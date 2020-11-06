@@ -120,11 +120,11 @@ module.exports = {
     const count = await I.grabNumberOfVisibleElements(this.fields.filterCheckboxes);
 
     if (!before) {
-      assert.equal(count, expectedCount, `The value ${expectedCount} should be equal to ${count}`);
+      assert.ok(count >= expectedCount, `The value ${count} should be same or bigger than ${expectedCount}`);
     }
 
     if (before) {
-      assert.notEqual(count, expectedCount, `The value ${expectedCount} should not be equal to ${count}`);
+      assert.ok(count !== expectedCount, `The value: ${count} different than: ${expectedCount}`);
     }
   },
 
