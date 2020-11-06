@@ -10,7 +10,7 @@ interface QueryAnalyticsPanelState {
   to: string;
   from: string;
   columns: any[];
-  labels: any; // ???
+  labels: any;
   pageNumber: number;
   pageSize: number;
   orderBy: string;
