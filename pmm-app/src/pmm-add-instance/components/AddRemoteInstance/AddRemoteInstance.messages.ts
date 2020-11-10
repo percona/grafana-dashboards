@@ -5,8 +5,9 @@ export const Messages = {
       pgStatements: 'PG Stat Statements',
       pgMonitor: 'PG Stat Monitor',
     },
-    labels: {
-      trackingOptions: 'Stat tracking options',
+    buttons: {
+      addService: 'Add service',
+      toMenu: 'Return to menu',
     },
   },
 };
