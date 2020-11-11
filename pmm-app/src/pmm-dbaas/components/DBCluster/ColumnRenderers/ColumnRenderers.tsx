@@ -4,6 +4,11 @@ import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { DBClusterConnection } from '../DBClusterConnection/DBClusterConnection';
 import { DBClusterStatus } from '../DBClusterStatus/DBClusterStatus';
 import { DBClusterStatus as Status } from '../DBCluster.types';
+import { DBClusterName } from '../DBClusterName/DBClusterName';
+
+export const clusterNameRender = (dbCluster) => (
+  <DBClusterName dbCluster={dbCluster} />
+);
 
 export const databaseTypeRender = (dbCluster) => DATABASE_LABELS[dbCluster.databaseType];
 
