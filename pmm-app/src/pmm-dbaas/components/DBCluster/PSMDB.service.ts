@@ -8,6 +8,7 @@ import {
   DeleteDBClusterAPI,
   DBClusterConnectionAPI,
   DBClusterStatus,
+  RestartDBClusterAPI,
 } from './DBCluster.types';
 import { DBClusterService } from './DBCluster.service';
 import { getClusterStatus } from './DBCluster.utils';
@@ -47,6 +48,13 @@ export class PSMDBService extends DBClusterService {
   getDBCluster(dbCluster: DBCluster): Promise<void | DBClusterConnectionAPI> {
     return apiRequestManagement.post<DBClusterConnectionAPI, any>(
       '/DBaaS/PSMDBClusters/Get',
+      omit(toAPI(dbCluster), ['params']),
+    );
+  }
+
+  restartDBCluster(dbCluster: DBCluster): Promise<void> {
+    return apiRequestManagement.post<any, RestartDBClusterAPI>(
+      '/DBaaS/PSMDBCluster/Restart',
       omit(toAPI(dbCluster), ['params']),
     );
   }
