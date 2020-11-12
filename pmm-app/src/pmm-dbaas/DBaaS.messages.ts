@@ -11,7 +11,7 @@ export const Messages = {
     deleteModal: {
       cancel: 'Cancel',
       confirm: 'Proceed',
-      confirmMessage: 'Are you sure that you want to delete this cluster?',
+      confirmMessage: 'Are you sure that you want to unregister this cluster?',
       title: 'Confirm action',
     },
     deleteSuccess: 'Cluster successfully unregistered',
@@ -60,6 +60,12 @@ export const Messages = {
         large: 'Large',
         custom: 'Custom',
       },
+    },
+    deleteModal: {
+      cancel: 'Cancel',
+      confirm: 'Proceed',
+      confirmMessage: 'Are you sure that you want to delete this cluster?',
+      title: 'Confirm action',
     },
     table: {
       nameColumn: 'Name',
