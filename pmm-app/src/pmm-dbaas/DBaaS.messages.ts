@@ -72,6 +72,7 @@ export const Messages = {
       nameColumn: 'Name',
       databaseTypeColumn: 'Database Type',
       connectionColumn: 'Connection',
+      clusterParametersColumn: 'DB cluster parameters',
       clusterStatusColumn: 'Cluster Status',
       actionsColumn: 'Actions',
       connection: {
@@ -79,6 +80,12 @@ export const Messages = {
         port: 'Port',
         username: 'Username',
         password: 'Password',
+      },
+      parameters: {
+        clusterName: 'K8s cluster name',
+        cpu: 'CPU',
+        memory: 'Memory',
+        disk: 'Disk',
       },
       actions: {
         deleteCluster: 'Delete',
