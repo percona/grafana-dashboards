@@ -28,13 +28,10 @@ export const Filters: FC = () => {
 
   const { filters, loading } = useFilters();
   const initialValues = useInitialFilterValues();
-
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
-
   const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);
   const [showAll, showSetAll] = useState(true);
   const [filter, setFilter] = useState('');
-
   const selectedCheckboxes = getSelectedCheckboxes(filters);
 
   useEffect(() => {
@@ -96,12 +93,12 @@ export const Filters: FC = () => {
     <Form
       onSubmit={() => {}}
       initialValues={initialValues}
-      render={({ form, handleSubmit }) => (
+      render={({ handleSubmit, values }) => (
         <Spin spinning={loading}>
           <form
             onSubmit={handleSubmit}
             onChange={() => {
-              contextActions.setLabels(form.getState().values);
+              contextActions.setLabels(values);
             }}
             onReset={() => {
               contextActions.resetLabels();
