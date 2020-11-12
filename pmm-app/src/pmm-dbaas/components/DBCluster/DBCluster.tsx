@@ -19,6 +19,7 @@ import {
   clusterStatusRender,
   connectionRender,
   databaseTypeRender,
+  clusterNameRender,
 } from './ColumnRenderers/ColumnRenderers';
 import { DeleteDBClusterModal } from './DeleteDBClusterModal/DeleteDBClusterModal';
 import { isClusterChanging, buildWarningMessage } from './DBCluster.utils';
@@ -36,7 +37,7 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
     () => [
       {
         Header: Messages.dbcluster.table.nameColumn,
-        accessor: 'clusterName',
+        accessor: clusterNameRender,
       },
       {
         Header: Messages.dbcluster.table.databaseTypeColumn,
