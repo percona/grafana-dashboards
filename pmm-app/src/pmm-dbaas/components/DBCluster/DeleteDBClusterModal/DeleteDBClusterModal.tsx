@@ -34,11 +34,11 @@ export const DeleteDBClusterModal: FC<DeleteDBClusterModalProps> = ({
 
   return (
     <Modal
-      title={Messages.kubernetes.deleteModal.title}
+      title={Messages.dbcluster.deleteModal.title}
       isVisible={isVisible}
       onClose={() => setVisible(false)}
     >
-      <h4 className={styles.deleteModalContent}>{Messages.kubernetes.deleteModal.confirmMessage}</h4>
+      <h4 className={styles.deleteModalContent}>{Messages.dbcluster.deleteModal.confirmMessage}</h4>
       <HorizontalGroup justify="space-between" spacing="md">
         <Button
           variant="secondary"
@@ -46,7 +46,7 @@ export const DeleteDBClusterModal: FC<DeleteDBClusterModalProps> = ({
           onClick={() => setVisible(false)}
           data-qa="cancel-delete-dbcluster-button"
         >
-          {Messages.kubernetes.deleteModal.cancel}
+          {Messages.dbcluster.deleteModal.cancel}
         </Button>
         <Button
           variant="destructive"
@@ -54,7 +54,7 @@ export const DeleteDBClusterModal: FC<DeleteDBClusterModalProps> = ({
           onClick={deleteDBCluster}
           data-qa="delete-dbcluster-button"
         >
-          {Messages.kubernetes.deleteModal.confirm}
+          {Messages.dbcluster.deleteModal.confirm}
         </Button>
       </HorizontalGroup>
     </Modal>

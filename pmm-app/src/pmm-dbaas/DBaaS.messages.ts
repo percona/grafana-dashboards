@@ -61,6 +61,12 @@ export const Messages = {
         custom: 'Custom',
       },
     },
+    deleteModal: {
+      cancel: 'Cancel',
+      confirm: 'Proceed',
+      confirmMessage: 'Are you sure that you want to delete this cluster?',
+      title: 'Confirm action',
+    },
     table: {
       nameColumn: 'Name',
       databaseTypeColumn: 'Database Type',
