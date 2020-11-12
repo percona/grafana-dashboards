@@ -93,12 +93,12 @@ export const Filters: FC = () => {
     <Form
       onSubmit={() => {}}
       initialValues={initialValues}
-      render={({ handleSubmit, values }) => (
+      render={({ form, handleSubmit }) => (
         <Spin spinning={loading}>
           <form
             onSubmit={handleSubmit}
             onChange={() => {
-              contextActions.setLabels(values);
+              contextActions.setLabels(form.getState().values);
             }}
             onReset={() => {
               contextActions.resetLabels();
