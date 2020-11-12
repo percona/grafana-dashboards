@@ -61,9 +61,9 @@ export class PSMDBService extends DBClusterService {
       kubernetesClusterName,
       databaseType,
       clusterSize: dbCluster.params.cluster_size,
-      memory: dbCluster.params.replicaset?.compute_resources?.memory_bytes || 0,
-      cpu: dbCluster.params.replicaset?.compute_resources?.cpu_m || 0,
-      disk: dbCluster.params.replicaset?.compute_resources?.disk_size || 0,
+      memory: (dbCluster.params.replicaset?.compute_resources?.memory_bytes || 0) / 10 ** 9,
+      cpu: (dbCluster.params.replicaset?.compute_resources?.cpu_m || 0) / 1000,
+      disk: (dbCluster.params.replicaset?.compute_resources?.disk_size || 0) / 10 ** 9,
       status: getClusterStatus(dbCluster.state, DBCLUSTER_STATUS_MAP),
       errorMessage: dbCluster.operation?.message,
     };
@@ -79,8 +79,7 @@ const toAPI = (dbCluster: DBCluster) => ({
       compute_resources: {
         cpu_m: dbCluster.cpu * 1000,
         memory_bytes: dbCluster.memory * 10 ** 9,
-        // disk_size units - Gigabytes
-        disk_size: Number(dbCluster.disk),
+        disk_size: dbCluster.disk * 10 ** 9,
       },
     },
   },
