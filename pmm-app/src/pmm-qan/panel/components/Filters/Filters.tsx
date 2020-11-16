@@ -11,22 +11,27 @@ import { useTheme } from '@grafana/ui';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
 import { FILTERS_BODY_HEIGHT, FILTERS_GROUPS } from './Filters.constants';
 import { getSelectedCheckboxes } from './Filters.tools';
-import { FiltersContainerProps } from './Filters.types';
 import { getStyles } from './Filters.styles';
 import { useFilters } from './hooks/useFilters';
 import { useInitialFilterValues } from './hooks/useInitialFilterValues';
 import { useFiltersContainerHeight } from './hooks/useFiltersContainerHeight';
 import { Messages } from './Filters.messages';
 
-export const FiltersContainer: FC<FiltersContainerProps> = ({ filters, disabled, rawTime }) => {
+export const Filters: FC = () => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
-  const filtersWrapperRef = useRef<HTMLDivElement>(null);
+  const {
+    contextActions,
+    panelState: { loadingDetails, rawTime },
+  } = useContext(QueryAnalyticsProvider);
 
+  const { filters, loading } = useFilters();
+  const initialValues = useInitialFilterValues();
+  const filtersWrapperRef = useRef<HTMLDivElement>(null);
   const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);
-  const [filter, setFilter] = useState('');
   const [showAll, showSetAll] = useState(true);
+  const [filter, setFilter] = useState('');
   const selectedCheckboxes = getSelectedCheckboxes(filters);
 
   useEffect(() => {
@@ -53,10 +58,6 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({ filters, disabled,
       htmlType="reset"
       className={styles.resetButton}
       data-qa="qan-filters-reset-all"
-      onClick={() => {
-        setFilter('');
-        showSetAll(true);
-      }}
       disabled={!selectedCheckboxes}
     >
       {Messages.buttons.reset}
@@ -89,59 +90,44 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({ filters, disabled,
   );
 
   return (
-    <div ref={filtersWrapperRef} className={cx({ [styles.filtersDisabled]: disabled })}>
-      <FiltersHeader />
-      <Scrollbar className={styles.getFiltersWrapper(height)}>
-        <FilterInput filter={filter} />
-        {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(
-          ({ name, dataKey, getDashboardURL }) => (
-            <CheckboxGroup
-              key={name}
-              name={name}
-              items={filters[dataKey].name}
-              group={dataKey}
-              showAll={showAll}
-              filter={filter}
-              getDashboardURL={getDashboardURL}
-              rawTime={rawTime}
-            />
-          ),
-        )}
-      </Scrollbar>
-    </div>
-  );
-};
-
-export const Filters: FC = () => {
-  const {
-    contextActions,
-    panelState: { loadingDetails, rawTime },
-  } = useContext(QueryAnalyticsProvider);
-  const { filters, loading } = useFilters();
-  const initialValues = useInitialFilterValues();
-
-  return useMemo(
-    () => (
-      <Form
-        onSubmit={() => {}}
-        initialValues={initialValues}
-        render={({ form, handleSubmit }) => (
-          <Spin spinning={loading}>
-            <form
-              onSubmit={handleSubmit}
-              onChange={() => {
-                contextActions.setLabels(form.getState().values);
-              }}
-              onReset={() => {
-                contextActions.resetLabels();
-              }}
-            >
-              <FiltersContainer filters={filters} disabled={loadingDetails} rawTime={rawTime} />
-            </form>
-          </Spin>
-        )}
-      />
-    ),
-    [contextActions, filters, loading, loadingDetails, initialValues, rawTime],
+    <Form
+      onSubmit={() => {}}
+      initialValues={initialValues}
+      render={({ form, handleSubmit }) => (
+        <Spin spinning={loading}>
+          <form
+            onSubmit={handleSubmit}
+            onChange={() => {
+              contextActions.setLabels(form.getState().values);
+            }}
+            onReset={() => {
+              contextActions.resetLabels();
+              setFilter('');
+            }}
+          >
+            <div ref={filtersWrapperRef} className={cx({ [styles.filtersDisabled]: loadingDetails })}>
+              <FiltersHeader />
+              <Scrollbar className={styles.getFiltersWrapper(height)}>
+                <FilterInput filter={filter} />
+                {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(
+                  ({ name, dataKey, getDashboardURL }) => (
+                    <CheckboxGroup
+                      key={name}
+                      name={name}
+                      items={filters[dataKey].name}
+                      group={dataKey}
+                      showAll={showAll}
+                      filter={filter}
+                      getDashboardURL={getDashboardURL}
+                      rawTime={rawTime}
+                    />
+                  ),
+                )}
+              </Scrollbar>
+            </div>
+          </form>
+        </Spin>
+      )}
+    />
   );
 };
