@@ -9,11 +9,7 @@ export const getStyles = ({
     flex-direction: column;
     margin: ${spacing.xs} ${spacing.sm};
   `,
-  connectionLoading: css`
-    display: flex;
-    justify-content: center;
-  `,
-  connectionFailed: css`
+  parametersFailed: css`
     display: flex;
     justify-content: center;
   `,

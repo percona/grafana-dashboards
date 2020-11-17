@@ -17,12 +17,20 @@ describe('DBClusterParameters::', () => {
     });
 
     expect(root.find('[data-qa="cluster-parameters-cluster-name"]')).toBeTruthy();
-    expect(root.find('[data-qa="cluster-parameters-cpu"]')).toBeTruthy();
-    expect(root.find('[data-qa="cluster-parameters-memory"]')).toBeTruthy();
-    expect(root.find('[data-qa="cluster-parameters-disk"]')).toBeTruthy();
+
+    const memory = root.find('[data-qa="cluster-parameters-memory"]');
+    const cpu = root.find('[data-qa="cluster-parameters-cpu"]');
+    const disk = root.find('[data-qa="cluster-parameters-disk"]');
+
+    expect(memory).toBeTruthy();
+    expect(memory.text()).toContain('Memory:1024 GB');
+    expect(cpu).toBeTruthy();
+    expect(cpu.text()).toContain('CPU:1');
+    expect(disk).toBeTruthy();
+    expect(disk.text()).toContain('Disk:25 GB');
   });
 
-  it('renders connection items correctly with MongoDB cluster', async () => {
+  it('renders parameters items correctly with MongoDB cluster', async () => {
     let root;
 
     await act(async () => {
@@ -32,8 +40,16 @@ describe('DBClusterParameters::', () => {
     root.update();
 
     expect(root.find('[data-qa="cluster-parameters-cluster-name"]')).toBeTruthy();
-    expect(root.find('[data-qa="cluster-parameters-cpu"]')).toBeTruthy();
-    expect(root.find('[data-qa="cluster-parameters-memory"]')).toBeTruthy();
-    expect(root.find('[data-qa="cluster-parameters-disk"]')).toBeTruthy();
+
+    const memory = root.find('[data-qa="cluster-parameters-memory"]');
+    const cpu = root.find('[data-qa="cluster-parameters-cpu"]');
+    const disk = root.find('[data-qa="cluster-parameters-disk"]');
+
+    expect(memory).toBeTruthy();
+    expect(memory.text()).toContain('Memory:0 GB');
+    expect(cpu).toBeTruthy();
+    expect(cpu.text()).toContain('CPU:0');
+    expect(disk).toBeTruthy();
+    expect(disk.text()).toContain('Disk:25 GB');
   });
 });

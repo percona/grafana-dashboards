@@ -10,6 +10,7 @@ export const dbClustersStub: DBCluster[] = [
     memory: 1024,
     cpu: 1,
     disk: 25,
+    status: DBClusterStatus.ready,
   },
   {
     kubernetesClusterName: 'Kubernetes Cluster 2',
