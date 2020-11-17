@@ -10,7 +10,7 @@ import { DBClusterServiceFactory } from '../DBClusterService.factory';
 export const EditDBClusterModal: FC<EditDBClusterModalProps> = ({
   isVisible,
   setVisible,
-  onDBClusterAdded,
+  onDBClusterChanged,
   selectedCluster,
 }) => {
   const onSubmit = async ({
@@ -22,6 +22,12 @@ export const EditDBClusterModal: FC<EditDBClusterModalProps> = ({
     cpu,
     disk,
   }: Record<string, any>) => {
+    if (!selectedCluster) {
+      setVisible(false);
+
+      return;
+    }
+
     try {
       const dbClusterService = DBClusterServiceFactory.newDBClusterService(databaseType.value);
 
@@ -35,7 +41,7 @@ export const EditDBClusterModal: FC<EditDBClusterModalProps> = ({
         disk,
       });
       setVisible(false);
-      onDBClusterAdded();
+      onDBClusterChanged();
     } catch (e) {
       console.error(e);
     }
@@ -44,7 +50,13 @@ export const EditDBClusterModal: FC<EditDBClusterModalProps> = ({
   const [initialValues, setInitialValues] = useState({});
 
   useEffect(() => {
-    const clusterParameters = { ...selectedCluster };
+    if (!selectedCluster) {
+      setVisible(false);
+
+      return;
+    }
+
+    const clusterParameters: any = { ...selectedCluster };
 
     clusterParameters.databaseType = {
       value: clusterParameters.databaseType,
@@ -78,16 +90,10 @@ export const EditDBClusterModal: FC<EditDBClusterModalProps> = ({
         onSubmit={onSubmit}
         initialValues={initialValues}
         validate={() => undefined}
-        render={({
-          values, form, valid, pristine, submitting, handleSubmit,
-        }) => (
-          <form onSubmit={handleSubmit} className="discovery-instance-form app-theme-dark">
+        render={(renderProps) => (
+          <form onSubmit={renderProps.handleSubmit} className="discovery-instance-form app-theme-dark">
             <DBClusterAdvancedOptions
-              form={form}
-              values={values}
-              valid={valid}
-              pristine={pristine}
-              submitting={submitting}
+              {...renderProps}
             />
           </form>
         )}

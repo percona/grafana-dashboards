@@ -122,7 +122,7 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
       <EditDBClusterModal
         isVisible={editModalVisible}
         setVisible={setEditModalVisible}
-        onClusterDeleted={getDBClusters}
+        onDBClusterChanged={getDBClusters}
         selectedCluster={selectedCluster}
       />
       <Table columns={columns} data={dbClusters} loading={loading} noData={<AddNewClusterButton />} />

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { processPromiseResults, FulfilledPromiseResult } from 'shared/components/helpers/promises';
+import { useEffect, useState } from 'react';
+import { FulfilledPromiseResult, processPromiseResults } from 'shared/components/helpers/promises';
 import { Databases } from 'shared/core';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
 import {
-  DBCluster, GetDBClustersAction, DBClusterPayload,
+  DBCluster, DBClusterPayload, GetDBClustersAction,
 } from './DBCluster.types';
 import { isClusterChanging } from './DBCluster.utils';
 import { DBClusterServiceFactory } from './DBClusterService.factory';

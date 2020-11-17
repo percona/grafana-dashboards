@@ -1,10 +1,10 @@
-import { SelectableValue } from '@grafana/data';
+import { DBCluster } from '../DBCluster.types';
 
 export interface EditDBClusterModalProps {
-  kubernetesOptions: SelectableValue[];
   isVisible: boolean;
   setVisible: (value: boolean) => void;
-  onDBClusterAdded: () => void;
+  onDBClusterChanged: () => void;
+  selectedCluster?: DBCluster;
 }
 
 export enum EditDBClusterFields {
