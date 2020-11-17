@@ -61,12 +61,12 @@ interface DBClusterParamsAPI {
 
 interface DBClusterContainerAPI {
   compute_resources: DBClusterComputeResourcesAPI;
+  disk_size: number;
 }
 
 interface DBClusterComputeResourcesAPI {
   cpu_m: number;
   memory_bytes: number;
-  disk_size: number;
 }
 
 interface DBClusterOperationAPI {
