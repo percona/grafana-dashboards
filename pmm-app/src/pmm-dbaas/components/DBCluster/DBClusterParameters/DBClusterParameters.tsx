@@ -29,12 +29,12 @@ export const DBClusterParameters: FC<DBClusterParametersProps> = ({ dbCluster })
               />
               <DBClusterConnectionItem
                 label={Messages.dbcluster.table.parameters.memory}
-                value={dbCluster.memory}
+                value={`${dbCluster.memory} GB`}
                 dataQa="cluster-parameters-memory"
               />
               <DBClusterConnectionItem
                 label={Messages.dbcluster.table.parameters.disk}
-                value={dbCluster.disk}
+                value={`${dbCluster.disk} GB`}
                 dataQa="cluster-parameters-cpu"
               />
             </>
