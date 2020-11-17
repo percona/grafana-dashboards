@@ -14,4 +14,7 @@ export const getStyles = (theme: GrafanaTheme) => ({
   tableWrapper: css`
     padding: ${theme.spacing.md};
   `,
+  actionButton: css`
+    margin-left: 10px;
+  `,
 });

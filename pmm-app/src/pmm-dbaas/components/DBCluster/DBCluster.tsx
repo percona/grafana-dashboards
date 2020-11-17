@@ -1,6 +1,4 @@
-import React, {
-  FC, useCallback, useMemo, useState,
-} from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Button, useStyles } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
@@ -77,8 +75,9 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
               variant="primary"
               data-qa="open-edit-modal-button"
               disabled={isClusterChanging(element)}
+              className={styles.actionButton}
             >
-              Edit cluster
+              {Messages.dbcluster.table.actions.editCluster}
             </Button>
           </div>
         ),

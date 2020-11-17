@@ -85,7 +85,7 @@ export const EditDBClusterModal: FC<EditDBClusterModalProps> = ({
 
   return (
     // eslint-disable-next-line max-len
-    <Modal title={`Edit cluster ${selectedCluster?.clusterName} (${selectedCluster?.databaseType})`} isVisible={isVisible} onClose={() => setVisible(false)}>
+    <Modal title={`${selectedCluster?.clusterName} ( ${selectedCluster?.databaseType} )`} isVisible={isVisible} onClose={() => setVisible(false)}>
       <FormFinal
         onSubmit={onSubmit}
         initialValues={initialValues}

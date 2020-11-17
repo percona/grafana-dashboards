@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { FulfilledPromiseResult, processPromiseResults } from 'shared/components/helpers/promises';
 import { Databases } from 'shared/core';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
-import {
-  DBCluster, DBClusterPayload, GetDBClustersAction,
-} from './DBCluster.types';
+import { DBCluster, DBClusterPayload, GetDBClustersAction } from './DBCluster.types';
 import { isClusterChanging } from './DBCluster.utils';
 import { DBClusterServiceFactory } from './DBClusterService.factory';
 
@@ -55,21 +53,66 @@ export const useDBClusters = (kubernetes: Kubernetes[]): [DBCluster[], GetDBClus
 
 const getClusters = async (kubernetes: Kubernetes[], databaseType: Databases): Promise<DBCluster[]> => {
   const dbClusterService = DBClusterServiceFactory.newDBClusterService(databaseType);
-  const requests = kubernetes.map(dbClusterService.getDBClusters);
-  const results = await processPromiseResults(requests);
+  // const requests = kubernetes.map(dbClusterService.getDBClusters);
+  // const results = await processPromiseResults(requests);
+  //
+  // const clustersList: DBCluster[] = results.reduce((acc: DBCluster[], r, index) => {
+  //   if (r.status !== 'fulfilled') {
+  //     return acc;
+  //   }
+  //
+  //   // const clusters: DBClusterPayload[] = (r as FulfilledPromiseResult).value?.clusters ?? [];
+  //
+  //   const clusters: DBClusterPayload[] = [
+  //     {
+  //       kubernetes_cluster_name: 'string',
+  //       name: 'Testerok',
+  //       state: 'pending',
+  //       operation: {},
+  //       params: {
+  //         cluster_size: 1,
+  //         pxc: {
+  //           compute_resources: {
+  //             cpu_m: 10000,
+  //             memory_bytes: 2000000000000,
+  //             disk_size: 25,
+  //           },
+  //         },
+  //       },
+  //     },
+  //   ];
+  //
+  //   // eslint-disable-next-line max-len
+  //   const resultClusters = clusters.map((cluster) =>
+  //     dbClusterService.toModel(cluster, kubernetes[index].kubernetesClusterName, databaseType),
+  //   );
+  //
+  //   return acc.concat(resultClusters);
+  // }, []);
+  //
 
-  const clustersList: DBCluster[] = results.reduce((acc: DBCluster[], r, index) => {
-    if (r.status !== 'fulfilled') {
-      return acc;
-    }
-
-    const clusters: DBClusterPayload[] = (r as FulfilledPromiseResult).value?.clusters ?? [];
-
-    // eslint-disable-next-line max-len
-    const resultClusters = clusters.map((cluster) => dbClusterService.toModel(cluster, kubernetes[index].kubernetesClusterName, databaseType));
-
-    return acc.concat(resultClusters);
-  }, []);
+  const clustersList = [
+    dbClusterService.toModel(
+      {
+        kubernetes_cluster_name: 'Test cluster name',
+        name: 'Test cluster',
+        state: 'XTRA_DB_CLUSTER_STATE_READY',
+        operation: {},
+        params: {
+          cluster_size: 1,
+          pxc: {
+            compute_resources: {
+              cpu_m: 10000,
+              memory_bytes: 2000000000,
+              disk_size: 2000000000000,
+            },
+          },
+        },
+      },
+      kubernetes[0].kubernetesClusterName,
+      databaseType,
+    ),
+  ];
 
   return clustersList;
 };
