@@ -52,5 +52,5 @@ const toModel = (response: any): Settings => ({
   sttEnabled: response.stt_enabled,
   platformEmail: response.platform_email,
   dbaasEnabled: response.dbaas_enabled,
-  publicAddress: response.pmm_server_url,
+  publicAddress: response.pmm_public_address_url,
 });
