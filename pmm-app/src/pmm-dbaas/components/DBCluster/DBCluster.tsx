@@ -1,4 +1,6 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, {
+  FC, useCallback, useMemo, useState,
+} from 'react';
 import { Button, useStyles } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
