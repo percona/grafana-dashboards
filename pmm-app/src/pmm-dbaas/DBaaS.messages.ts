@@ -92,6 +92,7 @@ export const Messages = {
       },
       actions: {
         deleteCluster: 'Delete',
+        restartCluster: 'Restart',
       },
       status: {
         [DBClusterStatus.changing]: 'Pending',

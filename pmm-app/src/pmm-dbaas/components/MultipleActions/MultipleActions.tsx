@@ -1,48 +1,23 @@
-import React, {
-  FC, useState, useEffect, useCallback,
-} from 'react';
-import { Icon, useTheme } from '@grafana/ui';
-import { cx } from 'emotion';
+import React, { FC } from 'react';
+import { IconButton } from '@grafana/ui';
+import { Dropdown } from '@percona/platform-core';
 import { MultipleActionsProps } from './MultipleActions.types';
-import { getStyles } from './MultipleActions.styles';
 
-export const MultipleActions: FC<MultipleActionsProps> = ({ actions }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const theme = useTheme();
-  const styles = getStyles(theme);
-  const toggleMenu = useCallback(() => setMenuOpen((value) => !value), []);
-
-  const Menu = () => {
-    useEffect(() => {
-      document.addEventListener('click', toggleMenu);
-
-      return () => {
-        document.removeEventListener('click', toggleMenu);
-      };
-    }, []);
-
-    return (
-      <div className={styles.menu}>
-        {actions.map((action) => (
-          <button type="button" className={styles.menuItem} onClick={action.action}>
-            <span className={styles.action}>{action.title}</span>
-          </button>
-        ))}
-      </div>
-    );
-  };
+export const MultipleActions: FC<MultipleActionsProps> = ({ actions, disabled, dataQa }) => {
+  const Toggle = React.forwardRef<HTMLButtonElement>((props, ref) => (
+    <IconButton
+      name="ellipsis-v"
+      size="xl"
+      disabled={disabled}
+      data-qa={dataQa}
+      ref={ref}
+      {...props}
+    />
+  ));
 
   return (
-    <div>
-      <button
-        type="button"
-        onClick={toggleMenu}
-        className={cx(styles.showMenu, { [styles.showMenuOpen]: menuOpen })}
-      >
-        <Icon name="ellipsis-v" />
-      </button>
-
-      <div className={styles.menuWrapper}>{menuOpen ? <Menu /> : null}</div>
-    </div>
+    <Dropdown toggle={Toggle}>
+      {actions.map(({ title, action }) => <span key={title} onClick={action}>{title}</span>)}
+    </Dropdown>
   );
 };

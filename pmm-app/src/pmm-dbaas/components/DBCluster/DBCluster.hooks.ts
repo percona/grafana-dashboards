@@ -3,10 +3,9 @@ import { processPromiseResults, FulfilledPromiseResult } from 'shared/components
 import { Databases } from 'shared/core';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
 import { DBCluster, GetDBClustersAction, DBClusterPayload } from './DBCluster.types';
-import { isClusterChanging } from './DBCluster.utils';
 import { DBClusterServiceFactory } from './DBClusterService.factory';
 
-const RECHECK_INTERVAL = 30000;
+const RECHECK_INTERVAL = 10000;
 const DATABASES = [
   Databases.mysql,
   Databases.mongodb,
@@ -39,19 +38,11 @@ export const useDBClusters = (
 
   useEffect(() => {
     getDBClusters();
+
+    timer = setInterval(() => getDBClusters(false), RECHECK_INTERVAL);
+
+    return () => clearTimeout(timer);
   }, []);
-
-  useEffect(() => {
-    // clear timer to prevent parallel requests when get is called from outside hook
-    if (timer) {
-      clearTimeout(timer);
-    }
-
-    // if there are clusters changing, recheck
-    if (dbClusters.find((cluster) => isClusterChanging(cluster))) {
-      timer = setTimeout(() => getDBClusters(false), RECHECK_INTERVAL);
-    }
-  }, [dbClusters]);
 
   return [dbClusters, getDBClusters, loading];
 };

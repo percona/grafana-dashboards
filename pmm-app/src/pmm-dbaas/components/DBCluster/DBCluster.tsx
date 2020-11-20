@@ -5,7 +5,7 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import { Button, useStyles } from '@grafana/ui';
+import { useStyles } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Settings } from 'pmm-settings/Settings.types';
 import { SettingsService } from 'pmm-settings/Settings.service';
@@ -21,9 +21,10 @@ import {
   databaseTypeRender,
   parametersRender,
   clusterNameRender,
+  clusterActionsRender,
 } from './ColumnRenderers/ColumnRenderers';
 import { DeleteDBClusterModal } from './DeleteDBClusterModal/DeleteDBClusterModal';
-import { isClusterChanging, buildWarningMessage } from './DBCluster.utils';
+import { buildWarningMessage } from './DBCluster.utils';
 
 export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
   const styles = useStyles(getStyles);
@@ -58,26 +59,14 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
       },
       {
         Header: Messages.dbcluster.table.actionsColumn,
-        accessor: (element) => (
-          <div className={styles.actionsColumn}>
-            <Button
-              size="md"
-              onClick={() => {
-                setSelectedCluster(element);
-                setDeleteModalVisible(true);
-              }}
-              icon="trash-alt"
-              variant="destructive"
-              data-qa="open-delete-modal-button"
-              disabled={isClusterChanging(element)}
-            >
-              {Messages.dbcluster.table.actions.deleteCluster}
-            </Button>
-          </div>
-        ),
+        accessor: clusterActionsRender({
+          setSelectedCluster,
+          setDeleteModalVisible,
+          getDBClusters,
+        }),
       },
     ],
-    [],
+    [setSelectedCluster, setDeleteModalVisible, getDBClusters],
   );
 
   const kubernetesOptions = kubernetes.map(({ kubernetesClusterName }) => ({

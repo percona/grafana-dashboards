@@ -6,6 +6,8 @@ import { DBClusterStatus } from '../DBClusterStatus/DBClusterStatus';
 import { DBClusterStatus as Status } from '../DBCluster.types';
 import { DBClusterParameters } from '../DBClusterParameters/DBClusterParameters';
 import { DBClusterName } from '../DBClusterName/DBClusterName';
+import { DBClusterActions } from '../DBClusterActions/DBClusterActions';
+import { DBClusterActionsProps } from '../DBClusterActions/DBClusterActions.types';
 
 export const clusterNameRender = (dbCluster) => (
   <DBClusterName dbCluster={dbCluster} />
@@ -26,3 +28,16 @@ export const clusterStatusRender = (dbCluster) => {
 
 export const connectionRender = (dbCluster) => <DBClusterConnection dbCluster={dbCluster} />;
 export const parametersRender = (dbCluster) => <DBClusterParameters dbCluster={dbCluster} />;
+
+export const clusterActionsRender = ({
+  setSelectedCluster,
+  setDeleteModalVisible,
+  getDBClusters,
+}: Omit<DBClusterActionsProps, 'dbCluster'>) => (dbCluster) => (
+  <DBClusterActions
+    dbCluster={dbCluster}
+    setSelectedCluster={setSelectedCluster}
+    setDeleteModalVisible={setDeleteModalVisible}
+    getDBClusters={getDBClusters}
+  />
+);
