@@ -52,6 +52,11 @@ export interface DeleteDBClusterAPI {
   name: string;
 }
 
+export interface RestartDBClusterAPI {
+  kubernetes_cluster_name: string;
+  name: string;
+}
+
 interface DBClusterParamsAPI {
   cluster_size: number;
   pxc?: DBClusterContainerAPI;
