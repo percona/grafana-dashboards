@@ -16,36 +16,33 @@ export const AddDBClusterModal: FC<AddDBClusterModalProps> = ({
   setVisible,
   onDBClusterAdded,
 }) => {
-  const steps = useMemo(() => [
-    {
-      title: Messages.dbcluster.addModal.steps.basicOptions,
-      fields: [
-        AddDBClusterFields.name,
-        AddDBClusterFields.kubernetesCluster,
-        AddDBClusterFields.databaseType,
-      ],
-      render: ({ form }) => (
-        <DBClusterBasicOptions
-          kubernetesOptions={kubernetesOptions}
-          form={form}
-        />
-      ),
-      dataQa: 'dbcluster-basic-options-step',
-    },
-    {
-      title: Messages.dbcluster.addModal.steps.advancedOptions,
-      fields: [
-        AddDBClusterFields.topology,
-        AddDBClusterFields.nodes,
-        AddDBClusterFields.memory,
-        AddDBClusterFields.cpu,
-      ],
-      render: (renderProps) => (
-        <DBClusterAdvancedOptions {...renderProps} />
-      ),
-      dataQa: 'dbcluster-advanced-options-step',
-    },
-  ], [kubernetesOptions]);
+  const steps = useMemo(
+    () => [
+      {
+        title: Messages.dbcluster.addModal.steps.basicOptions,
+        fields: [
+          AddDBClusterFields.name,
+          AddDBClusterFields.kubernetesCluster,
+          AddDBClusterFields.databaseType,
+        ],
+        render: ({ form }) => <DBClusterBasicOptions kubernetesOptions={kubernetesOptions} form={form} />,
+        dataQa: 'dbcluster-basic-options-step',
+      },
+      {
+        title: Messages.dbcluster.addModal.steps.advancedOptions,
+        fields: [
+          AddDBClusterFields.topology,
+          AddDBClusterFields.nodes,
+          AddDBClusterFields.memory,
+          AddDBClusterFields.cpu,
+          AddDBClusterFields.disk,
+        ],
+        render: (renderProps) => <DBClusterAdvancedOptions {...renderProps} />,
+        dataQa: 'dbcluster-advanced-options-step',
+      },
+    ],
+    [kubernetesOptions],
+  );
   const onSubmit = async ({
     name,
     kubernetesCluster,
@@ -55,6 +52,7 @@ export const AddDBClusterModal: FC<AddDBClusterModalProps> = ({
     single,
     memory,
     cpu,
+    disk,
   }: Record<string, any>) => {
     try {
       const dbClusterService = DBClusterServiceFactory.newDBClusterService(databaseType.value);
@@ -66,6 +64,7 @@ export const AddDBClusterModal: FC<AddDBClusterModalProps> = ({
         clusterSize: topology === DBClusterTopology.cluster ? nodes : single,
         cpu,
         memory,
+        disk,
       });
       setVisible(false);
       onDBClusterAdded();
@@ -75,17 +74,9 @@ export const AddDBClusterModal: FC<AddDBClusterModalProps> = ({
   };
 
   return (
-    <Modal
-      title={Messages.dbcluster.addModal.title}
-      isVisible={isVisible}
-      onClose={() => setVisible(false)}
-    >
+    <Modal title={Messages.dbcluster.addModal.title} isVisible={isVisible} onClose={() => setVisible(false)}>
       <div className={styles.stepProgressWrapper}>
-        <StepProgress
-          steps={steps}
-          initialValues={INITIAL_VALUES}
-          onSubmit={onSubmit}
-        />
+        <StepProgress steps={steps} initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
       </div>
     </Modal>
   );

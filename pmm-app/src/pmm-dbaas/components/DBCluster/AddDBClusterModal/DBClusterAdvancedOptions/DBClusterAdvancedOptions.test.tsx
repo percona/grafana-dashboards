@@ -18,6 +18,7 @@ describe('DBClusterAdvancedOptions::', () => {
     expect(root.find('[data-qa="dbcluster-resources-field"]')).toBeTruthy();
     expect(root.find('[data-qa="memory-number-input"]')).toBeTruthy();
     expect(root.find('[data-qa="cpu-number-input"]')).toBeTruthy();
+    expect(root.find('[data-qa="disk-number-input"]')).toBeTruthy();
     expect(root.find('[data-qa="dbcluster-create-cluster-button"]')).toBeTruthy();
   });
   it('renders correctly with initial values', () => {
@@ -46,7 +47,7 @@ describe('DBClusterAdvancedOptions::', () => {
 
     expect(root.find('[data-qa="single-number-input"]')).toBeTruthy();
   });
-  it('should disable memory and cpu when resources are not custom', () => {
+  it('should disable memory, cpu and disk when resources are not custom', () => {
     const root = mount(<Form
       initialValues={{
         [AddDBClusterFields.resources]: DBClusterResources.small,
@@ -56,9 +57,11 @@ describe('DBClusterAdvancedOptions::', () => {
     />);
     const memory = root.find('[data-qa="memory-number-input"]');
     const cpu = root.find('[data-qa="cpu-number-input"]');
+    const disk = root.find('[data-qa="disk-number-input"]');
 
     expect(memory.prop('disabled')).toBeTruthy();
     expect(cpu.prop('disabled')).toBeTruthy();
+    expect(disk.prop('disabled')).toBeTruthy();
   });
   it('should enable memory and cpu when resources is custom', () => {
     const root = mount(<Form
@@ -74,9 +77,11 @@ describe('DBClusterAdvancedOptions::', () => {
 
     const memory = root.find('[data-qa="memory-number-input"]');
     const cpu = root.find('[data-qa="cpu-number-input"]');
+    const disk = root.find('[data-qa="disk-number-input"]');
 
     expect(memory.prop('disabled')).toBeFalsy();
     expect(cpu.prop('disabled')).toBeFalsy();
+    expect(disk.prop('disabled')).toBeFalsy();
   });
   it('should disable button when invalid', () => {
     const root = mount(<Form
