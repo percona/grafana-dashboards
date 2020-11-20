@@ -32,7 +32,7 @@ Scenario('Open PMM Settings page and verify changing Data Retention [critical]',
   I.waitForValue(pmmSettingsPage.fields.dataRetentionInput, dataRetentionValue, 30);
 });
 
-xScenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]', async (I, pmmSettingsPage) => {
+Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]', async (I, pmmSettingsPage) => {
   const scheme = 'http://';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -40,7 +40,7 @@ xScenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(
     scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
-    pmmSettingsPage.alertManager.editRule.replace('{{ sec }}', Math.random() * 100000),
+    pmmSettingsPage.alertManager.editRule.replace('{{ sec }}', Math.floor(Math.random() * 10) + 1),
   );
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   pmmSettingsPage.openAlertsManagerUi();

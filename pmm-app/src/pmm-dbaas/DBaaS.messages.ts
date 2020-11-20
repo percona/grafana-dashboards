@@ -75,7 +75,7 @@ export const Messages = {
       nameColumn: 'Name',
       databaseTypeColumn: 'Database Type',
       connectionColumn: 'Connection',
-      clusterParametersColumn: 'DB cluster parameters',
+      clusterParametersColumn: 'DB Cluster Parameters',
       clusterStatusColumn: 'Cluster Status',
       actionsColumn: 'Actions',
       connection: {
