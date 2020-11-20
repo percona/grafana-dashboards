@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { FulfilledPromiseResult, processPromiseResults } from 'shared/components/helpers/promises';
 import { Databases } from 'shared/core';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
-import { DBCluster, DBClusterPayload, GetDBClustersAction } from './DBCluster.types';
-import { isClusterChanging } from './DBCluster.utils';
+import { DBCluster, GetDBClustersAction, DBClusterPayload } from './DBCluster.types';
 import { DBClusterServiceFactory } from './DBClusterService.factory';
 
 const RECHECK_INTERVAL = 10000;

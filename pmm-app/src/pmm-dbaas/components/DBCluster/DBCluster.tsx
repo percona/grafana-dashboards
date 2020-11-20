@@ -64,6 +64,7 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
         accessor: clusterActionsRender({
           setSelectedCluster,
           setDeleteModalVisible,
+          setEditModalVisible,
           getDBClusters,
         }),
       },
