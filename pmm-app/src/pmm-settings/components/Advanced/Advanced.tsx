@@ -76,7 +76,8 @@ export const Advanced: FC<AdvancedProps> = ({
       enable_telemetry: telemetry,
       disable_stt: !stt,
       enable_stt: stt,
-      pmm_public_address_url: publicAddress,
+      pmm_public_address: publicAddress,
+      remove_pmm_public_address: !publicAddress,
     };
 
     updateSettings(body, setLoading);
