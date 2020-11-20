@@ -5,4 +5,6 @@ interface Action {
 
 export interface MultipleActionsProps {
   actions: Action[];
+  disabled?: boolean;
+  dataQa?: string;
 }

@@ -13,6 +13,8 @@ export abstract class DBClusterService {
 
   abstract getDBCluster(dbCluster: DBCluster): Promise<void | DBClusterConnectionAPI>;
 
+  abstract restartDBCluster(dbCluster: DBCluster): Promise<void>;
+
   abstract toModel(
     dbCluster: DBClusterPayload,
     kubernetesClusterName: string,

@@ -8,6 +8,7 @@ import {
   DeleteDBClusterAPI,
   DBClusterConnectionAPI,
   DBClusterStatus,
+  RestartDBClusterAPI,
 } from './DBCluster.types';
 import { DBClusterService } from './DBCluster.service';
 import { getClusterStatus } from './DBCluster.utils';
@@ -54,6 +55,13 @@ export class XtraDBService extends DBClusterService {
   getDBCluster(dbCluster: DBCluster): Promise<void | DBClusterConnectionAPI> {
     return apiRequestManagement.post<DBClusterConnectionAPI, any>(
       '/DBaaS/XtraDBClusters/Get',
+      omit(toAPI(dbCluster), ['params']),
+    );
+  }
+
+  restartDBCluster(dbCluster: DBCluster): Promise<void> {
+    return apiRequestManagement.post<any, RestartDBClusterAPI>(
+      '/DBaaS/XtraDBCluster/Restart',
       omit(toAPI(dbCluster), ['params']),
     );
   }

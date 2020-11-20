@@ -16,6 +16,7 @@ export const getStyles = ({
   status: css`
     background-color: ${palette.gray1};
     border-radius: 20px;
+    color: ${palette.gray85};
     cursor: default;
     font-size: ${typography.size.sm};
     padding: 3px 15px;
