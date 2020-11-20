@@ -20,14 +20,17 @@ export const DEFAULT_SIZES = {
   small: {
     memory: 2,
     cpu: 1,
+    disk: 25,
   },
   medium: {
     memory: 8,
     cpu: 4,
+    disk: 100,
   },
   large: {
     memory: 32,
     cpu: 8,
+    disk: 500,
   },
 };
 
@@ -38,6 +41,7 @@ export const INITIAL_VALUES = {
   resources: DBClusterResources.small,
   memory: DEFAULT_SIZES.small.memory,
   cpu: DEFAULT_SIZES.small.cpu,
+  disk: DEFAULT_SIZES.small.disk,
 };
 
 export const MIN_NODES = 3;
