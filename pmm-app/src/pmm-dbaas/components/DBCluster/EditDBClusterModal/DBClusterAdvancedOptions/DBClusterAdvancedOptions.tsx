@@ -61,7 +61,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
     (value) => (value > 0 && Number.isInteger(+value) ? value : undefined), [],
   );
   const topologiesDisabled = useMemo(() => (
-    databaseType?.value !== Databases.mysql ? TOPOLOGIES_DISABLED : []
+    databaseType !== Databases.mysql ? TOPOLOGIES_DISABLED : []
   ), [databaseType]);
 
   return (
