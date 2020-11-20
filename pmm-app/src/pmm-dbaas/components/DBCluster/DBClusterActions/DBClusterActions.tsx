@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { MultipleActions } from 'pmm-dbaas/components/MultipleActions/MultipleActions';
-import { DBCluster } from '../DBCluster.types';
+import { DBCluster, DBClusterStatus } from '../DBCluster.types';
 import { isClusterChanging } from '../DBCluster.utils';
 import { DBClusterServiceFactory } from '../DBClusterService.factory';
 import { DBClusterActionsProps } from './DBClusterActions.types';
@@ -25,6 +25,7 @@ export const DBClusterActions: FC<DBClusterActionsProps> = ({
       },
       {
         title: Messages.dbcluster.table.actions.editCluster,
+        disabled: dbCluster.status !== DBClusterStatus.ready,
         action: () => {
           setSelectedCluster(dbCluster);
           setEditModalVisible(true);

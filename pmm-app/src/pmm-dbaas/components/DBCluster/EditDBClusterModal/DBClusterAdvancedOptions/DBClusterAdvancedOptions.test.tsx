@@ -8,10 +8,9 @@ import { DBClusterResources } from './DBClusterAdvancedOptions.types';
 
 describe('DBClusterAdvancedOptions::', () => {
   it('renders correctly', () => {
-    const root = mount(<Form
-      onSubmit={jest.fn()}
-      render={(renderProps) => <DBClusterAdvancedOptions {...renderProps} />}
-    />);
+    const root = mount(
+      <Form onSubmit={jest.fn()} render={(renderProps) => <DBClusterAdvancedOptions {...renderProps} />} />,
+    );
 
     expect(root.find('[data-qa="dbcluster-topology-field"]')).toBeTruthy();
     expect(root.find('[data-qa="nodes-number-input"]')).toBeTruthy();
@@ -23,13 +22,15 @@ describe('DBClusterAdvancedOptions::', () => {
   });
 
   it('should disable memory, cpu and disk when resources are not custom', () => {
-    const root = mount(<Form
-      initialValues={{
-        [EditDBClusterFields.resources]: DBClusterResources.small,
-      }}
-      onSubmit={jest.fn()}
-      render={(renderProps: FormRenderProps) => <DBClusterAdvancedOptions {...renderProps} />}
-    />);
+    const root = mount(
+      <Form
+        initialValues={{
+          [EditDBClusterFields.resources]: DBClusterResources.small,
+        }}
+        onSubmit={jest.fn()}
+        render={(renderProps: FormRenderProps) => <DBClusterAdvancedOptions {...renderProps} />}
+      />,
+    );
     const memory = root.find('[data-qa="memory-number-input"]');
     const cpu = root.find('[data-qa="cpu-number-input"]');
     const disk = root.find('[data-qa="disk-number-input"]');
@@ -40,16 +41,21 @@ describe('DBClusterAdvancedOptions::', () => {
   });
 
   it('should enable memory and cpu when resources are custom, disk should be disabled', () => {
-    const root = mount(<Form
-      initialValues={{
-        [EditDBClusterFields.resources]: DBClusterResources.small,
-      }}
-      onSubmit={jest.fn()}
-      render={(renderProps: FormRenderProps) => <DBClusterAdvancedOptions {...renderProps} />}
-    />);
+    const root = mount(
+      <Form
+        initialValues={{
+          [EditDBClusterFields.resources]: DBClusterResources.small,
+        }}
+        onSubmit={jest.fn()}
+        render={(renderProps: FormRenderProps) => <DBClusterAdvancedOptions {...renderProps} />}
+      />,
+    );
     const resourcesWrapper = root.find('[data-qa="dbcluster-resources-field"]');
 
-    resourcesWrapper.find('label').at(3).simulate('click');
+    resourcesWrapper
+      .find('label')
+      .at(3)
+      .simulate('click');
 
     const memory = root.find('[data-qa="memory-number-input"]');
     const cpu = root.find('[data-qa="cpu-number-input"]');
@@ -61,42 +67,36 @@ describe('DBClusterAdvancedOptions::', () => {
   });
 
   it('should disable button when invalid', () => {
-    const root = mount(<Form
-      onSubmit={jest.fn()}
-      render={(renderProps) => <DBClusterAdvancedOptions {...renderProps} />}
-    />);
+    const root = mount(
+      <Form onSubmit={jest.fn()} render={(renderProps) => <DBClusterAdvancedOptions {...renderProps} />} />,
+    );
     const button = root.find('[data-qa="dbcluster-update-cluster-button"]').find('button');
 
     expect(button.prop('disabled')).toBeTruthy();
   });
 
   it('should enable button when valid', () => {
-    const root = mount(<Form
-      onSubmit={jest.fn()}
-      render={(renderProps) => (
-        <DBClusterAdvancedOptions
-          {...renderProps}
-          valid
-          pristine={false}
-        />
-      )}
-    />);
+    const root = mount(
+      <Form
+        onSubmit={jest.fn()}
+        render={(renderProps) => <DBClusterAdvancedOptions {...renderProps} valid pristine={false} />}
+      />,
+    );
     const button = root.find('[data-qa="dbcluster-update-cluster-button"]').find('button');
 
     expect(button.prop('disabled')).toBeFalsy();
   });
 
   it('should disabled single node topology when database is MongoDB', () => {
-    const root = mount(<Form
-      initialValues={{
-        [EditDBClusterFields.databaseType]: {
-          value: Databases.mongodb,
-          key: Databases.mongodb,
-        },
-      }}
-      onSubmit={jest.fn()}
-      render={(renderProps: FormRenderProps) => <DBClusterAdvancedOptions {...renderProps} />}
-    />);
+    const root = mount(
+      <Form
+        initialValues={{
+          [EditDBClusterFields.databaseType]: Databases.mongodb,
+        }}
+        onSubmit={jest.fn()}
+        render={(renderProps: FormRenderProps) => <DBClusterAdvancedOptions {...renderProps} />}
+      />,
+    );
     const topology = root.find('[data-qa="dbcluster-topology-field"]');
     const singleLabel = topology.find('label').at(1);
 
@@ -104,16 +104,15 @@ describe('DBClusterAdvancedOptions::', () => {
   });
 
   it('should enable single node topology when database is MySQL', () => {
-    const root = mount(<Form
-      initialValues={{
-        [EditDBClusterFields.databaseType]: {
-          value: Databases.mysql,
-          key: Databases.mysql,
-        },
-      }}
-      onSubmit={jest.fn()}
-      render={(renderProps: FormRenderProps) => <DBClusterAdvancedOptions {...renderProps} />}
-    />);
+    const root = mount(
+      <Form
+        initialValues={{
+          [EditDBClusterFields.databaseType]: Databases.mysql,
+        }}
+        onSubmit={jest.fn()}
+        render={(renderProps: FormRenderProps) => <DBClusterAdvancedOptions {...renderProps} />}
+      />,
+    );
     const topology = root.find('[data-qa="dbcluster-topology-field"]');
     const singleLabel = topology.find('label').at(1);
 
