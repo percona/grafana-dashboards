@@ -21,7 +21,7 @@ const DBCLUSTER_STATUS_MAP = {
 };
 
 export class XtraDBService extends DBClusterService {
-  async getDBClusters(kubernetes: Kubernetes): Promise<DBClusterPayload> {
+  getDBClusters(kubernetes: Kubernetes): Promise<DBClusterPayload> {
     return apiRequestManagement.post<any, Kubernetes>('/DBaaS/XtraDBClusters/List', kubernetes);
   }
 

@@ -68,6 +68,9 @@ export const Messages = {
       confirmMessage: 'Are you sure that you want to delete this cluster?',
       title: 'Confirm action',
     },
+    editModal: {
+      confirm: 'Save changes',
+    },
     table: {
       nameColumn: 'Name',
       databaseTypeColumn: 'Database Type',

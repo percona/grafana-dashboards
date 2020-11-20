@@ -115,7 +115,6 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
         <NumberInputField
           name={EditDBClusterFields.disk}
           label={Messages.dbcluster.addModal.fields.disk}
-          validators={resourcesValidators}
           disabled
           parse={parsePositiveInt}
         />
@@ -129,7 +128,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
           loading={submitting}
           className={styles.createButton}
         >
-          Save changes
+          {Messages.dbcluster.editModal.confirm}
         </LoaderButton>
       </HorizontalGroup>
     </>

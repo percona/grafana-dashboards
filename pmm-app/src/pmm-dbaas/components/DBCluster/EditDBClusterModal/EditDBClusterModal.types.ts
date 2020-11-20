@@ -1,10 +1,16 @@
 import { DBCluster } from '../DBCluster.types';
+import { DBClusterResources } from './DBClusterAdvancedOptions/DBClusterAdvancedOptions.types';
 
 export interface EditDBClusterModalProps {
   isVisible: boolean;
   setVisible: (value: boolean) => void;
   onDBClusterChanged: () => void;
   selectedCluster?: DBCluster;
+}
+
+export interface SelectedDBCluster extends DBCluster {
+  topology?: string;
+  resources?: DBClusterResources;
 }
 
 export enum EditDBClusterFields {

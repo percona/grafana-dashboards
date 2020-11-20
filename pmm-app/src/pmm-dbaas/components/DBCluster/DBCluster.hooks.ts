@@ -63,12 +63,13 @@ const getClusters = async (kubernetes: Kubernetes[], databaseType: Databases): P
 
     const clusters: DBClusterPayload[] = (r as FulfilledPromiseResult).value?.clusters ?? [];
 
-    // eslint-disable-next-line max-len
-    const resultClusters = clusters.map((cluster) => dbClusterService.toModel(cluster, kubernetes[index].kubernetesClusterName, databaseType));
+    // eslint-disable-next-line arrow-body-style
+    const resultClusters = clusters.map((cluster) => {
+      return dbClusterService.toModel(cluster, kubernetes[index].kubernetesClusterName, databaseType);
+    });
 
     return acc.concat(resultClusters);
   }, []);
-
 
   return clustersList;
 };

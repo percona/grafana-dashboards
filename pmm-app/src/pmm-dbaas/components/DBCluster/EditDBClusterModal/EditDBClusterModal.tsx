@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { Form as FormFinal } from 'react-final-form';
-import { EditDBClusterFields, EditDBClusterModalProps } from './EditDBClusterModal.types';
+import { EditDBClusterFields, EditDBClusterModalProps, SelectedDBCluster } from './EditDBClusterModal.types';
 import { DBClusterAdvancedOptions } from './DBClusterAdvancedOptions/DBClusterAdvancedOptions';
 import { DEFAULT_SIZES } from './DBClusterAdvancedOptions/DBClusterAdvancedOptions.constants';
-import { DBClusterTopology } from './DBClusterAdvancedOptions/DBClusterAdvancedOptions.types';
+import { DBClusterResources, DBClusterTopology } from './DBClusterAdvancedOptions/DBClusterAdvancedOptions.types';
 import { DBClusterServiceFactory } from '../DBClusterService.factory';
 
 export const EditDBClusterModal: FC<EditDBClusterModalProps> = ({
@@ -29,7 +29,7 @@ export const EditDBClusterModal: FC<EditDBClusterModalProps> = ({
     }
 
     try {
-      const dbClusterService = DBClusterServiceFactory.newDBClusterService(databaseType.value);
+      const dbClusterService = DBClusterServiceFactory.newDBClusterService(databaseType);
 
       await dbClusterService.updateDBCluster({
         databaseType: databaseType.value,
@@ -48,6 +48,7 @@ export const EditDBClusterModal: FC<EditDBClusterModalProps> = ({
   };
 
   const [initialValues, setInitialValues] = useState({});
+  const editModalTitle = `${selectedCluster?.clusterName} ( ${selectedCluster?.databaseType} )`;
 
   useEffect(() => {
     if (!selectedCluster) {
@@ -56,11 +57,8 @@ export const EditDBClusterModal: FC<EditDBClusterModalProps> = ({
       return;
     }
 
-    const clusterParameters: any = { ...selectedCluster };
+    const clusterParameters: SelectedDBCluster = { ...selectedCluster };
 
-    clusterParameters.databaseType = {
-      value: clusterParameters.databaseType,
-    };
     // eslint-disable-next-line max-len
     clusterParameters.topology = clusterParameters.clusterSize > 1 ? DBClusterTopology.cluster : DBClusterTopology.single;
     clusterParameters[EditDBClusterFields.nodes] = clusterParameters.clusterSize;
@@ -70,28 +68,26 @@ export const EditDBClusterModal: FC<EditDBClusterModalProps> = ({
       && DEFAULT_SIZES[type].memory === clusterParameters.memory
       && DEFAULT_SIZES[type].disk === clusterParameters.disk;
 
-    if (isMatchSize('small')) {
-      clusterParameters.resources = 'small';
-    } else if (isMatchSize('medium')) {
-      clusterParameters.resources = 'medium';
-    } else if (isMatchSize('large')) {
-      clusterParameters.resources = 'large';
+    if (isMatchSize(DBClusterResources.small)) {
+      clusterParameters.resources = DBClusterResources.small;
+    } else if (isMatchSize(DBClusterResources.medium)) {
+      clusterParameters.resources = DBClusterResources.medium;
+    } else if (isMatchSize(DBClusterResources.large)) {
+      clusterParameters.resources = DBClusterResources.large;
     } else {
-      clusterParameters.resources = 'custom';
+      clusterParameters.resources = DBClusterResources.custom;
     }
 
     setInitialValues(clusterParameters);
   }, [selectedCluster]);
 
   return (
-    // eslint-disable-next-line max-len
-    <Modal title={`${selectedCluster?.clusterName} ( ${selectedCluster?.databaseType} )`} isVisible={isVisible} onClose={() => setVisible(false)}>
+    <Modal title={editModalTitle} isVisible={isVisible} onClose={() => setVisible(false)}>
       <FormFinal
         onSubmit={onSubmit}
         initialValues={initialValues}
-        validate={() => undefined}
         render={(renderProps) => (
-          <form onSubmit={renderProps.handleSubmit} className="discovery-instance-form app-theme-dark">
+          <form onSubmit={renderProps.handleSubmit}>
             <DBClusterAdvancedOptions
               {...renderProps}
             />
