@@ -36,7 +36,7 @@
     "gnetId": 12683,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1605872552475,
+    "iteration": 1605888224460,
     "links": [
         {
             "icon": "doc",
@@ -112,7 +112,7 @@
             },
             "fontSize": "100%",
             "gridPos": {
-                "h": 10,
+                "h": 11,
                 "w": 8,
                 "x": 0,
                 "y": 1
@@ -130,7 +130,7 @@
                     "$$hashKey": "object:1348",
                     "alias": "Uptime",
                     "align": "auto",
-                    "colorMode": "cell",
+                    "colorMode": "value",
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
                         "rgba(237, 129, 40, 0.89)",
@@ -220,8 +220,8 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 2,
-                "w": 4,
+                "h": 3,
+                "w": 6,
                 "x": 8,
                 "y": 1
             },
@@ -278,9 +278,9 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 2,
-                "w": 4,
-                "x": 12,
+                "h": 3,
+                "w": 5,
+                "x": 14,
                 "y": 1
             },
             "id": 72,
@@ -316,66 +316,6 @@
             "timeFrom": null,
             "timeShift": null,
             "title": "Scrape Targets Down",
-            "type": "stat"
-        },
-        {
-            "datasource": "$ds",
-            "description": "Persistent queue size shows size of pending samples in bytes which hasn't been flushed to remote storage yet. \nIncreasing of value might be a sign of connectivity issues. In such cases, vmagent starts to flush pending data on disk with attempt to send it later once connection is restored.",
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "decimals": 2,
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 10485760
-                            }
-                        ]
-                    },
-                    "unit": "bytes"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 2,
-                "w": 4,
-                "x": 16,
-                "y": 1
-            },
-            "id": 56,
-            "options": {
-                "colorMode": "value",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "reduceOptions": {
-                    "calcs": [
-                        "last"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "textMode": "auto"
-            },
-            "pluginVersion": "7.1.3",
-            "targets": [
-                {
-                    "expr": "sum(vm_persistentqueue_bytes_pending{node_name=~\"$node_name\"})",
-                    "interval": "$interval",
-                    "legendFormat": "",
-                    "refId": "A"
-                }
-            ],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Persistent Queue Size",
             "type": "stat"
         },
         {
@@ -417,9 +357,9 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 2,
-                "w": 4,
-                "x": 20,
+                "h": 3,
+                "w": 5,
+                "x": 19,
                 "y": 1
             },
             "id": 16,
@@ -488,7 +428,7 @@
                 "h": 8,
                 "w": 16,
                 "x": 8,
-                "y": 3
+                "y": 4
             },
             "highlightOnMouseover": true,
             "id": 13,
@@ -595,7 +535,8 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": null,
-            "description": "Shows in/out samples rate including push and pull models. \n\nThe out-rate could be different to in-rate because of replication or additional timeseries added by vmagent for every scraped target.",
+            "decimals": 2,
+            "description": "Shows scraped samples rate including push and pull models. \n\nThe out-rate could be different to in-rate because of replication or additional timeseries added by vmagent for every scraped target.",
             "fieldConfig": {
                 "defaults": {
                     "custom": {}
@@ -608,7 +549,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 11
+                "y": 12
             },
             "hiddenSeries": false,
             "id": 5,
@@ -644,24 +585,18 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(rate(vm_promscrape_scraped_samples_sum{node_name=~\"$node_name\"}[$interval]))\n+ sum(rate(vmagent_rows_inserted_total{node_name=~\"$node_name\"}[$interval]))",
+                    "expr": "sum by (node_name) (rate(vm_promscrape_scraped_samples_sum{node_name=~\"$node_name\"}[$interval]))\n+ sum by (node_name) (rate(vmagent_rows_inserted_total{node_name=~\"$node_name\"}[$interval]))",
                     "hide": false,
                     "interval": "$interval",
-                    "legendFormat": "Scraped",
+                    "legendFormat": "{{node_name}}",
                     "refId": "A"
-                },
-                {
-                    "expr": "sum(rate(vmagent_remotewrite_block_size_rows_sum{job=~\"$job\", instance=~\"$instance\"}[$interval]))",
-                    "interval": "$interval",
-                    "legendFormat": "Remote Write",
-                    "refId": "B"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "Processed Samples",
+            "title": "Scraped Samples",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -678,6 +613,7 @@
             "yaxes": [
                 {
                     "$$hashKey": "object:1040",
+                    "decimals": 2,
                     "format": "cps",
                     "label": null,
                     "logBase": 1,
@@ -692,7 +628,218 @@
                     "logBase": 1,
                     "max": null,
                     "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "decimals": 2,
+            "description": "Shows out samples rate including push and pull models. \n\nThe out-rate could be different to in-rate because of replication or additional timeseries added by vmagent for every scraped target.",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 12
+            },
+            "hiddenSeries": false,
+            "id": 91,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pluginVersion": "7.1.3",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "$$hashKey": "object:657",
+                    "alias": "Remote Write",
+                    "transform": "negative-Y"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "sum by (node_name) (rate(vmagent_remotewrite_block_size_rows_sum{node_name=~\"$node_name\"}[$interval]))",
+                    "interval": "$interval",
+                    "legendFormat": "{{node_name}}",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Remotely  Written Samples",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "$$hashKey": "object:1040",
+                    "decimals": 2,
+                    "format": "cps",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
                     "show": true
+                },
+                {
+                    "$$hashKey": "object:1041",
+                    "format": "bytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$ds",
+            "description": "Shows rate of dropped samples from persistent queue. VMagent drops samples from queue if in-memory and on-disk queues are full and it is unable to flush them to remote storage.\nThe max size of on-disk queue is configured by `-remoteWrite.maxDiskUsagePerURL` flag.",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 20
+            },
+            "hiddenSeries": false,
+            "id": 49,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Troubleshooting",
+                    "url": "https://github.com/VictoriaMetrics/VictoriaMetrics/tree/master/app/vmagent#troubleshooting"
+                }
+            ],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pluginVersion": "7.1.3",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "sum(increase(vm_persistentqueue_bytes_dropped_total{node_name=~\"$node_name\"}[$interval])) by (node_name)",
+                    "interval": "$interval",
+                    "legendFormat": "{{node_name}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Dropped Samples (Persistent Queue)",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "$$hashKey": "object:1004",
+                    "format": "bytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "$$hashKey": "object:1005",
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -720,7 +867,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 11
+                "y": 20
             },
             "hiddenSeries": false,
             "id": 17,
@@ -826,7 +973,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 19
+                "y": 28
             },
             "hiddenSeries": false,
             "id": 18,
@@ -925,223 +1072,6 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "$ds",
-            "description": "Shows rate of dropped samples from persistent queue. VMagent drops samples from queue if in-memory and on-disk queues are full and it is unable to flush them to remote storage.\nThe max size of on-disk queue is configured by `-remoteWrite.maxDiskUsagePerURL` flag.",
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {}
-                },
-                "overrides": []
-            },
-            "fill": 2,
-            "fillGradient": 0,
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 12,
-                "y": 19
-            },
-            "hiddenSeries": false,
-            "id": 49,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [
-                {
-                    "targetBlank": true,
-                    "title": "Troubleshooting",
-                    "url": "https://github.com/VictoriaMetrics/VictoriaMetrics/tree/master/app/vmagent#troubleshooting"
-                }
-            ],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pluginVersion": "7.1.3",
-            "pointradius": 2,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "sum(increase(vm_persistentqueue_bytes_dropped_total{node_name=~\"$node_name\"}[$interval])) by (node_name)",
-                    "interval": "$interval",
-                    "legendFormat": "{{node_name}}",
-                    "refId": "A"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Dropped Samples (Persistent Queue)",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "$$hashKey": "object:1004",
-                    "format": "bytes",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": "0",
-                    "show": true
-                },
-                {
-                    "$$hashKey": "object:1005",
-                    "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": false
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "$ds",
-            "decimals": 2,
-            "description": "Network usage shows the bytes rate for data accepted by vmagent and pushed via remotewrite protocol.\nDiscrepancies are possible because of different protocols used for ingesting, scraping and writing data.",
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {}
-                },
-                "overrides": []
-            },
-            "fill": 2,
-            "fillGradient": 0,
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 0,
-                "y": 27
-            },
-            "hiddenSeries": false,
-            "id": 7,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "nullPointMode": "null",
-            "percentage": false,
-            "pluginVersion": "7.1.3",
-            "pointradius": 2,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "$$hashKey": "object:534",
-                    "alias": "Outbound",
-                    "transform": "negative-Y"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "sum(rate(vm_tcplistener_read_bytes_total{node_name=~\"$node_name\"}[$__interval]) or irate(vm_tcplistener_read_bytes_total{node_name=~\"$node_name\"}[5m]))\n+ sum(rate(vm_promscrape_conn_bytes_read_total{node_name=~\"$node_name\"}[$interval]) or irate(vm_promscrape_conn_bytes_read_total{node_name=~\"$node_name\"}[$interval]))",
-                    "interval": "$interval",
-                    "legendFormat": "Inbound",
-                    "refId": "A"
-                },
-                {
-                    "expr": "sum(rate(vmagent_remotewrite_conn_bytes_written_total{node_name=~\"$node_name\"}[$interval]) or irate(vmagent_remotewrite_conn_bytes_written_total{node_name=~\"$node_name\"}[5m]))",
-                    "interval": "$interval",
-                    "legendFormat": "Outbound",
-                    "refId": "B"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Network  usage",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "$$hashKey": "object:514",
-                    "decimals": 2,
-                    "format": "bytes",
-                    "label": "Outbound (-) / Inbound (+)",
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": true
-                },
-                {
-                    "$$hashKey": "object:515",
-                    "format": "bytes",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": false
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "$ds",
             "description": "Shows the rate of requests served by vmagent HTTP server.",
             "fieldConfig": {
                 "defaults": {
@@ -1155,7 +1085,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 27
+                "y": 28
             },
             "hiddenSeries": false,
             "id": 15,
@@ -1242,7 +1172,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 35
+                "y": 36
             },
             "id": 86,
             "panels": [
@@ -1252,6 +1182,7 @@
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": null,
+                    "decimals": 0,
                     "description": "",
                     "fieldConfig": {
                         "defaults": {
@@ -1313,7 +1244,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "vm_log_messages_total{level!=\"info\",node_name=~\"$node_name\"}",
+                            "expr": "increase(vm_log_messages_total{level!=\"info\",node_name=~\"$node_name\"}[$interval]) or increase(vm_log_messages_total{level!=\"info\",node_name=~\"$node_name\"}[5m])",
                             "interval": "$interval",
                             "legendFormat": "{{level}} - {{location}}",
                             "refId": "A"
@@ -1340,11 +1271,12 @@
                     "yaxes": [
                         {
                             "$$hashKey": "object:545",
+                            "decimals": 0,
                             "format": "short",
-                            "label": null,
+                            "label": "",
                             "logBase": 1,
                             "max": null,
-                            "min": null,
+                            "min": "0",
                             "show": true
                         },
                         {
@@ -1368,6 +1300,7 @@
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": null,
+                    "decimals": 0,
                     "description": "",
                     "fieldConfig": {
                         "defaults": {
@@ -1384,7 +1317,7 @@
                         "y": 36
                     },
                     "hiddenSeries": false,
-                    "id": 90,
+                    "id": 94,
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -1407,7 +1340,7 @@
                     "renderer": "flot",
                     "repeat": null,
                     "repeatDirection": "h",
-                    "repeatIteration": 1605872552467,
+                    "repeatIteration": 1605888224454,
                     "repeatPanelId": 84,
                     "seriesOverrides": [
                         {
@@ -1431,7 +1364,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "vm_log_messages_total{level!=\"info\",node_name=~\"$node_name\"}",
+                            "expr": "increase(vm_log_messages_total{level!=\"info\",node_name=~\"$node_name\"}[$interval]) or increase(vm_log_messages_total{level!=\"info\",node_name=~\"$node_name\"}[5m])",
                             "interval": "$interval",
                             "legendFormat": "{{level}} - {{location}}",
                             "refId": "A"
@@ -1458,11 +1391,12 @@
                     "yaxes": [
                         {
                             "$$hashKey": "object:545",
+                            "decimals": 0,
                             "format": "short",
-                            "label": null,
+                            "label": "",
                             "logBase": 1,
                             "max": null,
-                            "min": null,
+                            "min": "0",
                             "show": true
                         },
                         {
@@ -1491,7 +1425,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 36
+                "y": 37
             },
             "id": 81,
             "panels": [
@@ -1623,7 +1557,7 @@
                         "y": 45
                     },
                     "hiddenSeries": false,
-                    "id": 88,
+                    "id": 92,
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -1649,7 +1583,7 @@
                     "renderer": "flot",
                     "repeat": null,
                     "repeatDirection": "v",
-                    "repeatIteration": 1605872552467,
+                    "repeatIteration": 1605877777686,
                     "repeatPanelId": 79,
                     "seriesOverrides": [],
                     "spaceLength": 10,
@@ -1861,7 +1795,7 @@
                         "y": 61
                     },
                     "hiddenSeries": false,
-                    "id": 89,
+                    "id": 93,
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -1892,7 +1826,7 @@
                     "renderer": "flot",
                     "repeat": null,
                     "repeatDirection": "v",
-                    "repeatIteration": 1605872552467,
+                    "repeatIteration": 1605877777686,
                     "repeatPanelId": 69,
                     "seriesOverrides": [],
                     "spaceLength": 10,
@@ -1984,7 +1918,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 37
+                "y": 38
             },
             "id": 28,
             "panels": [
@@ -2003,8 +1937,8 @@
                     "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
-                        "h": 7,
-                        "w": 24,
+                        "h": 8,
+                        "w": 12,
                         "x": 0,
                         "y": 38
                     },
@@ -2016,7 +1950,7 @@
                         "current": false,
                         "max": true,
                         "min": true,
-                        "rightSide": true,
+                        "rightSide": false,
                         "show": true,
                         "sideWidth": null,
                         "sort": "avg",
@@ -2107,8 +2041,8 @@
                     "gridPos": {
                         "h": 8,
                         "w": 12,
-                        "x": 0,
-                        "y": 45
+                        "x": 12,
+                        "y": 38
                     },
                     "hiddenSeries": false,
                     "id": 76,
@@ -2194,6 +2128,113 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
+                    "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 0,
+                        "y": 46
+                    },
+                    "hiddenSeries": false,
+                    "id": 20,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pluginVersion": "7.1.3",
+                    "pointradius": 2,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "$$hashKey": "object:2345",
+                            "alias": "Scrapes",
+                            "yaxis": 2
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "sum(rate(vm_promscrape_scrapes_total{node_name=~\"$node_name\"}[$interval])) > 0",
+                            "interval": "$interval",
+                            "legendFormat": "Scrapes",
+                            "refId": "A"
+                        },
+                        {
+                            "expr": "sum(rate(vm_promscrape_scraped_samples_sum{node_name=~\"$node_name\"}[$interval]))",
+                            "interval": "$interval",
+                            "legendFormat": "Samples",
+                            "refId": "B"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Scrape rate  ($instance)",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "$ds",
                     "fieldConfig": {
                         "defaults": {
@@ -2207,7 +2248,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 45
+                        "y": 46
                     },
                     "hiddenSeries": false,
                     "id": 31,
@@ -2309,184 +2350,6 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": null,
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {}
-                        },
-                        "overrides": []
-                    },
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 0,
-                        "y": 53
-                    },
-                    "hiddenSeries": false,
-                    "id": 20,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pluginVersion": "7.1.3",
-                    "pointradius": 2,
-                    "points": false,
-                    "renderer": "flot",
-                    "seriesOverrides": [
-                        {
-                            "$$hashKey": "object:2345",
-                            "alias": "Scrapes",
-                            "yaxis": 2
-                        }
-                    ],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum(rate(vm_promscrape_scrapes_total{node_name=~\"$node_name\"}[$interval])) > 0",
-                            "interval": "$interval",
-                            "legendFormat": "Scrapes",
-                            "refId": "A"
-                        },
-                        {
-                            "expr": "sum(rate(vm_promscrape_scraped_samples_sum{node_name=~\"$node_name\"}[$interval]))",
-                            "interval": "$interval",
-                            "legendFormat": "Samples",
-                            "refId": "B"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Scrape rate  ($instance)",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": "0",
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": "0",
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "cards": {
-                        "cardPadding": null,
-                        "cardRound": null
-                    },
-                    "color": {
-                        "cardColor": "#b4ff00",
-                        "colorScale": "sqrt",
-                        "colorScheme": "interpolateOranges",
-                        "exponent": 0.5,
-                        "mode": "spectrum"
-                    },
-                    "dataFormat": "tsbuckets",
-                    "datasource": "$ds",
-                    "description": "works in vm only disclaimer",
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {}
-                        },
-                        "overrides": []
-                    },
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 12,
-                        "y": 53
-                    },
-                    "heatmap": {},
-                    "hideZeroBuckets": false,
-                    "highlightCards": true,
-                    "id": 33,
-                    "legend": {
-                        "show": false
-                    },
-                    "reverseYBuckets": false,
-                    "targets": [
-                        {
-                            "expr": "buckets_limit(12, prometheus_buckets(sum(rate(vm_promscrape_scrape_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[$__interval])) by(vmrange)))",
-                            "format": "heatmap",
-                            "interval": "",
-                            "intervalFactor": 10,
-                            "legendFormat": "{{le}}",
-                            "refId": "A"
-                        }
-                    ],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Scrape duration ($instance)",
-                    "tooltip": {
-                        "show": true,
-                        "showHistogram": false
-                    },
-                    "type": "heatmap",
-                    "xAxis": {
-                        "show": true
-                    },
-                    "xBucketNumber": null,
-                    "xBucketSize": null,
-                    "yAxis": {
-                        "decimals": 2,
-                        "format": "s",
-                        "logBase": 1,
-                        "max": null,
-                        "min": null,
-                        "show": true,
-                        "splitFactor": null
-                    },
-                    "yBucketBound": "auto",
-                    "yBucketNumber": null,
-                    "yBucketSize": null
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
                     "datasource": "$ds",
                     "fieldConfig": {
                         "defaults": {
@@ -2500,7 +2363,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 61
+                        "y": 54
                     },
                     "hiddenSeries": false,
                     "id": 46,
@@ -2583,6 +2446,77 @@
                         "align": false,
                         "alignLevel": null
                     }
+                },
+                {
+                    "cards": {
+                        "cardPadding": null,
+                        "cardRound": null
+                    },
+                    "color": {
+                        "cardColor": "#b4ff00",
+                        "colorScale": "sqrt",
+                        "colorScheme": "interpolateOranges",
+                        "exponent": 0.5,
+                        "mode": "opacity"
+                    },
+                    "dataFormat": "timeseries",
+                    "datasource": "$ds",
+                    "description": "works in vm only disclaimer",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 54
+                    },
+                    "heatmap": {},
+                    "hideZeroBuckets": false,
+                    "highlightCards": true,
+                    "id": 33,
+                    "legend": {
+                        "show": true
+                    },
+                    "reverseYBuckets": false,
+                    "targets": [
+                        {
+                            "expr": "buckets_limit(12, prometheus_buckets(sum(rate(vm_promscrape_scrape_duration_seconds_bucket{node_name=~\"$node_name\"}[$interval])) by(vmrange)))",
+                            "format": "heatmap",
+                            "interval": "$interval",
+                            "intervalFactor": 10,
+                            "legendFormat": "{{le}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Scrape duration ($instance)",
+                    "tooltip": {
+                        "show": true,
+                        "showHistogram": false
+                    },
+                    "type": "heatmap",
+                    "xAxis": {
+                        "show": true
+                    },
+                    "xBucketNumber": null,
+                    "xBucketSize": null,
+                    "yAxis": {
+                        "decimals": 2,
+                        "format": "s",
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true,
+                        "splitFactor": null
+                    },
+                    "yBucketBound": "auto",
+                    "yBucketNumber": null,
+                    "yBucketSize": null
                 }
             ],
             "title": "Scraping",
@@ -2595,7 +2529,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 38
+                "y": 39
             },
             "id": 71,
             "panels": [
@@ -2608,36 +2542,38 @@
                     "description": "Shows the rate of write requests served by ingestserver (UDP, TCP connections) and HTTP server.",
                     "fieldConfig": {
                         "defaults": {
-                            "custom": {},
-                            "links": []
+                            "custom": {}
                         },
                         "overrides": []
                     },
-                    "fill": 1,
+                    "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 3
+                        "y": 39
                     },
                     "hiddenSeries": false,
                     "id": 73,
                     "legend": {
-                        "avg": false,
+                        "alignAsTable": true,
+                        "avg": true,
                         "current": false,
-                        "max": false,
-                        "min": false,
-                        "show": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
                         "total": false,
-                        "values": false
+                        "values": true
                     },
                     "lines": true,
-                    "linewidth": 1,
+                    "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null as zero",
                     "percentage": false,
-                    "pluginVersion": "7.1.1",
+                    "pluginVersion": "7.1.3",
                     "pointradius": 2,
                     "points": false,
                     "renderer": "flot",
@@ -2663,7 +2599,7 @@
                     "timeFrom": null,
                     "timeRegions": [],
                     "timeShift": null,
-                    "title": "Requests rate  ($instance)",
+                    "title": "Requests rate",
                     "tooltip": {
                         "shared": true,
                         "sort": 2,
@@ -2679,6 +2615,7 @@
                     },
                     "yaxes": [
                         {
+                            "$$hashKey": "object:988",
                             "format": "short",
                             "label": null,
                             "logBase": 1,
@@ -2687,12 +2624,13 @@
                             "show": true
                         },
                         {
+                            "$$hashKey": "object:989",
                             "format": "none",
                             "label": null,
                             "logBase": 1,
                             "max": null,
                             "min": null,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -2709,36 +2647,38 @@
                     "description": "Shows the rate of write errors in ingestserver (UDP, TCP connections) and HTTP server.",
                     "fieldConfig": {
                         "defaults": {
-                            "custom": {},
-                            "links": []
+                            "custom": {}
                         },
                         "overrides": []
                     },
-                    "fill": 1,
+                    "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 3
+                        "y": 39
                     },
                     "hiddenSeries": false,
                     "id": 77,
                     "legend": {
-                        "avg": false,
+                        "alignAsTable": true,
+                        "avg": true,
                         "current": false,
-                        "max": false,
-                        "min": false,
-                        "show": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
                         "total": false,
-                        "values": false
+                        "values": true
                     },
                     "lines": true,
-                    "linewidth": 1,
+                    "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null as zero",
                     "percentage": false,
-                    "pluginVersion": "7.1.1",
+                    "pluginVersion": "7.1.3",
                     "pointradius": 2,
                     "points": false,
                     "renderer": "flot",
@@ -2764,7 +2704,7 @@
                     "timeFrom": null,
                     "timeRegions": [],
                     "timeShift": null,
-                    "title": "Error rate  ($instance)",
+                    "title": "Error rate",
                     "tooltip": {
                         "shared": true,
                         "sort": 2,
@@ -2780,6 +2720,7 @@
                     },
                     "yaxes": [
                         {
+                            "$$hashKey": "object:1098",
                             "format": "short",
                             "label": null,
                             "logBase": 1,
@@ -2788,12 +2729,13 @@
                             "show": true
                         },
                         {
+                            "$$hashKey": "object:1099",
                             "format": "none",
                             "label": null,
                             "logBase": 1,
                             "max": null,
                             "min": null,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -2810,36 +2752,38 @@
                     "description": "Shows the rate of parsed rows from write or scrape requests.",
                     "fieldConfig": {
                         "defaults": {
-                            "custom": {},
-                            "links": []
+                            "custom": {}
                         },
                         "overrides": []
                     },
-                    "fill": 1,
+                    "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 11
+                        "y": 47
                     },
                     "hiddenSeries": false,
                     "id": 78,
                     "legend": {
-                        "avg": false,
+                        "alignAsTable": true,
+                        "avg": true,
                         "current": false,
-                        "max": false,
-                        "min": false,
-                        "show": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
                         "total": false,
-                        "values": false
+                        "values": true
                     },
                     "lines": true,
-                    "linewidth": 1,
+                    "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null as zero",
                     "percentage": false,
-                    "pluginVersion": "7.1.1",
+                    "pluginVersion": "7.1.3",
                     "pointradius": 2,
                     "points": false,
                     "renderer": "flot",
@@ -2849,8 +2793,8 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum(rate(vm_protoparser_rows_read_total{job=~\"$job\", instance=~\"$instance\"}[$__interval])) by(type)",
-                            "interval": "",
+                            "expr": "sum(rate(vm_protoparser_rows_read_total{job=~\"$job\", instance=~\"$instance\"}[$interval])) by(type)",
+                            "interval": "$interval",
                             "legendFormat": "{{ type }} ({{net}})",
                             "refId": "A"
                         }
@@ -2875,6 +2819,7 @@
                     },
                     "yaxes": [
                         {
+                            "$$hashKey": "object:1174",
                             "format": "short",
                             "label": null,
                             "logBase": 1,
@@ -2883,12 +2828,13 @@
                             "show": true
                         },
                         {
+                            "$$hashKey": "object:1175",
                             "format": "none",
                             "label": null,
                             "logBase": 1,
                             "max": null,
                             "min": null,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -2905,35 +2851,37 @@
                     "description": "Tracks the rate of dropped invalid rows because of errors while unmarshaling write requests. The exact errors messages will be printed in logs.",
                     "fieldConfig": {
                         "defaults": {
-                            "custom": {},
-                            "links": []
+                            "custom": {}
                         },
                         "overrides": []
                     },
-                    "fill": 1,
+                    "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 11
+                        "y": 47
                     },
                     "hiddenSeries": false,
                     "id": 50,
                     "legend": {
-                        "avg": false,
+                        "alignAsTable": true,
+                        "avg": true,
                         "current": false,
-                        "max": false,
-                        "min": false,
-                        "show": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
                         "total": false,
-                        "values": false
+                        "values": true
                     },
                     "lines": true,
-                    "linewidth": 1,
+                    "linewidth": 2,
                     "nullPointMode": "null",
                     "percentage": false,
-                    "pluginVersion": "7.1.1",
+                    "pluginVersion": "7.1.3",
                     "pointradius": 2,
                     "points": false,
                     "renderer": "flot",
@@ -2953,7 +2901,7 @@
                     "timeFrom": null,
                     "timeRegions": [],
                     "timeShift": null,
-                    "title": "Invalid rows rate ($instance)",
+                    "title": "Invalid rows rate",
                     "tooltip": {
                         "shared": true,
                         "sort": 2,
@@ -2969,6 +2917,7 @@
                     },
                     "yaxes": [
                         {
+                            "$$hashKey": "object:1284",
                             "format": "short",
                             "label": null,
                             "logBase": 1,
@@ -2977,12 +2926,13 @@
                             "show": true
                         },
                         {
+                            "$$hashKey": "object:1285",
                             "format": "bytes",
                             "label": null,
                             "logBase": 1,
                             "max": null,
                             "min": null,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -3001,7 +2951,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 39
+                "y": 40
             },
             "id": 58,
             "panels": [
@@ -3011,6 +2961,7 @@
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": "$ds",
+                    "decimals": 2,
                     "description": "Shows the rate of requests to configured remote write endpoints by url and status code.\n\nRemote write URLs are hidden by default but might be unveiled once `-remoteWrite.showURL` is set to true.\n\n",
                     "fieldConfig": {
                         "defaults": {
@@ -3018,27 +2969,30 @@
                         },
                         "overrides": []
                     },
-                    "fill": 1,
+                    "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 45
+                        "y": 40
                     },
                     "hiddenSeries": false,
                     "id": 60,
                     "legend": {
-                        "avg": false,
+                        "alignAsTable": true,
+                        "avg": true,
                         "current": false,
-                        "max": false,
-                        "min": false,
-                        "show": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
                         "total": false,
-                        "values": false
+                        "values": true
                     },
                     "lines": true,
-                    "linewidth": 1,
+                    "linewidth": 2,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pluginVersion": "7.1.3",
@@ -3051,9 +3005,9 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum(rate(vmagent_remotewrite_requests_total{job=~\"$job\", instance=~\"$instance\"}[$__interval])) by(url, status_code)",
-                            "interval": "",
-                            "legendFormat": "",
+                            "expr": "sum(rate(vmagent_remotewrite_requests_total{node_name=~\"$node_name\"}[$__interval])) by(node_name, url, status_code)",
+                            "interval": "$interval",
+                            "legendFormat": "{{node_name}} - {{url}} - {{status_code}}",
                             "refId": "A"
                         }
                     ],
@@ -3061,7 +3015,7 @@
                     "timeFrom": null,
                     "timeRegions": [],
                     "timeShift": null,
-                    "title": "Requests rate ($instance)",
+                    "title": "Requests Rate",
                     "tooltip": {
                         "shared": true,
                         "sort": 0,
@@ -3077,8 +3031,9 @@
                     },
                     "yaxes": [
                         {
+                            "$$hashKey": "object:1607",
                             "decimals": 2,
-                            "format": "short",
+                            "format": "ops",
                             "label": null,
                             "logBase": 1,
                             "max": null,
@@ -3086,12 +3041,13 @@
                             "show": true
                         },
                         {
+                            "$$hashKey": "object:1608",
                             "format": "short",
                             "label": null,
                             "logBase": 1,
                             "max": null,
                             "min": null,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -3112,27 +3068,30 @@
                         },
                         "overrides": []
                     },
-                    "fill": 1,
+                    "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 45
+                        "y": 40
                     },
                     "hiddenSeries": false,
                     "id": 66,
                     "legend": {
-                        "avg": false,
+                        "alignAsTable": true,
+                        "avg": true,
                         "current": false,
-                        "max": false,
-                        "min": false,
-                        "show": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
                         "total": false,
-                        "values": false
+                        "values": true
                     },
                     "lines": true,
-                    "linewidth": 1,
+                    "linewidth": 2,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pluginVersion": "7.1.3",
@@ -3145,9 +3104,9 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum(rate(vmagent_remotewrite_conn_bytes_written_total{job=~\"$job\", instance=~\"$instance\"}[$__interval])) by(instance)",
-                            "interval": "",
-                            "legendFormat": "",
+                            "expr": "sum(rate(vmagent_remotewrite_conn_bytes_written_total{node_name=~\"$node_name\"}[$interval])) by(node_name)",
+                            "interval": "$interval",
+                            "legendFormat": "{{node_name}}",
                             "refId": "A"
                         }
                     ],
@@ -3155,7 +3114,7 @@
                     "timeFrom": null,
                     "timeRegions": [],
                     "timeShift": null,
-                    "title": "Bytes write rate ($instance)",
+                    "title": "Written Rate",
                     "tooltip": {
                         "shared": true,
                         "sort": 0,
@@ -3171,6 +3130,7 @@
                     },
                     "yaxes": [
                         {
+                            "$$hashKey": "object:1683",
                             "format": "bytes",
                             "label": null,
                             "logBase": 1,
@@ -3179,12 +3139,13 @@
                             "show": true
                         },
                         {
+                            "$$hashKey": "object:1684",
                             "format": "short",
                             "label": null,
                             "logBase": 1,
                             "max": null,
                             "min": null,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -3198,6 +3159,7 @@
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": "$ds",
+                    "decimals": 2,
                     "description": "Shows requests retry rate by url. Number of retries is unlimited but protected with delays up to 1m between attempts.\n\nRemote write URLs are hidden by default but might be unveiled once `-remoteWrite.showURL` is set to true.\n\n",
                     "fieldConfig": {
                         "defaults": {
@@ -3205,27 +3167,30 @@
                         },
                         "overrides": []
                     },
-                    "fill": 1,
+                    "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 53
+                        "y": 48
                     },
                     "hiddenSeries": false,
                     "id": 61,
                     "legend": {
-                        "avg": false,
+                        "alignAsTable": true,
+                        "avg": true,
                         "current": false,
-                        "max": false,
-                        "min": false,
-                        "show": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
                         "total": false,
-                        "values": false
+                        "values": true
                     },
                     "lines": true,
-                    "linewidth": 1,
+                    "linewidth": 2,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pluginVersion": "7.1.3",
@@ -3238,8 +3203,8 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum(rate(vmagent_remotewrite_retries_count_total{job=~\"$job\", instance=~\"$instance\"}[$__interval])) by(url)",
-                            "interval": "",
+                            "expr": "sum(rate(vmagent_remotewrite_retries_count_total{node_name=~\"$node_name\"}[$interval])) by(url)",
+                            "interval": "$interval",
                             "legendFormat": "{{ url }}",
                             "refId": "A"
                         }
@@ -3248,7 +3213,7 @@
                     "timeFrom": null,
                     "timeRegions": [],
                     "timeShift": null,
-                    "title": "Retry rate ($instance)",
+                    "title": "Retry Rate",
                     "tooltip": {
                         "shared": true,
                         "sort": 0,
@@ -3264,6 +3229,8 @@
                     },
                     "yaxes": [
                         {
+                            "$$hashKey": "object:2003",
+                            "decimals": 2,
                             "format": "short",
                             "label": null,
                             "logBase": 1,
@@ -3272,12 +3239,13 @@
                             "show": true
                         },
                         {
+                            "$$hashKey": "object:2004",
                             "format": "short",
                             "label": null,
                             "logBase": 1,
                             "max": null,
                             "min": null,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -3291,6 +3259,7 @@
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": "$ds",
+                    "decimals": 2,
                     "description": "Shows current number of established connections to remote write endpoints.\n\n",
                     "fieldConfig": {
                         "defaults": {
@@ -3298,27 +3267,30 @@
                         },
                         "overrides": []
                     },
-                    "fill": 1,
+                    "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 53
+                        "y": 48
                     },
                     "hiddenSeries": false,
                     "id": 65,
                     "legend": {
-                        "avg": false,
+                        "alignAsTable": true,
+                        "avg": true,
                         "current": false,
-                        "max": false,
-                        "min": false,
-                        "show": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
                         "total": false,
-                        "values": false
+                        "values": true
                     },
                     "lines": true,
-                    "linewidth": 1,
+                    "linewidth": 2,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pluginVersion": "7.1.3",
@@ -3331,9 +3303,9 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum(vmagent_remotewrite_conns{job=~\"$job\", instance=~\"$instance\"}) by (instance)",
-                            "interval": "",
-                            "legendFormat": "",
+                            "expr": "sum(vmagent_remotewrite_conns{node_name=~\"$node_name\"}) by (node_name)",
+                            "interval": "$interval",
+                            "legendFormat": "{{node_name}}",
                             "refId": "A"
                         }
                     ],
@@ -3341,7 +3313,7 @@
                     "timeFrom": null,
                     "timeRegions": [],
                     "timeShift": null,
-                    "title": "Connections ($instance)",
+                    "title": "Connections",
                     "tooltip": {
                         "shared": true,
                         "sort": 0,
@@ -3357,20 +3329,23 @@
                     },
                     "yaxes": [
                         {
+                            "$$hashKey": "object:2079",
+                            "decimals": 2,
                             "format": "short",
-                            "label": null,
+                            "label": "",
                             "logBase": 1,
                             "max": null,
                             "min": "0",
                             "show": true
                         },
                         {
+                            "$$hashKey": "object:2080",
                             "format": "short",
                             "label": null,
                             "logBase": 1,
                             "max": null,
                             "min": null,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -3388,9 +3363,9 @@
                         "colorScale": "sqrt",
                         "colorScheme": "interpolateOranges",
                         "exponent": 0.5,
-                        "mode": "spectrum"
+                        "mode": "opacity"
                     },
-                    "dataFormat": "tsbuckets",
+                    "dataFormat": "timeseries",
                     "datasource": "$ds",
                     "description": "Shows the remote write request block size distribution in rows.",
                     "fieldConfig": {
@@ -3403,21 +3378,21 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 61
+                        "y": 56
                     },
                     "heatmap": {},
                     "hideZeroBuckets": false,
                     "highlightCards": true,
                     "id": 63,
                     "legend": {
-                        "show": false
+                        "show": true
                     },
                     "reverseYBuckets": false,
                     "targets": [
                         {
-                            "expr": "buckets_limit(12, prometheus_buckets(sum(rate(vmagent_remotewrite_block_size_rows_bucket{job=~\"$job\", instance=~\"$instance\"}[$__interval])) by(vmrange)))",
+                            "expr": "buckets_limit(12, prometheus_buckets(sum(rate(vmagent_remotewrite_block_size_rows_bucket{node_name=~\"$node_name\"}[$__interval])) by(vmrange)))",
                             "format": "heatmap",
-                            "interval": "",
+                            "interval": "$interval",
                             "intervalFactor": 10,
                             "legendFormat": "{{le}}",
                             "refId": "A"
@@ -3425,7 +3400,7 @@
                     ],
                     "timeFrom": null,
                     "timeShift": null,
-                    "title": "Block size rows ($instance)",
+                    "title": "Block size rows",
                     "tooltip": {
                         "show": true,
                         "showHistogram": false
@@ -3459,9 +3434,9 @@
                         "colorScale": "sqrt",
                         "colorScheme": "interpolateOranges",
                         "exponent": 0.5,
-                        "mode": "spectrum"
+                        "mode": "opacity"
                     },
-                    "dataFormat": "tsbuckets",
+                    "dataFormat": "timeseries",
                     "datasource": "$ds",
                     "description": "Shows the remote write request block size distribution in bytes.",
                     "fieldConfig": {
@@ -3474,21 +3449,21 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 61
+                        "y": 56
                     },
                     "heatmap": {},
                     "hideZeroBuckets": false,
                     "highlightCards": true,
                     "id": 62,
                     "legend": {
-                        "show": false
+                        "show": true
                     },
                     "reverseYBuckets": false,
                     "targets": [
                         {
-                            "expr": "buckets_limit(12, prometheus_buckets(sum(rate(vmagent_remotewrite_block_size_bytes_bucket{job=~\"$job\", instance=~\"$instance\"}[$__interval])) by(vmrange)))",
+                            "expr": "buckets_limit(12, prometheus_buckets(sum(rate(vmagent_remotewrite_block_size_bytes_bucket{node_name=~\"$node_name\"}[$__interval])) by(vmrange)))",
                             "format": "heatmap",
-                            "interval": "",
+                            "interval": "$interval",
                             "intervalFactor": 10,
                             "legendFormat": "{{le}}",
                             "refId": "A"
@@ -3530,9 +3505,9 @@
                         "colorScale": "sqrt",
                         "colorScheme": "interpolateOranges",
                         "exponent": 0.5,
-                        "mode": "spectrum"
+                        "mode": "opacity"
                     },
-                    "dataFormat": "tsbuckets",
+                    "dataFormat": "timeseries",
                     "datasource": "$ds",
                     "description": "Shows the remote write request duration distribution in seconds. Value depends on block size, network quality and remote storage performance.",
                     "fieldConfig": {
@@ -3545,21 +3520,21 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 69
+                        "y": 64
                     },
                     "heatmap": {},
                     "hideZeroBuckets": false,
                     "highlightCards": true,
                     "id": 30,
                     "legend": {
-                        "show": false
+                        "show": true
                     },
                     "reverseYBuckets": false,
                     "targets": [
                         {
-                            "expr": "buckets_limit(12, prometheus_buckets(sum(rate(vmagent_remotewrite_duration_seconds_bucket{job=~\"$job\", instance=~\"$instance\"}[$__interval])) by(vmrange)))",
+                            "expr": "buckets_limit(12, prometheus_buckets(sum(rate(vmagent_remotewrite_duration_seconds_bucket{node_name=~\"$node_name\"}[$__interval])) by(vmrange)))",
                             "format": "heatmap",
-                            "interval": "",
+                            "interval": "$intervall",
                             "intervalFactor": 10,
                             "legendFormat": "{{le}}",
                             "refId": "A"
@@ -3567,7 +3542,7 @@
                     ],
                     "timeFrom": null,
                     "timeShift": null,
-                    "title": "Push duration ($instance)",
+                    "title": "Push Duration",
                     "tooltip": {
                         "show": true,
                         "showHistogram": false
@@ -3602,7 +3577,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 40
+                "y": 41
             },
             "id": 45,
             "panels": [
@@ -3612,34 +3587,150 @@
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": "$ds",
-                    "description": "Shows the CPU usage per vmagent instance. \nIf you think that usage is abnormal or unexpected pls file an issue and attach CPU profile if possible.",
+                    "decimals": 2,
+                    "description": "Network usage shows the bytes rate for data accepted by vmagent and pushed via remotewrite protocol.\nDiscrepancies are possible because of different protocols used for ingesting, scraping and writing data.",
                     "fieldConfig": {
                         "defaults": {
                             "custom": {}
                         },
                         "overrides": []
                     },
-                    "fill": 1,
+                    "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 46
+                        "y": 41
                     },
                     "hiddenSeries": false,
-                    "id": 35,
+                    "id": 7,
                     "legend": {
-                        "avg": false,
+                        "alignAsTable": true,
+                        "avg": true,
                         "current": false,
-                        "max": false,
-                        "min": false,
+                        "max": true,
+                        "min": true,
                         "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
                         "total": false,
-                        "values": false
+                        "values": true
                     },
                     "lines": true,
-                    "linewidth": 1,
+                    "linewidth": 2,
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pluginVersion": "7.1.3",
+                    "pointradius": 2,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "$$hashKey": "object:534",
+                            "alias": "Outbound",
+                            "transform": "negative-Y"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "sum(rate(vm_tcplistener_read_bytes_total{node_name=~\"$node_name\"}[$interval]) or irate(vm_tcplistener_read_bytes_total{node_name=~\"$node_name\"}[5m]))\n+ sum(rate(vm_promscrape_conn_bytes_read_total{node_name=~\"$node_name\"}[$interval]) or irate(vm_promscrape_conn_bytes_read_total{node_name=~\"$node_name\"}[5m]))",
+                            "interval": "$interval",
+                            "legendFormat": "Inbound",
+                            "refId": "A"
+                        },
+                        {
+                            "expr": "sum(rate(vmagent_remotewrite_conn_bytes_written_total{node_name=~\"$node_name\"}[$interval]) or irate(vmagent_remotewrite_conn_bytes_written_total{node_name=~\"$node_name\"}[5m]))",
+                            "interval": "$interval",
+                            "legendFormat": "Outbound",
+                            "refId": "B"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Network  Usage",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "$$hashKey": "object:514",
+                            "decimals": 2,
+                            "format": "bytes",
+                            "label": "Outbound (-) / Inbound (+)",
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "$$hashKey": "object:515",
+                            "format": "bytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "$ds",
+                    "decimals": 2,
+                    "description": "Amount of used memory (resident)\n\nIf you think that usage is abnormal or unexpected pls file an issue and attach memory profile if possible.",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 41
+                    },
+                    "hiddenSeries": false,
+                    "id": 37,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
                     "links": [
                         {
                             "targetBlank": true,
@@ -3659,11 +3750,9 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum(rate(process_cpu_seconds_total{job=~\"$job\", instance=~\"$instance\"}[$__interval])) by(instance)",
-                            "format": "time_series",
-                            "interval": "",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{instance}}",
+                            "expr": "sum(process_resident_memory_bytes{node_name=~\"$node_name\"}) by (node_name)",
+                            "interval": "$interval",
+                            "legendFormat": "{{node_name}}",
                             "refId": "A"
                         }
                     ],
@@ -3671,7 +3760,116 @@
                     "timeFrom": null,
                     "timeRegions": [],
                     "timeShift": null,
-                    "title": "CPU ($instance)",
+                    "title": "Memory Usage",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "$$hashKey": "object:2480",
+                            "decimals": 2,
+                            "format": "bytes",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "$$hashKey": "object:2481",
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "$ds",
+                    "decimals": 2,
+                    "description": "Shows the CPU usage per vmagent instance. \nIf you think that usage is abnormal or unexpected pls file an issue and attach CPU profile if possible.",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 0,
+                        "y": 49
+                    },
+                    "hiddenSeries": false,
+                    "id": 35,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "Profiling",
+                            "url": "https://github.com/VictoriaMetrics/VictoriaMetrics/tree/master/app/vmagent#profiling"
+                        }
+                    ],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pluginVersion": "7.1.3",
+                    "pointradius": 2,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "sum(rate(process_cpu_seconds_total{node_name=~\"$node_name\"}[$interval])) by(node_name)",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{node_name}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "CPU Usage",
                     "tooltip": {
                         "shared": true,
                         "sort": 0,
@@ -3688,6 +3886,7 @@
                     "yaxes": [
                         {
                             "$$hashKey": "object:989",
+                            "decimals": 2,
                             "format": "short",
                             "label": null,
                             "logBase": 1,
@@ -3702,7 +3901,7 @@
                             "logBase": 1,
                             "max": null,
                             "min": null,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -3716,133 +3915,35 @@
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": "$ds",
-                    "description": "Amount of used memory (resident)\n\nIf you think that usage is abnormal or unexpected pls file an issue and attach memory profile if possible.",
+                    "decimals": 2,
                     "fieldConfig": {
                         "defaults": {
                             "custom": {}
                         },
                         "overrides": []
                     },
-                    "fill": 1,
+                    "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 46
-                    },
-                    "hiddenSeries": false,
-                    "id": 37,
-                    "legend": {
-                        "avg": false,
-                        "current": false,
-                        "max": false,
-                        "min": false,
-                        "show": false,
-                        "total": false,
-                        "values": false
-                    },
-                    "lines": true,
-                    "linewidth": 1,
-                    "links": [
-                        {
-                            "targetBlank": true,
-                            "title": "Profiling",
-                            "url": "https://github.com/VictoriaMetrics/VictoriaMetrics/tree/master/app/vmagent#profiling"
-                        }
-                    ],
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pluginVersion": "7.1.3",
-                    "pointradius": 2,
-                    "points": false,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum(process_resident_memory_bytes{job=~\"$job\", instance=~\"$instance\"}) by (instance)",
-                            "interval": "",
-                            "legendFormat": "{{instance}}",
-                            "refId": "A"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Memory usage ($instance)",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "bytes",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": "0",
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "$ds",
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {}
-                        },
-                        "overrides": []
-                    },
-                    "fill": 1,
-                    "fillGradient": 0,
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 0,
-                        "y": 54
+                        "y": 49
                     },
                     "hiddenSeries": false,
                     "id": 41,
                     "legend": {
-                        "avg": false,
+                        "alignAsTable": true,
+                        "avg": true,
                         "current": false,
-                        "max": false,
-                        "min": false,
-                        "show": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
                         "total": false,
-                        "values": false
+                        "values": true
                     },
                     "lines": true,
-                    "linewidth": 1,
+                    "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
                     "percentage": false,
@@ -3856,10 +3957,11 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum(process_num_threads{job=~\"$job\", instance=~\"$instance\"}) by(instance)",
+                            "expr": "sum(process_num_threads{node_name=~\"$node_name\"}) by(node_name)",
                             "format": "time_series",
-                            "intervalFactor": 2,
-                            "legendFormat": "{{instance}}",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{node_name}}",
                             "refId": "A"
                         }
                     ],
@@ -3867,7 +3969,7 @@
                     "timeFrom": null,
                     "timeRegions": [],
                     "timeShift": null,
-                    "title": "Threads ($instance)",
+                    "title": "Threads",
                     "tooltip": {
                         "shared": true,
                         "sort": 0,
@@ -3883,210 +3985,23 @@
                     },
                     "yaxes": [
                         {
-                            "decimals": 0,
+                            "$$hashKey": "object:4196",
+                            "decimals": 2,
                             "format": "short",
-                            "label": null,
+                            "label": "",
                             "logBase": 1,
                             "max": null,
                             "min": "0",
                             "show": true
                         },
                         {
+                            "$$hashKey": "object:4197",
                             "format": "short",
                             "label": null,
                             "logBase": 1,
                             "max": null,
                             "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "$ds",
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {}
-                        },
-                        "overrides": []
-                    },
-                    "fill": 1,
-                    "fillGradient": 0,
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 12,
-                        "y": 54
-                    },
-                    "hiddenSeries": false,
-                    "id": 39,
-                    "legend": {
-                        "avg": false,
-                        "current": false,
-                        "max": false,
-                        "min": false,
-                        "show": false,
-                        "total": false,
-                        "values": false
-                    },
-                    "lines": true,
-                    "linewidth": 1,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pluginVersion": "7.1.3",
-                    "pointradius": 2,
-                    "points": false,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum(go_goroutines{job=~\"$job\", instance=~\"$instance\"}) by(instance)",
-                            "format": "time_series",
-                            "intervalFactor": 2,
-                            "legendFormat": "{{instance}}",
-                            "refId": "A"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Goroutines ($instance)",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 0,
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": "0",
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "$ds",
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {}
-                        },
-                        "overrides": []
-                    },
-                    "fill": 1,
-                    "fillGradient": 0,
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 0,
-                        "y": 62
-                    },
-                    "hiddenSeries": false,
-                    "id": 43,
-                    "legend": {
-                        "avg": false,
-                        "current": false,
-                        "max": false,
-                        "min": false,
-                        "show": false,
-                        "total": false,
-                        "values": false
-                    },
-                    "lines": true,
-                    "linewidth": 1,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pluginVersion": "7.1.3",
-                    "pointradius": 2,
-                    "points": false,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "max(go_gc_duration_seconds{job=~\"$job\", instance=~\"$instance\", quantile=\"1\"}) by(instance)",
-                            "format": "time_series",
-                            "intervalFactor": 2,
-                            "legendFormat": "{{instance}}",
-                            "refId": "A"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "GC duration ($instance)",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "s",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": "0",
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -4268,5 +4183,5 @@
     "timezone": "browser",
     "title": "VictoriaMetrics Agents Overview",
     "uid": "vmagent",
-    "version": 1 
+    "version": 1
 }
