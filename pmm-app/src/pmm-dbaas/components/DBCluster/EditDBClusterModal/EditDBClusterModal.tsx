@@ -32,7 +32,7 @@ export const EditDBClusterModal: FC<EditDBClusterModalProps> = ({
       const dbClusterService = DBClusterServiceFactory.newDBClusterService(databaseType.value);
 
       await dbClusterService.updateDBCluster({
-        databaseType,
+        databaseType: databaseType.value,
         clusterName: selectedCluster.clusterName,
         kubernetesClusterName: selectedCluster.kubernetesClusterName,
         clusterSize: topology === DBClusterTopology.cluster ? nodes : single,
