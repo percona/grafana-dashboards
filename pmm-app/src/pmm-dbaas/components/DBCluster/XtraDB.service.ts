@@ -97,6 +97,7 @@ const toAPI = (dbCluster: DBCluster): DBClusterPayload => ({
       },
       disk_size: dbCluster.disk * 10 ** 9,
     },
+    // Temporary mock data
     proxysql: {
       compute_resources: {
         cpu_m: 1000,
