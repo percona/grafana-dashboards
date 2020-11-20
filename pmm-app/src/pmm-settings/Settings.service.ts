@@ -52,4 +52,5 @@ const toModel = (response: any): Settings => ({
   sttEnabled: response.stt_enabled,
   platformEmail: response.platform_email,
   dbaasEnabled: response.dbaas_enabled,
+  publicAddress: response.public_address,
 });

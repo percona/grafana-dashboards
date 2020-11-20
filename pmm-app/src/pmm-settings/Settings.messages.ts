@@ -17,6 +17,9 @@ export const Messages = {
     sttTooltip: 'Enable Security Threat Tool and get updated checks from Percona.',
     dbaasLabel: 'DBaaS',
     dbaasTooltip: 'Read-only option to show if DBaaS features are enabled.',
+    publicAddressLabel: 'Public Address',
+    publicAddressTooltip: 'Public Address to this PMM server.',
+    publicAddressButton: 'Get from browser',
   },
   alertmanager: {
     action: 'Apply Alertmanager settings',

@@ -33,6 +33,9 @@ export const Messages = {
   },
   dbcluster: {
     addAction: 'Create DB Cluster',
+    publicAddressWarningBegin: 'Go to',
+    publicAddressWarningLink: 'settings',
+    publicAddressWarningEnd: 'to set PMM public address first',
     addModal: {
       title: 'Create Cluster',
       confirm: 'Create Cluster',
