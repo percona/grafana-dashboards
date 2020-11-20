@@ -18,7 +18,7 @@ export const Messages = {
     dbaasLabel: 'DBaaS',
     dbaasTooltip: 'Read-only option to show if DBaaS features are enabled.',
     publicAddressLabel: 'Public Address',
-    publicAddressTooltip: 'Public URL to this PMM server.',
+    publicAddressTooltip: 'Public Address to this PMM server.',
     publicAddressButton: 'Get from browser',
   },
   alertmanager: {
