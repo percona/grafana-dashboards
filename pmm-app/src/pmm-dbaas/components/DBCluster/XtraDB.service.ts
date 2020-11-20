@@ -99,10 +99,10 @@ const toAPI = (dbCluster: DBCluster): DBClusterPayload => ({
     },
     proxysql: {
       compute_resources: {
-        cpu_m: 0,
-        memory_bytes: 0,
+        cpu_m: 1000,
+        memory_bytes: 2 * 10 ** 9,
       },
-      disk_size: dbCluster.disk * 10 ** 9,
+      disk_size: 1 * 10 ** 9,
     },
   },
 });
