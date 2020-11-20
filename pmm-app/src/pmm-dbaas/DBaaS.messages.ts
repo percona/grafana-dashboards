@@ -45,6 +45,7 @@ export const Messages = {
         resources: 'Resources per Node',
         memory: 'Memory (GB)',
         cpu: 'CPU',
+        disk: 'Disk (GB)',
       },
       steps: {
         basicOptions: 'Basic Options',
@@ -71,6 +72,7 @@ export const Messages = {
       nameColumn: 'Name',
       databaseTypeColumn: 'Database Type',
       connectionColumn: 'Connection',
+      clusterParametersColumn: 'DB Cluster Parameters',
       clusterStatusColumn: 'Cluster Status',
       actionsColumn: 'Actions',
       connection: {
@@ -78,6 +80,12 @@ export const Messages = {
         port: 'Port',
         username: 'Username',
         password: 'Password',
+      },
+      parameters: {
+        clusterName: 'K8s cluster name',
+        cpu: 'CPU',
+        memory: 'Memory',
+        disk: 'Disk',
       },
       actions: {
         deleteCluster: 'Delete',

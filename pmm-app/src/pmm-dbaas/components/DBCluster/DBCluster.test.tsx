@@ -38,7 +38,7 @@ describe('DBCluster::', () => {
     );
 
     expect(root.find('td').at(1).text()).toEqual(DATABASE_LABELS[dbClustersStub[0].databaseType]);
-    expect(root.find('td').at(6).text()).toEqual(DATABASE_LABELS[dbClustersStub[1].databaseType]);
-    expect(root.find('td').at(11).text()).toEqual(DATABASE_LABELS[dbClustersStub[2].databaseType]);
+    expect(root.find('td').at(7).text()).toEqual(DATABASE_LABELS[dbClustersStub[1].databaseType]);
+    expect(root.find('td').at(13).text()).toEqual(DATABASE_LABELS[dbClustersStub[2].databaseType]);
   });
 });
