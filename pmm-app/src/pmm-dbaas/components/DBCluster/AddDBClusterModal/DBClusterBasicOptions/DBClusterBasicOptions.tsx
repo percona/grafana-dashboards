@@ -9,10 +9,7 @@ import { DATABASE_OPTIONS } from '../../DBCluster.constants';
 import { AddDBClusterFields } from '../AddDBClusterModal.types';
 import { DBClusterTopology } from '../DBClusterAdvancedOptions/DBClusterAdvancedOptions.types';
 
-export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({
-  kubernetesOptions,
-  form,
-}) => {
+export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernetesOptions, form }) => {
   const { required } = validators;
   const { change } = form;
   const onChangeDatabase = useCallback((databaseType) => {
@@ -23,12 +20,20 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({
     change(AddDBClusterFields.databaseType, databaseType);
   }, []);
 
+  const kubernetesClusterName = useCallback((value: string) => {
+    const clusterNameRegexp = /^[a-z]([-a-z0-9]*[a-z0-9])?$/;
+
+    return clusterNameRegexp.test(value)
+      ? undefined
+      : Messages.dbcluster.addModal.validationMessages.clusterName;
+  }, []);
+
   return (
     <>
       <TextInputField
         name={AddDBClusterFields.name}
         label={Messages.dbcluster.addModal.fields.clusterName}
-        validators={[required]}
+        validators={[required, kubernetesClusterName]}
       />
       <Field
         dataQa="dbcluster-kubernetes-cluster-field"
