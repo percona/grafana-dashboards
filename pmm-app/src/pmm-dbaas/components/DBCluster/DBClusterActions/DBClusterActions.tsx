@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { MultipleActions } from 'pmm-dbaas/components/MultipleActions/MultipleActions';
-import { DBCluster } from '../DBCluster.types';
+import { DBCluster, DBClusterStatus } from '../DBCluster.types';
 import { isClusterChanging } from '../DBCluster.utils';
 import { DBClusterServiceFactory } from '../DBClusterService.factory';
 import { DBClusterActionsProps } from './DBClusterActions.types';
@@ -11,30 +11,42 @@ export const DBClusterActions: FC<DBClusterActionsProps> = ({
   dbCluster,
   setSelectedCluster,
   setDeleteModalVisible,
+  setEditModalVisible,
   getDBClusters,
 }) => {
-  const getActions = useCallback((dbCluster: DBCluster) => [
-    {
-      title: Messages.dbcluster.table.actions.deleteCluster,
-      action: () => {
-        setSelectedCluster(dbCluster);
-        setDeleteModalVisible(true);
+  const getActions = useCallback(
+    (dbCluster: DBCluster) => [
+      {
+        title: Messages.dbcluster.table.actions.deleteCluster,
+        action: () => {
+          setSelectedCluster(dbCluster);
+          setDeleteModalVisible(true);
+        },
       },
-    },
-    {
-      title: Messages.dbcluster.table.actions.restartCluster,
-      action: async () => {
-        try {
-          const dbClusterService = DBClusterServiceFactory.newDBClusterService(dbCluster.databaseType);
+      {
+        title: Messages.dbcluster.table.actions.editCluster,
+        disabled: dbCluster.status !== DBClusterStatus.ready,
+        action: () => {
+          setSelectedCluster(dbCluster);
+          setEditModalVisible(true);
+        },
+      },
+      {
+        title: Messages.dbcluster.table.actions.restartCluster,
+        action: async () => {
+          try {
+            const dbClusterService = DBClusterServiceFactory.newDBClusterService(dbCluster.databaseType);
 
-          await dbClusterService.restartDBCluster(dbCluster);
-          getDBClusters();
-        } catch (e) {
-          console.error(e);
-        }
+            await dbClusterService.restartDBCluster(dbCluster);
+            getDBClusters();
+          } catch (e) {
+            console.error(e);
+          }
+        },
       },
-    },
-  ], [setSelectedCluster, setDeleteModalVisible, getDBClusters]);
+    ],
+    [setSelectedCluster, setDeleteModalVisible, getDBClusters],
+  );
 
   return (
     <div className={styles.actionsColumn}>
