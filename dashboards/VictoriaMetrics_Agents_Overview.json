@@ -36,7 +36,7 @@
     "gnetId": 12683,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1605888224460,
+    "iteration": 1606126668976,
     "links": [
         {
             "icon": "doc",
@@ -103,7 +103,7 @@
         {
             "columns": [],
             "datasource": "$ds",
-            "description": "",
+            "description": "Agent is restated if a new service is added for monitoring ",
             "fieldConfig": {
                 "defaults": {
                     "custom": {}
@@ -202,7 +202,7 @@
         },
         {
             "datasource": "$ds",
-            "description": "Shows total number of all configured scrape targets in state \"up\".\n\nSee `http://vmagent-host:8429/targets` to get list of all targets. \n",
+            "description": "Shows total number of all configured scrape targets in state \"up\" and \"push\" mode.",
             "fieldConfig": {
                 "defaults": {
                     "custom": {},
@@ -221,7 +221,7 @@
             },
             "gridPos": {
                 "h": 3,
-                "w": 6,
+                "w": 4,
                 "x": 8,
                 "y": 1
             },
@@ -251,12 +251,12 @@
             ],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Scrape Targets UP",
+            "title": "Scraped Targets UP",
             "type": "stat"
         },
         {
             "datasource": "$ds",
-            "description": "Shows total number of all configured scrape targets in state \"down\".\n\nSee `http://vmagent-host:8429/targets` to get list of all targets. \n",
+            "description": "Shows total number of all samples ",
             "fieldConfig": {
                 "defaults": {
                     "custom": {},
@@ -265,12 +265,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green",
+                                "color": "light-green",
                                 "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 1
                             }
                         ]
                     }
@@ -279,17 +275,11 @@
             },
             "gridPos": {
                 "h": 3,
-                "w": 5,
-                "x": 14,
+                "w": 4,
+                "x": 12,
                 "y": 1
             },
-            "id": 72,
-            "links": [
-                {
-                    "title": "Troubleshooting",
-                    "url": "https://github.com/VictoriaMetrics/VictoriaMetrics/tree/master/app/vmagent#troubleshooting"
-                }
-            ],
+            "id": 92,
             "options": {
                 "colorMode": "value",
                 "graphMode": "area",
@@ -307,15 +297,77 @@
             "pluginVersion": "7.1.3",
             "targets": [
                 {
-                    "expr": "sum(vm_promscrape_targets{node_name=~\"$node_name\", status=\"down\"})",
-                    "interval": "",
-                    "legendFormat": "down",
+                    "expr": "sum(sum by (node_name) (increase(vm_promscrape_scraped_samples_sum{node_name=~\"$node_name\"}[$__range]))\n+ sum by (node_name) (increase(vmagent_rows_inserted_total{node_name=~\"$node_name\"}[$__range])))",
+                    "interval": "$interval",
+                    "legendFormat": "up",
                     "refId": "A"
                 }
             ],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Scrape Targets Down",
+            "title": "Scraped Samples",
+            "type": "stat"
+        },
+        {
+            "datasource": "$ds",
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "light-green",
+                                "value": null
+                            },
+                            {
+                                "color": "#EAB839",
+                                "value": 1
+                            },
+                            {
+                                "color": "semi-dark-red",
+                                "value": 1000
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 4,
+                "x": 16,
+                "y": 1
+            },
+            "id": 96,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "7.1.3",
+            "targets": [
+                {
+                    "expr": "sum(increase(vm_persistentqueue_bytes_dropped_total{node_name=~\"$node_name\"}[$__range])) + sum(increase(vmagent_remotewrite_global_relabel_metrics_dropped_total{node_name=~\"$node_name\"}[$__range])) + sum(increase(vmagent_remotewrite_relabel_metrics_dropped_total{node_name=~\"$node_name\"}[$__range]))",
+                    "interval": "$interval",
+                    "legendFormat": "up",
+                    "refId": "A"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Dropped Samples",
             "type": "stat"
         },
         {
@@ -358,8 +410,8 @@
             },
             "gridPos": {
                 "h": 3,
-                "w": 5,
-                "x": 19,
+                "w": 4,
+                "x": 20,
                 "y": 1
             },
             "id": 16,
@@ -387,7 +439,7 @@
             "pluginVersion": "7.1.3",
             "targets": [
                 {
-                    "expr": "sum(increase(vm_log_messages_total{node_name=~\"$node_name\", level!=\"info|warn\"}[$__range]))",
+                    "expr": "sum(increase(vm_log_messages_total{node_name=~\"$node_name\", agent_type=\"vmagent\", level!=\"info\", level!=\"warn\"}[$__range]))",
                     "instant": false,
                     "interval": "$interval",
                     "legendFormat": "",
@@ -458,7 +510,7 @@
                     "expr": "sum(up{node_name=~\"$node_name\",agent_type=\"vmagent\"}) by (node_name)",
                     "format": "time_series",
                     "instant": false,
-                    "interval": "",
+                    "interval": "$interval",
                     "legendFormat": "{{node_name}}",
                     "refId": "A"
                 }
@@ -618,7 +670,7 @@
                     "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": null,
+                    "min": "0",
                     "show": true
                 },
                 {
@@ -724,7 +776,7 @@
                     "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": null,
+                    "min": "0",
                     "show": true
                 },
                 {
@@ -1196,7 +1248,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 36
+                        "y": 37
                     },
                     "hiddenSeries": false,
                     "id": 84,
@@ -1248,6 +1300,12 @@
                             "interval": "$interval",
                             "legendFormat": "{{level}} - {{location}}",
                             "refId": "A"
+                        },
+                        {
+                            "expr": "sum by (node_name) (increase(vm_log_messages_total{level=\"info\",node_name=~\"$node_name\"}[$interval]) or increase(vm_log_messages_total{level=\"info\",node_name=~\"$node_name\"}[5m]))",
+                            "interval": "$interval",
+                            "legendFormat": "info",
+                            "refId": "B"
                         }
                     ],
                     "thresholds": [],
@@ -1314,10 +1372,10 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 36
+                        "y": 37
                     },
                     "hiddenSeries": false,
-                    "id": 94,
+                    "id": 95,
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -1340,7 +1398,7 @@
                     "renderer": "flot",
                     "repeat": null,
                     "repeatDirection": "h",
-                    "repeatIteration": 1605888224454,
+                    "repeatIteration": 1606126668976,
                     "repeatPanelId": 84,
                     "seriesOverrides": [
                         {
@@ -1368,6 +1426,12 @@
                             "interval": "$interval",
                             "legendFormat": "{{level}} - {{location}}",
                             "refId": "A"
+                        },
+                        {
+                            "expr": "sum by (node_name) (increase(vm_log_messages_total{level=\"info\",node_name=~\"$node_name\"}[$interval]) or increase(vm_log_messages_total{level=\"info\",node_name=~\"$node_name\"}[5m]))",
+                            "interval": "$interval",
+                            "legendFormat": "info",
+                            "refId": "B"
                         }
                     ],
                     "thresholds": [],
@@ -1449,7 +1513,7 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 37
+                        "y": 38
                     },
                     "hiddenSeries": false,
                     "id": 79,
@@ -1554,10 +1618,10 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 45
+                        "y": 46
                     },
                     "hiddenSeries": false,
-                    "id": 92,
+                    "id": 97,
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -1583,7 +1647,7 @@
                     "renderer": "flot",
                     "repeat": null,
                     "repeatDirection": "v",
-                    "repeatIteration": 1605877777686,
+                    "repeatIteration": 1606126668976,
                     "repeatPanelId": 79,
                     "seriesOverrides": [],
                     "spaceLength": 10,
@@ -1660,7 +1724,7 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 53
+                        "y": 54
                     },
                     "hiddenSeries": false,
                     "id": 69,
@@ -1792,10 +1856,10 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 61
+                        "y": 62
                     },
                     "hiddenSeries": false,
-                    "id": 93,
+                    "id": 98,
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -1826,7 +1890,7 @@
                     "renderer": "flot",
                     "repeat": null,
                     "repeatDirection": "v",
-                    "repeatIteration": 1605877777686,
+                    "repeatIteration": 1606126668976,
                     "repeatPanelId": 69,
                     "seriesOverrides": [],
                     "spaceLength": 10,
@@ -1927,207 +1991,6 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "$ds",
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {}
-                        },
-                        "overrides": []
-                    },
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 0,
-                        "y": 38
-                    },
-                    "hiddenSeries": false,
-                    "id": 48,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sideWidth": null,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pluginVersion": "7.1.3",
-                    "pointradius": 2,
-                    "points": false,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum(vm_promscrape_targets{node_name=~\"$node_name\", status=\"up\"}) by(type)",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "legendFormat": "{{type}}",
-                            "refId": "A"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Scrape Targets UP",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 2,
-                        "value_type": "individual"
-                    },
-                    "transparent": true,
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "$$hashKey": "object:2250",
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": "0",
-                            "show": true
-                        },
-                        {
-                            "$$hashKey": "object:2251",
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "$ds",
-                    "description": "",
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {}
-                        },
-                        "overrides": []
-                    },
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 12,
-                        "y": 38
-                    },
-                    "hiddenSeries": false,
-                    "id": 76,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pluginVersion": "7.1.3",
-                    "pointradius": 2,
-                    "points": false,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum(vm_promscrape_targets{node_name=~\"$node_name\", status=\"down\"}) by(type)",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "legendFormat": "{{type}}",
-                            "refId": "A"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Scrape Targets DOWN",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 2,
-                        "value_type": "individual"
-                    },
-                    "transparent": true,
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "$$hashKey": "object:2174",
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": "0",
-                            "show": true
-                        },
-                        {
-                            "$$hashKey": "object:2175",
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
                     "datasource": null,
                     "fieldConfig": {
                         "defaults": {
@@ -2141,7 +2004,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 46
+                        "y": 39
                     },
                     "hiddenSeries": false,
                     "id": 20,
@@ -2248,7 +2111,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 46
+                        "y": 39
                     },
                     "hiddenSeries": false,
                     "id": 31,
@@ -2363,7 +2226,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 54
+                        "y": 47
                     },
                     "hiddenSeries": false,
                     "id": 46,
@@ -2472,7 +2335,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 54
+                        "y": 47
                     },
                     "heatmap": {},
                     "hideZeroBuckets": false,
@@ -2552,7 +2415,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 39
+                        "y": 40
                     },
                     "hiddenSeries": false,
                     "id": 73,
@@ -2657,7 +2520,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 39
+                        "y": 40
                     },
                     "hiddenSeries": false,
                     "id": 77,
@@ -2762,7 +2625,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 47
+                        "y": 48
                     },
                     "hiddenSeries": false,
                     "id": 78,
@@ -2861,7 +2724,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 47
+                        "y": 48
                     },
                     "hiddenSeries": false,
                     "id": 50,
@@ -2975,7 +2838,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 40
+                        "y": 57
                     },
                     "hiddenSeries": false,
                     "id": 60,
@@ -3074,7 +2937,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 40
+                        "y": 57
                     },
                     "hiddenSeries": false,
                     "id": 66,
@@ -3173,7 +3036,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 48
+                        "y": 65
                     },
                     "hiddenSeries": false,
                     "id": 61,
@@ -3273,7 +3136,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 48
+                        "y": 65
                     },
                     "hiddenSeries": false,
                     "id": 65,
@@ -3378,7 +3241,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 56
+                        "y": 73
                     },
                     "heatmap": {},
                     "hideZeroBuckets": false,
@@ -3400,7 +3263,7 @@
                     ],
                     "timeFrom": null,
                     "timeShift": null,
-                    "title": "Block size rows",
+                    "title": "Block Size Rows",
                     "tooltip": {
                         "show": true,
                         "showHistogram": false
@@ -3449,7 +3312,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 56
+                        "y": 73
                     },
                     "heatmap": {},
                     "hideZeroBuckets": false,
@@ -3471,7 +3334,7 @@
                     ],
                     "timeFrom": null,
                     "timeShift": null,
-                    "title": "Block size bytes ($instance)",
+                    "title": "Block Size in Bytes",
                     "tooltip": {
                         "show": true,
                         "showHistogram": false
@@ -3520,7 +3383,7 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 64
+                        "y": 81
                     },
                     "heatmap": {},
                     "hideZeroBuckets": false,
@@ -3567,7 +3430,7 @@
                     "yBucketSize": null
                 }
             ],
-            "title": "Remote write",
+            "title": "Remote Write",
             "type": "row"
         },
         {
