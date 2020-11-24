@@ -33,6 +33,13 @@ export class PSMDBService extends DBClusterService {
     );
   }
 
+  updateDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload> {
+    return apiRequestManagement.post<DBClusterPayload, any>(
+      '/DBaaS/PSMDBCluster/Update',
+      toAPI(dbCluster),
+    );
+  }
+
   deleteDBClusters(dbCluster: DBCluster): Promise<void> {
     const toAPI = (cluster: DBCluster): DeleteDBClusterAPI => ({
       name: cluster.clusterName,
