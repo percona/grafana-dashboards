@@ -25,6 +25,7 @@ import {
 } from './ColumnRenderers/ColumnRenderers';
 import { DeleteDBClusterModal } from './DeleteDBClusterModal/DeleteDBClusterModal';
 import { buildWarningMessage } from './DBCluster.utils';
+import {ViewClusterConfigModal} from "./ViewClusterConfigModal/ViewClusterConfigModal";
 
 export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
   const styles = useStyles(getStyles);
@@ -91,7 +92,6 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
   }, []);
 
   useEffect(() => getSettings(), []);
-
   return (
     <div className={styles.tableWrapper}>
       <div className={styles.actionPanel}>
@@ -102,6 +102,11 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
         isVisible={addModalVisible}
         setVisible={setAddModalVisible}
         onDBClusterAdded={getDBClusters}
+      />
+      <ViewClusterConfigModal
+        isVisible={true}
+        setVisible={() => {}}
+        selectedCluster={{clusterName: 'tester'}}
       />
       <DeleteDBClusterModal
         isVisible={deleteModalVisible}
