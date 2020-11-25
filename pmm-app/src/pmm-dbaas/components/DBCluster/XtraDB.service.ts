@@ -33,6 +33,13 @@ export class XtraDBService extends DBClusterService {
     );
   }
 
+  updateDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload> {
+    return apiRequestManagement.post<DBClusterPayload, any>(
+      '/DBaaS/XtraDBCluster/Update',
+      toAPI(dbCluster),
+    );
+  }
+
   deleteDBClusters(dbCluster: DBCluster): Promise<void> {
     const toAPI = (cluster: DBCluster): DeleteDBClusterAPI => ({
       name: cluster.clusterName,
@@ -90,12 +97,13 @@ const toAPI = (dbCluster: DBCluster): DBClusterPayload => ({
       },
       disk_size: dbCluster.disk * 10 ** 9,
     },
+    // Temporary mock data
     proxysql: {
       compute_resources: {
-        cpu_m: 0,
-        memory_bytes: 0,
+        cpu_m: 1000,
+        memory_bytes: 2 * 10 ** 9,
       },
-      disk_size: dbCluster.disk * 10 ** 9,
+      disk_size: 1 * 10 ** 9,
     },
   },
 });
