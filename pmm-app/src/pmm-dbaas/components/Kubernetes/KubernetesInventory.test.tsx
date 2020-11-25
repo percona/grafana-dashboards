@@ -64,7 +64,7 @@ describe('KubernetesInventory::', () => {
 
     deleteButton.simulate('click');
 
-    expect(deleteActionStub.mock.calls[0][1]).toBe(undefined);
+    expect(deleteActionStub.mock.calls[0][1]).toBe(false);
     expect(deleteActionStub.mock.calls.length).toBe(1);
   });
 

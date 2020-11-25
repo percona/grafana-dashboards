@@ -117,9 +117,9 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
                 </h4>
                 <FormElement
                   dataQa="form-field-force"
-                  label="Force mode"
+                  label={Messages.kubernetes.deleteModal.labels.forceWrapper}
                   element={
-                    <CheckboxField name="force" label={Messages.kubernetes.deleteModal.fields.force} />
+                    <CheckboxField name="force" label={Messages.kubernetes.deleteModal.labels.force} />
                   }
                 />
                 <HorizontalGroup justify="space-between" spacing="md">
@@ -135,7 +135,7 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
                     variant="destructive"
                     size="md"
                     onClick={() => {
-                      deleteKubernetes(kubernetesToDelete, form.getState().values.force);
+                      deleteKubernetes(kubernetesToDelete, Boolean(form.getState().values.force));
                       setDeleteModalVisible(false);
                     }}
                     data-qa="delete-kubernetes-button"
