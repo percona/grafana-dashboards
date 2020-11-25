@@ -13,6 +13,9 @@ export const Messages = {
       confirm: 'Proceed',
       confirmMessage: 'Are you sure that you want to unregister this cluster?',
       title: 'Confirm action',
+      fields: {
+        force: 'Ignore errors; unregister anyway',
+      },
     },
     deleteSuccess: 'Cluster successfully unregistered',
     addModal: {

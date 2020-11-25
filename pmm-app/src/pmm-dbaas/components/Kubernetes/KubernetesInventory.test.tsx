@@ -29,7 +29,10 @@ describe('KubernetesInventory::', () => {
         loading={false}
       />,
     );
-    const openDeleteModalButton = root.find('[data-qa="open-delete-modal-button"]').find('button').at(0);
+    const openDeleteModalButton = root
+      .find('[data-qa="open-delete-modal-button"]')
+      .find('button')
+      .at(0);
 
     openDeleteModalButton.simulate('click');
 
@@ -40,6 +43,7 @@ describe('KubernetesInventory::', () => {
     expect(root.find('tr').length).toBe(kubernetesStub.length + 1);
     expect(deleteActionStub).toHaveBeenCalledTimes(0);
   });
+
   it('deletes cluster correctly', () => {
     const root = mount(
       <KubernetesInventory
@@ -49,7 +53,10 @@ describe('KubernetesInventory::', () => {
         loading={false}
       />,
     );
-    const openDeleteModalButton = root.find('[data-qa="open-delete-modal-button"]').find('button').at(0);
+    const openDeleteModalButton = root
+      .find('[data-qa="open-delete-modal-button"]')
+      .find('button')
+      .at(0);
 
     openDeleteModalButton.simulate('click');
 
@@ -57,6 +64,35 @@ describe('KubernetesInventory::', () => {
 
     deleteButton.simulate('click');
 
-    expect(deleteActionStub).toHaveBeenCalled();
+    expect(deleteActionStub.mock.calls[0][1]).toBe(undefined);
+    expect(deleteActionStub.mock.calls.length).toBe(1);
+  });
+
+  it('deletes cluster correctly with force mode', () => {
+    const root = mount(
+      <KubernetesInventory
+        kubernetes={kubernetesStub}
+        addKubernetes={addActionStub}
+        deleteKubernetes={deleteActionStub}
+        loading={false}
+      />,
+    );
+    const openDeleteModalButton = root
+      .find('[data-qa="open-delete-modal-button"]')
+      .find('button')
+      .at(0);
+
+    openDeleteModalButton.simulate('click');
+
+    const selectForceMode = root.find('[data-qa="form-field-force"] input');
+
+    selectForceMode.at(0).simulate('change', { target: { value: true } });
+
+    const deleteButton = root.find('[data-qa="delete-kubernetes-button"]').find('button');
+
+    deleteButton.simulate('click');
+
+    expect(deleteActionStub.mock.calls[1][1]).toBe(true);
+    expect(deleteActionStub.mock.calls.length).toBe(2);
   });
 });

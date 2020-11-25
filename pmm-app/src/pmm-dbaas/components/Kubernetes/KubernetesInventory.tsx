@@ -1,7 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
-import {
-  Button, HorizontalGroup, useStyles,
-} from '@grafana/ui';
+import { Button, HorizontalGroup, useStyles } from '@grafana/ui';
 import { TextInputField, TextareaInputField, validators } from '@percona/platform-core';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
@@ -10,6 +8,7 @@ import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { getStyles } from './Kubernetes.styles';
 import { Kubernetes, NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
+import { CheckboxField, FormElement } from '../../../shared/components/Form';
 
 export const KubernetesInventory: FC<KubernetesProps> = ({
   kubernetes,
@@ -48,13 +47,16 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
     },
   ];
 
-  const AddNewClusterButton = useCallback(() => (
-    <AddClusterButton
-      label={Messages.kubernetes.addAction}
-      action={() => setAddModalVisible(!addModalVisible)}
-      data-qa="kubernetes-new-cluster-button"
-    />
-  ), [addModalVisible]);
+  const AddNewClusterButton = useCallback(
+    () => (
+      <AddClusterButton
+        label={Messages.kubernetes.addAction}
+        action={() => setAddModalVisible(!addModalVisible)}
+        data-qa="kubernetes-new-cluster-button"
+      />
+    ),
+    [addModalVisible],
+  );
 
   return (
     <div className={styles.tableWrapper}>
@@ -71,9 +73,7 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
             addKubernetes(values);
             setAddModalVisible(false);
           }}
-          render={({
-            handleSubmit, valid, pristine,
-          }: FormRenderProps<NewKubernetesCluster>) => (
+          render={({ handleSubmit, valid, pristine }: FormRenderProps<NewKubernetesCluster>) => (
             <form onSubmit={handleSubmit}>
               <>
                 <TextInputField
@@ -107,37 +107,48 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
         isVisible={deleteModalVisible}
         onClose={() => setDeleteModalVisible(false)}
       >
-        <h4 className={styles.deleteModalContent}>
-          {Messages.kubernetes.deleteModal.confirmMessage}
-        </h4>
-        <HorizontalGroup justify="space-between" spacing="md">
-          <Button
-            variant="secondary"
-            size="md"
-            onClick={() => setDeleteModalVisible(false)}
-            data-qa="cancel-delete-kubernetes-button"
-          >
-            {Messages.kubernetes.deleteModal.cancel}
-          </Button>
-          <Button
-            variant="destructive"
-            size="md"
-            onClick={() => {
-              deleteKubernetes(kubernetesToDelete);
-              setDeleteModalVisible(false);
-            }}
-            data-qa="delete-kubernetes-button"
-          >
-            {Messages.kubernetes.deleteModal.confirm}
-          </Button>
-        </HorizontalGroup>
+        <Form
+          onSubmit={() => {}}
+          render={({ form, handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              <>
+                <h4 className={styles.deleteModalContent}>
+                  {Messages.kubernetes.deleteModal.confirmMessage}
+                </h4>
+                <FormElement
+                  dataQa="form-field-force"
+                  label="Force mode"
+                  element={
+                    <CheckboxField name="force" label={Messages.kubernetes.deleteModal.fields.force} />
+                  }
+                />
+                <HorizontalGroup justify="space-between" spacing="md">
+                  <Button
+                    variant="secondary"
+                    size="md"
+                    onClick={() => setDeleteModalVisible(false)}
+                    data-qa="cancel-delete-kubernetes-button"
+                  >
+                    {Messages.kubernetes.deleteModal.cancel}
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="md"
+                    onClick={() => {
+                      deleteKubernetes(kubernetesToDelete, form.getState().values.force);
+                      setDeleteModalVisible(false);
+                    }}
+                    data-qa="delete-kubernetes-button"
+                  >
+                    {Messages.kubernetes.deleteModal.confirm}
+                  </Button>
+                </HorizontalGroup>
+              </>
+            </form>
+          )}
+        />
       </Modal>
-      <Table
-        columns={columns}
-        data={kubernetes}
-        loading={loading}
-        noData={<AddNewClusterButton />}
-      />
+      <Table columns={columns} data={kubernetes} loading={loading} noData={<AddNewClusterButton />} />
     </div>
   );
 };

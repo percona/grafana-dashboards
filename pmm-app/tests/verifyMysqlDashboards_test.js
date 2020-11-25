@@ -64,7 +64,7 @@ Scenario(
   },
 );
 
-//Need to Skip due to wait issue on locator
+// Need to Skip due to wait issue on locator
 xScenario(
   'PMM-T396 - Verify that parameters are passed from MySQL User Details dashboard to QAN @not-pr-pipeline',
   async (I, dashboardPage, qanFilters, qanOverview, adminPage) => {
