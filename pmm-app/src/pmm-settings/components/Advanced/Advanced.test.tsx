@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import { dataQa } from '@percona/platform-core';
 import { Advanced } from './Advanced';
 
 
@@ -11,10 +12,13 @@ describe('Advanced::', () => {
       sttEnabled={false}
       updatesDisabled
       updateSettings={() => {}}
+      publicAddress="pmmtest.percona.com"
     />);
-    const retentionInput = root.find('[data-qa="advanced-retention-input"]');
+    const retentionInput = root.find(dataQa('advanced-retention-input')).find('input');
+    const publicAddressInput = root.find(dataQa('publicAddress-text-input')).find('input');
 
-    expect(retentionInput.find('input').prop('value')).toEqual(15);
+    expect(retentionInput.prop('value')).toEqual(15);
+    expect(publicAddressInput.prop('value')).toEqual('pmmtest.percona.com');
   });
 
   it('Cant change telemetry when stt is on', () => {
@@ -59,5 +63,28 @@ describe('Advanced::', () => {
     root.find('form').simulate('submit');
 
     expect(updateSettings).toHaveBeenCalled();
+  });
+
+  it('Sets correct URL from browser', () => {
+    const oldLocation = window.location;
+
+    delete window.location;
+    window.location = Object.create({ ...oldLocation, hostname: 'pmmtest.percona.com' });
+
+    const root = mount(<Advanced
+      dataRetention="1296000s"
+      telemetryEnabled={false}
+      sttEnabled={false}
+      updatesDisabled
+      updateSettings={() => {}}
+    />);
+    const publicAddressButton = root.find(dataQa('public-address-button')).find('button');
+
+    publicAddressButton.simulate('click');
+    root.update();
+
+    const publicAddressInput = root.find(dataQa('publicAddress-text-input')).find('input');
+
+    expect(publicAddressInput.prop('value')).toEqual('pmmtest.percona.com');
   });
 });

@@ -8,6 +8,7 @@ import {
   DeleteDBClusterAPI,
   DBClusterConnectionAPI,
   DBClusterStatus,
+  RestartDBClusterAPI,
 } from './DBCluster.types';
 import { DBClusterService } from './DBCluster.service';
 import { getClusterStatus } from './DBCluster.utils';
@@ -32,6 +33,13 @@ export class PSMDBService extends DBClusterService {
     );
   }
 
+  updateDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload> {
+    return apiRequestManagement.post<DBClusterPayload, any>(
+      '/DBaaS/PSMDBCluster/Update',
+      toAPI(dbCluster),
+    );
+  }
+
   deleteDBClusters(dbCluster: DBCluster): Promise<void> {
     const toAPI = (cluster: DBCluster): DeleteDBClusterAPI => ({
       name: cluster.clusterName,
@@ -51,6 +59,13 @@ export class PSMDBService extends DBClusterService {
     );
   }
 
+  restartDBCluster(dbCluster: DBCluster): Promise<void> {
+    return apiRequestManagement.post<any, RestartDBClusterAPI>(
+      '/DBaaS/PSMDBCluster/Restart',
+      omit(toAPI(dbCluster), ['params']),
+    );
+  }
+
   toModel(
     dbCluster: DBClusterPayload,
     kubernetesClusterName: string,
@@ -61,8 +76,9 @@ export class PSMDBService extends DBClusterService {
       kubernetesClusterName,
       databaseType,
       clusterSize: dbCluster.params.cluster_size,
-      memory: dbCluster.params.replicaset?.compute_resources?.memory_bytes || 0,
-      cpu: dbCluster.params.replicaset?.compute_resources?.cpu_m || 0,
+      memory: (dbCluster.params.replicaset?.compute_resources?.memory_bytes || 0) / 10 ** 9,
+      cpu: (dbCluster.params.replicaset?.compute_resources?.cpu_m || 0) / 1000,
+      disk: (dbCluster.params.replicaset?.disk_size || 0) / 10 ** 9,
       status: getClusterStatus(dbCluster.state, DBCLUSTER_STATUS_MAP),
       errorMessage: dbCluster.operation?.message,
     };
@@ -79,6 +95,7 @@ const toAPI = (dbCluster: DBCluster) => ({
         cpu_m: dbCluster.cpu * 1000,
         memory_bytes: dbCluster.memory * 10 ** 9,
       },
+      disk_size: dbCluster.disk * 10 ** 9,
     },
   },
 });

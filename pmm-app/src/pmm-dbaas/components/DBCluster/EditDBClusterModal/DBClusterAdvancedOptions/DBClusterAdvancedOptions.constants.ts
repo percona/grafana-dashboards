@@ -34,15 +34,5 @@ export const DEFAULT_SIZES = {
   },
 };
 
-export const INITIAL_VALUES = {
-  topology: DBClusterTopology.cluster,
-  nodes: 3,
-  single: 1,
-  resources: DBClusterResources.small,
-  memory: DEFAULT_SIZES.small.memory,
-  cpu: DEFAULT_SIZES.small.cpu,
-  disk: DEFAULT_SIZES.small.disk,
-};
-
 export const MIN_NODES = 3;
 export const MIN_RESOURCES = 1;

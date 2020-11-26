@@ -17,7 +17,7 @@ import {
   TOPOLOGIES_DISABLED,
 } from './DBClusterAdvancedOptions.constants';
 import { getStyles } from './DBClusterAdvancedOptions.styles';
-import { AddDBClusterFields } from '../AddDBClusterModal.types';
+import { EditDBClusterFields } from '../EditDBClusterModal.types';
 import { DBClusterTopology, DBClusterResources } from './DBClusterAdvancedOptions.types';
 
 export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
@@ -30,7 +30,6 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   const styles = useStyles(getStyles);
   const [customMemory, setCustomMemory] = useState(DEFAULT_SIZES.small.memory);
   const [customCPU, setCustomCPU] = useState(DEFAULT_SIZES.small.cpu);
-  const [customDisk, setCustomDisk] = useState(DEFAULT_SIZES.small.disk);
   const { required, min } = validators;
   const { change } = form;
   const nodesValidators = [required, min(MIN_NODES)];
@@ -41,39 +40,35 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
     memory,
     cpu,
     databaseType,
-    disk,
   } = values;
   const onChangeCustom = useCallback((value: string) => {
     if (resources === DBClusterResources.custom) {
       setCustomMemory(memory);
       setCustomCPU(cpu);
-      setCustomDisk(disk);
     }
 
     if (value !== DBClusterResources.custom) {
-      change(AddDBClusterFields.cpu, DEFAULT_SIZES[value].cpu);
-      change(AddDBClusterFields.memory, DEFAULT_SIZES[value].memory);
-      change(AddDBClusterFields.disk, DEFAULT_SIZES[value].disk);
+      change(EditDBClusterFields.cpu, DEFAULT_SIZES[value].cpu);
+      change(EditDBClusterFields.memory, DEFAULT_SIZES[value].memory);
     } else {
-      change(AddDBClusterFields.cpu, customCPU);
-      change(AddDBClusterFields.memory, customMemory);
-      change(AddDBClusterFields.disk, customDisk);
+      change(EditDBClusterFields.cpu, customCPU);
+      change(EditDBClusterFields.memory, customMemory);
     }
 
-    change(AddDBClusterFields.resources, value);
+    change(EditDBClusterFields.resources, value);
   }, [resources, memory, cpu, customMemory, customCPU]);
   const parsePositiveInt = useCallback(
     (value) => (value > 0 && Number.isInteger(+value) ? value : undefined), [],
   );
   const topologiesDisabled = useMemo(() => (
-    databaseType?.value !== Databases.mysql ? TOPOLOGIES_DISABLED : []
+    databaseType !== Databases.mysql ? TOPOLOGIES_DISABLED : []
   ), [databaseType]);
 
   return (
     <>
       <Field
         dataQa="dbcluster-topology-field"
-        name={AddDBClusterFields.topology}
+        name={EditDBClusterFields.topology}
         label={Messages.dbcluster.addModal.fields.topology}
         options={TOPOLOGY_OPTIONS}
         disabledOptions={topologiesDisabled}
@@ -82,13 +77,13 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
       <div className={styles.nodesWrapper}>
         {topology === DBClusterTopology.single ? (
           <NumberInputField
-            name={AddDBClusterFields.single}
+            name={EditDBClusterFields.single}
             label={Messages.dbcluster.addModal.fields.nodes}
             disabled
           />
         ) : (
           <NumberInputField
-            name={AddDBClusterFields.nodes}
+            name={EditDBClusterFields.nodes}
             label={Messages.dbcluster.addModal.fields.nodes}
             validators={nodesValidators}
           />
@@ -96,7 +91,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
       </div>
       <Field
         dataQa="dbcluster-resources-field"
-        name={AddDBClusterFields.resources}
+        name={EditDBClusterFields.resources}
         label={Messages.dbcluster.addModal.fields.resources}
         options={RESOURCES_OPTIONS}
         component={RadioButtonGroupAdapter}
@@ -104,37 +99,36 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
       />
       <div className={styles.resourcesWrapper}>
         <NumberInputField
-          name={AddDBClusterFields.memory}
+          name={EditDBClusterFields.memory}
           label={Messages.dbcluster.addModal.fields.memory}
           validators={resourcesValidators}
           disabled={resources !== DBClusterResources.custom}
           parse={parsePositiveInt}
         />
         <NumberInputField
-          name={AddDBClusterFields.cpu}
+          name={EditDBClusterFields.cpu}
           label={Messages.dbcluster.addModal.fields.cpu}
           validators={resourcesValidators}
           disabled={resources !== DBClusterResources.custom}
           parse={parsePositiveInt}
         />
         <NumberInputField
-          name={AddDBClusterFields.disk}
+          name={EditDBClusterFields.disk}
           label={Messages.dbcluster.addModal.fields.disk}
-          validators={resourcesValidators}
-          disabled={resources !== DBClusterResources.custom}
+          disabled
           parse={parsePositiveInt}
         />
       </div>
       <HorizontalGroup justify="center" spacing="md">
         <LoaderButton
-          data-qa="dbcluster-create-cluster-button"
+          data-qa="dbcluster-update-cluster-button"
           size="md"
           variant="primary"
           disabled={!valid || pristine || submitting}
           loading={submitting}
           className={styles.createButton}
         >
-          {Messages.dbcluster.addModal.confirm}
+          {Messages.dbcluster.editModal.confirm}
         </LoaderButton>
       </HorizontalGroup>
     </>

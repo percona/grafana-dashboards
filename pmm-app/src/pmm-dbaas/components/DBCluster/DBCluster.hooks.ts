@@ -1,20 +1,17 @@
-import { useState, useEffect } from 'react';
-import { processPromiseResults, FulfilledPromiseResult } from 'shared/components/helpers/promises';
+import { useEffect, useState } from 'react';
+import { FulfilledPromiseResult, processPromiseResults } from 'shared/components/helpers/promises';
 import { Databases } from 'shared/core';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
 import { DBCluster, GetDBClustersAction, DBClusterPayload } from './DBCluster.types';
-import { isClusterChanging } from './DBCluster.utils';
 import { DBClusterServiceFactory } from './DBClusterService.factory';
 
-const RECHECK_INTERVAL = 30000;
+const RECHECK_INTERVAL = 10000;
 const DATABASES = [
   Databases.mysql,
   Databases.mongodb,
 ];
 
-export const useDBClusters = (
-  kubernetes: Kubernetes[],
-): [DBCluster[], GetDBClustersAction, boolean] => {
+export const useDBClusters = (kubernetes: Kubernetes[]): [DBCluster[], GetDBClustersAction, boolean] => {
   const [dbClusters, setDBClusters] = useState<DBCluster[]>([]);
   const [loading, setLoading] = useState(false);
   let timer: NodeJS.Timeout;
@@ -39,19 +36,11 @@ export const useDBClusters = (
 
   useEffect(() => {
     getDBClusters();
+
+    timer = setInterval(() => getDBClusters(false), RECHECK_INTERVAL);
+
+    return () => clearTimeout(timer);
   }, []);
-
-  useEffect(() => {
-    // clear timer to prevent parallel requests when get is called from outside hook
-    if (timer) {
-      clearTimeout(timer);
-    }
-
-    // if there are clusters changing, recheck
-    if (dbClusters.find((cluster) => isClusterChanging(cluster))) {
-      timer = setTimeout(() => getDBClusters(false), RECHECK_INTERVAL);
-    }
-  }, [dbClusters]);
 
   return [dbClusters, getDBClusters, loading];
 };
@@ -68,13 +57,10 @@ const getClusters = async (kubernetes: Kubernetes[], databaseType: Databases): P
 
     const clusters: DBClusterPayload[] = (r as FulfilledPromiseResult).value?.clusters ?? [];
 
-    const resultClusters = clusters.map(
-      (cluster) => dbClusterService.toModel(
-        cluster,
-        kubernetes[index].kubernetesClusterName,
-        databaseType,
-      ),
-    );
+    // eslint-disable-next-line arrow-body-style
+    const resultClusters = clusters.map((cluster) => {
+      return dbClusterService.toModel(cluster, kubernetes[index].kubernetesClusterName, databaseType);
+    });
 
     return acc.concat(resultClusters);
   }, []);

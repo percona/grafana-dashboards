@@ -21,6 +21,7 @@ export enum InventoryType {
   rdsExporter = 'rdsExporter',
   remote = 'remote',
   remote_rds = 'remote_rds',
+  vmAgent = 'vm_agent',
 }
 
 export type InventoryList = {
