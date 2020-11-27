@@ -66,7 +66,7 @@ export const Messages = {
       },
       validationMessages: {
         clusterName:
-          'Cluster name should start and end with a letter, be alphanumeric, and may contain a dash',
+          'Cluster name should start with a letter, be alphanumeric, and may contain a dash',
       },
     },
     deleteModal: {
