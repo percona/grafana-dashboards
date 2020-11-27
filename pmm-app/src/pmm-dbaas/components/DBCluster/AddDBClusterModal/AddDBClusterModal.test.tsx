@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
+import { dataQa } from '@percona/platform-core';
 import { AddDBClusterModal } from './AddDBClusterModal';
 import { kubernetesOptionsStub, setVisibleStub, onDBClusterAddedStub } from './__mocks__/addDBClusterModalStubs';
 
@@ -28,6 +29,7 @@ describe('AddDBClusterModal::', () => {
         isVisible
         setVisible={setVisibleStub}
         onDBClusterAdded={onDBClusterAddedStub}
+        showMonitoringWarning={false}
       />,
     );
 
@@ -38,6 +40,8 @@ describe('AddDBClusterModal::', () => {
     expect(root.find('[data-qa="dbcluster-create-cluster-button"]')).toBeTruthy();
     expect(root.find('[data-qa="dbcluster-basic-options-step"]')).toBeTruthy();
     expect(root.find('[data-qa="dbcluster-advanced-options-step"]')).toBeTruthy();
+    expect(root.find('[data-qa="dbcluster-advanced-options-step"]')).toBeTruthy();
+    expect(root.find(dataQa('add-cluster-monitoring-warning'))).toBeTruthy();
   });
 
   it('should disable submit button when there is no values', () => {
