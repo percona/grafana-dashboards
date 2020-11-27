@@ -3,6 +3,8 @@ import { GrafanaTheme } from '@grafana/data';
 
 export const getStyles = ({ spacing, typography, colors }: GrafanaTheme) => ({
   stepProgressWrapper: css`
+    overflow: hidden;
+
     div[class$='-current'] {
       overflow: auto;
     }
