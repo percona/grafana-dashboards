@@ -87,6 +87,43 @@ const metrics = {
   },
 };
 
+const EMPTY_RELATIONS_METRICS = [
+  'blk_read_time',
+  'blk_write_time',
+  'local_blks_dirtied',
+  'local_blks_hit',
+  'local_blks_read',
+  'local_blks_written',
+  'shared_blks_dirtied',
+  'shared_blks_hit',
+  'shared_blks_read',
+  'shared_blks_written',
+  'temp_blks_read',
+  'temp_blks_written',
+  'num_queries',
+  'num_queries_with_errors',
+  'num_queries_with_warnings',
+  'docs_returned',
+  'innodb_io_r_ops',
+  'innodb_pages_distinct',
+  'load',
+  'no_good_index_used',
+  'no_index_used',
+  'query_length',
+  'query_time',
+  'rows_affected',
+  'rows_read',
+  'rows_sent',
+  'select_full_range_join',
+  'sort_range',
+  'select_range',
+  'select_range_check',
+  'sort_rows',
+  'sort_scan',
+  'cpu_user_time',
+  'cpu_sys_time',
+];
+
 describe('Query analytics metrics::', () => {
   it('bytes_sent', () => {
     const metric = METRIC_CATALOGUE.bytes_sent;
@@ -98,126 +135,6 @@ describe('Query analytics metrics::', () => {
     expect(processedMetric).toBe('2.00 Bytes per row sent');
   });
 
-  it('blk_read_time', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.blk_read_time;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('blk_write_time', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.blk_write_time;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('local_blks_dirtied', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.local_blks_dirtied;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('local_blks_hit', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.local_blks_hit;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('local_blks_read', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.local_blks_read;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('local_blks_written', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.local_blks_written;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('shared_blks_dirtied', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.shared_blks_dirtied;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('shared_blks_hit', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.shared_blks_hit;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('shared_blks_read', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.shared_blks_read;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('shared_blks_written', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.shared_blks_written;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('temp_blks_read', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.temp_blks_read;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('temp_blks_written', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.temp_blks_written;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('num_queries', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.num_queries;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('num_queries_with_errors', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.num_queries_with_errors;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('num_queries_with_warnings', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.num_queries_with_warnings;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
   it('docs_scanned', () => {
     const metric = METRIC_CATALOGUE.docs_scanned;
     const processedMetric = metric.metricRelation(metrics);
@@ -225,14 +142,6 @@ describe('Query analytics metrics::', () => {
 
     expect(absentMetric).toBe('');
     expect(processedMetric).toBe('2.00 per row sent');
-  });
-
-  it('docs_returned', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.docs_returned;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
   });
 
   it('filesort', () => {
@@ -280,14 +189,6 @@ describe('Query analytics metrics::', () => {
     expect(processedMetric).toBe('1.00 Bytes per Read Ops');
   });
 
-  it('innodb_io_r_ops', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.innodb_io_r_ops;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
   it('innodb_io_r_wait', () => {
     const metric = METRIC_CATALOGUE.innodb_io_r_wait;
     const processedMetric = metric.metricRelation(metrics);
@@ -295,14 +196,6 @@ describe('Query analytics metrics::', () => {
 
     expect(processedMetric).toBe('100% of query time');
     expect(absentMetric).toBe('');
-  });
-
-  it('innodb_pages_distinct', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.innodb_pages_distinct;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
   });
 
   it('innodb_queue_wait', () => {
@@ -323,14 +216,6 @@ describe('Query analytics metrics::', () => {
     expect(absentMetric).toBe('');
   });
 
-  it('load', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.load;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
   it('lock_time', () => {
     const metric = METRIC_CATALOGUE.lock_time;
     const processedMetric = metric.metricRelation(metrics);
@@ -349,22 +234,6 @@ describe('Query analytics metrics::', () => {
     expect(absentMetric).toBe('');
   });
 
-  it('no_good_index_used', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.no_good_index_used;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('no_index_used', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.no_index_used;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
   it('qc_hit', () => {
     const metric = METRIC_CATALOGUE.qc_hit;
     const processedMetric = metric.metricRelation(metrics);
@@ -372,22 +241,6 @@ describe('Query analytics metrics::', () => {
 
     expect(processedMetric).toBe('1000.00 ms per query');
     expect(absentMetric).toBe('');
-  });
-
-  it('query_length', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.query_length;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('query_time', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.query_time;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
   });
 
   it('response_length', () => {
@@ -399,14 +252,6 @@ describe('Query analytics metrics::', () => {
     expect(absentMetric).toBe('');
   });
 
-  it('rows_affected', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.rows_affected;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
   it('rows_examined', () => {
     const metric = METRIC_CATALOGUE.rows_examined;
     const processedMetric = metric.metricRelation(metrics);
@@ -414,70 +259,6 @@ describe('Query analytics metrics::', () => {
 
     expect(processedMetric).toBe('1.00 per row sent');
     expect(absentMetric).toBe('');
-  });
-
-  it('rows_read', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.rows_read;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('rows_sent', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.rows_sent;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('select_full_range_join', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.select_full_range_join;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('sort_range', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.sort_range;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('select_range', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.select_range;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('select_range_check', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.select_range_check;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('sort_rows', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.sort_rows;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('sort_scan', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.sort_scan;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
   });
 
   it('tmp_disk_tables', () => {
@@ -534,17 +315,8 @@ describe('Query analytics metrics::', () => {
     expect(absentMetric).toBe('');
   });
 
-  it('cpu_user_time', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.cpu_user_time;
-    const processedMetric = metric.metricRelation();
-
-    expect(processedMetric).toBe('');
-  });
-
-  it('cpu_sys_time', () => {
-    // Metric with empty relation
-    const metric = METRIC_CATALOGUE.cpu_sys_time;
+  test.each(EMPTY_RELATIONS_METRICS)('%s', (metricName) => {
+    const metric = METRIC_CATALOGUE[metricName];
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
