@@ -1,4 +1,3 @@
-import React from 'react';
 import { METRIC_CATALOGUE } from './QueryAnalytics.constants';
 
 const metrics = {
@@ -90,7 +89,7 @@ const metrics = {
 
 describe('Query analytics metrics::', () => {
   it('bytes_sent', () => {
-    const metric = METRIC_CATALOGUE['bytes_sent'];
+    const metric = METRIC_CATALOGUE.bytes_sent;
 
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
@@ -101,7 +100,7 @@ describe('Query analytics metrics::', () => {
 
   it('blk_read_time', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['blk_read_time'];
+    const metric = METRIC_CATALOGUE.blk_read_time;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -109,7 +108,7 @@ describe('Query analytics metrics::', () => {
 
   it('blk_write_time', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['blk_write_time'];
+    const metric = METRIC_CATALOGUE.blk_write_time;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -117,7 +116,7 @@ describe('Query analytics metrics::', () => {
 
   it('local_blks_dirtied', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['local_blks_dirtied'];
+    const metric = METRIC_CATALOGUE.local_blks_dirtied;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -125,7 +124,7 @@ describe('Query analytics metrics::', () => {
 
   it('local_blks_hit', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['local_blks_hit'];
+    const metric = METRIC_CATALOGUE.local_blks_hit;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -133,7 +132,7 @@ describe('Query analytics metrics::', () => {
 
   it('local_blks_read', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['local_blks_read'];
+    const metric = METRIC_CATALOGUE.local_blks_read;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -141,7 +140,7 @@ describe('Query analytics metrics::', () => {
 
   it('local_blks_written', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['local_blks_written'];
+    const metric = METRIC_CATALOGUE.local_blks_written;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -149,7 +148,7 @@ describe('Query analytics metrics::', () => {
 
   it('shared_blks_dirtied', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['shared_blks_dirtied'];
+    const metric = METRIC_CATALOGUE.shared_blks_dirtied;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -157,7 +156,7 @@ describe('Query analytics metrics::', () => {
 
   it('shared_blks_hit', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['shared_blks_hit'];
+    const metric = METRIC_CATALOGUE.shared_blks_hit;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -165,7 +164,7 @@ describe('Query analytics metrics::', () => {
 
   it('shared_blks_read', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['shared_blks_read'];
+    const metric = METRIC_CATALOGUE.shared_blks_read;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -173,7 +172,7 @@ describe('Query analytics metrics::', () => {
 
   it('shared_blks_written', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['shared_blks_written'];
+    const metric = METRIC_CATALOGUE.shared_blks_written;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -181,7 +180,7 @@ describe('Query analytics metrics::', () => {
 
   it('temp_blks_read', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['temp_blks_read'];
+    const metric = METRIC_CATALOGUE.temp_blks_read;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -189,7 +188,7 @@ describe('Query analytics metrics::', () => {
 
   it('temp_blks_written', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['temp_blks_written'];
+    const metric = METRIC_CATALOGUE.temp_blks_written;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -197,7 +196,7 @@ describe('Query analytics metrics::', () => {
 
   it('num_queries', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['num_queries'];
+    const metric = METRIC_CATALOGUE.num_queries;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -205,7 +204,7 @@ describe('Query analytics metrics::', () => {
 
   it('num_queries_with_errors', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['num_queries_with_errors'];
+    const metric = METRIC_CATALOGUE.num_queries_with_errors;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -213,14 +212,14 @@ describe('Query analytics metrics::', () => {
 
   it('num_queries_with_warnings', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['num_queries_with_warnings'];
+    const metric = METRIC_CATALOGUE.num_queries_with_warnings;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
   });
 
   it('docs_scanned', () => {
-    const metric = METRIC_CATALOGUE['docs_scanned'];
+    const metric = METRIC_CATALOGUE.docs_scanned;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -230,14 +229,14 @@ describe('Query analytics metrics::', () => {
 
   it('docs_returned', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['docs_returned'];
+    const metric = METRIC_CATALOGUE.docs_returned;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
   });
 
   it('filesort', () => {
-    const metric = METRIC_CATALOGUE['filesort'];
+    const metric = METRIC_CATALOGUE.filesort;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -246,7 +245,7 @@ describe('Query analytics metrics::', () => {
   });
 
   it('filesort_on_disk', () => {
-    const metric = METRIC_CATALOGUE['filesort_on_disk'];
+    const metric = METRIC_CATALOGUE.filesort_on_disk;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -255,7 +254,7 @@ describe('Query analytics metrics::', () => {
   });
 
   it('full_join', () => {
-    const metric = METRIC_CATALOGUE['full_join'];
+    const metric = METRIC_CATALOGUE.full_join;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -264,7 +263,7 @@ describe('Query analytics metrics::', () => {
   });
 
   it('full_scan', () => {
-    const metric = METRIC_CATALOGUE['full_scan'];
+    const metric = METRIC_CATALOGUE.full_scan;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -273,7 +272,7 @@ describe('Query analytics metrics::', () => {
   });
 
   it('innodb_io_r_bytes', () => {
-    const metric = METRIC_CATALOGUE['innodb_io_r_bytes'];
+    const metric = METRIC_CATALOGUE.innodb_io_r_bytes;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -283,14 +282,14 @@ describe('Query analytics metrics::', () => {
 
   it('innodb_io_r_ops', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['innodb_io_r_ops'];
+    const metric = METRIC_CATALOGUE.innodb_io_r_ops;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
   });
 
   it('innodb_io_r_wait', () => {
-    const metric = METRIC_CATALOGUE['innodb_io_r_wait'];
+    const metric = METRIC_CATALOGUE.innodb_io_r_wait;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -300,14 +299,14 @@ describe('Query analytics metrics::', () => {
 
   it('innodb_pages_distinct', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['innodb_pages_distinct'];
+    const metric = METRIC_CATALOGUE.innodb_pages_distinct;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
   });
 
   it('innodb_queue_wait', () => {
-    const metric = METRIC_CATALOGUE['innodb_queue_wait'];
+    const metric = METRIC_CATALOGUE.innodb_queue_wait;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -316,7 +315,7 @@ describe('Query analytics metrics::', () => {
   });
 
   it('innodb_rec_lock_wait', () => {
-    const metric = METRIC_CATALOGUE['innodb_rec_lock_wait'];
+    const metric = METRIC_CATALOGUE.innodb_rec_lock_wait;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -326,14 +325,14 @@ describe('Query analytics metrics::', () => {
 
   it('load', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['load'];
+    const metric = METRIC_CATALOGUE.load;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
   });
 
   it('lock_time', () => {
-    const metric = METRIC_CATALOGUE['lock_time'];
+    const metric = METRIC_CATALOGUE.lock_time;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -342,7 +341,7 @@ describe('Query analytics metrics::', () => {
   });
 
   it('merge_passes', () => {
-    const metric = METRIC_CATALOGUE['merge_passes'];
+    const metric = METRIC_CATALOGUE.merge_passes;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -352,7 +351,7 @@ describe('Query analytics metrics::', () => {
 
   it('no_good_index_used', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['no_good_index_used'];
+    const metric = METRIC_CATALOGUE.no_good_index_used;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -360,14 +359,14 @@ describe('Query analytics metrics::', () => {
 
   it('no_index_used', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['no_index_used'];
+    const metric = METRIC_CATALOGUE.no_index_used;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
   });
 
   it('qc_hit', () => {
-    const metric = METRIC_CATALOGUE['qc_hit'];
+    const metric = METRIC_CATALOGUE.qc_hit;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -377,7 +376,7 @@ describe('Query analytics metrics::', () => {
 
   it('query_length', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['query_length'];
+    const metric = METRIC_CATALOGUE.query_length;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -385,14 +384,14 @@ describe('Query analytics metrics::', () => {
 
   it('query_time', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['query_time'];
+    const metric = METRIC_CATALOGUE.query_time;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
   });
 
   it('response_length', () => {
-    const metric = METRIC_CATALOGUE['response_length'];
+    const metric = METRIC_CATALOGUE.response_length;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -402,14 +401,14 @@ describe('Query analytics metrics::', () => {
 
   it('rows_affected', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['rows_affected'];
+    const metric = METRIC_CATALOGUE.rows_affected;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
   });
 
   it('rows_examined', () => {
-    const metric = METRIC_CATALOGUE['rows_examined'];
+    const metric = METRIC_CATALOGUE.rows_examined;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -419,7 +418,7 @@ describe('Query analytics metrics::', () => {
 
   it('rows_read', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['rows_read'];
+    const metric = METRIC_CATALOGUE.rows_read;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -427,7 +426,7 @@ describe('Query analytics metrics::', () => {
 
   it('rows_sent', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['rows_sent'];
+    const metric = METRIC_CATALOGUE.rows_sent;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -435,7 +434,7 @@ describe('Query analytics metrics::', () => {
 
   it('select_full_range_join', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['select_full_range_join'];
+    const metric = METRIC_CATALOGUE.select_full_range_join;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -443,7 +442,7 @@ describe('Query analytics metrics::', () => {
 
   it('sort_range', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['sort_range'];
+    const metric = METRIC_CATALOGUE.sort_range;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -451,7 +450,7 @@ describe('Query analytics metrics::', () => {
 
   it('select_range', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['select_range'];
+    const metric = METRIC_CATALOGUE.select_range;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -459,7 +458,7 @@ describe('Query analytics metrics::', () => {
 
   it('select_range_check', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['select_range_check'];
+    const metric = METRIC_CATALOGUE.select_range_check;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -467,7 +466,7 @@ describe('Query analytics metrics::', () => {
 
   it('sort_rows', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['sort_rows'];
+    const metric = METRIC_CATALOGUE.sort_rows;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -475,7 +474,7 @@ describe('Query analytics metrics::', () => {
 
   it('sort_scan', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['sort_scan'];
+    const metric = METRIC_CATALOGUE.sort_scan;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -483,7 +482,7 @@ describe('Query analytics metrics::', () => {
 
   it('tmp_disk_tables', () => {
     // TODO: check correct values, not sure about units
-    const metric = METRIC_CATALOGUE['tmp_disk_tables'];
+    const metric = METRIC_CATALOGUE.tmp_disk_tables;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -494,7 +493,7 @@ describe('Query analytics metrics::', () => {
   it('tmp_table', () => {
     // TODO: check correct values, not sure about units
 
-    const metric = METRIC_CATALOGUE['tmp_table'];
+    const metric = METRIC_CATALOGUE.tmp_table;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -505,7 +504,7 @@ describe('Query analytics metrics::', () => {
   it('tmp_table_on_disk', () => {
     // TODO: check correct values, not sure about units
 
-    const metric = METRIC_CATALOGUE['tmp_table_on_disk'];
+    const metric = METRIC_CATALOGUE.tmp_table_on_disk;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -516,7 +515,7 @@ describe('Query analytics metrics::', () => {
   it('tmp_table_sizes', () => {
     // TODO: check correct values, not sure about units
 
-    const metric = METRIC_CATALOGUE['tmp_table_sizes'];
+    const metric = METRIC_CATALOGUE.tmp_table_sizes;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -527,7 +526,7 @@ describe('Query analytics metrics::', () => {
   it('tmp_tables', () => {
     // TODO: check correct values, not sure about units
 
-    const metric = METRIC_CATALOGUE['tmp_tables'];
+    const metric = METRIC_CATALOGUE.tmp_tables;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -537,7 +536,7 @@ describe('Query analytics metrics::', () => {
 
   it('cpu_user_time', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['cpu_user_time'];
+    const metric = METRIC_CATALOGUE.cpu_user_time;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
@@ -545,7 +544,7 @@ describe('Query analytics metrics::', () => {
 
   it('cpu_sys_time', () => {
     // Metric with empty relation
-    const metric = METRIC_CATALOGUE['cpu_sys_time'];
+    const metric = METRIC_CATALOGUE.cpu_sys_time;
     const processedMetric = metric.metricRelation();
 
     expect(processedMetric).toBe('');
