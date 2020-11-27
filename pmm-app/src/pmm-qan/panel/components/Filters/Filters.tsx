@@ -75,7 +75,7 @@ export const Filters: FC = () => {
   const FilterInput = useMemo(
     () => ({ filter }) => (
       <Input
-        suffix={<Filter fill="#c6c6c6" />}
+        suffix={<Filter className={styles.icon} />}
         placeholder="Filter by..."
         onChange={(e) => {
           setFilter(e.target.value);
