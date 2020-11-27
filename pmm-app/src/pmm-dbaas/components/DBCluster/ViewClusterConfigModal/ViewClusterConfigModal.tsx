@@ -1,15 +1,12 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Button, HorizontalGroup, useStyles } from '@grafana/ui';
+import React, { FC, useEffect, useState } from 'react';
+import { Button, HorizontalGroup } from '@grafana/ui';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
-import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { DeleteDBClusterModalProps } from './ViewClusterConfigModal.types';
-import { getStyles } from './ViewClusterConfigModal.styles';
 import { KubernetesService } from '../../Kubernetes/Kubernetes.service';
 import { Overlay } from '../../../../shared/components/Elements/Overlay/Overlay';
-import { Scrollbar } from '../../../../shared/components/Elements/Scrollbar/Scrollbar';
 import { ReactJSON } from '../../../../shared/components/Elements/ReactJSON/ReactJSON';
 import { showSuccessNotification } from '../../../../shared/components/helpers';
-import copy from 'clipboard-copy';
+import { css } from 'emotion';
 
 export const ViewClusterConfigModal: FC<DeleteDBClusterModalProps> = ({
   isVisible,
@@ -46,7 +43,13 @@ export const ViewClusterConfigModal: FC<DeleteDBClusterModalProps> = ({
 
   return (
     <Modal title={'View cluster config'} isVisible={isVisible} onClose={() => setVisible(false)}>
-      <Overlay isPending={loading} style={{ maxHeight: '50vh', marginBottom: '30px' }}>
+      <Overlay
+        isPending={loading}
+        className={css`
+          height: 50vh;
+          overflow: scroll;
+        `}
+      >
         {/*<Scrollbar style={{ maxHeight: '50vh', marginBottom: '30px' }}>*/}
         {/*  <ReactJSON json={kubeconfig} />*/}
         {/*</Scrollbar>*/}
