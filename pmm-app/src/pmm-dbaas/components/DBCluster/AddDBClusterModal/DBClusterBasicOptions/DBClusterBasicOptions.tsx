@@ -8,11 +8,9 @@ import { DBClusterBasicOptionsProps } from './DBClusterBasicOptions.types';
 import { DATABASE_OPTIONS } from '../../DBCluster.constants';
 import { AddDBClusterFields } from '../AddDBClusterModal.types';
 import { DBClusterTopology } from '../DBClusterAdvancedOptions/DBClusterAdvancedOptions.types';
+import { kubernetesClusterName } from './DBClusterBasicOptions.utils';
 
-export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({
-  kubernetesOptions,
-  form,
-}) => {
+export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernetesOptions, form }) => {
   const { required } = validators;
   const { change } = form;
   const onChangeDatabase = useCallback((databaseType) => {
@@ -28,7 +26,7 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({
       <TextInputField
         name={AddDBClusterFields.name}
         label={Messages.dbcluster.addModal.fields.clusterName}
-        validators={[required]}
+        validators={[required, kubernetesClusterName]}
       />
       <Field
         dataQa="dbcluster-kubernetes-cluster-field"
