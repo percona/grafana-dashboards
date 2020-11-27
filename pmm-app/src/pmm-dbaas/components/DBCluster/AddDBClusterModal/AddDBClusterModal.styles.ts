@@ -1,7 +1,9 @@
 import { css } from 'emotion';
 import { GrafanaTheme } from '@grafana/data';
 
-export const getStyles = ({ spacing, typography, colors }: GrafanaTheme) => ({
+export const getStyles = ({
+  spacing, typography, colors, palette,
+}: GrafanaTheme) => ({
   stepProgressWrapper: css`
     overflow: hidden;
 
@@ -10,10 +12,10 @@ export const getStyles = ({ spacing, typography, colors }: GrafanaTheme) => ({
     }
   `,
   warningIcon: css`
-    fill: red;
+    fill: ${palette.brandDanger};
     height: 30px;
     width: 30px;
-    margin-right: 10px;
+    margin-right: ${spacing.sm};
   `,
   settingsLink: css`
     color: ${colors.linkExternal};
