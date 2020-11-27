@@ -68,6 +68,10 @@ export const Messages = {
         large: 'Large',
         custom: 'Custom',
       },
+      validationMessages: {
+        clusterName:
+          'Cluster name should start with a letter, be alphanumeric, and may contain a dash',
+      },
     },
     deleteModal: {
       cancel: 'Cancel',
