@@ -902,7 +902,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${humanize.transform(mainMetric / divider)} per query`;
+      return `${humanize.transform(mainMetric / divider, 'number')} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -926,7 +926,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${humanize.transform(mainMetric / divider)} per query`;
+      return `${humanize.transform(mainMetric / divider, 'number')} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -950,7 +950,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${humanize.transform(mainMetric / divider)} per query`;
+      return `${humanize.transform(mainMetric / divider, 'number')} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -974,7 +974,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${humanize.transform(mainMetric / divider)} per query`;
+      return `${humanize.transform(mainMetric / divider, 'size')} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -998,7 +998,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${humanize.transform(mainMetric / divider)} per query`;
+      return `${humanize.transform(mainMetric / divider, 'number')} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
