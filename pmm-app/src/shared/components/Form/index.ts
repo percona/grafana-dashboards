@@ -1,13 +1,11 @@
-export { default as Button } from './Button/Button';
+// many places
 export { CheckboxField } from './Checkbox/Checkbox';
+// shared/Form inventory/Tabs
 export { FormElement } from './FormElement/FormElement';
-export { InputField } from './Input/Input';
-export { PasswordField } from './Password/Password';
-export { SelectField } from './Select/Select';
-export { SliderField } from './Slider/Slider';
-export { TextAreaField } from './TextArea/TextArea';
-export { ToggleField } from './Toggle/Toggle';
+// settings, need to be replaced with platform core component
 export { NumericInputField } from './NumericInput/NumericInputField';
 export { NumericInput } from './NumericInput/NumericInput';
+// Numeric input
 export { InputLabel } from './InputLabel/InputLabel';
+// many places
 export { ButtonWithSpinner } from './ButtonWithSpinner/ButtonWithSpinner';
