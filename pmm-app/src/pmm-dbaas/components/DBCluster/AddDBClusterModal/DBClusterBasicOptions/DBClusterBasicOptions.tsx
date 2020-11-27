@@ -8,6 +8,7 @@ import { DBClusterBasicOptionsProps } from './DBClusterBasicOptions.types';
 import { DATABASE_OPTIONS } from '../../DBCluster.constants';
 import { AddDBClusterFields } from '../AddDBClusterModal.types';
 import { DBClusterTopology } from '../DBClusterAdvancedOptions/DBClusterAdvancedOptions.types';
+import { kubernetesClusterName } from './DBClusterBasicOptions.utils';
 
 export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernetesOptions, form }) => {
   const { required } = validators;
@@ -18,14 +19,6 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
     }
 
     change(AddDBClusterFields.databaseType, databaseType);
-  }, []);
-
-  const kubernetesClusterName = useCallback((value: string) => {
-    const clusterNameRegexp = /^[a-z]([-a-z0-9]*[a-z0-9])?$/;
-
-    return clusterNameRegexp.test(value)
-      ? undefined
-      : Messages.dbcluster.addModal.validationMessages.clusterName;
   }, []);
 
   return (
