@@ -26,7 +26,7 @@ export const Filters: FC = () => {
     panelState: { loadingDetails, rawTime },
   } = useContext(QueryAnalyticsProvider);
 
-  const { filters, loading } = useFilters();
+  const [filters, loading] = useFilters();
   const initialValues = useInitialFilterValues();
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
   const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);

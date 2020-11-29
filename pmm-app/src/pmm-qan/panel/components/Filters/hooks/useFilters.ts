@@ -2,10 +2,11 @@ import { useContext, useEffect, useState } from 'react';
 import { QueryAnalyticsProvider } from '../../../provider/provider';
 import FiltersService from '../Filters.service';
 
-export const useFilters = () => {
+export const useFilters = (): [any, boolean, boolean] => {
   const [filters, setFilters] = useState({});
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const {
     panelState: {
       labels = {}, from, to, columns,
@@ -28,5 +29,5 @@ export const useFilters = () => {
     })();
   }, [labels, from, to, columns]);
 
-  return { filters, loading, error };
+  return [filters, loading, error];
 };
