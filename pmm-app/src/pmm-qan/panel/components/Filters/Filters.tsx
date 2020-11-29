@@ -1,5 +1,5 @@
 import React, {
-  FC, useContext, useEffect, useMemo, useRef, useState,
+  FC, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
@@ -24,8 +24,7 @@ export const Filters: FC = () => {
   const {
     contextActions,
     panelState: { loadingDetails, rawTime },
-  } = useContext(QueryAnalyticsProvider);
-
+  } = React.useContext(QueryAnalyticsProvider);
   const [filters, loading] = useFilters();
   const initialValues = useInitialFilterValues();
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
