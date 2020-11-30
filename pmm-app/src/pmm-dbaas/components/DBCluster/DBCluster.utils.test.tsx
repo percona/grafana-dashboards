@@ -8,6 +8,7 @@ const DBCLUSTER_STATUS_MAP = {
   [DBClusterStatus.ready]: 'XTRA_DB_CLUSTER_STATE_READY',
   [DBClusterStatus.failed]: 'XTRA_DB_CLUSTER_STATE_FAILED',
   [DBClusterStatus.deleting]: 'XTRA_DB_CLUSTER_STATE_DELETING',
+  [DBClusterStatus.suspended]: 'XTRA_DB_CLUSTER_STATE_SUSPENDED',
 };
 
 describe('DBCluster.utils::', () => {

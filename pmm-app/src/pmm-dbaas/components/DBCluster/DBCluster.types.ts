@@ -26,6 +26,7 @@ export enum DBClusterStatus {
   ready = 'DB_CLUSTER_STATE_READY',
   failed = 'DB_CLUSTER_STATE_FAILED',
   deleting = 'DB_CLUSTER_STATE_DELETING',
+  suspended = 'DB_CLUSTER_STATE_SUSPENDED',
 }
 
 export type DBClusterStatusMap = {
@@ -47,12 +48,7 @@ export interface DBClusterPayload {
   params: DBClusterParamsAPI;
 }
 
-export interface DeleteDBClusterAPI {
-  kubernetes_cluster_name: string;
-  name: string;
-}
-
-export interface RestartDBClusterAPI {
+export interface DBClusterActionAPI {
   kubernetes_cluster_name: string;
   name: string;
 }

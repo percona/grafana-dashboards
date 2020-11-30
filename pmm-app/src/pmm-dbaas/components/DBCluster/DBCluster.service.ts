@@ -15,6 +15,10 @@ export abstract class DBClusterService {
 
   abstract restartDBCluster(dbCluster: DBCluster): Promise<void>;
 
+  abstract suspend(dbCluster: DBCluster): Promise<void>;
+
+  abstract resume(dbCluster: DBCluster): Promise<void>;
+
   abstract toModel(
     dbCluster: DBClusterPayload,
     kubernetesClusterName: string,

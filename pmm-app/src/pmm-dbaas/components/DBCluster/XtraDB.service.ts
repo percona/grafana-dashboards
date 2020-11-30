@@ -4,11 +4,10 @@ import { apiRequestManagement } from 'shared/components/helpers/api';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
 import {
   DBCluster,
-  DBClusterPayload,
-  DeleteDBClusterAPI,
+  DBClusterActionAPI,
   DBClusterConnectionAPI,
+  DBClusterPayload,
   DBClusterStatus,
-  RestartDBClusterAPI,
 } from './DBCluster.types';
 import { DBClusterService } from './DBCluster.service';
 import { getClusterStatus } from './DBCluster.utils';
@@ -19,6 +18,7 @@ const DBCLUSTER_STATUS_MAP = {
   [DBClusterStatus.ready]: 'XTRA_DB_CLUSTER_STATE_READY',
   [DBClusterStatus.failed]: 'XTRA_DB_CLUSTER_STATE_FAILED',
   [DBClusterStatus.deleting]: 'XTRA_DB_CLUSTER_STATE_DELETING',
+  [DBClusterStatus.suspended]: 'XTRA_DB_CLUSTER_STATE_SUSPENDED',
 };
 
 export class XtraDBService extends DBClusterService {
@@ -41,12 +41,12 @@ export class XtraDBService extends DBClusterService {
   }
 
   deleteDBClusters(dbCluster: DBCluster): Promise<void> {
-    const toAPI = (cluster: DBCluster): DeleteDBClusterAPI => ({
+    const toAPI = (cluster: DBCluster): DBClusterActionAPI => ({
       name: cluster.clusterName,
       kubernetes_cluster_name: dbCluster.kubernetesClusterName,
     });
 
-    return apiRequestManagement.post<any, DeleteDBClusterAPI>(
+    return apiRequestManagement.post<any, DBClusterActionAPI>(
       '/DBaaS/XtraDBCluster/Delete',
       toAPI(dbCluster),
     );
@@ -60,8 +60,22 @@ export class XtraDBService extends DBClusterService {
   }
 
   restartDBCluster(dbCluster: DBCluster): Promise<void> {
-    return apiRequestManagement.post<any, RestartDBClusterAPI>(
+    return apiRequestManagement.post<any, DBClusterActionAPI>(
       '/DBaaS/XtraDBCluster/Restart',
+      omit(toAPI(dbCluster), ['params']),
+    );
+  }
+
+  suspend(dbCluster: DBCluster): Promise<void> {
+    return apiRequestManagement.post<any, DBClusterActionAPI>(
+      '/DBaaS/XtraDBCluster/Suspend',
+      omit(toAPI(dbCluster), ['params']),
+    );
+  }
+
+  resume(dbCluster: DBCluster): Promise<void> {
+    return apiRequestManagement.post<any, DBClusterActionAPI>(
+      '/DBaaS/XtraDBCluster/Resume',
       omit(toAPI(dbCluster), ['params']),
     );
   }
