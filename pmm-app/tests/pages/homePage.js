@@ -54,10 +54,34 @@ module.exports = {
       },
     },
   },
+  upgradeMilestones: [
+    'TASK [Gathering Facts]',
+    'TASK [detect /srv/pmm-distribution]',
+    'TASK [detect containers]',
+    'TASK [Configure systemd]',
+    'TASK [Remove old supervisord service confiuration]',
+    'TASK [Reread supervisord configuration]',
+    'TASK [Remove old packages]',
+    'TASK [Download pmm2 packages]',
+    'TASK [Update pmm2 packages]',
+    'TASK [Update system packages]',
+    'TASK [Check pg_stat_statements extension]',
+    'TASK [Add ClickHouse datasource to the list of unsigned plugins in Grafana]',
+    'TASK [Create working directory for VictoriaMetrics]',
+    'TASK [Restart pmm-managed]',
+    'TASK [Wait for pmm-managed]',
+    'TASK [Reread supervisord configuration again]',
+    'TASK [Restart services]',
+    'TASK [Start Grafana dashboards update]',
+    'TASK [Update/restart other services]',
+    'TASK [Check supervisord log]',
+    'Waiting for Grafana dashboards update to finish...'
+  ],
 
   // introducing methods
   async upgradePMM(version) {
     let locators = this.getLocators(version);
+    const milestones = this.upgradeMilestones;
 
     I.waitForElement(locators.triggerUpdate, 180);
     I.seeElement(locators.triggerUpdate);
@@ -66,6 +90,11 @@ module.exports = {
     I.click(locators.triggerUpdate);
     I.waitForElement(locators.updateProgressModal, 30);
     I.waitForText(locators.inProgressMessage, 30, locators.updateProgressModal);
+
+    for (const milestone of milestones) {
+      I.waitForElement(`//pre[contains(text(), '${milestone}')]`, 1200);
+    }
+
     I.waitForText(locators.successUpgradeMessage, 1200, locators.successUpgradeMsgSelector);
     I.click(locators.reloadButtonAfterUpgrade);
     locators = this.getLocators('latest');
@@ -73,7 +102,7 @@ module.exports = {
     assert.equal(
       await I.grabTextFrom(locators.currentVersion),
       available_version.split(' ')[0],
-      'Update operation failed',
+      'Upgrade operation failed',
     );
   },
 
