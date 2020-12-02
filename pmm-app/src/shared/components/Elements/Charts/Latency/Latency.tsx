@@ -1,8 +1,7 @@
 import React, {
-  useEffect, useRef, useState
+  useEffect, useRef, useState,
 } from 'react';
 import * as d3 from 'd3';
-import { scaleLog } from 'd3';
 import Tooltip from 'antd/es/tooltip';
 import { humanize } from '../../../helpers/Humanization';
 import { getStyles } from './Latency.styles';
@@ -33,14 +32,14 @@ export const Latency = (props) => {
       .attr('height', '20')
       .attr('width', width);
 
-    const x = scaleLog()
+    const x = d3.scaleLog()
       .domain([0.00001, 10000])
       .range([2, width - 2])
       .clamp(true)
       .nice();
 
     const {
-      min = 0, max = 0, avg = 0, p99 = 0
+      min = 0, max = 0, avg = 0, p99 = 0,
     } = data;
     const minStr = `⌜ Min: ${humanize.transform(min, measurement)}`;
     const maxStr = `⌟ Max: ${humanize.transform(max, measurement)}`;

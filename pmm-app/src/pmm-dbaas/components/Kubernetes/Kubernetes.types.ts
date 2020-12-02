@@ -27,3 +27,10 @@ export interface NewKubernetesCluster {
   name: string;
   kubeConfig: string;
 }
+
+export interface KubernetesProps {
+  kubernetes: Kubernetes[];
+  deleteKubernetes: DeleteKubernetesAction;
+  addKubernetes: AddKubernetesAction;
+  loading: boolean;
+}

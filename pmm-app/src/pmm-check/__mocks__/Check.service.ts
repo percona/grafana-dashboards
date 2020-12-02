@@ -1,8 +1,8 @@
 import {
-  SEVERITIES_ORDER
+  SEVERITIES_ORDER,
 } from 'pmm-check/CheckPanel.constants';
 import {
-  ActiveCheck, Alert, FailedChecks, Settings, SilenceResponse
+  ActiveCheck, Alert, FailedChecks, Settings, SilenceResponse,
 } from 'pmm-check/types';
 
 import { alertsStub } from './stubs';
@@ -112,5 +112,5 @@ export const sumFailedChecks = (checks: ActiveCheck[]): FailedChecks => checks
 
       return acc;
     },
-    [0, 0, 0]
+    [0, 0, 0],
   );

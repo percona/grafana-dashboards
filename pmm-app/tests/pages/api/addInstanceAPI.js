@@ -9,7 +9,7 @@ module.exports = {
     postgresql: 'pgsql_clstr',
     proxysql: 'proxy_clstr',
     mongodb: 'mongo_clstr',
-    rds: 'rdsmsql_clstr'
+    rds: 'rdsmsql_clstr',
   },
 
   instanceTypes: {
@@ -17,7 +17,7 @@ module.exports = {
     postgresql: 'PostgreSQL',
     mongodb: 'MongoDB',
     proxysql: 'ProxySQL',
-    rds: 'RDS'
+    rds: 'RDS',
   },
 
   async apiAddInstance(type, serviceName) {
@@ -41,7 +41,7 @@ module.exports = {
     const body = {
       add_node: {
         node_name: serviceName,
-        node_type: 'REMOTE_NODE'
+        node_type: 'REMOTE_NODE',
       },
       port: 3307,
       qan_mysql_perfschema: true,
@@ -51,7 +51,7 @@ module.exports = {
       password: process.env.REMOTE_MYSQL_PASSWORD,
       cluster: this.clusterNames.mysql,
       engine: 'DISCOVER_RDS_MYSQL',
-      pmm_agent_id: 'pmm-server'
+      pmm_agent_id: 'pmm-server',
     };
 
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
@@ -64,7 +64,7 @@ module.exports = {
     const body = {
       add_node: {
         node_name: serviceName,
-        node_type: 'REMOTE_NODE'
+        node_type: 'REMOTE_NODE',
       },
       port: 5432,
       address: process.env.REMOTE_POSTGRESQL_HOST,
@@ -75,7 +75,7 @@ module.exports = {
       pmm_agent_id: 'pmm-server',
       qan_postgresql_pgstatements_agent: true,
       tls_skip_verify: true,
-      tls: true
+      tls: true,
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const resp = await I.sendPostRequest('v1/management/PostgreSQL/Add', body, headers);
@@ -87,7 +87,7 @@ module.exports = {
     const body = {
       add_node: {
         node_name: serviceName,
-        node_type: 'REMOTE_NODE'
+        node_type: 'REMOTE_NODE',
       },
       port: 6032,
       address: process.env.REMOTE_PROXYSQL_HOST,
@@ -108,7 +108,7 @@ module.exports = {
     const body = {
       add_node: {
         node_name: serviceName,
-        node_type: 'REMOTE_NODE'
+        node_type: 'REMOTE_NODE',
       },
       port: 27017,
       address: process.env.REMOTE_MONGODB_HOST,
@@ -119,7 +119,7 @@ module.exports = {
       pmm_agent_id: 'pmm-server',
       qan_mongodb_profiler: true,
       tls: true,
-      tls_skip_verify: true
+      tls_skip_verify: true,
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const resp = await I.sendPostRequest('v1/management/MongoDB/Add', body, headers);
@@ -131,7 +131,7 @@ module.exports = {
     const body = {
       add_node: {
         node_name: serviceName,
-        node_type: 'REMOTE_NODE'
+        node_type: 'REMOTE_NODE',
       },
       address: process.env.REMOTE_AWS_MYSQL57_HOST,
       aws_access_key: process.env.AWS_ACCESS_KEY_ID,
@@ -152,7 +152,7 @@ module.exports = {
       replication_set: 'rds_mysql_repl',
       tls_skip_verify: true,
       disable_basic_metrics: true,
-      disable_enhanced_metrics: true
+      disable_enhanced_metrics: true,
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const resp = await I.sendPostRequest('v1/management/RDS/Add', body, headers);

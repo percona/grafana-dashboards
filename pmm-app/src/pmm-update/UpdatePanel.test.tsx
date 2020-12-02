@@ -41,7 +41,7 @@ describe('UpdatePanel::', () => {
     mockedUsePerformUpdate.mockImplementation(() => ['', '', false, false, fakeLaunchUpdate]);
     mockedUseVersionDetails.mockImplementation(() => [
       {
-        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: false
+        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: false,
       },
       '',
       false,
@@ -86,7 +86,7 @@ describe('UpdatePanel::', () => {
   it('should launch the upgrade if the upgrade button is clicked', () => {
     mockedUseVersionDetails.mockImplementation(() => [
       {
-        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: true
+        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: true,
       },
       '',
       false,
@@ -106,7 +106,7 @@ describe('UpdatePanel::', () => {
   it('should show InfoBox with the upToDate prop if !isUpdateAvailable && !isDefaultView', () => {
     mockedUseVersionDetails.mockImplementation(() => [
       {
-        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: false
+        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: false,
       },
       '',
       false,
@@ -125,7 +125,7 @@ describe('UpdatePanel::', () => {
   it('should not show InfoBox if isUpdateAvailable is true and !isDefaultView', () => {
     mockedUseVersionDetails.mockImplementation(() => [
       {
-        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: true
+        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: true,
       },
       '',
       false,
@@ -143,7 +143,7 @@ describe('UpdatePanel::', () => {
   it('should show a spinner if loading', () => {
     mockedUseVersionDetails.mockImplementation(() => [
       {
-        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: true
+        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: true,
       },
       '',
       true,
@@ -163,7 +163,7 @@ describe('UpdatePanel::', () => {
   it('should pass error messages to the modal correctly', () => {
     mockedUseVersionDetails.mockImplementation(() => [
       {
-        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: true
+        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: true,
       },
       'test',
       true,

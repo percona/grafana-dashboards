@@ -1,14 +1,13 @@
 import React, { FC } from 'react';
 import {
-  Icon, IconName, Tooltip, useTheme
+  Icon, IconName, Tooltip, useTheme,
 } from '@grafana/ui';
 import { getStyles } from './LinkTooltip.styles';
 
-
 export interface LinkTooltipProps {
   tooltipText: string;
-  link: string;
-  linkText: string;
+  link?: string;
+  linkText?: string;
   icon: IconName;
   dataQa?: string;
   target?: string;
@@ -20,7 +19,7 @@ export const LinkTooltip: FC<LinkTooltipProps> = ({
   linkText,
   icon,
   dataQa,
-  target = '_blank'
+  target = '_blank',
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -30,7 +29,11 @@ export const LinkTooltip: FC<LinkTooltipProps> = ({
       content={(
         <div className={styles.contentWrapper}>
           <span>{tooltipText}</span>
-          <a className={styles.link} href={link} target={target}>{linkText}</a>
+          {link && linkText && (
+            <a className={styles.link} href={link} target={target}>
+              {linkText}
+            </a>
+          )}
         </div>
       )}
       data-qa={dataQa}

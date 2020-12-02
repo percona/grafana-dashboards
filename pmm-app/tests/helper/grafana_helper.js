@@ -42,8 +42,8 @@ class Grafana extends Helper {
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify([
-          responseBody
-        ])
+          responseBody,
+        ]),
       });
     });
   }

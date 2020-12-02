@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { SelectableValue } from '@grafana/data';
 import { useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
@@ -9,6 +9,8 @@ export interface RadioButtonGroupProps {
   selected: string;
   name: string;
   options: SelectableValue[];
+  disabledOptions?: string[];
+  value?: string;
   className?: string;
   dataQa?: string;
   onChange: (value: string) => void;
@@ -18,12 +20,17 @@ export const RadioButtonGroup: FC<RadioButtonGroupProps> = ({
   selected,
   name,
   options,
+  disabledOptions = [],
+  value,
   className,
   dataQa,
-  onChange
+  onChange,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
+  const isActive = useCallback((key: string) => (
+    selected ? key === selected : key === value
+  ), [selected, value]);
 
   return (
     <div className={cx(styles.radioButtonGroup, className)} data-qa={dataQa}>
@@ -32,7 +39,8 @@ export const RadioButtonGroup: FC<RadioButtonGroupProps> = ({
           key={key}
           id={key}
           name={name}
-          active={key === selected}
+          active={isActive(key)}
+          disabled={disabledOptions.includes(key)}
           onChange={(key) => onChange(key)}
         >
           {value}

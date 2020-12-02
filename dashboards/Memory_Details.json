@@ -111,6 +111,12 @@
         {
             "breadcrumbItemsMaxAmount": 6,
             "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
             "gridPos": {
                 "h": 2,
                 "w": 24,
@@ -121,7 +127,6 @@
             "id": 999,
             "isRootDashboard": false,
             "links": [],
-            "options": {},
             "targets": [
                 {
                     "expr": "",
@@ -137,8 +142,14 @@
             "type": "digiapulssi-breadcrumb-panel"
         },
         {
-            "content": "<h1><i><font color=#5991A7><b><center>Data for </font><font color=#e68a00>$node_name</font> <font color=#5991A7> with</font> </font><font color=#e68a00>$interval</font> <font color=#5991A7>resolution</center></b></font></i></h1>",
+            "content": "<h1 style='color:#5991A7;font-weight:bold;text-align:center;font-style:italic'>Data for <span style='color:#e68a00'>$node_name</span> with <span style='color:#e68a00'>$interval</span> resolution</h1>",
             "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
             "gridPos": {
                 "h": 2,
                 "w": 24,
@@ -192,9 +203,16 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "Prometheus",
+            "datasource": null,
             "decimals": 2,
             "description": "Basic memory usage",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "links": []
+                },
+                "overrides": []
+            },
             "fill": 6,
             "fillGradient": 0,
             "gridPos": {
@@ -224,11 +242,9 @@
             "links": [],
             "maxPerRow": 6,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "paceLength": 10,
             "percentage": false,
+            "pluginVersion": "7.1.3",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -261,7 +277,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "avg by (node_name) (max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or\nmax_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m]))",
+                    "expr": "avg by (node_name) (avg_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -271,7 +287,7 @@
                     "step": 240
                 },
                 {
-                    "expr": "avg by (node_name) (max(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) - (max(node_memory_MemFree_bytes{node_name=~\"$node_name\"}) + max(node_memory_Buffers_bytes{node_name=~\"$node_name\"}) + (max(node_memory_Cached_bytes{node_name=~\"$node_name\"}))))",
+                    "expr": "clamp_min(avg by (node_name) (((avg_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m])) - ((avg_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m]))+ \n(avg_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m])) + \n(avg_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[5m]))))),0)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -281,7 +297,7 @@
                     "step": 240
                 },
                 {
-                    "expr": "avg by (node_name) (max(node_memory_Cached_bytes{node_name=~\"$node_name\"}) without (job))",
+                    "expr": "avg by (node_name) (avg(avg_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\",job=~\"rds.*|node.*\"}[$interval]) or avg_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\",job=~\"rds.*|node.*\"}[5m])) without (job))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -291,7 +307,7 @@
                     "step": 240
                 },
                 {
-                    "expr": "avg by (node_name) (max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m]))",
+                    "expr": "avg by (node_name) (avg_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -301,7 +317,7 @@
                     "step": 240
                 },
                 {
-                    "expr": "(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m])) - \n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m]))",
+                    "expr": "(avg_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m])) - \n(avg_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or av_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "hide": true,
                     "interval": "$interval",
@@ -311,7 +327,7 @@
                     "step": 240
                 },
                 {
-                    "expr": "avg by (node_name) (max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m]))",
+                    "expr": "avg by (node_name) (avg_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -366,8 +382,15 @@
             "bars": true,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "Prometheus",
+            "datasource": null,
             "decimals": 2,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {},
+                    "links": []
+                },
+                "overrides": []
+            },
             "fill": 1,
             "fillGradient": 0,
             "gridPos": {
@@ -394,11 +417,9 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "paceLength": 10,
             "percentage": false,
+            "pluginVersion": "7.1.3",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -493,7 +514,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "description": "**Inactive** - Memory which has been less recently used.  It is more eligible to be reclaimed for other purposes\n\n**Active** - Memory that has been used more recently and usually not reclaimed unless absolutely necessary",
                     "fill": 2,
@@ -621,7 +642,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "description": "**Inactive** Anonymous and swap cache on inactive LRU list, including tmpfs (shmem)\n\n**Active**  Anonymous and swap cache on active least-recently-used (LRU) list, including tmpfs",
                     "fill": 2,
@@ -751,7 +772,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "description": "**Inactive**  File-backed memory on inactive LRU list\n\n**Active** File-backed memory on active LRU list",
                     "fill": 2,
@@ -886,7 +907,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "description": "",
                     "fill": 2,
@@ -1035,7 +1056,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "description": "",
                     "fill": 2,
@@ -1205,16 +1226,23 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "description": "**PageTables**  Memory used to map between virtual and physical memory addresses\n\n**AnonPages** Non-file backed pages mapped into userspace page tables\n\n**SwapCache**  Memory that keeps track of pages that have been fetched from swap but not yet been modified\n\n**Slab**  Memory used by the kernel to cache data structures for its own use (caches like inode, dentry, etc)\n\n**Swap**  Swap space used\n\n**Hardware Corrupted** Amount of RAM that the kernel identified as corrupted / not working\n\n**Mapped** Files which have been mmaped, such as libraries\n\n**Dirty** Memory which is waiting to get written back to the disk\n\n**Writeback** Memory which is actively being written back to the disk\n\n**WritebackTmp** Memory used by FUSE for temporary writeback buffers\n\n**Shmem** Total memory used by shared memory (shmem) and tmpfs",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 0,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 39
+                        "y": 15
                     },
                     "hiddenSeries": false,
                     "id": 24,
@@ -1237,10 +1265,8 @@
                     "links": [],
                     "maxPerRow": 6,
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -1418,16 +1444,23 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "description": "**Total** total size of vmalloc memory area\n\n**Used** amount of vmalloc area which is used\n\n**Chunk** largest contiguous block of vmalloc area which is free",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 6,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 47
+                        "y": 23
                     },
                     "hiddenSeries": false,
                     "id": 70,
@@ -1450,10 +1483,8 @@
                     "links": [],
                     "maxPerRow": 6,
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -1569,16 +1600,23 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "description": "**Total** Memory used by shared memory (shmem) and tmpfs\n\n**HugePages** Memory used by shared memory (shmem) and tmpfs allocated with huge pages\n\n**PmdMapped**  Shared memory mapped into userspace with huge pages",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 47
+                        "y": 23
                     },
                     "hiddenSeries": false,
                     "id": 138,
@@ -1601,10 +1639,8 @@
                     "links": [],
                     "maxPerRow": 6,
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -1711,16 +1747,23 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "description": "",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 0,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 55
+                        "y": 31
                     },
                     "hiddenSeries": false,
                     "id": 160,
@@ -1743,10 +1786,8 @@
                     "links": [],
                     "maxPerRow": 2,
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -1835,16 +1876,23 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "description": "**Committed_AS**  Amount of memory presently allocated on the system\n\n**CommitLimit**  Amount of  memory currently available to be allocated on the system",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 55
+                        "y": 31
                     },
                     "hiddenSeries": false,
                     "id": 135,
@@ -1867,10 +1915,8 @@
                     "links": [],
                     "maxPerRow": 6,
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -1973,16 +2019,23 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "description": "**AnonPages** Non-file backed pages mapped into userspace page tables\n\n**AnonHugePages** Non-file backed huge pages mapped into userspace page tables",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 63
+                        "y": 39
                     },
                     "hiddenSeries": false,
                     "id": 129,
@@ -2005,10 +2058,8 @@
                     "links": [],
                     "maxPerRow": 6,
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -2106,16 +2157,23 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "description": "**Slab** in-kernel data structures cache\n**SReclaimable** Part of Slab, that might be reclaimed, such as caches\n **SUnreclaim** Part of Slab, that cannot be reclaimed on memory pressure",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 6,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 63
+                        "y": 39
                     },
                     "hiddenSeries": false,
                     "id": 242,
@@ -2138,10 +2196,8 @@
                     "links": [],
                     "maxPerRow": 6,
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -2249,15 +2305,22 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 71
+                        "y": 47
                     },
                     "hiddenSeries": false,
                     "id": 128,
@@ -2282,10 +2345,8 @@
                     "links": [],
                     "maxPerRow": 6,
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -2387,16 +2448,23 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "description": "**Bounce** Memory used for block device \"bounce buffers\"",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 0,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 71
+                        "y": 47
                     },
                     "hiddenSeries": false,
                     "id": 159,
@@ -2419,10 +2487,8 @@
                     "links": [],
                     "maxPerRow": 6,
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -2513,16 +2579,23 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "description": "**NFS_Unstable** NFS pages sent to the server, but not yet committed to stable storage",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 79
+                        "y": 55
                     },
                     "hiddenSeries": false,
                     "id": 132,
@@ -2545,10 +2618,8 @@
                     "links": [],
                     "maxPerRow": 6,
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -2632,16 +2703,23 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "description": "**Unevictable** Amount of unevictable memory that can't be swapped out for a variety of reasons\n\n**MLocked** Size of pages locked to memory using the mlock() system call",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 79
+                        "y": 55
                     },
                     "hiddenSeries": false,
                     "id": 137,
@@ -2664,10 +2742,8 @@
                     "links": [],
                     "maxPerRow": 6,
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -2761,16 +2837,23 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "description": "**HugePages** Total size of the pool of huge pages\n\n**Hugepagesize**  Huge Page size",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 87
+                        "y": 63
                     },
                     "hiddenSeries": false,
                     "id": 71,
@@ -2793,10 +2876,8 @@
                     "links": [],
                     "maxPerRow": 2,
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -2896,16 +2977,23 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "description": "**Total** Number of hugepages being allocated by the kernel (Defined with vm.nr_hugepages)\n\n**Free** The number of hugepages not being allocated by a process\n\n**Surp**  The number of hugepages in the pool above the value in vm.nr_hugepages. The maximum number of surplus hugepages is controlled by vm.nr_overcommit_hugepages.\n\n**Rsvd**  The number of  huge pages for which a commitment to allocate from the pool has been made, but no allocation has yet been made",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 6,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 87
+                        "y": 63
                     },
                     "hiddenSeries": false,
                     "id": 140,
@@ -2929,10 +3017,8 @@
                     "links": [],
                     "maxPerRow": 6,
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 1,
                     "points": false,
                     "renderer": "flot",
@@ -3067,7 +3153,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "fill": 2,
                     "fillGradient": 0,
@@ -3315,7 +3401,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "fill": 2,
                     "fillGradient": 0,
@@ -3450,7 +3536,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "fill": 2,
                     "fillGradient": 0,
@@ -3594,7 +3680,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "fill": 2,
                     "fillGradient": 0,
@@ -3614,9 +3700,9 @@
                         "min": true,
                         "rightSide": false,
                         "show": true,
+                        "sideWidth": 350,
                         "sort": "avg",
                         "sortDesc": true,
-                        "sideWidth": 350,
                         "total": false,
                         "values": true
                     },
@@ -3728,7 +3814,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "fill": 2,
                     "fillGradient": 0,
@@ -3899,7 +3985,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "fill": 0,
                     "fillGradient": 0,
@@ -4022,7 +4108,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 0,
                     "fill": 0,
                     "fillGradient": 0,
@@ -4146,7 +4232,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "fill": 2,
                     "fillGradient": 0,
@@ -4298,7 +4384,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "fill": 0,
                     "fillGradient": 0,
@@ -4422,7 +4508,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "fill": 0,
                     "fillGradient": 0,
@@ -4545,7 +4631,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "fill": 2,
                     "fillGradient": 0,
@@ -4704,7 +4790,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "fill": 2,
                     "fillGradient": 0,
@@ -4848,7 +4934,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "fill": 2,
                     "fillGradient": 0,
@@ -4992,7 +5078,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "fill": 2,
                     "fillGradient": 0,
@@ -5136,7 +5222,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "fill": 2,
                     "fillGradient": 0,
@@ -5400,7 +5486,7 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
                     "fill": 2,
                     "fillGradient": 0,
@@ -5527,7 +5613,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 21,
+    "schemaVersion": 26,
     "style": "dark",
     "tags": [
         "Percona",
@@ -5593,7 +5679,7 @@
             {
                 "allValue": null,
                 "current": {},
-                "datasource": "Prometheus",
+                "datasource": "Metrics",
                 "definition": "label_values(up{node_type=~\"generic|remote_rds|container|remote\"}, node_name)",
                 "hide": 0,
                 "includeAll": false,
@@ -5615,7 +5701,7 @@
             {
                 "allValue": null,
                 "current": {},
-                "datasource": "Prometheus",
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\",node_name=~\"$node_name\"}, service_name)",
                 "hide": 2,
                 "includeAll": true,
@@ -5637,7 +5723,7 @@
             {
                 "allValue": null,
                 "current": {},
-                "datasource": "Prometheus",
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
                 "hide": 2,
                 "includeAll": true,
@@ -5659,7 +5745,7 @@
             {
                 "allValue": null,
                 "current": {},
-                "datasource": "Prometheus",
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
                 "hide": 2,
                 "includeAll": true,
@@ -5681,7 +5767,7 @@
             {
                 "allValue": null,
                 "current": {},
-                "datasource": "Prometheus",
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
                 "hide": 2,
                 "includeAll": true,
@@ -5703,7 +5789,7 @@
             {
                 "allValue": null,
                 "current": {},
-                "datasource": "Prometheus",
+                "datasource": "Metrics",
                 "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
                 "hide": 2,
                 "includeAll": true,
@@ -5725,7 +5811,7 @@
             {
                 "allValue": null,
                 "current": {},
-                "datasource": "Prometheus",
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
                 "hide": 2,
                 "includeAll": true,
@@ -5747,7 +5833,7 @@
             {
                 "allValue": null,
                 "current": {},
-                "datasource": "Prometheus",
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
                 "hide": 2,
                 "includeAll": true,
@@ -5769,11 +5855,10 @@
             {
                 "allValue": null,
                 "current": {},
-                "datasource": "Prometheus",
+                "datasource": "Metrics",
                 "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
                 "hide": 2,
                 "includeAll": true,
-                "index": -1,
                 "label": "Username",
                 "multi": true,
                 "name": "username",
@@ -5792,7 +5877,7 @@
             {
                 "allValue": null,
                 "current": {},
-                "datasource": "Prometheus",
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
                 "hide": 2,
                 "includeAll": true,

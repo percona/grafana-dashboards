@@ -1,12 +1,12 @@
 export interface OverviewServiceInterface {
   columns: string[];
-  keyword?: string; // ?????
+  keyword?: string;
   labels: string[];
   limit?: number;
   offset?: number;
   orderBy: string;
-  from?: any; // ISO8601
-  to?: any; // ISO8601
+  from?: any;
+  to?: any;
   pageSize: number;
   pageNumber: number;
   groupBy?: string;

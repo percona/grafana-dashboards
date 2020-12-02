@@ -26,6 +26,12 @@ describe('RadioButton::', () => {
     expect(root.find('label').prop('className')).toContain('active');
   });
 
+  it('Renders with disabled class', () => {
+    const root = shallow(<RadioButton {...testProps} disabled>Test</RadioButton>);
+
+    expect(root.find('label').prop('className')).toContain('disabled');
+  });
+
   it('Calls onChange when clicked', () => {
     const root = shallow(<RadioButton {...testProps}>Test</RadioButton>);
 

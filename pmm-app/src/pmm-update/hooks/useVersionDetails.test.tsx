@@ -92,7 +92,7 @@ describe('useVersionDetails', () => {
   it('should return sane defaults when data is undefined', async () => {
     const [
       {
-        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable
+        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable,
       },
       errorMessage,
       isLoading,
@@ -126,7 +126,7 @@ describe('useVersionDetails', () => {
 
     const [
       {
-        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable
+        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable,
       },
       errorMessage,
       isLoading,
@@ -160,7 +160,7 @@ describe('useVersionDetails', () => {
 
     const [
       {
-        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable
+        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable,
       },
       errorMessage,
       isLoading,

@@ -40,7 +40,7 @@ Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]'
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(
     scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
-    pmmSettingsPage.alertManager.editRule.replace('{{ sec }}', Math.random() * 100000)
+    pmmSettingsPage.alertManager.editRule.replace('{{ sec }}', Math.floor(Math.random() * 10) + 1),
   );
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   pmmSettingsPage.openAlertsManagerUi();
@@ -57,7 +57,7 @@ Scenario(
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.moveCursorTo(pmmSettingsPage.fields.sttLabelTooltipSelector);
     await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.stt);
-  }
+  },
 );
 
 Scenario(
@@ -77,5 +77,5 @@ Scenario(
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'on');
-  }
+  },
 );

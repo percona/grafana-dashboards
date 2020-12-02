@@ -1,9 +1,9 @@
 import React, {
-  useEffect, useState, FC, MouseEvent
+  useEffect, useState, FC, MouseEvent,
 } from 'react';
 import { Button, Spinner } from '@grafana/ui';
 import {
-  AvailableUpdate, CurrentVersion, InfoBox, LastCheck, ProgressModal
+  AvailableUpdate, CurrentVersion, InfoBox, LastCheck, ProgressModal,
 } from 'pmm-update/components';
 import { useVersionDetails, usePerformUpdate } from 'pmm-update/hooks';
 
@@ -15,7 +15,7 @@ export const UpdatePanel: FC<{}> = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [
     {
-      installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable
+      installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable,
     },
     fetchVersionErrorMessage,
     isLoading,

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { Divider } from 'antd';
 import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
 import { humanize } from 'shared/components/helpers/Humanization';
@@ -6,7 +6,7 @@ import { useTheme, Icon } from '@grafana/ui';
 import { getStyles } from './CheckboxGroup.styles';
 import { TOP_LIMIT } from './CheckboxGroup.constants';
 import { CheckboxGroupProps } from './CheckboxGroup.types';
-
+import { Messages } from './CheckboxGroup.messages';
 
 export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   name,
@@ -15,6 +15,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   showAll,
   filter: searchFilterBy,
   getDashboardURL,
+  rawTime,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -42,7 +43,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
     );
   };
 
-  const itemsList = (showTop ? filteredData.slice(0, TOP_LIMIT) : filteredData)
+  const itemsList = filteredData
     .filter((item, index, list) => {
       if (showAll && !item.value && list.length === 1) {
         return false;
@@ -50,10 +51,14 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
 
       return true;
     })
-    .filter(searchFilter)
-    .map((item) => {
+    .filter(searchFilter);
+
+  const FilterCheckbox = useMemo(
+    () => ({ item }) => {
       const valueExists = item.main_metric_percent !== undefined;
-      const dashboardURL = getDashboardURL ? getDashboardURL(item.value) : '';
+      const dashboardURL = getDashboardURL && getDashboardURL(item.value)
+        ? `${getDashboardURL(item.value)}&from=${rawTime.from}&to=${rawTime.to}`
+        : '';
 
       return (
         <div className={styles.label} key={`${group}:${item.value || ''}`}>
@@ -65,13 +70,9 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
               disabled={!valueExists}
             />
           </span>
-          {dashboardURL && (
+          {dashboardURL && item.value && (
             <span className={styles.dashboardLink}>
-              <a
-                href={dashboardURL}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href={dashboardURL} target="_blank" rel="noreferrer">
                 <Icon name="graph-bar" />
               </a>
             </span>
@@ -81,9 +82,18 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
           </span>
         </div>
       );
-    });
+    },
+    [group, rawTime],
+  );
 
-  return itemsList.length ? (
+  const filteredList = showTop ? itemsList.slice(0, TOP_LIMIT) : itemsList;
+
+  const hiddenSelectedFilters = items
+    .slice(TOP_LIMIT, items.length)
+    .filter(({ checked }) => checked)
+    .filter(searchFilter);
+
+  return filteredList.length ? (
     <div>
       <p className={styles.filterHeaderWrapper}>
         <span className={styles.filterHeader}>{name}</span>
@@ -96,7 +106,20 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
         )}
       </p>
       <Divider className={styles.divider} />
-      {itemsList}
+      {filteredList.map((item) => (
+        <FilterCheckbox item={item} />
+      ))}
+
+      {showTop && hiddenSelectedFilters.length && filteredList.length >= TOP_LIMIT ? (
+        <>
+          <p className={styles.notTopWrapper}>
+            <span className={styles.notTopHeader}>{Messages.titles.additionalSelectedSection}</span>
+          </p>
+          {hiddenSelectedFilters.map((item) => (
+            <FilterCheckbox item={item} />
+          ))}
+        </>
+      ) : null}
     </div>
   ) : null;
 };

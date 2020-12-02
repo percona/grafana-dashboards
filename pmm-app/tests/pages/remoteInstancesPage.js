@@ -24,49 +24,61 @@ module.exports = {
     Cluster: 'rds56-cluster',
   },
   fields: {
-    accessKeyInput: '//input[@name="aws_access_key"]',
-    addAWSRDSMySQLbtn: '//a[text()[contains(.,"Add an AWS RDS MySQL or Aurora MySQL Instance")]]',
+    accessKeyInput: '$aws_access_key-text-input',
+    addAWSRDSMySQLbtn: '$rds-instance',
     addInstanceDiv: '//div[@class="view"]',
     addInstancesList: '//nav[@class="navigation"]',
-    addMongoDBRemote: '//a[text()[contains(.,"Add a Remote MongoDB Instance")]]',
-    addMySqlRemote: '//a[text()[contains(.,"Add a Remote MySQL Instance")]]',
-    addPostgreSQLRemote: '//a[text()[contains(.,"Add a Remote PostgreSQL Instance")]]',
-    addProxySQLRemote: '//a[text()[contains(.,"Add a Remote ProxySQL Instance")]]',
+    addMongoDBRemote: '$mongodb-instance',
+    addMySqlRemote: '$mysql-instance',
+    addPostgreSQLRemote: '$postgresql-instance',
+    addProxySQLRemote: '$proxysql-instance',
     addService: '#addInstance',
-    availabilityZone: '//input[@placeholder="*Availability Zone"]',
-    cluster: '//input[contains(@placeholder, "Cluster")]',
+    availabilityZone: '$az-text-input',
+    cluster: '$cluster-text-input',
+    customLabels: '$custom_labels-textarea-input',
     disableBasicMetrics: '//input[@name="disable_basic_metrics"]/following-sibling::span[2]',
     disableEnhancedMetrics: '//input[@name="disable_enhanced_metrics"]/following-sibling::span[2]',
-    discoverBtn: '#addInstance',
+    discoverBtn: '$credentials-search-button',
     discoveryResults: 'tbody[role="rowgroup"]',
-    discoveryRowWithId: '//tr/td[text()="',
-    environment: '//input[contains(@placeholder, "Environment")]',
-    hostName: '//input[contains(@placeholder,"*Hostname")]',
+    environment: '$environment-text-input',
+    hostName: '$address-text-input',
     iframe: '//div[@class="panel-content"]//iframe',
     pageHeaderText: 'PMM Add Instance',
-    password: '//input[contains(@placeholder, "Password")]',
-    portNumber: '//input[contains(@placeholder, "Port")]',
-    remoteInstanceTitle: 'How to Add an Instance',
-    remoteInstanceTitleLocator: '//section[@class="content-wrapper"]/h3',
-    replicationSet: '//input[contains(@placeholder, "Replication set")]',
-    secretKeyInput: '//input[@name="aws_secret_key"]',
-    serviceName: '//input[@placeholder="Service name (default: Hostname)"]',
+    password: '$password-password-input',
+    portNumber: '$port-text-input',
+    remoteInstanceTitle: 'Add instance',
+    remoteInstanceTitleLocator: '//section/h3',
+    replicationSet: '$replication_set-text-input',
+    secretKeyInput: '$aws_secret_key-password-input',
+    serviceName: '$service_name-text-input',
     skipConnectionCheck: '//input[@name="skip_connection_check"]/following-sibling::span[2]',
     skipTLS: '//input[@name="tls_skip_verify"]',
     skipTLSL: '//input[@name="tls_skip_verify"]/following-sibling::span[2]',
     startMonitoring: '/following-sibling::td/a',
+    tableStatsGroupTableLimit: '$tablestats_group_table_limit-number-input',
     usePerformanceSchema2: '//input[@name="qan_mysql_perfschema"]/following-sibling::span[2]',
-    usePerformanceSchema: '//input[@name="qan_mysql_perfschema"]',
-    usePgStatStatements: '//input[@name="qan_postgresql_pgstatements_agent"]',
+    usePgStatMonitor: '//label[@for="qan_postgresql_pgstatmonitor_agent"]',
+    usePgStatStatements: '//label[@for="qan_postgresql_pgstatements_agent"]',
     useQANMongoDBProfiler: '//input[@name="qan_mongodb_profiler"]',
-    useTLS: '//input[@name="tls"]',
-    userName: '//input[contains(@placeholder, "Username")]',
+    useTLS: '$tls-field-label',
+    userName: '$username-text-input',
+  },
+
+  tableStatsLimitRadioButtonLocator(limit) {
+    return `//label[@for='${limit}']`;
+  },
+
+  async getTableLimitFieldValue() {
+    return await I.grabValueFrom(this.fields.tableStatsGroupTableLimit);
+  },
+
+  rdsInstanceIdLocator(instance) {
+    return `//tr/td[text()="${instance}"]/following-sibling::td/button`;
   },
 
   waitUntilRemoteInstancesPageLoaded() {
-    I.waitForText(this.fields.remoteInstanceTitle, 60, this.fields.remoteInstanceTitleLocator);
-    I.seeInTitle(this.fields.pageHeaderText);
-    I.see(this.fields.remoteInstanceTitle, this.fields.remoteInstanceTitleLocator);
+    I.waitForElement(this.fields.addMySqlRemote, 30);
+    I.seeElement(this.fields.addMySqlRemote);
 
     return this;
   },
@@ -178,17 +190,16 @@ module.exports = {
   },
 
   verifyInstanceIsDiscovered(instanceIdToMonitor) {
-    const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}"]`;
+    const instanceIdLocator = this.rdsInstanceIdLocator(instanceIdToMonitor);
 
     I.seeElement(instanceIdLocator);
   },
 
   startMonitoringOfInstance(instanceIdToMonitor) {
-    const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}"]`;
-    const startMonitoringInstanceBtn = `${instanceIdLocator}${this.fields.startMonitoring}`;
+    const instangeIdLocator = this.rdsInstanceIdLocator(instanceIdToMonitor);
 
-    I.waitForVisible(instanceIdLocator, 30);
-    I.click(startMonitoringInstanceBtn);
+    I.waitForVisible(instangeIdLocator, 30);
+    I.click(instangeIdLocator);
   },
 
   verifyAddInstancePageOpened() {

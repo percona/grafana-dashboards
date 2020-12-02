@@ -6,21 +6,22 @@ module.exports = {
   confirmDeleteText: 'Are you sure that you want to permanently delete this cluster?',
   deletedAlertMessage: 'Cluster successfully deleted',
   fields: {
-    addKubernetesClusterButton: "//span[contains(text(), 'Add new Kubernetes Cluster')]",
+    addKubernetesClusterButton: '$kubernetes-new-cluster-button',
     addKubernetesClusterButtonInTable:
-      "//div[@data-qa='table-no-data']//span[contains(text(), 'Add new Kubernetes Cluster')]",
+      '//div[@data-qa=\'table-no-data\']//span[contains(text(), \'Register new Kubernetes Cluster\')]',
     modalWindow: '$modal-body',
     closeButton: '$modal-close-button',
     disabledAddButton: '//button[@data-qa="kubernetes-add-cluster-button" and @disabled]',
-    kubernetesClusterNameInput: '$kubernetes-cluster-name-field',
-    kubeconfigFileInput: '$kubernetes-kubeconfig-field',
+    kubernetesClusterNameInput: '$name-text-input',
+    kubeconfigFileInput: '$kubeConfig-textarea-input',
     kubernetesAddButton: '$kubernetes-add-cluster-button',
-    requiredField: "//div[contains(text(), 'Required field')]",
+    requiredField: '//div[contains(text(), \'Required field\')]',
     proceedButton: '$delete-kubernetes-button',
   },
 
   checkCluster(cluserName, deleted) {
     const clusterLocator = `//td[contains(text(), '${cluserName}')]`;
+
     if (deleted) {
       I.dontSeeElement(clusterLocator);
     } else {
@@ -30,6 +31,7 @@ module.exports = {
 
   seeErrorForAddedCluster(clusterName) {
     const message = `Kubernetes Cluster with Name "${clusterName}" already exists.`;
+
     I.waitForText(message, 10);
   },
 
@@ -42,6 +44,7 @@ module.exports = {
 
   deleteCluster(cluserName) {
     const deleteLocator = `//td[contains(text(), '${cluserName}')]//parent::tr//button[@data-qa='open-delete-modal-button']`;
+
     I.waitForVisible(deleteLocator, 30);
     I.click(deleteLocator);
     I.waitForText(this.confirmDeleteText, 10);

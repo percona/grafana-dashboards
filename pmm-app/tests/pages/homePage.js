@@ -148,11 +148,11 @@ module.exports = {
     I.seeElement(serviceExists);
   },
 
-  // Method used to get selectors for different PMM versions
+  // Method used to get selectors for different PMM versions, only to change locators after 2.9 version update
   getLocators(version) {
     let locators;
 
-    if (version >= 2.9) {
+    if (version >= 9) {
       // eslint-disable-next-line no-param-reassign
       version = 'latest';
     }

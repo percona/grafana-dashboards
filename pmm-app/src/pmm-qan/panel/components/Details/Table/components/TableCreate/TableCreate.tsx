@@ -1,5 +1,5 @@
 import React, {
-  FC, useCallback, useEffect, useState
+  FC, useCallback, useEffect, useState,
 } from 'react';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { Highlight } from 'pmm-qan/panel/components/Highlight/Highlight';
