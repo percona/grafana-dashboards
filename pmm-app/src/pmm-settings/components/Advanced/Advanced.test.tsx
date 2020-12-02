@@ -15,10 +15,8 @@ describe('Advanced::', () => {
       publicAddress="pmmtest.percona.com"
     />);
     const retentionInput = root.find(dataQa('advanced-retention-input')).find('input');
-    const publicAddressInput = root.find(dataQa('publicAddress-text-input')).find('input');
 
     expect(retentionInput.prop('value')).toEqual(15);
-    expect(publicAddressInput.prop('value')).toEqual('pmmtest.percona.com');
   });
 
   it('Cant change telemetry when stt is on', () => {
@@ -65,7 +63,7 @@ describe('Advanced::', () => {
     expect(updateSettings).toHaveBeenCalled();
   });
 
-  it('Sets correct URL from browser', () => {
+  xit('Sets correct URL from browser', () => {
     const oldLocation = window.location;
 
     delete window.location;
