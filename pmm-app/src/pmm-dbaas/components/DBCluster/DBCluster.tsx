@@ -27,6 +27,7 @@ import {
 import { DeleteDBClusterModal } from './DeleteDBClusterModal/DeleteDBClusterModal';
 // import { buildWarningMessage } from './DBCluster.utils';
 
+
 export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
   const styles = useStyles(getStyles);
   const [addModalVisible, setAddModalVisible] = useState(false);
@@ -105,6 +106,7 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
         isVisible={addModalVisible}
         setVisible={setAddModalVisible}
         onDBClusterAdded={getDBClusters}
+        showMonitoringWarning={settingsLoading || !settings?.publicAddress}
       />
       <DeleteDBClusterModal
         isVisible={deleteModalVisible}
