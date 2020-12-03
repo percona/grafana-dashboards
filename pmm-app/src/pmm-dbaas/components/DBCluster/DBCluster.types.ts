@@ -18,6 +18,8 @@ export interface DBCluster {
   disk: number;
   status?: DBClusterStatus;
   errorMessage?: string;
+  suspend?: boolean;
+  resume?: boolean;
 }
 
 export enum DBClusterStatus {
@@ -46,6 +48,8 @@ export interface DBClusterPayload {
   state?: DBClusterStatus;
   operation?: DBClusterOperationAPI;
   params: DBClusterParamsAPI;
+  suspend?: boolean;
+  resume?: boolean;
 }
 
 export interface DBClusterActionAPI {

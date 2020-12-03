@@ -66,20 +66,6 @@ export class PSMDBService extends DBClusterService {
     );
   }
 
-  suspend(dbCluster: DBCluster): Promise<void> {
-    return apiRequestManagement.post<any, DBClusterActionAPI>(
-      '/DBaaS/PSMDBCluster/Suspend',
-      omit(toAPI(dbCluster), ['params']),
-    );
-  }
-
-  resume(dbCluster: DBCluster): Promise<void> {
-    return apiRequestManagement.post<any, DBClusterActionAPI>(
-      '/DBaaS/PSMDBCluster/Resume',
-      omit(toAPI(dbCluster), ['params']),
-    );
-  }
-
   toModel(
     dbCluster: DBClusterPayload,
     kubernetesClusterName: string,
@@ -112,4 +98,6 @@ const toAPI = (dbCluster: DBCluster) => ({
       disk_size: dbCluster.disk * 10 ** 9,
     },
   },
+  suspend: dbCluster.suspend,
+  resume: dbCluster.resume,
 });

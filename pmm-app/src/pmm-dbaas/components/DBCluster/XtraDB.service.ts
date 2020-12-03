@@ -66,20 +66,6 @@ export class XtraDBService extends DBClusterService {
     );
   }
 
-  suspend(dbCluster: DBCluster): Promise<void> {
-    return apiRequestManagement.post<any, DBClusterActionAPI>(
-      '/DBaaS/XtraDBCluster/Suspend',
-      omit(toAPI(dbCluster), ['params']),
-    );
-  }
-
-  resume(dbCluster: DBCluster): Promise<void> {
-    return apiRequestManagement.post<any, DBClusterActionAPI>(
-      '/DBaaS/XtraDBCluster/Resume',
-      omit(toAPI(dbCluster), ['params']),
-    );
-  }
-
   toModel(
     dbCluster: DBClusterPayload,
     kubernetesClusterName: string,
@@ -120,4 +106,6 @@ const toAPI = (dbCluster: DBCluster): DBClusterPayload => ({
       disk_size: 1 * 10 ** 9,
     },
   },
+  suspend: dbCluster.suspend,
+  resume: dbCluster.resume,
 });
