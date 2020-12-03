@@ -25,6 +25,8 @@ import {
   clusterActionsRender,
 } from './ColumnRenderers/ColumnRenderers';
 import { DeleteDBClusterModal } from './DeleteDBClusterModal/DeleteDBClusterModal';
+// import { buildWarningMessage } from './DBCluster.utils';
+
 
 export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
   const styles = useStyles(getStyles);
@@ -79,7 +81,9 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
     () => (
       <AddClusterButton
         label={Messages.dbcluster.addAction}
-        disabled={settingsLoading}
+        // disabled={settingsLoading || !settings?.publicAddress}
+        // showWarning={!settingsLoading && !settings?.publicAddress}
+        // warningMessage={buildWarningMessage(styles.settingsLink)}
         action={() => setAddModalVisible(!addModalVisible)}
         data-qa="dbcluster-add-cluster-button"
       />
