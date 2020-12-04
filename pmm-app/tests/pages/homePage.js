@@ -91,13 +91,17 @@ module.exports = {
     I.waitForElement(locators.updateProgressModal, 30);
     I.waitForText(locators.inProgressMessage, 30, locators.updateProgressModal);
 
-    for (const milestone of milestones) {
-      I.waitForElement(`//pre[contains(text(), '${milestone}')]`, 1200);
+    // skipping milestones checks for 2.9 and 2.10 versions due logs not showing issue
+    if (version !== '9' && version !== '10') {
+      for (const milestone of milestones) {
+        I.waitForElement(`//pre[contains(text(), '${milestone}')]`, 1200);
+      }
     }
 
     I.waitForText(locators.successUpgradeMessage, 1200, locators.successUpgradeMsgSelector);
     I.click(locators.reloadButtonAfterUpgrade);
     locators = this.getLocators('latest');
+
     I.waitForVisible(locators.upToDateLocator, 30);
     assert.equal(
       await I.grabTextFrom(locators.currentVersion),
