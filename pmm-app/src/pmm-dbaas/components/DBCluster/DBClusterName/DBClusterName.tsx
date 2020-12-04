@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import { Icon, useStyles } from '@grafana/ui';
 import { getStyles } from './DBClusterName.styles';
 import { DBClusterNameProps } from './DBClusterName.types';
@@ -11,9 +11,7 @@ export const DBClusterName: FC<DBClusterNameProps> = ({
   },
 }) => {
   const styles = useStyles(getStyles);
-  const dashboardURL = useMemo(() => (
-    `${DASHBOARD_URL_MAP[databaseType]}${clusterName}`
-  ), [databaseType, clusterName]);
+  const dashboardURL = `${DASHBOARD_URL_MAP[databaseType]}${clusterName}`;
 
   return (
     <div className={styles.clusterNameWrapper}>

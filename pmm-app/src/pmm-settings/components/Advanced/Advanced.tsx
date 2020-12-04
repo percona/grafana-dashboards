@@ -1,9 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Field, Form } from 'react-final-form';
 import { cx } from 'emotion';
-import {
-  Button, Spinner, useTheme,
-} from '@grafana/ui';
+import { Button, Spinner, useTheme } from '@grafana/ui';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
 import { DATA_RETENTION_URL } from 'pmm-settings/Settings.constants';
@@ -44,7 +42,8 @@ export const Advanced: FC<AdvancedProps> = ({
       sttTooltip,
       dbaasLabel,
       dbaasTooltip,
-    }, tooltipLinkText,
+    },
+    tooltipLinkText,
   } = Messages;
   const initialValues = {
     retention: transformSecondsToDays(dataRetention),
@@ -81,10 +80,7 @@ export const Advanced: FC<AdvancedProps> = ({
           <form onSubmit={handleSubmit}>
             <div className={styles.advancedRow}>
               <div className={styles.advancedCol}>
-                <div
-                  className={settingsStyles.labelWrapper}
-                  data-qa="advanced-label"
-                >
+                <div className={settingsStyles.labelWrapper} data-qa="advanced-label">
                   <span>{retentionLabel}</span>
                   <LinkTooltip
                     tooltipText={retentionTooltip}
@@ -141,16 +137,16 @@ export const Advanced: FC<AdvancedProps> = ({
               component={SwitchRow}
             />
             {dbaasEnabled && (
-              <Field
-                name="dbaas"
-                type="checkbox"
-                label={dbaasLabel}
-                tooltip={dbaasTooltip}
-                className={styles.switchDisabled}
-                disabled
-                dataQa="advanced-dbaas"
-                component={SwitchRow}
-              />
+            <Field
+              name="dbaas"
+              type="checkbox"
+              label={dbaasLabel}
+              tooltip={dbaasTooltip}
+              className={styles.switchDisabled}
+              disabled
+              dataQa="advanced-dbaas"
+              component={SwitchRow}
+            />
             )}
             <Button
               className={settingsStyles.actionButton}

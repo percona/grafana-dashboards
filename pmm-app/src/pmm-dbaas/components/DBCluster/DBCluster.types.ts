@@ -15,6 +15,7 @@ export interface DBCluster {
   clusterSize: number;
   memory: number;
   cpu: number;
+  disk: number;
   status?: DBClusterStatus;
   errorMessage?: string;
 }
@@ -51,6 +52,11 @@ export interface DeleteDBClusterAPI {
   name: string;
 }
 
+export interface RestartDBClusterAPI {
+  kubernetes_cluster_name: string;
+  name: string;
+}
+
 interface DBClusterParamsAPI {
   cluster_size: number;
   pxc?: DBClusterContainerAPI;
@@ -60,6 +66,7 @@ interface DBClusterParamsAPI {
 
 interface DBClusterContainerAPI {
   compute_resources: DBClusterComputeResourcesAPI;
+  disk_size: number;
 }
 
 interface DBClusterComputeResourcesAPI {
