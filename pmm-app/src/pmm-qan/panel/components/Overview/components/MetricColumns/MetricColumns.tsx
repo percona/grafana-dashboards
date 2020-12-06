@@ -11,8 +11,7 @@ import { ManageColumns } from '../../../ManageColumns/ManageColumns';
 import './MetricColumns.scss';
 import { getStyles } from './MetricColumn.styles';
 
-
-const TimeMetric = ({ value, percentage, cnt }) => {
+export const TimeMetric = ({ value, percentage, cnt }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -23,12 +22,14 @@ const TimeMetric = ({ value, percentage, cnt }) => {
         {(value === undefined && cnt === undefined) || value === null || value === 'NaN' ? 'N/A' : null}
         {value && value !== 'NaN' ? `${humanize.transform(value, 'time')}` : null}
       </span>
-      {value === undefined || value === null || value === 'NaN' ? null : <TotalPercentage width={percentage} />}
+      {value === undefined || value === null || value === 'NaN' ? null : (
+        <TotalPercentage width={percentage} />
+      )}
     </div>
   );
 };
 
-const NonTimeMetric = ({
+export const NonTimeMetric = ({
   value, units, percentage, cnt,
 }) => {
   const theme = useTheme();
@@ -41,7 +42,9 @@ const NonTimeMetric = ({
         {(value === undefined && cnt === undefined) || value === null || value === 'NaN' ? 'N/A' : null}
         {value && value !== 'NaN' ? `${humanize.transform(value, 'number')} ${units}` : null}
       </span>
-      {value === undefined || value === null || value === 'NaN' ? null : <TotalPercentage width={percentage} />}
+      {value === undefined || value === null || value === 'NaN' ? null : (
+        <TotalPercentage width={percentage} />
+      )}
     </div>
   );
 };
@@ -58,7 +61,7 @@ const getSorting = (orderBy, metricName) => {
   return false;
 };
 
-const metricColumnRender = ({
+export const metricColumnRender = ({
   metricName, metric, totalValues, columnIndex,
 }) => (item, index) => {
   const { stats } = item.metrics[metricName];
