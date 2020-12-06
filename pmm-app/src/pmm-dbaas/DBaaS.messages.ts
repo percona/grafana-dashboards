@@ -1,8 +1,8 @@
-import { XtraDBClusterStatus } from './components/XtraDB/XtraDB.types';
+import { DBClusterStatus } from './components/DBCluster/DBCluster.types';
 
 export const Messages = {
   tabs: {
-    xtradb: 'DB Cluster',
+    dbcluster: 'DB Cluster',
     kubernetes: 'Kubernetes Cluster',
   },
   kubernetes: {
@@ -31,8 +31,11 @@ export const Messages = {
       clusterAdded: 'Cluster was successfully registered',
     },
   },
-  xtradb: {
+  dbcluster: {
     addAction: 'Create DB Cluster',
+    publicAddressWarningBegin: 'Go to',
+    publicAddressWarningLink: 'settings',
+    publicAddressWarningEnd: 'to set PMM public address first',
     addModal: {
       title: 'Create Cluster',
       confirm: 'Create Cluster',
@@ -45,6 +48,7 @@ export const Messages = {
         resources: 'Resources per Node',
         memory: 'Memory (GB)',
         cpu: 'CPU',
+        disk: 'Disk (GB)',
       },
       steps: {
         basicOptions: 'Basic Options',
@@ -60,11 +64,25 @@ export const Messages = {
         large: 'Large',
         custom: 'Custom',
       },
+      validationMessages: {
+        clusterName:
+          'Cluster name should start with a letter, be alphanumeric, and may contain a dash',
+      },
+    },
+    deleteModal: {
+      cancel: 'Cancel',
+      confirm: 'Proceed',
+      confirmMessage: 'Are you sure that you want to delete this cluster?',
+      title: 'Confirm action',
+    },
+    editModal: {
+      confirm: 'Save changes',
     },
     table: {
       nameColumn: 'Name',
       databaseTypeColumn: 'Database Type',
       connectionColumn: 'Connection',
+      clusterParametersColumn: 'DB Cluster Parameters',
       clusterStatusColumn: 'Cluster Status',
       actionsColumn: 'Actions',
       connection: {
@@ -73,15 +91,23 @@ export const Messages = {
         username: 'Username',
         password: 'Password',
       },
+      parameters: {
+        clusterName: 'K8s cluster name',
+        cpu: 'CPU',
+        memory: 'Memory',
+        disk: 'Disk',
+      },
       actions: {
         deleteCluster: 'Delete',
+        editCluster: 'Edit',
+        restartCluster: 'Restart',
       },
       status: {
-        [XtraDBClusterStatus.changing]: 'Pending',
-        [XtraDBClusterStatus.deleting]: 'Deleting',
-        [XtraDBClusterStatus.failed]: 'Failed',
-        [XtraDBClusterStatus.invalid]: 'Invalid',
-        [XtraDBClusterStatus.ready]: 'Active',
+        [DBClusterStatus.changing]: 'Pending',
+        [DBClusterStatus.deleting]: 'Deleting',
+        [DBClusterStatus.failed]: 'Failed',
+        [DBClusterStatus.invalid]: 'Invalid',
+        [DBClusterStatus.ready]: 'Active',
         errorMessage: 'Cluster creation failed',
       },
     },

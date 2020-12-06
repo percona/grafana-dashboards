@@ -97,6 +97,12 @@ describe('Humanize', () => {
     expect(result).toBe('200.23%');
   });
 
+  it('should return 200.2% if input is 2.002 and name is percent', () => {
+    const result = humanize.transform(2.002, 'percent');
+
+    expect(result).toBe('200.20%');
+  });
+
   it('should return <0.01% if input is 0.0000001 and name is percent', () => {
     const result = humanize.transform(0.0000001, 'percent');
 

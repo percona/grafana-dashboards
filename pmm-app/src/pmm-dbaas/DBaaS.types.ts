@@ -1,4 +1,4 @@
 export enum TabKeys {
   kubernetes = 'kubernetes',
-  xtradb = 'xtradb',
+  dbclusters = 'dbclusters',
 }
