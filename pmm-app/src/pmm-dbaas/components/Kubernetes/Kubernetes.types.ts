@@ -10,9 +10,8 @@ export interface Kubernetes {
   kubernetesClusterName: string;
 }
 
-export type DeleteKubernetesAction = (kubernetesToDelete: Kubernetes) => void;
+export type DeleteKubernetesAction = (kubernetesToDelete: Kubernetes, force: boolean) => void;
 export type AddKubernetesAction = (kubernetesToAdd: NewKubernetesCluster) => void;
-
 
 interface KubeAuth {
   kubeconfig: string;
@@ -20,7 +19,7 @@ interface KubeAuth {
 
 export interface NewKubernetesClusterAPI {
   kubernetes_cluster_name: string;
-  kube_auth: KubeAuth
+  kube_auth: KubeAuth;
 }
 
 export interface NewKubernetesCluster {
