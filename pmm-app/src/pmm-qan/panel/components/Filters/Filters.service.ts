@@ -1,7 +1,7 @@
 import { apiRequestQAN } from 'shared/components/helpers/api';
 import { getLabelQueryParams } from 'pmm-qan/panel/QueryAnalytics.tools';
 
-const markCheckedLabels = (labels, paramLabels) => {
+export const markCheckedLabels = (labels, paramLabels) => {
   Object.keys(labels).forEach((label) => {
     labels[label].name.forEach((metric) => {
       const passedVariables = paramLabels[label];
