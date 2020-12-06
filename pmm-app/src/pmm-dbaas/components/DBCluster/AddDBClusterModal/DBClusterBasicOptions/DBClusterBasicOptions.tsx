@@ -23,30 +23,28 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
     change(AddDBClusterFields.databaseType, databaseType);
   }, []);
 
-  const kubernetesOptions = kubernetes.map(({ kubernetesClusterName }) => {
-    const installedOperators = {
-      mysql: true,
-      mongodb: false,
-    };
+  const kubernetesOptions = kubernetes.map((kubernetesCluster ) => {
+    const { kubernetesClusterName, operators } = kubernetesCluster;
+    const operatorList = ['pxc', 'psmdb'];
 
-    const availableTypes = DATABASE_TYPES.filter((databaseType) => installedOperators[databaseType]);
-    const disabledTypes = DATABASE_TYPES.filter((databaseType) => !installedOperators[databaseType]);
+    const availableTypes = operatorList.filter((databaseType) => operators[databaseType].status === 'OPERATORS_STATUS_OK');
+    const disabledTypes = operatorList.filter((databaseType) => operators[databaseType].status !== 'OPERATORS_STATUS_OK');
 
     const getOptionContent = (listOfOperators, kubernetesClusterName) => {
       return (
         <OptionContent
           title={kubernetesClusterName}
           description={disabledTypes.length ? 'Operators must be installed to use database type' : ''}
-          tags={availableTypes.map((databaseType) => DATABASE_LABELS[databaseType])}
-          disabledTags={disabledTypes.map((databaseType) => DATABASE_LABELS[databaseType])}
+          tags={availableTypes.map((databaseType) => databaseType)}
+          disabledTags={disabledTypes.map((databaseType) => databaseType)}
         />
       );
     };
 
     return {
       value: kubernetesClusterName,
-      label: getOptionContent(installedOperators, kubernetesClusterName),
-      installedOperators,
+      label: getOptionContent(operatorList, kubernetesClusterName),
+      operatorList,
     };
   });
 

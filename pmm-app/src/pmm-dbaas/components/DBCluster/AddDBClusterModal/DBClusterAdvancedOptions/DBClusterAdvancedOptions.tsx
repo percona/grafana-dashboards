@@ -34,7 +34,13 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   const { required, min } = validators;
   const { change } = form;
   const nodesValidators = [required, min(MIN_NODES)];
-  const resourcesValidators = [required, min(MIN_RESOURCES)];
+  const diskValidators = [required, min(MIN_RESOURCES)];
+  const resourcesValidators = [
+    required,
+    min(0.1),
+    (value) => ((value * 10) % 1 ? 'Value must be increments of 0.1.' : undefined),
+  ];
+
   const {
     topology,
     resources,
@@ -63,7 +69,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
     change(AddDBClusterFields.resources, value);
   }, [resources, memory, cpu, customMemory, customCPU]);
   const parsePositiveInt = useCallback(
-    (value) => (value > 0 && Number.isInteger(+value) ? value : undefined), [],
+    (value) => (value > 0 && Number.isFinite(+value) ? value : undefined), [],
   );
   const topologiesDisabled = useMemo(() => (
     databaseType?.value !== Databases.mysql ? TOPOLOGIES_DISABLED : []
@@ -120,7 +126,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
         <NumberInputField
           name={AddDBClusterFields.disk}
           label={Messages.dbcluster.addModal.fields.disk}
-          validators={resourcesValidators}
+          validators={diskValidators}
           disabled={resources !== DBClusterResources.custom}
           parse={parsePositiveInt}
         />

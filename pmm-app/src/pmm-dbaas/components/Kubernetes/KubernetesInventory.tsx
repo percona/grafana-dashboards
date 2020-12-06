@@ -8,6 +8,8 @@ import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { getStyles } from './Kubernetes.styles';
 import { Kubernetes, NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
+import { DBClusterConnectionItem } from '../DBCluster/DBClusterConnection/DBClusterConnectionItem/DBClusterConnectionItem';
+import { DBClusterStatus } from './KubernetesOperatorStatus/DBClusterStatus';
 import { CheckboxField, FormElement } from '../../../shared/components/Form';
 
 export const KubernetesInventory: FC<KubernetesProps> = ({
@@ -25,6 +27,21 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
     {
       Header: Messages.kubernetes.table.nameColumn,
       accessor: 'kubernetesClusterName',
+    },
+    {
+      Header: 'Operators status',
+      accessor: (element) => (
+        <div>
+          <DBClusterConnectionItem
+            label={'Mysql'}
+            value={<DBClusterStatus status={element.operators.pxc.status} />}
+          />
+          <DBClusterConnectionItem
+            label={'MongoDB'}
+            value={<DBClusterStatus status={element.operators.psmdb.status} />}
+          />
+        </div>
+      ),
     },
     {
       Header: Messages.kubernetes.table.actionsColumn,

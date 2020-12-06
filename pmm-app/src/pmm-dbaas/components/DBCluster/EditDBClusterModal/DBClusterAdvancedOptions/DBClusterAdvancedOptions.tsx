@@ -13,7 +13,6 @@ import {
   RESOURCES_OPTIONS,
   DEFAULT_SIZES,
   MIN_NODES,
-  MIN_RESOURCES,
   TOPOLOGIES_DISABLED,
 } from './DBClusterAdvancedOptions.constants';
 import { getStyles } from './DBClusterAdvancedOptions.styles';
@@ -33,36 +32,40 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   const { required, min } = validators;
   const { change } = form;
   const nodesValidators = [required, min(MIN_NODES)];
-  const resourcesValidators = [required, min(MIN_RESOURCES)];
+  const resourcesValidators = [
+    required,
+    min(0.1),
+    (value) => ((value * 10) % 1 ? 'Value must be increments of 0.1.' : undefined),
+  ];
   const {
-    topology,
-    resources,
-    memory,
-    cpu,
-    databaseType,
+    topology, resources, memory, cpu, databaseType,
   } = values;
-  const onChangeCustom = useCallback((value: string) => {
-    if (resources === DBClusterResources.custom) {
-      setCustomMemory(memory);
-      setCustomCPU(cpu);
-    }
+  const onChangeCustom = useCallback(
+    (value: string) => {
+      if (resources === DBClusterResources.custom) {
+        setCustomMemory(memory);
+        setCustomCPU(cpu);
+      }
 
-    if (value !== DBClusterResources.custom) {
-      change(EditDBClusterFields.cpu, DEFAULT_SIZES[value].cpu);
-      change(EditDBClusterFields.memory, DEFAULT_SIZES[value].memory);
-    } else {
-      change(EditDBClusterFields.cpu, customCPU);
-      change(EditDBClusterFields.memory, customMemory);
-    }
+      if (value !== DBClusterResources.custom) {
+        change(EditDBClusterFields.cpu, DEFAULT_SIZES[value].cpu);
+        change(EditDBClusterFields.memory, DEFAULT_SIZES[value].memory);
+      } else {
+        change(EditDBClusterFields.cpu, customCPU);
+        change(EditDBClusterFields.memory, customMemory);
+      }
 
-    change(EditDBClusterFields.resources, value);
-  }, [resources, memory, cpu, customMemory, customCPU]);
-  const parsePositiveInt = useCallback(
-    (value) => (value > 0 && Number.isInteger(+value) ? value : undefined), [],
+      change(EditDBClusterFields.resources, value);
+    },
+    [resources, memory, cpu, customMemory, customCPU],
   );
-  const topologiesDisabled = useMemo(() => (
-    databaseType !== Databases.mysql ? TOPOLOGIES_DISABLED : []
-  ), [databaseType]);
+  const parsePositiveInt = useCallback(
+    (value) => (value > 0 && Number.isFinite(+value) ? value : undefined),
+    [],
+  );
+  const topologiesDisabled = useMemo(() => (databaseType !== Databases.mysql ? TOPOLOGIES_DISABLED : []), [
+    databaseType,
+  ]);
 
   return (
     <>

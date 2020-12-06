@@ -1,4 +1,5 @@
 import { DBClusterStatus } from './components/DBCluster/DBCluster.types';
+import { KubernetesClusterStatus } from './components/Kubernetes/KubernetesOperatorStatus/DBClusterStatus.types';
 
 export const Messages = {
   tabs: {
@@ -33,6 +34,13 @@ export const Messages = {
     },
     messages: {
       clusterAdded: 'Cluster was successfully registered',
+    },
+    operatorStatus: {
+      [KubernetesClusterStatus.ok]: 'Installed',
+      [KubernetesClusterStatus.unsupported]: 'Not supported',
+      [KubernetesClusterStatus.unavailable]: 'How to install?',
+      [KubernetesClusterStatus.invalid]: 'Invalid',
+      errorMessage: 'Cluster creation failed',
     },
   },
   dbcluster: {
@@ -70,8 +78,7 @@ export const Messages = {
         custom: 'Custom',
       },
       validationMessages: {
-        clusterName:
-          'Cluster name should start with a letter, be alphanumeric, and may contain a dash',
+        clusterName: 'Cluster name should start with a letter, be alphanumeric, and may contain a dash',
       },
     },
     deleteModal: {
