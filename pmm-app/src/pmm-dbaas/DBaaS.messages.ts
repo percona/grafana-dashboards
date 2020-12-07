@@ -1,5 +1,5 @@
 import { DBClusterStatus } from './components/DBCluster/DBCluster.types';
-import { KubernetesClusterStatus } from './components/Kubernetes/KubernetesOperatorStatus/DBClusterStatus.types';
+import { KubernetesClusterStatus } from './components/Kubernetes/OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus.types';
 
 export const Messages = {
   tabs: {

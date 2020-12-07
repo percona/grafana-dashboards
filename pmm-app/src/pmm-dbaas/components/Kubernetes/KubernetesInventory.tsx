@@ -8,9 +8,10 @@ import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { getStyles } from './Kubernetes.styles';
 import { Kubernetes, NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
-import { DBClusterConnectionItem } from '../DBCluster/DBClusterConnection/DBClusterConnectionItem/DBClusterConnectionItem';
-import { DBClusterStatus } from './KubernetesOperatorStatus/DBClusterStatus';
-import { CheckboxField, FormElement } from '../../../shared/components/Form';
+import { OperatorStatusItem } from './OperatorStatusItem/OperatorStatusItem';
+import { KubernetesOperatorStatus } from './OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus';
+import { CheckboxField, FormElement } from 'shared/components/Form';
+import { DATABASE_LABELS, Databases } from 'shared/core';
 
 export const KubernetesInventory: FC<KubernetesProps> = ({
   kubernetes,
@@ -32,14 +33,8 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
       Header: 'Operators status',
       accessor: (element) => (
         <div>
-          <DBClusterConnectionItem
-            label={'Mysql'}
-            value={<DBClusterStatus status={element.operators.pxc.status} />}
-          />
-          <DBClusterConnectionItem
-            label={'MongoDB'}
-            value={<DBClusterStatus status={element.operators.psmdb.status} />}
-          />
+          <OperatorStatusItem databaseType={Databases.mysql} status={element.operators.pxc.status} />
+          <OperatorStatusItem databaseType={Databases.mongodb} status={element.operators.psmdb.status} />
         </div>
       ),
     },

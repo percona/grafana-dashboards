@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { DBClusterStatus as Status } from '../DBCluster.types';
-import { DBClusterStatus } from './DBClusterStatus';
+import { KubernetesOperatorStatus } from './KubernetesOperatorStatus';
 
 describe('DBClusterStatus::', () => {
   it('renders correctly when active', () => {
     const root = shallow(
-      <DBClusterStatus
+      <KubernetesOperatorStatus
         status={Status.ready}
         errorMessage="Should not render error"
       />,
@@ -19,7 +19,7 @@ describe('DBClusterStatus::', () => {
   });
   it('renders correctly when failed', () => {
     const root = shallow(
-      <DBClusterStatus
+      <KubernetesOperatorStatus
         status={Status.failed}
         errorMessage="Test error"
       />,
@@ -32,7 +32,7 @@ describe('DBClusterStatus::', () => {
   });
   it('renders correctly when changing', () => {
     const root = shallow(
-      <DBClusterStatus
+      <KubernetesOperatorStatus
         status={Status.changing}
         errorMessage="Should not render error"
       />,

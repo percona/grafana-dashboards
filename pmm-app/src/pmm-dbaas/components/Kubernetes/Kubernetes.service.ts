@@ -32,7 +32,7 @@ export const KubernetesService = {
               status: 'OPERATORS_STATUS_UNAVAILABLE',
             },
             psmdb: {
-              status: 'OPERATORS_STATUS_UNSUPPORTED',
+              status: 'OPERATORS_STATUS_UNAVAILABLE',
             },
           },
         },
