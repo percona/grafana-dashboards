@@ -19,6 +19,7 @@ import {
 import { getStyles } from './DBClusterAdvancedOptions.styles';
 import { EditDBClusterFields } from '../EditDBClusterModal.types';
 import { DBClusterTopology, DBClusterResources } from './DBClusterAdvancedOptions.types';
+import { resourceValidator } from './DBClusterAdvancedOptions.utils';
 
 export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   values,
@@ -33,36 +34,42 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   const { required, min } = validators;
   const { change } = form;
   const nodesValidators = [required, min(MIN_NODES)];
-  const resourcesValidators = [required, min(MIN_RESOURCES)];
+  const resourcesValidators = [required, min(MIN_RESOURCES), resourceValidator];
   const {
-    topology,
-    resources,
-    memory,
-    cpu,
-    databaseType,
+    topology, resources, memory, cpu, databaseType,
   } = values;
-  const onChangeCustom = useCallback((value: string) => {
-    if (resources === DBClusterResources.custom) {
-      setCustomMemory(memory);
-      setCustomCPU(cpu);
-    }
+  const onChangeCustom = useCallback(
+    (value: string) => {
+      if (resources === DBClusterResources.custom) {
+        setCustomMemory(memory);
+        setCustomCPU(cpu);
+      }
 
-    if (value !== DBClusterResources.custom) {
-      change(EditDBClusterFields.cpu, DEFAULT_SIZES[value].cpu);
-      change(EditDBClusterFields.memory, DEFAULT_SIZES[value].memory);
-    } else {
-      change(EditDBClusterFields.cpu, customCPU);
-      change(EditDBClusterFields.memory, customMemory);
-    }
+      if (value !== DBClusterResources.custom) {
+        change(EditDBClusterFields.cpu, DEFAULT_SIZES[value].cpu);
+        change(EditDBClusterFields.memory, DEFAULT_SIZES[value].memory);
+      } else {
+        change(EditDBClusterFields.cpu, customCPU);
+        change(EditDBClusterFields.memory, customMemory);
+      }
 
-    change(EditDBClusterFields.resources, value);
-  }, [resources, memory, cpu, customMemory, customCPU]);
-  const parsePositiveInt = useCallback(
-    (value) => (value > 0 && Number.isInteger(+value) ? value : undefined), [],
+      change(EditDBClusterFields.resources, value);
+    },
+    [resources, memory, cpu, customMemory, customCPU],
   );
-  const topologiesDisabled = useMemo(() => (
-    databaseType !== Databases.mysql ? TOPOLOGIES_DISABLED : []
-  ), [databaseType]);
+  const parsePositiveInt = useCallback(
+    (value) => (value > 0 && Number.isInteger(+value) ? value : undefined),
+    [],
+  );
+
+  const parseNonNegativeFloat = useCallback(
+    (value) => (value >= 0 && Number.isFinite(+value) ? value : undefined),
+    [],
+  );
+
+  const topologiesDisabled = useMemo(() => (databaseType !== Databases.mysql ? TOPOLOGIES_DISABLED : []), [
+    databaseType,
+  ]);
 
   return (
     <>
@@ -103,14 +110,14 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
           label={Messages.dbcluster.addModal.fields.memory}
           validators={resourcesValidators}
           disabled={resources !== DBClusterResources.custom}
-          parse={parsePositiveInt}
+          parse={parseNonNegativeFloat}
         />
         <NumberInputField
           name={EditDBClusterFields.cpu}
           label={Messages.dbcluster.addModal.fields.cpu}
           validators={resourcesValidators}
           disabled={resources !== DBClusterResources.custom}
-          parse={parsePositiveInt}
+          parse={parseNonNegativeFloat}
         />
         <NumberInputField
           name={EditDBClusterFields.disk}

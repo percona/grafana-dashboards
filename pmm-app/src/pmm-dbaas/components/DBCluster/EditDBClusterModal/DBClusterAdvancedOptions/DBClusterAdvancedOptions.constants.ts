@@ -35,4 +35,4 @@ export const DEFAULT_SIZES = {
 };
 
 export const MIN_NODES = 3;
-export const MIN_RESOURCES = 1;
+export const MIN_RESOURCES = 0.1;
