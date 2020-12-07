@@ -31,9 +31,9 @@ The list of featured dashboards:
 - System Overview
 - Trends Dashboard
 
-These dashboards are part of [Percona Monitoring and Management](https://www.percona.com/doc/percona-monitoring-and-management/index.html) project.
+These dashboards are part of [Percona Monitoring and Management](https://www.percona.com/doc/percona-monitoring-and-management/2.x/index.html).
 
-Live demo is available at https://pmmdemo.percona.com
+See a live demonstration at <https://pmmdemo.percona.com>.
 
 We welcome contributions to this repository! Detailed information in [CONTRIBUTING.md](CONTRIBUTING.md)
 
