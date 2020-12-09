@@ -8,7 +8,7 @@ import { DBClusterStatus as Status } from '../DBCluster.types';
 import { STATUS_DATA_QA } from './DBClusterStatus.constants';
 
 export const DBClusterStatus: FC<DBClusterStatusProps> = ({ status, errorMessage }) => {
-  const styles = useStyles(getStyles);08
+  const styles = useStyles(getStyles);
   const statusError = status === Status.failed || status === Status.invalid;
   const statusStyles = useMemo(
     () => ({
@@ -23,7 +23,7 @@ export const DBClusterStatus: FC<DBClusterStatusProps> = ({ status, errorMessage
       <span className={cx(styles.status, statusStyles)} data-qa={`cluster-status-${STATUS_DATA_QA[status]}`}>
         {Messages.dbcluster.table.status[status]}
       </span>
-      {statusError && errorMessage ? (
+      {statusError && errorMessage && (
         <span
           title={statusError ? errorMessage : ''}
           className={cx(styles.statusIcon)}
@@ -31,7 +31,7 @@ export const DBClusterStatus: FC<DBClusterStatusProps> = ({ status, errorMessage
         >
           <Icon name="info-circle" />
         </span>
-      ) : null}
+      )}
     </div>
   );
 };

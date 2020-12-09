@@ -9,15 +9,15 @@ describe('DBClusterStatus::', () => {
     const span = root.find('span');
 
     expect(root.find('[data-qa="cluster-status-active"]')).toBeTruthy();
-    expect(root.find('[data-qa="cluster-status-error-message"]')).toBeFalsy();
+    expect(root.find('[data-qa="cluster-status-error-message"]').length).toBe(0);
     expect(span.prop('className')).toContain('active');
   });
   it('renders correctly when failed', () => {
     const root = shallow(<DBClusterStatus status={Status.failed} errorMessage="Test error" />);
-    const span = root.find('span');
+    const span = root.find('[data-qa="cluster-status-failed"]').find('span');
     const errorMessage = root.find('[data-qa="cluster-status-error-message"]');
 
-    expect(root.find('[data-qa="cluster-status-failse"]')).toBeTruthy();
+    expect(root.find('[data-qa="cluster-status-failed"]')).toBeTruthy();
     expect(errorMessage).toBeTruthy();
     expect(errorMessage.prop('title')).toEqual('Test error');
     expect(span.prop('className')).toContain('failed');
@@ -27,7 +27,7 @@ describe('DBClusterStatus::', () => {
     const span = root.find('span');
 
     expect(root.find('[data-qa="cluster-status-pending"]')).toBeTruthy();
-    expect(root.find('[data-qa="cluster-status-error-message"]')).toBeFalsy();
+    expect(root.find('[data-qa="cluster-status-error-message"]').length).toBe(0);
     expect(span.prop('className')).not.toContain('active');
   });
 });
