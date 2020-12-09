@@ -25,7 +25,7 @@ export const DBClusterStatus: FC<DBClusterStatusProps> = ({ status, errorMessage
       </span>
       {statusError && errorMessage && (
         <span
-          title={statusError ? errorMessage : ''}
+          title={errorMessage}
           className={cx(styles.statusIcon)}
           data-qa="cluster-status-error-message"
         >
