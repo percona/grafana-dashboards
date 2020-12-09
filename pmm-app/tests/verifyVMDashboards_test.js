@@ -27,7 +27,7 @@ Scenario(
         I.click(adminPage.fields.metricTitle);
         adminPage.peformPageDown(5);
         dashboardPage.verifyMetricsExistence(dashboardPage.victoriaMetricsAgentsOverviewDashboard.metrics);
-      //  await dashboardPage.verifyThereAreNoGraphsWithNA(0);
-      //  await dashboardPage.verifyThereAreNoGraphsWithoutData(0);
+        await dashboardPage.verifyThereAreNoGraphsWithNA(0);
+        await dashboardPage.verifyThereAreNoGraphsWithoutData(0);
     },
   );
