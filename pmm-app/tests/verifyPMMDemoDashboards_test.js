@@ -130,18 +130,6 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T73 Open Prometheus Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
-  async (I, adminPage, dashboardPage, pmmDemoPage) => {
-    I.amOnPage(pmmDemoPage.url + dashboardPage.prometheusDashboard.url);
-    dashboardPage.waitForDashboardOpened();
-    await dashboardPage.expandEachDashboardRow();
-    dashboardPage.verifyMetricsExistence(dashboardPage.prometheusDashboard.metrics);
-    await dashboardPage.verifyThereAreNoGraphsWithNA(0);
-    await dashboardPage.verifyThereAreNoGraphsWithoutData(0);
-  },
-);
-
-Scenario(
   // eslint-disable-next-line max-len
   'PMM-T72 Open the Prometheus Exporters Status Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
   async (I, dashboardPage, adminPage, pmmDemoPage) => {
