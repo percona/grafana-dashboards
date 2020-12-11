@@ -18,7 +18,7 @@ const DBCLUSTER_STATUS_MAP = {
   [DBClusterStatus.ready]: 'PSMDB_CLUSTER_STATE_READY',
   [DBClusterStatus.failed]: 'PSMDB_CLUSTER_STATE_FAILED',
   [DBClusterStatus.deleting]: 'PSMDB_CLUSTER_STATE_DELETING',
-  [DBClusterStatus.suspended]: 'PSMDB_CLUSTER_STATE_SUSPENDED',
+  [DBClusterStatus.suspended]: 'PSMDB_CLUSTER_STATE_PAUSED',
 };
 
 export class PSMDBService extends DBClusterService {
@@ -37,6 +37,20 @@ export class PSMDBService extends DBClusterService {
     return apiRequestManagement.post<DBClusterPayload, any>(
       '/DBaaS/PSMDBCluster/Update',
       toAPI(dbCluster),
+    );
+  }
+
+  resumeDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload> {
+    return apiRequestManagement.post<DBClusterPayload, any>(
+      '/DBaaS/PSMDBCluster/Update',
+      toResumeAPI(dbCluster),
+    );
+  }
+
+  suspendDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload> {
+    return apiRequestManagement.post<DBClusterPayload, any>(
+      '/DBaaS/PSMDBCluster/Update',
+      toSuspendAPI(dbCluster),
     );
   }
 
@@ -98,6 +112,21 @@ const toAPI = (dbCluster: DBCluster) => ({
       disk_size: dbCluster.disk * 10 ** 9,
     },
   },
-  suspend: dbCluster.suspend,
-  resume: dbCluster.resume,
+});
+
+const toSuspendAPI = (dbCluster: DBCluster) => ({
+  kubernetes_cluster_name: dbCluster.kubernetesClusterName,
+  name: dbCluster.clusterName,
+  params: {
+    suspend: true,
+  },
+});
+
+
+const toResumeAPI = (dbCluster: DBCluster) => ({
+  kubernetes_cluster_name: dbCluster.kubernetesClusterName,
+  name: dbCluster.clusterName,
+  params: {
+    resume: true,
+  },
 });

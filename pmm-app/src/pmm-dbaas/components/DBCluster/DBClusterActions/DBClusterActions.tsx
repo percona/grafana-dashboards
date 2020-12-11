@@ -56,12 +56,11 @@ export const DBClusterActions: FC<DBClusterActionsProps> = ({
             const dbClusterService = DBClusterServiceFactory.newDBClusterService(dbCluster.databaseType);
 
             if (dbCluster.status === DBClusterStatus.ready) {
-              dbCluster.suspend = true;
+              await dbClusterService.suspendDBCluster(dbCluster);
             } else {
-              dbCluster.resume = true;
+              await dbClusterService.resumeDBCluster(dbCluster);
             }
 
-            await dbClusterService.updateDBCluster(dbCluster);
             getDBClusters();
           } catch (e) {
             console.error(e);

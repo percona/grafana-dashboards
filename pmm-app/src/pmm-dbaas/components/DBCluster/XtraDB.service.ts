@@ -18,7 +18,7 @@ const DBCLUSTER_STATUS_MAP = {
   [DBClusterStatus.ready]: 'XTRA_DB_CLUSTER_STATE_READY',
   [DBClusterStatus.failed]: 'XTRA_DB_CLUSTER_STATE_FAILED',
   [DBClusterStatus.deleting]: 'XTRA_DB_CLUSTER_STATE_DELETING',
-  [DBClusterStatus.suspended]: 'XTRA_DB_CLUSTER_STATE_SUSPENDED',
+  [DBClusterStatus.suspended]: 'XTRA_DB_CLUSTER_STATE_PAUSED',
 };
 
 export class XtraDBService extends DBClusterService {
@@ -37,6 +37,20 @@ export class XtraDBService extends DBClusterService {
     return apiRequestManagement.post<DBClusterPayload, any>(
       '/DBaaS/XtraDBCluster/Update',
       toAPI(dbCluster),
+    );
+  }
+
+  resumeDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload> {
+    return apiRequestManagement.post<DBClusterPayload, any>(
+      '/DBaaS/XtraDBCluster/Update',
+      toResumeAPI(dbCluster),
+    );
+  }
+
+  suspendDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload> {
+    return apiRequestManagement.post<DBClusterPayload, any>(
+      '/DBaaS/XtraDBCluster/Update',
+      toSuspendAPI(dbCluster),
     );
   }
 
@@ -106,6 +120,21 @@ const toAPI = (dbCluster: DBCluster): DBClusterPayload => ({
       disk_size: 1 * 10 ** 9,
     },
   },
-  suspend: dbCluster.suspend,
-  resume: dbCluster.resume,
+});
+
+const toSuspendAPI = (dbCluster: DBCluster) => ({
+  kubernetes_cluster_name: dbCluster.kubernetesClusterName,
+  name: dbCluster.clusterName,
+  params: {
+    suspend: true,
+  },
+});
+
+
+const toResumeAPI = (dbCluster: DBCluster) => ({
+  kubernetes_cluster_name: dbCluster.kubernetesClusterName,
+  name: dbCluster.clusterName,
+  params: {
+    resume: true,
+  },
 });
