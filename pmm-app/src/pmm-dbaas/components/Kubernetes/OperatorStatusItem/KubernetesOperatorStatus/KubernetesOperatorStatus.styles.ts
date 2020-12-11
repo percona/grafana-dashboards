@@ -19,18 +19,23 @@ export const getStyles = ({ colors, palette, spacing, typography }: GrafanaTheme
     cursor: default;
     font-size: ${typography.size.sm};
     padding: 3px 15px;
-    text-transform: uppercase;
     display: flex;
   `,
   statusActive: css`
-    background-color: ${colors.formSwitchBgActive};
+    background-color: ${palette.brandSuccess};
     label: active;
   `,
   statusFailed: css`
     background-color: ${palette.brandDanger};
     label: failed;
   `,
+  statusUnsupported: css`
+    background-color: ${palette.gray1};
+  `,
   statusUnavailable: css`
-    background-color: ${palette.brandPrimary};
+    background-color: ${colors.formSwitchBgActive};
+  `,
+  InstallLinkIcon: css`
+    margin-left: ${spacing.xs};
   `,
 });

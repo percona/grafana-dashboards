@@ -10,6 +10,7 @@ import { AddDBClusterFields } from '../AddDBClusterModal.types';
 import { DBClusterTopology } from '../DBClusterAdvancedOptions/DBClusterAdvancedOptions.types';
 import { OptionContent } from '../../OptionContent/OptionContent';
 import { kubernetesClusterName } from './DBClusterBasicOptions.utils';
+import { KubernetesClusterStatus } from '../../../Kubernetes/OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus.types';
 
 export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernetes, form }) => {
   const DATABASE_TYPES = [Databases.mongodb, Databases.mysql];
@@ -23,49 +24,60 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
     change(AddDBClusterFields.databaseType, databaseType);
   }, []);
 
-  const kubernetesOptions = kubernetes.map((kubernetesCluster ) => {
+  const kubernetesOptions = kubernetes.map((kubernetesCluster) => {
     const { kubernetesClusterName, operators } = kubernetesCluster;
-    const operatorList = ['pxc', 'psmdb'];
+    const operatorList = ['xtradb', 'psmdb'];
 
-    const availableTypes = operatorList.filter((databaseType) => operators[databaseType].status === 'OPERATORS_STATUS_OK');
-    const disabledTypes = operatorList.filter((databaseType) => operators[databaseType].status !== 'OPERATORS_STATUS_OK');
+    const availableOperators = operatorList.filter((databaseType) => operators[databaseType].status === KubernetesClusterStatus.ok);
+    const disabledOperators = operatorList.filter((databaseType) => operators[databaseType].status !== KubernetesClusterStatus.ok);
 
-    const getOptionContent = (listOfOperators, kubernetesClusterName) => {
-      return (
-        <OptionContent
-          title={kubernetesClusterName}
-          description={disabledTypes.length ? 'Operators must be installed to use database type' : ''}
-          tags={availableTypes.map((databaseType) => databaseType)}
-          disabledTags={disabledTypes.map((databaseType) => databaseType)}
-        />
-      );
-    };
+    const getOptionContent = (listOfOperators, kubernetesClusterName) => (
+      <OptionContent
+        title={kubernetesClusterName}
+        description={disabledOperators.length ? 'Operators must be installed to use database type' : ''}
+        tags={availableOperators.map((databaseType) => databaseType)}
+        disabledTags={disabledOperators.map((databaseType) => databaseType)}
+      />
+    );
 
     return {
       value: kubernetesClusterName,
       label: getOptionContent(operatorList, kubernetesClusterName),
-      operatorList,
+      operators,
     };
   });
 
   const [databaseOptions, setDatabaseOptions] = useState(DATABASE_OPTIONS);
   const onChangeCluster = useCallback((selectedKubernetes) => {
-    const selectedDatabase = form.getState().values[AddDBClusterFields.databaseType]?.value
+    const { operators } = selectedKubernetes;
+    const selectedDatabase = form.getState().values[AddDBClusterFields.databaseType]?.value;
     const availableDatabaseOptions = [];
+    const operatorList = ['xtradb', 'psmdb'];
 
-    DATABASE_TYPES.forEach((databaseType) => {
-      if (!selectedKubernetes.installedOperators[databaseType]) {
-        availableDatabaseOptions.push({
-          value: Databases[databaseType],
-          label: DATABASE_LABELS[databaseType],
-        });
+    // if (operators.xtradb.status === KubernetesClusterStatus.ok) {
+    //   availableDatabaseOptions.push({
+    //     value: Databases.mysql,
+    //     label: DATABASE_LABELS[Databases.mysql],
+    //   });
+    // }
 
-        if (selectedDatabase === Databases[databaseType])
-          change(AddDBClusterFields.databaseType, {
-            value: undefined,
-            label: undefined,
-          });
-      }
+    if (operators.xtradb.status === KubernetesClusterStatus.ok) {
+      availableDatabaseOptions.push({
+        value: Databases.mysql,
+        label: DATABASE_LABELS[Databases.mysql],
+      });
+    }
+
+    if (operators.psmdb.status === KubernetesClusterStatus.ok) {
+      availableDatabaseOptions.push({
+        value: Databases.mongodb,
+        label: DATABASE_LABELS[Databases.mongodb],
+      });
+    }
+
+    change(AddDBClusterFields.databaseType, {
+      value: undefined,
+      label: undefined,
     });
 
     setDatabaseOptions(availableDatabaseOptions);

@@ -9,11 +9,12 @@ import { OPERATORS_DOCS_URL } from './KubernetesOperatorStatus.constants';
 
 export const KubernetesOperatorStatus: FC<any> = ({ status, databaseType }) => {
   const styles = useStyles(getStyles);
-  const statusError = status === Status.invalid || status === Status.unsupported;
   const statusStyles = useMemo(
     () => ({
-      [styles.statusActive]: status === Status.ok || status === Status.unavailable,
-      [styles.statusFailed]: statusError,
+      [styles.statusActive]: status === Status.ok,
+      [styles.statusFailed]: status === Status.invalid,
+      [styles.statusUnsupported]: status === Status.unsupported,
+      [styles.statusUnavailable]: status === Status.unavailable,
     }),
     [status],
   );
@@ -27,7 +28,9 @@ export const KubernetesOperatorStatus: FC<any> = ({ status, databaseType }) => {
             // data-qa={`cluster-status-${STATUS_DATA_QA[status]}`}
           >
             {Messages.kubernetes.operatorStatus[status]}
-            {status === Status.unavailable && <Icon name="external-link-alt" />}
+            {status === Status.unavailable && (
+              <Icon name="external-link-alt" className={styles.InstallLinkIcon} />
+            )}
           </span>
         </a>
       ) : (

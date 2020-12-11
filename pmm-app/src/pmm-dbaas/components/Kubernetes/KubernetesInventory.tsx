@@ -33,7 +33,7 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
       Header: 'Operators status',
       accessor: (element) => (
         <div>
-          <OperatorStatusItem databaseType={Databases.mysql} status={element.operators.pxc.status} />
+          <OperatorStatusItem databaseType={Databases.mysql} status={element.operators.xtradb.status} />
           <OperatorStatusItem databaseType={Databases.mongodb} status={element.operators.psmdb.status} />
         </div>
       ),

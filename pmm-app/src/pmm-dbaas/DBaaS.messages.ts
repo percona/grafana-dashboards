@@ -38,7 +38,7 @@ export const Messages = {
     operatorStatus: {
       [KubernetesClusterStatus.ok]: 'Installed',
       [KubernetesClusterStatus.unsupported]: 'Not supported',
-      [KubernetesClusterStatus.unavailable]: 'How to install?',
+      [KubernetesClusterStatus.unavailable]: 'How to install',
       [KubernetesClusterStatus.invalid]: 'Invalid',
       errorMessage: 'Cluster creation failed',
     },
