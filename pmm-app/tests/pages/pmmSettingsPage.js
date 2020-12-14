@@ -6,6 +6,7 @@ const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 module.exports = {
   url: 'graph/d/pmm-settings/pmm-settings',
   prometheusAlertUrl: '/prometheus/rules',
+  alertsRules: '/prometheus/alerts',
   diagnosticsText:
     'You can download server logs to make the problem detection simpler. '
     + 'Please include this file if you are submitting a bug report.',
@@ -26,6 +27,18 @@ module.exports = {
       + '      annotations:\n'
       + '        summary: "Instance {{ $labels.instance }} down"\n'
       + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds."',
+      rule2:
+      'groups:\n'
+      + '  - name: Test2Alerts\n'
+      + '    rules:\n'
+      + '    - alert: InstanceUp\n'
+      + '      expr: up == 1\n'
+      + '      for: 1s\n'
+      + '      labels:\n'
+      + '        severity: critical\n'
+      + '      annotations:\n'
+      + '        summary: "Instance {{ $labels.instance }} up"\n'
+      + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."',
     editRule:
       'groups:\n'
       + '  - name: AutoTestAlertsEdited\n'
@@ -40,6 +53,7 @@ module.exports = {
       + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than {{ sec }} seconds."',
     ruleName: 'AutoTestAlerts',
     editRuleName: 'AutoTestAlertsEdited',
+    ruleName2: 'Test2Alerts',
   },
   messages: {
     successPopUpMessage: 'Settings updated',

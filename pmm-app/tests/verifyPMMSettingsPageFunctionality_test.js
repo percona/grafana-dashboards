@@ -5,6 +5,7 @@ Before(async (I, pmmSettingsPage, settingsAPI) => {
   await settingsAPI.restoreSettingsDefaults();
   I.amOnPage(pmmSettingsPage.url);
 });
+
 Scenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
   const resolutionToApply = 'Rare';
 
@@ -79,3 +80,21 @@ Scenario(
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'on');
   },
 );
+
+
+Scenario('Will be added', async (I,pmmSettingsPage) => {
+  const scheme = 'http://';
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
+
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
+  pmmSettingsPage.addAlertmanagerRule(
+    scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
+    pmmSettingsPage.alertManager.rule2
+  );
+  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+  pmmSettingsPage.openAlertsManagerUi();
+  await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2);
+  I.amOnPage(pmmSettingsPage.alertsRules);
+  await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2);
+});
