@@ -3,7 +3,7 @@
 //   status: DBClusterStatus;
 // }
 
-export enum KubernetesClusterStatus {
+export enum KubernetesOperatorStatus {
   invalid = 'OPERATORS_STATUS_INVALID',
   ok = 'OPERATORS_STATUS_OK',
   unsupported = 'OPERATORS_STATUS_UNSUPPORTED',

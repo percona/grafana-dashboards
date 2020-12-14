@@ -10,7 +10,7 @@ import { AddDBClusterFields } from '../AddDBClusterModal.types';
 import { DBClusterTopology } from '../DBClusterAdvancedOptions/DBClusterAdvancedOptions.types';
 import { OptionContent } from '../../OptionContent/OptionContent';
 import { kubernetesClusterName } from './DBClusterBasicOptions.utils';
-import { KubernetesClusterStatus } from '../../../Kubernetes/OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus.types';
+import { KubernetesOperatorStatus } from '../../../Kubernetes/OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus.types';
 
 export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernetes, form }) => {
   const DATABASE_TYPES = [Databases.mongodb, Databases.mysql];
@@ -28,8 +28,8 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
     const { kubernetesClusterName, operators } = kubernetesCluster;
     const operatorList = ['xtradb', 'psmdb'];
 
-    const availableOperators = operatorList.filter((databaseType) => operators[databaseType].status === KubernetesClusterStatus.ok);
-    const disabledOperators = operatorList.filter((databaseType) => operators[databaseType].status !== KubernetesClusterStatus.ok);
+    const availableOperators = operatorList.filter((databaseType) => operators[databaseType].status === KubernetesOperatorStatus.ok);
+    const disabledOperators = operatorList.filter((databaseType) => operators[databaseType].status !== KubernetesOperatorStatus.ok);
 
     const getOptionContent = (listOfOperators, kubernetesClusterName) => (
       <OptionContent
@@ -61,14 +61,14 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
     //   });
     // }
 
-    if (operators.xtradb.status === KubernetesClusterStatus.ok) {
+    if (operators.xtradb.status === KubernetesOperatorStatus.ok) {
       availableDatabaseOptions.push({
         value: Databases.mysql,
         label: DATABASE_LABELS[Databases.mysql],
       });
     }
 
-    if (operators.psmdb.status === KubernetesClusterStatus.ok) {
+    if (operators.psmdb.status === KubernetesOperatorStatus.ok) {
       availableDatabaseOptions.push({
         value: Databases.mongodb,
         label: DATABASE_LABELS[Databases.mongodb],

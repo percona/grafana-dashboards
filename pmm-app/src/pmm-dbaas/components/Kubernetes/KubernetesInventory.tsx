@@ -9,7 +9,7 @@ import { getStyles } from './Kubernetes.styles';
 import { Kubernetes, NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
 import { OperatorStatusItem } from './OperatorStatusItem/OperatorStatusItem';
-import { KubernetesOperatorStatus } from './OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus';
+import { KubernetesClusterStatus } from './KubernetesClusterStatus/KubernetesClusterStatus';
 import { CheckboxField, FormElement } from 'shared/components/Form';
 import { DATABASE_LABELS, Databases } from 'shared/core';
 
@@ -28,6 +28,12 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
     {
       Header: Messages.kubernetes.table.nameColumn,
       accessor: 'kubernetesClusterName',
+    },
+    {
+      Header: 'Kubernetes cluster status',
+      accessor: (element) => (
+        <KubernetesClusterStatus status={element.status} />
+      ),
     },
     {
       Header: 'Operators status',

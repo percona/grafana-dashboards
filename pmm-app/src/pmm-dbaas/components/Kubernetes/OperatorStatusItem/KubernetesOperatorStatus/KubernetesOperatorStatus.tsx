@@ -3,7 +3,7 @@ import { cx } from 'emotion';
 import { useStyles, Icon } from '@grafana/ui';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { getStyles } from './KubernetesOperatorStatus.styles';
-import { KubernetesClusterStatus as Status } from './KubernetesOperatorStatus.types';
+import { KubernetesOperatorStatus as Status } from './KubernetesOperatorStatus.types';
 import { STATUS_DATA_QA } from './DBClusterStatus.constants';
 import { OPERATORS_DOCS_URL } from './KubernetesOperatorStatus.constants';
 

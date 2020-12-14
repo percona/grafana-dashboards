@@ -1,5 +1,6 @@
 import { DBClusterStatus } from './components/DBCluster/DBCluster.types';
-import { KubernetesClusterStatus } from './components/Kubernetes/OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus.types';
+import { KubernetesOperatorStatus } from './components/Kubernetes/OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus.types';
+import { KubernetesClusterStatus } from './components/Kubernetes/KubernetesClusterStatus/KubernetesClusterStatus.types';
 
 export const Messages = {
   tabs: {
@@ -36,11 +37,16 @@ export const Messages = {
       clusterAdded: 'Cluster was successfully registered',
     },
     operatorStatus: {
-      [KubernetesClusterStatus.ok]: 'Installed',
-      [KubernetesClusterStatus.unsupported]: 'Not supported',
-      [KubernetesClusterStatus.unavailable]: 'How to install',
-      [KubernetesClusterStatus.invalid]: 'Invalid',
+      [KubernetesOperatorStatus.ok]: 'Installed',
+      [KubernetesOperatorStatus.unsupported]: 'Not supported',
+      [KubernetesOperatorStatus.unavailable]: 'How to install',
+      [KubernetesOperatorStatus.invalid]: 'Invalid',
       errorMessage: 'Cluster creation failed',
+    },
+    kubernetesStatus: {
+      [KubernetesClusterStatus.ok]: 'Good',
+      [KubernetesClusterStatus.unavailable]: 'Unavailable',
+      [KubernetesClusterStatus.invalid]: 'Invalid',
     },
   },
   dbcluster: {

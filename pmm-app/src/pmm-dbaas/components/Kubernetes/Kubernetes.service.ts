@@ -8,36 +8,6 @@ import {
 
 export const KubernetesService = {
   async getKubernetes() {
-    // "OPERATORS_STATUS_INVALID",
-    //   "OPERATORS_STATUS_OK",
-    //   "OPERATORS_STATUS_UNSUPPORTED",
-    //   "OPERATORS_STATUS_UNAVAILABLE"
-    // return {
-    //   kubernetes_clusters: [
-    //     {
-    //       kubernetes_cluster_name: 'test',
-    //       operators: {
-    //         pxc: {
-    //           status: 'OPERATORS_STATUS_OK',
-    //         },
-    //         psmdb: {
-    //           status: 'OPERATORS_STATUS_UNSUPPORTED',
-    //         },
-    //       },
-    //     },
-    //     {
-    //       kubernetes_cluster_name: 'test',
-    //       operators: {
-    //         pxc: {
-    //           status: 'OPERATORS_STATUS_UNAVAILABLE',
-    //         },
-    //         psmdb: {
-    //           status: 'OPERATORS_STATUS_INVALID',
-    //         },
-    //       },
-    //     },
-    //   ],
-    // };
     return apiRequestManagement.post<KubernetesListAPI, any>('/DBaaS/Kubernetes/List', {});
   },
   deleteKubernetes(kubernetes: Kubernetes, force: boolean) {
