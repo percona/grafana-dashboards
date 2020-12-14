@@ -5,13 +5,13 @@ import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { Form, FormRenderProps } from 'react-final-form';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
+import { CheckboxField, FormElement } from 'shared/components/Form';
+import { Databases } from 'shared/core';
 import { getStyles } from './Kubernetes.styles';
 import { Kubernetes, NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
 import { OperatorStatusItem } from './OperatorStatusItem/OperatorStatusItem';
 import { KubernetesClusterStatus } from './KubernetesClusterStatus/KubernetesClusterStatus';
-import { CheckboxField, FormElement } from 'shared/components/Form';
-import { DATABASE_LABELS, Databases } from 'shared/core';
 
 export const KubernetesInventory: FC<KubernetesProps> = ({
   kubernetes,

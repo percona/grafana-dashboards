@@ -1,46 +1,22 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { DBClusterStatus as Status } from '../DBCluster.types';
+import { Databases } from 'shared/core';
+import { dataQa } from '@percona/platform-core';
+import { KubernetesOperatorStatus as Status } from './KubernetesOperatorStatus.types';
 import { KubernetesOperatorStatus } from './KubernetesOperatorStatus';
 
 describe('DBClusterStatus::', () => {
   it('renders correctly when active', () => {
-    const root = shallow(
-      <KubernetesOperatorStatus
-        status={Status.ready}
-        errorMessage="Should not render error"
-      />,
-    );
-    const span = root.find('span');
+    const root = shallow(<KubernetesOperatorStatus status={Status.ok} databaseType={Databases.mongodb} />);
 
-    expect(root.find('[data-qa="cluster-status-active"]')).toBeTruthy();
-    expect(span.prop('className')).toContain('active');
-    expect(span.prop('title')).toEqual('');
+    expect(root.find('[data-qa="cluster-status-ok"]')).toBeTruthy();
   });
-  it('renders correctly when failed', () => {
+  it('renders installation link when unavailable', () => {
     const root = shallow(
-      <KubernetesOperatorStatus
-        status={Status.failed}
-        errorMessage="Test error"
-      />,
+      <KubernetesOperatorStatus status={Status.unavailable} databaseType={Databases.mongodb} />,
     );
-    const span = root.find('span');
 
     expect(root.find('[data-qa="cluster-status-failse"]')).toBeTruthy();
-    expect(span.prop('className')).toContain('failed');
-    expect(span.prop('title')).toEqual('Test error');
-  });
-  it('renders correctly when changing', () => {
-    const root = shallow(
-      <KubernetesOperatorStatus
-        status={Status.changing}
-        errorMessage="Should not render error"
-      />,
-    );
-    const span = root.find('span');
-
-    expect(root.find('[data-qa="cluster-status-pending"]')).toBeTruthy();
-    expect(span.prop('className')).not.toContain('active');
-    expect(span.prop('title')).toEqual('');
+    expect(root.find(dataQa('cluster-install-doc-link'))).toBeTruthy();
   });
 });

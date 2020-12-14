@@ -13,7 +13,6 @@ import { kubernetesClusterName } from './DBClusterBasicOptions.utils';
 import { KubernetesOperatorStatus } from '../../../Kubernetes/OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus.types';
 
 export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernetes, form }) => {
-  const DATABASE_TYPES = [Databases.mongodb, Databases.mysql];
   const { required } = validators;
   const { change } = form;
   const onChangeDatabase = useCallback((databaseType) => {
@@ -28,8 +27,12 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
     const { kubernetesClusterName, operators } = kubernetesCluster;
     const operatorList = ['xtradb', 'psmdb'];
 
-    const availableOperators = operatorList.filter((databaseType) => operators[databaseType].status === KubernetesOperatorStatus.ok);
-    const disabledOperators = operatorList.filter((databaseType) => operators[databaseType].status !== KubernetesOperatorStatus.ok);
+    const availableOperators = operatorList.filter(
+      (databaseType) => operators[databaseType].status === KubernetesOperatorStatus.ok,
+    );
+    const disabledOperators = operatorList.filter(
+      (databaseType) => operators[databaseType].status !== KubernetesOperatorStatus.ok,
+    );
 
     const getOptionContent = (listOfOperators, kubernetesClusterName) => (
       <OptionContent
@@ -50,16 +53,7 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
   const [databaseOptions, setDatabaseOptions] = useState(DATABASE_OPTIONS);
   const onChangeCluster = useCallback((selectedKubernetes) => {
     const { operators } = selectedKubernetes;
-    const selectedDatabase = form.getState().values[AddDBClusterFields.databaseType]?.value;
     const availableDatabaseOptions = [];
-    const operatorList = ['xtradb', 'psmdb'];
-
-    // if (operators.xtradb.status === KubernetesClusterStatus.ok) {
-    //   availableDatabaseOptions.push({
-    //     value: Databases.mysql,
-    //     label: DATABASE_LABELS[Databases.mysql],
-    //   });
-    // }
 
     if (operators.xtradb.status === KubernetesOperatorStatus.ok) {
       availableDatabaseOptions.push({

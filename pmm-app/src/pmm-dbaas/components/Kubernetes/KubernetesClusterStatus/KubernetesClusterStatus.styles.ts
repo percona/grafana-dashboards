@@ -1,7 +1,9 @@
 import { css } from 'emotion';
 import { GrafanaTheme } from '@grafana/data';
 
-export const getStyles = ({ colors, palette, spacing, typography }: GrafanaTheme) => ({
+export const getStyles = ({
+  colors, palette, spacing, typography,
+}: GrafanaTheme) => ({
   clusterStatusWrapper: css`
     align-items: center;
     display: flex;

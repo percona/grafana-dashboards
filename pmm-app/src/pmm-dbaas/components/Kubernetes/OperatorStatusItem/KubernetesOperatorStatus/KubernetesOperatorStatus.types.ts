@@ -4,8 +4,8 @@
 // }
 
 export enum KubernetesOperatorStatus {
-  invalid = 'OPERATORS_STATUS_INVALID',
   ok = 'OPERATORS_STATUS_OK',
+  invalid = 'OPERATORS_STATUS_INVALID',
   unsupported = 'OPERATORS_STATUS_UNSUPPORTED',
   unavailable = 'OPERATORS_STATUS_NOT_INSTALLED',
 }

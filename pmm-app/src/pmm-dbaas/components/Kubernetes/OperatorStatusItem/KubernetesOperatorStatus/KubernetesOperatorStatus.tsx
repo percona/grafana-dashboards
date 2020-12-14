@@ -4,8 +4,7 @@ import { useStyles, Icon } from '@grafana/ui';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { getStyles } from './KubernetesOperatorStatus.styles';
 import { KubernetesOperatorStatus as Status } from './KubernetesOperatorStatus.types';
-import { STATUS_DATA_QA } from './DBClusterStatus.constants';
-import { OPERATORS_DOCS_URL } from './KubernetesOperatorStatus.constants';
+import { OPERATORS_DOCS_URL, STATUS_DATA_QA } from './KubernetesOperatorStatus.constants';
 
 export const KubernetesOperatorStatus: FC<any> = ({ status, databaseType }) => {
   const styles = useStyles(getStyles);
@@ -22,10 +21,15 @@ export const KubernetesOperatorStatus: FC<any> = ({ status, databaseType }) => {
   return (
     <div className={styles.clusterStatusWrapper}>
       {status === Status.unavailable ? (
-        <a href={OPERATORS_DOCS_URL[databaseType]} target="_blank" rel="noopener noreferrer">
+        <a
+          href={OPERATORS_DOCS_URL[databaseType]}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-qa="cluster-install-doc-link"
+        >
           <span
             className={cx(styles.status, statusStyles)}
-            // data-qa={`cluster-status-${STATUS_DATA_QA[status]}`}
+            data-qa={`cluster-status-${STATUS_DATA_QA[status]}`}
           >
             {Messages.kubernetes.operatorStatus[status]}
             {status === Status.unavailable && (
@@ -36,7 +40,7 @@ export const KubernetesOperatorStatus: FC<any> = ({ status, databaseType }) => {
       ) : (
         <span
           className={cx(styles.status, statusStyles)}
-          // data-qa={`cluster-status-${STATUS_DATA_QA[status]}`}
+          data-qa={`cluster-status-${STATUS_DATA_QA[status]}`}
         >
           {Messages.kubernetes.operatorStatus[status]}
         </span>

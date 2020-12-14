@@ -18,7 +18,7 @@ export const clusterStatusRender = (dbCluster) => {
 
   return (
     <DBClusterStatus
-      status={status || Status.failed}
+      status={status || Status.unknown}
       errorMessage={errorMessage || Messages.dbcluster.table.status.errorMessage}
     />
   );

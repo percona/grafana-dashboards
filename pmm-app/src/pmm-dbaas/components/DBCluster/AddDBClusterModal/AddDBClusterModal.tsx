@@ -13,7 +13,7 @@ import { buildWarningMessage } from '../DBCluster.utils';
 import { getStyles } from './AddDBClusterModal.styles';
 
 export const AddDBClusterModal: FC<AddDBClusterModalProps> = ({
-                                                                kubernetes,
+  kubernetes,
   isVisible,
   setVisible,
   onDBClusterAdded,
