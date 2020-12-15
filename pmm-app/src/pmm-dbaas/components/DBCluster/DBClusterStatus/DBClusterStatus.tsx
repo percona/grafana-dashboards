@@ -17,7 +17,6 @@ export const DBClusterStatus: FC<DBClusterStatusProps> = ({ status, errorMessage
     }),
     [status],
   );
-
   const ErrorMessage = () => <pre>{errorMessage.replace(/;/g, '\n')}</pre>;
 
   return (
@@ -25,7 +24,6 @@ export const DBClusterStatus: FC<DBClusterStatusProps> = ({ status, errorMessage
       <span className={cx(styles.status, statusStyles)} data-qa={`cluster-status-${STATUS_DATA_QA[status]}`}>
         {Messages.dbcluster.table.status[status]}
       </span>
-
       {statusError && errorMessage && (
         <Tooltip content={<ErrorMessage />} placement="bottom">
           <span className={cx(styles.statusIcon)} data-qa="cluster-status-error-message">
