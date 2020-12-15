@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { cx } from 'emotion';
-import { Icon, useStyles } from '@grafana/ui';
+import { Icon, useStyles, Tooltip } from '@grafana/ui';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { DBClusterStatusProps } from './DBClusterStatus.types';
 import { getStyles } from './DBClusterStatus.styles';
@@ -18,19 +18,20 @@ export const DBClusterStatus: FC<DBClusterStatusProps> = ({ status, errorMessage
     [status],
   );
 
+  const ErrorMessage = () => <pre>{errorMessage.replace(/;/g, '\n')}</pre>;
+
   return (
     <div className={styles.clusterStatusWrapper}>
       <span className={cx(styles.status, statusStyles)} data-qa={`cluster-status-${STATUS_DATA_QA[status]}`}>
         {Messages.dbcluster.table.status[status]}
       </span>
+
       {statusError && errorMessage && (
-        <span
-          title={errorMessage.replace(/;/g, '\n')}
-          className={cx(styles.statusIcon)}
-          data-qa="cluster-status-error-message"
-        >
-          <Icon name="info-circle" />
-        </span>
+        <Tooltip content={<ErrorMessage />} placement="bottom">
+          <span className={cx(styles.statusIcon)} data-qa="cluster-status-error-message">
+            <Icon name="info-circle" />
+          </span>
+        </Tooltip>
       )}
     </div>
   );
