@@ -27,7 +27,7 @@ module.exports = {
       + '      annotations:\n'
       + '        summary: "Instance {{ $labels.instance }} down"\n'
       + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds."',
-      rule2:
+    rule2:
       'groups:\n'
       + '  - name: Test2Alerts\n'
       + '    rules:\n'

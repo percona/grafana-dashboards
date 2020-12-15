@@ -81,8 +81,7 @@ Scenario(
   },
 );
 
-
-Scenario('Will be added', async (I,pmmSettingsPage) => {
+Scenario('PMM-T520 - Verify that alert is in Firing State', async (I, pmmSettingsPage) => {
   const scheme = 'http://';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -90,7 +89,7 @@ Scenario('Will be added', async (I,pmmSettingsPage) => {
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(
     scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
-    pmmSettingsPage.alertManager.rule2
+    pmmSettingsPage.alertManager.rule2,
   );
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   pmmSettingsPage.openAlertsManagerUi();
