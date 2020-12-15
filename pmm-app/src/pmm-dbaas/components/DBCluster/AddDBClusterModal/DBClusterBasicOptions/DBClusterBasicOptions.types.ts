@@ -7,3 +7,8 @@ export interface DBClusterBasicOptionsProps {
   kubernetes: Kubernetes[];
   form: FormApi;
 }
+
+export enum Operators {
+  xtradb = 'xtradb',
+  psmdb = 'psmdb',
+}

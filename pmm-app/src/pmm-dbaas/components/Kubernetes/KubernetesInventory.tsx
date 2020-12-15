@@ -30,13 +30,11 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
       accessor: 'kubernetesClusterName',
     },
     {
-      Header: 'Kubernetes cluster status',
-      accessor: (element) => (
-        <KubernetesClusterStatus status={element.status} />
-      ),
+      Header: Messages.kubernetes.table.clusterStatusColumn,
+      accessor: (element) => <KubernetesClusterStatus status={element.status} />,
     },
     {
-      Header: 'Operators status',
+      Header: Messages.kubernetes.table.operatorsStatusColumn,
       accessor: (element) => (
         <div>
           <OperatorStatusItem databaseType={Databases.mysql} status={element.operators.xtradb.status} />

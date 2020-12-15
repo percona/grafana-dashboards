@@ -31,6 +31,8 @@ export const Messages = {
     },
     table: {
       nameColumn: 'Kubernetes Cluster Name',
+      clusterStatusColumn: 'Kubernetes Cluster Status',
+      operatorsStatusColumn: 'Operators Status',
       actionsColumn: 'Actions',
     },
     messages: {
@@ -44,7 +46,7 @@ export const Messages = {
       errorMessage: 'Cluster creation failed',
     },
     kubernetesStatus: {
-      [KubernetesClusterStatus.ok]: 'Good',
+      [KubernetesClusterStatus.ok]: 'Active',
       [KubernetesClusterStatus.unavailable]: 'Unavailable',
       [KubernetesClusterStatus.invalid]: 'Invalid',
     },
@@ -85,6 +87,7 @@ export const Messages = {
       },
       validationMessages: {
         clusterName: 'Cluster name should start with a letter, be alphanumeric, and may contain a dash',
+        notInstalledOperator: 'Operators must be installed to use database type',
       },
     },
     deleteModal: {

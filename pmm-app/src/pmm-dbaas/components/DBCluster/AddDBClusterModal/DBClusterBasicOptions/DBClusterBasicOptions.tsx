@@ -11,6 +11,7 @@ import { DBClusterTopology } from '../DBClusterAdvancedOptions/DBClusterAdvanced
 import { OptionContent } from '../../OptionContent/OptionContent';
 import { kubernetesClusterName } from './DBClusterBasicOptions.utils';
 import { KubernetesOperatorStatus } from '../../../Kubernetes/OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus.types';
+import { DatabaseOperators, OPERATORS } from './DBClusterBasicOptions.constants';
 
 export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernetes, form }) => {
   const { required } = validators;
@@ -25,27 +26,28 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
 
   const kubernetesOptions = kubernetes.map((kubernetesCluster) => {
     const { kubernetesClusterName, operators } = kubernetesCluster;
-    const operatorList = ['xtradb', 'psmdb'];
 
-    const availableOperators = operatorList.filter(
+    const availableOperators = OPERATORS.filter(
       (databaseType) => operators[databaseType].status === KubernetesOperatorStatus.ok,
     );
-    const disabledOperators = operatorList.filter(
+    const disabledOperators = OPERATORS.filter(
       (databaseType) => operators[databaseType].status !== KubernetesOperatorStatus.ok,
     );
 
     const getOptionContent = (listOfOperators, kubernetesClusterName) => (
       <OptionContent
         title={kubernetesClusterName}
-        description={disabledOperators.length ? 'Operators must be installed to use database type' : ''}
-        tags={availableOperators.map((databaseType) => databaseType)}
-        disabledTags={disabledOperators.map((databaseType) => databaseType)}
+        description={
+          disabledOperators.length ? Messages.dbcluster.addModal.validationMessages.notInstalledOperator : ''
+        }
+        tags={availableOperators.map((databaseType) => DatabaseOperators[databaseType])}
+        disabledTags={disabledOperators.map((databaseType) => DatabaseOperators[databaseType])}
       />
     );
 
     return {
       value: kubernetesClusterName,
-      label: getOptionContent(operatorList, kubernetesClusterName),
+      label: getOptionContent(OPERATORS, kubernetesClusterName),
       operators,
     };
   });
@@ -95,8 +97,7 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
         onChange={onChangeCluster}
       />
       <Field
-        // disabled={!form.getState().values[AddDBClusterFields.kubernetesCluster]}
-        disabled={!databaseOptions.length}
+        disabled={!form.getState().values[AddDBClusterFields.kubernetesCluster] || !databaseOptions.length}
         dataQa="dbcluster-database-type-field"
         name={AddDBClusterFields.databaseType}
         label={Messages.dbcluster.addModal.fields.databaseType}

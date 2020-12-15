@@ -29,7 +29,7 @@ export const dbClustersStub: DBCluster[] = [
     memory: 0,
     cpu: 0,
     disk: 25,
-    status: DBClusterStatus.ready,
+    status: DBClusterStatus.invalid,
   },
   {
     kubernetesClusterName: 'Kubernetes Cluster 1',

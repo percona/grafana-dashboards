@@ -1,23 +1,16 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { OperatorStatusItem } from './OperatorStatusItem';
+import { Databases } from '../../../../shared/core';
+import { KubernetesOperatorStatus } from './KubernetesOperatorStatus/KubernetesOperatorStatus.types';
 
 describe('DBClusterConnectionItem::', () => {
-  it('renders correctly', () => {
-    const root = shallow(
-      <OperatorStatusItem label="Test" value="test" />,
-    );
-    const span = root.find('span');
-
-    expect(span.length).toBe(2);
-    expect(root.find('div').children().length).toBe(2);
-  });
-  it('renders correctly label and value', () => {
-    const root = shallow(
-      <OperatorStatusItem label="test label" value="test value" />,
+  it('renders', () => {
+    const root = mount(
+      <OperatorStatusItem databaseType={Databases.mysql} status={KubernetesOperatorStatus.ok} />,
     );
 
-    expect(root.text()).toContain('test label');
-    expect(root.text()).toContain('test value');
+    expect(root.text()).toContain('MySQL');
+    expect(root.text()).toContain('Installed');
   });
 });
