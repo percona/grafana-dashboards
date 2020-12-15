@@ -33,20 +33,26 @@ export const DeleteDBClusterModal: FC<DeleteDBClusterModalProps> = ({
     }
   }, [selectedCluster]);
 
+
+  const ConfirmationMessage = () => (selectedCluster ? (
+    <h4 className={styles.deleteModalContent}>
+      Are you sure that you want to delete
+      {` ${DATABASE_LABELS[selectedCluster.databaseType]} `}
+      cluster
+      <span className={styles.namesHighlight}>{` ${selectedCluster.clusterName} `}</span>
+      from Kubernetes cluster
+      <span className={styles.namesHighlight}>{` ${selectedCluster.kubernetesClusterName} `}</span>
+    </h4>
+  ) : null);
+
+
   return (
     <Modal
       title={Messages.dbcluster.deleteModal.title}
       isVisible={isVisible}
       onClose={() => setVisible(false)}
     >
-      <h4 className={styles.deleteModalContent}>
-        Are you sure that you want to delete
-        {` ${DATABASE_LABELS[selectedCluster?.databaseType]} `}
-        cluster
-        <span className={styles.namesHighlight}>{` ${selectedCluster?.clusterName} `}</span>
-        from Kubernetes cluster
-        <span className={styles.namesHighlight}>{` ${selectedCluster?.kubernetesClusterName} `}</span>
-      </h4>
+      <ConfirmationMessage />
       <HorizontalGroup justify="space-between" spacing="md">
         <Button
           variant="secondary"
