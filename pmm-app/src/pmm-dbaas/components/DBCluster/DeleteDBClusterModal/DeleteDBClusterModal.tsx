@@ -41,7 +41,7 @@ export const DeleteDBClusterModal: FC<DeleteDBClusterModalProps> = ({
     >
       <h4 className={styles.deleteModalContent}>
         Are you sure that you want to delete
-        <span className={styles.namesHighlight}>{` ${DATABASE_LABELS[selectedCluster?.databaseType]} `}</span>
+        {` ${DATABASE_LABELS[selectedCluster?.databaseType]} `}
         cluster
         <span className={styles.namesHighlight}>{` ${selectedCluster?.clusterName} `}</span>
         from Kubernetes cluster
