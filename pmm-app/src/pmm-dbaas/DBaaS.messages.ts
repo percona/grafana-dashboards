@@ -110,6 +110,7 @@ export const Messages = {
         [DBClusterStatus.failed]: 'Failed',
         [DBClusterStatus.invalid]: 'Invalid',
         [DBClusterStatus.ready]: 'Active',
+        [DBClusterStatus.suspended]: 'Paused',
         errorMessage: 'Cluster creation failed',
       },
     },
