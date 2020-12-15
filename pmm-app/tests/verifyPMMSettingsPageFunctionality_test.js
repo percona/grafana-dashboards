@@ -95,6 +95,6 @@ Scenario('Will be added', async (I,pmmSettingsPage) => {
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   pmmSettingsPage.openAlertsManagerUi();
   await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2);
-  I.amOnPage(pmmSettingsPage.alertsRules);
+  I.amOnPage(pmmSettingsPage.stateOfAlertsUrl);
   await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2);
 });

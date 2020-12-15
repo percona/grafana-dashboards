@@ -6,7 +6,7 @@ const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 module.exports = {
   url: 'graph/d/pmm-settings/pmm-settings',
   prometheusAlertUrl: '/prometheus/rules',
-  alertsRules: '/prometheus/alerts',
+  stateOfAlertsUrl: '/prometheus/alerts',
   diagnosticsText:
     'You can download server logs to make the problem detection simpler. '
     + 'Please include this file if you are submitting a bug report.',
