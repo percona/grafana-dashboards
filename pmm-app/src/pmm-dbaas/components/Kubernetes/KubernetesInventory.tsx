@@ -8,7 +8,7 @@ import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { CheckboxField, FormElement } from 'shared/components/Form';
 import { Databases } from 'shared/core';
 import { getStyles } from './Kubernetes.styles';
-import { Kubernetes, NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
+import { NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
 import { OperatorStatusItem } from './OperatorStatusItem/OperatorStatusItem';
 import { KubernetesClusterStatus } from './KubernetesClusterStatus/KubernetesClusterStatus';
@@ -20,7 +20,9 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
   loading,
 }) => {
   const styles = useStyles(getStyles);
-  const [kubernetesToDelete, setKubernetesToDelete] = useState<Kubernetes>({ kubernetesClusterName: '' });
+  const [kubernetesToDelete, setKubernetesToDelete] = useState<any>({
+    kubernetesClusterName: '',
+  });
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
   const { required } = validators;
@@ -151,8 +153,10 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
                     variant="destructive"
                     size="md"
                     onClick={() => {
-                      deleteKubernetes(kubernetesToDelete, Boolean(form.getState().values.force));
-                      setDeleteModalVisible(false);
+                      if (kubernetesToDelete) {
+                        deleteKubernetes(kubernetesToDelete, Boolean(form.getState().values.force));
+                        setDeleteModalVisible(false);
+                      }
                     }}
                     data-qa="delete-kubernetes-button"
                   >
