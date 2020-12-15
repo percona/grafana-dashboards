@@ -19,8 +19,8 @@ export interface KubernetesAPI {
 
 export interface Kubernetes {
   kubernetesClusterName: string;
-  operators: OperatorsList;
-  status: string;
+  operators?: OperatorsList;
+  status?: string;
 }
 
 export type DeleteKubernetesAction = (kubernetesToDelete: Kubernetes, force: boolean) => void;

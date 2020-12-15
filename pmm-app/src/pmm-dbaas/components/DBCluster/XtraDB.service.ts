@@ -19,6 +19,7 @@ const DBCLUSTER_STATUS_MAP = {
   [DBClusterStatus.ready]: 'XTRA_DB_CLUSTER_STATE_READY',
   [DBClusterStatus.failed]: 'XTRA_DB_CLUSTER_STATE_FAILED',
   [DBClusterStatus.deleting]: 'XTRA_DB_CLUSTER_STATE_DELETING',
+  [DBClusterStatus.unknown]: 'XTRA_DB_CLUSTER_STATE_UNKNOWN',
 };
 
 export class XtraDBService extends DBClusterService {

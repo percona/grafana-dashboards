@@ -4,7 +4,7 @@ import { TextInputField, validators } from '@percona/platform-core';
 import { DATABASE_LABELS, Databases } from 'shared/core';
 import { SelectFieldAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
-import { DBClusterBasicOptionsProps } from './DBClusterBasicOptions.types';
+import { DatabaseOption, DBClusterBasicOptionsProps } from './DBClusterBasicOptions.types';
 import { DATABASE_OPTIONS } from '../../DBCluster.constants';
 import { AddDBClusterFields } from '../AddDBClusterModal.types';
 import { DBClusterTopology } from '../DBClusterAdvancedOptions/DBClusterAdvancedOptions.types';
@@ -55,7 +55,7 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
   const [databaseOptions, setDatabaseOptions] = useState(DATABASE_OPTIONS);
   const onChangeCluster = useCallback((selectedKubernetes) => {
     const { operators } = selectedKubernetes;
-    const availableDatabaseOptions = [];
+    const availableDatabaseOptions: DatabaseOption[] = [];
 
     if (operators.xtradb.status === KubernetesOperatorStatus.ok) {
       availableDatabaseOptions.push({
