@@ -62,7 +62,7 @@ export const EditDBClusterModal: FC<EditDBClusterModalProps> = ({
     // eslint-disable-next-line max-len
     clusterParameters.topology = clusterParameters.clusterSize > 1 ? DBClusterTopology.cluster : DBClusterTopology.single;
     clusterParameters[EditDBClusterFields.nodes] = clusterParameters.clusterSize;
-    clusterParameters[EditDBClusterFields.single] = clusterParameters.clusterSize;
+    clusterParameters[EditDBClusterFields.single] = 1;
 
     const isMatchSize = (type) => DEFAULT_SIZES[type].cpu === clusterParameters.cpu
       && DEFAULT_SIZES[type].memory === clusterParameters.memory

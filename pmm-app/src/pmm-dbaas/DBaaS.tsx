@@ -37,7 +37,7 @@ export const DBaaSPanel: FC = () => {
   );
 
   return (
-    <div>
+    <div className={styles.panelContentWrapper}>
       <TabsBar>
         {tabs.map((tab, index) => (
           <Tab

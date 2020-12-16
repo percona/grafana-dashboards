@@ -3,6 +3,7 @@ import { SelectableValue } from '@grafana/data';
 export interface AddDBClusterModalProps {
   kubernetesOptions: SelectableValue[];
   isVisible: boolean;
+  showMonitoringWarning?: boolean;
   setVisible: (value: boolean) => void;
   onDBClusterAdded: () => void;
 }

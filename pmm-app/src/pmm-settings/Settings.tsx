@@ -98,6 +98,7 @@ export const SettingsPanel: FC = () => {
                   updatesDisabled={!!settings.updatesDisabled}
                   sttEnabled={!!settings.sttEnabled}
                   dbaasEnabled={!!settings.dbaasEnabled}
+                  publicAddress={settings.publicAddress}
                   updateSettings={updateSettings}
                 />
                 )}
