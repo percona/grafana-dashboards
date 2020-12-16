@@ -81,7 +81,7 @@ Scenario(
   },
 );
 
-Scenario('PMM-T520 - Verify that alert is in Firing State @nightly', async (I, pmmSettingsPage) => {
+Scenario('PMM-T520 - Verify that alert is in Firing State @not-ui-pipeline @nightly @not-pr-pipeline', async (I, pmmSettingsPage) => {
   const scheme = 'http://';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
