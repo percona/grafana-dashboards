@@ -82,13 +82,13 @@ Scenario(
 );
 
 Scenario('PMM-T520 - Verify that alert is in Firing State @not-ui-pipeline @nightly @not-pr-pipeline', async (I, pmmSettingsPage) => {
-  const scheme = 'http://';
+  const scheme = 'http://127.0.0.1';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(
-    scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
+    scheme + pmmSettingsPage.alertManager.service,
     pmmSettingsPage.alertManager.rule2,
   );
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
