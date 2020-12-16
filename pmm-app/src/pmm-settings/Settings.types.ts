@@ -25,4 +25,5 @@ export enum TabKeys {
   ssh = 'ssh-key',
   alertManager = 'am-integration',
   perconaPlatform = 'percona-platform',
+  communication = 'communication',
 }
