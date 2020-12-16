@@ -9,39 +9,42 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
 
   return {
     getFiltersWrapper: (height) => css`
-    border: 1px solid rgb(40, 40, 40);
-    height: ${height}px;
-    padding: 10px 16px !important;
-  `,
+      border: 1px solid rgb(40, 40, 40);
+      height: ${height}px;
+      padding: 10px 16px !important;
+    `,
     filtersField: css`
-    width: 100%;
-    input {
+      width: 100%;
+      input {
         color: ${parameters.mainTextColor} !important;
         background-color: ${parameters.table.backgroundColor} !important;
-    }
-  `,
+      }
+    `,
+    icon: css`
+      fill: #c6c6c6;
+    `,
     filtersHeader: css`
-    display: flex;
-    align-items: baseline;
-    padding: 15px 0px 5px;
-    height: 50px;
-    justify-content: space-between;
-  `,
+      display: flex;
+      align-items: baseline;
+      padding: 15px 0px 5px;
+      height: 50px;
+      justify-content: space-between;
+    `,
     filtersDisabled: css`
-    opacity: 0.6;
-    pointer-events: none;
-  `,
+      opacity: 0.6;
+      pointer-events: none;
+    `,
     showAllButton: css`
-    padding: 0 !important;
-    height: auto;
-  `,
+      padding: 0 !important;
+      height: auto;
+    `,
     title: css`
-    margin: 3px;
-    color: ${parameters.mainTextColor} !important;
-  `,
+      margin: 3px;
+      color: ${parameters.mainTextColor} !important;
+    `,
     resetButton: css`
-    padding: 0 !important;
-    height: auto;
-  `,
+      padding: 0 !important;
+      height: auto;
+    `,
   };
 });

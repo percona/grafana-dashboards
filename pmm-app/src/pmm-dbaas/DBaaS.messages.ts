@@ -13,6 +13,10 @@ export const Messages = {
       confirm: 'Proceed',
       confirmMessage: 'Are you sure that you want to unregister this cluster?',
       title: 'Confirm action',
+      labels: {
+        force: 'Ignore errors; unregister anyway',
+        forceWrapper: 'Force mode',
+      },
     },
     deleteSuccess: 'Cluster successfully unregistered',
     addModal: {
@@ -33,9 +37,10 @@ export const Messages = {
   },
   dbcluster: {
     addAction: 'Create DB Cluster',
-    publicAddressWarningBegin: 'Go to',
+    publicAddressWarningBegin:
+      'If you want to use monitoring, you need to set your PMM installation public address in',
     publicAddressWarningLink: 'settings',
-    publicAddressWarningEnd: 'to set PMM public address first',
+    publicAddressWarningEnd: 'before cluster creation',
     addModal: {
       title: 'Create Cluster',
       confirm: 'Create Cluster',

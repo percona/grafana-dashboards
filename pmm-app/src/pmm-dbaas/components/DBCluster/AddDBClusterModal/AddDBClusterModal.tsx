@@ -2,20 +2,25 @@ import React, { FC, useMemo } from 'react';
 import { StepProgress } from '@percona/platform-core';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
+import { Icon, useStyles } from '@grafana/ui';
 import { AddDBClusterModalProps, AddDBClusterFields } from './AddDBClusterModal.types';
 import { DBClusterBasicOptions } from './DBClusterBasicOptions/DBClusterBasicOptions';
 import { DBClusterAdvancedOptions } from './DBClusterAdvancedOptions/DBClusterAdvancedOptions';
 import { INITIAL_VALUES } from './DBClusterAdvancedOptions/DBClusterAdvancedOptions.constants';
 import { DBClusterTopology } from './DBClusterAdvancedOptions/DBClusterAdvancedOptions.types';
 import { DBClusterServiceFactory } from '../DBClusterService.factory';
-import { styles } from './AddDBClusterModal.styles';
+import { buildWarningMessage } from '../DBCluster.utils';
+import { getStyles } from './AddDBClusterModal.styles';
 
 export const AddDBClusterModal: FC<AddDBClusterModalProps> = ({
   kubernetesOptions,
   isVisible,
   setVisible,
   onDBClusterAdded,
+  showMonitoringWarning,
 }) => {
+  const styles = useStyles(getStyles);
+
   const steps = useMemo(
     () => [
       {
@@ -76,6 +81,19 @@ export const AddDBClusterModal: FC<AddDBClusterModalProps> = ({
   return (
     <Modal title={Messages.dbcluster.addModal.title} isVisible={isVisible} onClose={() => setVisible(false)}>
       <div className={styles.stepProgressWrapper}>
+        {showMonitoringWarning && (
+          <div className={styles.warningWrapper} data-qa="add-cluster-monitoring-warning">
+            <Icon
+              name="exclamation-triangle"
+              className={styles.warningIcon}
+            />
+            <span className={styles.warningMessage}>
+              {
+                buildWarningMessage(styles.settingsLink)
+              }
+            </span>
+          </div>
+        )}
         <StepProgress steps={steps} initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
       </div>
     </Modal>

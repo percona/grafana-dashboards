@@ -38,7 +38,9 @@ const Metrics: FC<MetricsProps> = ({
     return (
       <div className={styles.metricColumn}>
         <span className={styles.metricData}>
-          {`${item.isRate ? humanize.transform(item.metric.rate, item.pipeTypes.ratePipe) : '0'} ${item.units}`}
+          {`${item.isRate ? humanize.transform(item.metric.rate, item.pipeTypes.ratePipe) : '0'} ${
+            item.units
+          }`}
         </span>
         <span className={styles.sparkline}>{item.sparkline && <Sparkline {...polygonChartProps} />}</span>
       </div>
