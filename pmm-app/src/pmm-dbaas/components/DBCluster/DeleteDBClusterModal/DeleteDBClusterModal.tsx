@@ -42,6 +42,7 @@ export const DeleteDBClusterModal: FC<DeleteDBClusterModalProps> = ({
       <span className={styles.namesHighlight}>{` ${selectedCluster.clusterName} `}</span>
       from Kubernetes cluster
       <span className={styles.namesHighlight}>{` ${selectedCluster.kubernetesClusterName} `}</span>
+      ?
     </h4>
   ) : null);
 
