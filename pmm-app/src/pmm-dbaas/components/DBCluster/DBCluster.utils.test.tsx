@@ -68,6 +68,6 @@ describe('DBCluster.utils::', () => {
   it('returns failed status when status doesnt exist', () => {
     const result = getClusterStatus('XTRA_DB_CLUSTER_STATE_UNKNOWN', DBCLUSTER_STATUS_MAP);
 
-    expect(result).toBe(DBClusterStatus.failed);
+    expect(result).toBe(DBClusterStatus.changing);
   });
 });
