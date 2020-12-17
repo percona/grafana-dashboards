@@ -41,6 +41,16 @@ export const dbClustersStub: DBCluster[] = [
     disk: 25,
     status: DBClusterStatus.deleting,
   },
+  {
+    kubernetesClusterName: 'Kubernetes Cluster 1',
+    clusterName: 'dbcluster1',
+    databaseType: Databases.mysql,
+    clusterSize: 3,
+    memory: 1024,
+    cpu: 1,
+    disk: 25,
+    status: DBClusterStatus.failed,
+  },
 ];
 
 export const xtraDBClusterConnectionStub: DBClusterConnection = {
