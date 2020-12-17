@@ -8,6 +8,7 @@ const DBCLUSTER_STATUS_MAP = {
   [DBClusterStatus.ready]: 'XTRA_DB_CLUSTER_STATE_READY',
   [DBClusterStatus.failed]: 'XTRA_DB_CLUSTER_STATE_FAILED',
   [DBClusterStatus.deleting]: 'XTRA_DB_CLUSTER_STATE_DELETING',
+  [DBClusterStatus.suspended]: 'XTRA_DB_CLUSTER_STATE_PAUSED',
 };
 
 describe('DBCluster.utils::', () => {
@@ -60,14 +61,14 @@ describe('DBCluster.utils::', () => {
 
     expect(result).toBe(DBClusterStatus.ready);
   });
-  it('returns failed status when receives undefined', () => {
+  it('returns changing status when receives undefined', () => {
     const result = getClusterStatus(undefined, DBCLUSTER_STATUS_MAP);
 
-    expect(result).toBe(DBClusterStatus.failed);
+    expect(result).toBe(DBClusterStatus.changing);
   });
   it('returns failed status when status doesnt exist', () => {
     const result = getClusterStatus('XTRA_DB_CLUSTER_STATE_UNKNOWN', DBCLUSTER_STATUS_MAP);
 
-    expect(result).toBe(DBClusterStatus.failed);
+    expect(result).toBe(DBClusterStatus.changing);
   });
 });

@@ -18,6 +18,8 @@ export interface DBCluster {
   disk: number;
   status?: DBClusterStatus;
   errorMessage?: string;
+  suspend?: boolean;
+  resume?: boolean;
 }
 
 export enum DBClusterStatus {
@@ -26,6 +28,7 @@ export enum DBClusterStatus {
   ready = 'DB_CLUSTER_STATE_READY',
   failed = 'DB_CLUSTER_STATE_FAILED',
   deleting = 'DB_CLUSTER_STATE_DELETING',
+  suspended = 'DB_CLUSTER_STATE_PAUSED',
 }
 
 export type DBClusterStatusMap = {
@@ -45,14 +48,11 @@ export interface DBClusterPayload {
   state?: DBClusterStatus;
   operation?: DBClusterOperationAPI;
   params: DBClusterParamsAPI;
+  suspend?: boolean;
+  resume?: boolean;
 }
 
-export interface DeleteDBClusterAPI {
-  kubernetes_cluster_name: string;
-  name: string;
-}
-
-export interface RestartDBClusterAPI {
+export interface DBClusterActionAPI {
   kubernetes_cluster_name: string;
   name: string;
 }
