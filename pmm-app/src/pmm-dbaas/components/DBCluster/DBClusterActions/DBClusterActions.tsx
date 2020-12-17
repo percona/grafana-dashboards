@@ -46,6 +46,29 @@ export const DBClusterActions: FC<DBClusterActionsProps> = ({
           }
         },
       },
+      {
+        title:
+          dbCluster.status === DBClusterStatus.ready
+            ? Messages.dbcluster.table.actions.suspend
+            : Messages.dbcluster.table.actions.resume,
+        disabled:
+          dbCluster.status !== DBClusterStatus.ready && dbCluster.status !== DBClusterStatus.suspended,
+        action: async () => {
+          try {
+            const dbClusterService = DBClusterServiceFactory.newDBClusterService(dbCluster.databaseType);
+
+            if (dbCluster.status === DBClusterStatus.ready) {
+              await dbClusterService.suspendDBCluster(dbCluster);
+            } else {
+              await dbClusterService.resumeDBCluster(dbCluster);
+            }
+
+            getDBClusters();
+          } catch (e) {
+            console.error(e);
+          }
+        },
+      },
     ],
     [setSelectedCluster, setDeleteModalVisible, getDBClusters],
   );
