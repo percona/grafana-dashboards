@@ -95,5 +95,5 @@ Scenario('PMM-T520 - Verify that alert is in Firing State - internal alert manag
   pmmSettingsPage.openAlertsManagerUi();
   await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2);
   I.amOnPage(pmmSettingsPage.stateOfAlertsUrl);
-  await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2);
+  await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2, true);
 });
