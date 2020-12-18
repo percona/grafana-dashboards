@@ -21,7 +21,8 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     nodesWrapper: css`
       margin-bottom: ${spacing.md};
       width: 60px;
-      div, label {
+      div,
+      label {
         white-space: nowrap;
       }
     `,

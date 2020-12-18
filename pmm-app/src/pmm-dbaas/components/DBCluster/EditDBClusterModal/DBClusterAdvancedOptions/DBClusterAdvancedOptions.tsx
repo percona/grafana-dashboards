@@ -14,6 +14,7 @@ import {
   DEFAULT_SIZES,
   MIN_NODES,
   TOPOLOGIES_DISABLED,
+  MIN_RESOURCES,
 } from './DBClusterAdvancedOptions.constants';
 import { getStyles } from './DBClusterAdvancedOptions.styles';
 import { EditDBClusterFields } from '../EditDBClusterModal.types';
@@ -31,12 +32,8 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   const [customCPU, setCustomCPU] = useState(DEFAULT_SIZES.small.cpu);
   const { required, min } = validators;
   const { change } = form;
-  const nodesValidators = [required, min(MIN_NODES)];
-  const resourcesValidators = [
-    required,
-    min(0.1),
-    (value) => ((value * 10) % 1 ? 'Value must be increments of 0.1.' : undefined),
-  ];
+  const nodeValidators = [required, min(MIN_NODES)];
+  const resourceValidators = [required, min(MIN_RESOURCES)];
   const {
     topology, resources, memory, cpu, databaseType,
   } = values;
@@ -88,7 +85,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
           <NumberInputField
             name={EditDBClusterFields.nodes}
             label={Messages.dbcluster.addModal.fields.nodes}
-            validators={nodesValidators}
+            validators={nodeValidators}
           />
         )}
       </div>
@@ -104,14 +101,14 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
         <NumberInputField
           name={EditDBClusterFields.memory}
           label={Messages.dbcluster.addModal.fields.memory}
-          validators={resourcesValidators}
+          validators={resourceValidators}
           disabled={resources !== DBClusterResources.custom}
           parse={parsePositiveInt}
         />
         <NumberInputField
           name={EditDBClusterFields.cpu}
           label={Messages.dbcluster.addModal.fields.cpu}
-          validators={resourcesValidators}
+          validators={resourceValidators}
           disabled={resources !== DBClusterResources.custom}
           parse={parsePositiveInt}
         />

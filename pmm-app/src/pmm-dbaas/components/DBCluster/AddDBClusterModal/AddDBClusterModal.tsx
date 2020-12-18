@@ -83,15 +83,8 @@ export const AddDBClusterModal: FC<AddDBClusterModalProps> = ({
       <div className={styles.stepProgressWrapper}>
         {showMonitoringWarning && (
           <div className={styles.warningWrapper} data-qa="add-cluster-monitoring-warning">
-            <Icon
-              name="exclamation-triangle"
-              className={styles.warningIcon}
-            />
-            <span className={styles.warningMessage}>
-              {
-                buildWarningMessage(styles.settingsLink)
-              }
-            </span>
+            <Icon name="exclamation-triangle" className={styles.warningIcon} />
+            <span className={styles.warningMessage}>{buildWarningMessage(styles.settingsLink)}</span>
           </div>
         )}
         <StepProgress steps={steps} initialValues={INITIAL_VALUES} onSubmit={onSubmit} />

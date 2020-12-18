@@ -33,7 +33,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   const [customDisk, setCustomDisk] = useState(DEFAULT_SIZES.small.disk);
   const { required, min } = validators;
   const { change } = form;
-  const nodesValidators = [required, min(MIN_NODES)];
+  const nodeValidators = [required, min(MIN_NODES)];
   const parametersValidators = [required, min(MIN_RESOURCES)];
 
   const {
@@ -91,7 +91,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
           <NumberInputField
             name={AddDBClusterFields.nodes}
             label={Messages.dbcluster.addModal.fields.nodes}
-            validators={nodesValidators}
+            validators={nodeValidators}
           />
         )}
       </div>

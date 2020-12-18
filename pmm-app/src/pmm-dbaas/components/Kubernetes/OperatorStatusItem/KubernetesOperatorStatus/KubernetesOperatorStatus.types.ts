@@ -1,8 +1,3 @@
-//
-// export interface DBClusterStatusProps {
-//   status: DBClusterStatus;
-// }
-
 export enum KubernetesOperatorStatus {
   ok = 'OPERATORS_STATUS_OK',
   invalid = 'OPERATORS_STATUS_INVALID',

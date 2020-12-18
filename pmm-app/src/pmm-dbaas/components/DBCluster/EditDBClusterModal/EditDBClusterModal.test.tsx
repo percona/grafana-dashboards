@@ -8,11 +8,7 @@ jest.mock('shared/components/helpers/notification-manager');
 describe('EditDBClusterModal::', () => {
   it('should disable submit button when there are no changes', () => {
     const root = mount(
-      <EditDBClusterModal
-        isVisible
-        setVisible={setVisibleStub}
-        onDBClusterChanged={onDBClusterAddedStub}
-      />,
+      <EditDBClusterModal isVisible setVisible={setVisibleStub} onDBClusterChanged={onDBClusterAddedStub} />,
     );
 
     const button = root.find('[data-qa="dbcluster-update-cluster-button"]').find('button');

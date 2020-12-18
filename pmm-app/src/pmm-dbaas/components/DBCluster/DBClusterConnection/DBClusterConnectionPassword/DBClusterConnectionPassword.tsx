@@ -12,7 +12,7 @@ export const DBClusterConnectionPassword: FC<DBClusterConnectionPasswordProps> =
 }) => {
   const styles = useStyles(getStyles);
   const [showPassword, setShowPassword] = useState(false);
-  const getHiddenPassword = useMemo(() => ('*'.repeat(HIDDEN_PASSWORD_LENGTH)), []);
+  const getHiddenPassword = useMemo(() => '*'.repeat(HIDDEN_PASSWORD_LENGTH), []);
 
   return (
     <div className={styles.connectionPasswordWrapper}>

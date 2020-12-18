@@ -1,10 +1,7 @@
 import { css } from 'emotion';
 import { GrafanaTheme } from '@grafana/data';
 
-export const getStyles = ({
-  spacing,
-  typography,
-}: GrafanaTheme) => ({
+export const getStyles = ({ spacing, typography }: GrafanaTheme) => ({
   connectionItemWrapper: css`
     display: flex;
     margin-bottom: ${spacing.xxs};
