@@ -36,7 +36,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   const { change } = form;
   const diskValidators = [required, min(MIN_DISK_SIZE)];
   const nodeValidators = [required, min(MIN_NODES)];
-  const parameterValidators = [required, min(MIN_RESOURCES)];
+  const parameterValidators = [required, min(MIN_RESOURCES), resourceValidator];
 
   const {
     topology,

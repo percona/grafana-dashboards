@@ -34,7 +34,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   const { required, min } = validators;
   const { change } = form;
   const nodeValidators = [required, min(MIN_NODES)];
-  const resourceValidators = [required, min(MIN_RESOURCES)];
+  const resourceValidators = [required, min(MIN_RESOURCES), resourceValidator];
   const {
     topology, resources, memory, cpu, databaseType,
   } = values;

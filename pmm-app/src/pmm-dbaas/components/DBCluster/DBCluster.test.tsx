@@ -19,7 +19,7 @@ describe('DBCluster::', () => {
     const root = mount(<DBCluster kubernetes={kubernetesStub} />);
 
     expect(root.find('[data-qa="dbcluster-add-cluster-button"]').find('button').length).toBe(1);
-    expect(root.find('tr').length).toBe(5);
+    expect(root.find('tr').length).toBe(6);
   });
   it('renders correctly with failed status', () => {
     const root = mount(<DBCluster kubernetes={kubernetesStub} />);
