@@ -642,11 +642,11 @@ module.exports = {
       'Mem Avail',
       'Disk Reads',
       'Disk Writes',
-      'Network IO', 
+      'Network IO',
       'Sys Uptime',
     ],
   },
-victoriaMetricsAgentsOverviewDashboard: {
+  victoriaMetricsAgentsOverviewDashboard: {
     url: 'graph/d/vmagent/victoriametrics-agents-overview?orgId=1&refresh=1m',
     metrics: [
       'Current Uptime',
@@ -678,7 +678,7 @@ victoriaMetricsAgentsOverviewDashboard: {
       'Dropped Invalid Rows',
       'Remote Write Requests',
       'Remote Write Size',
-      'Block Size Rows', 
+      'Block Size Rows',
       'Block Size in Bytes',
       'Requests Retry Rate',
       'Established Connections',
@@ -687,7 +687,8 @@ victoriaMetricsAgentsOverviewDashboard: {
       'Memory Usage',
       'Threads',
       'Network  Usage',
-    ]},
+    ],
+  },
 
   fields: {
     notAvailableMetrics: '//span[contains(text(), "N/A")]',
