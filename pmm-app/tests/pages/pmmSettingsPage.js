@@ -15,6 +15,7 @@ module.exports = {
   alertManager: {
     ip: process.env.VM_IP,
     service: ':9093/#/alerts',
+    externalAlertManagerPort: ':9093',
     rule:
       'groups:\n'
       + '  - name: AutoTestAlerts\n'
@@ -221,6 +222,7 @@ module.exports = {
 
     for (let i = 0; i < 30; i++) {
       let response;
+
       if (checkState) {
         response = await I.sendGetRequest('prometheus/alerts', headers);
       } else {
@@ -238,6 +240,21 @@ module.exports = {
 
     I.seeElement(`//pre[contains(text(), '${ruleName}')]`);
     I.see(ruleName);
+  },
+
+  async verifyExternalAlertManager(ruleName) {
+    let response;
+
+    for (let i = 0; i < 20; i++) {
+      response = await I.sendGetRequest('http://' + this.alertManager.ip + this.alertManager.externalAlertManagerPort + '/api/v2/alerts/groups?silenced=false&inhibited=false&active=true');
+      if (JSON.stringify(response.data).includes(ruleName)) {
+        break;
+      }
+
+      I.wait(5);
+    }
+
+    assert.equal(JSON.stringify(response.data).includes(ruleName), true, 'Alert Should be firing at External Alert Manager');
   },
 
   async verifyTooltip(tooltipObj) {
