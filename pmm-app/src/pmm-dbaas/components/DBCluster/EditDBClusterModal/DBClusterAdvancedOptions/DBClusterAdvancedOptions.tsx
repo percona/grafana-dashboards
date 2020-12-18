@@ -57,7 +57,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
     [resources, memory, cpu, customMemory, customCPU],
   );
   const parsePositiveInt = useCallback(
-    (value) => (value > 0 && Number.isFinite(+value) ? value : undefined),
+    (value) => (value > 0 && Number.isInteger(+value) ? value : undefined),
     [],
   );
   const topologiesDisabled = useMemo(() => (databaseType !== Databases.mysql ? TOPOLOGIES_DISABLED : []), [
