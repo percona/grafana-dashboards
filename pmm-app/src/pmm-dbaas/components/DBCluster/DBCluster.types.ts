@@ -29,6 +29,7 @@ export enum DBClusterStatus {
   failed = 'DB_CLUSTER_STATE_FAILED',
   deleting = 'DB_CLUSTER_STATE_DELETING',
   suspended = 'DB_CLUSTER_STATE_PAUSED',
+  unknown = 'DB_CLUSTER_STATE_UNKNOWN',
 }
 
 export type DBClusterStatusMap = {

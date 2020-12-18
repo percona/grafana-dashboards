@@ -2,12 +2,7 @@ import { Kubernetes } from 'pmm-dbaas/components/Kubernetes/Kubernetes.types';
 import { dbClustersStub, getDBClustersActionStub } from './dbClustersStubs';
 import { DBCluster, GetDBClustersAction } from '../DBCluster.types';
 
-
-export const useDBClusters = (kubernetes: Kubernetes[]): [
-  DBCluster[],
-  GetDBClustersAction,
-  boolean
-] => {
+export const useDBClusters = (kubernetes: Kubernetes[]): [DBCluster[], GetDBClustersAction, boolean] => {
   const dbClusters: DBCluster[] = [];
 
   if (kubernetes.length > 0) {

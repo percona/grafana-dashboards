@@ -19,6 +19,7 @@ const DBCLUSTER_STATUS_MAP = {
   [DBClusterStatus.failed]: 'PSMDB_CLUSTER_STATE_FAILED',
   [DBClusterStatus.deleting]: 'PSMDB_CLUSTER_STATE_DELETING',
   [DBClusterStatus.suspended]: 'PSMDB_CLUSTER_STATE_PAUSED',
+  [DBClusterStatus.unknown]: 'PSMDB_CLUSTER_STATE_UNKNOWN',
 };
 
 export class PSMDBService extends DBClusterService {
