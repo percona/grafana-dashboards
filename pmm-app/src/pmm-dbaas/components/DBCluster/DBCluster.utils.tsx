@@ -13,7 +13,7 @@ export const getClusterStatus = (
 ): DBClusterStatus => {
   const key = Object.keys(statusMap).find((key) => statusMap[key] === status) as DBClusterStatus;
 
-  return key || DBClusterStatus.failed;
+  return key || DBClusterStatus.changing;
 };
 
 export const buildWarningMessage = (className: string) => (
