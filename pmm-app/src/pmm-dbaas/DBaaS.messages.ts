@@ -27,7 +27,7 @@ export const Messages = {
       fields: {
         clusterName: 'Kubernetes Cluster Name',
         kubeConfig: 'Kubeconfig file',
-      },
+      }
     },
     table: {
       nameColumn: 'Kubernetes Cluster Name',
@@ -89,6 +89,7 @@ export const Messages = {
         clusterName: 'Cluster name should start with a letter, be alphanumeric, and may contain a dash',
         notInstalledOperator: 'Operators must be installed to use database type',
       },
+      noOperatorsMessage: 'No clusters with installed operators found',
     },
     deleteModal: {
       cancel: 'Cancel',

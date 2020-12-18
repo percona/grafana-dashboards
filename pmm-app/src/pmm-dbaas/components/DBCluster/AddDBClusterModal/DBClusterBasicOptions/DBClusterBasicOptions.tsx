@@ -24,33 +24,40 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
     change(AddDBClusterFields.databaseType, databaseType);
   }, []);
 
-  const kubernetesOptions = kubernetes.map((kubernetesCluster) => {
-    const { kubernetesClusterName, operators } = kubernetesCluster;
+  const kubernetesOptions = kubernetes
+    .map((kubernetesCluster) => {
+      const { kubernetesClusterName, operators } = kubernetesCluster;
 
-    const availableOperators = OPERATORS.filter(
-      (databaseType) => operators[databaseType].status === KubernetesOperatorStatus.ok,
-    );
-    const disabledOperators = OPERATORS.filter(
-      (databaseType) => operators[databaseType].status !== KubernetesOperatorStatus.ok,
-    );
+      const availableOperators = OPERATORS.filter(
+        (databaseType) => operators[databaseType].status === KubernetesOperatorStatus.ok,
+      );
+      const disabledOperators = OPERATORS.filter(
+        (databaseType) => operators[databaseType].status !== KubernetesOperatorStatus.ok,
+      );
 
-    const getOptionContent = (listOfOperators, kubernetesClusterName) => (
-      <OptionContent
-        title={kubernetesClusterName}
-        description={
-          disabledOperators.length ? Messages.dbcluster.addModal.validationMessages.notInstalledOperator : ''
-        }
-        tags={availableOperators.map((databaseType) => DatabaseOperators[databaseType])}
-        disabledTags={disabledOperators.map((databaseType) => DatabaseOperators[databaseType])}
-      />
-    );
+      const getOptionContent = (listOfOperators, kubernetesClusterName) => (
+        <OptionContent
+          title={kubernetesClusterName}
+          description={
+            disabledOperators.length
+              ? Messages.dbcluster.addModal.validationMessages.notInstalledOperator
+              : ''
+          }
+          tags={availableOperators.map((databaseType) => DatabaseOperators[databaseType])}
+          disabledTags={disabledOperators.map((databaseType) => DatabaseOperators[databaseType])}
+        />
+      );
 
-    return {
-      value: kubernetesClusterName,
-      label: getOptionContent(OPERATORS, kubernetesClusterName),
-      operators,
-    };
-  });
+      return {
+        value: kubernetesClusterName,
+        label: getOptionContent(OPERATORS, kubernetesClusterName),
+        operators,
+        availableOperators: availableOperators,
+      };
+    })
+    .filter((operators) => {
+      operators.availableOperators.length > 0;
+    });
 
   const [databaseOptions, setDatabaseOptions] = useState(DATABASE_OPTIONS);
   const onChangeCluster = useCallback((selectedKubernetes) => {
@@ -93,6 +100,7 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
         label={Messages.dbcluster.addModal.fields.kubernetesCluster}
         options={kubernetesOptions}
         component={SelectFieldAdapter}
+        noOptionsMessage={Messages.dbcluster.addModal.noOperatorsMessage}
         validate={required}
         onChange={onChangeCluster}
       />
