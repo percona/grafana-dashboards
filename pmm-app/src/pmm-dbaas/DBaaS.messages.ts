@@ -7,6 +7,7 @@ export const Messages = {
   },
   kubernetes: {
     deleteAction: 'Unregister',
+    showConfiguration: 'Show configuration',
     addAction: 'Register new Kubernetes Cluster',
     deleteModal: {
       cancel: 'Cancel',

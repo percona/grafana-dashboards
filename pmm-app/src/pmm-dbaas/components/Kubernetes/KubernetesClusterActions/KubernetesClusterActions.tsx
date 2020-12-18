@@ -1,32 +1,31 @@
 import React, { FC, useCallback } from 'react';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { MultipleActions } from 'pmm-dbaas/components/MultipleActions/MultipleActions';
-import { DBCluster } from '../DBCluster.types';
 // import { isClusterChanging } from '../DBCluster.utils';
-import { DBClusterServiceFactory } from '../DBClusterService.factory';
 import { DBClusterActionsProps } from './KubernetesClusterActions.types';
 import { styles } from './KubernetesClusterActions.styles';
+import { Kubernetes } from '../Kubernetes.types';
 
 export const KubernetesClusterActions: FC<DBClusterActionsProps> = ({
-  dbCluster,
+  kubernetesCluster,
   setSelectedCluster,
   setDeleteModalVisible,
   setViewConfigModalVisible,
   getDBClusters,
 }) => {
   const getActions = useCallback(
-    (dbCluster: DBCluster) => [
+    (kubernetesCluster: Kubernetes) => [
       {
         title: Messages.kubernetes.deleteAction,
         action: () => {
-          setSelectedCluster(dbCluster);
+          setSelectedCluster(kubernetesCluster);
           setDeleteModalVisible(true);
         },
       },
       {
-        title: 'Show configuration',
+        title: Messages.kubernetes.showConfiguration,
         action: () => {
-          setSelectedCluster(dbCluster);
+          setSelectedCluster(kubernetesCluster);
           setViewConfigModalVisible(true);
         },
       },
@@ -36,11 +35,7 @@ export const KubernetesClusterActions: FC<DBClusterActionsProps> = ({
 
   return (
     <div className={styles.actionsColumn}>
-      <MultipleActions
-        actions={getActions(dbCluster)}
-        // disabled={isClusterChanging(dbCluster)}
-        dataQa="dbcluster-actions"
-      />
+      <MultipleActions actions={getActions(kubernetesCluster)} dataQa="dbcluster-actions" />
     </div>
   );
 };

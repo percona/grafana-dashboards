@@ -91,6 +91,7 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
   }, []);
 
   useEffect(() => getSettings(), []);
+
   return (
     <div className={styles.tableWrapper}>
       <div className={styles.actionPanel}>

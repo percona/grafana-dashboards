@@ -9,7 +9,7 @@ import { getStyles } from './Kubernetes.styles';
 import { Kubernetes, NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
 import { clusterActionsRender } from './ColumnRenderers/ColumnRenderers';
-import {ViewClusterConfigModal} from "./ViewClusterConfigModal/ViewClusterConfigModal";
+import { ViewClusterConfigModal } from './ViewClusterConfigModal/ViewClusterConfigModal';
 
 export const KubernetesInventory: FC<KubernetesProps> = ({
   kubernetes,
@@ -31,9 +31,9 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
     {
       Header: Messages.kubernetes.table.actionsColumn,
       accessor: clusterActionsRender({
-        setSelectedCluster: setSelectedCluster,
-        setDeleteModalVisible: setDeleteModalVisible,
-        setViewConfigModalVisible: setViewConfigModalVisible
+        setSelectedCluster,
+        setDeleteModalVisible,
+        setViewConfigModalVisible,
       }),
     },
   ];

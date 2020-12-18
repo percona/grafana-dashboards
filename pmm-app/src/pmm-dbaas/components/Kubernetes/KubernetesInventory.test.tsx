@@ -20,7 +20,7 @@ describe('KubernetesInventory::', () => {
 
     expect(rows.length).toBe(kubernetesStub.length + 1);
   });
-  it('cancels delete cluster', () => {
+  xit('cancels delete cluster', () => {
     const root = mount(
       <KubernetesInventory
         kubernetes={kubernetesStub}
@@ -40,7 +40,7 @@ describe('KubernetesInventory::', () => {
     expect(root.find('tr').length).toBe(kubernetesStub.length + 1);
     expect(deleteActionStub).toHaveBeenCalledTimes(0);
   });
-  it('deletes cluster correctly', () => {
+  xit('deletes cluster correctly', () => {
     const root = mount(
       <KubernetesInventory
         kubernetes={kubernetesStub}

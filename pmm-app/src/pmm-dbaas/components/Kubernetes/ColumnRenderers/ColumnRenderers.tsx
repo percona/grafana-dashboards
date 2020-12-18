@@ -1,14 +1,15 @@
 import React from 'react';
-import {KubernetesClusterActions} from '../KubernetesClusterActions/KubernetesClusterActions';
+import { KubernetesClusterActions } from '../KubernetesClusterActions/KubernetesClusterActions';
+import { Kubernetes } from '../Kubernetes.types';
 
 export const clusterActionsRender = ({
   setSelectedCluster,
   setDeleteModalVisible,
   setViewConfigModalVisible,
   getDBClusters,
-}: Omit<any, 'dbCluster'>) => (dbCluster) => (
+}: Omit<any, 'dbCluster'>) => (kubernetesCluster: Kubernetes) => (
   <KubernetesClusterActions
-    dbCluster={dbCluster}
+    kubernetesCluster={kubernetesCluster}
     setSelectedCluster={setSelectedCluster}
     setDeleteModalVisible={setDeleteModalVisible}
     setViewConfigModalVisible={setViewConfigModalVisible}
