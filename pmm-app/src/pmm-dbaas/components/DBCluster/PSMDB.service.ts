@@ -4,11 +4,10 @@ import { apiRequestManagement } from 'shared/components/helpers/api';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
 import {
   DBCluster,
-  DBClusterPayload,
-  DeleteDBClusterAPI,
+  DBClusterActionAPI,
   DBClusterConnectionAPI,
+  DBClusterPayload,
   DBClusterStatus,
-  RestartDBClusterAPI,
 } from './DBCluster.types';
 import { DBClusterService } from './DBCluster.service';
 import { getClusterStatus } from './DBCluster.utils';
@@ -19,6 +18,7 @@ const DBCLUSTER_STATUS_MAP = {
   [DBClusterStatus.ready]: 'PSMDB_CLUSTER_STATE_READY',
   [DBClusterStatus.failed]: 'PSMDB_CLUSTER_STATE_FAILED',
   [DBClusterStatus.deleting]: 'PSMDB_CLUSTER_STATE_DELETING',
+  [DBClusterStatus.suspended]: 'PSMDB_CLUSTER_STATE_PAUSED',
 };
 
 export class PSMDBService extends DBClusterService {
@@ -40,13 +40,27 @@ export class PSMDBService extends DBClusterService {
     );
   }
 
+  resumeDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload> {
+    return apiRequestManagement.post<DBClusterPayload, any>(
+      '/DBaaS/PSMDBCluster/Update',
+      toResumeAPI(dbCluster),
+    );
+  }
+
+  suspendDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload> {
+    return apiRequestManagement.post<DBClusterPayload, any>(
+      '/DBaaS/PSMDBCluster/Update',
+      toSuspendAPI(dbCluster),
+    );
+  }
+
   deleteDBClusters(dbCluster: DBCluster): Promise<void> {
-    const toAPI = (cluster: DBCluster): DeleteDBClusterAPI => ({
+    const toAPI = (cluster: DBCluster): DBClusterActionAPI => ({
       name: cluster.clusterName,
       kubernetes_cluster_name: dbCluster.kubernetesClusterName,
     });
 
-    return apiRequestManagement.post<any, DeleteDBClusterAPI>(
+    return apiRequestManagement.post<any, DBClusterActionAPI>(
       '/DBaaS/PSMDBCluster/Delete',
       toAPI(dbCluster),
     );
@@ -60,7 +74,7 @@ export class PSMDBService extends DBClusterService {
   }
 
   restartDBCluster(dbCluster: DBCluster): Promise<void> {
-    return apiRequestManagement.post<any, RestartDBClusterAPI>(
+    return apiRequestManagement.post<any, DBClusterActionAPI>(
       '/DBaaS/PSMDBCluster/Restart',
       omit(toAPI(dbCluster), ['params']),
     );
@@ -97,5 +111,22 @@ const toAPI = (dbCluster: DBCluster) => ({
       },
       disk_size: dbCluster.disk * 10 ** 9,
     },
+  },
+});
+
+const toSuspendAPI = (dbCluster: DBCluster) => ({
+  kubernetes_cluster_name: dbCluster.kubernetesClusterName,
+  name: dbCluster.clusterName,
+  params: {
+    suspend: true,
+  },
+});
+
+
+const toResumeAPI = (dbCluster: DBCluster) => ({
+  kubernetes_cluster_name: dbCluster.kubernetesClusterName,
+  name: dbCluster.clusterName,
+  params: {
+    resume: true,
   },
 });
