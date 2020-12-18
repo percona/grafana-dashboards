@@ -62,10 +62,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
     [],
   );
 
-  const parseNonNegativeFloat = useCallback(
-    (value) => (value >= 0 && Number.isFinite(+value) ? value : undefined),
-    [],
-  );
+  const parseNonNegativeFloat = useCallback((value) => +(+value).toFixed(1).replace(/\.0+$/, ''), []);
 
   const topologiesDisabled = useMemo(() => (databaseType !== Databases.mysql ? TOPOLOGIES_DISABLED : []), [
     databaseType,
