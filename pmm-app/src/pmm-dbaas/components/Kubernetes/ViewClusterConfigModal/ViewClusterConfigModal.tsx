@@ -1,12 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Button, HorizontalGroup } from '@grafana/ui';
+import {Button, ClipboardButton, HorizontalGroup} from '@grafana/ui';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { DeleteDBClusterModalProps } from './ViewClusterConfigModal.types';
-import { KubernetesService } from '../../Kubernetes/Kubernetes.service';
+import { KubernetesService } from '../Kubernetes.service';
 import { Overlay } from '../../../../shared/components/Elements/Overlay/Overlay';
 import { ReactJSON } from '../../../../shared/components/Elements/ReactJSON/ReactJSON';
 import { showSuccessNotification } from '../../../../shared/components/helpers';
 import { css } from 'emotion';
+import * as styles from "../../../../pmm-update/components/ProgressModal/ProgressModal.styles";
+import {Messages} from "../../../../pmm-update/components/ProgressModal/ProgressModal.messages";
 
 export const ViewClusterConfigModal: FC<DeleteDBClusterModalProps> = ({
   isVisible,
@@ -18,6 +20,8 @@ export const ViewClusterConfigModal: FC<DeleteDBClusterModalProps> = ({
 
   const onConfigCopy = () => {
     showSuccessNotification({ message: 'Copied' });
+    console.log(kubeconfig)
+    return kubeconfig
   };
 
   useEffect(() => {
@@ -30,7 +34,7 @@ export const ViewClusterConfigModal: FC<DeleteDBClusterModalProps> = ({
       setLoading(true);
       try {
         const config = await KubernetesService.getKubernetesConfig(selectedCluster);
-        setKubeconfig(config);
+        setKubeconfig(config.kube_auth.kubeconfig);
       } catch (e) {
         console.error(e);
       } finally {
@@ -50,15 +54,20 @@ export const ViewClusterConfigModal: FC<DeleteDBClusterModalProps> = ({
           overflow: scroll;
         `}
       >
-        {/*<Scrollbar style={{ maxHeight: '50vh', marginBottom: '30px' }}>*/}
-        {/*  <ReactJSON json={kubeconfig} />*/}
-        {/*</Scrollbar>*/}
-        <ReactJSON json={kubeconfig} />
+        <pre>{String(kubeconfig)}</pre>
       </Overlay>
       <HorizontalGroup justify="flex-end" spacing="md">
-        <Button variant="secondary" size="md" onClick={onConfigCopy} data-qa="cancel-delete-dbcluster-button">
-          {'Copy config'}
-        </Button>
+        {/*<Button variant="secondary" size="md" onClick={onConfigCopy} data-qa="cancel-delete-dbcluster-button">*/}
+        {/*  {'Copy config'}*/}
+        {/*</Button>*/}
+        <ClipboardButton
+          getText={onConfigCopy}
+          className={styles.clipboardButton}
+          variant="secondary"
+          size="sm"
+        >
+          {Messages.copyToClipboard}
+        </ClipboardButton>
         <Button
           variant="destructive"
           size="md"

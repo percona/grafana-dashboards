@@ -1,4 +1,4 @@
-import { DBCluster } from '../DBCluster.types';
+import { DBCluster } from '../../DBCluster/DBCluster.types';
 
 export interface DeleteDBClusterModalProps {
   selectedCluster?: DBCluster;
