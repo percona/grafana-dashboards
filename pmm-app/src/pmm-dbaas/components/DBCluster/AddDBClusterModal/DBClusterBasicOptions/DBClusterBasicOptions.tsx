@@ -52,7 +52,7 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
         value: kubernetesClusterName,
         label: getOptionContent(OPERATORS, kubernetesClusterName),
         operators,
-        availableOperators: availableOperators,
+        availableOperators,
       };
     })
     .filter((operators) => {

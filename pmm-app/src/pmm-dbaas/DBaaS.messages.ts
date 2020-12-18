@@ -27,7 +27,7 @@ export const Messages = {
       fields: {
         clusterName: 'Kubernetes Cluster Name',
         kubeConfig: 'Kubeconfig file',
-      }
+      },
     },
     table: {
       nameColumn: 'Kubernetes Cluster Name',

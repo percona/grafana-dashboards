@@ -1,13 +1,17 @@
 import React from 'react';
 import { cx } from 'emotion';
-import { Input, Select, TextArea, useTheme } from '@grafana/ui';
+import {
+  Input, Select, TextArea, useTheme,
+} from '@grafana/ui';
 import { getStyles } from './FieldAdapters.styles';
 // TODO: replace with components from platform-core
 import { Checkbox } from './Checkbox';
 import { Field } from './Field';
 import { RadioButtonGroup } from '../Radio/RadioButtonGroup';
 
-export const InputFieldAdapter = ({ input, className, label, meta, ...props }) => {
+export const InputFieldAdapter = ({
+  input, className, label, meta, ...props
+}) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -28,7 +32,9 @@ export const InputFieldAdapter = ({ input, className, label, meta, ...props }) =
   );
 };
 
-export const TextAreaAdapter = ({ input, className, label, meta, ...props }) => {
+export const TextAreaAdapter = ({
+  input, className, label, meta, ...props
+}) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -50,7 +56,9 @@ export const TextAreaAdapter = ({ input, className, label, meta, ...props }) => 
   );
 };
 
-export const CheckboxFieldAdapter = ({ input, className, meta, ...props }) => {
+export const CheckboxFieldAdapter = ({
+  input, className, meta, ...props
+}) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
