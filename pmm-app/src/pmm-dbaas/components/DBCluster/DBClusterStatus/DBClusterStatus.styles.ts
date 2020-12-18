@@ -2,10 +2,7 @@ import { css } from 'emotion';
 import { GrafanaTheme } from '@grafana/data';
 
 export const getStyles = ({
-  colors,
-  palette,
-  spacing,
-  typography,
+  colors, palette, spacing, typography,
 }: GrafanaTheme) => ({
   clusterStatusWrapper: css`
     align-items: center;
@@ -21,6 +18,11 @@ export const getStyles = ({
     font-size: ${typography.size.sm};
     padding: 3px 15px;
     text-transform: uppercase;
+  `,
+  statusIcon: css`
+    color: ${palette.gray1};
+    cursor: help;
+    margin-left: ${spacing.sm};
   `,
   statusActive: css`
     background-color: ${colors.formSwitchBgActive};

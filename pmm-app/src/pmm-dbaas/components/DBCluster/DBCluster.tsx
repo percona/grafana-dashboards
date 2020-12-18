@@ -71,10 +71,6 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
     [setSelectedCluster, setDeleteModalVisible, getDBClusters],
   );
 
-  const kubernetesOptions = kubernetes.map(({ kubernetesClusterName }) => ({
-    value: kubernetesClusterName,
-    label: kubernetesClusterName,
-  }));
   const AddNewClusterButton = useCallback(
     () => (
       <AddClusterButton
@@ -98,7 +94,7 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
         <AddNewClusterButton />
       </div>
       <AddDBClusterModal
-        kubernetesOptions={kubernetesOptions}
+        kubernetes={kubernetes}
         isVisible={addModalVisible}
         setVisible={setAddModalVisible}
         onDBClusterAdded={getDBClusters}

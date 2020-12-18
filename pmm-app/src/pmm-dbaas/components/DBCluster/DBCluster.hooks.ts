@@ -4,12 +4,19 @@ import { Databases } from 'shared/core';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
 import { DBCluster, GetDBClustersAction, DBClusterPayload } from './DBCluster.types';
 import { DBClusterServiceFactory } from './DBClusterService.factory';
+import { Operators } from './AddDBClusterModal/DBClusterBasicOptions/DBClusterBasicOptions.types';
+import { KubernetesOperatorStatus } from '../Kubernetes/OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus.types';
 
 const RECHECK_INTERVAL = 10000;
 const DATABASES = [
   Databases.mysql,
   Databases.mongodb,
 ];
+
+const OPERATORS = {
+  [Databases.mysql]: Operators.xtradb,
+  [Databases.mongodb]: Operators.psmdb,
+};
 
 export const useDBClusters = (kubernetes: Kubernetes[]): [DBCluster[], GetDBClustersAction, boolean] => {
   const [dbClusters, setDBClusters] = useState<DBCluster[]>([]);
@@ -47,7 +54,11 @@ export const useDBClusters = (kubernetes: Kubernetes[]): [DBCluster[], GetDBClus
 
 const getClusters = async (kubernetes: Kubernetes[], databaseType: Databases): Promise<DBCluster[]> => {
   const dbClusterService = DBClusterServiceFactory.newDBClusterService(databaseType);
-  const requests = kubernetes.map(dbClusterService.getDBClusters);
+  const requests = kubernetes.filter((kubernetesCluster) => {
+    const operator = OPERATORS[databaseType];
+
+    return kubernetesCluster.operators[operator].status === KubernetesOperatorStatus.ok;
+  }).map(dbClusterService.getDBClusters);
   const results = await processPromiseResults(requests);
 
   const clustersList: DBCluster[] = results.reduce((acc: DBCluster[], r, index) => {

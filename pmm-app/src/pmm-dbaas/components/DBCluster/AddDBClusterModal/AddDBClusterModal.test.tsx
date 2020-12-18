@@ -2,7 +2,8 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { dataQa } from '@percona/platform-core';
 import { AddDBClusterModal } from './AddDBClusterModal';
-import { kubernetesOptionsStub, setVisibleStub, onDBClusterAddedStub } from './__mocks__/addDBClusterModalStubs';
+import { setVisibleStub, onDBClusterAddedStub } from './__mocks__/addDBClusterModalStubs';
+import { kubernetesStub } from '../../Kubernetes/__mocks__/kubernetesStubs';
 
 jest.mock('shared/components/helpers/notification-manager');
 
@@ -25,7 +26,7 @@ describe('AddDBClusterModal::', () => {
   it('renders correctly', () => {
     const root = mount(
       <AddDBClusterModal
-        kubernetesOptions={kubernetesOptionsStub}
+        kubernetes={kubernetesStub}
         isVisible
         setVisible={setVisibleStub}
         onDBClusterAdded={onDBClusterAddedStub}
@@ -47,7 +48,7 @@ describe('AddDBClusterModal::', () => {
   it('should disable submit button when there is no values', () => {
     const root = mount(
       <AddDBClusterModal
-        kubernetesOptions={kubernetesOptionsStub}
+        kubernetes={kubernetesStub}
         isVisible
         setVisible={setVisibleStub}
         onDBClusterAdded={onDBClusterAddedStub}
@@ -64,7 +65,7 @@ describe('AddDBClusterModal::', () => {
   it('should change step correctly', () => {
     const root = mount(
       <AddDBClusterModal
-        kubernetesOptions={kubernetesOptionsStub}
+        kubernetes={kubernetesStub}
         isVisible
         setVisible={setVisibleStub}
         onDBClusterAdded={onDBClusterAddedStub}
