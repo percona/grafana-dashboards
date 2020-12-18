@@ -5,7 +5,7 @@ import { MultipleActions } from 'pmm-dbaas/components/MultipleActions/MultipleAc
 import { act } from 'react-dom/test-utils';
 import { dbClustersStub } from '../__mocks__/dbClustersStubs';
 import { DBClusterStatus } from '../DBCluster.types';
-import { DBClusterActions } from './DBClusterActions';
+import { DBClusterActions } from './KubernetesClusterActions';
 
 jest.mock('shared/components/helpers/notification-manager');
 jest.mock('../XtraDB.service');

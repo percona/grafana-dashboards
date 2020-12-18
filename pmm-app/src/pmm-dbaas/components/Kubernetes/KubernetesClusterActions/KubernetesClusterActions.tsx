@@ -4,8 +4,8 @@ import { MultipleActions } from 'pmm-dbaas/components/MultipleActions/MultipleAc
 import { DBCluster } from '../DBCluster.types';
 // import { isClusterChanging } from '../DBCluster.utils';
 import { DBClusterServiceFactory } from '../DBClusterService.factory';
-import { DBClusterActionsProps } from './DBClusterActions.types';
-import { styles } from './DBClusterActions.styles';
+import { DBClusterActionsProps } from './KubernetesClusterActions.types';
+import { styles } from './KubernetesClusterActions.styles';
 
 export const KubernetesClusterActions: FC<DBClusterActionsProps> = ({
   dbCluster,
