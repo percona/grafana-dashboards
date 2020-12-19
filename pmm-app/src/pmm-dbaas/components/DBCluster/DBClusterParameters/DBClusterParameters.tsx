@@ -16,7 +16,7 @@ export const DBClusterParameters: FC<DBClusterParametersProps> = ({ dbCluster })
         <div className={styles.wrapper}>
           <DBClusterConnectionItem
             label={Messages.dbcluster.table.parameters.clusterName}
-            value={dbCluster.clusterName}
+            value={dbCluster.kubernetesClusterName}
             dataQa="cluster-parameters-cluster-name"
           />
           <DBClusterConnectionItem

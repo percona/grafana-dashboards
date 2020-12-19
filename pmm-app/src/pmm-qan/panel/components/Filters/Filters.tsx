@@ -1,11 +1,11 @@
 import React, {
-  FC, useContext, useEffect, useMemo, useRef, useState,
+  FC, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
 import { cx } from 'emotion';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import { Filter } from 'shared/components/Elements/Icons/Filter';
+import { Filter } from 'shared/components/Elements/Icons';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { useTheme } from '@grafana/ui';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
@@ -24,9 +24,8 @@ export const Filters: FC = () => {
   const {
     contextActions,
     panelState: { loadingDetails, rawTime },
-  } = useContext(QueryAnalyticsProvider);
-
-  const { filters, loading } = useFilters();
+  } = React.useContext(QueryAnalyticsProvider);
+  const [filters, loading] = useFilters();
   const initialValues = useInitialFilterValues();
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
   const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);
@@ -75,7 +74,7 @@ export const Filters: FC = () => {
   const FilterInput = useMemo(
     () => ({ filter }) => (
       <Input
-        suffix={<Filter fill="#c6c6c6" />}
+        suffix={<Filter className={styles.icon} />}
         placeholder="Filter by..."
         onChange={(e) => {
           setFilter(e.target.value);

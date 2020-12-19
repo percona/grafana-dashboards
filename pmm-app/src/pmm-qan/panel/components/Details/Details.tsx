@@ -12,7 +12,7 @@ import Metrics from './Metrics/Metrics';
 import TableCreateContainer from './Table/TableContainer';
 import { useDetails } from './Details.hooks';
 import { TabKeys } from './Details.constants';
-import { useMetricsDetails } from './Metrics/Metrics.hooks';
+import { useMetricsDetails } from './Metrics/hooks/useMetricDetails';
 import { Messages } from './Details.messages';
 import { Databases } from './Details.types';
 import { getStyles } from './Details.styles';

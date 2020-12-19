@@ -5,9 +5,13 @@ import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { Form, FormRenderProps } from 'react-final-form';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
+import { CheckboxField, FormElement } from 'shared/components/Form';
+import { Databases } from 'shared/core';
 import { getStyles } from './Kubernetes.styles';
-import { Kubernetes, NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
+import { NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
+import { OperatorStatusItem } from './OperatorStatusItem/OperatorStatusItem';
+import { KubernetesClusterStatus } from './KubernetesClusterStatus/KubernetesClusterStatus';
 import { clusterActionsRender } from './ColumnRenderers/ColumnRenderers';
 import { ViewClusterConfigModal } from './ViewClusterConfigModal/ViewClusterConfigModal';
 
@@ -27,6 +31,19 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
     {
       Header: Messages.kubernetes.table.nameColumn,
       accessor: 'kubernetesClusterName',
+    },
+    {
+      Header: Messages.kubernetes.table.clusterStatusColumn,
+      accessor: (element) => <KubernetesClusterStatus status={element.status} />,
+    },
+    {
+      Header: Messages.kubernetes.table.operatorsStatusColumn,
+      accessor: (element) => (
+        <div>
+          <OperatorStatusItem databaseType={Databases.mysql} status={element.operators.xtradb.status} />
+          <OperatorStatusItem databaseType={Databases.mongodb} status={element.operators.psmdb.status} />
+        </div>
+      ),
     },
     {
       Header: Messages.kubernetes.table.actionsColumn,

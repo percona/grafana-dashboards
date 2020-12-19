@@ -33,8 +33,9 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   const [customDisk, setCustomDisk] = useState(DEFAULT_SIZES.small.disk);
   const { required, min } = validators;
   const { change } = form;
-  const nodesValidators = [required, min(MIN_NODES)];
-  const resourcesValidators = [required, min(MIN_RESOURCES)];
+  const nodeValidators = [required, min(MIN_NODES)];
+  const parameterValidators = [required, min(MIN_RESOURCES)];
+
   const {
     topology,
     resources,
@@ -90,7 +91,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
           <NumberInputField
             name={AddDBClusterFields.nodes}
             label={Messages.dbcluster.addModal.fields.nodes}
-            validators={nodesValidators}
+            validators={nodeValidators}
           />
         )}
       </div>
@@ -106,21 +107,21 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
         <NumberInputField
           name={AddDBClusterFields.memory}
           label={Messages.dbcluster.addModal.fields.memory}
-          validators={resourcesValidators}
+          validators={parameterValidators}
           disabled={resources !== DBClusterResources.custom}
           parse={parsePositiveInt}
         />
         <NumberInputField
           name={AddDBClusterFields.cpu}
           label={Messages.dbcluster.addModal.fields.cpu}
-          validators={resourcesValidators}
+          validators={parameterValidators}
           disabled={resources !== DBClusterResources.custom}
           parse={parsePositiveInt}
         />
         <NumberInputField
           name={AddDBClusterFields.disk}
           label={Messages.dbcluster.addModal.fields.disk}
-          validators={resourcesValidators}
+          validators={parameterValidators}
           disabled={resources !== DBClusterResources.custom}
           parse={parsePositiveInt}
         />

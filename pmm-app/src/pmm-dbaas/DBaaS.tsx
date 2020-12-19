@@ -15,29 +15,28 @@ export const DBaaSPanel: FC = () => {
       {
         label: Messages.tabs.kubernetes,
         key: TabKeys.kubernetes,
-        component: <KubernetesInventory
-          key={TabKeys.kubernetes}
-          kubernetes={kubernetes}
-          deleteKubernetes={deleteKubernetes}
-          addKubernetes={addKubernetes}
-          loading={kubernetesLoading}
-        />,
+        component: (
+          <KubernetesInventory
+            key={TabKeys.kubernetes}
+            kubernetes={kubernetes}
+            deleteKubernetes={deleteKubernetes}
+            addKubernetes={addKubernetes}
+            loading={kubernetesLoading}
+          />
+        ),
       },
       {
         label: Messages.tabs.dbcluster,
         key: TabKeys.dbclusters,
         disabled: kubernetes.length === 0,
-        component: <DBCluster
-          key={TabKeys.dbclusters}
-          kubernetes={kubernetes}
-        />,
+        component: <DBCluster key={TabKeys.dbclusters} kubernetes={kubernetes} />,
       },
     ],
     [kubernetes, kubernetesLoading],
   );
 
   return (
-    <div>
+    <div className={styles.panelContentWrapper}>
       <TabsBar>
         {tabs.map((tab, index) => (
           <Tab
@@ -49,9 +48,7 @@ export const DBaaSPanel: FC = () => {
           />
         ))}
       </TabsBar>
-      <TabContent>
-        {tabs.map((tab) => tab.key === activeTab && tab.component)}
-      </TabContent>
+      <TabContent>{tabs.map((tab) => tab.key === activeTab && tab.component)}</TabContent>
     </div>
   );
 };

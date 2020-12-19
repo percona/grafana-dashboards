@@ -14,6 +14,7 @@ import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
 import { getStyles } from './DBCluster.styles';
 import { DBCluster as Cluster, DBClusterProps } from './DBCluster.types';
 import { AddDBClusterModal } from './AddDBClusterModal/AddDBClusterModal';
+import { EditDBClusterModal } from './EditDBClusterModal/EditDBClusterModal';
 import { useDBClusters } from './DBCluster.hooks';
 import {
   clusterStatusRender,
@@ -24,12 +25,12 @@ import {
   clusterActionsRender,
 } from './ColumnRenderers/ColumnRenderers';
 import { DeleteDBClusterModal } from './DeleteDBClusterModal/DeleteDBClusterModal';
-import { buildWarningMessage } from './DBCluster.utils';
 
 export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
   const styles = useStyles(getStyles);
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
   const [selectedCluster, setSelectedCluster] = useState<Cluster>();
   const [dbClusters, getDBClusters, loading] = useDBClusters(kubernetes);
   const [settings, setSettings] = useState<Settings>();
@@ -62,6 +63,7 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
         accessor: clusterActionsRender({
           setSelectedCluster,
           setDeleteModalVisible,
+          setEditModalVisible,
           getDBClusters,
         }),
       },
@@ -69,17 +71,11 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
     [setSelectedCluster, setDeleteModalVisible, getDBClusters],
   );
 
-  const kubernetesOptions = kubernetes.map(({ kubernetesClusterName }) => ({
-    value: kubernetesClusterName,
-    label: kubernetesClusterName,
-  }));
   const AddNewClusterButton = useCallback(
     () => (
       <AddClusterButton
         label={Messages.dbcluster.addAction}
-        disabled={settingsLoading || !settings?.publicAddress}
-        showWarning={!settingsLoading && !settings?.publicAddress}
-        warningMessage={buildWarningMessage(styles.settingsLink)}
+        disabled={settingsLoading}
         action={() => setAddModalVisible(!addModalVisible)}
         data-qa="dbcluster-add-cluster-button"
       />
@@ -98,15 +94,22 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
         <AddNewClusterButton />
       </div>
       <AddDBClusterModal
-        kubernetesOptions={kubernetesOptions}
+        kubernetes={kubernetes}
         isVisible={addModalVisible}
         setVisible={setAddModalVisible}
         onDBClusterAdded={getDBClusters}
+        showMonitoringWarning={settingsLoading || !settings?.publicAddress}
       />
       <DeleteDBClusterModal
         isVisible={deleteModalVisible}
         setVisible={setDeleteModalVisible}
         onClusterDeleted={getDBClusters}
+        selectedCluster={selectedCluster}
+      />
+      <EditDBClusterModal
+        isVisible={editModalVisible}
+        setVisible={setEditModalVisible}
+        onDBClusterChanged={getDBClusters}
         selectedCluster={selectedCluster}
       />
       <Table columns={columns} data={dbClusters} loading={loading} noData={<AddNewClusterButton />} />

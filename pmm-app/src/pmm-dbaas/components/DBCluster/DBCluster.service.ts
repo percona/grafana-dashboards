@@ -1,15 +1,17 @@
 import { Databases } from 'shared/core';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
-import {
-  DBCluster,
-  DBClusterPayload,
-  DBClusterConnectionAPI,
-} from './DBCluster.types';
+import { DBCluster, DBClusterPayload, DBClusterConnectionAPI } from './DBCluster.types';
 
 export abstract class DBClusterService {
   abstract getDBClusters(kubernetes: Kubernetes): Promise<DBClusterPayload>;
 
-  abstract addDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload> ;
+  abstract addDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload>;
+
+  abstract updateDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload>;
+
+  abstract suspendDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload>;
+
+  abstract resumeDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload>;
 
   abstract deleteDBClusters(dbCluster: DBCluster): Promise<void>;
 

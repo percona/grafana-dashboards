@@ -4,11 +4,10 @@ import { apiRequestManagement } from 'shared/components/helpers/api';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
 import {
   DBCluster,
-  DBClusterPayload,
-  DeleteDBClusterAPI,
+  DBClusterActionAPI,
   DBClusterConnectionAPI,
+  DBClusterPayload,
   DBClusterStatus,
-  RestartDBClusterAPI,
 } from './DBCluster.types';
 import { DBClusterService } from './DBCluster.service';
 import { getClusterStatus } from './DBCluster.utils';
@@ -19,6 +18,8 @@ const DBCLUSTER_STATUS_MAP = {
   [DBClusterStatus.ready]: 'XTRA_DB_CLUSTER_STATE_READY',
   [DBClusterStatus.failed]: 'XTRA_DB_CLUSTER_STATE_FAILED',
   [DBClusterStatus.deleting]: 'XTRA_DB_CLUSTER_STATE_DELETING',
+  [DBClusterStatus.suspended]: 'XTRA_DB_CLUSTER_STATE_PAUSED',
+  [DBClusterStatus.unknown]: 'XTRA_DB_CLUSTER_STATE_UNKNOWN',
 };
 
 export class XtraDBService extends DBClusterService {
@@ -33,13 +34,34 @@ export class XtraDBService extends DBClusterService {
     );
   }
 
+  updateDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload> {
+    return apiRequestManagement.post<DBClusterPayload, any>(
+      '/DBaaS/XtraDBCluster/Update',
+      toAPI(dbCluster),
+    );
+  }
+
+  resumeDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload> {
+    return apiRequestManagement.post<DBClusterPayload, any>(
+      '/DBaaS/XtraDBCluster/Update',
+      toResumeAPI(dbCluster),
+    );
+  }
+
+  suspendDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload> {
+    return apiRequestManagement.post<DBClusterPayload, any>(
+      '/DBaaS/XtraDBCluster/Update',
+      toSuspendAPI(dbCluster),
+    );
+  }
+
   deleteDBClusters(dbCluster: DBCluster): Promise<void> {
-    const toAPI = (cluster: DBCluster): DeleteDBClusterAPI => ({
+    const toAPI = (cluster: DBCluster): DBClusterActionAPI => ({
       name: cluster.clusterName,
       kubernetes_cluster_name: dbCluster.kubernetesClusterName,
     });
 
-    return apiRequestManagement.post<any, DeleteDBClusterAPI>(
+    return apiRequestManagement.post<any, DBClusterActionAPI>(
       '/DBaaS/XtraDBCluster/Delete',
       toAPI(dbCluster),
     );
@@ -53,7 +75,7 @@ export class XtraDBService extends DBClusterService {
   }
 
   restartDBCluster(dbCluster: DBCluster): Promise<void> {
-    return apiRequestManagement.post<any, RestartDBClusterAPI>(
+    return apiRequestManagement.post<any, DBClusterActionAPI>(
       '/DBaaS/XtraDBCluster/Restart',
       omit(toAPI(dbCluster), ['params']),
     );
@@ -90,12 +112,30 @@ const toAPI = (dbCluster: DBCluster): DBClusterPayload => ({
       },
       disk_size: dbCluster.disk * 10 ** 9,
     },
+    // Temporary mock data
     proxysql: {
       compute_resources: {
-        cpu_m: 0,
-        memory_bytes: 0,
+        cpu_m: 1000,
+        memory_bytes: 2 * 10 ** 9,
       },
-      disk_size: dbCluster.disk * 10 ** 9,
+      disk_size: 1 * 10 ** 9,
     },
+  },
+});
+
+const toSuspendAPI = (dbCluster: DBCluster) => ({
+  kubernetes_cluster_name: dbCluster.kubernetesClusterName,
+  name: dbCluster.clusterName,
+  params: {
+    suspend: true,
+  },
+});
+
+
+const toResumeAPI = (dbCluster: DBCluster) => ({
+  kubernetes_cluster_name: dbCluster.kubernetesClusterName,
+  name: dbCluster.clusterName,
+  params: {
+    resume: true,
   },
 });

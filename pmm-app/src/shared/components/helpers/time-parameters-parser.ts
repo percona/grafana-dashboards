@@ -1,42 +1,63 @@
-// @ts-nocheck
-import * as moment from 'moment';
+import moment from 'moment';
 
 type TimeEdge = 'from' | 'to';
 
-export class MomentFormatPipe {
-  timezone = 'browser';
+const getTimezone = () => {
+  const getCookie = (name) => document.cookie.split('; ').reduce((r, v) => {
+    const parts = v.split('=');
 
-  constructor() {
-    this.timezone = MomentFormatPipe.getCookie('timezone') || 'browser';
-  }
+    return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+  }, '');
 
-  static getCookie(name) {
-    return document.cookie.split('; ').reduce((r, v) => {
-      const parts = v.split('=');
+  return getCookie('timezone') || 'browser';
+};
 
-      return parts[0] === name ? decodeURIComponent(parts[1]) : r;
-    }, '');
-  }
+const getComplexTimeValue = (date, nowFunc, edge) => {
+  // ex: ["now-7d/d", "now", "-", "7", "d", "/", "d"]
+  const parts = date.match('(now)(-|/)?([0-9]*)([yMwdhms])(/)?([yMwdhms])?');
+  let parsedDate;
 
-  transform(value: any, format = 'YYYY-MM-DD HH:mm:ss'): string {
-    if (value === null) {
-      return null;
+  if (!parts) {
+    const isnum = /^\d+$/.test(date);
+
+    if (isnum) {
+      return nowFunc(parseInt(date, 10));
     }
 
-    if (this.timezone === 'browser') {
-      return moment(value).local().format(format);
+    return nowFunc(date);
+  }
+
+  if (parts[1] === 'now') {
+    parsedDate = nowFunc();
+  }
+
+  if (parts[2] === '-') {
+    parsedDate.subtract(parts[3], parts[4]);
+  }
+
+  if (parts[2] === '/') {
+    if (edge === 'from') {
+      return parsedDate.startOf(parts[4]);
     }
 
-    return moment(value).format(format);
+    return parsedDate.endOf(parts[4]);
   }
-}
+
+  if (parts.length > 4 && parts[5] === '/') {
+    if (edge === 'from') {
+      return parsedDate.startOf(parts[6]);
+    }
+
+    return parsedDate.endOf(parts[6]);
+  }
+
+  return parsedDate;
+};
 
 export class ParseQueryParamDate {
-  static transform(date: string, edge: TimeEdge) {
-    const momentFormatPipe = new MomentFormatPipe();
-    const nowFunc = momentFormatPipe.timezone === 'utc' ? moment.utc : moment;
+  static transform(date: string, edge?: TimeEdge) {
+    const nowFunc = getTimezone() === 'utc' ? moment.utc : moment;
     let parsedDate;
-    // from=now
 
     if (date === undefined && edge === 'from') {
       return nowFunc().subtract(1, 'h');
@@ -50,45 +71,11 @@ export class ParseQueryParamDate {
       return nowFunc();
     }
 
-    // from=now-5d&to=now-6M ... from=now/w&to=now/w
     if (date.length > 4 && date.startsWith('now')) {
-      // let subtrahend = date.substr(4);
-      // ex: ["now-7d/d", "now", "-", "7", "d", "/", "d"]
-      const parts = date.match('(now)(-|/)?([0-9]*)([yMwdhms])(/)?([yMwdhms])?');
-
-      if (!parts) {
-        const isnum = /^\d+$/.test(date);
-
-        if (isnum) {
-          return nowFunc(parseInt(date, 10));
-        }
-
-        return nowFunc(date);
-      }
-
-      if (parts[1] === 'now') {
-        parsedDate = nowFunc();
-      }
-
-      if (parts[2] === '-') {
-        parsedDate.subtract(parts[3], parts[4]);
-      }
-
-      if (parts[2] === '/') {
-        if (edge === 'from') {
-          return parsedDate.startOf(parts[4]);
-        }
-
-        return parsedDate.endOf(parts[4]);
-      }
-
-      if (parts.length > 4 && parts[5] === '/') {
-        if (edge === 'from') {
-          return parsedDate.startOf(parts[6]);
-        }
-
-        return parsedDate.endOf(parts[6]);
-      }
+      // Calculate complex time range, for example 'Week to date'
+      // from=now-5d&to=now-6M ... from=now/w&to=now/w
+      // https://grafana.com/docs/grafana/latest/dashboards/time-range-controls/
+      parsedDate = getComplexTimeValue(date, nowFunc, edge);
     } else {
       // expect unix timestamp in milliseconds
       const isnum = /^\d+$/.test(date);
