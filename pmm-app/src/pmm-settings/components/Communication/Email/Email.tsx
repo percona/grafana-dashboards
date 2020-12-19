@@ -1,7 +1,7 @@
 import { Form } from 'react-final-form';
 import { Button, Spinner, useTheme } from '@grafana/ui';
 import React, { FC, useState } from 'react';
-import { TextInputField, validators } from '@percona/platform-core';
+import { TextInputField, PasswordInputField, validators } from '@percona/platform-core';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getSettingsStyles } from '../../../Settings.styles';
 import { Messages } from '../Communication.messages';
@@ -76,7 +76,7 @@ export const Email: FC<EmailProps> = ({ updateSettings, settings }) => {
                 icon="info-circle"
               />
             </div>
-            <TextInputField name="password" validators={[validators.required]} />
+            <PasswordInputField name="password" validators={[validators.required]} />
 
             <div className={settingsStyles.labelWrapper}>
               <span>{Messages.fields.hello.label}</span>
@@ -109,7 +109,7 @@ export const Email: FC<EmailProps> = ({ updateSettings, settings }) => {
                 icon="info-circle"
               />
             </div>
-            <TextInputField name="secret" />
+            <PasswordInputField name="secret" />
 
             <Button
               className={settingsStyles.actionButton}
