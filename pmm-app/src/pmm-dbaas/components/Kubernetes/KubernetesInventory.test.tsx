@@ -67,7 +67,7 @@ describe('KubernetesInventory::', () => {
     expect(deleteActionStub.mock.calls.length).toBe(1);
   });
 
-  it('deletes cluster correctly with force mode', () => {
+  xit('deletes cluster correctly with force mode', () => {
     const root = mount(
       <KubernetesInventory
         kubernetes={kubernetesStub}
