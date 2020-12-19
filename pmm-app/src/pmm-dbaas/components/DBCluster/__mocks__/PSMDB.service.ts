@@ -5,7 +5,5 @@ export class PSMDBService {
     return { connection_credentials: mongoDBClusterConnectionStub };
   }
 
-  restartDBCluster() {
-
-  }
+  restartDBCluster() {}
 }

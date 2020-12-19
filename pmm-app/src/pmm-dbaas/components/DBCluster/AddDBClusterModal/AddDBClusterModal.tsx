@@ -13,7 +13,7 @@ import { buildWarningMessage } from '../DBCluster.utils';
 import { getStyles } from './AddDBClusterModal.styles';
 
 export const AddDBClusterModal: FC<AddDBClusterModalProps> = ({
-  kubernetesOptions,
+  kubernetes,
   isVisible,
   setVisible,
   onDBClusterAdded,
@@ -30,7 +30,7 @@ export const AddDBClusterModal: FC<AddDBClusterModalProps> = ({
           AddDBClusterFields.kubernetesCluster,
           AddDBClusterFields.databaseType,
         ],
-        render: ({ form }) => <DBClusterBasicOptions kubernetesOptions={kubernetesOptions} form={form} />,
+        render: ({ form }) => <DBClusterBasicOptions kubernetes={kubernetes} form={form} />,
         dataQa: 'dbcluster-basic-options-step',
       },
       {
@@ -46,7 +46,7 @@ export const AddDBClusterModal: FC<AddDBClusterModalProps> = ({
         dataQa: 'dbcluster-advanced-options-step',
       },
     ],
-    [kubernetesOptions],
+    [kubernetes],
   );
   const onSubmit = async ({
     name,
@@ -83,15 +83,8 @@ export const AddDBClusterModal: FC<AddDBClusterModalProps> = ({
       <div className={styles.stepProgressWrapper}>
         {showMonitoringWarning && (
           <div className={styles.warningWrapper} data-qa="add-cluster-monitoring-warning">
-            <Icon
-              name="exclamation-triangle"
-              className={styles.warningIcon}
-            />
-            <span className={styles.warningMessage}>
-              {
-                buildWarningMessage(styles.settingsLink)
-              }
-            </span>
+            <Icon name="exclamation-triangle" className={styles.warningIcon} />
+            <span className={styles.warningMessage}>{buildWarningMessage(styles.settingsLink)}</span>
           </div>
         )}
         <StepProgress steps={steps} initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
