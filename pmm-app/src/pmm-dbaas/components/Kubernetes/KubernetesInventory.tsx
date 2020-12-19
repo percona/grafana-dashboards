@@ -30,11 +30,11 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
     },
     {
       Header: Messages.kubernetes.table.actionsColumn,
-      accessor: clusterActionsRender({
+      accessor: (kubernetesCluster) => clusterActionsRender({
         setSelectedCluster,
         setDeleteModalVisible,
         setViewConfigModalVisible,
-      }),
+      })(kubernetesCluster),
     },
   ];
 

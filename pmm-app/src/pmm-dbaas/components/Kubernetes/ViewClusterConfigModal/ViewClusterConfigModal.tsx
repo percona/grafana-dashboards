@@ -4,14 +4,14 @@ import React, {
 import { Button, ClipboardButton, HorizontalGroup } from '@grafana/ui';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { css } from 'emotion';
-import { DeleteDBClusterModalProps } from './ViewClusterConfigModal.types';
+import { ViewKubernetesClusterModalProps } from './ViewClusterConfigModal.types';
 import { KubernetesService } from '../Kubernetes.service';
 import { Overlay } from '../../../../shared/components/Elements/Overlay/Overlay';
 import { showSuccessNotification } from '../../../../shared/components/helpers';
 import * as styles from '../../../../pmm-update/components/ProgressModal/ProgressModal.styles';
 import { Messages } from '../../../../pmm-update/components/ProgressModal/ProgressModal.messages';
 
-export const ViewClusterConfigModal: FC<DeleteDBClusterModalProps> = ({
+export const ViewClusterConfigModal: FC<ViewKubernetesClusterModalProps> = ({
   isVisible,
   setVisible,
   selectedCluster,

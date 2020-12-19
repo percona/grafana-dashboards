@@ -1,8 +1,7 @@
 import { Kubernetes } from '../Kubernetes.types';
 
-export interface DeleteDBClusterModalProps {
+export interface ViewKubernetesClusterModalProps {
   selectedCluster?: Kubernetes;
   isVisible: boolean;
   setVisible: (value: boolean) => void;
-  onClusterDeleted: () => void;
 }
