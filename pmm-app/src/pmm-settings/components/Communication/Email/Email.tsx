@@ -1,103 +1,124 @@
-import { LinkTooltip } from '../../../../shared/components/Elements/LinkTooltip/LinkTooltip';
-import { Field, Form } from 'react-final-form';
-import { Button, Input, Spinner, Tab, TabContent, TabsBar, useTheme } from '@grafana/ui';
-import React from 'react';
-import { getStyles } from '../../AlertManager/AlertManager.styles';
+import { Form } from 'react-final-form';
+import { Button, Spinner, useTheme } from '@grafana/ui';
+import React, { FC, useState } from 'react';
+import { TextInputField, validators } from '@percona/platform-core';
+import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getSettingsStyles } from '../../../Settings.styles';
-import {Messages} from "../Communication.messages";
+import { Messages } from '../Communication.messages';
+import { LoadingCallback } from '../../../Settings.service';
+import { EmailSettings } from '../../../Settings.types';
 
-export const Email = (props) => {
+export interface EmailProps {
+  settings: EmailSettings;
+  updateSettings: (body: any, callback: LoadingCallback) => void;
+}
+
+export const Email: FC<EmailProps> = ({ updateSettings, settings }) => {
   const theme = useTheme();
-  const styles = getStyles(theme);
   const settingsStyles = getSettingsStyles(theme);
-  const loading = false;
-  const action = 'Apply changes';
+  const [loading, setLoading] = useState(false);
+
+  const applyChanges = (values) => {
+    updateSettings(
+      {
+        email_alerting_settings: values,
+      },
+      setLoading,
+    );
+  };
 
   return (
     <>
       <Form
-        onSubmit={() => {}}
-        initialValues={{ url: 'tester' }}
-        render={({ form: { change }, values, handleSubmit, valid, pristine }) => (
+        onSubmit={applyChanges}
+        initialValues={settings}
+        render={({ handleSubmit, valid, pristine }) => (
           <form onSubmit={handleSubmit}>
-            <div className={settingsStyles.labelWrapper} data-qa="alertmanager-url-label">
+            <div className={settingsStyles.labelWrapper}>
               <span>{Messages.fields.smarthost.label}</span>
-              <LinkTooltip tooltipText={'test2'} link={'test3'} linkText={'test4'} icon="info-circle" />
+              <LinkTooltip
+                tooltipText={Messages.fields.smarthost.tooltipText}
+                link={Messages.fields.smarthost.tooltipLink}
+                linkText={Messages.fields.smarthost.tooltipLinkText}
+                icon="info-circle"
+              />
             </div>
-            <Field
-              name="url"
-              // isEqual={isEqual}
-              render={({ input }) => <Input {...input} className={styles.input} data-qa="alertmanager-url" />}
-            />
+            <TextInputField name="smarthost" validators={[validators.required]} />
 
-            <div className={settingsStyles.labelWrapper} data-qa="alertmanager-url-label">
-              <span>{'From'}</span>
-              <LinkTooltip tooltipText={'test2'} link={'test3'} linkText={'test4'} icon="info-circle" />
+            <div className={settingsStyles.labelWrapper}>
+              <span>{Messages.fields.from.label}</span>
+              <LinkTooltip
+                tooltipText={Messages.fields.from.tooltipText}
+                link={Messages.fields.from.tooltipLink}
+                linkText={Messages.fields.from.tooltipLinkText}
+                icon="info-circle"
+              />
             </div>
-            <Field
-              name="url"
-              // isEqual={isEqual}
-              render={({ input }) => <Input {...input} className={styles.input} data-qa="alertmanager-url" />}
-            />
+            <TextInputField name="from" validators={[validators.required]} />
 
-            <div className={settingsStyles.labelWrapper} data-qa="alertmanager-url-label">
-              <span>{'Username'}</span>
-              <LinkTooltip tooltipText={'test2'} link={'test3'} linkText={'test4'} icon="info-circle" />
+            <div className={settingsStyles.labelWrapper}>
+              <span>{Messages.fields.username.label}</span>
+              <LinkTooltip
+                tooltipText={Messages.fields.username.tooltipText}
+                link={Messages.fields.username.tooltipLink}
+                linkText={Messages.fields.username.tooltipLinkText}
+                icon="info-circle"
+              />
             </div>
-            <Field
-              name="url"
-              // isEqual={isEqual}
-              render={({ input }) => <Input {...input} className={styles.input} data-qa="alertmanager-url" />}
-            />
+            <TextInputField name="username" validators={[validators.required]} />
 
-            <div className={settingsStyles.labelWrapper} data-qa="alertmanager-url-label">
-              <span>{'Password'}</span>
-              <LinkTooltip tooltipText={'test2'} link={'test3'} linkText={'test4'} icon="info-circle" />
+            <div className={settingsStyles.labelWrapper}>
+              <span>{Messages.fields.password.label}</span>
+              <LinkTooltip
+                tooltipText={Messages.fields.password.tooltipText}
+                link={Messages.fields.password.tooltipLink}
+                linkText={Messages.fields.password.tooltipLinkText}
+                icon="info-circle"
+              />
             </div>
-            <Field
-              name="url"
-              // isEqual={isEqual}
-              render={({ input }) => <Input {...input} className={styles.input} data-qa="alertmanager-url" />}
-            />
+            <TextInputField name="password" validators={[validators.required]} />
 
-            <div className={settingsStyles.labelWrapper} data-qa="alertmanager-url-label">
-              <span>{'Hello'}</span>
-              <LinkTooltip tooltipText={'test2'} link={'test3'} linkText={'test4'} icon="info-circle" />
+            <div className={settingsStyles.labelWrapper}>
+              <span>{Messages.fields.hello.label}</span>
+              <LinkTooltip
+                tooltipText={Messages.fields.hello.tooltipText}
+                link={Messages.fields.hello.tooltipLink}
+                linkText={Messages.fields.hello.tooltipLinkText}
+                icon="info-circle"
+              />
             </div>
-            <Field
-              name="url"
-              // isEqual={isEqual}
-              render={({ input }) => <Input {...input} className={styles.input} data-qa="alertmanager-url" />}
-            />
+            <TextInputField name="hello" />
 
-            <div className={settingsStyles.labelWrapper} data-qa="alertmanager-url-label">
-              <span>{'Identity'}</span>
-              <LinkTooltip tooltipText={'test2'} link={'test3'} linkText={'test4'} icon="info-circle" />
+            <div className={settingsStyles.labelWrapper}>
+              <span>{Messages.fields.identity.label}</span>
+              <LinkTooltip
+                tooltipText={Messages.fields.identity.tooltipText}
+                link={Messages.fields.identity.tooltipLink}
+                linkText={Messages.fields.identity.tooltipLinkText}
+                icon="info-circle"
+              />
             </div>
-            <Field
-              name="url"
+            <TextInputField name="identity" />
 
-              render={({ input }) => <Input {...input} className={styles.input} data-qa="alertmanager-url" />}
-            />
-
-            <div className={settingsStyles.labelWrapper} data-qa="alertmanager-url-label">
-              <span>{'Secret'}</span>
-              <LinkTooltip tooltipText={'test2'} link={'test3'} linkText={'test4'} icon="info-circle" />
+            <div className={settingsStyles.labelWrapper}>
+              <span>{Messages.fields.secret.label}</span>
+              <LinkTooltip
+                tooltipText={Messages.fields.secret.tooltipText}
+                link={Messages.fields.secret.tooltipLink}
+                linkText={Messages.fields.secret.tooltipLinkText}
+                icon="info-circle"
+              />
             </div>
-            <Field
-              name="url"
-              // isEqual={isEqual}
-              render={({ input }) => <Input {...input} className={styles.input} data-qa="alertmanager-url" />}
-            />
+            <TextInputField name="secret" />
 
             <Button
               className={settingsStyles.actionButton}
               type="submit"
-              disabled={pristine || loading}
-              data-qa="alertmanager-button"
+              disabled={!valid || pristine || loading}
+              data-qa="email-settings-submit-button"
             >
               {loading && <Spinner />}
-              {action}
+              {Messages.actionButton}
             </Button>
           </form>
         )}

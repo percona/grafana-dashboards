@@ -1,3 +1,22 @@
+export interface EmailSettings {
+  from: string;
+  smarthost: string;
+  hello: string;
+  username: string;
+  password: string;
+  identity: string;
+  secret: string;
+}
+
+export interface SlackSettings {
+  url?: string;
+}
+
+export interface AlertingSettings {
+  email: EmailSettings;
+  slack: SlackSettings;
+}
+
 export interface Settings {
   updatesDisabled: boolean;
   telemetryEnabled: boolean;
@@ -11,6 +30,8 @@ export interface Settings {
   platformEmail?: string;
   dbaasEnabled?: boolean;
   publicAddress?: string;
+  alertingEnabled: boolean;
+  alertingSettings: AlertingSettings;
 }
 
 export interface MetricsResolutions {

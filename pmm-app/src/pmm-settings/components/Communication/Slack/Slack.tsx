@@ -1,42 +1,58 @@
+import { Form } from 'react-final-form';
+import { Button, Spinner, useTheme } from '@grafana/ui';
+import React, { FC, useState } from 'react';
+import { TextInputField } from '@percona/platform-core';
 import { LinkTooltip } from '../../../../shared/components/Elements/LinkTooltip/LinkTooltip';
-import { Field, Form } from 'react-final-form';
-import { Button, Input, Spinner, useTheme } from '@grafana/ui';
-import React from 'react';
-import { getStyles } from '../../AlertManager/AlertManager.styles';
 import { getSettingsStyles } from '../../../Settings.styles';
+import { LoadingCallback } from '../../../Settings.service';
+import { Messages } from '../Communication.messages';
+import { SlackSettings } from '../../../Settings.types';
 
-export const Slack = (props) => {
+export interface SlackProps {
+  settings: SlackSettings;
+  updateSettings: (body: any, callback: LoadingCallback) => void;
+}
+
+export const Slack: FC<SlackProps> = ({ updateSettings, settings }) => {
   const theme = useTheme();
-  const styles = getStyles(theme);
   const settingsStyles = getSettingsStyles(theme);
-  const loading = false;
-  const action = 'Apply changes';
+  const [loading, setLoading] = useState(false);
+
+  const applyChanges = (values) => {
+    updateSettings(
+      {
+        slack_alerting_settings: values,
+      },
+      setLoading,
+    );
+  };
 
   return (
     <>
       <Form
-        onSubmit={() => {}}
-        initialValues={{ url: 'tester' }}
-        render={({ form: { change }, values, handleSubmit, valid, pristine }) => (
+        onSubmit={applyChanges}
+        initialValues={settings}
+        render={({ handleSubmit, valid, pristine }) => (
           <form onSubmit={handleSubmit}>
-            <div className={settingsStyles.labelWrapper} data-qa="alertmanager-url-label">
-              <span>{'URL'}</span>
-              <LinkTooltip tooltipText={'test2'} link={'test3'} linkText={'test4'} icon="info-circle" />
+            <div className={settingsStyles.labelWrapper}>
+              <span>{Messages.fields.slackURL.label}</span>
+              <LinkTooltip
+                tooltipText={Messages.fields.slackURL.tooltipText}
+                link={Messages.fields.slackURL.tooltipLink}
+                linkText={Messages.fields.slackURL.tooltipLinkText}
+                icon="info-circle"
+              />
             </div>
-            <Field
-              name="url"
-              // isEqual={isEqual}
-              render={({ input }) => <Input {...input} className={styles.input} data-qa="alertmanager-url" />}
-            />
+            <TextInputField name="url" />
 
             <Button
               className={settingsStyles.actionButton}
               type="submit"
-              disabled={pristine || loading}
-              data-qa="alertmanager-button"
+              disabled={!valid || pristine || loading}
+              data-qa="slack-settings--submit-button"
             >
               {loading && <Spinner />}
-              {action}
+              {Messages.actionButton}
             </Button>
           </form>
         )}

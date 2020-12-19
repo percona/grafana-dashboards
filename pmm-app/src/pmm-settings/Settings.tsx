@@ -1,5 +1,9 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Spinner, TabContent, Tab, useTheme } from '@grafana/ui';
+import React, {
+  FC, useEffect, useMemo, useState,
+} from 'react';
+import {
+  Spinner, TabContent, Tab, useTheme,
+} from '@grafana/ui';
 import { cx } from 'emotion';
 import { TabsVertical } from 'shared/components/Elements/TabsVertical/TabsVertical';
 import {
@@ -15,13 +19,15 @@ import { Settings, TabKeys } from './Settings.types';
 import { Messages } from './Settings.messages';
 import { getSettingsStyles } from './Settings.styles';
 import useQueryParams from '../shared/components/hooks/parameters.hook';
-import { Communication } from './components/Communication/Advanced';
+import { Communication } from './components/Communication/Communication';
 
 export const SettingsPanel: FC = () => {
   const [activeTab, setActiveTab] = useQueryParams('menu', TabKeys.metrics);
   const theme = useTheme();
   const styles = getSettingsStyles(theme);
-  const { metrics, advanced, ssh, alertManager, perconaPlatform } = Messages.tabs;
+  const {
+    metrics, advanced, ssh, alertManager, perconaPlatform,
+  } = Messages.tabs;
   const tabs = useMemo(
     () => [
       { label: metrics, key: TabKeys.metrics, active: activeTab === TabKeys.metrics },
@@ -94,12 +100,8 @@ export const SettingsPanel: FC = () => {
 
             {tabs[5].active && (
               <Communication
-                dataRetention={settings.dataRetention}
-                telemetryEnabled={!!settings.telemetryEnabled}
-                updatesDisabled={!!settings.updatesDisabled}
-                sttEnabled={!!settings.sttEnabled}
-                dbaasEnabled={!!settings.dbaasEnabled}
-                publicAddress={settings.publicAddress}
+                alertingSettings={settings.alertingSettings}
+                alertingEnabled={!!settings.alertingEnabled}
                 updateSettings={updateSettings}
               />
             )}
