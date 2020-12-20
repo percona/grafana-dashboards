@@ -1224,7 +1224,7 @@
                     "valueName": "current"
                 },
                 {
-                    "activePatternIndex": 3,
+                    "activePatternIndex": 0,
                     "datasource": null,
                     "defaultPattern": {
                         "bgColors": "green|orange|red",
@@ -1454,7 +1454,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "count by (service_type) ( \nsum by (service_name,service_type) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\",service_type!=\"external\"}[$interval]))\n)",
+                            "expr": "count by (service_type) ( \nsum by (service_name,service_type) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\"}[$interval]))\n)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1462,7 +1462,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\",service_type!=\"external\"}[$interval]))\n)",
+                            "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\"}[$interval]))\n)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1471,9 +1471,16 @@
                         },
                         {
                             "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(process_virtual_memory_max_bytes{service_type=\"external\",service_name=~\"$service_name\"}[$interval]))\n)",
+                            "hide": true,
                             "interval": "$interval",
                             "legendFormat": "External ",
                             "refId": "D"
+                        },
+                        {
+                            "expr": "count by (service_type) (up{service_type=\"external\"})",
+                            "interval": "",
+                            "legendFormat": "External",
+                            "refId": "E"
                         }
                     ],
                     "text_alignment_firstcolumn": "left",
@@ -1689,31 +1696,25 @@
                     ],
                     "targets": [
                         {
-                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\",service_type!=\"external\"}[$interval]))",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]))",
                             "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{service_name}}     ",
                             "refId": "A"
                         },
                         {
-                            "expr": "avg by (service_name) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\",service_type!=\"external\"}[$interval]))",
+                            "expr": "avg by (service_name) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\"}[$interval]))",
                             "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{service_name}}   ",
                             "refId": "B"
                         },
                         {
-                            "expr": "sum by (service_name) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\",service_type!=\"external\"}[$interval]))",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{service_name}}  ",
-                            "refId": "C"
-                        },
-                        {
-                            "expr": "max_over_time(process_virtual_memory_max_bytes{service_type=\"external\",service_name=~\"$service_name\"}[$interval])",
+                            "expr": "up{service_type=\"external\",service_name=~\"$service_name\"}",
                             "interval": "$interval",
                             "legendFormat": "{{service_name}} ({{external_group}})",
                             "refId": "D"
@@ -10461,14 +10462,14 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Metrics",
-                "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|process_virtual_memory_max_bytes\",node_name=~\"$node_name\"}, service_name)",
+                "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|up\",node_name=~\"$node_name\"}, service_name)",
                 "hide": 2,
                 "includeAll": true,
                 "label": "Service Name",
                 "multi": true,
                 "name": "service_name",
                 "options": [],
-                "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|process_virtual_memory_max_bytes\",node_name=~\"$node_name\"}, service_name)",
+                "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|up\",node_name=~\"$node_name\"}, service_name)",
                 "refresh": 2,
                 "regex": "",
                 "skipUrlSync": false,
