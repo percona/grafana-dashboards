@@ -132,7 +132,7 @@ export const Advanced: FC<AdvancedProps> = ({
               tooltipLinkText={tooltipLinkText}
               link={telemetryLink}
               className={cx({ [styles.switchDisabled]: values.stt || values.alerting })}
-              disabled={values.stt || values.alerting }
+              disabled={values.stt || values.alerting}
               dataQa="advanced-telemetry"
               component={SwitchRow}
             />
