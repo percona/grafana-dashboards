@@ -31,7 +31,6 @@ export interface Settings {
   dbaasEnabled?: boolean;
   alertingEnabled?: boolean;
   publicAddress?: string;
-  alertingEnabled: boolean;
   alertingSettings: AlertingSettings;
 }
 
