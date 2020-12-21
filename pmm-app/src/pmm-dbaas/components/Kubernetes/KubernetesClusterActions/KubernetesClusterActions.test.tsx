@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { dataQa } from '@percona/platform-core';
 import { MultipleActions } from 'pmm-dbaas/components/MultipleActions/MultipleActions';
 import { act } from 'react-dom/test-utils';
-import { KubernetesClusterActions } from './Ku';
+import { KubernetesClusterActions } from './KubernetesClusterActions';
 import { kubernetesStub } from '../__mocks__/kubernetesStubs';
 
 describe('KubernetesClusterActions::', () => {
