@@ -7,7 +7,7 @@ import { Form, FormRenderProps } from 'react-final-form';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { Databases } from 'shared/core';
 import { getStyles } from './Kubernetes.styles';
-import { NewKubernetesCluster, KubernetesProps, Kubernetes } from './Kubernetes.types';
+import { NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
 import { OperatorStatusItem } from './OperatorStatusItem/OperatorStatusItem';
 import { KubernetesClusterStatus } from './KubernetesClusterStatus/KubernetesClusterStatus';
@@ -21,7 +21,7 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
   loading,
 }) => {
   const styles = useStyles(getStyles);
-  const [selectedCluster, setSelectedCluster] = useState<Kubernetes>({ kubernetesClusterName: '' });
+  const [selectedCluster, setSelectedCluster] = useState<any>({ kubernetesClusterName: '' });
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [viewConfigModalVisible, setViewConfigModalVisible] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
@@ -133,8 +133,10 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
             variant="destructive"
             size="md"
             onClick={() => {
-              deleteKubernetes(selectedCluster);
-              setDeleteModalVisible(false);
+              if (selectedCluster) {
+                deleteKubernetes(selectedCluster);
+                setDeleteModalVisible(false);
+              }
             }}
             data-qa="delete-kubernetes-button"
           >
