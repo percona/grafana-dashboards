@@ -5,7 +5,6 @@ import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { Form, FormRenderProps } from 'react-final-form';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
-import { CheckboxField, FormElement } from 'shared/components/Form';
 import { Databases } from 'shared/core';
 import { getStyles } from './Kubernetes.styles';
 import { NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
