@@ -7,7 +7,7 @@ import { Form, FormRenderProps } from 'react-final-form';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { Databases } from 'shared/core';
 import { getStyles } from './Kubernetes.styles';
-import { NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
+import { NewKubernetesCluster, KubernetesProps, Kubernetes } from './Kubernetes.types';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
 import { OperatorStatusItem } from './OperatorStatusItem/OperatorStatusItem';
 import { KubernetesClusterStatus } from './KubernetesClusterStatus/KubernetesClusterStatus';
