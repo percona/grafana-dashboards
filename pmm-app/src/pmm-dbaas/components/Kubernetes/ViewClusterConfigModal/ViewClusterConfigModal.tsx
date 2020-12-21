@@ -1,28 +1,33 @@
 import React, {
   FC, useCallback, useEffect, useRef, useState,
 } from 'react';
-import { Button, ClipboardButton, HorizontalGroup } from '@grafana/ui';
+import {
+  Button, ClipboardButton, HorizontalGroup, useTheme,
+} from '@grafana/ui';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
-import { css } from 'emotion';
+import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
+import { showSuccessNotification } from 'shared/components/helpers';
 import { ViewKubernetesClusterModalProps } from './ViewClusterConfigModal.types';
 import { KubernetesService } from '../Kubernetes.service';
-import { Overlay } from '../../../../shared/components/Elements/Overlay/Overlay';
-import { showSuccessNotification } from '../../../../shared/components/helpers';
-import * as styles from '../../../../pmm-update/components/ProgressModal/ProgressModal.styles';
-import { Messages } from '../../../../pmm-update/components/ProgressModal/ProgressModal.messages';
+import { Messages } from '../../../DBaaS.messages';
+import { getStyles } from './ViewClusterConfigModal.styles';
 
 export const ViewClusterConfigModal: FC<ViewKubernetesClusterModalProps> = ({
   isVisible,
   setVisible,
   selectedCluster,
 }) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
+
   const [kubeconfig, setKubeconfig] = useState('');
   const [loading, setLoading] = useState(false);
   const outputRef = useRef<HTMLPreElement>(null);
 
 
   const copyToClipboard = useCallback(() => {
-    showSuccessNotification({ message: 'Copied' });
+    showSuccessNotification({ message: Messages.successfulCopyMessage });
 
     return outputRef.current?.textContent || '';
   }, [outputRef]);
@@ -55,7 +60,6 @@ export const ViewClusterConfigModal: FC<ViewKubernetesClusterModalProps> = ({
       <HorizontalGroup justify="flex-start" spacing="md">
         <ClipboardButton
           getText={copyToClipboard}
-          className={styles.clipboardButton}
           variant="secondary"
           size="sm"
         >
@@ -64,12 +68,7 @@ export const ViewClusterConfigModal: FC<ViewKubernetesClusterModalProps> = ({
       </HorizontalGroup>
       <Overlay
         isPending={loading}
-        className={css`
-          height: 50vh;
-          overflow: scroll;
-          margin-top: 10px;
-          margin-bottom: 10px;
-        `}
+        className={styles.overlay}
       >
         <pre ref={outputRef}>{kubeconfig}</pre>
       </Overlay>

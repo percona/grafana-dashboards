@@ -7,7 +7,7 @@ import { Form, FormRenderProps } from 'react-final-form';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { Databases } from 'shared/core';
 import { getStyles } from './Kubernetes.styles';
-import { NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
+import { NewKubernetesCluster, KubernetesProps, Kubernetes } from './Kubernetes.types';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
 import { OperatorStatusItem } from './OperatorStatusItem/OperatorStatusItem';
 import { KubernetesClusterStatus } from './KubernetesClusterStatus/KubernetesClusterStatus';
@@ -21,11 +21,19 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
   loading,
 }) => {
   const styles = useStyles(getStyles);
-  const [selectedCluster, setSelectedCluster] = useState<any>({ kubernetesClusterName: '' });
+  const [selectedCluster, setSelectedCluster] = useState<Kubernetes | null>(null);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [viewConfigModalVisible, setViewConfigModalVisible] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
   const { required } = validators;
+
+  const deleteKubernetesCluster = useCallback(() => {
+    if (selectedCluster) {
+      deleteKubernetes(selectedCluster);
+      setDeleteModalVisible(false);
+    }
+  }, [selectedCluster]);
+
   const columns = [
     {
       Header: Messages.kubernetes.table.nameColumn,
@@ -70,11 +78,13 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
       <div className={styles.actionPanel}>
         <AddNewClusterButton />
       </div>
-      <ViewClusterConfigModal
-        isVisible={viewConfigModalVisible}
-        setVisible={() => setViewConfigModalVisible(false)}
-        selectedCluster={selectedCluster}
-      />
+      {selectedCluster && (
+        <ViewClusterConfigModal
+          isVisible={viewConfigModalVisible}
+          setVisible={() => setViewConfigModalVisible(false)}
+          selectedCluster={selectedCluster}
+        />
+      )}
       <Modal
         title={Messages.kubernetes.addModal.title}
         isVisible={addModalVisible}
@@ -132,12 +142,7 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
           <Button
             variant="destructive"
             size="md"
-            onClick={() => {
-              if (selectedCluster) {
-                deleteKubernetes(selectedCluster);
-                setDeleteModalVisible(false);
-              }
-            }}
+            onClick={deleteKubernetesCluster}
             data-qa="delete-kubernetes-button"
           >
             {Messages.kubernetes.deleteModal.confirm}

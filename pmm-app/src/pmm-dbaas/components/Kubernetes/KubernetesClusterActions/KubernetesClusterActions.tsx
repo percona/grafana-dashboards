@@ -1,7 +1,6 @@
 import React, { FC, useCallback } from 'react';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { MultipleActions } from 'pmm-dbaas/components/MultipleActions/MultipleActions';
-// import { isClusterChanging } from '../DBCluster.utils';
 import { DBClusterActionsProps } from './KubernetesClusterActions.types';
 import { styles } from './KubernetesClusterActions.styles';
 import { Kubernetes } from '../Kubernetes.types';
