@@ -53,4 +53,5 @@ const toModel = (response: any): Settings => ({
   platformEmail: response.platform_email,
   dbaasEnabled: response.dbaas_enabled,
   publicAddress: response.pmm_public_address,
+  alertingEnabled: response.alerting_enabled,
 });

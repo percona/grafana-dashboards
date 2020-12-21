@@ -20,6 +20,8 @@ export const Messages = {
     publicAddressLabel: 'Public Address',
     publicAddressTooltip: 'Public Address to this PMM server.',
     publicAddressButton: 'Get from browser',
+    alertingLabel: 'Integrated Alerting',
+    alertingTooltip: 'Option to enable/disable Integrated Alerting features.',
   },
   alertmanager: {
     action: 'Apply Alertmanager settings',
