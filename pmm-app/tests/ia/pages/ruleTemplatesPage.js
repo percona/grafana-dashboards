@@ -13,7 +13,7 @@ module.exports = {
     templateName: '//tr/td[1]',
     modalHeader: '$modal-header',
     popUpTitle: '.alert-title',
-    columnHeaderLocator: (columnHeaderText) => `//th[text()="${columnHeaderText}"]`,
+    columnHeaderLocator: columnHeaderText => `//th[text()="${columnHeaderText}"]`,
   },
   buttons: {
     openAddTemplateModal: '$alert-rule-template-add-modal-button',
@@ -22,7 +22,7 @@ module.exports = {
     addTemplate: '$alert-rule-template-add-button',
     cancelAdding: '$alert-rule-template-cancel-button',
     // editButtonBySource returns Edit template button locators for a given source
-    editButtonBySource: (source) => `//tr[descendant::td[contains(text(), "${source}")]]//button[@data-qa="edit-template-button"]`,
+    editButtonBySource: source => `//tr[descendant::td[contains(text(), "${source}")]]//button[@data-qa="edit-template-button"]`,
   },
   fields: {
     templateInput: '$yaml-textarea-input',
@@ -33,7 +33,7 @@ module.exports = {
     successfullyAdded: 'Alert rule template successfully added',
     successfullyEdited: 'Alert rule template successfully added',
     failedToParse: 'Failed to parse rule template.',
-    duplicateTemplate: (id) => `Template with name "${id}" already exists.`,
+    duplicateTemplate: id => `Template with name "${id}" already exists.`,
   },
   templateSources: {
     ui: 'User-defined (UI)',
