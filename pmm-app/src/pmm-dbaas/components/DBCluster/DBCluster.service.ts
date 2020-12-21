@@ -9,6 +9,10 @@ export abstract class DBClusterService {
 
   abstract updateDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload>;
 
+  abstract suspendDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload>;
+
+  abstract resumeDBCluster(dbCluster: DBCluster): Promise<void | DBClusterPayload>;
+
   abstract deleteDBClusters(dbCluster: DBCluster): Promise<void>;
 
   abstract getDBCluster(dbCluster: DBCluster): Promise<void | DBClusterConnectionAPI>;

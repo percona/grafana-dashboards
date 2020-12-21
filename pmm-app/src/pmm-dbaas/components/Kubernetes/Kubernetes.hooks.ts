@@ -68,4 +68,6 @@ const toModelList = (response: KubernetesListAPI): Kubernetes[] => (
 
 const toModel = (response: KubernetesAPI): Kubernetes => ({
   kubernetesClusterName: response.kubernetes_cluster_name,
+  operators: response.operators,
+  status: response.status,
 });
