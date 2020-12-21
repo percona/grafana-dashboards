@@ -7,7 +7,7 @@ for (const i of Object.values(page.ruleTemplate.paths)) {
   templates.add([i]);
 }
 
-Feature('IA: Alert Rule Templates');
+Feature('IA: Alert rule templates');
 
 Before(async (I, ruleTemplatesPage) => {
   I.Authorize();
@@ -15,7 +15,7 @@ Before(async (I, ruleTemplatesPage) => {
 });
 
 Scenario(
-  'PMM-T510 Verify Built-in Rule templates are non-editable @ia @not-pr-pipeline',
+  'PMM-T510 Verify built-in rule templates are non-editable @ia @not-pr-pipeline',
   async (I, ruleTemplatesPage) => {
     const editButton = ruleTemplatesPage.buttons
       .editButtonBySource(ruleTemplatesPage.templateSources.builtin);
@@ -26,7 +26,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify Rule templates list elements @ia @not-pr-pipeline',
+  'Verify rule templates list elements @ia @not-pr-pipeline',
   async (I, ruleTemplatesPage) => {
     ruleTemplatesPage.columnHeaders.forEach((header) => {
       const columnHeader = ruleTemplatesPage.elements.columnHeaderLocator(header);
@@ -43,7 +43,7 @@ Scenario(
 );
 
 Scenario(
-  'Add rule Template modal elements @ia @not-pr-pipeline',
+  'Add rule template modal elements @ia @not-pr-pipeline',
   async (I, ruleTemplatesPage) => {
     I.click(ruleTemplatesPage.buttons.openAddTemplateModal);
     I.see(ruleTemplatesPage.messages.modalHeaderText, ruleTemplatesPage.elements.modalHeader);
@@ -55,7 +55,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T500 Add Rule templates @ia @not-pr-pipeline',
+  'PMM-T500 Add rule templates @ia @not-pr-pipeline',
   async (I, ruleTemplatesPage) => {
     const [templateName, fileContent] = ruleTemplatesPage.ruleTemplate
       .templateNameAndContent(ruleTemplatesPage.ruleTemplate.inputFilePath);
@@ -75,7 +75,7 @@ Scenario(
 
 Data(templates)
   .Scenario(
-    'PMM-T482 PMM-T499 Upload Rule templates @ia @not-pr-pipeline',
+    'PMM-T482 PMM-T499 Upload rule templates @ia @not-pr-pipeline',
     async (I, ruleTemplatesPage, current) => {
       const { path } = current;
       const validFile = path.endsWith('.yaml') || path.endsWith('.yml');
@@ -101,7 +101,7 @@ Data(templates)
   );
 
 Scenario(
-  'PMM-T501 Upload duplicate Rule template @ia @not-pr-pipeline',
+  'PMM-T501 Upload duplicate rule template @ia @not-pr-pipeline',
   async (I, ruleTemplatesPage) => {
     const path = ruleTemplatesPage.ruleTemplate.paths.yaml;
     const [, , id] = ruleTemplatesPage.ruleTemplate.templateNameAndContent(path);
