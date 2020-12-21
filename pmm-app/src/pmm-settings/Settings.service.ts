@@ -58,4 +58,5 @@ const toModel = (response: any): Settings => ({
     slack: response.slack_alerting_settings || {},
   },
   publicAddress: response.pmm_public_address,
+  alertingEnabled: response.alerting_enabled,
 });

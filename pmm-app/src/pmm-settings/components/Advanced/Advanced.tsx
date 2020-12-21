@@ -23,6 +23,7 @@ export const Advanced: FC<AdvancedProps> = ({
   updatesDisabled,
   sttEnabled,
   dbaasEnabled,
+  alertingEnabled,
   publicAddress,
   updateSettings,
 }) => {
@@ -49,6 +50,8 @@ export const Advanced: FC<AdvancedProps> = ({
       publicAddressLabel,
       publicAddressTooltip,
       publicAddressButton,
+      alertingLabel,
+      alertingTooltip,
     }, tooltipLinkText,
   } = Messages;
   const initialValues = {
@@ -58,6 +61,7 @@ export const Advanced: FC<AdvancedProps> = ({
     stt: sttEnabled,
     dbaas: dbaasEnabled,
     publicAddress,
+    alerting: alertingEnabled,
   };
   const [loading, setLoading] = useState(false);
   const retentionValidators = validators.compose(
@@ -69,6 +73,7 @@ export const Advanced: FC<AdvancedProps> = ({
     telemetry,
     stt,
     publicAddress,
+    alerting,
   }) => {
     const body = {
       data_retention: `${+retention * SECONDS_IN_DAY}s`,
@@ -78,6 +83,8 @@ export const Advanced: FC<AdvancedProps> = ({
       enable_stt: stt,
       pmm_public_address: publicAddress,
       remove_pmm_public_address: !publicAddress,
+      enable_alerting: alerting ? true : undefined,
+      disable_alerting: !alerting ? true : undefined,
     };
 
     updateSettings(body, setLoading);
@@ -124,8 +131,8 @@ export const Advanced: FC<AdvancedProps> = ({
               tooltip={telemetryTooltip}
               tooltipLinkText={tooltipLinkText}
               link={telemetryLink}
-              className={cx({ [styles.switchDisabled]: values.stt })}
-              disabled={values.stt}
+              className={cx({ [styles.switchDisabled]: values.stt || values.alerting })}
+              disabled={values.stt || values.alerting}
               dataQa="advanced-telemetry"
               component={SwitchRow}
             />
@@ -165,6 +172,16 @@ export const Advanced: FC<AdvancedProps> = ({
                 component={SwitchRow}
               />
             )}
+            <Field
+              name="alerting"
+              type="checkbox"
+              label={alertingLabel}
+              tooltip={alertingTooltip}
+              className={cx({ [styles.switchDisabled]: !values.telemetry })}
+              disabled={!values.telemetry}
+              dataQa="advanced-alerting"
+              component={SwitchRow}
+            />
             <div className={styles.advancedRow}>
               <div
                 className={cx(styles.advancedCol, styles.publicAddressLabelWrapper)}

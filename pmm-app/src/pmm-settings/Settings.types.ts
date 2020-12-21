@@ -29,6 +29,7 @@ export interface Settings {
   sttEnabled: boolean;
   platformEmail?: string;
   dbaasEnabled?: boolean;
+  alertingEnabled?: boolean;
   publicAddress?: string;
   alertingEnabled: boolean;
   alertingSettings: AlertingSettings;
