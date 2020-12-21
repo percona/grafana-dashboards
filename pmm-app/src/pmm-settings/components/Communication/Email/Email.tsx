@@ -65,7 +65,7 @@ export const Email: FC<EmailProps> = ({ updateSettings, settings }) => {
                 icon="info-circle"
               />
             </div>
-            <TextInputField name="username" validators={[validators.required]} />
+            <TextInputField name="username" />
 
             <div className={settingsStyles.labelWrapper}>
               <span>{Messages.fields.password.label}</span>
@@ -76,7 +76,7 @@ export const Email: FC<EmailProps> = ({ updateSettings, settings }) => {
                 icon="info-circle"
               />
             </div>
-            <PasswordInputField name="password" validators={[validators.required]} />
+            <PasswordInputField name="password" />
 
             <div className={settingsStyles.labelWrapper}>
               <span>{Messages.fields.hello.label}</span>

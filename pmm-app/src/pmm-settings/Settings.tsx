@@ -26,7 +26,7 @@ export const SettingsPanel: FC = () => {
   const theme = useTheme();
   const styles = getSettingsStyles(theme);
   const {
-    metrics, advanced, ssh, alertManager, perconaPlatform,
+    metrics, advanced, ssh, alertManager, perconaPlatform, communication,
   } = Messages.tabs;
   const tabs = useMemo(
     () => [
@@ -35,7 +35,7 @@ export const SettingsPanel: FC = () => {
       { label: ssh, key: TabKeys.ssh, active: activeTab === TabKeys.ssh },
       { label: alertManager, key: TabKeys.alertManager, active: activeTab === TabKeys.alertManager },
       { label: perconaPlatform, key: TabKeys.perconaPlatform, active: activeTab === TabKeys.perconaPlatform },
-      { label: 'Communication', key: TabKeys.communication, active: activeTab === TabKeys.communication },
+      { label: communication, key: TabKeys.communication, active: activeTab === TabKeys.communication },
     ],
     [activeTab],
   );
