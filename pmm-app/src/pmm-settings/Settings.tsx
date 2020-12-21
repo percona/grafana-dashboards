@@ -28,6 +28,9 @@ export const SettingsPanel: FC = () => {
   const {
     metrics, advanced, ssh, alertManager, perconaPlatform, communication,
   } = Messages.tabs;
+  const [settings, setSettings] = useState<Settings>();
+  const [loading, setLoading] = useState(true);
+
   const tabs = useMemo(
     () => [
       { label: metrics, key: TabKeys.metrics, active: activeTab === TabKeys.metrics },
@@ -35,12 +38,16 @@ export const SettingsPanel: FC = () => {
       { label: ssh, key: TabKeys.ssh, active: activeTab === TabKeys.ssh },
       { label: alertManager, key: TabKeys.alertManager, active: activeTab === TabKeys.alertManager },
       { label: perconaPlatform, key: TabKeys.perconaPlatform, active: activeTab === TabKeys.perconaPlatform },
-      { label: communication, key: TabKeys.communication, active: activeTab === TabKeys.communication },
+      {
+        label: communication,
+        key: TabKeys.communication,
+        active: activeTab === TabKeys.communication,
+        hidden: !settings?.alertingEnabled,
+      },
     ],
-    [activeTab],
+    [activeTab, settings],
   );
-  const [settings, setSettings] = useState<Settings>();
-  const [loading, setLoading] = useState(true);
+
   const updateSettings = async (body: any, callback: LoadingCallback) => {
     const response = await SettingsService.setSettings(body, callback);
 
@@ -60,7 +67,7 @@ export const SettingsPanel: FC = () => {
   return (
     <div className={styles.settingsWrapper}>
       <TabsVertical className={styles.tabsWrapper} dataQa="settings-tabs">
-        {tabs.map((tab, index) => (
+        {tabs.filter(({ hidden }) => !hidden).map((tab, index) => (
           <Tab key={index} label={tab.label} active={tab.active} onChangeTab={() => setActiveTab(tab.key)} />
         ))}
       </TabsVertical>
@@ -98,7 +105,7 @@ export const SettingsPanel: FC = () => {
             )}
             {tabs[4].active && <PlatformLogin userEmail={settings.platformEmail} getSettings={getSettings} />}
 
-            {tabs[5].active && (
+            {tabs[5].active && !tabs[5].hidden && (
               <Communication
                 alertingSettings={settings.alertingSettings}
                 alertingEnabled={!!settings.alertingEnabled}
