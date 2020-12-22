@@ -20,6 +20,8 @@ export const Messages = {
     publicAddressLabel: 'Public Address',
     publicAddressTooltip: 'Public Address to this PMM server.',
     publicAddressButton: 'Get from browser',
+    alertingLabel: 'Integrated Alerting',
+    alertingTooltip: 'Option to enable/disable Integrated Alerting features.',
   },
   alertmanager: {
     action: 'Apply Alertmanager settings',
@@ -67,6 +69,7 @@ export const Messages = {
     ssh: 'SSH Key',
     alertManager: 'Alertmanager Integration',
     perconaPlatform: 'Percona Platform',
+    communication: 'Communication',
   },
   tooltipLinkText: 'Read more',
 };
