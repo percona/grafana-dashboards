@@ -1,4 +1,4 @@
-import { GUI_DOC_URL } from './Settings.constants';
+import { GUI_DOC_URL, HOW_TO_DOC_URL } from './Settings.constants';
 
 export const Messages = {
   advanced: {
@@ -22,6 +22,7 @@ export const Messages = {
     publicAddressButton: 'Get from browser',
     alertingLabel: 'Integrated Alerting',
     alertingTooltip: 'Option to enable/disable Integrated Alerting features.',
+    alertingLink: `${HOW_TO_DOC_URL}/configure.html#alerting`,
   },
   alertmanager: {
     action: 'Apply Alertmanager settings',
