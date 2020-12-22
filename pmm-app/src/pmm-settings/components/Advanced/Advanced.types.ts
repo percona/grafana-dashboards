@@ -8,5 +8,5 @@ export interface AdvancedProps {
   dbaasEnabled?: boolean;
   alertingEnabled?: boolean;
   publicAddress?: string;
-  updateSettings: (body: any, callback: LoadingCallback) => void;
+  updateSettings: (body: any, callback: LoadingCallback, refresh?: boolean) => void;
 }
