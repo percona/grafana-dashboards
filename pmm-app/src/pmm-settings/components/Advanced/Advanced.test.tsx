@@ -47,6 +47,20 @@ describe('Advanced::', () => {
     expect(sttSwitch.prop('disabled')).toBeTruthy();
   });
 
+  it('Cant change alerting when telemetry is off', () => {
+    const root = mount(<Advanced
+      dataRetention="1296000s"
+      telemetryEnabled={false}
+      sttEnabled={false}
+      alertingEnabled={false}
+      updatesDisabled
+      updateSettings={() => {}}
+    />);
+    const alertingSwitch = root.find('[data-qa="advanced-alerting"]').find('input');
+
+    expect(alertingSwitch.prop('disabled')).toBeTruthy();
+  });
+
   it('Calls apply changes', () => {
     const updateSettings = jest.fn();
     const root = mount(<Advanced
