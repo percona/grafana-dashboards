@@ -5,13 +5,16 @@ import { DBClusterBasicOptions } from './DBClusterBasicOptions';
 import { AddDBClusterFields } from '../AddDBClusterModal.types';
 import { kubernetesClusterName } from './DBClusterBasicOptions.utils';
 import { Messages } from '../../../../DBaaS.messages';
+import { kubernetesStub } from '../../../Kubernetes/__mocks__/kubernetesStubs';
 
 describe('DBClusterBasicOptions::', () => {
   it('renders correctly', () => {
     const root = mount(
       <Form
         onSubmit={jest.fn()}
-        render={({ form }: FormRenderProps) => <DBClusterBasicOptions kubernetesOptions={[]} form={form} />}
+        render={({ form }: FormRenderProps) => (
+          <DBClusterBasicOptions kubernetes={kubernetesStub} form={form} />
+        )}
       />,
     );
 
@@ -26,7 +29,9 @@ describe('DBClusterBasicOptions::', () => {
           [AddDBClusterFields.name]: 'dbcluster',
         }}
         onSubmit={jest.fn()}
-        render={({ form }: FormRenderProps) => <DBClusterBasicOptions kubernetesOptions={[]} form={form} />}
+        render={({ form }: FormRenderProps) => (
+          <DBClusterBasicOptions kubernetes={kubernetesStub} form={form} />
+        )}
       />,
     );
     const name = root.find('[data-qa="name-text-input"]');

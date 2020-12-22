@@ -5,7 +5,5 @@ export class XtraDBService {
     return { connection_credentials: xtraDBClusterConnectionStub };
   }
 
-  restartDBCluster() {
-
-  }
+  restartDBCluster() {}
 }
