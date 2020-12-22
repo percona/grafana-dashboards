@@ -70,6 +70,7 @@ export const Messages = {
     ssh: 'SSH Key',
     alertManager: 'Alertmanager Integration',
     perconaPlatform: 'Percona Platform',
+    communication: 'Communication',
   },
   tooltipLinkText: 'Read more',
 };

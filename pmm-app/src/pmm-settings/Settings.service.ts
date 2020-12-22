@@ -52,6 +52,11 @@ const toModel = (response: any): Settings => ({
   sttEnabled: response.stt_enabled,
   platformEmail: response.platform_email,
   dbaasEnabled: response.dbaas_enabled,
+  alertingEnabled: response.alerting_enabled,
+  alertingSettings: {
+    email: response.email_alerting_settings || {},
+    slack: response.slack_alerting_settings || {},
+  },
   publicAddress: response.pmm_public_address,
   alertingEnabled: response.alerting_enabled,
 });

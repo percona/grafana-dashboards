@@ -70,12 +70,10 @@ export const Advanced: FC<AdvancedProps> = ({
     validators.range(MIN_DAYS, MAX_DAYS),
   );
   const applyChanges = ({
-    retention,
-    telemetry,
-    stt,
-    publicAddress,
-    alerting,
+    retention, telemetry, stt, publicAddress, alerting,
   }) => {
+    const refresh = !!alerting !== alertingEnabled;
+
     const body = {
       data_retention: `${+retention * SECONDS_IN_DAY}s`,
       disable_telemetry: !telemetry,
@@ -88,7 +86,7 @@ export const Advanced: FC<AdvancedProps> = ({
       disable_alerting: !alerting ? true : undefined,
     };
 
-    updateSettings(body, setLoading);
+    updateSettings(body, setLoading, refresh);
   };
 
   return (
@@ -102,10 +100,7 @@ export const Advanced: FC<AdvancedProps> = ({
           <form onSubmit={handleSubmit}>
             <div className={styles.advancedRow}>
               <div className={styles.advancedCol}>
-                <div
-                  className={settingsStyles.labelWrapper}
-                  data-qa="advanced-label"
-                >
+                <div className={settingsStyles.labelWrapper} data-qa="advanced-label">
                   <span>{retentionLabel}</span>
                   <LinkTooltip
                     tooltipText={retentionTooltip}
@@ -162,16 +157,16 @@ export const Advanced: FC<AdvancedProps> = ({
               component={SwitchRow}
             />
             {dbaasEnabled && (
-              <Field
-                name="dbaas"
-                type="checkbox"
-                label={dbaasLabel}
-                tooltip={dbaasTooltip}
-                className={styles.switchDisabled}
-                disabled
-                dataQa="advanced-dbaas"
-                component={SwitchRow}
-              />
+            <Field
+              name="dbaas"
+              type="checkbox"
+              label={dbaasLabel}
+              tooltip={dbaasTooltip}
+              className={styles.switchDisabled}
+              disabled
+              dataQa="advanced-dbaas"
+              component={SwitchRow}
+            />
             )}
             <Field
               name="alerting"
@@ -186,25 +181,14 @@ export const Advanced: FC<AdvancedProps> = ({
               component={SwitchRow}
             />
             <div className={styles.advancedRow}>
-              <div
-                className={cx(styles.advancedCol, styles.publicAddressLabelWrapper)}
-              >
-                <div
-                  className={settingsStyles.labelWrapper}
-                  data-qa="public-address-label"
-                >
+              <div className={cx(styles.advancedCol, styles.publicAddressLabelWrapper)}>
+                <div className={settingsStyles.labelWrapper} data-qa="public-address-label">
                   <span>{publicAddressLabel}</span>
-                  <LinkTooltip
-                    tooltipText={publicAddressTooltip}
-                    icon="info-circle"
-                  />
+                  <LinkTooltip tooltipText={publicAddressTooltip} icon="info-circle" />
                 </div>
               </div>
               <div className={styles.publicAddressWrapper}>
-                <TextInputField
-                  name="publicAddress"
-                  className={styles.publicAddressInput}
-                />
+                <TextInputField name="publicAddress" className={styles.publicAddressInput} />
                 <Button
                   className={styles.publicAddressButton}
                   type="button"
