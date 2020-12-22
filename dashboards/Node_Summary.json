@@ -1249,7 +1249,7 @@
             },
             "targets": [
                 {
-                    "expr": "count by (service_type) (sum by (service_name,service_type) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\",service_type!=\"external\"}[$interval])))",
+                    "expr": "count by (service_type) (sum by (service_name,service_type) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\",service_type!=\"external\",node_name=\"$node_name\"}[$interval])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1257,7 +1257,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "count by (service_type) ( \nsum by (service_name,service_type) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\",service_type!=\"external\"}[$interval]))\n)",
+                    "expr": "count by (service_type) ( \nsum by (service_name,service_type) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\",service_type!=\"external\",node_name=\"$node_name\"}[$interval]))\n)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1265,7 +1265,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\",service_type!=\"external\"}[$interval]))\n)",
+                    "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\",service_type!=\"external\",node_name=\"$node_name\"}[$interval]))\n)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1273,14 +1273,14 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(process_virtual_memory_max_bytes{service_type=\"external\",service_name=~\"$service_name\"}[$interval]))\n)",
+                    "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(process_virtual_memory_max_bytes{service_type=\"external\",service_name=~\"$service_name\",node_name=\"$node_name\"}[$interval]))\n)",
                     "hide": true,
                     "interval": "$interval",
                     "legendFormat": "External ",
                     "refId": "D"
                 },
                 {
-                    "expr": "count by (service_type) (up{service_type=\"external\"})",
+                    "expr": "count by (service_type) (up{service_type=\"external\",node_name=\"$node_name\"})",
                     "interval": "$interval",
                     "legendFormat": "External",
                     "refId": "E"
@@ -1515,7 +1515,7 @@
                 {
                     "expr": "up{service_type=\"external\",node_name=~\"$node_name\"}",
                     "interval": "$interval",
-                    "legendFormat": "{{service_name}} ",
+                    "legendFormat": "{{service_name}} ({{external_group}})",
                     "refId": "D"
                 }
             ],
@@ -4048,12 +4048,12 @@
     "templating": {
         "list": [
             {
-                "datasource": "Metrics",
                 "allFormat": "glob",
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
                 "current": {},
+                "datasource": "Metrics",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Interval",
@@ -4108,10 +4108,10 @@
                 "type": "interval"
             },
             {
-                "datasource": "Metrics",
                 "allFormat": "glob",
                 "allValue": null,
                 "current": {},
+                "datasource": "Metrics",
                 "definition": "label_values(up, node_name)",
                 "hide": 0,
                 "includeAll": false,
@@ -4133,9 +4133,9 @@
                 "useTags": false
             },
             {
-                "datasource": "Metrics",
                 "allValue": null,
                 "current": {},
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_name)",
                 "hide": 2,
                 "includeAll": true,
@@ -4155,9 +4155,9 @@
                 "useTags": false
             },
             {
-                "datasource": "Metrics",
                 "allValue": null,
                 "current": {},
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
                 "hide": 2,
                 "includeAll": true,
@@ -4177,9 +4177,9 @@
                 "useTags": false
             },
             {
-                "datasource": "Metrics",
                 "allValue": null,
                 "current": {},
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
                 "hide": 2,
                 "includeAll": true,
@@ -4199,9 +4199,9 @@
                 "useTags": false
             },
             {
-                "datasource": "Metrics",
                 "allValue": null,
                 "current": {},
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
                 "hide": 2,
                 "includeAll": true,
@@ -4221,9 +4221,9 @@
                 "useTags": false
             },
             {
-                "datasource": "Metrics",
                 "allValue": null,
                 "current": {},
+                "datasource": "Metrics",
                 "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
                 "hide": 2,
                 "includeAll": true,
@@ -4243,9 +4243,9 @@
                 "useTags": false
             },
             {
-                "datasource": "Metrics",
                 "allValue": null,
                 "current": {},
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
                 "hide": 2,
                 "includeAll": true,
@@ -4265,9 +4265,9 @@
                 "useTags": false
             },
             {
-                "datasource": "Metrics",
                 "allValue": null,
                 "current": {},
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
                 "hide": 2,
                 "includeAll": true,
@@ -4287,9 +4287,9 @@
                 "useTags": false
             },
             {
-                "datasource": "Metrics",
                 "allValue": null,
                 "current": {},
+                "datasource": "Metrics",
                 "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
                 "hide": 2,
                 "includeAll": true,
@@ -4309,9 +4309,9 @@
                 "useTags": false
             },
             {
-                "datasource": "Metrics",
                 "allValue": null,
                 "current": {},
+                "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
                 "hide": 2,
                 "includeAll": true,
@@ -4331,10 +4331,10 @@
                 "useTags": false
             },
             {
-                "datasource": "Metrics",
                 "allFormat": "glob",
                 "allValue": null,
                 "current": {},
+                "datasource": "Metrics",
                 "definition": "label_values(up{node_name=~\"$node_name\"}, node_id)",
                 "hide": 2,
                 "includeAll": false,

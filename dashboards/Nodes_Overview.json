@@ -1446,7 +1446,7 @@
                     },
                     "targets": [
                         {
-                            "expr": "count by (service_type) (sum by (service_name,service_type) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\",service_type!=\"external\"}[$interval])))",
+                            "expr": "count by (service_type) (sum by (service_name,service_type) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\",service_type!=\"external\",node_name=~\"$node_name\"}[$interval])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1454,7 +1454,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "count by (service_type) ( \nsum by (service_name,service_type) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\"}[$interval]))\n)",
+                            "expr": "count by (service_type) ( \nsum by (service_name,service_type) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\",service_type!=\"external\",node_name=~\"$node_name\"}[$interval]))\n)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1462,7 +1462,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\"}[$interval]))\n)",
+                            "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\",service_type!=\"external\",node_name=~\"$node_name\"}[$interval]))\n)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1470,14 +1470,14 @@
                             "refId": "C"
                         },
                         {
-                            "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(process_virtual_memory_max_bytes{service_type=\"external\",service_name=~\"$service_name\"}[$interval]))\n)",
+                            "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(process_virtual_memory_max_bytes{service_type=\"external\",service_name=~\"$service_name\",node_name=~\"$node_name\"}[$interval]))\n)",
                             "hide": true,
                             "interval": "$interval",
                             "legendFormat": "External ",
                             "refId": "D"
                         },
                         {
-                            "expr": "count by (service_type) (up{service_type=\"external\"})",
+                            "expr": "count by (service_type) (up{service_type=\"external\",node_name=~\"$node_name\"})",
                             "interval": "",
                             "legendFormat": "External",
                             "refId": "E"
@@ -1696,7 +1696,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]))",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\",service_type!=\"external\"}[$interval]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1705,13 +1705,19 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "avg by (service_name) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\"}[$interval]))",
+                            "expr": "avg by (service_name) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\",service_type!=\"external\"}[$interval]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{service_name}}   ",
                             "refId": "B"
+                        },
+                        {
+                            "expr": "count by (service_name) (\nsum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\",service_type!=\"external\"}[$interval]))\n)",
+                            "interval": "$interval",
+                            "legendFormat": "{{service_name}}  ",
+                            "refId": "C"
                         },
                         {
                             "expr": "up{service_type=\"external\",service_name=~\"$service_name\"}",
@@ -2035,7 +2041,7 @@
             "colorValue": true,
             "colors": [
                 "#299c46",
-                "rgba(237, 129, 40, 0.89)",
+                "#FF780A",
                 "#d44a3a"
             ],
             "datasource": null,
@@ -2512,6 +2518,19 @@
                     "description": "The CPU time is measured in clock ticks or seconds. It is useful to measure CPU time as a percentage of the CPU's capacity, which is called the CPU usage.",
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "CPU utilization details - ${__series.name}",
+                                    "url": "/graph/d/node-cpu/cpu-utilization-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 5,
                     "fillGradient": 0,
                     "grid": {},
@@ -2543,17 +2562,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "CPU utilization details - ${__series.name}",
-                                "url": "/graph/d/node-cpu/cpu-utilization-details?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
-                    },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -2638,9 +2649,16 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
@@ -2649,6 +2667,17 @@
                     },
                     "id": 216,
                     "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
@@ -2657,6 +2686,7 @@
                         "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -2685,8 +2715,16 @@
                         "tooltipPrimarySortField": "thresholdLevel",
                         "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -2758,7 +2796,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "CPU Usage",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "aliasColors": {
@@ -2778,6 +2823,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "CPU utilization details - ${__series.name}",
+                                    "url": "/graph/d/node-cpu/cpu-utilization-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 5,
                     "fillGradient": 0,
                     "grid": {},
@@ -2809,17 +2867,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "CPU utilization details - ${__series.name}",
-                                "url": "/graph/d/node-cpu/cpu-utilization-details?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
-                    },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -2904,9 +2954,16 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
@@ -2915,6 +2972,17 @@
                     },
                     "id": 330,
                     "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
@@ -2923,6 +2991,7 @@
                         "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -2951,8 +3020,16 @@
                         "tooltipPrimarySortField": "thresholdLevel",
                         "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -3024,7 +3101,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "CPU Steal",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "aliasColors": {
@@ -3044,6 +3128,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "CPU utilization details - ${__series.name}",
+                                    "url": "/graph/d/node-cpu/cpu-utilization-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 5,
                     "fillGradient": 0,
                     "grid": {},
@@ -3075,17 +3172,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "CPU utilization details - ${__series.name}",
-                                "url": "/graph/d/node-cpu/cpu-utilization-details?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
-                    },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -3170,9 +3259,16 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
@@ -3181,6 +3277,17 @@
                     },
                     "id": 332,
                     "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
@@ -3189,6 +3296,7 @@
                         "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -3217,8 +3325,16 @@
                         "tooltipPrimarySortField": "thresholdLevel",
                         "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -3290,7 +3406,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "CPU I/O Wait",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "aliasColors": {
@@ -3310,6 +3433,19 @@
                     "description": "When a system is running with maximum CPU utilization, the transmitting and receiving threads must all share the available CPU. This will cause data to be queued more frequently to cope with the lack of CPU. CPU Saturation may be measured as the length of a wait queue, or the time spent waiting on the queue.",
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "CPU utilization details ${__series.name}",
+                                    "url": "/graph/d/node-cpu/cpu-utilization-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -3339,17 +3475,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "CPU utilization details ${__series.name}",
-                                "url": "/graph/d/node-cpu/cpu-utilization-details?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
-                    },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -3439,9 +3567,16 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
@@ -3450,13 +3585,26 @@
                     },
                     "id": 313,
                     "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "/graph/d/node-instance-summary/node-summary?from=$__from&to=$__to&var-node_name=${__cell_name}",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -3466,7 +3614,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "percent",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -3481,12 +3629,20 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -3558,7 +3714,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "CPU Saturation",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "aliasColors": {},
@@ -3569,6 +3732,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "CPU utilization details - ${__series.name}",
+                                    "url": "/graph/d/node-cpu/cpu-utilization-details?var-node_name=${__series.name}&$__url_time_range "
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -3599,17 +3775,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "CPU utilization details - ${__series.name}",
-                                "url": "/graph/d/node-cpu/cpu-utilization-details?var-node_name=${__series.name}&$__url_time_range "
-                            }
-                        ]
-                    },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -3701,9 +3869,16 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
@@ -3712,13 +3887,26 @@
                     },
                     "id": 316,
                     "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "/graph/d/node-instance-summary/node-summary?from=$__from&to=$__to&var-node_name=${__cell_name}",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -3728,7 +3916,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "percent",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -3743,12 +3931,20 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -4000,7 +4196,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Switches",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "aliasColors": {
@@ -4017,6 +4220,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "CPU utilization details - ${__series.name}",
+                                    "url": "/graph/d/node-cpu/cpu-utilization-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -4047,17 +4263,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "CPU utilization details - ${__series.name}",
-                                "url": "/graph/d/node-cpu/cpu-utilization-details?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
-                    },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -4144,9 +4352,16 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
@@ -4155,13 +4370,26 @@
                     },
                     "id": 318,
                     "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "/graph/",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -4171,7 +4399,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "percent",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -4186,12 +4414,20 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -4264,7 +4500,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Runnable Processes",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "aliasColors": {
@@ -4281,6 +4524,13 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -4311,11 +4561,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.1.3",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -4396,9 +4644,16 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
@@ -4407,13 +4662,26 @@
                     },
                     "id": 320,
                     "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "/graph/",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -4423,7 +4691,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "percent",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -4438,12 +4706,20 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -4515,7 +4791,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Blocked Processes",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 }
             ],
             "title": "CPU Details",
