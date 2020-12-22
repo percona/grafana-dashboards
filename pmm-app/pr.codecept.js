@@ -41,6 +41,7 @@ exports.config = {
     homePage: './tests/pages/homePage.js',
     inventoryAPI: './tests/pages/api/inventoryAPI.js',
     mysqlTableDetailsPage: './tests/pages/mysqlTableDetailsPage.js',
+    ncPage: './tests/ia/pages/notificationChannelsPage.js',
     pmmDemoPage: './tests/pages/pmmDemoPage.js',
     pmmInventoryPage: './tests/pages/pmmInventoryPage.js',
     pmmSettingsPage: './tests/pages/pmmSettingsPage.js',
