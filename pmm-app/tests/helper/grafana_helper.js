@@ -25,10 +25,12 @@ class Grafana extends Helper {
 
   async readFile(path) {
     try {
-      return fs.readFileSync(path, 'utf8')
+      return fs.readFileSync(path, 'utf8');
     } catch (e) {
-      assert.ok(false, `Could not read the file ${path}`)
+      assert.ok(false, `Could not read the file ${path}`);
     }
+
+    return null;
   }
 
   /**
