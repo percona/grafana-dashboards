@@ -94,8 +94,8 @@ describe('DBClusterActions::', () => {
 
     action.simulate('click');
 
-    expect(setSelectedCluster).toHaveBeenCalledTimes(1);
-    expect(setDeleteModalVisible).toHaveBeenCalledTimes(1);
+    expect(setSelectedCluster).toHaveBeenCalled();
+    expect(setDeleteModalVisible).toHaveBeenCalled();
   });
 
   xit('calls restart action correctly', async () => {
