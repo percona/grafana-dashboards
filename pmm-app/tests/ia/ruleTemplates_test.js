@@ -57,7 +57,7 @@ Scenario(
 Scenario(
   'PMM-T500 Add rule templates @ia @not-pr-pipeline',
   async (I, ruleTemplatesPage) => {
-    const [templateName, fileContent] = ruleTemplatesPage.ruleTemplate
+    const [templateName, fileContent] = await ruleTemplatesPage.ruleTemplate
       .templateNameAndContent(ruleTemplatesPage.ruleTemplate.inputFilePath);
     const expectedSourceLocator = ruleTemplatesPage
       .getSourceLocator(templateName, ruleTemplatesPage.templateSources.ui);
@@ -79,7 +79,7 @@ Data(templates)
     async (I, ruleTemplatesPage, current) => {
       const { path } = current;
       const validFile = path.endsWith('.yaml') || path.endsWith('.yml');
-      const [templateName] = ruleTemplatesPage.ruleTemplate.templateNameAndContent(path);
+      const [templateName] = await ruleTemplatesPage.ruleTemplate.templateNameAndContent(path);
       const expectedSourceLocator = ruleTemplatesPage
         .getSourceLocator(templateName, ruleTemplatesPage.templateSources.ui);
       const editButton = ruleTemplatesPage.buttons
@@ -87,7 +87,7 @@ Data(templates)
 
       I.click(ruleTemplatesPage.buttons.openAddTemplateModal);
       I.attachFile(ruleTemplatesPage.fields.fileInput, path);
-      ruleTemplatesPage.verifyInputContent(path);
+      await ruleTemplatesPage.verifyInputContent(path);
       I.click(ruleTemplatesPage.buttons.addTemplate);
 
       if (validFile) {
@@ -104,12 +104,12 @@ Scenario(
   'PMM-T501 Upload duplicate rule template @ia @not-pr-pipeline',
   async (I, ruleTemplatesPage) => {
     const path = ruleTemplatesPage.ruleTemplate.paths.yaml;
-    const [, , id] = ruleTemplatesPage.ruleTemplate.templateNameAndContent(path);
+    const [, , id] = await ruleTemplatesPage.ruleTemplate.templateNameAndContent(path);
     const message = ruleTemplatesPage.messages.duplicateTemplate(id);
 
     I.click(ruleTemplatesPage.buttons.openAddTemplateModal);
     I.attachFile(ruleTemplatesPage.fields.fileInput, path);
-    ruleTemplatesPage.verifyInputContent(path);
+    await ruleTemplatesPage.verifyInputContent(path);
     I.click(ruleTemplatesPage.buttons.addTemplate);
     ruleTemplatesPage.verifyPopUpMessage(message);
   },

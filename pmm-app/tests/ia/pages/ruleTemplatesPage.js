@@ -1,5 +1,4 @@
 const { I } = inject();
-const fs = require('fs');
 const YAML = require('yaml');
 
 module.exports = {
@@ -42,8 +41,8 @@ module.exports = {
   ruleTemplate: {
     // templateNameAndContent parses yaml file and returns
     // template name, full content as string and template id
-    templateNameAndContent: (ymlPath) => {
-      const content = fs.readFileSync(ymlPath, 'utf8');
+    templateNameAndContent: async (ymlPath) => {
+      const content = await I.readFile(ymlPath);
 
       try {
         const name = YAML.parse(content).templates[0].summary;
@@ -66,8 +65,8 @@ module.exports = {
     return `//td[contains(text(), "${templateName}")]/following-sibling::td[text()="${source}"]`;
   },
 
-  verifyInputContent(ymlPath) {
-    const file = fs.readFileSync(ymlPath, 'utf8');
+  async verifyInputContent(ymlPath) {
+    const file = await I.readFile(ymlPath);
 
     I.seeInField(this.fields.templateInput, file);
   },
