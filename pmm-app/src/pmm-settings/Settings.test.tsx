@@ -7,7 +7,7 @@ jest.mock('shared/components/helpers/notification-manager');
 jest.mock('shared/components/hooks/parameters.hook');
 
 describe('SettingsPanel::', () => {
-  it('Renders correctly', async () => {
+  it('Renders correctly without rendering hidden tab', async () => {
     let root;
 
     await act(async () => {

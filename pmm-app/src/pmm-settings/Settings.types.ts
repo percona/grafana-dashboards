@@ -1,3 +1,22 @@
+export interface EmailSettings {
+  from?: string;
+  smarthost?: string;
+  hello?: string;
+  username?: string;
+  password?: string;
+  identity?: string;
+  secret?: string;
+}
+
+export interface SlackSettings {
+  url?: string;
+}
+
+export interface AlertingSettings {
+  email: EmailSettings;
+  slack: SlackSettings;
+}
+
 export interface Settings {
   updatesDisabled: boolean;
   telemetryEnabled: boolean;
@@ -10,7 +29,9 @@ export interface Settings {
   sttEnabled: boolean;
   platformEmail?: string;
   dbaasEnabled?: boolean;
+  alertingEnabled?: boolean;
   publicAddress?: string;
+  alertingSettings: AlertingSettings;
 }
 
 export interface MetricsResolutions {
@@ -25,4 +46,5 @@ export enum TabKeys {
   ssh = 'ssh-key',
   alertManager = 'am-integration',
   perconaPlatform = 'percona-platform',
+  communication = 'communication',
 }
