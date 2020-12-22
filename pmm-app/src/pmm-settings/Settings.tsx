@@ -48,8 +48,14 @@ export const SettingsPanel: FC = () => {
     [activeTab, settings],
   );
 
-  const updateSettings = async (body: any, callback: LoadingCallback) => {
+  const updateSettings = async (body: any, callback: LoadingCallback, refresh?: boolean) => {
     const response = await SettingsService.setSettings(body, callback);
+
+    if (refresh) {
+      window.location.reload();
+
+      return;
+    }
 
     if (response) {
       setSettings(response);

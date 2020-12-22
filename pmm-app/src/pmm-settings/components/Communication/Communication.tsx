@@ -29,7 +29,7 @@ export const Communication: FC<CommunicationProps> = ({ alertingSettings, update
         component: <Slack updateSettings={updateSettings} settings={alertingSettings.slack} />,
       },
     ],
-    [],
+    [alertingSettings],
   );
 
   return (
