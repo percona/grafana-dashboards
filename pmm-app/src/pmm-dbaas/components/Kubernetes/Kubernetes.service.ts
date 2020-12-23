@@ -10,8 +10,11 @@ export const KubernetesService = {
   async getKubernetes() {
     return apiRequestManagement.post<KubernetesListAPI, any>('/DBaaS/Kubernetes/List', {});
   },
-  deleteKubernetes(kubernetes: Kubernetes, force: boolean) {
+  deleteKubernetes(kubernetes: Kubernetes, force?: boolean) {
     return apiRequestManagement.post<any, any>('/DBaaS/Kubernetes/Unregister', toAPI(kubernetes, force));
+  },
+  getKubernetesConfig(kubernetes: Kubernetes) {
+    return apiRequestManagement.post<any, any>('/DBaaS/Kubernetes/Get', toAPI(kubernetes));
   },
   addKubernetes(kubernetes: NewKubernetesCluster) {
     return apiRequestManagement.post<NewKubernetesClusterAPI, any>(
@@ -21,7 +24,7 @@ export const KubernetesService = {
   },
 };
 
-const toAPI = (kubernetes: Kubernetes, force: boolean) => ({
+const toAPI = (kubernetes: Kubernetes, force?: boolean) => ({
   kubernetes_cluster_name: kubernetes.kubernetesClusterName,
   force,
 });

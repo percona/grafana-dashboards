@@ -52,8 +52,8 @@ export const Advanced: FC<AdvancedProps> = ({
       publicAddressButton,
       alertingLabel,
       alertingTooltip,
-    },
-    tooltipLinkText,
+      alertingLink,
+    }, tooltipLinkText,
   } = Messages;
   const initialValues = {
     retention: transformSecondsToDays(dataRetention),
@@ -173,6 +173,8 @@ export const Advanced: FC<AdvancedProps> = ({
               type="checkbox"
               label={alertingLabel}
               tooltip={alertingTooltip}
+              tooltipLinkText={tooltipLinkText}
+              link={alertingLink}
               className={cx({ [styles.switchDisabled]: !values.telemetry })}
               disabled={!values.telemetry}
               dataQa="advanced-alerting"
