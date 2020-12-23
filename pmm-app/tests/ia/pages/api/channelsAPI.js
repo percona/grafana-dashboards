@@ -15,7 +15,7 @@ module.exports = {
           ...body,
           email_config: {
             to: [this.types.email.addresses],
-          }
+          },
         };
         break;
       case this.types.pagerDuty.type:
@@ -23,7 +23,7 @@ module.exports = {
           ...body,
           pagerduty_config: {
             routing_key: this.types.pagerDuty.key,
-          }
+          },
         };
         break;
       case this.types.slack.type:
@@ -31,13 +31,14 @@ module.exports = {
           ...body,
           slack_config: {
             channel: this.types.slack.slackChannel,
-          }
+          },
         };
         break;
       default:
-        assert.ok(false, `Unknown channel ${ type }`)
+        assert.ok(false, `Unknown channel ${type}`);
     }
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
     await I.sendPostRequest('v1/management/ia/Channels/Add', body, headers);
   },
 
@@ -50,12 +51,12 @@ module.exports = {
     for (const i in resp.data.channels) {
       const channel = resp.data.channels[i];
 
-      await this.deleteNC(channel.channel_id)
+      await this.deleteNC(channel.channel_id);
     }
   },
 
   async deleteNC(channelId) {
-    const headers = { Authorization: `Basic ${await I.getAuth()}`};
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const body = { channel_id: channelId };
     const resp = await I.sendPostRequest('v1/management/ia/Channels/Remove', body, headers);
 

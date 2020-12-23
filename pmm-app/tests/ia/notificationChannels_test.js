@@ -1,6 +1,7 @@
 const page = require('./pages/notificationChannelsPage');
 
 const notificationChannels = new DataTable(['name', 'type']);
+
 for (const [, channel] of Object.entries(page.types)) {
   notificationChannels.add([channel.name, channel.type]);
 }
@@ -21,8 +22,8 @@ Scenario(
   'Verify No Channels found message @ia @not-pr-pipeline',
   async (I, ncPage) => {
     ncPage.openNotificationChannelsTab();
-      I.waitForVisible(ncPage.elements.noChannels, 30);
-      I.see(ncPage.messages.noChannelsFound, ncPage.elements.noChannels);
+    I.waitForVisible(ncPage.elements.noChannels, 30);
+    I.see(ncPage.messages.noChannelsFound, ncPage.elements.noChannels);
   },
 );
 
@@ -61,6 +62,6 @@ Data(notificationChannels).Scenario(
     I.see(ncPage.messages.deleteConfirmation(current.name), ncPage.elements.modalContent);
     I.click(ncPage.buttons.confirmDelete);
     ncPage.verifyPopUpMessage(ncPage.messages.successfullyDeleted(current.name));
-    I.dontSeeElement(ncPage.elements.channelInTable(current.name, current.type))
+    I.dontSeeElement(ncPage.elements.channelInTable(current.name, current.type));
   },
 );

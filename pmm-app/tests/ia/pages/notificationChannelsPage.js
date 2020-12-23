@@ -7,7 +7,7 @@ module.exports = {
     email: {
       name: 'Email Channel',
       type: 'Email',
-      addresses: 'some@email.com, other@email.com'
+      addresses: 'some@email.com, other@email.com',
     },
     pagerDuty: {
       name: 'PagerDuty Channel',
@@ -37,9 +37,9 @@ module.exports = {
     cancelAdding: '$notification-channel-cancel-button',
     confirmDelete: '$confirm-delete-modal-button',
     // removeChannelLocator returns delete channel button locators for a given channel name
-    deleteChannelLocator: (name) =>`//td[text()="${name}"]/following-sibling::td//button[@data-qa="delete-notification-channel-button"]`,
+    deleteChannelLocator: (name) => `//td[text()="${name}"]/following-sibling::td//button[@data-qa="delete-notification-channel-button"]`,
     // editChannelLocator returns delete channel button locators for a given channel name
-    editChannelLocator: (name) =>`//td[text()="${name}"]/following-sibling::td//button[@data-qa="edit-notification-channel-button"]`,
+    editChannelLocator: (name) => `//td[text()="${name}"]/following-sibling::td//button[@data-qa="edit-notification-channel-button"]`,
   },
   fields: {
     nameInput: '$name-text-input',
@@ -95,12 +95,13 @@ module.exports = {
         I.fillField(this.fields.slackChannelInput, this.types.slack.slackChannel);
         break;
       default:
-        assert.ok(false, `Did not found matching notification channel type ${ type }`);
+        assert.ok(false, `Did not found matching notification channel type ${type}`);
     }
   },
 
   editChannel(name, type) {
     const suffix = '_EDITED';
+
     I.click(this.buttons.editChannelLocator(name, type));
     I.waitForVisible(this.buttons.addChannel, 30);
     I.seeAttributesOnElements(this.buttons.addChannel, { disabled: true });
@@ -117,13 +118,13 @@ module.exports = {
         I.fillField(this.fields.slackChannelInput, suffix);
         break;
       default:
-        assert.ok(false, `Did not found matching notification channel type ${ type }`);
+        assert.ok(false, `Did not found matching notification channel type ${type}`);
     }
 
     I.click(this.buttons.addChannel);
     this.verifyPopUpMessage(this.messages.successfullyEdited);
 
-    return `${name}${suffix}`
+    return `${name}${suffix}`;
   },
 
   verifyPopUpMessage(message) {
