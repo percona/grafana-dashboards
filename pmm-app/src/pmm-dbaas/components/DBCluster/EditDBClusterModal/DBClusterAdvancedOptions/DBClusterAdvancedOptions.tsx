@@ -19,6 +19,7 @@ import {
 import { getStyles } from './DBClusterAdvancedOptions.styles';
 import { EditDBClusterFields } from '../EditDBClusterModal.types';
 import { DBClusterTopology, DBClusterResources } from './DBClusterAdvancedOptions.types';
+import { resourceValidator } from './DBClusterAdvancedOptions.utils';
 
 export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   values,
@@ -33,7 +34,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   const { required, min } = validators;
   const { change } = form;
   const nodeValidators = [required, min(MIN_NODES)];
-  const resourceValidators = [required, min(MIN_RESOURCES)];
+  const resourceValidators = [required, min(MIN_RESOURCES), resourceValidator];
   const {
     topology, resources, memory, cpu, databaseType,
   } = values;
@@ -60,6 +61,12 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
     (value) => (value > 0 && Number.isInteger(+value) ? value : undefined),
     [],
   );
+
+  const parseNonNegativeFloat = useCallback(
+    (value) => (value > 0 ? (+value).toFixed(1).replace(/\.0+$/, '') : value),
+    [],
+  );
+
   const topologiesDisabled = useMemo(() => (databaseType !== Databases.mysql ? TOPOLOGIES_DISABLED : []), [
     databaseType,
   ]);
@@ -103,14 +110,14 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
           label={Messages.dbcluster.addModal.fields.memory}
           validators={resourceValidators}
           disabled={resources !== DBClusterResources.custom}
-          parse={parsePositiveInt}
+          parse={parseNonNegativeFloat}
         />
         <NumberInputField
           name={EditDBClusterFields.cpu}
           label={Messages.dbcluster.addModal.fields.cpu}
           validators={resourceValidators}
           disabled={resources !== DBClusterResources.custom}
-          parse={parsePositiveInt}
+          parse={parseNonNegativeFloat}
         />
         <NumberInputField
           name={EditDBClusterFields.disk}
