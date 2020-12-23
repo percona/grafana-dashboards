@@ -9,16 +9,11 @@ module.exports = {
       type: 'Email',
       addresses: 'some@email.com, other@email.com'
     },
-    pagerDutyRouting: {
-      name: 'PagerDuty with routingKey Channel',
+    pagerDuty: {
+      name: 'PagerDuty Channel',
       type: 'Pager Duty',
       key: 'routingKey',
     },
-    pagerDutyService: {
-      name: 'PagerDuty serviceKey Channel',
-      type: 'Pager Duty',
-      key: 'serviceKey',
-      },
     slack: {
       name: 'Slack Channel',
       type: 'Slack',
@@ -58,7 +53,7 @@ module.exports = {
   messages: {
     noChannelsFound: 'No notification channels found',
     successfullyAdded: 'Notification channel was successfully added',
-    successfullyEdited: 'Alert rule template successfully added',
+    successfullyEdited: 'Notification channel was successfully edited',
     deleteConfirmation: (name) => `Are you sure you want to delete the notification channel "${name}"?`,
     successfullyDeleted: (name) => `Notification channel "${name}" successfully deleted.`,
   },
@@ -89,22 +84,46 @@ module.exports = {
     I.fillField(this.fields.nameInput, name);
     this.selectChannelType(type);
 
-    switch (name) {
-      case this.types.email.name:
+    switch (type) {
+      case this.types.email.type:
         I.fillField(this.fields.emailsInput, this.types.email.addresses);
         break;
-      case this.types.pagerDutyRouting.name:
-        I.fillField(this.fields.routingKeyInput, this.types.pagerDutyRouting.key);
+      case this.types.pagerDuty.type:
+        I.fillField(this.fields.routingKeyInput, this.types.pagerDuty.key);
         break;
-        case this.types.pagerDutyService.name:
-        I.fillField(this.fields.serviceKeyInput, this.types.pagerDutyService.key);
-        break;
-      case this.types.slack.name:
+      case this.types.slack.type:
         I.fillField(this.fields.slackChannelInput, this.types.slack.slackChannel);
         break;
       default:
-        assert.ok(false, `Did not found matching notification channel name ${name}`)
+        assert.ok(false, `Did not found matching notification channel type ${ type }`);
     }
+  },
+
+  editChannel(name, type) {
+    const suffix = '_EDITED';
+    I.click(this.buttons.editChannelLocator(name, type));
+    I.waitForVisible(this.buttons.addChannel, 30);
+    I.seeAttributesOnElements(this.buttons.addChannel, { disabled: true });
+    I.appendField(this.fields.nameInput, suffix);
+
+    switch (type) {
+      case this.types.email.type:
+        I.appendField(this.fields.emailsInput, suffix);
+        break;
+      case this.types.pagerDuty.type:
+        I.fillField(this.fields.routingKeyInput, suffix);
+        break;
+      case this.types.slack.type:
+        I.fillField(this.fields.slackChannelInput, suffix);
+        break;
+      default:
+        assert.ok(false, `Did not found matching notification channel type ${ type }`);
+    }
+
+    I.click(this.buttons.addChannel);
+    this.verifyPopUpMessage(this.messages.successfullyEdited);
+
+    return `${name}${suffix}`
   },
 
   verifyPopUpMessage(message) {

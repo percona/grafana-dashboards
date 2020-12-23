@@ -35,6 +35,7 @@ exports.config = {
     addInstanceAPI: './tests/pages/api/addInstanceAPI.js',
     adminPage: './tests/pages/adminPage.js',
     amiInstanceSetupPage: './tests/pages/amiInstanceSetupPage.js',
+    channelsAPI: './tests/ia/pages/api/channelsAPI.js',
     dashboardPage: './tests/pages/dashboardPage.js',
     databaseChecksPage: './tests/pages/databaseChecksPage.js',
     dbaasPage: './tests/pages/dbaasPage.js',
