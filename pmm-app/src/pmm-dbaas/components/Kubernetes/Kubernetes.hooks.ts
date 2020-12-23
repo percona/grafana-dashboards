@@ -30,7 +30,7 @@ export const useKubernetes = (): [Kubernetes[], DeleteKubernetesAction, AddKuber
     }
   };
 
-  const deleteKubernetes = async (kubernetesToDelete: Kubernetes, force: boolean) => {
+  const deleteKubernetes = async (kubernetesToDelete: Kubernetes, force?: boolean) => {
     try {
       setLoading(true);
       await KubernetesService.deleteKubernetes(kubernetesToDelete, force);
