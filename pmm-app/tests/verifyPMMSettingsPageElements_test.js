@@ -111,8 +111,8 @@ Scenario('Verify validation for invalid Alertmanager Rule', async (I, pmmSetting
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerRulesMessage);
 });
 
-// Skip, need to investigate will roll back
-Scenario(
+// Skip, the test is broken due to IA switch logic FIXME: https://jira.percona.com/browse/PMM-7217
+xScenario(
   'PMM-T254 Verify validation for STT and Telemetry switches',
   async (I, pmmSettingsPage, settingsAPI) => {
     await settingsAPI.apiDisableSTT();
