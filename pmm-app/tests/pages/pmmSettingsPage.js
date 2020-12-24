@@ -141,6 +141,8 @@ module.exports = {
     signUpBackToLogin: '$sign-up-to-sign-in-button',
     telemetrySwitchSelectorInput: '//div[@data-qa="advanced-telemetry"]//div[2]//input',
     telemetrySwitchSelector: '//div[@data-qa="advanced-telemetry"]//div[2]//label',
+    iaSwitchSelectorInput: '//div[@data-qa="advanced-alerting"]//div[2]//input',
+    iaSwitchSelector: '//div[@data-qa="advanced-alerting"]//div[2]//label',
     telemetryLabel: '//div[@data-qa="advanced-telemetry"]//div//span',
     tooltipSelector: '.popper__background',
     tabsSection: '$settings-tabs',
