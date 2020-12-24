@@ -118,7 +118,7 @@ module.exports = {
         I.fillField(this.fields.slackChannelInput, suffix);
         break;
       default:
-        assert.ok(false, `Did not found matching notification channel type ${type}`);
+        assert.ok(false, `Did not find a matching notification channel type ${type}`);
     }
 
     I.click(this.buttons.addChannel);
