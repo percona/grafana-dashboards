@@ -1,5 +1,6 @@
 const Helper = codecept_helper;
 const assert = require('assert');
+const fs = require('fs');
 
 class Grafana extends Helper {
   constructor(config) {
@@ -20,6 +21,16 @@ class Grafana extends Helper {
     return Buffer.from(`${this.config.username || username}:${this.config.password || password}`).toString(
       'base64',
     );
+  }
+
+  async readFile(path) {
+    try {
+      return fs.readFileSync(path, 'utf8');
+    } catch (e) {
+      assert.ok(false, `Could not read the file ${path}`);
+    }
+
+    return null;
   }
 
   /**

@@ -52,6 +52,7 @@ exports.config = {
     qanPage: './tests/QAN/pages/qanPage.js',
     qanPagination: './tests/QAN/pages/qanPaginationFragment.js',
     remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
+    ruleTemplatesPage: './tests/ia/pages/ruleTemplatesPage.js',
     settingsAPI: './tests/pages/api/settingsAPI.js',
   },
   multiple: {

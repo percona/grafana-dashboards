@@ -1,0 +1,28 @@
+---
+templates:
+  - name: input_template_yml
+    version: 1
+    summary: E2E TemplateForAutomation input YML
+    tiers: [anonymous, registered]
+    expr: |-
+      max_over_time(mysql_global_status_threads_connected[5m]) / ignoring (job)
+      mysql_global_variables_max_connections
+      * 100
+      > [[ .threshold ]]
+    params:
+      - name: threshold
+        summary: A percentage from configured maximum
+        unit: '%'
+        type: float
+        range: [0, 100]
+        value: 80
+    for: 5m
+    severity: warning
+    labels:
+      foo: bar
+    annotations:
+      description: |-
+        More than [[ .threshold ]]% of MySQL connections are in use on {{ $labels.instance }}
+        VALUE = {{ $value }}
+        LABELS: {{ $labels }}
+      summary: MySQL too many connections (instance {{ $labels.instance }})
