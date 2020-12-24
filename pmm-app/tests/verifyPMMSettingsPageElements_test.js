@@ -121,7 +121,13 @@ Scenario(
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
-    I.click(pmmSettingsPage.fields.iaSwitchSelector);
+
+    // turning off IA switch to keep old STT and Telemetry switch logic
+    const iaEnabled = await I.grabAttributeFrom(pmmSettingsPage.fields.iaSwitchSelectorInput, 'checked');
+    if (iaEnabled) {
+      I.click(pmmSettingsPage.fields.iaSwitchSelector);
+    }
+
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelectorInput, 'on');
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'off');
     I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
