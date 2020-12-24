@@ -4,7 +4,7 @@ const assert = require('assert');
 module.exports = {
   types: ncPage.types,
 
-  async createNC(name, type) {
+  async createNotificationChannel(name, type) {
     let body = {
       summary: name,
     };
@@ -42,7 +42,7 @@ module.exports = {
     await I.sendPostRequest('v1/management/ia/Channels/Add', body, headers);
   },
 
-  async clearAllNCs() {
+  async clearAllNotificationChannels() {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const resp = await I.sendPostRequest('v1/management/ia/Channels/List', {}, headers);
 
@@ -51,11 +51,11 @@ module.exports = {
     for (const i in resp.data.channels) {
       const channel = resp.data.channels[i];
 
-      await this.deleteNC(channel.channel_id);
+      await this.deleteNotificationChannel(channel.channel_id);
     }
   },
 
-  async deleteNC(channelId) {
+  async deleteNotificationChannel(channelId) {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const body = { channel_id: channelId };
     const resp = await I.sendPostRequest('v1/management/ia/Channels/Remove', body, headers);
