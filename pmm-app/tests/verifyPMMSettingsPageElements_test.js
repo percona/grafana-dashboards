@@ -111,7 +111,7 @@ Scenario('Verify validation for invalid Alertmanager Rule', async (I, pmmSetting
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerRulesMessage);
 });
 
-// Skip, need to investigate will roll back
+// Update the test to check IA switch logic too TODO: https://jira.percona.com/browse/PMM-7217
 Scenario(
   'PMM-T254 Verify validation for STT and Telemetry switches',
   async (I, pmmSettingsPage, settingsAPI) => {
@@ -121,6 +121,13 @@ Scenario(
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
+
+    // turning off IA switch to keep old STT and Telemetry switch logic
+    const iaEnabled = await I.grabAttributeFrom(pmmSettingsPage.fields.iaSwitchSelectorInput, 'checked');
+    if (iaEnabled) {
+      I.click(pmmSettingsPage.fields.iaSwitchSelector);
+    }
+
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelectorInput, 'on');
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'off');
     I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
