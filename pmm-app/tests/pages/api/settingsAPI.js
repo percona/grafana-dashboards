@@ -22,6 +22,24 @@ module.exports = {
     await I.sendPostRequest('v1/Settings/Change', body, headers);
   },
 
+  async apiDisableIA() {
+    const body = {
+      disable_alerting: true,
+    };
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    await I.sendPostRequest('v1/Settings/Change', body, headers);
+  },
+
+  async apiEnableIA() {
+    const body = {
+      enable_alerting: true,
+    };
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    await I.sendPostRequest('v1/Settings/Change', body, headers);
+  },
+
   async restoreSettingsDefaults() {
     const body = {
       data_retention: '2592000s',
