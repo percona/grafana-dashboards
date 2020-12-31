@@ -4,20 +4,15 @@ import { getStyles } from './DBClusterName.styles';
 import { DBClusterNameProps } from './DBClusterName.types';
 import { DASHBOARD_URL_MAP } from './DBClusterName.constants';
 
-export const DBClusterName: FC<DBClusterNameProps> = ({
-  dbCluster: {
-    clusterName,
-    databaseType,
-  },
-}) => {
+export const DBClusterName: FC<DBClusterNameProps> = ({ dbCluster: { clusterName, databaseType } }) => {
   const styles = useStyles(getStyles);
-  const dashboardURL = `${DASHBOARD_URL_MAP[databaseType]}${clusterName}`;
+  const getDashboardUrl = DASHBOARD_URL_MAP[databaseType];
 
   return (
     <div className={styles.clusterNameWrapper}>
       <span>{clusterName}</span>
       <a
-        href={dashboardURL}
+        href={getDashboardUrl(clusterName)}
         target="_blank"
         rel="noreferrer noopener"
         className={styles.dashboardIcon}

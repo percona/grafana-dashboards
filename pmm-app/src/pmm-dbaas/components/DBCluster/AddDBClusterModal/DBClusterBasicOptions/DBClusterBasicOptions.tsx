@@ -1,18 +1,17 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { Field } from 'react-final-form';
 import { TextInputField, validators } from '@percona/platform-core';
-import { Databases } from 'shared/core';
+import { DATABASE_LABELS, Databases } from 'shared/core';
 import { SelectFieldAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
-import { DBClusterBasicOptionsProps } from './DBClusterBasicOptions.types';
+import { DatabaseOption, DBClusterBasicOptionsProps } from './DBClusterBasicOptions.types';
 import { DATABASE_OPTIONS } from '../../DBCluster.constants';
 import { AddDBClusterFields } from '../AddDBClusterModal.types';
 import { DBClusterTopology } from '../DBClusterAdvancedOptions/DBClusterAdvancedOptions.types';
+import { getKubernetesOptions, kubernetesClusterName } from './DBClusterBasicOptions.utils';
+import { KubernetesOperatorStatus } from '../../../Kubernetes/OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus.types';
 
-export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({
-  kubernetesOptions,
-  form,
-}) => {
+export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernetes, form }) => {
   const { required } = validators;
   const { change } = form;
   const onChangeDatabase = useCallback((databaseType) => {
@@ -23,12 +22,42 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({
     change(AddDBClusterFields.databaseType, databaseType);
   }, []);
 
+  const kubernetesOptions = getKubernetesOptions(kubernetes);
+
+  const [databaseOptions, setDatabaseOptions] = useState(DATABASE_OPTIONS);
+  const onChangeCluster = useCallback((selectedKubernetes) => {
+    const { operators } = selectedKubernetes;
+    const availableDatabaseOptions: DatabaseOption[] = [];
+
+    if (operators.xtradb.status === KubernetesOperatorStatus.ok) {
+      availableDatabaseOptions.push({
+        value: Databases.mysql,
+        label: DATABASE_LABELS[Databases.mysql],
+      });
+    }
+
+    if (operators.psmdb.status === KubernetesOperatorStatus.ok) {
+      availableDatabaseOptions.push({
+        value: Databases.mongodb,
+        label: DATABASE_LABELS[Databases.mongodb],
+      });
+    }
+
+    change(AddDBClusterFields.databaseType, {
+      value: undefined,
+      label: undefined,
+    });
+
+    setDatabaseOptions(availableDatabaseOptions);
+    change(AddDBClusterFields.kubernetesCluster, selectedKubernetes);
+  }, []);
+
   return (
     <>
       <TextInputField
         name={AddDBClusterFields.name}
         label={Messages.dbcluster.addModal.fields.clusterName}
-        validators={[required]}
+        validators={[required, kubernetesClusterName]}
       />
       <Field
         dataQa="dbcluster-kubernetes-cluster-field"
@@ -36,13 +65,16 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({
         label={Messages.dbcluster.addModal.fields.kubernetesCluster}
         options={kubernetesOptions}
         component={SelectFieldAdapter}
+        noOptionsMessage={Messages.dbcluster.addModal.noOperatorsMessage}
         validate={required}
+        onChange={onChangeCluster}
       />
       <Field
+        disabled={!form.getState().values[AddDBClusterFields.kubernetesCluster] || !databaseOptions.length}
         dataQa="dbcluster-database-type-field"
         name={AddDBClusterFields.databaseType}
         label={Messages.dbcluster.addModal.fields.databaseType}
-        options={DATABASE_OPTIONS}
+        options={databaseOptions}
         component={SelectFieldAdapter}
         validate={required}
         onChange={onChangeDatabase}

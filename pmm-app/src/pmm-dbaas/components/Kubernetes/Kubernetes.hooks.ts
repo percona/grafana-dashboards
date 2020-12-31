@@ -30,7 +30,7 @@ export const useKubernetes = (): [Kubernetes[], DeleteKubernetesAction, AddKuber
     }
   };
 
-  const deleteKubernetes = async (kubernetesToDelete: Kubernetes, force: boolean) => {
+  const deleteKubernetes = async (kubernetesToDelete: Kubernetes, force?: boolean) => {
     try {
       setLoading(true);
       await KubernetesService.deleteKubernetes(kubernetesToDelete, force);
@@ -68,4 +68,6 @@ const toModelList = (response: KubernetesListAPI): Kubernetes[] => (
 
 const toModel = (response: KubernetesAPI): Kubernetes => ({
   kubernetesClusterName: response.kubernetes_cluster_name,
+  operators: response.operators,
+  status: response.status,
 });

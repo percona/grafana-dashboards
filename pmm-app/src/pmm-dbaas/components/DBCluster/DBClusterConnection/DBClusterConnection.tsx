@@ -9,31 +9,24 @@ import {
 } from '../DBCluster.types';
 import { INITIAL_CONNECTION } from './DBClusterConnection.constants';
 import { getStyles } from './DBClusterConnection.styles';
-import {
-  DBClusterConnectionPassword,
-} from './DBClusterConnectionPassword/DBClusterConnectionPassword';
+import { DBClusterConnectionPassword } from './DBClusterConnectionPassword/DBClusterConnectionPassword';
 import { DBClusterConnectionItem } from './DBClusterConnectionItem/DBClusterConnectionItem';
 import { isClusterChanging } from '../DBCluster.utils';
 import { DBClusterServiceFactory } from '../DBClusterService.factory';
 
-export const DBClusterConnection: FC<DBClusterConnectionProps> = ({
-  dbCluster,
-}) => {
+export const DBClusterConnection: FC<DBClusterConnectionProps> = ({ dbCluster }) => {
   const styles = useStyles(getStyles);
   const [loading, setLoading] = useState(true);
   const [connection, setConnection] = useState<ConnectionParams>(INITIAL_CONNECTION);
   const {
-    host,
-    password,
-    port,
-    username,
+    host, password, port, username,
   } = connection;
   const { status, databaseType } = dbCluster;
   const getClusterConnection = async () => {
     try {
       setLoading(true);
       const dbClusterService = DBClusterServiceFactory.newDBClusterService(databaseType);
-      const connection = await dbClusterService.getDBCluster(dbCluster) as DBClusterConnectionAPI;
+      const connection = (await dbClusterService.getDBCluster(dbCluster)) as DBClusterConnectionAPI;
 
       setConnection(connection.connection_credentials);
     } catch (e) {
@@ -75,19 +68,13 @@ export const DBClusterConnection: FC<DBClusterConnectionProps> = ({
               />
             </>
           ) : (
-            <span
-              className={styles.connectionFailed}
-              data-qa="cluster-connection-failed"
-            >
+            <span className={styles.connectionFailed} data-qa="cluster-connection-failed">
               -
             </span>
           )}
         </div>
       ) : (
-        <div
-          className={styles.connectionLoading}
-          data-qa="cluster-connection-loading"
-        >
+        <div className={styles.connectionLoading} data-qa="cluster-connection-loading">
           <Spinner />
         </div>
       )}

@@ -1,8 +1,9 @@
-import { SelectableValue } from '@grafana/data';
+import { Kubernetes } from '../../Kubernetes/Kubernetes.types';
 
 export interface AddDBClusterModalProps {
-  kubernetesOptions: SelectableValue[];
+  kubernetes: Kubernetes[];
   isVisible: boolean;
+  showMonitoringWarning?: boolean;
   setVisible: (value: boolean) => void;
   onDBClusterAdded: () => void;
 }

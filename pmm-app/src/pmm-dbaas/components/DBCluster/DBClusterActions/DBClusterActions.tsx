@@ -18,6 +18,7 @@ export const DBClusterActions: FC<DBClusterActionsProps> = ({
     (dbCluster: DBCluster) => [
       {
         title: Messages.dbcluster.table.actions.deleteCluster,
+        disabled: dbCluster.status === DBClusterStatus.deleting,
         action: () => {
           setSelectedCluster(dbCluster);
           setDeleteModalVisible(true);
@@ -33,11 +34,35 @@ export const DBClusterActions: FC<DBClusterActionsProps> = ({
       },
       {
         title: Messages.dbcluster.table.actions.restartCluster,
+        disabled: isClusterChanging(dbCluster),
         action: async () => {
           try {
             const dbClusterService = DBClusterServiceFactory.newDBClusterService(dbCluster.databaseType);
 
             await dbClusterService.restartDBCluster(dbCluster);
+            getDBClusters();
+          } catch (e) {
+            console.error(e);
+          }
+        },
+      },
+      {
+        title:
+          dbCluster.status === DBClusterStatus.ready
+            ? Messages.dbcluster.table.actions.suspend
+            : Messages.dbcluster.table.actions.resume,
+        disabled:
+          dbCluster.status !== DBClusterStatus.ready && dbCluster.status !== DBClusterStatus.suspended,
+        action: async () => {
+          try {
+            const dbClusterService = DBClusterServiceFactory.newDBClusterService(dbCluster.databaseType);
+
+            if (dbCluster.status === DBClusterStatus.ready) {
+              await dbClusterService.suspendDBCluster(dbCluster);
+            } else {
+              await dbClusterService.resumeDBCluster(dbCluster);
+            }
+
             getDBClusters();
           } catch (e) {
             console.error(e);
@@ -50,11 +75,7 @@ export const DBClusterActions: FC<DBClusterActionsProps> = ({
 
   return (
     <div className={styles.actionsColumn}>
-      <MultipleActions
-        actions={getActions(dbCluster)}
-        disabled={isClusterChanging(dbCluster)}
-        dataQa="dbcluster-actions"
-      />
+      <MultipleActions actions={getActions(dbCluster)} dataQa="dbcluster-actions" />
     </div>
   );
 };

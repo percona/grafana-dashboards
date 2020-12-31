@@ -5,10 +5,14 @@ import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { Form, FormRenderProps } from 'react-final-form';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
+import { Databases } from 'shared/core';
 import { getStyles } from './Kubernetes.styles';
-import { Kubernetes, NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
+import { NewKubernetesCluster, KubernetesProps, Kubernetes } from './Kubernetes.types';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
-import { CheckboxField, FormElement } from '../../../shared/components/Form';
+import { OperatorStatusItem } from './OperatorStatusItem/OperatorStatusItem';
+import { KubernetesClusterStatus } from './KubernetesClusterStatus/KubernetesClusterStatus';
+import { clusterActionsRender } from './ColumnRenderers/ColumnRenderers';
+import { ViewClusterConfigModal } from './ViewClusterConfigModal/ViewClusterConfigModal';
 
 export const KubernetesInventory: FC<KubernetesProps> = ({
   kubernetes,
@@ -17,33 +21,44 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
   loading,
 }) => {
   const styles = useStyles(getStyles);
-  const [kubernetesToDelete, setKubernetesToDelete] = useState<Kubernetes>({ kubernetesClusterName: '' });
+  const [selectedCluster, setSelectedCluster] = useState<Kubernetes | null>(null);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [viewConfigModalVisible, setViewConfigModalVisible] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
   const { required } = validators;
+
+  const deleteKubernetesCluster = useCallback(() => {
+    if (selectedCluster) {
+      deleteKubernetes(selectedCluster);
+      setDeleteModalVisible(false);
+    }
+  }, [selectedCluster]);
+
   const columns = [
     {
       Header: Messages.kubernetes.table.nameColumn,
       accessor: 'kubernetesClusterName',
     },
     {
-      Header: Messages.kubernetes.table.actionsColumn,
+      Header: Messages.kubernetes.table.clusterStatusColumn,
+      accessor: (element) => <KubernetesClusterStatus status={element.status} />,
+    },
+    {
+      Header: Messages.kubernetes.table.operatorsStatusColumn,
       accessor: (element) => (
-        <div className={styles.actionsColumn}>
-          <Button
-            size="md"
-            onClick={() => {
-              setKubernetesToDelete(element);
-              setDeleteModalVisible(true);
-            }}
-            icon="trash-alt"
-            variant="destructive"
-            data-qa="open-delete-modal-button"
-          >
-            {Messages.kubernetes.deleteAction}
-          </Button>
+        <div>
+          <OperatorStatusItem databaseType={Databases.mysql} status={element.operators.xtradb.status} />
+          <OperatorStatusItem databaseType={Databases.mongodb} status={element.operators.psmdb.status} />
         </div>
       ),
+    },
+    {
+      Header: Messages.kubernetes.table.actionsColumn,
+      accessor: (kubernetesCluster) => clusterActionsRender({
+        setSelectedCluster,
+        setDeleteModalVisible,
+        setViewConfigModalVisible,
+      })(kubernetesCluster),
     },
   ];
 
@@ -63,6 +78,13 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
       <div className={styles.actionPanel}>
         <AddNewClusterButton />
       </div>
+      {selectedCluster && (
+        <ViewClusterConfigModal
+          isVisible={viewConfigModalVisible}
+          setVisible={() => setViewConfigModalVisible(false)}
+          selectedCluster={selectedCluster}
+        />
+      )}
       <Modal
         title={Messages.kubernetes.addModal.title}
         isVisible={addModalVisible}
@@ -135,7 +157,7 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
                     variant="destructive"
                     size="md"
                     onClick={() => {
-                      deleteKubernetes(kubernetesToDelete, Boolean(form.getState().values.force));
+                      deleteKubernetes(selectedCluster, Boolean(form.getState().values.force));
                       setDeleteModalVisible(false);
                     }}
                     data-qa="delete-kubernetes-button"
