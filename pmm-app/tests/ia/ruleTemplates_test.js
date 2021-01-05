@@ -9,8 +9,9 @@ for (const i of Object.values(page.ruleTemplate.paths)) {
 
 Feature('IA: Alert rule templates');
 
-Before(async (I, ruleTemplatesPage) => {
+Before(async (I, ruleTemplatesPage, settingsAPI) => {
   I.Authorize();
+  await settingsAPI.apiEnableIA();
   ruleTemplatesPage.openRuleTemplatesTab();
 });
 

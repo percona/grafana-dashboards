@@ -9,8 +9,9 @@ for (const [, channel] of Object.entries(page.types)) {
 Feature('IA: Notification Channels');
 
 
-Before(async (I, channelsAPI) => {
+Before(async (I, channelsAPI, settingsAPI) => {
   I.Authorize();
+  await settingsAPI.apiEnableIA();
   await channelsAPI.clearAllNotificationChannels();
 });
 
