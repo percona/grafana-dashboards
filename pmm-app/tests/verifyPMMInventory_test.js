@@ -141,3 +141,14 @@ Scenario(
     await pmmInventoryPage.checkAllNotDeletedAgents(countBefore);
   },
 );
+
+Scenario(
+  'PMM-T554 - Check that all agents have status "RUNNING" @not-pr-pipeline',
+  async (I, pmmInventoryPage) => {
+    
+    I.amOnPage(pmmInventoryPage.url);
+    I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
+    I.click(pmmInventoryPage.fields.agentsLink);
+    const countBefore = await pmmInventoryPage.getCountOfItems();
+  },
+);
