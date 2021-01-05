@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 Feature('Inventory page');
 
 Before(async (I) => {
@@ -150,5 +152,8 @@ Scenario(
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
     I.click(pmmInventoryPage.fields.agentsLink);
     const countBefore = await pmmInventoryPage.getCountOfItems();
+    const countOfRunning = await pmmInventoryPage.getCountOfRunning();
+    const countOfPMMAgentType = await pmmInventoryPage.getCountOfPMMAgents();
+    assert.ok(countBefore-countOfPMMAgentType===countOfRunning, 'Some agents are not Running! Check the statuses!');
   },
 );
