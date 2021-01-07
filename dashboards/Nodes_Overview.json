@@ -1827,7 +1827,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max(clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m])),100))",
+                    "expr": "max(sum by (node_name) (avg by (mode,node_name)((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m]))))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1919,7 +1919,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max(clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m])),100))",
+                    "expr": "max(clamp_max(sum by (node_name) (avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m]))) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m])),100))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2012,7 +2012,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max(clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[5m])))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[5m])) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[5m]),100))",
+                    "expr": "max(clamp_max(sum by (node_name) (avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[5m]))))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[5m])) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[5m]),100))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2785,7 +2785,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "avg by (node_name) (clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m])),100))",
+                            "expr": "avg by (node_name) (sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m]))))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3090,7 +3090,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "avg by (node_name) (clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m])),100))",
+                            "expr": "avg by (node_name) (clamp_max(sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m])) ))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m])),100))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3974,7 +3974,7 @@
                                 "#bf1b00",
                                 "#ffffff"
                             ],
-                            "decimals": "",
+                            "decimals": 2,
                             "enabled": true,
                             "label": "OVERRIDE 1",
                             "metricName": "/.*/",
@@ -3990,6 +3990,7 @@
                                     "value": 3000
                                 },
                                 {
+                                    "$$hashKey": "object:2998",
                                     "color": "#e5ac0e",
                                     "state": 1,
                                     "value": 6000
@@ -3998,186 +3999,6 @@
                                     "color": "#bf1b00",
                                     "state": 2,
                                     "value": 10000
-                                }
-                            ],
-                            "unitFormat": "short"
-                        },
-                        {
-                            "clickThrough": "/graph/d/node-instance-summary/node-summary?from=$__from&to=$__to&var-node_name=${__cell_name}",
-                            "colors": [
-                                "#299c46",
-                                "#e5ac0e",
-                                "#bf1b00",
-                                "#ffffff"
-                            ],
-                            "decimals": 2,
-                            "enabled": true,
-                            "label": "OVERRIDE 2",
-                            "metricName": "/.* - Saturation/",
-                            "operatorName": "avg",
-                            "prefix": "",
-                            "sanitizeURLEnabled": false,
-                            "scaledDecimals": null,
-                            "suffix": "",
-                            "thresholds": [
-                                {
-                                    "color": "#299c46",
-                                    "state": 0,
-                                    "value": 10
-                                },
-                                {
-                                    "color": "#e5ac0e",
-                                    "state": 1,
-                                    "value": 20
-                                },
-                                {
-                                    "color": "#bf1b00",
-                                    "state": 2,
-                                    "value": 40
-                                }
-                            ],
-                            "unitFormat": "short"
-                        },
-                        {
-                            "clickThrough": "/graph/d/node-instance-summary/node-summary?from=$__from&to=$__to&var-node_name=${__cell_name}",
-                            "colors": [
-                                "#299c46",
-                                "#e5ac0e",
-                                "#bf1b00",
-                                "#ffffff"
-                            ],
-                            "decimals": 2,
-                            "enabled": true,
-                            "label": "OVERRIDE 3",
-                            "metricName": "/.* - Core Usage/",
-                            "operatorName": "avg",
-                            "prefix": "",
-                            "sanitizeURLEnabled": false,
-                            "scaledDecimals": null,
-                            "suffix": "",
-                            "thresholds": [
-                                {
-                                    "color": "#299c46",
-                                    "state": 0,
-                                    "value": 1
-                                },
-                                {
-                                    "color": "#e5ac0e",
-                                    "state": 1,
-                                    "value": 2
-                                },
-                                {
-                                    "color": "#bf1b00",
-                                    "state": 2,
-                                    "value": 3
-                                }
-                            ],
-                            "unitFormat": "short"
-                        },
-                        {
-                            "clickThrough": "/graph/d/node-instance-summary/node-summary?from=$__from&to=$__to&var-node_name=${__cell_name}",
-                            "colors": [
-                                "#299c46",
-                                "#e5ac0e",
-                                "#bf1b00",
-                                "#ffffff"
-                            ],
-                            "decimals": null,
-                            "enabled": true,
-                            "label": "OVERRIDE 4",
-                            "metricName": "/.* - Forks/",
-                            "operatorName": "avg",
-                            "prefix": "",
-                            "sanitizeURLEnabled": false,
-                            "scaledDecimals": null,
-                            "suffix": "",
-                            "thresholds": [
-                                {
-                                    "color": "#299c46",
-                                    "state": 0,
-                                    "value": 2
-                                },
-                                {
-                                    "color": "#e5ac0e",
-                                    "state": 1,
-                                    "value": 4
-                                },
-                                {
-                                    "color": "#bf1b00",
-                                    "state": 2,
-                                    "value": 6
-                                }
-                            ],
-                            "unitFormat": "short"
-                        },
-                        {
-                            "clickThrough": "/graph/d/node-instance-summary/node-summary?from=$__from&to=$__to&var-node_name=${__cell_name}",
-                            "colors": [
-                                "#299c46",
-                                "#e5ac0e",
-                                "#bf1b00",
-                                "#ffffff"
-                            ],
-                            "decimals": 2,
-                            "enabled": true,
-                            "label": "OVERRIDE 5",
-                            "metricName": "/.* - Runnable Processes/",
-                            "operatorName": "avg",
-                            "prefix": "",
-                            "sanitizeURLEnabled": false,
-                            "scaledDecimals": null,
-                            "suffix": "",
-                            "thresholds": [
-                                {
-                                    "color": "#299c46",
-                                    "state": 0,
-                                    "value": 2
-                                },
-                                {
-                                    "color": "#e5ac0e",
-                                    "state": 1,
-                                    "value": 4
-                                },
-                                {
-                                    "color": "#bf1b00",
-                                    "state": 2,
-                                    "value": 6
-                                }
-                            ],
-                            "unitFormat": "short"
-                        },
-                        {
-                            "clickThrough": "/graph/d/node-instance-summary/node-summary?from=$__from&to=$__to&var-node_name=${__cell_name}",
-                            "colors": [
-                                "#299c46",
-                                "#e5ac0e",
-                                "#bf1b00",
-                                "#ffffff"
-                            ],
-                            "decimals": 0,
-                            "enabled": true,
-                            "label": "OVERRIDE 6",
-                            "metricName": "/.* - Blocked Processes/",
-                            "operatorName": "avg",
-                            "prefix": "",
-                            "sanitizeURLEnabled": false,
-                            "scaledDecimals": null,
-                            "suffix": "",
-                            "thresholds": [
-                                {
-                                    "color": "#299c46",
-                                    "state": 0,
-                                    "value": 0
-                                },
-                                {
-                                    "color": "#e5ac0e",
-                                    "state": 1,
-                                    "value": 2
-                                },
-                                {
-                                    "color": "#bf1b00",
-                                    "state": 2,
-                                    "value": 4
                                 }
                             ],
                             "unitFormat": "short"
@@ -4527,7 +4348,13 @@
                     "fieldConfig": {
                         "defaults": {
                             "custom": {},
-                            "links": []
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Processes Details - ${__series.name}",
+                                    "url": "/graph/d/node-cpu-process/processes-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
                         },
                         "overrides": []
                     },
