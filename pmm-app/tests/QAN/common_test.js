@@ -14,9 +14,9 @@ Scenario(
     qanFilters.applyFilter('mysql');
     I.waitForVisible(qanFilters.fields.filterBy, 30);
     I.waitForVisible(qanOverview.buttons.addColumn, 30);
-    await qanOverview.verifyRowCount(27);
     await qanPagination.verifyPagesAndCount(25);
     I.waitForVisible(qanFilters.elements.environmentLabel, 30);
+    await qanOverview.verifyRowCount(27);
     I.click(qanOverview.elements.querySelector);
     I.waitForVisible(qanOverview.getColumnLocator('Lock Time'), 30);
   },
