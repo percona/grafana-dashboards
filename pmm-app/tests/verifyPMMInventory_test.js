@@ -147,14 +147,14 @@ Scenario(
 Scenario(
   'PMM-T554 - Check that all agents have status "RUNNING" @not-pr-pipeline',
   async (I, pmmInventoryPage) => {
-    
     I.amOnPage(pmmInventoryPage.url);
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
     I.click(pmmInventoryPage.fields.agentsLink);
     const countOfAllAgents = await pmmInventoryPage.getCountOfItems();
     const countOfRunning = await pmmInventoryPage.getCountofRunningAgents();
-    //Need countOfPMMAgentType because of fact that agents that have Type "PMM Agent" don't have status. We subtrack it from all agents.
+    // Need countOfPMMAgentType because agents that have Type PMM Agent don't have status. We need subtrack it
     const countOfPMMAgentType = await pmmInventoryPage.getCountOfPMMAgents();
-    assert.ok(countOfAllAgents-countOfPMMAgentType===countOfRunning, 'Some agents are not Running! Check the statuses!');
+
+    assert.ok(countOfAllAgents - countOfPMMAgentType === countOfRunning, 'Some agents are not Running! Check the statuses!');
   },
 );
