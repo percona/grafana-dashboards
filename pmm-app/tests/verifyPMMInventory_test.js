@@ -151,9 +151,10 @@ Scenario(
     I.amOnPage(pmmInventoryPage.url);
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
     I.click(pmmInventoryPage.fields.agentsLink);
-    const countBefore = await pmmInventoryPage.getCountOfItems();
+    const countOfAllAgents = await pmmInventoryPage.getCountOfItems();
     const countOfRunning = await pmmInventoryPage.getCountOfRunning();
+    //Need countOfPMMAgentType because of fact that agents that have Type "PMM Agent" don't have status. We subtrack it from all agents.
     const countOfPMMAgentType = await pmmInventoryPage.getCountOfPMMAgents();
-    assert.ok(countBefore-countOfPMMAgentType===countOfRunning, 'Some agents are not Running! Check the statuses!');
+    assert.ok(countOfAllAgents-countOfPMMAgentType===countOfRunning, 'Some agents are not Running! Check the statuses!');
   },
 );
