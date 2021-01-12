@@ -145,7 +145,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T554 - Check that all agents have status "RUNNING" @not-pr-pipeline',
+  'PMM-T554 - Check that all agents have status "RUNNING" @not-pr-pipeline @nightly',
   async (I, pmmInventoryPage) => {
     I.amOnPage(pmmInventoryPage.url);
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
