@@ -11,12 +11,16 @@ Scenario(
   'PMM-T122 - Verify QAN UI Elements are displayed @not-pr-pipeline @qan',
   async (I, qanFilters, qanOverview, qanPagination) => {
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('mysql');
-    I.waitForVisible(qanFilters.fields.filterBy, 30);
     I.waitForVisible(qanOverview.buttons.addColumn, 30);
     await qanPagination.verifyPagesAndCount(25);
     I.waitForVisible(qanFilters.elements.environmentLabel, 30);
     await qanOverview.verifyRowCount(27);
+    qanFilters.applyFilter('mysql');
+    I.waitForVisible(qanFilters.fields.filterBy, 30);
+    I.waitForVisible(qanOverview.fields.searchBy, 30);
+    I.fillField(qanOverview.fields.searchBy, 'insert');
+    I.pressKey('Enter');
+    I.waitForVisible(qanOverview.elements.querySelector, 30);
     I.click(qanOverview.elements.querySelector);
     I.waitForVisible(qanOverview.getColumnLocator('Lock Time'), 30);
   },
