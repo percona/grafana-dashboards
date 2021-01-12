@@ -124,6 +124,7 @@ Scenario(
 
     // turning off IA switch to keep old STT and Telemetry switch logic
     const iaEnabled = await I.grabAttributeFrom(pmmSettingsPage.fields.iaSwitchSelectorInput, 'checked');
+
     if (iaEnabled) {
       I.click(pmmSettingsPage.fields.iaSwitchSelector);
     }
