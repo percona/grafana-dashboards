@@ -139,7 +139,7 @@ module.exports = {
     assert.equal(countOfAgents, 0, 'The agents should be removed!');
   },
 
-  async getCountofRunningAgents() {
+  async getCountOfRunningAgents() {
     return await I.grabNumberOfVisibleElements(this.fields.runningStatus);
   },
 
