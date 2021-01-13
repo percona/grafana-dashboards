@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 Feature('Inventory page');
 
 Before(async (I) => {
@@ -139,5 +141,20 @@ Scenario(
     pmmInventoryPage.deleteWithForceOpt();
     pmmInventoryPage.existsByid(agentIDToDelete, true);
     await pmmInventoryPage.checkAllNotDeletedAgents(countBefore);
+  },
+);
+
+Scenario(
+  'PMM-T554 - Check that all agents have status "RUNNING" @not-pr-pipeline @nightly',
+  async (I, pmmInventoryPage) => {
+    I.amOnPage(pmmInventoryPage.url);
+    I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
+    I.click(pmmInventoryPage.fields.agentsLink);
+    const countOfAllAgents = await pmmInventoryPage.getCountOfItems();
+    const countOfRunning = await pmmInventoryPage.getCountOfRunningAgents();
+    // Need countOfPMMAgentType because agents that have Type PMM Agent don't have status. We need subtract it
+    const countOfPMMAgentType = await pmmInventoryPage.getCountOfPMMAgents();
+
+    assert.ok(countOfAllAgents - countOfPMMAgentType === countOfRunning, 'Some agents are not Running! Check the statuses!');
   },
 );

@@ -7,7 +7,7 @@ import {
 } from './Kubernetes.types';
 
 export const KubernetesService = {
-  async getKubernetes() {
+  getKubernetes() {
     return apiRequestManagement.post<KubernetesListAPI, any>('/DBaaS/Kubernetes/List', {});
   },
   deleteKubernetes(kubernetes: Kubernetes, force?: boolean) {
