@@ -75,7 +75,7 @@ module.exports = {
     'TASK [Start Grafana dashboards update]',
     'TASK [Update/restart other services]',
     'TASK [Check supervisord log]',
-    'Waiting for Grafana dashboards update to finish...'
+    'Waiting for Grafana dashboards update to finish...',
   ],
 
   // introducing methods

@@ -20,6 +20,7 @@ module.exports = {
     forceModeCheckbox: 'div[data-qa="form-field-force"] span.checkbox-container__checkmark',
     tableCheckbox: 'div[data-qa="select-row"]',
     tableRow: '//tr[@data-qa="table-row"]',
+    runningStatus: '//span[contains(text(), "RUNNING")]',
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
@@ -136,6 +137,14 @@ module.exports = {
     const countOfAgents = await I.grabNumberOfVisibleElements(serviceId);
 
     assert.equal(countOfAgents, 0, 'The agents should be removed!');
+  },
+
+  async getCountOfRunningAgents() {
+    return await I.grabNumberOfVisibleElements(this.fields.runningStatus);
+  },
+
+  async getCountOfPMMAgents() {
+    return await I.grabNumberOfVisibleElements(this.fields.pmmAgentLocator);
   },
 
   selectAgent(agentType) {
