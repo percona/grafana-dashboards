@@ -8,7 +8,7 @@ import { DatabaseOption, DBClusterBasicOptionsProps } from './DBClusterBasicOpti
 import { DATABASE_OPTIONS } from '../../DBCluster.constants';
 import { AddDBClusterFields } from '../AddDBClusterModal.types';
 import { DBClusterTopology } from '../DBClusterAdvancedOptions/DBClusterAdvancedOptions.types';
-import { getKubernetesOptions, kubernetesClusterName } from './DBClusterBasicOptions.utils';
+import { getKubernetesOptions, kubernetesClusterName, databaseTypeRequired } from './DBClusterBasicOptions.utils';
 import { KubernetesOperatorStatus } from '../../../Kubernetes/OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus.types';
 
 export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernetes, form }) => {
@@ -76,7 +76,7 @@ export const DBClusterBasicOptions: FC<DBClusterBasicOptionsProps> = ({ kubernet
         label={Messages.dbcluster.addModal.fields.databaseType}
         options={databaseOptions}
         component={SelectFieldAdapter}
-        validate={required}
+        validate={databaseTypeRequired}
         onChange={onChangeDatabase}
       />
     </>

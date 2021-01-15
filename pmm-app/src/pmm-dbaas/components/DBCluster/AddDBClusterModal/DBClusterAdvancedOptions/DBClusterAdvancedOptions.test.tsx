@@ -18,7 +18,7 @@ describe('DBClusterAdvancedOptions::', () => {
     expect(root.find('[data-qa="memory-number-input"]')).toBeTruthy();
     expect(root.find('[data-qa="cpu-number-input"]')).toBeTruthy();
     expect(root.find('[data-qa="disk-number-input"]')).toBeTruthy();
-    expect(root.find('[data-qa="dbcluster-create-cluster-button"]')).toBeTruthy();
+    expect(root.find('[data-qa="step-progress-submit-button"]')).toBeTruthy();
   });
   it('renders correctly with initial values', () => {
     const root = mount(
@@ -97,25 +97,6 @@ describe('DBClusterAdvancedOptions::', () => {
     expect(memory.prop('disabled')).toBeFalsy();
     expect(cpu.prop('disabled')).toBeFalsy();
     expect(disk.prop('disabled')).toBeFalsy();
-  });
-  it('should disable button when invalid', () => {
-    const root = mount(
-      <Form onSubmit={jest.fn()} render={(renderProps) => <DBClusterAdvancedOptions {...renderProps} />} />,
-    );
-    const button = root.find('[data-qa="dbcluster-create-cluster-button"]').find('button');
-
-    expect(button.prop('disabled')).toBeTruthy();
-  });
-  it('should enable button when valid', () => {
-    const root = mount(
-      <Form
-        onSubmit={jest.fn()}
-        render={(renderProps) => <DBClusterAdvancedOptions {...renderProps} valid pristine={false} />}
-      />,
-    );
-    const button = root.find('[data-qa="dbcluster-create-cluster-button"]').find('button');
-
-    expect(button.prop('disabled')).toBeFalsy();
   });
   it('should disabled single node topology when database is MongoDB', () => {
     const root = mount(
