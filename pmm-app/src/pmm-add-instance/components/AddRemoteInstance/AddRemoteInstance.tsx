@@ -9,6 +9,7 @@ import { AddRemoteInstanceProps } from './AddRemoteInstance.types';
 import { AdditionalOptions, Labels, MainDetails } from './FormParts';
 import { Messages } from './AddRemoteInstance.messages';
 import { ExternalExporterConnectionDetails } from './FormParts/ExternalExporterConnectionDetails/ExternalExporterConnectionDetails';
+import { InstanceTypes } from '../../panel.types';
 
 const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
   instance: { type, credentials },
@@ -17,25 +18,23 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
   const theme = useTheme();
   const styles = getStyles(theme);
 
-  const { instanceType, remoteInstanceCredentials, discoverName } = getInstanceData(type, credentials);
+  const { remoteInstanceCredentials, discoverName } = getInstanceData(type, credentials);
   const [loading, setLoading] = useState<boolean>(false);
   const initialValues: any = { ...remoteInstanceCredentials, tracking: 'qan_postgresql_pgstatements_agent' };
 
-  if (instanceType === DATABASE_LABELS[Databases.mysql]) {
+  if (type === DATABASE_LABELS[Databases.mysql]) {
     initialValues.qan_mysql_perfschema = true;
   }
 
   const onSubmit = useCallback(
     async (values) => {
-      const data = toPayload(values, discoverName);
-
       try {
         setLoading(true);
 
         if (values.isRDS) {
-          await AddRemoteInstanceService.addRDS(data);
+          await AddRemoteInstanceService.addRDS(toPayload(values, discoverName));
         } else {
-          await AddRemoteInstanceService.addRemote(instanceType, data);
+          await AddRemoteInstanceService.addRemote(type, values);
         }
 
         window.location.href = '/graph/d/pmm-inventory/';
@@ -45,23 +44,23 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
         setLoading(false);
       }
     },
-    [instanceType, type],
+    [type, discoverName],
   );
 
   const formParts = useMemo(
     () => (form) => (
       <>
-        {type !== 'external' ? (
+        {type !== InstanceTypes.external ? (
           <MainDetails remoteInstanceCredentials={remoteInstanceCredentials} />
         ) : (
           <ExternalExporterConnectionDetails form={form} />
         )}
         <Labels />
-        {type !== 'external' && (
+        {type !== InstanceTypes.external && (
           <AdditionalOptions
             remoteInstanceCredentials={remoteInstanceCredentials}
             loading={loading}
-            instanceType={instanceType}
+            instanceType={type}
             form={form}
           />
         )}
@@ -69,6 +68,14 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
     ),
     [type],
   );
+
+  const getHeader = (databaseType) => {
+    if (databaseType === InstanceTypes.external) {
+      return 'Add external exporter';
+    } else {
+      return `Add remote ${DATABASE_LABELS[databaseType]} Instance`;
+    }
+  };
 
   return (
     <div className={styles.formWrapper}>
@@ -83,7 +90,7 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
         }}
         render={({ form, handleSubmit }) => (
           <form onSubmit={handleSubmit} data-qa="add-remote-instance-form">
-            <h4 className={styles.addRemoteInstanceTitle}>{`Add remote ${instanceType} Instance`}</h4>
+            <h4 className={styles.addRemoteInstanceTitle}>{getHeader(type)}</h4>
             {formParts(form)}
             <div className={styles.addRemoteInstanceButtons}>
               <Button id="addInstance" disabled={loading}>

@@ -1,5 +1,5 @@
 import { apiRequestManagement } from 'shared/components/helpers/api';
-import { DATABASE_LABELS, Databases } from 'shared/core';
+import { Databases } from 'shared/core';
 import { TrackingOptions } from './AddRemoteInstance.types';
 
 class AddRemoteInstanceService {
@@ -29,16 +29,16 @@ class AddRemoteInstanceService {
 
   static addRemote(type, data) {
     switch (type) {
-      case DATABASE_LABELS[Databases.mongodb]:
-        return AddRemoteInstanceService.addMongodb(data);
-      case DATABASE_LABELS[Databases.mysql]:
-        return AddRemoteInstanceService.addMysql(data);
-      case DATABASE_LABELS[Databases.postgresql]:
-        return AddRemoteInstanceService.addPostgresql(data);
-      case DATABASE_LABELS[Databases.proxysql]:
-        return AddRemoteInstanceService.addProxysql(data);
+      case Databases.mongodb:
+        return AddRemoteInstanceService.addMongodb(toPayload(data));
+      case Databases.mysql:
+        return AddRemoteInstanceService.addMysql(toPayload(data));
+      case Databases.postgresql:
+        return AddRemoteInstanceService.addPostgresql(toPayload(data));
+      case Databases.proxysql:
+        return AddRemoteInstanceService.addProxysql(toPayload(data));
       case 'external':
-        return AddRemoteInstanceService.addExternal(data);
+        return AddRemoteInstanceService.addExternal(toExternalExporterPayload(data));
       default:
         throw new Error('Unknown instance type');
     }
@@ -47,7 +47,7 @@ class AddRemoteInstanceService {
 
 export default AddRemoteInstanceService;
 
-export const toPayload = (values, discoverName) => {
+export const toPayload = (values, discoverName?) => {
   const data = { ...values };
 
   if (values.custom_labels) {
@@ -99,6 +99,43 @@ export const toPayload = (values, discoverName) => {
   if (values.isRDS) {
     data.rds_exporter = true;
   }
+
+  data.metrics_mode = 1;
+
+  return data;
+};
+
+export const toExternalExporterPayload = (values) => {
+  const data = { ...values };
+
+  if (values.custom_labels) {
+    data.custom_labels = data.custom_labels
+      .split(/[\n\s]/)
+      .filter(Boolean)
+      .reduce((acc, val) => {
+        const [key, value] = val.split(':');
+
+        acc[key] = value;
+
+        return acc;
+      }, {});
+  }
+
+  delete data.tracking;
+
+  if (!data.service_name) {
+    data.service_name = data.address;
+  }
+
+  if (data.add_node === undefined) {
+    data.add_node = {
+      node_name: data.service_name,
+      node_type: 'REMOTE_NODE',
+    };
+  }
+
+  data.listen_port = data.port;
+  delete data.port;
 
   data.metrics_mode = 1;
 

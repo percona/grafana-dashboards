@@ -90,7 +90,7 @@ describe('AdditionalOptionsFormPart ::', () => {
 
 describe('getAdditionalOptions ::', () => {
   it('should render correct for MongoDB', async () => {
-    const type = 'MongoDB';
+    const type = 'mongodb';
     const remoteInstanceCredentials = {
       isRDS: false,
     };
@@ -108,7 +108,7 @@ describe('getAdditionalOptions ::', () => {
   });
 
   it('should render correct for MySQL', async () => {
-    const type = 'MySQL';
+    const type = 'mysql';
     const remoteInstanceCredentials = {
       isRDS: false,
     };
@@ -126,7 +126,7 @@ describe('getAdditionalOptions ::', () => {
   });
 
   it('should render correct for RDS MySQL', async () => {
-    const type = 'MySQL';
+    const type = 'mysql';
     const remoteInstanceCredentials = {
       isRDS: true,
     };
@@ -146,7 +146,7 @@ describe('getAdditionalOptions ::', () => {
   });
 
   it('should render correct for PostgreSQL', async () => {
-    const type = 'PostgreSQL';
+    const type = 'postgresql';
     const remoteInstanceCredentials = {
       isRDS: true,
     };

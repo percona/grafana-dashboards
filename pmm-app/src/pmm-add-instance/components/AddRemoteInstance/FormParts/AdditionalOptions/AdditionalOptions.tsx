@@ -87,9 +87,9 @@ const MySQLOptions = ({ form }) => {
 
 export const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
   switch (type) {
-    case DATABASE_LABELS[Databases.postgresql]:
+    case Databases.postgresql:
       return <PostgreSQLAdditionalOptions />;
-    case DATABASE_LABELS[Databases.mysql]:
+    case Databases.mysql:
       return (
         <>
           <MySQLOptions form={form} />
@@ -111,7 +111,7 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
           ) : null}
         </>
       );
-    case DATABASE_LABELS[Databases.mongodb]:
+    case Databases.mongodb:
       return (
         <>
           <CheckboxField
