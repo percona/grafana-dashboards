@@ -12,4 +12,13 @@ module.exports = {
   ...standard.jestConfig(),
   snapshotSerializers: ['enzyme-to-json/serializer'],
   verbose: true,
+  collectCoverage: true,
+  collectCoverageFrom: [
+    '**/*.{ts,tsx}',
+    '!**/node_modules/**',
+    '!**/*styles.{ts,tsx}',
+    '!**/*constants.{ts,tsx}',
+    '!**/*module.{ts,tsx}',
+    '!**/*types.ts',
+  ],
 };

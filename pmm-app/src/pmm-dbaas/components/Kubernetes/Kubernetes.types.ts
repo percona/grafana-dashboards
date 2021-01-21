@@ -2,17 +2,29 @@ export interface KubernetesListAPI {
   kubernetes_clusters: KubernetesAPI[];
 }
 
+interface Operator {
+  status: string;
+}
+
+interface OperatorsList {
+  psmdb: Operator;
+  xtradb: Operator;
+}
+
 export interface KubernetesAPI {
   kubernetes_cluster_name: string;
+  operators: OperatorsList;
+  status: string;
 }
 
 export interface Kubernetes {
   kubernetesClusterName: string;
+  operators: OperatorsList;
+  status: string;
 }
 
-export type DeleteKubernetesAction = (kubernetesToDelete: Kubernetes) => void;
+export type DeleteKubernetesAction = (kubernetesToDelete: Kubernetes, force?: boolean) => void;
 export type AddKubernetesAction = (kubernetesToAdd: NewKubernetesCluster) => void;
-
 
 interface KubeAuth {
   kubeconfig: string;
@@ -20,7 +32,7 @@ interface KubeAuth {
 
 export interface NewKubernetesClusterAPI {
   kubernetes_cluster_name: string;
-  kube_auth: KubeAuth
+  kube_auth: KubeAuth;
 }
 
 export interface NewKubernetesCluster {

@@ -11,12 +11,16 @@ Scenario(
   'PMM-T122 - Verify QAN UI Elements are displayed @not-pr-pipeline @qan',
   async (I, qanFilters, qanOverview, qanPagination) => {
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('mysql');
-    I.waitForVisible(qanFilters.fields.filterBy, 30);
     I.waitForVisible(qanOverview.buttons.addColumn, 30);
-    await qanOverview.verifyRowCount(27);
     await qanPagination.verifyPagesAndCount(25);
     I.waitForVisible(qanFilters.elements.environmentLabel, 30);
+    await qanOverview.verifyRowCount(27);
+    qanFilters.applyFilter('mysql');
+    I.waitForVisible(qanFilters.fields.filterBy, 30);
+    I.waitForVisible(qanOverview.fields.searchBy, 30);
+    I.fillField(qanOverview.fields.searchBy, 'insert');
+    I.pressKey('Enter');
+    I.waitForVisible(qanOverview.elements.querySelector, 30);
     I.click(qanOverview.elements.querySelector);
     I.waitForVisible(qanOverview.getColumnLocator('Lock Time'), 30);
   },
@@ -28,19 +32,22 @@ Scenario(
     const cellValue = qanDetails.getMetricsCellLocator('Query Time', 3);
 
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('ps-dev');
+    qanFilters.applyFilter('mysql');
+    I.waitForVisible(qanOverview.fields.searchBy, 30);
+    I.fillField(qanOverview.fields.searchBy, 'insert');
+    I.pressKey('Enter');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
     I.waitForVisible(cellValue, 30);
     let overviewValue = await I.grabTextFrom(qanOverview.getCellValueLocator(1, 2));
     let detailsValue = await I.grabTextFrom(qanDetails.getMetricsCellLocator('Query Count', 2));
 
-    assert.ok(overviewValue === detailsValue, 'Query Count value in Overview and Detail should match');
+    assert.ok(overviewValue === detailsValue, `Query Count value in Overview and Detail should match. Overview:'${overviewValue}'!=Detail:'${detailsValue}'`);
 
     overviewValue = await I.grabTextFrom(qanOverview.getCellValueLocator(1, 3));
     detailsValue = await I.grabTextFrom(qanDetails.getMetricsCellLocator('Query Time', 4));
 
-    assert.ok(overviewValue === detailsValue, 'Query Time value in Overview and Detail should match');
+    assert.ok(overviewValue === detailsValue, `Query Time value in Overview and Detail should match. Overview:'${overviewValue}'!=Detail:'${detailsValue}'`);
   },
 );
 

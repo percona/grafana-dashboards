@@ -17,18 +17,6 @@ Scenario(
 );
 
 Scenario(
-  'Open Prometheus Dashboard and verify Metrics are present and graphs are displayed @not-ui-pipeline @nightly @not-pr-pipeline',
-  async (I, adminPage, dashboardPage) => {
-    I.amOnPage(dashboardPage.prometheusDashboard.url);
-    dashboardPage.waitForDashboardOpened();
-    await dashboardPage.expandEachDashboardRow();
-    dashboardPage.verifyMetricsExistence(dashboardPage.prometheusDashboard.metrics);
-    await dashboardPage.verifyThereAreNoGraphsWithNA(9);
-    await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
-  },
-);
-
-Scenario(
   // eslint-disable-next-line max-len
   'Open the Prometheus Exporters Status Dashboard and verify Metrics are present and graphs are displayed @not-ui-pipeline @nightly @not-pr-pipeline',
   async (I, dashboardPage, adminPage) => {

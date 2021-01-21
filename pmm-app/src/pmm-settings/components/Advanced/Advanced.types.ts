@@ -6,5 +6,7 @@ export interface AdvancedProps {
   sttEnabled: boolean;
   updatesDisabled: boolean;
   dbaasEnabled?: boolean;
-  updateSettings: (body: any, callback: LoadingCallback) => void;
+  alertingEnabled?: boolean;
+  publicAddress?: string;
+  updateSettings: (body: any, callback: LoadingCallback, refresh?: boolean) => void;
 }
