@@ -25,7 +25,7 @@ module.exports = {
     for (const i in resp.data.templates) {
       const template = resp.data.templates[i];
 
-      // eslint-disable-next-line/no-continue
+      // eslint-disable-next-line no-continue
       if (template.source === 'BUILT_IN') continue;
 
       await this.removeTemplate(template.name);

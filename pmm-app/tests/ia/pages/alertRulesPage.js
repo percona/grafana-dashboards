@@ -2,7 +2,7 @@ const { I } = inject();
 
 module.exports = {
   url: 'graph/integrated-alerting',
-  columnHeaders: ['Name',	'Threshold', 'Duration',	'Severity',	'Filters',	'Created',	'Actions'],
+  columnHeaders: ['Name', 'Threshold', 'Duration', 'Severity', 'Filters', 'Created', 'Actions'],
   rules: [{
     template: 'PostgreSQL connections in use',
     templateType: 'BUILT_IN',
