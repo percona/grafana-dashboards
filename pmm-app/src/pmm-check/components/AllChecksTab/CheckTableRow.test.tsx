@@ -12,12 +12,14 @@ const originalConsoleError = jest.fn();
 const runAllPromises = () => new Promise(setImmediate);
 
 const TEST_CHECK = {
+  summary: 'Test',
   name: 'test',
   description: 'test description',
   disabled: false,
 };
 
 const TEST_CHECK_DISABLED = {
+  summary: 'Test disabled',
   name: 'test disabled',
   description: 'test disabled description',
   disabled: true,
@@ -42,7 +44,7 @@ describe('CheckTableRow::', () => {
 
     let tdElements = wrapper.find('tr').find('td');
 
-    expect(tdElements.at(0).text()).toBe('test');
+    expect(tdElements.at(0).text()).toBe('Test');
     expect(tdElements.at(1).text()).toBe('test description');
     expect(tdElements.at(2).text()).toBe(Messages.enabled);
     expect(tdElements.at(3).text()).toBe(Messages.disable);

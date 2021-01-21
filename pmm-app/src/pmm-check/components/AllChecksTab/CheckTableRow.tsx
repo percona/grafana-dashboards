@@ -6,7 +6,9 @@ import { CheckTableRowProps } from './types';
 
 export const CheckTableRow: FC<CheckTableRowProps> = ({ check, onSuccess }) => {
   const [changeCheckPending, setChangeCheckPending] = useState(false);
-  const { name, description, disabled } = check;
+  const {
+    name, summary, description, disabled,
+  } = check;
 
   const changeCheck = async () => {
     setChangeCheckPending(true);
@@ -25,7 +27,7 @@ export const CheckTableRow: FC<CheckTableRowProps> = ({ check, onSuccess }) => {
 
   return (
     <tr key={name}>
-      <td>{name}</td>
+      <td>{summary}</td>
       <td>{description}</td>
       <td>{disabled ? Messages.disabled : Messages.enabled}</td>
       <td>
