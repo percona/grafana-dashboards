@@ -38,7 +38,7 @@ describe('AddDBClusterModal::', () => {
     expect(root.find('[data-qa="name-text-input"]')).toBeTruthy();
     expect(root.find('[data-qa="dbcluster-kubernetes-cluster-field"]')).toBeTruthy();
     expect(root.find('[data-qa="dbcluster-database-type-field"]')).toBeTruthy();
-    expect(root.find('[data-qa="dbcluster-create-cluster-button"]')).toBeTruthy();
+    expect(root.find('[data-qa="step-progress-submit-button"]')).toBeTruthy();
     expect(root.find('[data-qa="dbcluster-basic-options-step"]')).toBeTruthy();
     expect(root.find('[data-qa="dbcluster-advanced-options-step"]')).toBeTruthy();
     expect(root.find('[data-qa="dbcluster-advanced-options-step"]')).toBeTruthy();
@@ -57,7 +57,7 @@ describe('AddDBClusterModal::', () => {
 
     openStep(root, 'dbcluster-advanced-options-step');
 
-    const button = root.find('[data-qa="dbcluster-create-cluster-button"]').find('button');
+    const button = root.find('[data-qa="step-progress-submit-button"]').find('button');
 
     expect(button.prop('disabled')).toBeTruthy();
   });
