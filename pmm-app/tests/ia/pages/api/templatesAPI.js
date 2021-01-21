@@ -6,7 +6,7 @@ module.exports = {
     const [, content, id] = await ruleTemplatesPage.ruleTemplate.templateNameAndContent(path);
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const body = {
-      yaml: content
+      yaml: content,
     };
     const resp = await I.sendPostRequest('v1/management/ia/Templates/Create', body, headers);
 
@@ -18,12 +18,14 @@ module.exports = {
 
   async clearAllTemplates() {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
-    const resp = await I.sendPostRequest('v1/management/ia/Templates/List', { reload: true}, headers);
+    const resp = await I.sendPostRequest('v1/management/ia/Templates/List', { reload: true }, headers);
 
     if (resp.data === {}) return;
 
     for (const i in resp.data.templates) {
       const template = resp.data.templates[i];
+
+      // eslint-disable-next-line/no-continue
       if (template.source === 'BUILT_IN') continue;
 
       await this.removeTemplate(template.name);
@@ -33,7 +35,7 @@ module.exports = {
   async removeTemplate(templateId) {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const body = {
-      name: templateId
+      name: templateId,
     };
     const resp = await I.sendPostRequest('v1/management/ia/Templates/Delete', body, headers);
 

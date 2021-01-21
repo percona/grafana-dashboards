@@ -6,8 +6,9 @@ const rules = new DataTable(['template', 'templateType', 'ruleName', 'threshold'
 
 for (const i in page.rules) {
   const rule = page.rules[i];
+
   rules.add([rule.template, rule.templateType, rule.ruleName, rule.threshold, rule.duration,
-    rule.severity, rule.filters, rule.channels, rule.activate])
+    rule.severity, rule.filters, rule.channels, rule.activate]);
 }
 
 Feature('IA: Alert rules');
@@ -23,7 +24,7 @@ BeforeSuite(async (I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, chann
   await templatesAPI.clearAllTemplates();
   await channelsAPI.clearAllNotificationChannels();
   await templatesAPI.createRuleTemplate('tests/ia/templates/templateForRules.yaml');
-  await channelsAPI.createNotificationChannel('EmailChannelForRules', ncPage.types.email.type)
+  await channelsAPI.createNotificationChannel('EmailChannelForRules', ncPage.types.email.type);
 });
 
 AfterSuite(async (I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channelsAPI) => {
@@ -48,7 +49,7 @@ Scenario(
       I.waitForVisible(columnHeader, 30);
     });
     await rulesAPI.removeAlertRule(ruleId);
-  }
+  },
 );
 
 Scenario(
@@ -94,7 +95,7 @@ Scenario(
 
     I.click(alertRulesPage.buttons.toggleAlertRule(ruleName));
     alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyEnabled(ruleName));
-    I.seeCssPropertiesOnElements(alertRulesPage.elements.rulesNameCell(ruleName), {'background-color': color});
+    I.seeCssPropertiesOnElements(alertRulesPage.elements.rulesNameCell(ruleName), { 'background-color': color });
     await rulesAPI.removeAlertRule(ruleId);
   },
 );
@@ -111,7 +112,7 @@ Data(rules).Scenario(
       severity: current.severity,
       filters: current.filters,
       channels: current.channels,
-      activate: current.activate
+      activate: current.activate,
     };
 
     alertRulesPage.openAlertRulesTab();
@@ -133,6 +134,7 @@ Scenario(
   async (I, alertRulesPage, rulesAPI, channelsAPI, ncPage) => {
     const ruleName = 'QAA PSQL Update test';
     const ruleId = await rulesAPI.createAlertRule(ruleName);
+
     await channelsAPI.createNotificationChannel('EmailChannelForEditRules', ncPage.types.email.type);
     const rule = {
       threshold: '2',
@@ -140,7 +142,7 @@ Scenario(
       severity: 'High',
       filters: 'service_name=pmm-server-postgresql-updated',
       channels: ['EmailChannelForRules', 'EmailChannelForEditRules'],
-      activate: false
+      activate: false,
     };
 
     alertRulesPage.openAlertRulesTab();

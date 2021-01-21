@@ -13,19 +13,19 @@ module.exports = {
           key: 'service_name',
           value: 'pmm-server-postgresql',
           type: 'EQUAL',
-        }
+        },
       ],
       for: '1s',
       severity: 'SEVERITY_CRITICAL',
       template_name: 'pmm_postgresql_too_many_connections',
       summary: ruleName,
-      params:[
+      params: [
         {
           name: 'threshold',
           type: 'FLOAT',
-          float: 1
-        }
-      ]
+          float: 1,
+        },
+      ],
     };
     const resp = await I.sendPostRequest('v1/management/ia/Rules/Create', body, headers);
 
@@ -51,7 +51,7 @@ module.exports = {
   async removeAlertRule(ruleId) {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const body = {
-      rule_id: ruleId
+      rule_id: ruleId,
     };
     const resp = await I.sendPostRequest('v1/management/ia/Rules/Delete', body, headers);
 

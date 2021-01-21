@@ -3,7 +3,7 @@ const { I } = inject();
 module.exports = {
   url: 'graph/integrated-alerting',
   columnHeaders: ['Name',	'Threshold', 'Duration',	'Severity',	'Filters',	'Created',	'Actions'],
-  rules: [ {
+  rules: [{
     template: 'PostgreSQL connections in use',
     templateType: 'BUILT_IN',
     ruleName: 'Rule with BUILT_IN template (activated, without channels)',
@@ -12,7 +12,7 @@ module.exports = {
     severity: 'Warning',
     filters: 'service_name=pmm-server-postgresql',
     channels: [],
-    activate: true
+    activate: true,
   }, {
     template: 'PostgreSQL connections in use',
     templateType: 'BUILT_IN',
@@ -22,7 +22,7 @@ module.exports = {
     severity: 'Critical',
     filters: 'service_name=pmm-server-postgresql',
     channels: [],
-    activate: false
+    activate: false,
   }, {
     template: 'PostgreSQL connections in use',
     templateType: 'BUILT_IN',
@@ -32,7 +32,7 @@ module.exports = {
     severity: 'High',
     filters: 'service_name=pmm-server-postgresql',
     channels: ['EmailChannelForRules'],
-    activate: true
+    activate: true,
   }, {
     template: 'PostgreSQL connections in use',
     templateType: 'BUILT_IN',
@@ -42,7 +42,7 @@ module.exports = {
     severity: 'Notice',
     filters: 'service_name=pmm-server-postgresql',
     channels: ['EmailChannelForRules'],
-    activate: false
+    activate: false,
   }, {
     template: 'E2E TemplateForRules YAML',
     templateType: 'User-defined (UI)',
@@ -52,7 +52,7 @@ module.exports = {
     severity: 'Warning',
     filters: 'service_name=pmm-server-postgresql',
     channels: [],
-    activate: true
+    activate: true,
   }, {
     template: 'E2E TemplateForRules YAML',
     templateType: 'User-defined (UI)',
@@ -62,7 +62,7 @@ module.exports = {
     severity: 'Critical',
     filters: 'service_name=pmm-server-postgresql',
     channels: [],
-    activate: false
+    activate: false,
   }, {
     template: 'E2E TemplateForRules YAML',
     templateType: 'User-defined (UI)',
@@ -72,7 +72,7 @@ module.exports = {
     severity: 'High',
     filters: 'service_name=pmm-server-postgresql',
     channels: ['EmailChannelForRules'],
-    activate: true
+    activate: true,
   }, {
     template: 'E2E TemplateForRules YAML',
     templateType: 'User-defined (UI)',
@@ -82,8 +82,8 @@ module.exports = {
     severity: 'Notice',
     filters: 'service_name=pmm-server-postgresql',
     channels: ['EmailChannelForRules'],
-    activate: false
-  } ],
+    activate: false,
+  }],
   elements: {
     rulesTab: '//li[@aria-label="Tab Alert Rules"]',
     noRules: '[data-qa=alert-rules-table-no-data] > h1',
@@ -112,7 +112,7 @@ module.exports = {
     editAlertRule: (ruleName) => `//td[1][text()="${ruleName}"]/following-sibling::td//button[@data-qa='edit-alert-rule-button']`,
     // toggleAlertRule returns enable/disabled rule switch locator in alert rules list
     toggleAlertRule: (ruleName) => `//td[1][text()="${ruleName}"]/following-sibling::td//input[@data-qa='toggle-alert-rule']/following-sibling::label`,
-    toogleInModal: '//input[@data-qa="enabled-toggle-input"]/following-sibling::label'
+    toogleInModal: '//input[@data-qa="enabled-toggle-input"]/following-sibling::label',
   },
   fields: {
     // searchDropdown returns a locator of a search input for a given label
@@ -133,9 +133,11 @@ module.exports = {
     successfullyEnabled: (name) => `Alert rule "${name}" successfully enabled`,
   },
 
-  fillRuleFields( ruleObj = this.rules[0] ) {
-    const { template, ruleName, threshold, duration,
-      severity, filters, channels, activate } = ruleObj;
+  fillRuleFields(ruleObj = this.rules[0]) {
+    const {
+      template, ruleName, threshold, duration,
+      severity, filters, channels, activate,
+    } = ruleObj;
 
     // skipping these steps while editing an Alert rule
     if (template && ruleName) {
@@ -151,13 +153,13 @@ module.exports = {
     I.clearField(this.fields.filters);
     I.fillField(this.fields.filters, filters);
     if (channels) {
-      channels.forEach( channel => {
-        this.searchAndSelectResult('Channels', channel)
-      })
+      channels.forEach((channel) => {
+        this.searchAndSelectResult('Channels', channel);
+      });
     }
 
     if (!activate) {
-      I.click(this.buttons.toogleInModal)
+      I.click(this.buttons.toogleInModal);
     }
   },
 
@@ -173,14 +175,16 @@ module.exports = {
   },
 
   verifyRuleState(activate, ruleName) {
-    if (!activate) activate = null;
+    let checked = activate;
 
-    I.seeAttributesOnElements(this.elements.activateSwitch(ruleName), { checked: activate });
+    if (!activate) checked = null;
+
+    I.seeAttributesOnElements(this.elements.activateSwitch(ruleName), { checked });
   },
 
   verifyPopUpMessage(message) {
     I.waitForVisible(this.elements.popUpTitle, 30);
     I.see(message, this.elements.popUpTitle);
-    I.click(this.buttons.closePopUp)
+    I.click(this.buttons.closePopUp);
   },
 };
