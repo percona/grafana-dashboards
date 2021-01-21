@@ -1,6 +1,4 @@
-import React, {
-  FC, useCallback, useMemo, useState,
-} from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Form as FormFinal } from 'react-final-form';
 import { Button, useTheme } from '@grafana/ui';
 import { DATABASE_LABELS, Databases } from 'shared/core';
@@ -10,6 +8,7 @@ import { getStyles } from './AddRemoteInstance.styles';
 import { AddRemoteInstanceProps } from './AddRemoteInstance.types';
 import { AdditionalOptions, Labels, MainDetails } from './FormParts';
 import { Messages } from './AddRemoteInstance.messages';
+import { ExternalExporterConnectionDetails } from './FormParts/ExternalExporterConnectionDetails/ExternalExporterConnectionDetails';
 
 const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
   instance: { type, credentials },
@@ -46,23 +45,29 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
         setLoading(false);
       }
     },
-    [instanceType],
+    [instanceType, type],
   );
 
   const formParts = useMemo(
     () => (form) => (
       <>
-        <MainDetails remoteInstanceCredentials={remoteInstanceCredentials} />
+        {type !== 'external' ? (
+          <MainDetails remoteInstanceCredentials={remoteInstanceCredentials} />
+        ) : (
+          <ExternalExporterConnectionDetails form={form} />
+        )}
         <Labels />
-        <AdditionalOptions
-          remoteInstanceCredentials={remoteInstanceCredentials}
-          loading={loading}
-          instanceType={instanceType}
-          form={form}
-        />
+        {type !== 'external' && (
+          <AdditionalOptions
+            remoteInstanceCredentials={remoteInstanceCredentials}
+            loading={loading}
+            instanceType={instanceType}
+            form={form}
+          />
+        )}
       </>
     ),
-    [],
+    [type],
   );
 
   return (
@@ -70,6 +75,12 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
       <FormFinal
         onSubmit={onSubmit}
         initialValues={initialValues}
+        mutators={{
+          // expect (field, value) args from the mutator
+          setValue: ([field, value], state, { changeValue }) => {
+            changeValue(state, field, () => value);
+          },
+        }}
         render={({ form, handleSubmit }) => (
           <form onSubmit={handleSubmit} data-qa="add-remote-instance-form">
             <h4 className={styles.addRemoteInstanceTitle}>{`Add remote ${instanceType} Instance`}</h4>

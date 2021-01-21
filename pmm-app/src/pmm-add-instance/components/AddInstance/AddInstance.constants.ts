@@ -6,4 +6,5 @@ export const instanceList = [
   { type: 'mysql', title: Messages.titles.mysql },
   { type: 'mongodb', title: Messages.titles.mongodb },
   { type: 'proxysql', title: Messages.titles.proxysql },
+  { type: 'external', title: Messages.titles.external },
 ];

@@ -5,6 +5,10 @@ export interface MainDetailsFormPartProps {
   remoteInstanceCredentials: RemoteInstanceCredentials;
 }
 
+export interface ExternalExporterConnectionDetailsFormPartProps {
+  form: FormApi
+}
+
 export interface AdditionalOptionsFormPartProps {
   instanceType?: string;
   loading: boolean;

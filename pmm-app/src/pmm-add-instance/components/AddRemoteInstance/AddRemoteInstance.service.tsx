@@ -23,6 +23,10 @@ class AddRemoteInstanceService {
     return apiRequestManagement.post<any, any>('/RDS/Add', body);
   }
 
+  static async addExternal(body) {
+    return apiRequestManagement.post<any, any>('/External/Add', body);
+  }
+
   static addRemote(type, data) {
     switch (type) {
       case DATABASE_LABELS[Databases.mongodb]:
@@ -33,6 +37,8 @@ class AddRemoteInstanceService {
         return AddRemoteInstanceService.addPostgresql(data);
       case DATABASE_LABELS[Databases.proxysql]:
         return AddRemoteInstanceService.addProxysql(data);
+      case 'external':
+        return AddRemoteInstanceService.addExternal(data);
       default:
         throw new Error('Unknown instance type');
     }
