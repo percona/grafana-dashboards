@@ -3,12 +3,12 @@ import { PasswordInputField, TextInputField, validators } from '@percona/platfor
 import Validators from 'shared/components/helpers/validators';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { Button, useTheme } from '@grafana/ui';
+import { Field } from 'react-final-form';
+import { css } from 'emotion';
 import { ExternalExporterConnectionDetailsFormPartProps } from '../FormParts.types';
 import { getStyles } from '../FormParts.styles';
 import { Messages } from '../FormParts.messages';
-import { Field } from 'react-final-form';
 import { RadioButtonGroupAdapter } from '../../../../../shared/components/Form/FieldAdapters/FieldAdapters';
-import { css } from 'emotion';
 import { schemaOptions } from '../FormParts.constants';
 
 export const ExternalExporterConnectionDetails: FC<ExternalExporterConnectionDetailsFormPartProps> = ({
@@ -37,7 +37,7 @@ export const ExternalExporterConnectionDetails: FC<ExternalExporterConnectionDet
 
   return (
     <div className={styles.groupWrapper}>
-      <h4 className={styles.sectionHeader}>{'External exporter connection details'}</h4>
+      <h4 className={styles.sectionHeader}>External exporter connection details</h4>
       <div className={styles.labelWrapper} data-qa="address-label">
         <span>{Messages.form.labels.externalExporter.url}</span>
         <LinkTooltip tooltipText={Messages.form.tooltips.externalExporter.url} icon="info-circle" />
@@ -56,7 +56,7 @@ export const ExternalExporterConnectionDetails: FC<ExternalExporterConnectionDet
           />
         </div>
         <Button id="addInstance" type="button" onClick={getUrlParts}>
-          {'Parse URL'}
+          Parse URL
         </Button>
       </div>
       <div className={styles.labelWrapper} data-qa="address-label">
@@ -65,7 +65,7 @@ export const ExternalExporterConnectionDetails: FC<ExternalExporterConnectionDet
       </div>
       <Field
         dataQa="http-schema-field"
-        name={'schema'}
+        name="schema"
         options={schemaOptions}
         component={RadioButtonGroupAdapter}
       />
@@ -90,7 +90,7 @@ export const ExternalExporterConnectionDetails: FC<ExternalExporterConnectionDet
         <span>{Messages.form.labels.externalExporter.port}</span>
         <LinkTooltip tooltipText={Messages.form.tooltips.externalExporter.port} icon="info-circle" />
       </div>
-      <TextInputField name="port" placeholder={`Port`} validators={portValidators} />
+      <TextInputField name="port" placeholder="Port" validators={portValidators} />
       <div className={styles.labelWrapper} data-qa="username-label">
         <span>{Messages.form.labels.externalExporter.group}</span>
         <LinkTooltip tooltipText={Messages.form.tooltips.externalExporter.group} icon="info-circle" />

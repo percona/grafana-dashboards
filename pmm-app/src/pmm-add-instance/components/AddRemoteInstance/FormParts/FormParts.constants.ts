@@ -1,6 +1,6 @@
+import { SelectableValue } from '@grafana/data';
 import { Messages } from '../AddRemoteInstance.messages';
 import { TrackingOptions } from '../AddRemoteInstance.types';
-import { SelectableValue } from '@grafana/data';
 
 export const trackingOptions = [
   { key: TrackingOptions.none, value: Messages.form.trackingOptions.none },

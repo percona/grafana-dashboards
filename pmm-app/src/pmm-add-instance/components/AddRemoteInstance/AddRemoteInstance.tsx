@@ -1,4 +1,6 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, {
+  FC, useCallback, useMemo, useState,
+} from 'react';
 import { Form as FormFinal } from 'react-final-form';
 import { Button, useTheme } from '@grafana/ui';
 import { DATABASE_LABELS, Databases } from 'shared/core';
@@ -72,9 +74,9 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
   const getHeader = (databaseType) => {
     if (databaseType === InstanceTypes.external) {
       return 'Add external exporter';
-    } else {
-      return `Add remote ${DATABASE_LABELS[databaseType]} Instance`;
     }
+
+    return `Add remote ${DATABASE_LABELS[databaseType]} Instance`;
   };
 
   return (
@@ -101,6 +103,7 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
                 onClick={() => selectInstance({ type: '' })}
                 disabled={loading}
                 className={styles.returnButton}
+                icon="arrow-left"
               >
                 {Messages.form.buttons.toMenu}
               </Button>

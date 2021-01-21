@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { BrowserRouter as Router, Route, useLocation, useHistory } from 'react-router-dom';
+import {
+  BrowserRouter as Router, Route, useLocation, useHistory,
+} from 'react-router-dom';
 import { Button } from '@grafana/ui';
 import { cx } from 'emotion';
 import AddRemoteInstance from './components/AddRemoteInstance/AddRemoteInstance';
@@ -42,7 +44,12 @@ const AddInstancePanel = () => {
     () => () => (
       <>
         <div className={styles.content}>
-          <Button variant="link" onClick={() => selectInstance({ type: '' })}>
+          <Button
+            variant="secondary"
+            onClick={() => selectInstance({ type: '' })}
+            className={styles.returnButton}
+            icon="arrow-left"
+          >
             {Messages.form.buttons.toMenu}
           </Button>
         </div>

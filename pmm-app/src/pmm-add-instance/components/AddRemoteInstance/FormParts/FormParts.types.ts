@@ -6,7 +6,7 @@ export interface MainDetailsFormPartProps {
 }
 
 export interface ExternalExporterConnectionDetailsFormPartProps {
-  form: FormApi
+  form: FormApi;
 }
 
 export interface AdditionalOptionsFormPartProps {
