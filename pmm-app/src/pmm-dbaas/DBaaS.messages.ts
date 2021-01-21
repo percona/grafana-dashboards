@@ -1,4 +1,6 @@
 import { DBClusterStatus } from './components/DBCluster/DBCluster.types';
+import { KubernetesOperatorStatus } from './components/Kubernetes/OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus.types';
+import { KubernetesClusterStatus } from './components/Kubernetes/KubernetesClusterStatus/KubernetesClusterStatus.types';
 
 export const Messages = {
   tabs: {
@@ -7,12 +9,17 @@ export const Messages = {
   },
   kubernetes: {
     deleteAction: 'Unregister',
+    showConfiguration: 'Show configuration',
     addAction: 'Register new Kubernetes Cluster',
     deleteModal: {
       cancel: 'Cancel',
       confirm: 'Proceed',
       confirmMessage: 'Are you sure that you want to unregister this cluster?',
       title: 'Confirm action',
+      labels: {
+        force: 'Ignore errors; unregister anyway',
+        forceWrapper: 'Force mode',
+      },
     },
     deleteSuccess: 'Cluster successfully unregistered',
     addModal: {
@@ -25,17 +32,32 @@ export const Messages = {
     },
     table: {
       nameColumn: 'Kubernetes Cluster Name',
+      clusterStatusColumn: 'Kubernetes Cluster Status',
+      operatorsStatusColumn: 'Operators Status',
       actionsColumn: 'Actions',
     },
     messages: {
       clusterAdded: 'Cluster was successfully registered',
     },
+    operatorStatus: {
+      [KubernetesOperatorStatus.ok]: 'Installed',
+      [KubernetesOperatorStatus.unsupported]: 'Not supported',
+      [KubernetesOperatorStatus.unavailable]: 'How to install',
+      [KubernetesOperatorStatus.invalid]: 'Invalid',
+      errorMessage: 'Cluster creation failed',
+    },
+    kubernetesStatus: {
+      [KubernetesClusterStatus.ok]: 'Active',
+      [KubernetesClusterStatus.unavailable]: 'Unavailable',
+      [KubernetesClusterStatus.invalid]: 'Invalid',
+    },
   },
   dbcluster: {
     addAction: 'Create DB Cluster',
-    publicAddressWarningBegin: 'Go to',
+    publicAddressWarningBegin:
+      'If you want to use monitoring, you need to set your PMM installation public address in',
     publicAddressWarningLink: 'settings',
-    publicAddressWarningEnd: 'to set PMM public address first',
+    publicAddressWarningEnd: 'before cluster creation',
     addModal: {
       title: 'Create Cluster',
       confirm: 'Create Cluster',
@@ -65,14 +87,15 @@ export const Messages = {
         custom: 'Custom',
       },
       validationMessages: {
-        clusterName:
-          'Cluster name should start with a letter, be alphanumeric, and may contain a dash',
+        clusterName: 'Cluster name should start with a letter, be alphanumeric, and may contain a dash',
+        notInstalledOperator: 'Operators must be installed to use database type',
+        requiredDatabaseType: 'Required field',
       },
+      noOperatorsMessage: 'No clusters found with installed operators',
     },
     deleteModal: {
       cancel: 'Cancel',
       confirm: 'Proceed',
-      confirmMessage: 'Are you sure that you want to delete this cluster?',
       title: 'Confirm action',
     },
     editModal: {
@@ -101,6 +124,8 @@ export const Messages = {
         deleteCluster: 'Delete',
         editCluster: 'Edit',
         restartCluster: 'Restart',
+        suspend: 'Suspend',
+        resume: 'Resume',
       },
       status: {
         [DBClusterStatus.changing]: 'Pending',
@@ -108,8 +133,11 @@ export const Messages = {
         [DBClusterStatus.failed]: 'Failed',
         [DBClusterStatus.invalid]: 'Invalid',
         [DBClusterStatus.ready]: 'Active',
+        [DBClusterStatus.suspended]: 'Paused',
         errorMessage: 'Cluster creation failed',
       },
     },
   },
+  successfulCopyMessage: 'Copied',
+  copyToClipboard: 'Copy to clipboard',
 };

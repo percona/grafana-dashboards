@@ -45,4 +45,5 @@ export const INITIAL_VALUES = {
 };
 
 export const MIN_NODES = 3;
-export const MIN_RESOURCES = 1;
+export const MIN_RESOURCES = 0.1;
+export const MIN_DISK_SIZE = 1;

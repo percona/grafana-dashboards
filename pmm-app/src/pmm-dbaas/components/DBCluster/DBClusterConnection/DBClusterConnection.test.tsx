@@ -2,10 +2,7 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { DBClusterConnection } from './DBClusterConnection';
-import {
-  dbClustersStub,
-  mongoDBClusterConnectionStub,
-} from '../__mocks__/dbClustersStubs';
+import { dbClustersStub, mongoDBClusterConnectionStub } from '../__mocks__/dbClustersStubs';
 
 jest.mock('shared/components/helpers/notification-manager');
 jest.mock('../XtraDB.service');
@@ -16,9 +13,7 @@ describe('DBClusterConnection::', () => {
     let root;
 
     await act(async () => {
-      root = mount(
-        <DBClusterConnection dbCluster={dbClustersStub[0]} />,
-      );
+      root = mount(<DBClusterConnection dbCluster={dbClustersStub[0]} />);
     });
 
     expect(root.find('[data-qa="cluster-connection-host"]')).toBeTruthy();
@@ -30,9 +25,7 @@ describe('DBClusterConnection::', () => {
     let root;
 
     await act(async () => {
-      root = mount(
-        <DBClusterConnection dbCluster={dbClustersStub[2]} />,
-      );
+      root = mount(<DBClusterConnection dbCluster={dbClustersStub[2]} />);
     });
 
     root.update();

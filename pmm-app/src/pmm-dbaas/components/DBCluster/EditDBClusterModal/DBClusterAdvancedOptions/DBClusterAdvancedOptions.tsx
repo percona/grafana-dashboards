@@ -13,12 +13,13 @@ import {
   RESOURCES_OPTIONS,
   DEFAULT_SIZES,
   MIN_NODES,
-  MIN_RESOURCES,
   TOPOLOGIES_DISABLED,
+  MIN_RESOURCES,
 } from './DBClusterAdvancedOptions.constants';
 import { getStyles } from './DBClusterAdvancedOptions.styles';
 import { EditDBClusterFields } from '../EditDBClusterModal.types';
 import { DBClusterTopology, DBClusterResources } from './DBClusterAdvancedOptions.types';
+import { resourceValidator } from './DBClusterAdvancedOptions.utils';
 
 export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   values,
@@ -32,37 +33,43 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   const [customCPU, setCustomCPU] = useState(DEFAULT_SIZES.small.cpu);
   const { required, min } = validators;
   const { change } = form;
-  const nodesValidators = [required, min(MIN_NODES)];
-  const resourcesValidators = [required, min(MIN_RESOURCES)];
+  const nodeValidators = [required, min(MIN_NODES)];
+  const resourceValidators = [required, min(MIN_RESOURCES), resourceValidator];
   const {
-    topology,
-    resources,
-    memory,
-    cpu,
-    databaseType,
+    topology, resources, memory, cpu, databaseType,
   } = values;
-  const onChangeCustom = useCallback((value: string) => {
-    if (resources === DBClusterResources.custom) {
-      setCustomMemory(memory);
-      setCustomCPU(cpu);
-    }
+  const onChangeCustom = useCallback(
+    (value: string) => {
+      if (resources === DBClusterResources.custom) {
+        setCustomMemory(memory);
+        setCustomCPU(cpu);
+      }
 
-    if (value !== DBClusterResources.custom) {
-      change(EditDBClusterFields.cpu, DEFAULT_SIZES[value].cpu);
-      change(EditDBClusterFields.memory, DEFAULT_SIZES[value].memory);
-    } else {
-      change(EditDBClusterFields.cpu, customCPU);
-      change(EditDBClusterFields.memory, customMemory);
-    }
+      if (value !== DBClusterResources.custom) {
+        change(EditDBClusterFields.cpu, DEFAULT_SIZES[value].cpu);
+        change(EditDBClusterFields.memory, DEFAULT_SIZES[value].memory);
+      } else {
+        change(EditDBClusterFields.cpu, customCPU);
+        change(EditDBClusterFields.memory, customMemory);
+      }
 
-    change(EditDBClusterFields.resources, value);
-  }, [resources, memory, cpu, customMemory, customCPU]);
-  const parsePositiveInt = useCallback(
-    (value) => (value > 0 && Number.isInteger(+value) ? value : undefined), [],
+      change(EditDBClusterFields.resources, value);
+    },
+    [resources, memory, cpu, customMemory, customCPU],
   );
-  const topologiesDisabled = useMemo(() => (
-    databaseType !== Databases.mysql ? TOPOLOGIES_DISABLED : []
-  ), [databaseType]);
+  const parsePositiveInt = useCallback(
+    (value) => (value > 0 && Number.isInteger(+value) ? value : undefined),
+    [],
+  );
+
+  const parseNonNegativeFloat = useCallback(
+    (value) => (value > 0 ? (+value).toFixed(1).replace(/\.0+$/, '') : value),
+    [],
+  );
+
+  const topologiesDisabled = useMemo(() => (databaseType !== Databases.mysql ? TOPOLOGIES_DISABLED : []), [
+    databaseType,
+  ]);
 
   return (
     <>
@@ -85,7 +92,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
           <NumberInputField
             name={EditDBClusterFields.nodes}
             label={Messages.dbcluster.addModal.fields.nodes}
-            validators={nodesValidators}
+            validators={nodeValidators}
           />
         )}
       </div>
@@ -101,16 +108,16 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
         <NumberInputField
           name={EditDBClusterFields.memory}
           label={Messages.dbcluster.addModal.fields.memory}
-          validators={resourcesValidators}
+          validators={resourceValidators}
           disabled={resources !== DBClusterResources.custom}
-          parse={parsePositiveInt}
+          parse={parseNonNegativeFloat}
         />
         <NumberInputField
           name={EditDBClusterFields.cpu}
           label={Messages.dbcluster.addModal.fields.cpu}
-          validators={resourcesValidators}
+          validators={resourceValidators}
           disabled={resources !== DBClusterResources.custom}
-          parse={parsePositiveInt}
+          parse={parseNonNegativeFloat}
         />
         <NumberInputField
           name={EditDBClusterFields.disk}

@@ -6,6 +6,7 @@ const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 module.exports = {
   url: 'graph/d/pmm-settings/pmm-settings',
   prometheusAlertUrl: '/prometheus/rules',
+  stateOfAlertsUrl: '/prometheus/alerts',
   diagnosticsText:
     'You can download server logs to make the problem detection simpler. '
     + 'Please include this file if you are submitting a bug report.',
@@ -14,6 +15,7 @@ module.exports = {
   alertManager: {
     ip: process.env.VM_IP,
     service: ':9093/#/alerts',
+    externalAlertManagerPort: ':9093',
     rule:
       'groups:\n'
       + '  - name: AutoTestAlerts\n'
@@ -26,6 +28,18 @@ module.exports = {
       + '      annotations:\n'
       + '        summary: "Instance {{ $labels.instance }} down"\n'
       + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds."',
+    rule2:
+      'groups:\n'
+      + '  - name: Test2Alerts\n'
+      + '    rules:\n'
+      + '    - alert: InstanceUp\n'
+      + '      expr: up == 1\n'
+      + '      for: 1s\n'
+      + '      labels:\n'
+      + '        severity: critical\n'
+      + '      annotations:\n'
+      + '        summary: "Instance {{ $labels.instance }} up"\n'
+      + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."',
     editRule:
       'groups:\n'
       + '  - name: AutoTestAlertsEdited\n'
@@ -40,6 +54,7 @@ module.exports = {
       + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than {{ sec }} seconds."',
     ruleName: 'AutoTestAlerts',
     editRuleName: 'AutoTestAlertsEdited',
+    ruleName2: 'Test2Alerts',
   },
   messages: {
     successPopUpMessage: 'Settings updated',
@@ -126,6 +141,8 @@ module.exports = {
     signUpBackToLogin: '$sign-up-to-sign-in-button',
     telemetrySwitchSelectorInput: '//div[@data-qa="advanced-telemetry"]//div[2]//input',
     telemetrySwitchSelector: '//div[@data-qa="advanced-telemetry"]//div[2]//label',
+    iaSwitchSelectorInput: '//div[@data-qa="advanced-alerting"]//div[2]//input',
+    iaSwitchSelector: '//div[@data-qa="advanced-alerting"]//div[2]//label',
     telemetryLabel: '//div[@data-qa="advanced-telemetry"]//div//span',
     tooltipSelector: '.popper__background',
     tabsSection: '$settings-tabs',
@@ -202,19 +219,44 @@ module.exports = {
     I.amOnPage(this.prometheusAlertUrl);
   },
 
-  async verifyAlertmanagerRuleAdded(ruleName) {
-    for (let i = 0; i < 10; i++) {
-      const notLoaded = await I.grabNumberOfVisibleElements(`//td[contains(text(), '${ruleName}')]`);
+  async verifyAlertmanagerRuleAdded(ruleName, checkState = false) {
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
-      if (notLoaded) {
+    for (let i = 0; i < 30; i++) {
+      let response;
+
+      if (checkState) {
+        response = await I.sendGetRequest('prometheus/alerts', headers);
+      } else {
+        response = await I.sendGetRequest('prometheus/rules', headers);
+      }
+
+      if (JSON.stringify(response.data.data).includes(ruleName)) {
+        I.refreshPage();
         break;
       }
 
       I.refreshPage();
-      I.wait(1);
+      I.wait(5);
     }
 
+    I.seeElement(`//pre[contains(text(), '${ruleName}')]`);
     I.see(ruleName);
+  },
+
+  async verifyExternalAlertManager(ruleName) {
+    let response;
+
+    for (let i = 0; i < 20; i++) {
+      response = await I.sendGetRequest(`http://${this.alertManager.ip}${this.alertManager.externalAlertManagerPort}/api/v2/alerts/groups?silenced=false&inhibited=false&active=true`);
+      if (JSON.stringify(response.data).includes(ruleName)) {
+        break;
+      }
+
+      I.wait(5);
+    }
+
+    assert.equal(JSON.stringify(response.data).includes(ruleName), true, 'Alert Should be firing at External Alert Manager');
   },
 
   async verifyTooltip(tooltipObj) {

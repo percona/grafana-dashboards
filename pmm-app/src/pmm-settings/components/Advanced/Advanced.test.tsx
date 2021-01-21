@@ -15,11 +15,13 @@ describe('Advanced::', () => {
       publicAddress="pmmtest.percona.com"
     />);
     const retentionInput = root.find(dataQa('advanced-retention-input')).find('input');
+    const publicAddressInput = root.find(dataQa('publicAddress-text-input')).find('input');
 
     expect(retentionInput.prop('value')).toEqual(15);
+    expect(publicAddressInput.prop('value')).toEqual('pmmtest.percona.com');
   });
 
-  it('Cant change telemetry when stt is on', () => {
+  it('Can\'t change telemetry when stt is on', () => {
     const root = mount(<Advanced
       dataRetention="1296000s"
       telemetryEnabled
@@ -32,7 +34,7 @@ describe('Advanced::', () => {
     expect(telemetrySwitch.prop('disabled')).toBeTruthy();
   });
 
-  it('Cant change stt when telemetry is off', () => {
+  it('Can\'t change stt when telemetry is off', () => {
     const root = mount(<Advanced
       dataRetention="1296000s"
       telemetryEnabled={false}
@@ -43,6 +45,20 @@ describe('Advanced::', () => {
     const sttSwitch = root.find('[data-qa="advanced-stt"]').find('input');
 
     expect(sttSwitch.prop('disabled')).toBeTruthy();
+  });
+
+  it('Can\'t change alerting when telemetry is off', () => {
+    const root = mount(<Advanced
+      dataRetention="1296000s"
+      telemetryEnabled={false}
+      sttEnabled={false}
+      alertingEnabled={false}
+      updatesDisabled
+      updateSettings={() => {}}
+    />);
+    const alertingSwitch = root.find('[data-qa="advanced-alerting"]').find('input');
+
+    expect(alertingSwitch.prop('disabled')).toBeTruthy();
   });
 
   it('Calls apply changes', () => {
@@ -63,7 +79,7 @@ describe('Advanced::', () => {
     expect(updateSettings).toHaveBeenCalled();
   });
 
-  xit('Sets correct URL from browser', () => {
+  it('Sets correct URL from browser', () => {
     const oldLocation = window.location;
 
     delete window.location;

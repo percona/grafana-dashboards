@@ -342,7 +342,7 @@
             "valueName": "current"
         },
         {
-            "activePatternIndex": 0,
+            "activePatternIndex": 1,
             "datasource": null,
             "debug_mode": false,
             "defaultPattern": {
@@ -371,7 +371,7 @@
                 "name": "Default Pattern",
                 "null_color": "darkred",
                 "null_textcolor": "black",
-                "null_value": "No data",
+                "null_value": "-",
                 "pattern": "*",
                 "row_col_wrapper": "_",
                 "row_name": "_series_",
@@ -425,9 +425,9 @@
                     },
                     "format": "none",
                     "name": "Collection",
-                    "null_color": "darkred",
-                    "null_textcolor": "black",
-                    "null_value": "No data",
+                    "null_color": "blue",
+                    "null_textcolor": "white",
+                    "null_value": "0",
                     "pattern": ".*Collections",
                     "row_col_wrapper": "_",
                     "row_name": "_0_",
@@ -487,7 +487,7 @@
             },
             "targets": [
                 {
-                    "expr": "mongodb_mongos_db_collections_total{cluster=\"$cluster\",db!~\"admin|config\"}",
+                    "expr": "max by (db,shard) (mongodb_mongos_db_collections_total{cluster=\"$cluster\",db!~\"admin|config\"})",
                     "format": "time_series",
                     "hide": false,
                     "instant": true,
@@ -593,9 +593,9 @@
                     },
                     "format": "bytes",
                     "name": "Size",
-                    "null_color": "darkred",
-                    "null_textcolor": "black",
-                    "null_value": "No data",
+                    "null_color": "blue",
+                    "null_textcolor": "white",
+                    "null_value": "0",
                     "pattern": ".*Collections",
                     "row_col_wrapper": "_",
                     "row_name": "_0_",
@@ -616,7 +616,7 @@
             },
             "targets": [
                 {
-                    "expr": "mongodb_mongos_db_data_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"}",
+                    "expr": "max by (db,shard) (mongodb_mongos_db_data_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"})",
                     "format": "time_series",
                     "hide": false,
                     "instant": true,
@@ -1187,7 +1187,8 @@
             "colors": [
                 "#299c46",
                 "rgba(237, 129, 40, 0.89)",
-                "#d44a3a"
+                "#d44a3a",
+                "#4040a0"
             ],
             "datasource": null,
             "description": "Config services store the metadata for a sharded cluster. The metadata reflects state and organization for all data and components within the sharded cluster. The metadata includes the list of chunks on every shard and the ranges that define the chunks.",
@@ -1199,7 +1200,7 @@
             },
             "gridPos": {
                 "h": 5,
-                "w": 16,
+                "w": 12,
                 "x": 0,
                 "y": 11
             },
@@ -1252,7 +1253,8 @@
                 "tooltipPrimarySortField": "thresholdLevel",
                 "tooltipSecondarySortDirection": 2,
                 "tooltipSecondarySortField": "name",
-                "tooltipTimestampEnabled": true
+                "tooltipTimestampEnabled": true,
+                "valueEnabled": true
             },
             "rangeMaps": [
                 {
@@ -1297,7 +1299,8 @@
             "colors": [
                 "#299c46",
                 "rgba(237, 129, 40, 0.89)",
-                "#d44a3a"
+                "#d44a3a",
+                "#4040a0"
             ],
             "datasource": null,
             "description": "Mongos is a routing service for MongoDB shard configurations that processes queries from the application layer, and determines the location of this data in the sharded cluster, in order to complete these operations. From the perspective of the application, a mongos instance behaves identically to any other MongoDB instance.",
@@ -1309,8 +1312,8 @@
             },
             "gridPos": {
                 "h": 5,
-                "w": 8,
-                "x": 16,
+                "w": 12,
+                "x": 12,
                 "y": 11
             },
             "id": 1231,
@@ -1362,7 +1365,8 @@
                 "tooltipPrimarySortField": "thresholdLevel",
                 "tooltipSecondarySortDirection": 2,
                 "tooltipSecondarySortField": "name",
-                "tooltipTimestampEnabled": true
+                "tooltipTimestampEnabled": true,
+                "valueEnabled": true
             },
             "rangeMaps": [
                 {
@@ -1422,7 +1426,8 @@
             "colors": [
                 "#299c46",
                 "rgba(237, 129, 40, 0.89)",
-                "#d44a3a"
+                "#d44a3a",
+                "#4040a0"
             ],
             "datasource": null,
             "description": "A shard contains a subset of sharded data for a sharded cluster. Together, the cluster\u2019s shards hold the entire data set for the cluster.",
@@ -1487,7 +1492,8 @@
                 "tooltipPrimarySortField": "thresholdLevel",
                 "tooltipSecondarySortDirection": 2,
                 "tooltipSecondarySortField": "name",
-                "tooltipTimestampEnabled": true
+                "tooltipTimestampEnabled": true,
+                "valueEnabled": true
             },
             "rangeMaps": [
                 {
@@ -1545,13 +1551,143 @@
             ]
         },
         {
+            "colors": [
+                "#299c46",
+                "rgba(237, 129, 40, 0.89)",
+                "#d44a3a",
+                "#4040a0"
+            ],
+            "datasource": null,
+            "description": "A shard contains a subset of sharded data for a sharded cluster. Together, the cluster\u2019s shards hold the entire data set for the cluster.",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 24,
+                "x": 0,
+                "y": 21
+            },
+            "id": 10000,
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "polystat": {
+                "animationSpeed": 2500,
+                "columnAutoSize": true,
+                "columns": "",
+                "defaultClickThrough": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?from=$__from&to=$__to&var-service_name=${__cell_name}",
+                "defaultClickThroughNewTab": true,
+                "defaultClickThroughSanitize": true,
+                "displayLimit": 100,
+                "fontAutoColor": true,
+                "fontAutoScale": true,
+                "fontSize": 12,
+                "fontType": "Roboto",
+                "globalDecimals": 0,
+                "globalDisplayMode": "all",
+                "globalDisplayTextTriggeredEmpty": "OK",
+                "globalOperatorName": "current",
+                "globalUnitFormat": "ops",
+                "gradientEnabled": true,
+                "hexagonSortByDirection": 1,
+                "hexagonSortByField": "name",
+                "maxMetrics": 0,
+                "polygonBorderColor": "black",
+                "polygonBorderSize": 2,
+                "polygonGlobalFillColor": "#0a50a1",
+                "radius": "",
+                "radiusAutoSize": true,
+                "rowAutoSize": true,
+                "rows": "",
+                "shape": "hexagon_pointed_top",
+                "tooltipDisplayMode": "all",
+                "tooltipDisplayTextTriggeredEmpty": "OK",
+                "tooltipFontSize": 12,
+                "tooltipFontType": "Roboto",
+                "tooltipPrimarySortDirection": 2,
+                "tooltipPrimarySortField": "thresholdLevel",
+                "tooltipSecondarySortDirection": 2,
+                "tooltipSecondarySortField": "name",
+                "tooltipTimestampEnabled": true,
+                "valueEnabled": true
+            },
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "repeat": null,
+            "repeatDirection": "v",
+            "repeatIteration": 1607082131822,
+            "repeatPanelId": 1227,
+            "savedComposites": [],
+            "savedOverrides": [
+                {
+                    "clickThrough": "",
+                    "colors": [
+                        "#299c46",
+                        "#e5ac0e",
+                        "#bf1b00",
+                        "#ffffff"
+                    ],
+                    "decimals": "",
+                    "enabled": true,
+                    "label": "OVERRIDE 1",
+                    "metricName": "",
+                    "newTabEnabled": true,
+                    "operatorName": "avg",
+                    "prefix": "",
+                    "sanitizeURLEnabled": false,
+                    "scaledDecimals": null,
+                    "suffix": "",
+                    "thresholds": [],
+                    "unitFormat": "short"
+                }
+            ],
+            "targets": [
+                {
+                    "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set=~\"$shard\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set=~\"$shard\"}))",
+                    "format": "time_series",
+                    "instant": false,
+                    "interval": "$interval",
+                    "legendFormat": "{{service_name}} ",
+                    "refId": "A"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "QPS of Services in Shard - $shard",
+            "type": "grafana-polystat-panel",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ]
+        },
+        {
             "collapsed": true,
             "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 21
+                "y": 26
             },
             "id": 1199,
             "panels": [
@@ -2086,7 +2222,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 22
+                "y": 27
             },
             "id": 1045,
             "panels": [
@@ -2574,7 +2710,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 23
+                "y": 28
             },
             "id": 1071,
             "panels": [
@@ -2802,7 +2938,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 24
+                "y": 29
             },
             "id": 81,
             "panels": [],
@@ -2838,7 +2974,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 25
+                "y": 30
             },
             "hiddenSeries": false,
             "id": 37,
@@ -2971,7 +3107,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 25
+                "y": 30
             },
             "hiddenSeries": false,
             "id": 7,
@@ -3060,7 +3196,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 33
+                "y": 38
             },
             "id": 50,
             "panels": [
@@ -3284,7 +3420,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 34
+                "y": 39
             },
             "id": 1149,
             "panels": [],
@@ -3321,7 +3457,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 35
+                "y": 40
             },
             "hiddenSeries": false,
             "id": 25,
@@ -3442,7 +3578,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 35
+                "y": 40
             },
             "hiddenSeries": false,
             "id": 31,
@@ -3528,7 +3664,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 43
+                "y": 48
             },
             "id": 62,
             "panels": [
@@ -3656,7 +3792,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 44
+                "y": 49
             },
             "id": 1056,
             "title": "Mongos Operations",
@@ -3692,7 +3828,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 45
+                "y": 50
             },
             "hiddenSeries": false,
             "id": 30,
@@ -3804,7 +3940,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 45
+                "y": 50
             },
             "hiddenSeries": false,
             "id": 46,
@@ -3897,7 +4033,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 53
+                "y": 58
             },
             "id": 52,
             "panels": [
@@ -5010,7 +5146,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 54
+                "y": 59
             },
             "id": 97,
             "panels": [],
@@ -5045,7 +5181,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 55
+                "y": 60
             },
             "hiddenSeries": false,
             "id": 14,
@@ -5158,7 +5294,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 55
+                "y": 60
             },
             "hiddenSeries": false,
             "id": 27,
@@ -5263,7 +5399,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 63
+                "y": 68
             },
             "hiddenSeries": false,
             "id": 1213,

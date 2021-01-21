@@ -6,6 +6,7 @@ module.exports = {
   root: '.query-analytics-data',
   fields: {
     columnSearchField: 'input.ant-select-search__field',
+    searchBy: '//input[contains(@name, "search")]'
   },
   buttons: {
     addColumn: '//span[contains(text(), "Add column")]',
