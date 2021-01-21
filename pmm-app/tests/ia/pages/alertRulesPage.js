@@ -89,14 +89,14 @@ module.exports = {
     noRules: '[data-qa=alert-rules-table-no-data] > h1',
     rulesTableHeader: '$alert-rules-table-thead',
     rulesTable: '$alert-rules-table-tbody',
+    rulesNameCell: (ruleName) => `//td[1][div[text()="${ruleName}"]]`,
     // activateSwitch returns enable/disabled rule switch locator which holds the state (enabled or disabled)
     // Note: not clickable one
-    activateSwitch: (ruleName) => `//td[1][text()="${ruleName}"]/following-sibling::td//input[@data-qa='toggle-alert-rule']`,
-    rulesNameCell: (ruleName) => `//td[1][text()="${ruleName}"]`,
-    thresholdCell: (ruleName) => `//td[text()="${ruleName}"]/following-sibling::td[1]`,
-    durationCell: (ruleName) => `//td[text()="${ruleName}"]/following-sibling::td[2]`,
-    severityCell: (ruleName) => `//td[text()="${ruleName}"]/following-sibling::td[3]`,
-    filtersCell: (ruleName) => `//td[text()="${ruleName}"]/following-sibling::td[4]//span`,
+    activateSwitch: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//input[@data-qa='toggle-alert-rule']`,
+    thresholdCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[1]`,
+    durationCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[2]`,
+    severityCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[3]`,
+    filtersCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[4]//span`,
     modalHeader: '$modal-header',
     popUpTitle: '.alert-title',
     columnHeaderLocator: (columnHeaderText) => `//th[text()="${columnHeaderText}"]`,
@@ -109,9 +109,9 @@ module.exports = {
     addRule: '$add-alert-rule-modal-add-button',
     cancelAdding: '$add-alert-rule-modal-cancel-button',
     // editAlertRule returns Edit template button locators for a given source
-    editAlertRule: (ruleName) => `//td[1][text()="${ruleName}"]/following-sibling::td//button[@data-qa='edit-alert-rule-button']`,
+    editAlertRule: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='edit-alert-rule-button']`,
     // toggleAlertRule returns enable/disabled rule switch locator in alert rules list
-    toggleAlertRule: (ruleName) => `//td[1][text()="${ruleName}"]/following-sibling::td//input[@data-qa='toggle-alert-rule']/following-sibling::label`,
+    toggleAlertRule: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//input[@data-qa='toggle-alert-rule']/following-sibling::label`,
     toogleInModal: '//input[@data-qa="enabled-toggle-input"]/following-sibling::label',
   },
   fields: {
