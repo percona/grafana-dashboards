@@ -36,3 +36,17 @@ Scenario(
     await qanDetails.verifyAvgQueryTime();
   },
 );
+
+Scenario(
+  'Check Explain and Example for supported DBs @qan @not-pr-pipeline',
+  async (I, qanOverview, qanFilters, qanDetails) => {
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyFilter('mysql');
+    I.waitForVisible(qanOverview.fields.searchBy, 30);
+    I.fillField(qanOverview.fields.searchBy, 'insert');
+    I.pressKey('Enter');
+    I.waitForElement(qanOverview.elements.querySelector, 30);
+    qanOverview.selectRow(1);
+    qanDetails.checkExplainExamplesTab();
+  }
+);

@@ -10,6 +10,11 @@ module.exports = {
   },
   elements: {
     resizer: 'span.Resizer.horizontal',
+    noExamples: '//pre[contains(text(), "Sorry, no examples found for this query")]',
+    examplesTab: '//span[contains(text(), "Examples")]',
+    explainTab: '//span[contains(text(), "Explain")]',
+    noClassic: '//pre[contains(text(), "No classic explain found")]',
+    noJSON: '//pre[contains(text(), "No JSON explain found")]'
   },
 
   getFilterSectionLocator: (filterSectionName) => `//span[contains(text(), '${filterSectionName}')]`,
@@ -26,6 +31,17 @@ module.exports = {
     const result = (parseFloat(queryCountDetail) / 300).toFixed(4);
 
     compareCalculation(qpsvalue, result);
+  },
+
+  checkExplainExamplesTab() {
+    I.waitForVisible(this.elements.examplesTab, 30);
+    I.click(this.elements.examplesTab);
+    I.wait(2);
+    I.dontSeeElement(this.elements.noExamples);
+    I.click(this.elements.explainTab);
+    I.wait(2);
+    I.dontSeeElement(this.elements.noClassic);
+    I.dontSeeElement(this.elements.noJSON);
   },
 
   async verifyAvgQueryTime() {
