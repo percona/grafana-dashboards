@@ -18,7 +18,7 @@ describe('DBClusterAdvancedOptions::', () => {
     expect(root.find('[data-qa="memory-number-input"]')).toBeTruthy();
     expect(root.find('[data-qa="cpu-number-input"]')).toBeTruthy();
     expect(root.find('[data-qa="disk-number-input"]')).toBeTruthy();
-    expect(root.find('[data-qa="dbcluster-create-cluster-button"]')).toBeTruthy();
+    expect(root.find('[data-qa="step-progress-submit-button"]')).toBeTruthy();
   });
 
   it('should disable memory, cpu and disk when resources are not custom', () => {

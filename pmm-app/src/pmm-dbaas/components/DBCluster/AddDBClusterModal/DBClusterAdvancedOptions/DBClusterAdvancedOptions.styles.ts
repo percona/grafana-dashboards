@@ -14,10 +14,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         width: 100px;
       }
     `,
-    createButton: css`
-      margin-top: ${spacing.md};
-      margin-right: ${spacing.xl};
-    `,
     nodesWrapper: css`
       margin-bottom: ${spacing.md};
       width: 60px;

@@ -1,8 +1,8 @@
 import React, { FC, useMemo } from 'react';
-import { StepProgress } from '@percona/platform-core';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { Icon, useStyles } from '@grafana/ui';
+import { StepProgress } from 'pmm-dbaas/components/StepProgress/StepProgress';
 import { AddDBClusterModalProps, AddDBClusterFields } from './AddDBClusterModal.types';
 import { DBClusterBasicOptions } from './DBClusterBasicOptions/DBClusterBasicOptions';
 import { DBClusterAdvancedOptions } from './DBClusterAdvancedOptions/DBClusterAdvancedOptions';
@@ -94,7 +94,12 @@ export const AddDBClusterModal: FC<AddDBClusterModalProps> = ({
             </span>
           </div>
         )}
-        <StepProgress steps={steps} initialValues={INITIAL_VALUES} onSubmit={onSubmit} />
+        <StepProgress
+          steps={steps}
+          initialValues={INITIAL_VALUES}
+          submitButtonMessage={Messages.dbcluster.addModal.confirm}
+          onSubmit={onSubmit}
+        />
       </div>
     </Modal>
   );

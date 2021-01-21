@@ -1,5 +1,6 @@
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import React from 'react';
+import { SelectableValue } from '@grafana/data';
 import { DatabaseOperators, OPERATORS } from './DBClusterBasicOptions.constants';
 import { KubernetesOperatorStatus } from '../../../Kubernetes/OperatorStatusItem/KubernetesOperatorStatus/KubernetesOperatorStatus.types';
 import { OptionContent } from '../../OptionContent/OptionContent';
@@ -48,3 +49,9 @@ export const getKubernetesOptions = (kubernetes) => kubernetes
     };
   })
   .filter((operators) => operators.availableOperators.length);
+
+export const databaseTypeRequired = (value: SelectableValue) => (
+  value && value.label && value.value
+    ? undefined
+    : Messages.dbcluster.addModal.validationMessages.requiredDatabaseType
+);
