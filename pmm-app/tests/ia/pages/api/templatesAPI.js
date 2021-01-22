@@ -10,8 +10,10 @@ module.exports = {
     };
     const resp = await I.sendPostRequest('v1/management/ia/Templates/Create', body, headers);
 
-    assert.ok(resp.status === 200, `Failed to create a template with id "${id}".
-     Response message is "${resp.data.message}"`);
+    assert.ok(
+      resp.status === 200,
+      `Failed to create a template with id "${id}". Response message is "${resp.data.message}"`,
+    );
 
     return id;
   },
@@ -20,15 +22,12 @@ module.exports = {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const resp = await I.sendPostRequest('v1/management/ia/Templates/List', { reload: true }, headers);
 
-    if (resp.data === {}) return;
+    if (Object.keys(resp.data).length === 0) return;
 
     for (const i in resp.data.templates) {
       const template = resp.data.templates[i];
 
-      // eslint-disable-next-line no-continue
-      if (template.source === 'BUILT_IN') continue;
-
-      await this.removeTemplate(template.name);
+      if (template.source !== 'BUILT_IN') { await this.removeTemplate(template.name); }
     }
   },
 
@@ -39,7 +38,9 @@ module.exports = {
     };
     const resp = await I.sendPostRequest('v1/management/ia/Templates/Delete', body, headers);
 
-    assert.ok(resp.status === 200, `Failed to remove template with templateID "${templateId}".
-     Response message is "${resp.data.message}"`);
+    assert.ok(
+      resp.status === 200,
+      `Failed to remove template with templateID "${templateId}". Response message is "${resp.data.message}"`,
+    );
   },
 };

@@ -29,8 +29,10 @@ module.exports = {
     };
     const resp = await I.sendPostRequest('v1/management/ia/Rules/Create', body, headers);
 
-    assert.ok(resp.status === 200, `Failed to create alert rule with "${ruleName}".
-     Response message is "${resp.data.message}"`);
+    assert.ok(
+      resp.status === 200,
+      `Failed to create alert rule with "${ruleName}". Response message is "${resp.data.message}"`,
+    );
 
     return resp.data.rule_id;
   },
@@ -39,7 +41,7 @@ module.exports = {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const resp = await I.sendPostRequest('v1/management/ia/Rules/List', {}, headers);
 
-    if (resp.data === {}) return;
+    if (Object.keys(resp.data).length === 0) return;
 
     for (const i in resp.data.rules) {
       const rule = resp.data.rules[i];
@@ -55,7 +57,9 @@ module.exports = {
     };
     const resp = await I.sendPostRequest('v1/management/ia/Rules/Delete', body, headers);
 
-    assert.ok(resp.status === 200, `Failed to remove alert rule with rule_id ${ruleId}.
-     Response message is "${resp.data.message}"`);
+    assert.ok(
+      resp.status === 200,
+      `Failed to remove alert rule with rule_id ${ruleId}. Response message is "${resp.data.message}"`,
+    );
   },
 };

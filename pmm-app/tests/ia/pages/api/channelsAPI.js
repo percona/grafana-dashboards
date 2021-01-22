@@ -42,15 +42,17 @@ module.exports = {
     const resp = await I.sendPostRequest('v1/management/ia/Channels/Add', body, headers);
 
 
-    assert.ok(resp.status === 200, `Failed to create a channel with name "${name}".
-     Response message is "${resp.data.message}"`);
+    assert.ok(
+      resp.status === 200,
+      `Failed to create a channel with name "${name}". Response message is "${resp.data.message}"`,
+    );
   },
 
   async clearAllNotificationChannels() {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const resp = await I.sendPostRequest('v1/management/ia/Channels/List', {}, headers);
 
-    if (resp.data === {}) return;
+    if (Object.keys(resp.data).length === 0) return;
 
     for (const i in resp.data.channels) {
       const channel = resp.data.channels[i];
@@ -65,8 +67,8 @@ module.exports = {
     const resp = await I.sendPostRequest('v1/management/ia/Channels/Remove', body, headers);
 
     assert.ok(
-      resp.status === 200, 
-      `Failed to remove channel with channel_id "${channelId}". Response message is "${resp.data.message}"`
+      resp.status === 200,
+      `Failed to remove channel with channel_id "${channelId}". Response message is "${resp.data.message}"`,
     );
   },
 };
