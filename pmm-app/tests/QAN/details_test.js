@@ -47,6 +47,53 @@ Scenario(
     I.pressKey('Enter');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
-    qanDetails.checkExplainExamplesTab();
+    qanDetails.checkExamplesTab();
+    qanDetails.checkExplainTab();
+  }
+);
+
+Scenario(
+  'Check Explain and Example for supported DBs @qan @not-pr-pipeline',
+  async (I, qanOverview, qanFilters, qanDetails) => {
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyFilter('md-dev');
+    I.waitForElement(qanOverview.elements.querySelector, 30);
+    qanOverview.selectRow(1);
+    qanDetails.checkExamplesTab();
+    qanDetails.checkExplainTab();
+  }
+);
+
+Scenario(
+  'Check Explain and Example for supported DBs @qan @not-pr-pipeline',
+  async (I, qanOverview, qanFilters, qanDetails) => {
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyFilter('ps-dev');
+    I.waitForElement(qanOverview.elements.querySelector, 30);
+    qanOverview.selectRow(1);
+    qanDetails.checkExamplesTab();
+    qanDetails.checkExplainTab();
+  }
+);
+
+Scenario(
+  'Check Explain and Example for supported DBs @qan @not-pr-pipeline',
+  async (I, qanOverview, qanFilters, qanDetails) => {
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyFilter('pdpgsql-dev');
+    I.waitForElement(qanOverview.elements.querySelector, 30);
+    qanOverview.selectRow(1);
+    qanDetails.checkExamplesTab();
+  }
+);
+
+Scenario(
+  'Check Explain and Example for supported DBs @qan @not-pr-pipeline',
+  async (I, qanOverview, qanFilters, qanDetails) => {
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyFilter('pgsql-dev');
+    I.waitForElement(qanOverview.elements.querySelector, 30);
+    qanOverview.selectRow(1);
+    qanDetails.checkExamplesTab();
   }
 );

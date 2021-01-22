@@ -11,8 +11,6 @@ module.exports = {
   elements: {
     resizer: 'span.Resizer.horizontal',
     noExamples: '//pre[contains(text(), "Sorry, no examples found for this query")]',
-    examplesTab: '//span[contains(text(), "Examples")]',
-    explainTab: '//span[contains(text(), "Explain")]',
     noClassic: '//pre[contains(text(), "No classic explain found")]',
     noJSON: '//pre[contains(text(), "No JSON explain found")]'
   },
@@ -33,12 +31,15 @@ module.exports = {
     compareCalculation(qpsvalue, result);
   },
 
-  checkExplainExamplesTab() {
-    I.waitForVisible(this.elements.examplesTab, 30);
-    I.click(this.elements.examplesTab);
+  checkExamplesTab() {
+    I.waitForVisible(this.getTabLocator('Example'), 30);
+    I.click(this.getTabLocator('Example'));
     I.wait(2);
     I.dontSeeElement(this.elements.noExamples);
-    I.click(this.elements.explainTab);
+  },
+
+  checkExplainTab(){
+    I.click(this.getTabLocator('Explain'));
     I.wait(2);
     I.dontSeeElement(this.elements.noClassic);
     I.dontSeeElement(this.elements.noJSON);
