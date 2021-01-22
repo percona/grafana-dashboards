@@ -4,12 +4,10 @@ const page = require('./pages/alertRulesPage');
 const rules = new DataTable(['template', 'templateType', 'ruleName', 'threshold', 'duration',
   'severity', 'filters', 'channels', 'activate']);
 
-for (const i in page.rules) {
-  const rule = page.rules[i];
-
+Object.values(page.rules).forEach(rule => {
   rules.add([rule.template, rule.templateType, rule.ruleName, rule.threshold, rule.duration,
     rule.severity, rule.filters, rule.channels, rule.activate]);
-}
+});
 
 Feature('IA: Alert rules');
 
