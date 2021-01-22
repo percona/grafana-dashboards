@@ -2,8 +2,8 @@ import React, {
   FC, useCallback, useState, useMemo,
 } from 'react';
 import { Field, FormRenderProps } from 'react-final-form';
-import { HorizontalGroup, useStyles } from '@grafana/ui';
-import { LoaderButton, NumberInputField } from '@percona/platform-core';
+import { useStyles } from '@grafana/ui';
+import { NumberInputField } from '@percona/platform-core';
 import validators from 'shared/components/helpers/validators';
 import { RadioButtonGroupAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
@@ -24,9 +24,6 @@ import { resourceValidator } from './DBClusterAdvancedOptions.utils';
 export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   values,
   form,
-  valid,
-  pristine,
-  submitting,
 }) => {
   const styles = useStyles(getStyles);
   const [customMemory, setCustomMemory] = useState(DEFAULT_SIZES.small.memory);
@@ -135,18 +132,6 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
           parse={parsePositiveInt}
         />
       </div>
-      <HorizontalGroup justify="center" spacing="md">
-        <LoaderButton
-          data-qa="dbcluster-create-cluster-button"
-          size="md"
-          variant="primary"
-          disabled={!valid || pristine || submitting}
-          loading={submitting}
-          className={styles.createButton}
-        >
-          {Messages.dbcluster.addModal.confirm}
-        </LoaderButton>
-      </HorizontalGroup>
     </>
   );
 };

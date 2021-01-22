@@ -89,6 +89,7 @@ export const Messages = {
       validationMessages: {
         clusterName: 'Cluster name should start with a letter, be alphanumeric, and may contain a dash',
         notInstalledOperator: 'Operators must be installed to use database type',
+        requiredDatabaseType: 'Required field',
       },
       noOperatorsMessage: 'No clusters found with installed operators',
     },
