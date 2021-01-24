@@ -7,14 +7,14 @@ export const Messages = {
     },
     labels: {
       trackingOptions: 'Stat tracking options',
-      externalExporter: {
+      externalService: {
         url: 'URL string',
         schema: 'Schema',
         metricsPath: 'Metrics path',
         group: 'Group',
-        address: 'External exporter hostname',
+        address: 'External service hostname',
         serviceName: 'Service name',
-        port: 'External exporter port',
+        port: 'External service port',
         username: 'Username',
         password: 'Password',
       },
@@ -45,7 +45,7 @@ export const Messages = {
       },
     },
     placeholders: {
-      externalExporter: {
+      externalService: {
         url: 'http://example.com:3333/path/to/metrics',
         metricsPath: '/path/to/metrics',
         address: 'Hostname',
@@ -70,16 +70,16 @@ export const Messages = {
       additionalOptions: {},
     },
     tooltips: {
-      externalExporter: {
-        url: 'Your external exporter endpoint',
+      externalService: {
+        url: 'Your external service endpoint',
         schema: 'Used version of protocol',
         metricsPath: 'Path to your metrics',
-        group: 'Group to which your exporter belongs',
+        group: 'Group to which your service belongs',
         address: 'Public DNS hostname of your instance',
         serviceName: 'Service name to use',
-        port: 'Port your external exporter is listening on',
-        username: 'Your external exporter user name',
-        password: 'Your external exporter password',
+        port: 'Port your external service is listening on',
+        username: 'Your external service user name',
+        password: 'Your external service password',
       },
       mainDetails: {
         address: 'Public DNS hostname of your instance',
@@ -97,6 +97,7 @@ export const Messages = {
       mainDetails: 'Main details',
       labels: 'Labels',
       additionalOptions: 'Additional options',
+      parseURL: 'Parse URL',
     },
   },
 };

@@ -10,7 +10,7 @@ import { getStyles } from './AddRemoteInstance.styles';
 import { AddRemoteInstanceProps } from './AddRemoteInstance.types';
 import { AdditionalOptions, Labels, MainDetails } from './FormParts';
 import { Messages } from './AddRemoteInstance.messages';
-import { ExternalExporterConnectionDetails } from './FormParts/ExternalExporterConnectionDetails/ExternalExporterConnectionDetails';
+import { ExternalServiceConnectionDetails } from './FormParts/ExternalServiceConnectionDetails/ExternalServiceConnectionDetails';
 import { InstanceTypes } from '../../panel.types';
 
 const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
@@ -55,7 +55,7 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
         {type !== InstanceTypes.external ? (
           <MainDetails remoteInstanceCredentials={remoteInstanceCredentials} />
         ) : (
-          <ExternalExporterConnectionDetails form={form} />
+          <ExternalServiceConnectionDetails form={form} />
         )}
         <Labels />
         {type !== InstanceTypes.external && (
@@ -73,7 +73,7 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
 
   const getHeader = (databaseType) => {
     if (databaseType === InstanceTypes.external) {
-      return 'Add external exporter';
+      return Messages.form.titles.addExternalService;
     }
 
     return `Add remote ${DATABASE_LABELS[databaseType]} Instance`;
@@ -85,7 +85,6 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
         onSubmit={onSubmit}
         initialValues={initialValues}
         mutators={{
-          // expect (field, value) args from the mutator
           setValue: ([field, value], state, { changeValue }) => {
             changeValue(state, field, () => value);
           },

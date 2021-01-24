@@ -38,7 +38,7 @@ class AddRemoteInstanceService {
       case Databases.proxysql:
         return AddRemoteInstanceService.addProxysql(toPayload(data));
       case 'external':
-        return AddRemoteInstanceService.addExternal(toExternalExporterPayload(data));
+        return AddRemoteInstanceService.addExternal(toExternalServicePayload(data));
       default:
         throw new Error('Unknown instance type');
     }
@@ -105,7 +105,7 @@ export const toPayload = (values, discoverName?) => {
   return data;
 };
 
-export const toExternalExporterPayload = (values) => {
+export const toExternalServicePayload = (values) => {
   const data = { ...values };
 
   if (values.custom_labels) {
