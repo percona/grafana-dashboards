@@ -24,12 +24,8 @@ describe('DBCluster::', () => {
   it('renders correctly with failed status', () => {
     const root = mount(<DBCluster kubernetes={kubernetesStub} />);
 
-    expect(
-      root
-        .find('[data-qa="cluster-status-failed"]')
-        .at(0)
-        .prop('className'),
-    ).toContain('failed');
+    expect(root.find('[data-qa="cluster-progress-bar"]').length).toBeGreaterThan(0);
+    expect(root.find('[data-qa="cluster-status-error-message"]').length).toBeGreaterThan(0);
   });
   it('renders database types correctly', () => {
     const root = mount(<DBCluster kubernetes={kubernetesStub} />);

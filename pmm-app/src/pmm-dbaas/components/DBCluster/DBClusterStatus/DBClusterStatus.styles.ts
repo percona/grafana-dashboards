@@ -5,10 +5,17 @@ export const getStyles = ({
   colors, palette, spacing, typography,
 }: GrafanaTheme) => ({
   clusterStatusWrapper: css`
-    align-items: center;
+    align-items: flex-end;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    margin: ${spacing.sm};
+    min-width: 125px;
     padding: ${spacing.xs} 0;
+  `,
+  clusterPillWrapper: css`
+    align-items: center;
+    min-width: 0;
   `,
   status: css`
     background-color: ${palette.gray1};
@@ -20,9 +27,13 @@ export const getStyles = ({
     text-transform: uppercase;
   `,
   statusIcon: css`
-    color: ${palette.gray1};
-    cursor: help;
-    margin-left: ${spacing.sm};
+    margin-top: ${spacing.sm};
+    svg {
+      color: ${palette.gray1};
+      cursor: help;
+      margin-left: ${spacing.xs};
+      margin-bottom: 0px;
+    }
   `,
   statusActive: css`
     background-color: ${colors.formSwitchBgActive};
@@ -31,5 +42,8 @@ export const getStyles = ({
   statusFailed: css`
     background-color: ${palette.brandDanger};
     label: failed;
+  `,
+  logsLabel: css`
+    font-size: ${typography.size.sm};
   `,
 });

@@ -17,9 +17,11 @@ export interface DBCluster {
   cpu: number;
   disk: number;
   status?: DBClusterStatus;
-  errorMessage?: string;
+  message?: string;
   suspend?: boolean;
   resume?: boolean;
+  finishedSteps: number;
+  totalSteps: number;
 }
 
 export enum DBClusterStatus {
@@ -76,8 +78,9 @@ interface DBClusterComputeResourcesAPI {
 }
 
 interface DBClusterOperationAPI {
-  progress: number;
   message: string;
+  finished_steps: number;
+  total_steps: number;
 }
 
 export interface DBClusterConnectionAPI {
