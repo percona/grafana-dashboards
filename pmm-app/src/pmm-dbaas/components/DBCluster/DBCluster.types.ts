@@ -20,8 +20,8 @@ export interface DBCluster {
   message?: string;
   suspend?: boolean;
   resume?: boolean;
-  finishedSteps: number;
-  totalSteps: number;
+  finishedSteps?: number;
+  totalSteps?: number;
 }
 
 export enum DBClusterStatus {
