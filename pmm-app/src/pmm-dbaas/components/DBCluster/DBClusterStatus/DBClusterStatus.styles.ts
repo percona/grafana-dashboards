@@ -27,13 +27,10 @@ export const getStyles = ({
     text-transform: uppercase;
   `,
   statusIcon: css`
-    margin-top: ${spacing.sm};
-    svg {
-      color: ${palette.gray1};
-      cursor: help;
-      margin-left: ${spacing.xs};
-      margin-bottom: 0px;
-    }
+    color: ${palette.gray1};
+    cursor: help;
+    margin-left: ${spacing.xs};
+    margin-bottom: 0px;
   `,
   statusActive: css`
     background-color: ${colors.formSwitchBgActive};
@@ -42,6 +39,10 @@ export const getStyles = ({
   statusFailed: css`
     background-color: ${palette.brandDanger};
     label: failed;
+  `,
+  logsWrapper: css`
+    display: flex;
+    margin-top: ${spacing.sm};
   `,
   logsLabel: css`
     font-size: ${typography.size.sm};

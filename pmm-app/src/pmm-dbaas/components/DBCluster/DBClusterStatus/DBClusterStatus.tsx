@@ -48,15 +48,16 @@ export const DBClusterStatus: FC<DBClusterStatusProps> = ({
         </span>
       )}
       {statusError && message && (
-        <Tooltip content={<ErrorMessage />} placement="bottom">
-          <span className={cx(styles.statusIcon)} data-qa="cluster-status-error-message">
-            <span className={styles.logsLabel}>
-              {Messages.dbcluster.table.status.logs}
-              :
-            </span>
-            <Icon name="info-circle" />
+        <div className={styles.logsWrapper}>
+          <span className={styles.logsLabel}>
+            {Messages.dbcluster.table.status.logs}
           </span>
-        </Tooltip>
+          <Tooltip content={<ErrorMessage />} placement="bottom">
+            <span className={cx(styles.statusIcon)} data-qa="cluster-status-error-message">
+              <Icon name="info-circle" />
+            </span>
+          </Tooltip>
+        </div>
       )}
     </div>
   );
