@@ -94,5 +94,7 @@ export const toPayload = (values, discoverName) => {
     data.rds_exporter = true;
   }
 
+  data.metrics_mode = 1;
+
   return data;
 };
