@@ -54,11 +54,12 @@ export const useDBClusters = (kubernetes: Kubernetes[]): [DBCluster[], GetDBClus
 
 const getClusters = async (kubernetes: Kubernetes[], databaseType: Databases): Promise<DBCluster[]> => {
   const dbClusterService = DBClusterServiceFactory.newDBClusterService(databaseType);
-  const requests = kubernetes.filter((kubernetesCluster) => {
+  const kubernetesByOperator = kubernetes.filter((kubernetesCluster) => {
     const operator = OPERATORS[databaseType];
 
     return kubernetesCluster.operators[operator].status === KubernetesOperatorStatus.ok;
-  }).map(dbClusterService.getDBClusters);
+  });
+  const requests = kubernetesByOperator.map(dbClusterService.getDBClusters);
   const results = await processPromiseResults(requests);
 
   const clustersList: DBCluster[] = results.reduce((acc: DBCluster[], r, index) => {
@@ -70,7 +71,9 @@ const getClusters = async (kubernetes: Kubernetes[], databaseType: Databases): P
 
     // eslint-disable-next-line arrow-body-style
     const resultClusters = clusters.map((cluster) => {
-      return dbClusterService.toModel(cluster, kubernetes[index].kubernetesClusterName, databaseType);
+      return dbClusterService.toModel(
+        cluster, kubernetesByOperator[index].kubernetesClusterName, databaseType,
+      );
     });
 
     return acc.concat(resultClusters);
