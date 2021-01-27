@@ -4,9 +4,10 @@ import {
   Input, Select, TextArea, useTheme,
 } from '@grafana/ui';
 import { getStyles } from './FieldAdapters.styles';
-// TODO (nicolalamacchia): use Grafana's components once migration to Grafana v7 is complete
+// TODO: replace with components from platform-core
 import { Checkbox } from './Checkbox';
 import { Field } from './Field';
+import { RadioButtonGroup } from '../Radio/RadioButtonGroup';
 
 export const InputFieldAdapter = ({
   input, className, label, meta, ...props
@@ -23,12 +24,13 @@ export const InputFieldAdapter = ({
           className={cx(className, { invalid: meta.touched && meta.error })}
           title={meta.touched ? meta.error : ''}
         />
-        <div data-qa="input-field-error-message" className={styles.errorMessage}>{meta.touched && meta.error}</div>
+        <div data-qa="input-field-error-message" className={styles.errorMessage}>
+          {meta.touched && meta.error}
+        </div>
       </>
     </Field>
   );
 };
-
 
 export const TextAreaAdapter = ({
   input, className, label, meta, ...props
@@ -46,7 +48,9 @@ export const TextAreaAdapter = ({
           title={meta.touched ? meta.error : ''}
           className={cx(className, { invalid: meta.touched && meta.error })}
         />
-        <div data-qa="textarea-field-error-message" className={styles.errorMessage}>{meta.touched && meta.error}</div>
+        <div data-qa="textarea-field-error-message" className={styles.errorMessage}>
+          {meta.touched && meta.error}
+        </div>
       </>
     </Field>
   );
@@ -62,14 +66,23 @@ export const CheckboxFieldAdapter = ({
     <Field>
       <div className={cx(className, { invalid: meta.touched && meta.error })}>
         <Checkbox {...input} {...props} />
-        <div data-qa="checkbox-field-error-message" className={styles.errorMessage}>{meta.touched && meta.error}</div>
+        <div data-qa="checkbox-field-error-message" className={styles.errorMessage}>
+          {meta.touched && meta.error}
+        </div>
       </div>
     </Field>
   );
 };
 
 export const SelectFieldAdapter = ({
-  input, className, options, label, meta, dataQa, ...props
+  input,
+  className,
+  options,
+  label,
+  meta,
+  dataQa,
+  noOptionsMessage,
+  ...props
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -83,9 +96,44 @@ export const SelectFieldAdapter = ({
           options={options}
           className={cx(styles.input, className)}
           invalid={meta.touched && meta.error}
+          noOptionsMessage={noOptionsMessage}
         />
-        <div data-qa="select-field-error-message" className={styles.errorMessage}>{meta.touched && meta.error}</div>
+        <div data-qa="select-field-error-message" className={styles.errorMessage}>
+          {meta.touched && meta.error}
+        </div>
       </div>
+    </Field>
+  );
+};
+
+export const RadioButtonGroupAdapter = ({
+  input,
+  options,
+  disabledOptions,
+  selected,
+  label,
+  meta,
+  dataQa,
+  ...props
+}) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
+  return (
+    <Field label={label}>
+      <>
+        <RadioButtonGroup
+          {...input}
+          {...props}
+          options={options}
+          disabledOptions={disabledOptions}
+          value={input.value || selected}
+          dataQa={dataQa}
+        />
+        <div data-qa="radio-field-error-message" className={styles.errorMessage}>
+          {meta.touched && meta.error}
+        </div>
+      </>
     </Field>
   );
 };

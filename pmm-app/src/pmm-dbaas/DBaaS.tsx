@@ -1,7 +1,7 @@
 import React, { FC, useState, useMemo } from 'react';
 import { TabsBar, TabContent, Tab } from '@grafana/ui';
 import { KubernetesInventory } from './components/Kubernetes/KubernetesInventory';
-import { XtraDB } from './components/XtraDB/XtraDB';
+import { DBCluster } from './components/DBCluster/DBCluster';
 import { useKubernetes } from './components/Kubernetes/Kubernetes.hooks';
 import { Messages } from './DBaaS.messages';
 import { TabKeys } from './DBaaS.types';
@@ -15,29 +15,28 @@ export const DBaaSPanel: FC = () => {
       {
         label: Messages.tabs.kubernetes,
         key: TabKeys.kubernetes,
-        component: <KubernetesInventory
-          key={TabKeys.kubernetes}
-          kubernetes={kubernetes}
-          deleteKubernetes={deleteKubernetes}
-          addKubernetes={addKubernetes}
-          loading={kubernetesLoading}
-        />,
+        component: (
+          <KubernetesInventory
+            key={TabKeys.kubernetes}
+            kubernetes={kubernetes}
+            deleteKubernetes={deleteKubernetes}
+            addKubernetes={addKubernetes}
+            loading={kubernetesLoading}
+          />
+        ),
       },
       {
-        label: Messages.tabs.xtradb,
-        key: TabKeys.xtradb,
+        label: Messages.tabs.dbcluster,
+        key: TabKeys.dbclusters,
         disabled: kubernetes.length === 0,
-        component: <XtraDB
-          key={TabKeys.xtradb}
-          kubernetes={kubernetes}
-        />,
+        component: <DBCluster key={TabKeys.dbclusters} kubernetes={kubernetes} />,
       },
     ],
     [kubernetes, kubernetesLoading],
   );
 
   return (
-    <div>
+    <div className={styles.panelContentWrapper}>
       <TabsBar>
         {tabs.map((tab, index) => (
           <Tab
@@ -49,9 +48,7 @@ export const DBaaSPanel: FC = () => {
           />
         ))}
       </TabsBar>
-      <TabContent>
-        {tabs.map((tab) => tab.key === activeTab && tab.component)}
-      </TabContent>
+      <TabContent>{tabs.map((tab) => tab.key === activeTab && tab.component)}</TabContent>
     </div>
   );
 };

@@ -5,6 +5,7 @@ Before(async (I, pmmSettingsPage, settingsAPI) => {
   await settingsAPI.restoreSettingsDefaults();
   I.amOnPage(pmmSettingsPage.url);
 });
+
 Scenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
   const resolutionToApply = 'Rare';
 
@@ -40,7 +41,7 @@ Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]'
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(
     scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
-    pmmSettingsPage.alertManager.editRule.replace('{{ sec }}', Math.random() * 100000),
+    pmmSettingsPage.alertManager.editRule.replace('{{ sec }}', Math.floor(Math.random() * 10) + 1),
   );
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   pmmSettingsPage.openAlertsManagerUi();
@@ -79,3 +80,38 @@ Scenario(
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'on');
   },
 );
+
+Scenario('PMM-T520 - Verify that alert is in Firing State - internal alert manager @not-ui-pipeline @nightly @not-pr-pipeline', async (I, pmmSettingsPage) => {
+  const scheme = 'http://127.0.0.1';
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
+
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
+  pmmSettingsPage.addAlertmanagerRule(
+    scheme + pmmSettingsPage.alertManager.service,
+    pmmSettingsPage.alertManager.rule2,
+  );
+  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+  pmmSettingsPage.openAlertsManagerUi();
+  await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2);
+  I.amOnPage(pmmSettingsPage.stateOfAlertsUrl);
+  await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2, true);
+});
+
+Scenario('PMM-T520 - Verify that alert is being fired to external Alert Manager @not-ui-pipeline @nightly @not-pr-pipeline', async (I, pmmSettingsPage) => {
+  const scheme = 'http://';
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
+
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
+  pmmSettingsPage.addAlertmanagerRule(
+    scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.externalAlertManagerPort,
+    pmmSettingsPage.alertManager.rule2,
+  );
+  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+  pmmSettingsPage.openAlertsManagerUi();
+  await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2);
+  I.amOnPage(pmmSettingsPage.stateOfAlertsUrl);
+  await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2, true);
+  await pmmSettingsPage.verifyExternalAlertManager(pmmSettingsPage.alertManager.ruleName2);
+});

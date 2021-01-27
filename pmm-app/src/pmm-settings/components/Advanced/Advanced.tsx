@@ -2,8 +2,9 @@ import React, { FC, useState } from 'react';
 import { Field, Form } from 'react-final-form';
 import { cx } from 'emotion';
 import {
-  Button, Spinner, useTheme,
+  Button, Spinner, useTheme, Icon,
 } from '@grafana/ui';
+import { TextInputField } from '@percona/platform-core';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
 import { DATA_RETENTION_URL } from 'pmm-settings/Settings.constants';
@@ -22,6 +23,8 @@ export const Advanced: FC<AdvancedProps> = ({
   updatesDisabled,
   sttEnabled,
   dbaasEnabled,
+  alertingEnabled,
+  publicAddress,
   updateSettings,
 }) => {
   const theme = useTheme();
@@ -44,6 +47,12 @@ export const Advanced: FC<AdvancedProps> = ({
       sttTooltip,
       dbaasLabel,
       dbaasTooltip,
+      publicAddressLabel,
+      publicAddressTooltip,
+      publicAddressButton,
+      alertingLabel,
+      alertingTooltip,
+      alertingLink,
     }, tooltipLinkText,
   } = Messages;
   const initialValues = {
@@ -52,22 +61,32 @@ export const Advanced: FC<AdvancedProps> = ({
     updates: !updatesDisabled,
     stt: sttEnabled,
     dbaas: dbaasEnabled,
+    publicAddress,
+    alerting: alertingEnabled,
   };
   const [loading, setLoading] = useState(false);
   const retentionValidators = validators.compose(
     validators.required,
     validators.range(MIN_DAYS, MAX_DAYS),
   );
-  const applyChanges = ({ retention, telemetry, stt }) => {
+  const applyChanges = ({
+    retention, telemetry, stt, publicAddress, alerting,
+  }) => {
+    const refresh = !!alerting !== alertingEnabled;
+
     const body = {
       data_retention: `${+retention * SECONDS_IN_DAY}s`,
       disable_telemetry: !telemetry,
       enable_telemetry: telemetry,
       disable_stt: !stt,
       enable_stt: stt,
+      pmm_public_address: publicAddress,
+      remove_pmm_public_address: !publicAddress,
+      enable_alerting: alerting ? true : undefined,
+      disable_alerting: !alerting ? true : undefined,
     };
 
-    updateSettings(body, setLoading);
+    updateSettings(body, setLoading, refresh);
   };
 
   return (
@@ -76,15 +95,12 @@ export const Advanced: FC<AdvancedProps> = ({
         onSubmit={applyChanges}
         initialValues={initialValues}
         render={({
-          values, handleSubmit, valid, pristine,
+          form: { change }, values, handleSubmit, valid, pristine,
         }) => (
           <form onSubmit={handleSubmit}>
             <div className={styles.advancedRow}>
               <div className={styles.advancedCol}>
-                <div
-                  className={settingsStyles.labelWrapper}
-                  data-qa="advanced-label"
-                >
+                <div className={settingsStyles.labelWrapper} data-qa="advanced-label">
                   <span>{retentionLabel}</span>
                   <LinkTooltip
                     tooltipText={retentionTooltip}
@@ -111,8 +127,8 @@ export const Advanced: FC<AdvancedProps> = ({
               tooltip={telemetryTooltip}
               tooltipLinkText={tooltipLinkText}
               link={telemetryLink}
-              className={cx({ [styles.switchDisabled]: values.stt })}
-              disabled={values.stt}
+              className={cx({ [styles.switchDisabled]: values.stt || values.alerting })}
+              disabled={values.stt || values.alerting}
               dataQa="advanced-telemetry"
               component={SwitchRow}
             />
@@ -141,17 +157,50 @@ export const Advanced: FC<AdvancedProps> = ({
               component={SwitchRow}
             />
             {dbaasEnabled && (
-              <Field
-                name="dbaas"
-                type="checkbox"
-                label={dbaasLabel}
-                tooltip={dbaasTooltip}
-                className={styles.switchDisabled}
-                disabled
-                dataQa="advanced-dbaas"
-                component={SwitchRow}
-              />
+            <Field
+              name="dbaas"
+              type="checkbox"
+              label={dbaasLabel}
+              tooltip={dbaasTooltip}
+              className={styles.switchDisabled}
+              disabled
+              dataQa="advanced-dbaas"
+              component={SwitchRow}
+            />
             )}
+            <Field
+              name="alerting"
+              type="checkbox"
+              label={alertingLabel}
+              tooltip={alertingTooltip}
+              tooltipLinkText={tooltipLinkText}
+              link={alertingLink}
+              className={cx({ [styles.switchDisabled]: !values.telemetry })}
+              disabled={!values.telemetry}
+              dataQa="advanced-alerting"
+              component={SwitchRow}
+            />
+            <div className={styles.advancedRow}>
+              <div className={cx(styles.advancedCol, styles.publicAddressLabelWrapper)}>
+                <div className={settingsStyles.labelWrapper} data-qa="public-address-label">
+                  <span>{publicAddressLabel}</span>
+                  <LinkTooltip tooltipText={publicAddressTooltip} icon="info-circle" />
+                </div>
+              </div>
+              <div className={styles.publicAddressWrapper}>
+                <TextInputField name="publicAddress" className={styles.publicAddressInput} />
+                <Button
+                  className={styles.publicAddressButton}
+                  type="button"
+                  variant="secondary"
+                  data-qa="public-address-button"
+                  onClick={() => change('publicAddress', window.location.hostname)}
+                >
+                  <Icon name="link" />
+                  {publicAddressButton}
+                </Button>
+              </div>
+            </div>
             <Button
               className={settingsStyles.actionButton}
               type="submit"

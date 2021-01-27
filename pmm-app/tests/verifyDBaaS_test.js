@@ -6,7 +6,7 @@ Before(async (I) => {
   I.Authorize();
 });
 
-//Need to Skip this for now, we need to setup correct config to be provided for this test https://jira.percona.com/browse/PMM-6457
+// Need to Skip this for now, we need to setup correct config to be provided for this test https://jira.percona.com/browse/PMM-6457
 xScenario(
   'PMM-T426 - Verify adding new Kubernetes cluster, PMM-T428 - Verify adding new Kubernetes cluster with same name, PMM-T431 -Verify deleting Kubernetes cluster @not-pr-pipeline',
   async (I, dbaasPage) => {

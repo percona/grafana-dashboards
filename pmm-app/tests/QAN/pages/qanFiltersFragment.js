@@ -49,6 +49,16 @@ module.exports = {
     );
   },
 
+  checkLink(section, filter, visibility) {
+    const locator = `//span[contains(text(), '${section}')]/parent::p/following-sibling::div//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '${filter}')]/ancestor::span/following-sibling::span/a`;
+
+    if (visibility) {
+      I.waitForElement(locator, 30);
+    } else {
+      I.dontSeeElement(locator);
+    }
+  },
+
   async getCountOfFilters(groupName) {
     const showAllLink = this.getFilterGroupCountSelector(groupName);
 
@@ -68,7 +78,8 @@ module.exports = {
       if (numOfElementsFilterCount === '1') {
         I.click(this.getFilterGroupCountSelector(this.filterGroups[i]));
         I.waitForVisible(
-          `//section[@class='aside__filter-group']//span[contains(text(), '${this.filterGroups[i]}')]/../button[contains(text(), 'Show top 5')]`, 30,
+          `//section[@class='aside__filter-group']//span[contains(text(), '${this.filterGroups[i]}')]/../button[contains(text(), 'Show top 5')]`,
+          30,
         );
       }
     }
@@ -109,11 +120,11 @@ module.exports = {
     const count = await I.grabNumberOfVisibleElements(this.fields.filterCheckboxes);
 
     if (!before) {
-      assert.equal(count, expectedCount, `The value ${expectedCount} should be equal to ${count}`);
+      assert.ok(count >= expectedCount, `The value ${count} should be same or bigger than ${expectedCount}`);
     }
 
     if (before) {
-      assert.notEqual(count, expectedCount, `The value ${expectedCount} should not be equal to ${count}`);
+      assert.ok(count !== expectedCount, `The value: ${count} different than: ${expectedCount}`);
     }
   },
 
@@ -145,5 +156,12 @@ module.exports = {
     for (let i = 0; i <= filters.length - 1; i++) {
       assert.ok(currentFilters[i].includes(filters[i]), `The filter '${filters[i]}' has not been found!`);
     }
+  },
+
+  navigateByShortCut(href) {
+    const shortCutLocator = `//a[contains(@href,'${href}')]`;
+
+    I.waitForVisible(shortCutLocator, 30);
+    I.click(shortCutLocator);
   },
 };

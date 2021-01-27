@@ -1,4 +1,4 @@
-import { GUI_DOC_URL } from './Settings.constants';
+import { GUI_DOC_URL, HOW_TO_DOC_URL } from './Settings.constants';
 
 export const Messages = {
   advanced: {
@@ -17,6 +17,12 @@ export const Messages = {
     sttTooltip: 'Enable Security Threat Tool and get updated checks from Percona.',
     dbaasLabel: 'DBaaS',
     dbaasTooltip: 'Read-only option to show if DBaaS features are enabled.',
+    publicAddressLabel: 'Public Address',
+    publicAddressTooltip: 'Public Address to this PMM server.',
+    publicAddressButton: 'Get from browser',
+    alertingLabel: 'Integrated Alerting',
+    alertingTooltip: 'Option to enable/disable Integrated Alerting features.',
+    alertingLink: `${HOW_TO_DOC_URL}/configure.html#integrated-alerting`,
   },
   alertmanager: {
     action: 'Apply Alertmanager settings',
@@ -64,6 +70,7 @@ export const Messages = {
     ssh: 'SSH Key',
     alertManager: 'Alertmanager Integration',
     perconaPlatform: 'Percona Platform',
+    communication: 'Communication',
   },
   tooltipLinkText: 'Read more',
 };
