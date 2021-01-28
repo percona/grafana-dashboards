@@ -34,13 +34,13 @@ module.exports = {
   checkExamplesTab() {
     I.waitForVisible(this.getTabLocator('Example'), 30);
     I.click(this.getTabLocator('Example'));
-    I.wait(2);
+    I.wait(5);
     I.dontSeeElement(this.elements.noExamples);
   },
 
   checkExplainTab(){
     I.click(this.getTabLocator('Explain'));
-    I.wait(2);
+    I.wait(5);
     I.dontSeeElement(this.elements.noClassic);
     I.dontSeeElement(this.elements.noJSON);
   },
