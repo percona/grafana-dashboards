@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@grafana/ui';
-import { ActiveCheck, Column } from 'pmm-check/types';
+import { Column, ActiveCheck } from 'pmm-check/types';
 import { PMM_SETTINGS_URL } from 'pmm-check/CheckPanel.constants';
 import { getStyles } from './Table.styles';
 import { TableHeader } from './TableHeader';

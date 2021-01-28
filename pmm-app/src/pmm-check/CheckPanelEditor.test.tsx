@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShallowWrapper, shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import {
   LoadingState, PanelEditorProps, TimeRange, dateTime,
 } from '@grafana/data';

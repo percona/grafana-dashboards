@@ -1,5 +1,7 @@
 import { css } from 'emotion';
 
+const headerPadding = '10px 8px';
+
 export const panel = css`
   display: flex;
   flex-direction: column;
@@ -14,10 +16,18 @@ export const spinner = css`
   justify-content: center;
 `;
 
-export const tabBar = css`
-  height: 42px;
+export const header = css`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
 `;
 
-export const tabContent = css`
-  height: calc(100% - 42px);
+export const title = css`
+  font-size: 16px;
+  padding: ${headerPadding};
+  border: 1px solid transparent;
+`;
+
+export const runChecksButton = css`
+  width: 140px;
 `;
