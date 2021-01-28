@@ -1,4 +1,6 @@
-import React, { FC, useMemo } from 'react';
+import React, {
+  FC, useMemo, useEffect, useRef, useState,
+} from 'react';
 import { cx } from 'emotion';
 import { Icon, useStyles, Tooltip } from '@grafana/ui';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
@@ -7,7 +9,8 @@ import { ProgressBarStatus } from 'pmm-dbaas/components/ProgressBar/ProgressBar.
 import { DBClusterStatusProps } from './DBClusterStatus.types';
 import { getStyles } from './DBClusterStatus.styles';
 import { DBClusterStatus as Status } from '../DBCluster.types';
-import { STATUS_DATA_QA } from './DBClusterStatus.constants';
+import { COMPLETE_PROGRESS_DELAY, STATUS_DATA_QA } from './DBClusterStatus.constants';
+import { getProgressMessage, getShowProgressBarValue } from './DBClusterStatus.utils';
 
 export const DBClusterStatus: FC<DBClusterStatusProps> = ({
   status,
@@ -16,8 +19,9 @@ export const DBClusterStatus: FC<DBClusterStatusProps> = ({
   totalSteps,
 }) => {
   const styles = useStyles(getStyles);
+  const prevStatus = useRef<Status>();
   const statusError = status === Status.failed || status === Status.invalid;
-  const showProgressBar = status === Status.changing || statusError;
+  const [showProgressBar, setShowProgressBar] = useState(getShowProgressBarValue(status, prevStatus.current));
   const statusStyles = useMemo(
     () => ({
       [styles.statusActive]: status === Status.ready,
@@ -29,6 +33,25 @@ export const DBClusterStatus: FC<DBClusterStatusProps> = ({
     <pre>{message ? message.replace(/;/g, '\n') : Messages.dbcluster.table.status.errorMessage}</pre>
   ), [message]);
 
+  useEffect(() => {
+    // handles the last step of the progress bar
+    // creates a delay between the last step and showing active status
+    // without this the bar would jump from the second last step to active status
+    if (
+      prevStatus.current === Status.changing
+      && status === Status.ready
+      && finishedSteps === totalSteps
+    ) {
+      setTimeout(() => setShowProgressBar(false), COMPLETE_PROGRESS_DELAY);
+    } else {
+      setShowProgressBar(getShowProgressBarValue(status, prevStatus.current));
+    }
+  }, [status]);
+
+  useEffect(() => {
+    prevStatus.current = status;
+  });
+
   return (
     <div className={cx(styles.clusterStatusWrapper, { [styles.clusterPillWrapper]: !showProgressBar })}>
       {showProgressBar ? (
@@ -36,7 +59,7 @@ export const DBClusterStatus: FC<DBClusterStatusProps> = ({
           status={statusError ? ProgressBarStatus.error : ProgressBarStatus.progress}
           finishedSteps={finishedSteps}
           totalSteps={totalSteps}
-          message={statusError ? Messages.dbcluster.table.status.progressError : message}
+          message={getProgressMessage(status, prevStatus.current)}
           dataQa="cluster-progress-bar"
         />
       ) : (

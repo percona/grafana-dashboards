@@ -137,6 +137,8 @@ export const Messages = {
         errorMessage: 'Cluster creation failed',
         logs: 'Logs',
         progressError: 'Error',
+        processing: 'Processing',
+        complete: 'Complete',
       },
     },
   },
