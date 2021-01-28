@@ -11,17 +11,17 @@ import { INITIAL_CONNECTION } from './DBClusterConnection.constants';
 import { getStyles } from './DBClusterConnection.styles';
 import { DBClusterConnectionPassword } from './DBClusterConnectionPassword/DBClusterConnectionPassword';
 import { DBClusterConnectionItem } from './DBClusterConnectionItem/DBClusterConnectionItem';
-import { isClusterChanging } from '../DBCluster.utils';
 import { DBClusterServiceFactory } from '../DBClusterService.factory';
 
 export const DBClusterConnection: FC<DBClusterConnectionProps> = ({ dbCluster }) => {
   const styles = useStyles(getStyles);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [connection, setConnection] = useState<ConnectionParams>(INITIAL_CONNECTION);
   const {
     host, password, port, username,
   } = connection;
   const { status, databaseType } = dbCluster;
+  const isClusterReady = status && status === DBClusterStatus.ready;
   const getClusterConnection = async () => {
     try {
       setLoading(true);
@@ -37,14 +37,16 @@ export const DBClusterConnection: FC<DBClusterConnectionProps> = ({ dbCluster })
   };
 
   useEffect(() => {
-    getClusterConnection();
-  }, []);
+    if (isClusterReady) {
+      getClusterConnection();
+    }
+  }, [status]);
 
   return (
     <>
-      {!loading && !isClusterChanging(dbCluster) ? (
+      {!loading ? (
         <div className={styles.connectionWrapper}>
-          {status && status === DBClusterStatus.ready ? (
+          {isClusterReady ? (
             <>
               <DBClusterConnectionItem
                 label={Messages.dbcluster.table.connection.host}
