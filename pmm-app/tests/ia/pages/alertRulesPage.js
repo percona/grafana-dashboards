@@ -83,6 +83,16 @@ module.exports = {
     filters: 'service_name=pmm-server-postgresql',
     channels: ['EmailChannelForRules'],
     activate: false,
+  }, {
+    template: 'E2E TemplateForRules YAML',
+    templateType: 'User-defined (UI)',
+    ruleName: 'Rule with User-defined (UI) template with default params',
+    threshold: '',
+    duration: '1',
+    severity: 'Notice',
+    filters: 'service_name=pmm-server-postgresql',
+    channels: ['EmailChannelForRules'],
+    activate: true,
   }],
   elements: {
     rulesTab: '//li[@aria-label="Tab Alert Rules"]',
@@ -98,8 +108,10 @@ module.exports = {
     severityCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[3]`,
     filtersCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[4]//span`,
     modalHeader: '$modal-header',
+    modalContent: '$modal-content',
     popUpTitle: '.alert-title',
     columnHeaderLocator: (columnHeaderText) => `//th[text()="${columnHeaderText}"]`,
+    ruleDetails: '$alert-rules-details',
   },
   buttons: {
     closePopUp: '.alert-close',
@@ -108,9 +120,19 @@ module.exports = {
     closeModal: '$modal-close-button',
     addRule: '$add-alert-rule-modal-add-button',
     cancelAdding: '$add-alert-rule-modal-cancel-button',
-    // editAlertRule returns Edit template button locators for a given source
+    cancelDelete: '$cancel-delete-modal-button',
+    delete: '$confirm-delete-modal-button',
+    // showDetails returns Show rule details button locator for a given rule name
+    showDetails: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}//button[@data-qa="show-alert-rule-details"]`,
+    // showDetails returns Hide rule details button locator for a given rule name
+    hideDetails: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}//button[@data-qa="hide-alert-rule-details"]`,
+    // editAlertRule returns Edit rule button locator for a given rule name
     editAlertRule: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='edit-alert-rule-button']`,
-    // toggleAlertRule returns enable/disabled rule switch locator in alert rules list
+    // duplicateAlertRule returns Copy rule button locator for a given rule name
+    duplicateAlertRule: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='copy-alert-rule-button']`,
+    // deleteAlertRule returns Delete rule button locator for a given rule name
+    deleteAlertRule: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='delete-alert-rule-button']`,
+    // toggleAlertRule returns Enable/Disable rule switch locator in alert rules list
     toggleAlertRule: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//input[@data-qa='toggle-alert-rule']/following-sibling::label`,
     toogleInModal: '//input[@data-qa="enabled-toggle-input"]/following-sibling::label',
   },
@@ -126,9 +148,13 @@ module.exports = {
   },
   messages: {
     noRulesFound: 'No alert rules found',
-    modalHeaderText: 'Add Alert Rule',
+    addRuleModalHeader: 'Add Alert Rule',
+    deleteRuleModalHeader: 'Delete Alert Rule',
+    confirmDelete: (name) => `Are you sure you want to delete the alert rule "${name}"?`,
     successfullyAdded: 'Alert rule created',
+    successfullyCreated: (name) => `Alert rule ${name} successfully created`,
     successfullyEdited: 'Alert rule updated',
+    successfullyDeleted: (name) => `Alert rule ${name} successfully deleted`,
     successfullyDisabled: (name) => `Alert rule "${name}" successfully disabled`,
     successfullyEnabled: (name) => `Alert rule "${name}" successfully enabled`,
   },
@@ -142,6 +168,7 @@ module.exports = {
     // skipping these steps while editing an Alert rule
     if (template && ruleName) {
       this.searchAndSelectResult('Template', template);
+      I.clearField(this.fields.ruleName);
       I.fillField(this.fields.ruleName, ruleName);
     }
 
@@ -172,6 +199,20 @@ module.exports = {
   searchAndSelectResult(dropdownLabel, option) {
     I.fillField(this.fields.searchDropdown(dropdownLabel), option);
     I.click(this.fields.resultsLocator(option));
+  },
+
+  verifyRowValues(ruleObj) {
+    const {
+      ruleName, threshold, duration,
+      severity, filters, activate,
+    } = ruleObj;
+
+    I.seeElement(this.elements.rulesNameCell(ruleName));
+    I.see(`${threshold} %`, this.elements.thresholdCell(ruleName));
+    I.see(`${duration} seconds`, this.elements.durationCell(ruleName));
+    I.see(severity, this.elements.severityCell(ruleName));
+    I.see(filters, this.elements.filtersCell(ruleName));
+    this.verifyRuleState(activate, ruleName);
   },
 
   verifyRuleState(activate, ruleName) {

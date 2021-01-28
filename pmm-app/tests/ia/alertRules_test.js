@@ -58,7 +58,7 @@ Scenario(
 
     alertRulesPage.openAlertRulesTab();
     I.click(alertRulesPage.buttons.openAddRuleModal);
-    I.see(alertRulesPage.messages.modalHeaderText, alertRulesPage.elements.modalHeader);
+    I.see(alertRulesPage.messages.addRuleModalHeader, alertRulesPage.elements.modalHeader);
     I.seeElement(alertRulesPage.buttons.closeModal);
     I.seeElement(alertRulesPage.fields.searchDropdown('Template'));
     I.seeElement(alertRulesPage.fields.ruleName);
@@ -99,7 +99,7 @@ Scenario(
 );
 
 Data(rules).Scenario(
-  'PMM-T515 PMM-T543 PMM-T544 PMM-T545 Create Alert rule @ia @not-pr-pipeline',
+  'PMM-T515 PMM-T543 PMM-T544 PMM-T545 PMM-T574 Create Alert rule @ia @not-pr-pipeline',
   async (I, alertRulesPage, rulesAPI, templatesAPI, current) => {
     const rule = {
       template: current.template,
@@ -119,10 +119,11 @@ Data(rules).Scenario(
     I.click(alertRulesPage.buttons.addRule);
     alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyAdded);
     I.seeElement(alertRulesPage.elements.rulesNameCell(rule.ruleName));
-    I.see(`${rule.threshold} %`, alertRulesPage.elements.thresholdCell(rule.ruleName));
-    I.see(`${rule.duration} seconds`, alertRulesPage.elements.durationCell(rule.ruleName));
-    I.see(rule.severity, alertRulesPage.elements.severityCell(rule.ruleName));
-    I.see(rule.filters, alertRulesPage.elements.filtersCell(rule.ruleName));
+    if (rule.threshold.length === 0) {rule.threshold = 80}
+    I.seeTextEquals(`${rule.threshold} %`, alertRulesPage.elements.thresholdCell(rule.ruleName));
+    I.seeTextEquals(`${rule.duration} seconds`, alertRulesPage.elements.durationCell(rule.ruleName));
+    I.seeTextEquals(rule.severity, alertRulesPage.elements.severityCell(rule.ruleName));
+    I.seeTextEquals(rule.filters, alertRulesPage.elements.filtersCell(rule.ruleName));
     alertRulesPage.verifyRuleState(rule.activate, rule.ruleName);
   },
 );
@@ -130,11 +131,8 @@ Data(rules).Scenario(
 Scenario(
   'PMM-T516 Update Alert rule @ia @not-pr-pipeline',
   async (I, alertRulesPage, rulesAPI, channelsAPI, ncPage) => {
-    const ruleName = 'QAA PSQL Update test';
-    const ruleId = await rulesAPI.createAlertRule(ruleName);
-
-    await channelsAPI.createNotificationChannel('EmailChannelForEditRules', ncPage.types.email.type);
     const rule = {
+      ruleName: 'QAA PSQL Update test',
       threshold: '2',
       duration: '2',
       severity: 'High',
@@ -142,19 +140,76 @@ Scenario(
       channels: ['EmailChannelForRules', 'EmailChannelForEditRules'],
       activate: false,
     };
+    const ruleId = await rulesAPI.createAlertRule(rule.ruleName);
 
+    await channelsAPI.createNotificationChannel('EmailChannelForEditRules', ncPage.types.email.type);
     alertRulesPage.openAlertRulesTab();
-    I.click(alertRulesPage.buttons.editAlertRule(ruleName));
+    I.click(alertRulesPage.buttons.editAlertRule(rule.ruleName));
     alertRulesPage.fillRuleFields(rule);
     I.click(alertRulesPage.buttons.addRule);
     alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyEdited);
-    I.seeElement(alertRulesPage.elements.rulesNameCell(ruleName));
-    I.see(`${rule.threshold} %`, alertRulesPage.elements.thresholdCell(ruleName));
-    I.see(`${rule.duration} seconds`, alertRulesPage.elements.durationCell(ruleName));
-    I.see(rule.severity, alertRulesPage.elements.severityCell(ruleName));
-    I.see(rule.filters, alertRulesPage.elements.filtersCell(ruleName));
-    alertRulesPage.verifyRuleState(rule.activate, ruleName);
+    alertRulesPage.verifyRowValues(rule);
 
     await rulesAPI.removeAlertRule(ruleId);
+  },
+);
+
+Scenario(
+  'PMM-T566 Verify user can copy Alert rule @ia @not-pr-pipeline',
+  async (I, alertRulesPage, rulesAPI) => {
+    const ruleName = 'QAA PSQL duplicate test';
+    const ruleId = await rulesAPI.createAlertRule(ruleName);
+    const rule = {
+      ruleName: `Copy of ${ruleName}`,
+      threshold: '1',
+      duration: '1',
+      severity: 'Critical',
+      filters: 'service_name=pmm-server-postgresql',
+      channels: [],
+      activate: false,
+    };
+
+    alertRulesPage.openAlertRulesTab();
+    I.click(alertRulesPage.buttons.duplicateAlertRule(ruleName));
+    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyCreated(rule.ruleName));
+    alertRulesPage.verifyRowValues(rule);
+
+    await rulesAPI.removeAlertRule(ruleId);
+  },
+);
+
+Scenario(
+  'PMM-T566 Verify user can delete Alert rule @ia @not-pr-pipeline',
+  async (I, alertRulesPage, rulesAPI) => {
+    const ruleName = 'QAA PSQL delete test';
+
+    await rulesAPI.createAlertRule(ruleName);
+    alertRulesPage.openAlertRulesTab();
+    I.click(alertRulesPage.buttons.deleteAlertRule(ruleName));
+    I.seeTextEquals(alertRulesPage.messages.deleteRuleModalHeader, alertRulesPage.elements.modalHeader);
+    I.seeElement(alertRulesPage.buttons.closeModal, alertRulesPage.elements.modalHeader);
+    I.seeTextEquals(alertRulesPage.messages.confirmDelete(ruleName),
+      locate(alertRulesPage.elements.modalContent).find('h4'));
+    I.seeElement(alertRulesPage.buttons.cancelDelete);
+    I.seeElement(alertRulesPage.buttons.delete);
+    I.click(alertRulesPage.buttons.delete);
+    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyDeleted(ruleName));
+    I.dontSeeElement(alertRulesPage.elements.rulesNameCell(ruleName));
+  },
+);
+
+Scenario(
+  'PMM-T563 Verify user can see YAML content for the User-defined Alert rule @ia @not-pr-pipeline',
+  async (I, ruleTemplatesPage, alertRulesPage, rulesAPI) => {
+    const ruleName = 'QAA PSQL yaml content test';
+    const [, content, id] = await ruleTemplatesPage.ruleTemplate
+      .templateNameAndContent('tests/ia/templates/templateForRules.yaml');
+
+    await rulesAPI.createAlertRule(ruleName, id);
+    alertRulesPage.openAlertRulesTab();
+    I.click(alertRulesPage.buttons.showDetails(ruleName));
+    I.seeTextEquals(content, alertRulesPage.elements.ruleDetails);
+    I.click(alertRulesPage.buttons.hideDetails(ruleName));
+    I.dontSeeElement(alertRulesPage.elements.ruleDetails);
   },
 );

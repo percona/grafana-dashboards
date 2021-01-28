@@ -3,6 +3,7 @@ exports.config = {
   helpers: {
     Playwright: {
       url: process.env.PMM_UI_URL || 'http://localhost/',
+      // show: true,
       restart: true,
       browser: 'chromium',
       windowSize: '1920x1080',
