@@ -68,7 +68,7 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
         )}
       </>
     ),
-    [type],
+    [],
   );
 
   const getHeader = (databaseType) => {

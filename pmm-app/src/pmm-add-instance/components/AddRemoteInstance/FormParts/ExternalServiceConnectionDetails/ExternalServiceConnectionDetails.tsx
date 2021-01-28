@@ -38,7 +38,7 @@ export const ExternalServiceConnectionDetails: FC<ExternalServiceConnectionDetai
 
   return (
     <div className={styles.groupWrapper}>
-      <h4 className={styles.sectionHeader}>External service connection details</h4>
+      <h4 className={styles.sectionHeader}>{Messages.form.titles.connectionDetails}</h4>
       <div className={styles.labelWrapper} data-qa="username-label">
         <span>{Messages.form.labels.externalService.group}</span>
         <LinkTooltip tooltipText={Messages.form.tooltips.externalService.group} icon="info-circle" />
@@ -58,13 +58,9 @@ export const ExternalServiceConnectionDetails: FC<ExternalServiceConnectionDetai
       </div>
       <div className={styles.urlFieldGroupWrapper}>
         <div className={styles.urlFieldWrapper}>
-          <TextInputField
-            name="url"
-            placeholder={Messages.form.placeholders.externalService.url}
-            validators={[validators.required]}
-          />
+          <TextInputField name="url" placeholder={Messages.form.placeholders.externalService.url} />
         </div>
-        <Button id="addInstance" type="button" onClick={getUrlParts}>
+        <Button id="parseUrl" type="button" onClick={getUrlParts} data-qa="parse-url-button">
           {Messages.form.titles.parseURL}
         </Button>
       </div>

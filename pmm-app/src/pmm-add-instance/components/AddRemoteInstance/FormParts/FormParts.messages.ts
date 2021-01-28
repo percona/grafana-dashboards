@@ -98,6 +98,7 @@ export const Messages = {
       labels: 'Labels',
       additionalOptions: 'Additional options',
       parseURL: 'Parse URL',
+      connectionDetails: 'External service connection details',
     },
   },
 };

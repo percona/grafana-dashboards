@@ -1,6 +1,6 @@
 import { apiRequestManagement } from 'shared/components/helpers/api';
 import { Databases } from 'shared/core';
-import { TrackingOptions } from './AddRemoteInstance.types';
+import { RemoteInstanceExternalservicePayload, TrackingOptions } from './AddRemoteInstance.types';
 
 class AddRemoteInstanceService {
   static async addMysql(body) {
@@ -101,11 +101,12 @@ export const toPayload = (values, discoverName?) => {
   }
 
   data.metrics_mode = 1;
+  console.log(values, data);
 
   return data;
 };
 
-export const toExternalServicePayload = (values) => {
+export const toExternalServicePayload = (values): RemoteInstanceExternalservicePayload => {
   const data = { ...values };
 
   if (values.custom_labels) {
@@ -138,6 +139,7 @@ export const toExternalServicePayload = (values) => {
   delete data.port;
 
   data.metrics_mode = 1;
+  console.log(values, data);
 
   return data;
 };
