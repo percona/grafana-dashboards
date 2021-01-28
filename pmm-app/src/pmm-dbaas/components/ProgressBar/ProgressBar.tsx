@@ -28,7 +28,13 @@ export const ProgressBar: FC<ProgressBarProps> = ({
           /
           {totalSteps}
         </span>
-        <span data-qa="progress-bar-message" className={styles.message}>{message}</span>
+        <span
+          data-qa="progress-bar-message"
+          className={styles.message}
+          title={message}
+        >
+          {message}
+        </span>
       </div>
       <div data-qa="progress-bar-content" className={styles.progressBarBackground}>
         <div className={cx(styles.getFillerStyles(width), progressBarErrorStyles)} />

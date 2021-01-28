@@ -12,6 +12,7 @@ export const getStyles = ({
     margin: ${spacing.sm};
     min-width: 125px;
     padding: ${spacing.xs} 0;
+    position: relative;
   `,
   clusterPillWrapper: css`
     align-items: center;
@@ -41,8 +42,9 @@ export const getStyles = ({
     label: failed;
   `,
   logsWrapper: css`
+    bottom: ${spacing.md};
     display: flex;
-    margin-top: ${spacing.sm};
+    position: absolute;
   `,
   logsLabel: css`
     font-size: ${typography.size.sm};

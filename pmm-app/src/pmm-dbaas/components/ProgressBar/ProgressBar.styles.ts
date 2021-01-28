@@ -11,11 +11,10 @@ export const getStyles = ({ palette, spacing, typography }: GrafanaTheme) => ({
     align-items: baseline;
     display: flex;
     justify-content: flex-start;
-    margin-bottom: ${spacing.sm};
+    margin-bottom: ${spacing.xs};
   `,
   stepsLabel: css`
     color: ${palette.blue80};
-    font-size: ${typography.size.lg};
     font-weight: ${typography.weight.bold};
     margin-right: ${spacing.sm};
   `,
@@ -29,14 +28,14 @@ export const getStyles = ({ palette, spacing, typography }: GrafanaTheme) => ({
   progressBarBackground: css`
     background-color: ${palette.gray1};
     border-radius: 50px;
-    height: ${spacing.md};
+    height: ${spacing.sm};
     width: 100%;
   `,
   getFillerStyles: (width: number) => css`
     background-color: ${palette.blue80};
     border-radius: inherit;
     height: 100%;
-    transition: width 1s ease-in-out;
+    transition: width 300ms ease-in-out;
     width: ${width}%;
   `,
   progressBarError: css`
