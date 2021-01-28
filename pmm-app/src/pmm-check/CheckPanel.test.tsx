@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { dataQa } from '@percona/platform-core';
 import { ReactWrapper, mount } from 'enzyme';
 import { CheckPanelRouter } from './CheckPanel';
 import { CheckService } from './Check.service';
@@ -8,8 +10,6 @@ jest.mock('shared/components/helpers/notification-manager');
 jest.mock('./Check.service');
 
 const originalConsoleError = console.error;
-
-const dataQa = (label: string) => `[data-qa="${label}"]`;
 
 // immediately resolves all pending promises: allows to run expectations after a promise
 const runAllPromises = () => new Promise(setImmediate);
@@ -54,6 +54,29 @@ describe('CheckPanel::', () => {
     const wrapper: ReactWrapper<{}, {}, any> = mount(<CheckPanelRouter />);
 
     expect(console.error).toBeCalledTimes(1);
+
+    spy.mockClear();
+    wrapper.unmount();
+  });
+
+  it('should render the link to Settings when STT is disabled', async () => {
+    const spy = jest.spyOn(CheckService, 'getSettings').mockImplementation(() => Promise.resolve({
+      settings: {
+        stt_enabled: false,
+      },
+    }));
+
+    const wrapper: ReactWrapper<{}, {}, any> = mount(<CheckPanelRouter />);
+
+    await runAllPromises();
+    wrapper.update();
+
+    expect(wrapper.find(dataQa('db-check-panel-settings-link'))).toHaveLength(1);
+    const text = 'Security Threat Tool is disabled. You can enable it in PMM Settings.';
+
+    expect(wrapper.find(dataQa('db-check-panel-settings-link')).text()).toEqual(text);
+
+    expect(wrapper.find(Link).length).toEqual(1);
 
     spy.mockClear();
     wrapper.unmount();
