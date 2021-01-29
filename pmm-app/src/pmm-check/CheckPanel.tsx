@@ -81,9 +81,9 @@ export const CheckPanel: FC = () => {
         </>
       ) : (
         <div className={styles.empty} data-qa="db-check-panel-settings-link">
-          Security Threat Tool is disabled. You can enable it in&nbsp;
+          {Messages.sttDisabled}&nbsp;
           <Link className={styles.link} to={PMM_SETTINGS_URL}>
-            PMM Settings.
+            {Messages.pmmSettings}
           </Link>
         </div>
       ))}
