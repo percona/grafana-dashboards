@@ -62,5 +62,9 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       align-items: center;
       border: 1px solid ${borderColor};
     `,
+    silenced: css`
+      width: 100%;
+      text-align: center;
+    `,
   };
 });
