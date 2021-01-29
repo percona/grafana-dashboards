@@ -25,7 +25,7 @@ export interface ActiveCheck {
   key: string;
   name: string;
   failed: FailedChecks;
-  details: Array<{ description: string, labels: { [key: string]: string }}>;
+  details: Array<{ description: string, labels: { [key: string]: string }, silenced: boolean }>;
 }
 
 export interface CheckDetails {
@@ -62,6 +62,8 @@ export type CheckPanelProps = { component: FC } & RouteComponentProps;
 
 export type SeverityMap = Record<Severity, string>;
 
+export type AlertState = 'active' | 'suppressed' | 'unprocessed';
+
 export interface Alert {
   annotations: {
     description: string;
@@ -72,6 +74,9 @@ export interface Alert {
     service_name: string;
     severity: Severity;
   };
+  status: {
+    state: AlertState;
+  }
 }
 
 export interface AlertRequestParams {
@@ -118,6 +123,7 @@ export interface DetailProps {
 export interface DetailsItem {
   description: string;
   labels: Labels
+  silenced: boolean;
 }
 
 export interface TableDataAlertDetailsProps {
