@@ -12,7 +12,7 @@ export const DBClusterParameters: FC<DBClusterParametersProps> = ({ dbCluster })
 
   return (
     <>
-      {status && status === DBClusterStatus.ready ? (
+      {status && status === DBClusterStatus.ready && (
         <div className={styles.wrapper}>
           <DBClusterConnectionItem
             label={Messages.dbcluster.table.parameters.clusterName}
@@ -35,10 +35,6 @@ export const DBClusterParameters: FC<DBClusterParametersProps> = ({ dbCluster })
             dataQa="cluster-parameters-disk"
           />
         </div>
-      ) : (
-        <span className={styles.parametersFailed} data-qa="cluster-parameters-failed">
-          -
-        </span>
       )}
     </>
   );
