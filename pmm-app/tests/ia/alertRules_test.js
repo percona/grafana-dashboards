@@ -119,7 +119,8 @@ Data(rules).Scenario(
     I.click(alertRulesPage.buttons.addRule);
     alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyAdded);
     I.seeElement(alertRulesPage.elements.rulesNameCell(rule.ruleName));
-    if (rule.threshold.length === 0) {rule.threshold = 80}
+    if (rule.threshold.length === 0) { rule.threshold = 80; }
+
     I.seeTextEquals(`${rule.threshold} %`, alertRulesPage.elements.thresholdCell(rule.ruleName));
     I.seeTextEquals(`${rule.duration} seconds`, alertRulesPage.elements.durationCell(rule.ruleName));
     I.seeTextEquals(rule.severity, alertRulesPage.elements.severityCell(rule.ruleName));
