@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { Link } from 'react-router-dom';
 import { COLUMNS } from 'pmm-check/CheckPanel.constants';
 import { activeCheckStub } from 'pmm-check/__mocks__/stubs';
-import { Table, TableHeader, TableBody } from 'pmm-check/components/Table';
+import { Table, TableBody, TableHeader } from 'pmm-check/components/Table';
 
 
 jest.mock('shared/components/helpers/notification-manager');
