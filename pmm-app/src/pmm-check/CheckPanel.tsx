@@ -82,7 +82,7 @@ export const CheckPanel: FC = () => {
       ) : (
         <div className={styles.empty} data-qa="db-check-panel-settings-link">
           {Messages.sttDisabled}
-          &nbsp;
+          {' '}
           <Link className={styles.link} to={PMM_SETTINGS_URL}>
             {Messages.pmmSettings}
           </Link>

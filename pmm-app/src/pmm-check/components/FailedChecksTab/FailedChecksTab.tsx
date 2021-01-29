@@ -49,11 +49,8 @@ export const FailedChecksTab: FC<FailedChecksTabProps> = ({ hasNoAccess }) => {
 
   const toggleShowSilenced = () => {
     setShowSilenced((currentValue) => !currentValue);
-  };
-
-  useEffect(() => {
     fetchAlerts();
-  }, [showSilenced]);
+  };
 
   useEffect(() => {
     fetchAlerts();
