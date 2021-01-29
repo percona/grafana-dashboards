@@ -6,23 +6,21 @@ import { ActiveCheck } from 'pmm-check/types';
 import { COLUMNS } from 'pmm-check/CheckPanel.constants';
 import { AlertsReloadContext } from 'pmm-check/Check.context';
 import { CheckService } from 'pmm-check/Check.service';
-import { Spinner, Switch, useStyles } from '@grafana/ui';
+import { Spinner } from '@grafana/ui';
 import { FailedChecksTabProps } from './types';
 import { Messages } from './FailedChecksTab.messages';
-import { getStyles } from './FailedChecksTab.styles';
+import * as styles from './FailedChecksTab.styles';
 
 export const FailedChecksTab: FC<FailedChecksTabProps> = ({ hasNoAccess }) => {
   const [fetchAlertsPending, setFetchAlertsPending] = useState(false);
   const [runChecksPending, setRunChecksPending] = useState(false);
-  const [showSilenced, setShowSilenced] = useState(false);
   const [dataSource, setDataSource] = useState<ActiveCheck[] | undefined>();
-  const styles = useStyles(getStyles);
 
   const fetchAlerts = async (): Promise<void> => {
     setFetchAlertsPending(true);
 
     try {
-      const dataSource = await CheckService.getActiveAlerts(showSilenced);
+      const dataSource = await CheckService.getActiveAlerts();
 
       setDataSource(dataSource);
     } catch (err) {
@@ -47,14 +45,6 @@ export const FailedChecksTab: FC<FailedChecksTabProps> = ({ hasNoAccess }) => {
     }, 10000);
   };
 
-  const toggleShowSilenced = () => {
-    setShowSilenced((currentValue) => !currentValue);
-  };
-
-  useEffect(() => {
-    fetchAlerts();
-  }, [showSilenced]);
-
   useEffect(() => {
     fetchAlerts();
   }, []);
@@ -63,10 +53,6 @@ export const FailedChecksTab: FC<FailedChecksTabProps> = ({ hasNoAccess }) => {
     <>
       <div className={styles.header}>
         <div className={styles.actionButtons} data-qa="db-check-panel-actions">
-          <span className={styles.showAll}>
-            <Switch value={showSilenced} onChange={toggleShowSilenced} data-qa="db-checks-failed-checks-toggle-silenced" />
-            <span>Show All</span>
-          </span>
           <ButtonWithSpinner
             onClick={handleRunChecksClick}
             isLoading={runChecksPending}

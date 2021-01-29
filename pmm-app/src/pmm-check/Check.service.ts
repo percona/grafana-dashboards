@@ -20,9 +20,9 @@ export const makeApiUrl: (segment: string) => string = (segment) => `${API.ALERT
  * A service-like object to store the API methods
  */
 export const CheckService = {
-  async getActiveAlerts(includeSilenced = false): Promise<ActiveCheck[] | undefined> {
+  async getActiveAlerts(): Promise<ActiveCheck[] | undefined> {
     const data = await apiRequest.get<Alert[], AlertRequestParams>(makeApiUrl('alerts'), {
-      params: { active: true, silenced: includeSilenced, filter: 'stt_check=1' },
+      params: { active: true, silenced: false, filter: 'stt_check=1' },
     });
 
     return Array.isArray(data) && data.length ? processData(data as Alert[]) : undefined;
@@ -56,20 +56,13 @@ export const CheckService = {
 export const processData = (data: Alert[]): ActiveCheck[] => {
   const result: Record<
     string,
-    Array<{
-      summary: string;
-      description: string;
-      severity: string;
-      labels: { [key: string]: string },
-      silenced: boolean;
-     }>
+    Array<{ summary: string; description: string; severity: string; labels: { [key: string]: string } }>
   > = data
     .filter((alert) => !!alert.labels.stt_check)
     .reduce((acc, alert) => {
       const {
         labels,
         annotations: { summary, description },
-        status: { state },
       } = alert;
       const serviceName = labels.service_name;
 
@@ -82,7 +75,6 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
         description,
         severity: labels.severity,
         labels,
-        silenced: state === 'suppressed',
       };
 
       acc[serviceName] = (acc[serviceName] ?? []).concat(item);
@@ -114,7 +106,6 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
       .map((val) => ({
         description: `${val.summary}${val.description ? `: ${val.description}` : ''}`,
         labels: val.labels ?? [],
-        silenced: val.silenced,
       }))
       .sort((a, b) => {
         const aSeverity = a.labels.severity;
