@@ -82,6 +82,28 @@ export const activeCheckStub: ActiveCheck[] = [
     key: '2',
     name: 'mongodb-inst-rpl-1',
   },
+  {
+    details: [
+      {
+        description: 'MongoDB password is weak: MongoDB admin password does not meet the complexity requirement',
+        labels: {
+          agent_id: 'pmm-server',
+          agent_type: 'pmm-agent',
+          alertname: 'pmm_agent_outdated',
+          node_id: 'pmm-server',
+          node_name: 'pmm-server',
+          node_type: 'generic',
+          service_name: 'mongodb-inst-rpl-2',
+          severity: 'warning',
+          stt_check: '1',
+        },
+        silenced: true,
+      },
+    ],
+    failed: [0, 1, 0],
+    key: '3',
+    name: 'mongodb-inst-rpl-2',
+  },
 ];
 
 export const alertsStub = [
@@ -205,6 +227,37 @@ export const alertsStub = [
       node_id: 'pmm-server',
       node_name: 'pmm-server',
       service_name: 'mongodb-inst-rpl-1',
+      node_type: 'generic',
+      severity: 'warning',
+    },
+  },
+  {
+    annotations: {
+      description: 'MongoDB admin password does not meet the complexity requirement',
+      summary: 'MongoDB password is weak',
+    },
+    endsAt: '2020-04-20T14:39:03.575Z',
+    fingerprint: '0d2242091d134c09',
+    receivers: [
+      {
+        name: 'empty',
+      },
+    ],
+    startsAt: '2020-04-20T12:08:48.946Z',
+    status: {
+      inhibitedBy: [],
+      silencedBy: [],
+      state: 'suppressed',
+    },
+    updatedAt: '2020-04-20T14:34:03.575Z',
+    labels: {
+      stt_check: '1',
+      agent_id: 'pmm-server',
+      agent_type: 'pmm-agent',
+      alertname: 'pmm_agent_outdated',
+      node_id: 'pmm-server',
+      node_name: 'pmm-server',
+      service_name: 'mongodb-inst-rpl-2',
       node_type: 'generic',
       severity: 'warning',
     },
