@@ -10,11 +10,12 @@ import { Spinner, Switch, useStyles } from '@grafana/ui';
 import { FailedChecksTabProps } from './types';
 import { Messages } from './FailedChecksTab.messages';
 import { getStyles } from './FailedChecksTab.styles';
+import { loadShowSilencedValue, saveShowSilencedValue } from './FailedChecksTab.utils';
 
 export const FailedChecksTab: FC<FailedChecksTabProps> = ({ hasNoAccess }) => {
   const [fetchAlertsPending, setFetchAlertsPending] = useState(false);
   const [runChecksPending, setRunChecksPending] = useState(false);
-  const [showSilenced, setShowSilenced] = useState(false);
+  const [showSilenced, setShowSilenced] = useState(loadShowSilencedValue());
   const [dataSource, setDataSource] = useState<ActiveCheck[] | undefined>();
   const styles = useStyles(getStyles);
 
@@ -53,6 +54,7 @@ export const FailedChecksTab: FC<FailedChecksTabProps> = ({ hasNoAccess }) => {
 
   useEffect(() => {
     fetchAlerts();
+    saveShowSilencedValue(showSilenced);
   }, [showSilenced]);
 
   return (
