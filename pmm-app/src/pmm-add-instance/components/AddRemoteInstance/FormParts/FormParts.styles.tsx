@@ -22,13 +22,4 @@ export const getStyles = stylesFactory((theme) => ({
     }
     margin-bottom: ${theme.spacing.xs};
   `,
-  urlFieldGroupWrapper: css`
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-  `,
-  urlFieldWrapper: css`
-    width: 100%;
-    margin-right: 5px;
-  `,
 }));

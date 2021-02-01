@@ -9,16 +9,8 @@ import Discovery from './components/Discovery/Discovery';
 import { AddInstance } from './components/AddInstance/AddInstance';
 import { getStyles } from './panel.styles';
 import { Messages } from './components/AddRemoteInstance/AddRemoteInstance.messages';
-import { InstanceTypes } from './panel.types';
 
-const availableInstanceTypes = [
-  InstanceTypes.rds,
-  InstanceTypes.postgresql,
-  InstanceTypes.mysql,
-  InstanceTypes.proxysql,
-  InstanceTypes.mongodb,
-  InstanceTypes.external,
-];
+const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
 
 const AddInstancePanel = () => {
   const styles = getStyles();
@@ -27,7 +19,7 @@ const AddInstancePanel = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const instanceType = urlParams.get('instance_type') || '';
   const [selectedInstance, selectInstance] = useState({
-    type: availableInstanceTypes.includes(instanceType as InstanceTypes) ? instanceType : '',
+    type: availableInstanceTypes.includes(instanceType) ? instanceType : '',
   });
 
   useEffect(() => {
@@ -44,16 +36,11 @@ const AddInstancePanel = () => {
     () => () => (
       <>
         <div className={styles.content}>
-          <Button
-            variant="secondary"
-            onClick={() => selectInstance({ type: '' })}
-            className={styles.returnButton}
-            icon="arrow-left"
-          >
+          <Button variant="link" onClick={() => selectInstance({ type: '' })}>
             {Messages.form.buttons.toMenu}
           </Button>
         </div>
-        {selectedInstance.type === InstanceTypes.rds ? (
+        {selectedInstance.type === 'rds' ? (
           <Discovery selectInstance={selectInstance} />
         ) : (
           <AddRemoteInstance instance={selectedInstance} selectInstance={selectInstance} />

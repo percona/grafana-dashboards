@@ -6,7 +6,6 @@ import { trackingOptions } from './FormParts.constants';
 import { AdditionalOptionsFormPart, getAdditionalOptions } from './AdditionalOptions/AdditionalOptions';
 import { LabelsFormPart } from './Labels/Labels';
 import { MainDetailsFormPart } from './MainDetails/MainDetails';
-import { ExternalServiceConnectionDetails } from './ExternalServiceConnectionDetails/ExternalServiceConnectionDetails';
 
 const form = {
   change: jest.fn(),
@@ -47,21 +46,6 @@ describe('MainDetailsFormPart ::', () => {
     expect(root.find('input[name="port"]').prop('disabled')).toBeFalsy();
     expect(root.find('input[name="username"]').prop('disabled')).toBeFalsy();
     expect(root.find('input[name="password"]').prop('disabled')).toBeFalsy();
-  });
-});
-
-describe('ExternalServiceConnectionDetails ::', () => {
-  it('should render', async () => {
-    const root = mount(
-      <Form
-        onSubmit={jest.fn()}
-        render={() => <ExternalServiceConnectionDetails form={(form as unknown) as FormApi} />}
-      />,
-    );
-
-    const fields = root.find('input');
-
-    expect(fields.length).toBe(10);
   });
 });
 
@@ -106,7 +90,7 @@ describe('AdditionalOptionsFormPart ::', () => {
 
 describe('getAdditionalOptions ::', () => {
   it('should render correct for MongoDB', async () => {
-    const type = 'mongodb';
+    const type = 'MongoDB';
     const remoteInstanceCredentials = {
       isRDS: false,
     };
@@ -124,7 +108,7 @@ describe('getAdditionalOptions ::', () => {
   });
 
   it('should render correct for MySQL', async () => {
-    const type = 'mysql';
+    const type = 'MySQL';
     const remoteInstanceCredentials = {
       isRDS: false,
     };
@@ -142,7 +126,7 @@ describe('getAdditionalOptions ::', () => {
   });
 
   it('should render correct for RDS MySQL', async () => {
-    const type = 'mysql';
+    const type = 'MySQL';
     const remoteInstanceCredentials = {
       isRDS: true,
     };
@@ -162,7 +146,7 @@ describe('getAdditionalOptions ::', () => {
   });
 
   it('should render correct for PostgreSQL', async () => {
-    const type = 'postgresql';
+    const type = 'PostgreSQL';
     const remoteInstanceCredentials = {
       isRDS: true,
     };

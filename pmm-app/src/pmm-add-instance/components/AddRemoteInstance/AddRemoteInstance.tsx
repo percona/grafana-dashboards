@@ -10,8 +10,6 @@ import { getStyles } from './AddRemoteInstance.styles';
 import { AddRemoteInstanceProps } from './AddRemoteInstance.types';
 import { AdditionalOptions, Labels, MainDetails } from './FormParts';
 import { Messages } from './AddRemoteInstance.messages';
-import { ExternalServiceConnectionDetails } from './FormParts/ExternalServiceConnectionDetails/ExternalServiceConnectionDetails';
-import { InstanceTypes } from '../../panel.types';
 
 const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
   instance: { type, credentials },
@@ -20,23 +18,25 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
   const theme = useTheme();
   const styles = getStyles(theme);
 
-  const { remoteInstanceCredentials, discoverName } = getInstanceData(type, credentials);
+  const { instanceType, remoteInstanceCredentials, discoverName } = getInstanceData(type, credentials);
   const [loading, setLoading] = useState<boolean>(false);
   const initialValues: any = { ...remoteInstanceCredentials, tracking: 'qan_postgresql_pgstatements_agent' };
 
-  if (type === DATABASE_LABELS[Databases.mysql]) {
+  if (instanceType === DATABASE_LABELS[Databases.mysql]) {
     initialValues.qan_mysql_perfschema = true;
   }
 
   const onSubmit = useCallback(
     async (values) => {
+      const data = toPayload(values, discoverName);
+
       try {
         setLoading(true);
 
         if (values.isRDS) {
-          await AddRemoteInstanceService.addRDS(toPayload(values, discoverName));
+          await AddRemoteInstanceService.addRDS(data);
         } else {
-          await AddRemoteInstanceService.addRemote(type, values);
+          await AddRemoteInstanceService.addRemote(instanceType, data);
         }
 
         window.location.href = '/graph/d/pmm-inventory/';
@@ -46,52 +46,33 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
         setLoading(false);
       }
     },
-    [type, discoverName],
+    [instanceType],
   );
 
   const formParts = useMemo(
     () => (form) => (
       <>
-        {type !== InstanceTypes.external ? (
-          <MainDetails remoteInstanceCredentials={remoteInstanceCredentials} />
-        ) : (
-          <ExternalServiceConnectionDetails form={form} />
-        )}
+        <MainDetails remoteInstanceCredentials={remoteInstanceCredentials} />
         <Labels />
-        {type !== InstanceTypes.external && (
-          <AdditionalOptions
-            remoteInstanceCredentials={remoteInstanceCredentials}
-            loading={loading}
-            instanceType={type}
-            form={form}
-          />
-        )}
+        <AdditionalOptions
+          remoteInstanceCredentials={remoteInstanceCredentials}
+          loading={loading}
+          instanceType={instanceType}
+          form={form}
+        />
       </>
     ),
     [],
   );
-
-  const getHeader = (databaseType) => {
-    if (databaseType === InstanceTypes.external) {
-      return Messages.form.titles.addExternalService;
-    }
-
-    return `Add remote ${DATABASE_LABELS[databaseType]} Instance`;
-  };
 
   return (
     <div className={styles.formWrapper}>
       <FormFinal
         onSubmit={onSubmit}
         initialValues={initialValues}
-        mutators={{
-          setValue: ([field, value], state, { changeValue }) => {
-            changeValue(state, field, () => value);
-          },
-        }}
         render={({ form, handleSubmit }) => (
           <form onSubmit={handleSubmit} data-qa="add-remote-instance-form">
-            <h4 className={styles.addRemoteInstanceTitle}>{getHeader(type)}</h4>
+            <h4 className={styles.addRemoteInstanceTitle}>{`Add remote ${instanceType} Instance`}</h4>
             {formParts(form)}
             <div className={styles.addRemoteInstanceButtons}>
               <Button id="addInstance" disabled={loading}>
@@ -102,7 +83,6 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
                 onClick={() => selectInstance({ type: '' })}
                 disabled={loading}
                 className={styles.returnButton}
-                icon="arrow-left"
               >
                 {Messages.form.buttons.toMenu}
               </Button>

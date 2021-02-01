@@ -23,12 +23,18 @@ export const LabelsFormPart: FC = () => {
         <span>{Messages.form.labels.labels.region}</span>
         <LinkTooltip tooltipText={Messages.form.tooltips.labels.region} icon="info-circle" />
       </div>
-      <TextInputField name="region" placeholder={Messages.form.placeholders.labels.region} />
+      <TextInputField
+        name="region"
+        placeholder={Messages.form.placeholders.labels.region}
+      />
       <div className={styles.labelWrapper} data-qa="username-label">
         <span>{Messages.form.labels.labels.az}</span>
         <LinkTooltip tooltipText={Messages.form.tooltips.labels.az} icon="info-circle" />
       </div>
-      <TextInputField name="az" placeholder={Messages.form.placeholders.labels.az} />
+      <TextInputField
+        name="az"
+        placeholder={Messages.form.placeholders.labels.az}
+      />
       <TextInputField
         name="replication_set"
         label={Messages.form.labels.labels.replicationSet}

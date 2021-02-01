@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { CheckboxField, NumberInputField, validators } from '@percona/platform-core';
 import { RadioButtonGroupAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
-import { Databases } from 'shared/core';
+import { DATABASE_LABELS, Databases } from 'shared/core';
 import { useTheme } from '@grafana/ui';
 import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
 import { Field as FieldWrapper } from 'shared/components/Form/FieldAdapters/Field';
@@ -87,9 +87,9 @@ const MySQLOptions = ({ form }) => {
 
 export const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
   switch (type) {
-    case Databases.postgresql:
+    case DATABASE_LABELS[Databases.postgresql]:
       return <PostgreSQLAdditionalOptions />;
-    case Databases.mysql:
+    case DATABASE_LABELS[Databases.mysql]:
       return (
         <>
           <MySQLOptions form={form} />
@@ -111,7 +111,7 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
           ) : null}
         </>
       );
-    case Databases.mongodb:
+    case DATABASE_LABELS[Databases.mongodb]:
       return (
         <>
           <CheckboxField
