@@ -9,5 +9,8 @@ export const Messages = {
       addService: 'Add service',
       toMenu: 'Return to menu',
     },
+    titles: {
+      addExternalService: 'Add external service',
+    },
   },
 };
