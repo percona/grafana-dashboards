@@ -49,20 +49,21 @@ export const FailedChecksTab: FC<FailedChecksTabProps> = ({ hasNoAccess }) => {
 
   const toggleShowSilenced = () => {
     setShowSilenced((currentValue) => !currentValue);
-    fetchAlerts();
   };
 
   useEffect(() => {
     fetchAlerts();
-  }, []);
+  }, [showSilenced]);
 
   return (
     <>
       <div className={styles.header}>
         <div className={styles.actionButtons} data-qa="db-check-panel-actions">
           <span className={styles.showAll}>
-            <Switch value={showSilenced} onChange={toggleShowSilenced} data-qa="db-checks-failed-checks-toggle-silenced" />
-            <span>Show All</span>
+            <span data-qa="db-checks-failed-checks-toggle-silenced">
+              <Switch value={showSilenced} onChange={toggleShowSilenced} />
+            </span>
+            <span>{Messages.showAll}</span>
           </span>
           <ButtonWithSpinner
             onClick={handleRunChecksClick}
