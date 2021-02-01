@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { PasswordInputField, TextInputField, validators } from '@percona/platform-core';
 import Validators from 'shared/components/helpers/validators';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
@@ -18,6 +18,7 @@ export const ExternalServiceConnectionDetails: FC<ExternalServiceConnectionDetai
 
   const portValidators = useMemo(() => [validators.required, Validators.validatePort], []);
 
+  const trim = useCallback((value) => (value ? value.trim() : value), []);
   const getUrlParts = (value) => {
     try {
       const url = new URL(form.getState().values.url);
@@ -73,7 +74,6 @@ export const ExternalServiceConnectionDetails: FC<ExternalServiceConnectionDetai
         name="schema"
         options={schemaOptions}
         component={RadioButtonGroupAdapter}
-        validators={[validators.required]}
       />
       <div className={styles.labelWrapper} data-qa="address-label">
         <span>{Messages.form.labels.externalService.address}</span>
@@ -91,7 +91,6 @@ export const ExternalServiceConnectionDetails: FC<ExternalServiceConnectionDetai
       <TextInputField
         name="metrics_path"
         placeholder={Messages.form.placeholders.externalService.metricsPath}
-        validators={[validators.required]}
       />
       <div className={styles.labelWrapper} data-qa="port-label">
         <span>{Messages.form.labels.externalService.port}</span>
@@ -105,7 +104,7 @@ export const ExternalServiceConnectionDetails: FC<ExternalServiceConnectionDetai
       <TextInputField
         name="username"
         placeholder={Messages.form.placeholders.externalService.username}
-        validators={[validators.required]}
+        format={trim}
       />
       <div className={styles.labelWrapper} data-qa="password-label">
         <span>{Messages.form.labels.externalService.password}</span>
@@ -114,7 +113,7 @@ export const ExternalServiceConnectionDetails: FC<ExternalServiceConnectionDetai
       <PasswordInputField
         name="password"
         placeholder={Messages.form.placeholders.externalService.password}
-        validators={[validators.required]}
+        format={trim}
       />
     </div>
   );

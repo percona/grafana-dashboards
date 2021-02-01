@@ -36,9 +36,9 @@ describe('Add remote instance:: ', () => {
     root.find(dataQa('add-remote-instance-form')).simulate('submit');
 
     expect(root.find('input[data-qa="address-text-input"].invalid').length).toBe(1);
-    expect(root.find('input[data-qa="metrics_path-text-input"].invalid').length).toBe(1);
+    expect(root.find('input[data-qa="metrics_path-text-input"].invalid').length).toBe(0);
     expect(root.find('input[data-qa="port-text-input"].invalid').length).toBe(1);
-    expect(root.find('input[data-qa="username-text-input"].invalid').length).toBe(1);
-    expect(root.find('input[data-qa="password-password-input"].invalid').length).toBe(1);
+    expect(root.find('input[data-qa="username-text-input"].invalid').length).toBe(0);
+    expect(root.find('input[data-qa="password-password-input"].invalid').length).toBe(0);
   });
 });

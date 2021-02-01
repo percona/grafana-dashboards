@@ -101,7 +101,6 @@ export const toPayload = (values, discoverName?) => {
   }
 
   data.metrics_mode = 1;
-  console.log(values, data);
 
   return data;
 };
@@ -139,7 +138,6 @@ export const toExternalServicePayload = (values): RemoteInstanceExternalserviceP
   delete data.port;
 
   data.metrics_mode = 1;
-  console.log(values, data);
 
   return data;
 };

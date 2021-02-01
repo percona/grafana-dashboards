@@ -78,7 +78,7 @@ export const Messages = {
         address: 'Public DNS hostname of your instance',
         serviceName: 'Service name to use',
         port: 'Port your external service is listening on',
-        username: 'Your external service user name',
+        username: 'Your external service username',
         password: 'Your external service password',
       },
       mainDetails: {
