@@ -11,8 +11,4 @@ export const getStyles = stylesFactory(() => ({
   contentPadding: css`
     padding-top: 20px;
   `,
-  returnButton: css`
-    position: absolute;
-    left: 50px;
-  `,
 }));
