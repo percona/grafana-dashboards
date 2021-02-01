@@ -141,6 +141,16 @@ Scenario(
   },
 ).retry(2);
 
+Scenario('PMM-T537 - Verify user is not able to enable IA if Telemetry is disabled @ia @not-pr-pipeline',
+  async (I, pmmSettingsPage, settingsAPI) => {
+    await settingsAPI.apiDisableIA();
+    I.amOnPage(pmmSettingsPage.advancedSettingsUrl);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    I.seeAttributesOnElements(pmmSettingsPage.fields.iaSwitchSelectorInput, { disabled: null });
+    I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
+    I.seeAttributesOnElements(pmmSettingsPage.fields.iaSwitchSelectorInput, { disabled: true });
+  }).retry(2);
+
 // To be removed from Skip after https://jira.percona.com/browse/PMM-5791
 xScenario(
   'PMM-T227 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days @not-pr-pipeline',
