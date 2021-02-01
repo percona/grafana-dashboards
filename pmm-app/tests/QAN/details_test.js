@@ -91,7 +91,6 @@ Scenario(
   'PMM-T13 - Check Explain and Example for supported DBs - pgsql @qan @not-pr-pipeline',
   async (I, qanOverview, qanFilters, qanDetails) => {
     qanOverview.waitForOverviewLoaded();
-    pause();
     qanFilters.applyFilter('pgsql-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
