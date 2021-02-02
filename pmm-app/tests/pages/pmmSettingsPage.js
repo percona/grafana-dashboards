@@ -273,7 +273,6 @@ module.exports = {
   changeDataRetentionValueTo(days) {
     this.customClearField(this.fields.dataRetentionInput);
     I.fillField(this.fields.dataRetentionInput, days);
-    I.moveCursorTo(this.fields.advancedButton);
     I.click(this.fields.advancedButton);
   },
 
@@ -335,6 +334,7 @@ module.exports = {
   },
 
   async verifyTooltip(tooltipObj) {
+    I.waitForVisible(this.fields.tooltipSelector, 30);
     I.see(tooltipObj.text, this.fields.tooltipSelector);
     I.seeAttributesOnElements(`${this.fields.tooltipSelector} > div > a`, { href: tooltipObj.link });
   },

@@ -1,24 +1,20 @@
 const assert = require('assert');
-const page = require('./pages/pmmSettingsPage');
+const communicationDefaults = new DataTable(['type']);
 
-const validationValues = ['text ', '2147483648', '-1', '<script>alert(test);</script>'];
+communicationDefaults.add(['email']);
+communicationDefaults.add(['slack']);
 
-const dataRetentionTable = new DataTable(['value', 'message']);
+Feature('PMM Settings');
 
-for (const i in validationValues) {
-  dataRetentionTable.add([validationValues[i], page.messages.invalidDataDurationMessage]);
-}
-
-dataRetentionTable.add(['', page.messages.requiredFieldMessage]);
-
-Feature('PMM Settings Page Elements and Validations');
-
-Before(async (I, pmmSettingsPage) => {
+Before(async (I, pmmSettingsPage, settingsAPI) => {
   I.Authorize();
-  I.amOnPage(pmmSettingsPage.url);
+  await settingsAPI.restoreSettingsDefaults();
 });
 
+// Elements
+
 Scenario('Verify Section Tabs and Metrics Section Elements [critical]', async (I, pmmSettingsPage) => {
+  I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   Object.values(pmmSettingsPage.sectionTabsList).forEach((value) => {
     I.see(value, pmmSettingsPage.fields.tabsSection);
@@ -37,6 +33,7 @@ Scenario('Verify Section Tabs and Metrics Section Elements [critical]', async (I
 Scenario('Verify SSH Key Section Elements', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.ssh;
 
+  I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.sshKeyButton);
   I.see('SSH key', pmmSettingsPage.fields.sshKeyLabel);
@@ -46,6 +43,7 @@ Scenario('Verify SSH Key Section Elements', async (I, pmmSettingsPage) => {
 Scenario('Verify Advanced Section Elements', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
+  I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
   I.see('Data retention', pmmSettingsPage.fields.advancedLabel);
@@ -63,6 +61,7 @@ Scenario('Verify Advanced Section Elements', async (I, pmmSettingsPage) => {
 Scenario('Verify Alertmanager integration Section Elements', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
+  I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   I.see('Alertmanager URL', pmmSettingsPage.fields.alertmanagerUrlLabel);
@@ -75,6 +74,7 @@ Scenario('Verify validation for invalid SSH Key', async (I, pmmSettingsPage) => 
   const sshKeyForTest = 'ssh-rsa testKey test@key.local';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.ssh;
 
+  I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.sshKeyButton);
   pmmSettingsPage.addSSHKey(sshKeyForTest);
@@ -85,6 +85,7 @@ Scenario('Verify validation for Alertmanager URL without scheme', async (I, pmmS
   const urlWithoutScheme = 'invalid_url';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
+  I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(urlWithoutScheme, '');
@@ -95,6 +96,7 @@ Scenario('Verify validation for Alertmanager URL without host', async (I, pmmSet
   const urlWithoutHost = 'http://';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
+  I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(urlWithoutHost, '');
@@ -105,13 +107,13 @@ Scenario('Verify validation for invalid Alertmanager Rule', async (I, pmmSetting
   const rule = 'invalid_rule';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
+  I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule('', rule);
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerRulesMessage);
 });
 
-// Update the test to check IA switch logic too TODO: https://jira.percona.com/browse/PMM-7217
 Scenario(
   'PMM-T254 Verify validation for STT and Telemetry switches',
   async (I, pmmSettingsPage, settingsAPI) => {
@@ -165,6 +167,7 @@ xScenario(
 Scenario(
   'PMM-T415 - Verify Percona Platform (Sign up) elements on PMM Settings Page',
   async (I, pmmSettingsPage) => {
+    I.amOnPage(pmmSettingsPage.url);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.waitForElement(pmmSettingsPage.fields.perconaPlatformLink, 30);
     I.click(pmmSettingsPage.fields.perconaPlatformLink);
@@ -182,7 +185,7 @@ Scenario(
     I.waitForElement(pmmSettingsPage.fields.signUpBackToLogin, 30);
     I.waitForElement(pmmSettingsPage.fields.diagnosticsButton, 30);
     I.waitForVisible(pmmSettingsPage.fields.diagnosticsInfo, 30);
-    I.moveCursorTo(pmmSettingsPage.fields.diagnosticsInfo);
+    I.moveCursor(pmmSettingsPage.fields.diagnosticsInfo);
     I.waitForText(pmmSettingsPage.diagnosticsText, 30);
     I.waitForElement(pmmSettingsPage.fields.termsOfService);
     I.waitForElement(pmmSettingsPage.fields.privacyPolicy);
@@ -192,6 +195,7 @@ Scenario(
 Scenario(
   'PMM-T398 - Verify Percona Platform (Login) elements on PMM Settings Page',
   async (I, pmmSettingsPage) => {
+    I.amOnPage(pmmSettingsPage.url);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.waitForElement(pmmSettingsPage.fields.perconaPlatformLink, 30);
     I.click(pmmSettingsPage.fields.perconaPlatformLink);
@@ -201,7 +205,163 @@ Scenario(
     I.waitForElement(pmmSettingsPage.fields.singInToSignUpButton, 30);
     I.waitForElement(pmmSettingsPage.fields.diagnosticsButton, 30);
     I.waitForVisible(pmmSettingsPage.fields.diagnosticsInfo, 30);
-    I.moveCursorTo(pmmSettingsPage.fields.diagnosticsInfo);
+    I.moveCursor(pmmSettingsPage.fields.diagnosticsInfo);
     I.waitForText(pmmSettingsPage.diagnosticsText, 30);
   },
 );
+
+// Functionality
+
+Scenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
+  const resolutionToApply = 'Rare';
+
+  I.amOnPage(pmmSettingsPage.url);
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.selectMetricsResolution(resolutionToApply);
+  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+  I.refreshPage();
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.verifySelectedResolution(resolutionToApply);
+});
+
+Scenario('Open PMM Settings page and verify changing Data Retention [critical]', async (I, pmmSettingsPage) => {
+  const dataRetentionValue = '1';
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
+
+  I.amOnPage(pmmSettingsPage.url);
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
+  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+  I.refreshPage();
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  I.waitForValue(pmmSettingsPage.fields.dataRetentionInput, dataRetentionValue, 30);
+});
+
+Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]', async (I, pmmSettingsPage) => {
+  const scheme = 'http://';
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
+
+  I.amOnPage(pmmSettingsPage.url);
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
+  pmmSettingsPage.addAlertmanagerRule(
+    scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
+    pmmSettingsPage.alertManager.editRule.replace('{{ sec }}', Math.floor(Math.random() * 10) + 1),
+  );
+  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+  pmmSettingsPage.openAlertsManagerUi();
+  await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName);
+});
+
+Scenario(
+  'PMM-T253 Verify user can see correct tooltip for STT [trivial]',
+  async (I, pmmSettingsPage) => {
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
+
+    I.amOnPage(pmmSettingsPage.url);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    I.moveCursor(pmmSettingsPage.fields.sttLabelTooltipSelector);
+    await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.stt);
+  },
+);
+
+Scenario(
+  'PMM-T253 Verify user can enable STT if Telemetry is enabled',
+  async (I, pmmSettingsPage) => {
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
+
+    I.amOnPage(pmmSettingsPage.url);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    I.click(pmmSettingsPage.fields.sttSwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'on');
+    I.click(pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+    I.refreshPage();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'on');
+  },
+);
+
+Scenario('PMM-T520 - Verify that alert is in Firing State - internal alert manager @not-ui-pipeline @nightly @not-pr-pipeline', async (I, pmmSettingsPage) => {
+  const scheme = 'http://127.0.0.1';
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
+
+  I.amOnPage(pmmSettingsPage.url);
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
+  pmmSettingsPage.addAlertmanagerRule(
+    scheme + pmmSettingsPage.alertManager.service,
+    pmmSettingsPage.alertManager.rule2,
+  );
+  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+  pmmSettingsPage.openAlertsManagerUi();
+  await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2);
+  I.amOnPage(pmmSettingsPage.stateOfAlertsUrl);
+  await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2, true);
+});
+
+Scenario('PMM-T520 - Verify that alert is being fired to external Alert Manager @not-ui-pipeline @nightly @not-pr-pipeline', async (I, pmmSettingsPage) => {
+  const scheme = 'http://';
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
+
+  I.amOnPage(pmmSettingsPage.url);
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
+  pmmSettingsPage.addAlertmanagerRule(
+    scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.externalAlertManagerPort,
+    pmmSettingsPage.alertManager.rule2,
+  );
+  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+  pmmSettingsPage.openAlertsManagerUi();
+  await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2);
+  I.amOnPage(pmmSettingsPage.stateOfAlertsUrl);
+  await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2, true);
+  await pmmSettingsPage.verifyExternalAlertManager(pmmSettingsPage.alertManager.ruleName2);
+});
+
+Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable IA in Settings @ia @not-pr-pipeline',
+  async (I, pmmSettingsPage, settingsAPI, adminPage) => {
+    await settingsAPI.apiDisableIA();
+    I.amOnPage(pmmSettingsPage.advancedSettingsUrl);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    I.click(pmmSettingsPage.fields.iaSwitchSelector);
+    I.dontSeeElement(pmmSettingsPage.communication.communicationSection);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.iaSwitchSelectorInput, 'on');
+    I.click(pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.iaSwitchSelectorInput, 'on');
+    I.seeElementInDOM(adminPage.sideMenu.integratedAlerting);
+    I.seeTextEquals('Integrated Alerting', adminPage.sideMenu.integratedAlerting);
+    I.seeTextEquals('Communication', pmmSettingsPage.communication.communicationSection);
+    I.click(pmmSettingsPage.fields.iaSwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.iaSwitchSelectorInput, 'off');
+    I.click(pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.iaSwitchSelectorInput, 'off');
+    I.dontSeeElementInDOM(adminPage.sideMenu.integratedAlerting);
+    I.dontSeeElement(pmmSettingsPage.communication.communicationSection);
+  });
+
+
+Data(communicationDefaults)
+  .Scenario('PMM-T534 PMM-T534 - Verify user is able to set up default Email/Slack communication settings @ia @not-pr-pipeline',
+    async (I, pmmSettingsPage, settingsAPI, current) => {
+      await settingsAPI.apiEnableIA();
+      I.amOnPage(pmmSettingsPage.communicationSettingsUrl);
+      await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+      pmmSettingsPage.fillCommunicationFields(current.type);
+      pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+      I.refreshPage();
+      await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+      await pmmSettingsPage.verifyCommunicationFields(current.type);
+    });
