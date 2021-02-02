@@ -4,18 +4,18 @@ import { DatasourceType } from '../PTSummary.types';
 export const DATASOURCE_OPTIONS = [
   {
     value: DatasourceType.node,
-    label: Messages.titles.nodePTSummary,
+    label: Messages.labels.nodePTSummary,
   },
   {
     value: DatasourceType.mysql,
-    label: Messages.titles.mysqlPTSummary,
+    label: Messages.labels.mysqlPTSummary,
   },
   {
     value: DatasourceType.postgresql,
-    label: Messages.titles.postgresqlPTSummary,
+    label: Messages.labels.postgresqlPTSummary,
   },
   {
     value: DatasourceType.mongodb,
-    label: Messages.titles.mongodbPTSummary,
+    label: Messages.labels.mongodbPTSummary,
   },
 ];

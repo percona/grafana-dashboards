@@ -1,4 +1,4 @@
-import { FieldType, MutableDataFrame, DataQueryRequest } from '@grafana/data';
+import { FieldType, MutableDataFrame } from '@grafana/data';
 import { ActionResult } from 'shared/components/Actions';
 import { PTSummaryDataSource } from './PTSummaryDataSource';
 import { PTSummaryService } from './PTSummary.service';
@@ -32,7 +32,9 @@ describe('PTSummaryDatasource::', () => {
 
     PTSummaryService.getPTSummary = jest.fn().mockResolvedValueOnce({ value: 'Test data' });
 
-    const result = await instance.query({ targets: [{ refId: 'A' }] } as DataQueryRequest);
+    const result = await instance.query({
+      targets: [{ refId: 'A', queryType: { queryType: 'node', variableName: undefined } }],
+    } as any);
 
     expect(result).toEqual(expected);
   });
@@ -50,8 +52,8 @@ describe('PTSummaryDatasource::', () => {
     PTSummaryService.getMysqlPTSummary = jest.fn().mockResolvedValueOnce({ value: 'Test data' });
 
     const result = await instance.query({
-      targets: [{ refId: 'A', queryType: 'mysql' }],
-    } as DataQueryRequest);
+      targets: [{ refId: 'A', queryType: { queryType: 'mysql', variableName: undefined } }],
+    } as any);
 
     expect(result).toEqual(expected);
   });
@@ -69,8 +71,8 @@ describe('PTSummaryDatasource::', () => {
     PTSummaryService.getMongodbPTSummary = jest.fn().mockResolvedValueOnce({ value: 'Test data' });
 
     const result = await instance.query({
-      targets: [{ refId: 'A', queryType: 'mongodb' }],
-    } as DataQueryRequest);
+      targets: [{ refId: 'A', queryType: { queryType: 'mongodb', variableName: undefined } }],
+    } as any);
 
     expect(result).toEqual(expected);
   });
@@ -88,8 +90,8 @@ describe('PTSummaryDatasource::', () => {
     PTSummaryService.getPostgresqlPTSummary = jest.fn().mockResolvedValueOnce({ value: 'Test data' });
 
     const result = await instance.query({
-      targets: [{ refId: 'A', queryType: 'postgresql' }],
-    } as DataQueryRequest);
+      targets: [{ refId: 'A', queryType: { queryType: 'postgresql', variableName: undefined } }],
+    } as any);
 
     expect(result).toEqual(expected);
   });

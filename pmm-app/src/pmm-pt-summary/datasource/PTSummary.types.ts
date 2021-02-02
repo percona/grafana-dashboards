@@ -4,7 +4,6 @@ export interface PTSummaryRequest {
 
 export interface DatabaseSummaryRequest {
   service_id: string;
-  environment: string;
 }
 
 export interface PTSummaryResponse {

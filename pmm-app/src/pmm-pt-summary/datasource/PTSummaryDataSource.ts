@@ -4,7 +4,6 @@ import {
   MutableDataFrame,
   FieldType,
   DataSourceInstanceSettings,
-  DataQueryRequest,
 } from '@grafana/data';
 import { getActionResult } from 'shared/components/Actions';
 import { PTSummaryService } from './PTSummary.service';
@@ -16,25 +15,25 @@ export class PTSummaryDataSource extends DataSourceApi {
     super(instanceSettings);
   }
 
-  async query(options: DataQueryRequest): Promise<DataQueryResponse> {
-    const summaryType = options.targets[0].queryType;
+  async query(options): Promise<DataQueryResponse> {
+    const { queryType, variableName } = options.targets[0].queryType || {};
 
     const getRequest = (type) => {
       switch (type) {
         case DatasourceType.node:
-          return PTSummaryService.getPTSummary();
+          return PTSummaryService.getPTSummary(variableName);
         case DatasourceType.mysql:
-          return PTSummaryService.getMysqlPTSummary();
+          return PTSummaryService.getMysqlPTSummary(variableName);
         case DatasourceType.mongodb:
-          return PTSummaryService.getMongodbPTSummary();
+          return PTSummaryService.getMongodbPTSummary(variableName);
         case DatasourceType.postgresql:
-          return PTSummaryService.getPostgresqlPTSummary();
+          return PTSummaryService.getPostgresqlPTSummary(variableName);
         default:
-          return PTSummaryService.getPTSummary();
+          return PTSummaryService.getPTSummary(variableName);
       }
     };
 
-    return getRequest(summaryType)
+    return getRequest(queryType)
       .then(async (response) => {
         const result = await getActionResult((response as PTSummaryResponse).action_id);
 

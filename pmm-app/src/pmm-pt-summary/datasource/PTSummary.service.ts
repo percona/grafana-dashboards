@@ -3,31 +3,28 @@ import { apiRequestManagement } from 'shared/components/helpers/api';
 import { PTSummaryRequest, PTSummaryResponse, DatabaseSummaryRequest } from './PTSummary.types';
 
 export const PTSummaryService = {
-  async getPTSummary() {
-    const body: PTSummaryRequest = { node_id: getTemplateSrv().replace('$node_id') };
+  async getPTSummary(variableName) {
+    const body: PTSummaryRequest = { node_id: getTemplateSrv().replace(`$${variableName || 'node_id'}`) };
 
     return apiRequestManagement.post<PTSummaryResponse, any>('/Actions/StartPTSummary', body, true);
   },
-  async getMysqlPTSummary() {
+  async getMysqlPTSummary(variableName) {
     const body: DatabaseSummaryRequest = {
-      service_id: getTemplateSrv().replace('$service_name'),
-      environment: getTemplateSrv().replace('$environment'),
+      service_id: getTemplateSrv().replace(`$${variableName || 'service_name'}`),
     };
 
     return apiRequestManagement.post<PTSummaryResponse, any>('/Actions/StartPTMySQLSummary', body, true);
   },
-  async getPostgresqlPTSummary() {
+  async getPostgresqlPTSummary(variableName) {
     const body: DatabaseSummaryRequest = {
-      service_id: getTemplateSrv().replace('$service_name'),
-      environment: getTemplateSrv().replace('$environment'),
+      service_id: getTemplateSrv().replace(`$${variableName || 'service_name'}`),
     };
 
     return apiRequestManagement.post<PTSummaryResponse, any>('/Actions/StartPTPostgreSQLSummary', body, true);
   },
-  async getMongodbPTSummary() {
+  async getMongodbPTSummary(variableName) {
     const body: DatabaseSummaryRequest = {
-      service_id: getTemplateSrv().replace('$service_name'),
-      environment: getTemplateSrv().replace('$environment'),
+      service_id: getTemplateSrv().replace(`$${variableName || 'service-name'}`),
     };
 
     return apiRequestManagement.post<PTSummaryResponse, any>('/Actions/StartPTMongoDBSummary', body, true);
