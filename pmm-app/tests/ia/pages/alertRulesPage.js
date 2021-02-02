@@ -1,4 +1,5 @@
 const { I } = inject();
+const rulesNameCell = (ruleName) => `//td[1][div[text()="${ruleName}"]]`;
 
 module.exports = {
   url: 'graph/integrated-alerting',
@@ -99,14 +100,14 @@ module.exports = {
     noRules: '[data-qa=alert-rules-table-no-data] > h1',
     rulesTableHeader: '$alert-rules-table-thead',
     rulesTable: '$alert-rules-table-tbody',
-    rulesNameCell: (ruleName) => `//td[1][div[text()="${ruleName}"]]`,
+    rulesNameCell: (ruleName) => rulesNameCell(ruleName),
     // activateSwitch returns enable/disabled rule switch locator which holds the state (enabled or disabled)
     // Note: not clickable one
-    activateSwitch: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//input[@data-qa='toggle-alert-rule']`,
-    thresholdCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[1]`,
-    durationCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[2]`,
-    severityCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[3]`,
-    filtersCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[4]//span`,
+    activateSwitch: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td//input[@data-qa='toggle-alert-rule']`,
+    thresholdCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[1]`,
+    durationCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[2]`,
+    severityCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[3]`,
+    filtersCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[4]//span`,
     modalHeader: '$modal-header',
     modalContent: '$modal-content',
     popUpTitle: '.alert-title',
@@ -123,17 +124,17 @@ module.exports = {
     cancelDelete: '$cancel-delete-modal-button',
     delete: '$confirm-delete-modal-button',
     // showDetails returns Show rule details button locator for a given rule name
-    showDetails: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}//button[@data-qa="show-alert-rule-details"]`,
+    showDetails: (ruleName) => `${rulesNameCell(ruleName)}//button[@data-qa="show-alert-rule-details"]`,
     // hideDetails returns Hide rule details button locator for a given rule name
-    hideDetails: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}//button[@data-qa="hide-alert-rule-details"]`,
+    hideDetails: (ruleName) => `${rulesNameCell(ruleName)}//button[@data-qa="hide-alert-rule-details"]`,
     // editAlertRule returns Edit rule button locator for a given rule name
-    editAlertRule: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='edit-alert-rule-button']`,
+    editAlertRule: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='edit-alert-rule-button']`,
     // duplicateAlertRule returns Copy rule button locator for a given rule name
-    duplicateAlertRule: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='copy-alert-rule-button']`,
+    duplicateAlertRule: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='copy-alert-rule-button']`,
     // deleteAlertRule returns Delete rule button locator for a given rule name
-    deleteAlertRule: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='delete-alert-rule-button']`,
+    deleteAlertRule: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='delete-alert-rule-button']`,
     // toggleAlertRule returns Enable/Disable rule switch locator in alert rules list
-    toggleAlertRule: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//input[@data-qa='toggle-alert-rule']/following-sibling::label`,
+    toggleAlertRule: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td//input[@data-qa='toggle-alert-rule']/following-sibling::label`,
     toogleInModal: '//input[@data-qa="enabled-toggle-input"]/following-sibling::label',
   },
   fields: {
