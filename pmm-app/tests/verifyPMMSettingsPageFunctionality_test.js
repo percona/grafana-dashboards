@@ -1,3 +1,4 @@
+const CONFIG = require('../pr-local.codecept.js').config.multiple.parallel;
 const communicationDefaults = new DataTable(['type']);
 
 communicationDefaults.add(['email']);
@@ -8,12 +9,12 @@ Feature('PMM Settings Page Functionality');
 Before(async (I, pmmSettingsPage, settingsAPI) => {
   I.Authorize();
   await settingsAPI.restoreSettingsDefaults();
-  I.amOnPage(pmmSettingsPage.url);
 });
 
 Scenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
   const resolutionToApply = 'Rare';
 
+  I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.selectMetricsResolution(resolutionToApply);
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
@@ -26,6 +27,7 @@ Scenario('Open PMM Settings page and verify changing Data Retention [critical]',
   const dataRetentionValue = '1';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
+  I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -42,6 +44,7 @@ Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]'
   const scheme = 'http://';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
+  I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(
@@ -58,10 +61,11 @@ Scenario(
   async (I, pmmSettingsPage) => {
     const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
+    I.amOnPage(pmmSettingsPage.url);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    I.moveCursorTo(pmmSettingsPage.fields.sttLabelTooltipSelector);
+    I.moveCursor(pmmSettingsPage.fields.sttLabelTooltipSelector);
     await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.stt);
   },
 );
@@ -71,6 +75,7 @@ Scenario(
   async (I, pmmSettingsPage) => {
     const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
+    I.amOnPage(pmmSettingsPage.url);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -90,6 +95,7 @@ Scenario('PMM-T520 - Verify that alert is in Firing State - internal alert manag
   const scheme = 'http://127.0.0.1';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
+  I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(
@@ -107,6 +113,7 @@ Scenario('PMM-T520 - Verify that alert is being fired to external Alert Manager 
   const scheme = 'http://';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
+  I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(
@@ -121,7 +128,7 @@ Scenario('PMM-T520 - Verify that alert is being fired to external Alert Manager 
   await pmmSettingsPage.verifyExternalAlertManager(pmmSettingsPage.alertManager.ruleName2);
 });
 
-Scenario('PMM-T532 PMM-T536 - Verify user can enable IA in Settings @ia @not-pr-pipeline',
+Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable IA in Settings @ia @not-pr-pipeline',
   async (I, pmmSettingsPage, settingsAPI, adminPage) => {
     await settingsAPI.apiDisableIA();
     I.amOnPage(pmmSettingsPage.advancedSettingsUrl);
@@ -135,13 +142,6 @@ Scenario('PMM-T532 PMM-T536 - Verify user can enable IA in Settings @ia @not-pr-
     I.seeElementInDOM(adminPage.sideMenu.integratedAlerting);
     I.seeTextEquals('Integrated Alerting', adminPage.sideMenu.integratedAlerting);
     I.seeTextEquals('Communication', pmmSettingsPage.communication.communicationSection);
-  });
-
-Scenario('PMM-T533 PMM-T536 - Verify user can disable IA in Settings @ia @not-pr-pipeline',
-  async (I, pmmSettingsPage, settingsAPI, adminPage) => {
-    await settingsAPI.apiEnableIA();
-    I.amOnPage(pmmSettingsPage.advancedSettingsUrl);
-    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.click(pmmSettingsPage.fields.iaSwitchSelector);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.iaSwitchSelectorInput, 'off');
     I.click(pmmSettingsPage.fields.advancedButton);
@@ -150,6 +150,7 @@ Scenario('PMM-T533 PMM-T536 - Verify user can disable IA in Settings @ia @not-pr
     I.dontSeeElementInDOM(adminPage.sideMenu.integratedAlerting);
     I.dontSeeElement(pmmSettingsPage.communication.communicationSection);
   });
+
 
 Data(communicationDefaults)
   .Scenario('PMM-T534 PMM-T534 - Verify user is able to set up default Email/Slack communication settings @ia @not-pr-pipeline',
