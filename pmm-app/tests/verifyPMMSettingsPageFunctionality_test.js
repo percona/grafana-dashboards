@@ -6,7 +6,7 @@ Before(async (I, pmmSettingsPage, settingsAPI) => {
   I.amOnPage(pmmSettingsPage.url);
 });
 
-Scenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
+Scenario('PMM-T93 - Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
   const resolutionToApply = 'Rare';
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -17,7 +17,7 @@ Scenario('Open PMM Settings page and verify changing Metrics Resolution [critica
   await pmmSettingsPage.verifySelectedResolution(resolutionToApply);
 });
 
-Scenario('Open PMM Settings page and verify changing Data Retention [critical]', async (I, pmmSettingsPage) => {
+Scenario('PMM-T94 - Open PMM Settings page and verify changing Data Retention [critical]', async (I, pmmSettingsPage) => {
   const dataRetentionValue = '1';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
