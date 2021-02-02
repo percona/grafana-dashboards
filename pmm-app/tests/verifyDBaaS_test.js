@@ -6,11 +6,10 @@ Before(async (I) => {
   I.Authorize();
 });
 
-// Need to Skip this for now, we need to setup correct config to be provided for this test https://jira.percona.com/browse/PMM-6457
-xScenario(
-  'PMM-T426 - Verify adding new Kubernetes cluster, PMM-T428 - Verify adding new Kubernetes cluster with same name, PMM-T431 -Verify deleting Kubernetes cluster @not-pr-pipeline',
+Scenario(
+  'PMM-T426 - Verify adding new Kubernetes cluster minikube, PMM-T428 - Verify adding new Kubernetes cluster with same name, PMM-T431 -Verify unregistering Kubernetes cluster @not-pr-pipeline @dbaas',
   async (I, dbaasPage) => {
-    const clusterName = 'Kubernetes_Testing_Cluster';
+    const clusterName = 'Kubernetes_Testing_Cluster_Minikube';
 
     I.amOnPage(dbaasPage.url);
     I.waitForVisible(dbaasPage.fields.addKubernetesClusterButtonInTable, 30);
@@ -23,20 +22,20 @@ xScenario(
     I.pressKey('Escape');
     I.dontSeeElement(dbaasPage.fields.modalWindow);
     // cannot automate click outside the form
-    dbaasPage.addKubernetesCluster(clusterName, 'Kubernetes_Config_Test');
+    dbaasPage.registerKubernetesCluster(clusterName, process.env.kubeconfig_minikube);
     I.waitForText(dbaasPage.addedAlertMessage, 10);
     dbaasPage.checkCluster(clusterName, false);
     // PMM-T428 - starting here
-    dbaasPage.addKubernetesCluster(clusterName, 'Kubernetes_Config_Test');
+    dbaasPage.registerKubernetesCluster(clusterName, process.env.kubeconfig_minikube);
     dbaasPage.seeErrorForAddedCluster(clusterName);
     // PMM-T431 - starting here
-    dbaasPage.deleteCluster(clusterName);
+    dbaasPage.unregisterCluster(clusterName);
     dbaasPage.checkCluster(clusterName, true);
   },
 );
 
 Scenario(
-  'PMM-T427 - Verify submitting blank Add kubernetes cluster form @not-pr-pipeline',
+  'PMM-T427 - Verify submitting blank Add kubernetes cluster form @not-pr-pipeline @dbaas',
   async (I, dbaasPage) => {
     const clusterName = 'Kubernetes_Testing_Cluster';
 
@@ -56,7 +55,7 @@ Scenario(
   },
 );
 
-Scenario('PMM-T427 - Verify elements on PMM DBaaS page @not-pr-pipeline', async (I, dbaasPage) => {
+Scenario('PMM-T427 - Verify elements on PMM DBaaS page @not-pr-pipeline @dbaas', async (I, dbaasPage) => {
   I.amOnPage(dbaasPage.url);
   I.waitForVisible(dbaasPage.fields.addKubernetesClusterButton, 30);
   I.waitForVisible(dbaasPage.fields.addKubernetesClusterButtonInTable, 30);

@@ -2,9 +2,9 @@ const { I } = inject();
 
 module.exports = {
   url: 'graph/d/pmm-dbaas/dbaas?orgId=1',
-  addedAlertMessage: 'Cluster was successfully added',
-  confirmDeleteText: 'Are you sure that you want to permanently delete this cluster?',
-  deletedAlertMessage: 'Cluster successfully deleted',
+  addedAlertMessage: 'Cluster was successfully registered',
+  confirmDeleteText: 'Are you sure that you want to unregister this cluster?',
+  deletedAlertMessage: 'Cluster successfully unregistered',
   fields: {
     addKubernetesClusterButton: '$kubernetes-new-cluster-button',
     addKubernetesClusterButtonInTable:
@@ -17,6 +17,9 @@ module.exports = {
     kubernetesAddButton: '$kubernetes-add-cluster-button',
     requiredField: '//div[contains(text(), \'Required field\')]',
     proceedButton: '$delete-kubernetes-button',
+    unregisterButton: '//div[@data-qa=\'dropdown-menu-menu\']//span[1]',
+    viewClusterConfiguration: '//div[@data-qa=\'dropdown-menu-menu\']//span[2]',
+    forceUnreigsterCheckBox: '.checkbox-container__checkmark',
   },
 
   checkCluster(cluserName, deleted) {
@@ -35,18 +38,20 @@ module.exports = {
     I.waitForText(message, 10);
   },
 
-  addKubernetesCluster(clusterName, config) {
+  registerKubernetesCluster(clusterName, config) {
     I.click(this.fields.addKubernetesClusterButton);
     I.fillField(this.fields.kubernetesClusterNameInput, clusterName);
     I.fillField(this.fields.kubeconfigFileInput, config);
     I.click(this.fields.kubernetesAddButton);
   },
 
-  deleteCluster(cluserName) {
-    const deleteLocator = `//td[contains(text(), '${cluserName}')]//parent::tr//button[@data-qa='open-delete-modal-button']`;
+  unregisterCluster(cluserName) {
+    const actionsLocator = `//td[contains(text(), '${cluserName}')]//parent::tr//button[@data-qa='dropdown-menu-toggle']`;
 
-    I.waitForVisible(deleteLocator, 30);
-    I.click(deleteLocator);
+    I.waitForVisible(actionsLocator, 30);
+    I.click(actionsLocator);
+    I.waitForElement(this.fields.unregisterButton, 30);
+    I.click(this.fields.unregisterButton);
     I.waitForText(this.confirmDeleteText, 10);
     I.click(this.fields.proceedButton);
     I.waitForText(this.deletedAlertMessage, 10);
