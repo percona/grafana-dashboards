@@ -9,7 +9,7 @@ export const loadShowSilencedValue = (): boolean => {
       return SHOW_SILENCED_DEFAULT;
     }
 
-    return !!showSilencedValue;
+    return showSilencedValue === 'true';
   } catch (e) {
     logger.error(e);
 
