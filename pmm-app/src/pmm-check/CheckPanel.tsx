@@ -3,12 +3,13 @@ import React, {
 } from 'react';
 import { createBrowserHistory } from 'history';
 import {
-  Spinner, Tab, TabContent, TabsBar,
+  Spinner, Tab, TabContent, TabsBar, useStyles,
 } from '@grafana/ui';
-import { Route, Router } from 'react-router-dom';
+import { Link, Route, Router } from 'react-router-dom';
+import { PMM_SETTINGS_URL } from 'pmm-check/CheckPanel.constants';
 import { Settings, TabEntry, TabKeys } from './types';
 import { CheckService } from './Check.service';
-import * as styles from './CheckPanel.styles';
+import { getStyles } from './CheckPanel.styles';
 import { Messages } from './CheckPanel.messages';
 import { AllChecksTab, FailedChecksTab } from './components';
 
@@ -19,6 +20,7 @@ export const CheckPanel: FC = () => {
   const [hasNoAccess, setHasNoAccess] = useState(false);
   const [isSttEnabled, setIsSttEnabled] = useState(false);
   const [getSettingsPending, setGetSettingsPending] = useState(false);
+  const styles = useStyles(getStyles);
 
   const getSettings = async () => {
     try {
@@ -44,23 +46,24 @@ export const CheckPanel: FC = () => {
     {
       label: Messages.failedChecksTitle,
       key: TabKeys.failedChecks,
-      component: <FailedChecksTab hasNoAccess={hasNoAccess} isSttEnabled={isSttEnabled} />,
+      component: <FailedChecksTab key="failed-checks" hasNoAccess={hasNoAccess} />,
     },
     {
       label: Messages.allChecksTitle,
       key: TabKeys.allChecks,
-      component: <AllChecksTab />,
+      component: <AllChecksTab key="all-checks" />,
     },
   ],
   [hasNoAccess, isSttEnabled]);
 
   return (
     <div className={styles.panel} data-qa="db-check-panel">
-      {getSettingsPending ? (
+      {getSettingsPending && (
         <div className={styles.spinner} data-qa="db-check-spinner">
           <Spinner />
         </div>
-      ) : (
+      )}
+      {!getSettingsPending && (isSttEnabled ? (
         <>
           <TabsBar className={styles.tabBar} data-qa="db-check-tabs-bar">
             {tabs.map((tab) => (
@@ -76,7 +79,15 @@ export const CheckPanel: FC = () => {
             {tabs.map((tab) => tab.key === activeTab && tab.component)}
           </TabContent>
         </>
-      )}
+      ) : (
+        <div className={styles.empty} data-qa="db-check-panel-settings-link">
+          {Messages.sttDisabled}
+          {' '}
+          <Link className={styles.link} to={PMM_SETTINGS_URL}>
+            {Messages.pmmSettings}
+          </Link>
+        </div>
+      ))}
     </div>
   );
 };
