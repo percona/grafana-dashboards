@@ -2,7 +2,7 @@ const { I } = inject();
 const assert = require('assert');
 
 module.exports = {
-  async createAlertRule(ruleName) {
+  async createAlertRule(ruleName, templateName = 'pmm_postgresql_too_many_connections') {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const body = {
       custom_labels: {},
@@ -17,7 +17,7 @@ module.exports = {
       ],
       for: '1s',
       severity: 'SEVERITY_CRITICAL',
-      template_name: 'pmm_postgresql_too_many_connections',
+      template_name: templateName,
       summary: ruleName,
       params: [
         {
