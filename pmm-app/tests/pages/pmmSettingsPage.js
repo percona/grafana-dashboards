@@ -237,6 +237,7 @@ module.exports = {
 
     if (iaEnabled) {
       I.click(this.fields.iaSwitchSelector);
+      I.click(this.fields.advancedButton);
     }
   },
 
