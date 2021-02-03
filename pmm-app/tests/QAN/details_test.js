@@ -88,7 +88,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T13 - Check Explain and Example for supported Dsadsad   dsdasdasddddddBs dsad   dsdasdadsad   dsdasdadsad   dsdasda - pgsql @qan @not-pr-pipeline',
+  'PMM-T13 - Check Explain and Example for supported DBs - pgsql @qan @not-pr-pipeline',
   async (I, qanOverview, qanFilters, qanDetails) => {
     qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('pgsql-dev');
