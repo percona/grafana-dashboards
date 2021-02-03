@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 const { I } = inject();
 
 module.exports = {
@@ -28,7 +30,12 @@ module.exports = {
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
-    await I.sendPostRequest('v1/Settings/Change', body, headers);
+    const resp = await I.sendPostRequest('v1/Settings/Change', body, headers);
+
+    assert.ok(
+      resp.status === 200,
+      'Failed to disable Integrated alerting',
+    );
   },
 
   async apiEnableIA() {
@@ -37,7 +44,12 @@ module.exports = {
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
-    await I.sendPostRequest('v1/Settings/Change', body, headers);
+    const resp = await I.sendPostRequest('v1/Settings/Change', body, headers);
+
+    assert.ok(
+      resp.status === 200,
+      'Failed to enable Integrated alerting',
+    );
   },
 
   async restoreSettingsDefaults() {
