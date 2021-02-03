@@ -34,7 +34,7 @@ module.exports = {
 
     assert.ok(
       resp.status === 200,
-      'Failed to disable Integrated alerting',
+      `Failed to disable Integrated alerting. ${resp.data.message}`,
     );
   },
 
@@ -48,7 +48,7 @@ module.exports = {
 
     assert.ok(
       resp.status === 200,
-      'Failed to enable Integrated alerting',
+      `Failed to enable Integrated alerting. ${resp.data.message}`,
     );
   },
 
