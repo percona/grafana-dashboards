@@ -180,7 +180,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T566 Verify user can delete Alert rule @ia @not-pr-pipeline',
+  'PMM-T517 Verify user can delete Alert rule @ia @not-pr-pipeline',
   async (I, alertRulesPage, rulesAPI) => {
     const ruleName = 'QAA PSQL delete test';
 
@@ -203,14 +203,20 @@ Scenario(
   'PMM-T563 Verify user can see YAML content for the User-defined Alert rule @ia @not-pr-pipeline',
   async (I, ruleTemplatesPage, alertRulesPage, rulesAPI) => {
     const ruleName = 'QAA PSQL yaml content test';
+    const ruleNameNoContent = 'Rule without yaml content';
     const [, content, id] = await ruleTemplatesPage.ruleTemplate
       .templateNameAndContent('tests/ia/templates/templateForRules.yaml');
 
     await rulesAPI.createAlertRule(ruleName, id);
+    await rulesAPI.createAlertRule(ruleNameNoContent);
     alertRulesPage.openAlertRulesTab();
     I.click(alertRulesPage.buttons.showDetails(ruleName));
     I.seeTextEquals(content, alertRulesPage.elements.ruleDetails);
     I.click(alertRulesPage.buttons.hideDetails(ruleName));
+    I.dontSeeElement(alertRulesPage.elements.ruleDetails);
+    I.click(alertRulesPage.buttons.showDetails(ruleNameNoContent));
+    I.seeTextEquals('', alertRulesPage.elements.ruleDetails);
+    I.click(alertRulesPage.buttons.hideDetails(ruleNameNoContent));
     I.dontSeeElement(alertRulesPage.elements.ruleDetails);
   },
 );

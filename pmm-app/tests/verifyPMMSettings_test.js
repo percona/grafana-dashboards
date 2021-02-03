@@ -1,4 +1,5 @@
 const assert = require('assert');
+
 const communicationDefaults = new DataTable(['type']);
 
 communicationDefaults.add(['email']);
@@ -123,14 +124,7 @@ Scenario(
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
-
-    // turning off IA switch to keep old STT and Telemetry switch logic
-    const iaEnabled = await I.grabAttributeFrom(pmmSettingsPage.fields.iaSwitchSelectorInput, 'checked');
-
-    if (iaEnabled) {
-      I.click(pmmSettingsPage.fields.iaSwitchSelector);
-    }
-
+    await pmmSettingsPage.disableIA();
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelectorInput, 'on');
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'off');
     I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
@@ -148,6 +142,7 @@ Scenario('PMM-T537 - Verify user is not able to enable IA if Telemetry is disabl
     await settingsAPI.apiDisableIA();
     I.amOnPage(pmmSettingsPage.advancedSettingsUrl);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.disableIA();
     I.seeAttributesOnElements(pmmSettingsPage.fields.iaSwitchSelectorInput, { disabled: null });
     I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
     I.seeAttributesOnElements(pmmSettingsPage.fields.iaSwitchSelectorInput, { disabled: true });
@@ -334,6 +329,7 @@ Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable IA in Settings @ia
     await settingsAPI.apiDisableIA();
     I.amOnPage(pmmSettingsPage.advancedSettingsUrl);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.disableIA();
     I.click(pmmSettingsPage.fields.iaSwitchSelector);
     I.dontSeeElement(pmmSettingsPage.communication.communicationSection);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.iaSwitchSelectorInput, 'on');

@@ -68,7 +68,8 @@ class Grafana extends Helper {
 
   async moveCursor(locator) {
     const { page } = this.helpers.Playwright;
-    page.hover(locator)
+
+    page.hover(locator);
   }
 
   // eslint-disable-next-line no-underscore-dangle, class-methods-use-this

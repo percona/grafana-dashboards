@@ -232,6 +232,14 @@ module.exports = {
     }
   },
 
+  async disableIA() {
+    const iaEnabled = await I.grabAttributeFrom(this.fields.iaSwitchSelectorInput, 'checked');
+
+    if (iaEnabled) {
+      I.click(this.fields.iaSwitchSelector);
+    }
+  },
+
   async verifyCommunicationFields(type) {
     if (type === 'slack') I.click(this.communication.slackTab);
 
