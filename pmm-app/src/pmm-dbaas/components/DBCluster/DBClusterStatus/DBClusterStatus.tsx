@@ -37,11 +37,7 @@ export const DBClusterStatus: FC<DBClusterStatusProps> = ({
     // handles the last step of the progress bar
     // creates a delay between the last step and showing active status
     // without this the bar would jump from the second last step to active status
-    if (
-      prevStatus.current === Status.changing
-      && status === Status.ready
-      && finishedSteps === totalSteps
-    ) {
+    if (prevStatus.current === Status.changing && status === Status.ready) {
       setTimeout(() => setShowProgressBar(false), COMPLETE_PROGRESS_DELAY);
     } else {
       setShowProgressBar(getShowProgressBarValue(status, prevStatus.current));

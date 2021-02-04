@@ -23,7 +23,7 @@ export const getStyles = ({ palette, spacing, typography }: GrafanaTheme) => ({
     label: error;
   `,
   message: css`
-    font-size: ${typography.size.xs};
+    font-size: ${typography.size.sm};
   `,
   progressBarBackground: css`
     background-color: ${palette.gray1};

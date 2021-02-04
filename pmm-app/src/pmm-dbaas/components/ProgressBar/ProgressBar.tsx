@@ -3,6 +3,7 @@ import { cx } from 'emotion';
 import { useStyles } from '@grafana/ui';
 import { getStyles } from './ProgressBar.styles';
 import { ProgressBarProps, ProgressBarStatus } from './ProgressBar.types';
+import { getProgressBarPercentage } from './ProgressBar.utils';
 
 export const ProgressBar: FC<ProgressBarProps> = ({
   finishedSteps,
@@ -18,15 +19,17 @@ export const ProgressBar: FC<ProgressBarProps> = ({
   const stepsLabelErrorStyles = useMemo(() => ({
     [styles.stepsLabelError]: status === ProgressBarStatus.error,
   }), [status]);
-  const width = totalSteps > 0 ? Math.round((finishedSteps * 100) / totalSteps) : 0;
+  const width = getProgressBarPercentage(finishedSteps, totalSteps);
 
   return (
     <div className={styles.progressBarWrapper} data-qa={dataQa}>
       <div className={styles.labelWrapper}>
         <span data-qa="progress-bar-steps" className={cx(styles.stepsLabel, stepsLabelErrorStyles)}>
-          {finishedSteps}
-          /
-          {totalSteps}
+          {finishedSteps === 0 && totalSteps === 0 ? (
+            '-/-'
+          ) : (
+            `${finishedSteps}/${totalSteps}`
+          )}
         </span>
         <span
           data-qa="progress-bar-message"
