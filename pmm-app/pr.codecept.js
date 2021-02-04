@@ -60,7 +60,15 @@ exports.config = {
   },
   multiple: {
     parallel: {
-      chunks: 3,
+      chunks: (files) => {
+        const conflictGroup = files.filter((value) => value.includes('PMMSettings') || value.includes('database') || value.includes('ia'));
+        const otherGroup = files.filter((val) => (conflictGroup.indexOf(val) === -1));
+
+        return [
+          conflictGroup,
+          otherGroup,
+        ];
+      },
       browsers: ['chromium'],
     },
   },
