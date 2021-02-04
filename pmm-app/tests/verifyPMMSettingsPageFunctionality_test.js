@@ -165,5 +165,4 @@ Data(communicationDefaults)
       I.refreshPage();
       await pmmSettingsPage.waitForPmmSettingsPageLoaded();
       await pmmSettingsPage.verifyCommunicationFields(current.type);
-    });
-
+    }).retry(2);
