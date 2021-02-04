@@ -10,7 +10,7 @@ Before(async (I, pmmSettingsPage, settingsAPI) => {
   await settingsAPI.restoreSettingsDefaults();
 });
 
-Scenario('PMM-T537 - Verify user is not able to enable IA if Telemetry is disabled @ia @not-pr-pipeline',
+xScenario('PMM-T537 - Verify user is not able to enable IA if Telemetry is disabled @ia @not-pr-pipeline',
   async (I, pmmSettingsPage, settingsAPI) => {
     await settingsAPI.apiDisableIA();
     I.amOnPage(pmmSettingsPage.advancedSettingsUrl);
@@ -20,7 +20,7 @@ Scenario('PMM-T537 - Verify user is not able to enable IA if Telemetry is disabl
     I.seeAttributesOnElements(pmmSettingsPage.fields.iaSwitchSelectorInput, { disabled: true });
   }).retry(2);
 
-Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Settings @ia @not-pr-pipeline',
+xScenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Settings @ia @not-pr-pipeline',
   async (I, pmmSettingsPage, settingsAPI, adminPage) => {
     await settingsAPI.apiDisableIA();
     I.amOnPage(pmmSettingsPage.advancedSettingsUrl);
@@ -45,15 +45,14 @@ Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Sett
   });
 
 
-Data(communicationDefaults)
-  .Scenario('PMM-T534 PMM-T535 - Verify user is able to set up default Email/Slack communication settings @ia @not-pr-pipeline',
-    async (I, pmmSettingsPage, settingsAPI, current) => {
-      await settingsAPI.apiEnableIA();
-      I.amOnPage(pmmSettingsPage.communicationSettingsUrl);
-      await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-      pmmSettingsPage.fillCommunicationFields(current.type);
-      pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
-      I.refreshPage();
-      await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-      await pmmSettingsPage.verifyCommunicationFields(current.type);
-    });
+xScenario('PMM-T534 PMM-T535 - Verify user is able to set up default Email/Slack communication settings @ia @not-pr-pipeline',
+  async (I, pmmSettingsPage, settingsAPI, current) => {
+    await settingsAPI.apiEnableIA();
+    I.amOnPage(pmmSettingsPage.communicationSettingsUrl);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    pmmSettingsPage.fillCommunicationFields(current.type);
+    pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+    I.refreshPage();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.verifyCommunicationFields(current.type);
+  });
