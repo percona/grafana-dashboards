@@ -3,7 +3,7 @@ const communicationDefaults = new DataTable(['type']);
 communicationDefaults.add(['email']);
 communicationDefaults.add(['slack']);
 
-Feature('PMM Settings Functionality').retry(3);
+Feature('PMM Settings Functionality');
 
 Before(async (I, pmmSettingsPage, settingsAPI) => {
   I.Authorize();
@@ -151,7 +151,7 @@ Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Sett
     I.dontSeeElementInDOM(adminPage.sideMenu.integratedAlerting);
     I.dontSeeElement(pmmSettingsPage.communication.communicationSection);
     await settingsAPI.apiEnableIA();
-  });
+  }).retry(2);
 
 
 Data(communicationDefaults)

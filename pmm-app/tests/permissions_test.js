@@ -1,4 +1,4 @@
-Feature('PMM Permission restrictions').retry(3);
+Feature('PMM Permission restrictions');
 let viewer;
 let admin;
 const users = {

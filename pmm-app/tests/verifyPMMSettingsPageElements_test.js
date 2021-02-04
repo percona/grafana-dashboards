@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-Feature('PMM Settings Elements').retry(3);
+Feature('PMM Settings Elements');
 
 Before(async (I, pmmSettingsPage, settingsAPI) => {
   I.Authorize();

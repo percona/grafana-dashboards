@@ -6,7 +6,7 @@ for (const [, channel] of Object.entries(page.types)) {
   notificationChannels.add([channel.name, channel.type]);
 }
 
-Feature('IA: Notification Channels').retry(3);
+Feature('IA: Notification Channels');
 
 
 Before(async (I, channelsAPI, settingsAPI) => {

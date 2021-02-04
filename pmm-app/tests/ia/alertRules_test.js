@@ -9,7 +9,7 @@ Object.values(page.rules).forEach((rule) => {
     rule.severity, rule.filters, rule.channels, rule.activate]);
 });
 
-Feature('IA: Alert rules').retry(3);
+Feature('IA: Alert rules');
 
 Before(async (I, alertRulesPage, settingsAPI) => {
   I.Authorize();
