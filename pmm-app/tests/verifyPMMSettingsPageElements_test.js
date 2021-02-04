@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-Feature('PMM Settings Elements');
+Feature('PMM Settings Elements').retry(3);
 
 Before(async (I, pmmSettingsPage, settingsAPI) => {
   I.Authorize();
@@ -195,4 +195,5 @@ Scenario('PMM-T537 - Verify user is not able to enable IA if Telemetry is disabl
     I.seeAttributesOnElements(pmmSettingsPage.fields.iaSwitchSelectorInput, { disabled: null });
     I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
     I.seeAttributesOnElements(pmmSettingsPage.fields.iaSwitchSelectorInput, { disabled: true });
+    await settingsAPI.apiEnableIA();
   }).retry(2);

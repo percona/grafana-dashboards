@@ -3,7 +3,7 @@ const communicationDefaults = new DataTable(['type']);
 communicationDefaults.add(['email']);
 communicationDefaults.add(['slack']);
 
-Feature('PMM Settings Functionality');
+Feature('PMM Settings Functionality').retry(3);
 
 Before(async (I, pmmSettingsPage, settingsAPI) => {
   I.Authorize();
@@ -138,6 +138,7 @@ Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Sett
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.iaSwitchSelectorInput, 'on');
     I.click(pmmSettingsPage.fields.advancedButton);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    I.waitForVisible(pmmSettingsPage.fields.iaSwitchSelectorInput, 30);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.iaSwitchSelectorInput, 'on');
     I.seeElementInDOM(adminPage.sideMenu.integratedAlerting);
     I.seeTextEquals('Integrated Alerting', adminPage.sideMenu.integratedAlerting);
@@ -149,6 +150,7 @@ Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Sett
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.iaSwitchSelectorInput, 'off');
     I.dontSeeElementInDOM(adminPage.sideMenu.integratedAlerting);
     I.dontSeeElement(pmmSettingsPage.communication.communicationSection);
+    await settingsAPI.apiEnableIA();
   });
 
 
