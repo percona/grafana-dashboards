@@ -62,7 +62,11 @@ export type CheckPanelProps = { component: FC } & RouteComponentProps;
 
 export type SeverityMap = Record<Severity, string>;
 
-export type AlertState = 'active' | 'suppressed' | 'unprocessed';
+export enum AlertState {
+  active = 'active',
+  suppressed = 'suppressed',
+  unprocessed = 'unprocessed',
+}
 
 export interface Alert {
   annotations: {
