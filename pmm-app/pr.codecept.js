@@ -61,7 +61,8 @@ exports.config = {
   multiple: {
     parallel: {
       chunks: (files) => {
-        const conflictGroup = files.filter((value) => value.includes('PMMSettings') || value.includes('database') || value.includes('ia'));
+        const conflictGroup = files.filter((value) => value.includes('PMMSettings')
+          || value.includes('database') || value.includes('ia') || value.includes('permissions'));
         const otherGroup = files.filter((val) => (conflictGroup.indexOf(val) === -1));
 
         return [
