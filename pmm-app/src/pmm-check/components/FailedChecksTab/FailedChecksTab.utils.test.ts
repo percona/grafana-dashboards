@@ -22,18 +22,13 @@ describe('FailedChecksTab::utils', () => {
   });
 
   test('loadShowSilencedValue calls localStorage.getItem', () => {
-    jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => 'true');
-    const value = loadShowSilencedValue();
-
     expect(getItemSpy).toBeCalledTimes(1);
-    expect(value).toEqual(true);
+    expect(loadShowSilencedValue()).toEqual(true);
   });
 
   test('loadShowSilencedValue the default value if localStorage is not available', () => {
     jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => { throw Error('test error'); });
 
-    const value = loadShowSilencedValue();
-
-    expect(value).toBe(SHOW_SILENCED_DEFAULT);
+    expect(loadShowSilencedValue()).toBe(SHOW_SILENCED_DEFAULT);
   });
 });
