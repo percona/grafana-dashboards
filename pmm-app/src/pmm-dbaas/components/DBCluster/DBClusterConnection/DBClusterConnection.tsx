@@ -15,6 +15,7 @@ import { DBClusterServiceFactory } from '../DBClusterService.factory';
 
 export const DBClusterConnection: FC<DBClusterConnectionProps> = ({ dbCluster }) => {
   const styles = useStyles(getStyles);
+  const [loading, setLoading] = useState(true);
   const [connection, setConnection] = useState<ConnectionParams>(INITIAL_CONNECTION);
   const {
     host, password, port, username,
@@ -23,12 +24,15 @@ export const DBClusterConnection: FC<DBClusterConnectionProps> = ({ dbCluster })
   const isClusterReady = status && status === DBClusterStatus.ready;
   const getClusterConnection = async () => {
     try {
+      setLoading(true);
       const dbClusterService = DBClusterServiceFactory.newDBClusterService(databaseType);
       const connection = (await dbClusterService.getDBCluster(dbCluster)) as DBClusterConnectionAPI;
 
       setConnection(connection.connection_credentials);
     } catch (e) {
       console.error(e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,7 +45,7 @@ export const DBClusterConnection: FC<DBClusterConnectionProps> = ({ dbCluster })
   return (
     <>
       <div className={styles.connectionWrapper}>
-        {isClusterReady && (
+        {!loading && isClusterReady && (
           <>
             <DBClusterConnectionItem
               label={Messages.dbcluster.table.connection.host}
