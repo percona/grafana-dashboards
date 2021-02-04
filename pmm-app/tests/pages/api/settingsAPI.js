@@ -11,7 +11,12 @@ module.exports = {
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
-    await I.sendPostRequest('v1/Settings/Change', body, headers);
+    const resp = await I.sendPostRequest('v1/Settings/Change', body, headers);
+
+    assert.ok(
+      resp.status === 200,
+      `Failed to enabled STT. ${resp.data.message}`,
+    );
   },
 
   async apiDisableSTT() {
@@ -21,7 +26,12 @@ module.exports = {
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
-    await I.sendPostRequest('v1/Settings/Change', body, headers);
+    const resp = await I.sendPostRequest('v1/Settings/Change', body, headers);
+
+    assert.ok(
+      resp.status === 200,
+      `Failed to disable STT. ${resp.data.message}`,
+    );
   },
 
   async apiDisableIA() {
