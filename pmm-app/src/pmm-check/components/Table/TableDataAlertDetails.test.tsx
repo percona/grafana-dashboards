@@ -41,4 +41,13 @@ describe('TableDataAlertDetails::', () => {
     expect(root.find('td').at(2).find(SilenceAlertButton)).toHaveLength(0);
     expect(root.find('td').at(2).text()).toEqual(Messages.silenced);
   });
+
+  it('shows a text for silenced alerts', () => {
+    const detailsItem = activeCheckStub[3].details[0];
+
+    const root = shallow(<TableDataAlertDetails detailsItem={detailsItem} />);
+
+    expect(root.find('td').at(2).find(SilenceAlertButton)).toHaveLength(0);
+    expect(root.find('td').at(2).text()).toEqual(Messages.silenced);
+  });
 });

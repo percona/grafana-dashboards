@@ -4,6 +4,7 @@ import {
   ActiveCheck,
   Alert,
   AlertRequestParams,
+  AlertState,
   AllChecks,
   ChangeCheckBody,
   CheckDetails,
@@ -83,7 +84,7 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
         description,
         severity: labels.severity,
         labels,
-        silenced: state === 'suppressed',
+        silenced: state === AlertState.suppressed,
         readMoreUrl: read_more_url,
       };
 
