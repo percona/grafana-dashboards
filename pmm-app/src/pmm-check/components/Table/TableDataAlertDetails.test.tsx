@@ -22,7 +22,7 @@ describe('TableDataAlertDetails::', () => {
 
     const root = shallow(<TableDataAlertDetails detailsItem={detailsItem} />);
 
-    expect(root.find('td').at(1).text()).toEqual(detailsItem.description);
+    expect(root.find('td').at(1).text()).toEqual(`${detailsItem.description} - ${Messages.readMore}`);
   });
 
   it('should show a silence alert button', () => {
@@ -30,7 +30,7 @@ describe('TableDataAlertDetails::', () => {
 
     const root = shallow(<TableDataAlertDetails detailsItem={detailsItem} />);
 
-    expect(root.find('td').at(2).find(SilenceAlertButton).length).toEqual(1);
+    expect(root.find('td').at(2).find(SilenceAlertButton)).toHaveLength(1);
   });
 
   it('shows a text for silenced alerts', () => {

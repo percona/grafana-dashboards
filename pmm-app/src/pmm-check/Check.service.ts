@@ -62,13 +62,14 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
       severity: string;
       labels: { [key: string]: string },
       silenced: boolean;
+      readMoreUrl: string;
      }>
   > = data
     .filter((alert) => !!alert.labels.stt_check)
     .reduce((acc, alert) => {
       const {
         labels,
-        annotations: { summary, description },
+        annotations: { summary, description, read_more_url },
         status: { state },
       } = alert;
       const serviceName = labels.service_name;
@@ -83,6 +84,7 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
         severity: labels.severity,
         labels,
         silenced: state === 'suppressed',
+        readMoreUrl: read_more_url,
       };
 
       acc[serviceName] = (acc[serviceName] ?? []).concat(item);
@@ -115,6 +117,7 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
         description: `${val.summary}${val.description ? `: ${val.description}` : ''}`,
         labels: val.labels ?? [],
         silenced: val.silenced,
+        readMoreUrl: val.readMoreUrl,
       }))
       .sort((a, b) => {
         const aSeverity = a.labels.severity;

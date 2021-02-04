@@ -17,6 +17,7 @@ export const activeCheckStub: ActiveCheck[] = [
           stt_check: '1',
         },
         silenced: false,
+        readMoreUrl: 'https://example.com',
       },
       {
         description: 'MySQL is outdated: MySQL 5.1 is not the latest major version',
@@ -32,6 +33,7 @@ export const activeCheckStub: ActiveCheck[] = [
           stt_check: '1',
         },
         silenced: false,
+        readMoreUrl: '',
       },
     ],
     failed: [1, 0, 1],
@@ -54,6 +56,7 @@ export const activeCheckStub: ActiveCheck[] = [
           stt_check: '1',
         },
         silenced: false,
+        readMoreUrl: '',
       },
     ],
     failed: [0, 1, 0],
@@ -76,6 +79,7 @@ export const activeCheckStub: ActiveCheck[] = [
           stt_check: '1',
         },
         silenced: false,
+        readMoreUrl: '',
       },
     ],
     failed: [0, 1, 0],
@@ -98,6 +102,7 @@ export const activeCheckStub: ActiveCheck[] = [
           stt_check: '1',
         },
         silenced: true,
+        readMoreUrl: '',
       },
     ],
     failed: [0, 1, 0],
@@ -111,6 +116,7 @@ export const alertsStub = [
     annotations: {
       description: 'The root password is empty',
       summary: 'root password is empty',
+      read_more_url: 'https://example.com',
     },
     endsAt: '2020-04-20T14:39:03.575Z',
     fingerprint: '0d2242091d134c09',
@@ -142,6 +148,7 @@ export const alertsStub = [
     annotations: {
       description: 'MySQL 5.1 is not the latest major version',
       summary: 'MySQL is outdated',
+      read_more_url: '',
     },
     endsAt: '2020-04-20T14:39:03.575Z',
     fingerprint: '0d2242091d134c09',
@@ -173,6 +180,7 @@ export const alertsStub = [
     annotations: {
       description: 'PMM Server is not the latest major version',
       summary: 'pmm-server is outdated',
+      read_more_url: '',
     },
     endsAt: '2020-04-20T14:39:03.575Z',
     fingerprint: '0d2242091d134c09',
@@ -204,6 +212,7 @@ export const alertsStub = [
     annotations: {
       description: 'MongoDB admin password does not meet the complexity requirement',
       summary: 'MongoDB password is weak',
+      read_more_url: '',
     },
     endsAt: '2020-04-20T14:39:03.575Z',
     fingerprint: '0d2242091d134c09',
@@ -235,6 +244,7 @@ export const alertsStub = [
     annotations: {
       description: 'MongoDB admin password does not meet the complexity requirement',
       summary: 'MongoDB password is weak',
+      read_more_url: '',
     },
     endsAt: '2020-04-20T14:39:03.575Z',
     fingerprint: '0d2242091d134c09',

@@ -16,6 +16,14 @@ export const TableDataAlertDetails: FC<TableDataAlertDetailsProps> = ({ detailsI
       </td>
       <td>
         {detailsItem.description}
+        {detailsItem.readMoreUrl ? (
+          <span>
+            {' '}
+            -
+            {' '}
+            <a target="_blank" rel="noreferrer" className={styles.link} href={detailsItem.readMoreUrl}>{Messages.readMore}</a>
+          </span>
+        ) : null}
       </td>
       <td>
         {detailsItem.silenced
