@@ -2,7 +2,7 @@ import {
   SEVERITIES_ORDER,
 } from 'pmm-check/CheckPanel.constants';
 import {
-  ActiveCheck, Alert, CheckDetails, FailedChecks, Settings, SilenceResponse,
+  ActiveCheck, Alert, CheckDetails, FailedChecks, Settings, SilenceResponse, AlertState,
 } from 'pmm-check/types';
 
 import { alertsStub } from './stubs';
@@ -50,7 +50,6 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
       const {
         labels,
         annotations: { summary, description },
-        status: { state },
       } = alert;
       const serviceName = labels.service_name;
 
@@ -63,7 +62,7 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
         description,
         severity: labels.severity,
         labels,
-        silenced: state === 'suppressed',
+        silenced: AlertState.suppressed,
       };
 
       if (acc[serviceName]) {

@@ -6,7 +6,7 @@ import { TableBody } from './TableBody';
 jest.mock('shared/components/helpers/notification-manager');
 
 describe('TableBody::', () => {
-  it('should render a table body with 3 rows', () => {
+  it('renders a table body', () => {
     const root = shallow(<TableBody data={activeCheckStub} />);
 
     expect(root.find('tbody > tr').length).toEqual(5);
