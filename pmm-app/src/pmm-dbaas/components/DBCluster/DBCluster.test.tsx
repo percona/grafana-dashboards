@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import { dataQa } from '@percona/platform-core';
 import { DATABASE_LABELS } from 'shared/core';
 import { DBCluster } from './DBCluster';
 import { kubernetesStub } from '../Kubernetes/__mocks__/kubernetesStubs';
@@ -12,24 +13,20 @@ describe('DBCluster::', () => {
   it('renders correctly without clusters', () => {
     const root = mount(<DBCluster kubernetes={[]} />);
 
-    expect(root.find('[data-qa="dbcluster-add-cluster-button"]').find('button').length).toBe(2);
+    expect(root.find(dataQa('dbcluster-add-cluster-button')).find('button').length).toBe(2);
     expect(root.contains('table')).toBeFalsy();
   });
   it('renders correctly with clusters', () => {
     const root = mount(<DBCluster kubernetes={kubernetesStub} />);
 
-    expect(root.find('[data-qa="dbcluster-add-cluster-button"]').find('button').length).toBe(1);
+    expect(root.find(dataQa('dbcluster-add-cluster-button')).find('button').length).toBe(1);
     expect(root.find('tr').length).toBe(6);
   });
   it('renders correctly with failed status', () => {
     const root = mount(<DBCluster kubernetes={kubernetesStub} />);
 
-    expect(
-      root
-        .find('[data-qa="cluster-status-failed"]')
-        .at(0)
-        .prop('className'),
-    ).toContain('failed');
+    expect(root.find(dataQa('cluster-progress-bar')).length).toBeGreaterThan(0);
+    expect(root.find(dataQa('cluster-status-error-message')).length).toBeGreaterThan(0);
   });
   it('renders database types correctly', () => {
     const root = mount(<DBCluster kubernetes={kubernetesStub} />);
