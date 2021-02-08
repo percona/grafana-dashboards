@@ -78,7 +78,7 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
   );
 
   return (
-    <div className={styles.tableWrapper}>
+    <div>
       <div className={styles.actionPanel}>
         <AddNewClusterButton />
       </div>

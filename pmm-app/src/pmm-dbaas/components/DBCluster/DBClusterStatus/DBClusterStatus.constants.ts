@@ -7,3 +7,5 @@ export const STATUS_DATA_QA = {
   [DBClusterStatus.invalid]: 'invalid',
   [DBClusterStatus.ready]: 'active',
 };
+
+export const COMPLETE_PROGRESS_DELAY = 4000;
