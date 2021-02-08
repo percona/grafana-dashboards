@@ -39,6 +39,7 @@ exports.config = {
     channelsAPI: './tests/ia/pages/api/channelsAPI.js',
     dashboardPage: './tests/pages/dashboardPage.js',
     databaseChecksPage: './tests/pages/databaseChecksPage.js',
+    dbaasAPI: './tests/pages/api/dbaasAPI.js',
     dbaasPage: './tests/pages/dbaasPage.js',
     homePage: './tests/pages/homePage.js',
     inventoryAPI: './tests/pages/api/inventoryAPI.js',
