@@ -33,41 +33,6 @@ export interface ActiveCheck {
   }>;
 }
 
-export interface CheckDetails {
-  name: string;
-  summary: string;
-  description?: string;
-  disabled?: boolean;
-  readMoreUrl?: string;
-}
-
-export interface AllChecks {
-  checks: CheckDetails[];
-}
-
-export interface ChangeCheckBody {
-  params: Array<{
-    name: string;
-    enable?: boolean;
-    disable?: boolean;
-  }>;
-}
-
-export enum TabKeys {
-  allChecks = 'allChecks',
-  failedChecks = 'failedChecks',
-}
-
-export interface TabEntry {
-  label: string,
-  key: TabKeys,
-  component: React.ReactNode,
-}
-
-export type CheckPanelProps = { component: FC } & RouteComponentProps;
-
-export type SeverityMap = Record<Severity, string>;
-
 export enum AlertState {
   active = 'active',
   suppressed = 'suppressed',
@@ -79,6 +44,7 @@ export interface CheckDetails {
   summary: string;
   description?: string;
   disabled?: boolean;
+  readMoreUrl?: string;
 }
 
 export interface AllChecks {
