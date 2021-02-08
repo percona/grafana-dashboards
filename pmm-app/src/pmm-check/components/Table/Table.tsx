@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
 import { useTheme } from '@grafana/ui';
 import { ActiveCheck, Column } from 'pmm-check/types';
-import { PMM_SETTINGS_URL } from 'pmm-check/CheckPanel.constants';
 import { getStyles } from './Table.styles';
 import { TableHeader } from './TableHeader';
 import { TableBody } from './TableBody';
@@ -11,11 +9,10 @@ interface TableProps {
   columns: Column[];
   data?: ActiveCheck[];
   hasNoAccess?: boolean;
-  isSttEnabled: boolean;
 }
 
 export const Table: FC<TableProps> = ({
-  columns, data = [], isSttEnabled, hasNoAccess = false,
+  columns, data = [], hasNoAccess = false,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -36,20 +33,11 @@ export const Table: FC<TableProps> = ({
   return (
     <>
       <div className={styles.wrapper}>
-        {!isSttEnabled && (
-          <div className={styles.empty} data-qa="db-check-panel-settings-link">
-            Security Threat Tool is disabled. You can enable it in&nbsp;
-            <Link className={styles.link} to={PMM_SETTINGS_URL}>
-              PMM Settings.
-            </Link>
-          </div>
-        )}
-        {isSttEnabled && isEmpty && (
+        {isEmpty ? (
           <div className={styles.empty} data-qa="db-check-panel-table-empty">
             No failed checks. Checks run every 24 hours.
           </div>
-        )}
-        {isSttEnabled && !isEmpty && (
+        ) : (
           <table className={styles.table} data-qa="db-check-panel-table">
             <TableHeader columns={columns} />
             <TableBody data={data} />
