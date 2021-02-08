@@ -49,7 +49,7 @@ Scenario(
     qanOverview.selectRow(1);
     qanDetails.checkExamplesTab();
     qanDetails.checkExplainTab();
-  }
+  },
 );
 
 Scenario(
@@ -61,7 +61,7 @@ Scenario(
     qanOverview.selectRow(1);
     qanDetails.checkExamplesTab();
     qanDetails.checkExplainTab();
-  }
+  },
 );
 
 Scenario(
@@ -73,7 +73,7 @@ Scenario(
     qanOverview.selectRow(1);
     qanDetails.checkExamplesTab();
     qanDetails.checkExplainTab();
-  }
+  },
 );
 
 Scenario(
@@ -84,7 +84,7 @@ Scenario(
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
     qanDetails.checkExamplesTab();
-  }
+  },
 );
 
 Scenario(
@@ -95,7 +95,7 @@ Scenario(
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
     qanDetails.checkExamplesTab();
-  }
+  },
 );
 
 Scenario(
@@ -107,5 +107,5 @@ Scenario(
     qanOverview.selectRow(1);
     qanDetails.checkExamplesTab();
     qanDetails.checkExplainTab();
-  }
+  },
 );

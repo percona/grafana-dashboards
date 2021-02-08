@@ -12,6 +12,7 @@ import { AdditionalOptions, Labels, MainDetails } from './FormParts';
 import { Messages } from './AddRemoteInstance.messages';
 import { ExternalServiceConnectionDetails } from './FormParts/ExternalServiceConnectionDetails/ExternalServiceConnectionDetails';
 import { InstanceTypes } from '../../panel.types';
+import { HAProxyConnectionDetails } from './FormParts/HAProxyConnectionDetails/HAProxyConnectionDetails';
 
 const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
   instance: { type, credentials },
@@ -49,14 +50,21 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
     [type, discoverName],
   );
 
+  const ConnectionDetails = ({ form, type }) => {
+    switch (type) {
+      case InstanceTypes.external:
+        return <ExternalServiceConnectionDetails form={form} />;
+      case InstanceTypes.haproxy:
+        return <HAProxyConnectionDetails remoteInstanceCredentials={remoteInstanceCredentials} />;
+      default:
+        return <MainDetails remoteInstanceCredentials={remoteInstanceCredentials} />;
+    }
+  };
+
   const formParts = useMemo(
     () => (form) => (
       <>
-        {type !== InstanceTypes.external ? (
-          <MainDetails remoteInstanceCredentials={remoteInstanceCredentials} />
-        ) : (
-          <ExternalServiceConnectionDetails form={form} />
-        )}
+        <ConnectionDetails form={form} type={type} />
         <Labels />
         {type !== InstanceTypes.external && (
           <AdditionalOptions
