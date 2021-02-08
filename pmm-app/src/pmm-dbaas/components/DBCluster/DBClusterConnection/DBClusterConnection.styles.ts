@@ -7,12 +7,4 @@ export const getStyles = ({ spacing }: GrafanaTheme) => ({
     flex-direction: column;
     margin: ${spacing.xs} ${spacing.sm};
   `,
-  connectionLoading: css`
-    display: flex;
-    justify-content: center;
-  `,
-  connectionFailed: css`
-    display: flex;
-    justify-content: center;
-  `,
 });
