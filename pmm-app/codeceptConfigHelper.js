@@ -29,13 +29,12 @@ module.exports = {
 
   },
   getChunks: (files) => {
-    const conflictGroup = files.filter((value) => value.includes('PMMSettings')
-      || value.includes('database') || value.includes('ia') || value.includes('permissions'));
-    const otherGroup = files.filter((val) => (conflictGroup.indexOf(val) === -1));
+    const dependentTests = files.filter((value) => /PMMSettings|database|ia|permissions/.test(value));
+    const otherTests = files.filter((val) => !dependentTests.includes(val));
 
     return [
-      conflictGroup,
-      otherGroup,
+      dependentTests,
+      otherTests,
     ];
   },
 };
