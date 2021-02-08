@@ -11,7 +11,7 @@ import { FailedChecksTabProps } from './types';
 import { Messages } from './FailedChecksTab.messages';
 import * as styles from './FailedChecksTab.styles';
 
-export const FailedChecksTab: FC<FailedChecksTabProps> = ({ hasNoAccess, isSttEnabled }) => {
+export const FailedChecksTab: FC<FailedChecksTabProps> = ({ hasNoAccess }) => {
   const [fetchAlertsPending, setFetchAlertsPending] = useState(false);
   const [runChecksPending, setRunChecksPending] = useState(false);
   const [dataSource, setDataSource] = useState<ActiveCheck[] | undefined>();
@@ -72,7 +72,6 @@ export const FailedChecksTab: FC<FailedChecksTabProps> = ({ hasNoAccess, isSttEn
           <Table
             data={dataSource}
             columns={COLUMNS}
-            isSttEnabled={isSttEnabled}
             hasNoAccess={hasNoAccess}
           />
         )}
