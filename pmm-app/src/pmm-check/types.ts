@@ -74,6 +74,40 @@ export enum AlertState {
   unprocessed = 'unprocessed',
 }
 
+export interface CheckDetails {
+  name: string;
+  summary: string;
+  description?: string;
+  disabled?: boolean;
+}
+
+export interface AllChecks {
+  checks: CheckDetails[];
+}
+
+export interface ChangeCheckBody {
+  params: Array<{
+    name: string;
+    enable?: boolean;
+    disable?: boolean;
+  }>;
+}
+
+export enum TabKeys {
+  allChecks = 'allChecks',
+  failedChecks = 'failedChecks',
+}
+
+export interface TabEntry {
+  label: string,
+  key: TabKeys,
+  component: React.ReactNode,
+}
+
+export type CheckPanelProps = { component: FC } & RouteComponentProps;
+
+export type SeverityMap = Record<Severity, string>;
+
 export interface Alert {
   annotations: {
     description: string;
