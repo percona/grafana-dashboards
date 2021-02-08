@@ -62,11 +62,5 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       align-items: center;
       border: 1px solid ${borderColor};
     `,
-    link: css`
-      color: ${theme.colors.linkExternal};
-      &:hover {
-        color: ${theme.colors.textBlue};
-      }
-    `,
   };
 });
