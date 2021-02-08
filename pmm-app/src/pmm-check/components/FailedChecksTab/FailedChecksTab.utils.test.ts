@@ -4,6 +4,15 @@ import { SHOW_SILENCED_VALUE_KEY, SHOW_SILENCED_DEFAULT } from './FailedChecksTa
 let getItemSpy: jest.SpyInstance;
 let setItemSpy: jest.SpyInstance;
 
+const originalPlatformCore = jest.requireActual('@percona/platform-core');
+
+jest.mock('@percona/platform-core', () => ({
+  ...originalPlatformCore,
+  logger: {
+    error: jest.fn(),
+  },
+}));
+
 describe('FailedChecksTab::utils', () => {
   beforeEach(() => {
     getItemSpy = jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => 'true');
@@ -22,8 +31,8 @@ describe('FailedChecksTab::utils', () => {
   });
 
   test('loadShowSilencedValue calls localStorage.getItem', () => {
-    expect(getItemSpy).toBeCalledTimes(1);
     expect(loadShowSilencedValue()).toEqual(true);
+    expect(getItemSpy).toBeCalledTimes(1);
   });
 
   test('loadShowSilencedValue the default value if localStorage is not available', () => {
