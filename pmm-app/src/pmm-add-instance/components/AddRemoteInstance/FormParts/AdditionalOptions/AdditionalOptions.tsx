@@ -29,8 +29,6 @@ export const AdditionalOptionsFormPart: FC<AdditionalOptionsFormPartProps> = ({
           label={Messages.form.labels.additionalOptions.skipConnectionCheck}
           name="skip_connection_check"
         />
-        <CheckboxField label={Messages.form.labels.additionalOptions.tls} name="tls" />
-        <CheckboxField label={Messages.form.labels.additionalOptions.tlsSkipVerify} name="tls_skip_verify" />
         {getAdditionalOptions(instanceType, remoteInstanceCredentials, form)}
       </div>
     </div>
@@ -88,10 +86,21 @@ const MySQLOptions = ({ form }) => {
 export const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
   switch (type) {
     case Databases.postgresql:
-      return <PostgreSQLAdditionalOptions />;
+      return (
+        <>
+          <CheckboxField label={Messages.form.labels.additionalOptions.tls} name="tls" />
+          <CheckboxField
+            label={Messages.form.labels.additionalOptions.tlsSkipVerify}
+            name="tls_skip_verify"
+          />
+          <PostgreSQLAdditionalOptions />
+        </>
+      );
     case Databases.mysql:
       return (
         <>
+          <CheckboxField label={Messages.form.labels.additionalOptions.tls} name="tls" />
+          <CheckboxField label={Messages.form.labels.additionalOptions.tlsSkipVerify} name="tls_skip_verify" />
           <MySQLOptions form={form} />
           <CheckboxField
             label={Messages.form.labels.additionalOptions.qanMysqlPerfschema}
@@ -114,6 +123,8 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
     case Databases.mongodb:
       return (
         <>
+          <CheckboxField label={Messages.form.labels.additionalOptions.tls} name="tls" />
+          <CheckboxField label={Messages.form.labels.additionalOptions.tlsSkipVerify} name="tls_skip_verify" />
           <CheckboxField
             label={Messages.form.labels.additionalOptions.qanMongodbProfiler}
             name="qan_mongodb_profiler"

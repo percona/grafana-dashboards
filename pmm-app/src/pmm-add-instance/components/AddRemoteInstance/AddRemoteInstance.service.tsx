@@ -15,6 +15,10 @@ class AddRemoteInstanceService {
     return apiRequestManagement.post<any, any>('/ProxySQL/Add', body);
   }
 
+  static async addHaproxy(body) {
+    return apiRequestManagement.post<any, any>('/HAProxy/Add', body);
+  }
+
   static async addMongodb(body) {
     return apiRequestManagement.post<any, any>('/MongoDB/Add', body);
   }
@@ -37,6 +41,8 @@ class AddRemoteInstanceService {
         return AddRemoteInstanceService.addPostgresql(toPayload(data));
       case Databases.proxysql:
         return AddRemoteInstanceService.addProxysql(toPayload(data));
+      case Databases.haproxy:
+        return AddRemoteInstanceService.addHaproxy(toPayload(data));
       case 'external':
         return AddRemoteInstanceService.addExternal(toExternalServicePayload(data));
       default:
