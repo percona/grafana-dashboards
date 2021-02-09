@@ -60,8 +60,8 @@ Scenario(
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
     pmmSettingsPage.addAlertmanagerRule('', '');
+    I.wait(5);
     pmmSettingsPage.openAlertsManagerUi();
-    I.wait(10);
     I.dontSeeElement(`//pre[contains(text(), '${pmmSettingsPage.alertManager.editRuleName}')]`);
   },
 );
