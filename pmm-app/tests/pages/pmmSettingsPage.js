@@ -5,6 +5,8 @@ const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 
 module.exports = {
   url: 'graph/d/pmm-settings/pmm-settings',
+  advancedSettingsUrl: 'graph/d/pmm-settings/pmm-settings?menu=advanced-settings',
+  communicationSettingsUrl: 'graph/d/pmm-settings/pmm-settings?menu=communication',
   prometheusAlertUrl: '/prometheus/rules',
   stateOfAlertsUrl: '/prometheus/alerts',
   diagnosticsText:
@@ -79,7 +81,6 @@ module.exports = {
     applySSHKey: 'Apply SSH key',
     applyAlertmanager: 'Apply Alertmanager settings',
   },
-
   tooltips: {
     stt: {
       text: 'Enable Security Threat Tool and get updated checks from Percona.',
@@ -87,7 +88,49 @@ module.exports = {
         'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#security-threat-tool',
     },
   },
-
+  communication: {
+    email: {
+      serverAddress: {
+        locator: '$smarthost-text-input',
+        value: 'test.server.com',
+      },
+      from: {
+        locator: '$from-text-input',
+        value: 'sender',
+      },
+      username: {
+        locator: '$username-text-input',
+        value: 'user',
+      },
+      password: {
+        locator: '$password-password-input',
+        value: 'secret',
+      },
+      hello: {
+        locator: '$hello-text-input',
+        value: 'Hey there',
+      },
+      identity: {
+        locator: '$identity-text-input',
+        value: 'test',
+      },
+      secret: {
+        locator: '$secret-password-input',
+        value: 'test',
+      },
+    },
+    slack: {
+      url: {
+        locator: '$url-text-input',
+        value: 'https://hook',
+      },
+    },
+    communicationSection: locate('$settings-tabs').find('li').withAttr({ 'aria-label': 'Tab Communication' }),
+    emailTab: 'li[aria-label="Tab Email"]',
+    submitEmailButton: '$email-settings-submit-button',
+    slackTab: 'li[aria-label="Tab Slack"]',
+    submitSlackButton: '$slack-settings--submit-button',
+  },
   fields: {
     advancedLabel: '$advanced-label',
     advancedButton: '$advanced-button',
@@ -174,6 +217,46 @@ module.exports = {
     I.see(validationMessage, this.fields.validationMessage);
   },
 
+  fillCommunicationFields(type) {
+    if (type === 'slack') I.click(this.communication.slackTab);
+
+    Object.values(this.communication[type]).forEach((key) => {
+      I.clearField(key.locator);
+      I.fillField(key.locator, key.value);
+    });
+
+    if (type === 'email') {
+      I.click(this.communication.submitEmailButton);
+    } else {
+      I.click(this.communication.submitSlackButton);
+    }
+  },
+
+  async disableIA() {
+    const iaEnabled = await I.grabAttributeFrom(this.fields.iaSwitchSelectorInput, 'checked');
+
+    if (iaEnabled) {
+      I.click(this.fields.iaSwitchSelector);
+    }
+  },
+
+  async verifyCommunicationFields(type) {
+    if (type === 'slack') I.click(this.communication.slackTab);
+
+    Object.values(this.communication[type])
+      .forEach((key) => {
+        let { value } = key;
+
+        if (key.locator === this.communication.email.password.locator) value = '';
+
+        if (key.locator !== this.communication.email.secret.locator) {
+          I.seeInField(key.locator, value);
+        } else {
+          I.seeAttributesOnElements(key.locator, { type: 'password' });
+        }
+      });
+  },
+
   async selectMetricsResolution(resolution) {
     I.waitForElement(`${this.fields.metricsResolution + resolution}"]`, 30);
     I.click(`${this.fields.metricsResolution + resolution}"]`);
@@ -198,7 +281,6 @@ module.exports = {
   changeDataRetentionValueTo(days) {
     this.customClearField(this.fields.dataRetentionInput);
     I.fillField(this.fields.dataRetentionInput, days);
-    I.moveCursorTo(this.fields.advancedButton);
     I.click(this.fields.advancedButton);
   },
 
@@ -260,6 +342,7 @@ module.exports = {
   },
 
   async verifyTooltip(tooltipObj) {
+    I.waitForVisible(this.fields.tooltipSelector, 30);
     I.see(tooltipObj.text, this.fields.tooltipSelector);
     I.seeAttributesOnElements(`${this.fields.tooltipSelector} > div > a`, { href: tooltipObj.link });
   },
