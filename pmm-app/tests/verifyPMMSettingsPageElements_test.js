@@ -1,7 +1,7 @@
 const assert = require('assert');
 const page = require('./pages/pmmSettingsPage');
 
-const validationValues = ['text ', '2147483648', '-1', '<script>alert(test);</script>'];
+const validationValues = ['2147483648', '-1', '0'];
 
 const dataRetentionTable = new DataTable(['value', 'message']);
 
@@ -9,7 +9,8 @@ for (const i in validationValues) {
   dataRetentionTable.add([validationValues[i], page.messages.invalidDataDurationMessage]);
 }
 
-dataRetentionTable.add(['', page.messages.requiredFieldMessage]);
+dataRetentionTable.add([' ', page.messages.requiredFieldMessage]);
+dataRetentionTable.add(['e', page.messages.requiredFieldMessage]);
 
 Feature('PMM Settings Page Elements and Validations');
 
@@ -18,7 +19,27 @@ Before(async (I, pmmSettingsPage) => {
   I.amOnPage(pmmSettingsPage.url);
 });
 
-Scenario('Verify Section Tabs and Metrics Section Elements [critical]', async (I, pmmSettingsPage) => {
+Data(dataRetentionTable).Scenario('PMM-T97 - Verify server diagnostics on PMM Settings Page', async (pmmSettingsPage, current) => {
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
+
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
+  pmmSettingsPage.checkDataRetentionInput(current.value, current.message);
+});
+
+Scenario('PMM-T87 - Verify server diagnostics on PMM Settings Page', async (pmmSettingsPage) => {
+  const diagnostcsButtonLocator = pmmSettingsPage.fields.diagnosticsButton;
+  const platform = pmmSettingsPage.sectionTabsList.perconaPlatform;
+
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.expandSection(pmmSettingsPage.sectionTabsList.metrics, diagnostcsButtonLocator);
+  await pmmSettingsPage.expandSection(pmmSettingsPage.sectionTabsList.advanced, diagnostcsButtonLocator);
+  await pmmSettingsPage.expandSection(pmmSettingsPage.sectionTabsList.ssh, diagnostcsButtonLocator);
+  await pmmSettingsPage.expandSection(pmmSettingsPage.sectionTabsList.alertmanager, diagnostcsButtonLocator);
+  await pmmSettingsPage.expandSection(platform, diagnostcsButtonLocator);
+});
+
+Scenario('PMM-T84 - Verify Section Tabs and Metrics Section Elements [critical]', async (I, pmmSettingsPage) => {
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   Object.values(pmmSettingsPage.sectionTabsList).forEach((value) => {
     I.see(value, pmmSettingsPage.fields.tabsSection);
@@ -34,7 +55,7 @@ Scenario('Verify Section Tabs and Metrics Section Elements [critical]', async (I
   });
 });
 
-Scenario('Verify SSH Key Section Elements', async (I, pmmSettingsPage) => {
+Scenario('PMM-T85 - Verify SSH Key Section Elements', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.ssh;
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -60,7 +81,7 @@ Scenario('Verify Advanced Section Elements', async (I, pmmSettingsPage) => {
   I.seeElement(pmmSettingsPage.fields.sttLabel);
 });
 
-Scenario('Verify Alertmanager integration Section Elements', async (I, pmmSettingsPage) => {
+Scenario('PMM-T86 - Verify Alertmanager integration Section Elements', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -69,9 +90,10 @@ Scenario('Verify Alertmanager integration Section Elements', async (I, pmmSettin
   I.see('Prometheus Alerting rules', pmmSettingsPage.fields.alertmanagerRuleslabel);
   I.seeElement(pmmSettingsPage.fields.alertURLInput);
   I.seeElement(pmmSettingsPage.fields.alertRulesInput);
+  I.seeElement(pmmSettingsPage.fields.diagnosticsButton);
 });
 
-Scenario('Verify validation for invalid SSH Key', async (I, pmmSettingsPage) => {
+Scenario('PMM-T89 - Verify validation for invalid SSH Key', async (I, pmmSettingsPage) => {
   const sshKeyForTest = 'ssh-rsa testKey test@key.local';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.ssh;
 
@@ -81,7 +103,7 @@ Scenario('Verify validation for invalid SSH Key', async (I, pmmSettingsPage) => 
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidSSHKeyMessage);
 });
 
-Scenario('Verify validation for Alertmanager URL without scheme', async (I, pmmSettingsPage) => {
+Scenario('PMM-T90 - Verify validation for Alertmanager URL without scheme', async (I, pmmSettingsPage) => {
   const urlWithoutScheme = 'invalid_url';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -91,7 +113,7 @@ Scenario('Verify validation for Alertmanager URL without scheme', async (I, pmmS
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerMissingSchemeMessage);
 });
 
-Scenario('Verify validation for Alertmanager URL without host', async (I, pmmSettingsPage) => {
+Scenario('PMM-T91 - Verify validation for Alertmanager URL without host', async (I, pmmSettingsPage) => {
   const urlWithoutHost = 'http://';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -101,7 +123,7 @@ Scenario('Verify validation for Alertmanager URL without host', async (I, pmmSet
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerMissingHostMessage);
 });
 
-Scenario('Verify validation for invalid Alertmanager Rule', async (I, pmmSettingsPage) => {
+Scenario('PMM-T92 - Verify validation for invalid Alertmanager Rule', async (I, pmmSettingsPage) => {
   const rule = 'invalid_rule';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 

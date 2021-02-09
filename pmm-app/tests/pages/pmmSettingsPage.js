@@ -58,7 +58,7 @@ module.exports = {
   },
   messages: {
     successPopUpMessage: 'Settings updated',
-    invalidDataDurationMessage: 'Value should be in range from 1 to 3650',
+    invalidDataDurationMessage: 'Value should be in the range from 1 to 3650',
     invalidDataDurationPopUpMessage: 'data_retention: should be a natural number of days',
     requiredFieldMessage: 'Required field',
     invalidSSHKeyMessage: 'Invalid SSH key.',
@@ -73,6 +73,7 @@ module.exports = {
     advanced: 'Advanced Settings',
     ssh: 'SSH Key',
     alertmanager: 'Alertmanager Integration',
+    perconaPlatform: 'Percona Platform',
   },
   sectionButtonText: {
     applyChanges: 'Apply changes',
@@ -202,6 +203,14 @@ module.exports = {
     I.click(this.fields.advancedButton);
   },
 
+  checkDataRetentionInput(value, message) {
+    const messageField = `//div[contains(text(), '${message}')]`;
+
+    this.customClearField(this.fields.dataRetentionInput);
+    I.fillField(this.fields.dataRetentionInput, value);
+    I.seeElement(messageField);
+  },
+
   addSSHKey(keyValue) {
     I.fillField(this.fields.sshKeyInput, keyValue);
     I.click(this.fields.sshKeyButton);
@@ -219,7 +228,7 @@ module.exports = {
     I.amOnPage(this.prometheusAlertUrl);
   },
 
-  async verifyAlertmanagerRuleAdded(ruleName, checkState = false) {
+  async verifyAlertmanagerRuleAdded(ruleName, checkState = false, added = true) {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
     for (let i = 0; i < 30; i++) {
@@ -238,10 +247,19 @@ module.exports = {
 
       I.refreshPage();
       I.wait(5);
+
+      // When rule is not added, we are waiting just 30 seconds.
+      if (!added && i === 5) {
+        break;
+      }
     }
 
-    I.seeElement(`//pre[contains(text(), '${ruleName}')]`);
-    I.see(ruleName);
+    if (added) {
+      I.seeElement(`//pre[contains(text(), '${ruleName}')]`);
+      I.see(ruleName);
+    } else {
+      I.dontSeeElement(`//pre[contains(text(), '${ruleName}')]`);
+    }
   },
 
   async verifyExternalAlertManager(ruleName) {
