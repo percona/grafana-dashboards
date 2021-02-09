@@ -34,6 +34,7 @@ exports.config = {
   include: {
     addInstanceAPI: './tests/pages/api/addInstanceAPI.js',
     adminPage: './tests/pages/adminPage.js',
+    alertRulesPage: './tests/ia/pages/alertRulesPage.js',
     amiInstanceSetupPage: './tests/pages/amiInstanceSetupPage.js',
     channelsAPI: './tests/ia/pages/api/channelsAPI.js',
     dashboardPage: './tests/pages/dashboardPage.js',
@@ -52,8 +53,10 @@ exports.config = {
     qanPage: './tests/QAN/pages/qanPage.js',
     qanPagination: './tests/QAN/pages/qanPaginationFragment.js',
     remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
+    rulesAPI: './tests/ia/pages/api/rulesAPI.js',
     ruleTemplatesPage: './tests/ia/pages/ruleTemplatesPage.js',
     settingsAPI: './tests/pages/api/settingsAPI.js',
+    templatesAPI: './tests/ia/pages/api/templatesAPI.js',
   },
   multiple: {
     parallel: {

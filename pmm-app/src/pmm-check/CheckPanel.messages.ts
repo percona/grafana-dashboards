@@ -1,3 +1,4 @@
 export const Messages = {
-  runDbChecks: 'Run DB checks',
+  failedChecksTitle: 'Failed Checks',
+  allChecksTitle: 'All Checks',
 };
