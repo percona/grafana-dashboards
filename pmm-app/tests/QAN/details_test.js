@@ -1,3 +1,10 @@
+const dbsTable = new DataTable(['db']);
+const dbs = ['mysql', 'md-dev', 'ps-dev', 'pdpgsql-dev', 'pgsql-dev', 'mongodb'];
+
+dbs.forEach((db) => {
+  dbsTable.add([db]);
+});
+
 Feature('QAN details');
 
 Before((I, qanPage) => {
@@ -37,75 +44,22 @@ Scenario(
   },
 );
 
-Scenario(
-  'PMM-T13 - Check Explain and Example for supported - mysql DBs @qan @not-pr-pipeline',
-  async (I, qanOverview, qanFilters, qanDetails) => {
+Data(dbsTable).Scenario(
+  'PMM-T13 - Check Explain and Example for supported DBs @qan @not-pr-pipeline',
+  async (I, qanOverview, qanFilters, qanDetails, current) => {
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('mysql');
-    I.waitForVisible(qanOverview.fields.searchBy, 30);
-    I.fillField(qanOverview.fields.searchBy, 'insert');
-    I.pressKey('Enter');
-    I.waitForElement(qanOverview.elements.querySelector, 30);
-    qanOverview.selectRow(1);
-    qanDetails.checkExamplesTab();
-    qanDetails.checkExplainTab();
-  }
-);
+    qanFilters.applyFilter(current.db);
+    if (current.db === 'mysql') {
+      I.waitForVisible(qanOverview.fields.searchBy, 30);
+      I.fillField(qanOverview.fields.searchBy, 'insert');
+      I.pressKey('Enter');
+    }
 
-Scenario(
-  'PMM-T13 - Check Explain and Example for supported DBs - md @qan @not-pr-pipeline',
-  async (I, qanOverview, qanFilters, qanDetails) => {
-    qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('md-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
     qanDetails.checkExamplesTab();
-    qanDetails.checkExplainTab();
-  }
-);
-
-Scenario(
-  'PMM-T13 - Check Explain and Example for supported DBs - ps @qan @not-pr-pipeline',
-  async (I, qanOverview, qanFilters, qanDetails) => {
-    qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('ps-dev');
-    I.waitForElement(qanOverview.elements.querySelector, 30);
-    qanOverview.selectRow(1);
-    qanDetails.checkExamplesTab();
-    qanDetails.checkExplainTab();
-  }
-);
-
-Scenario(
-  'PMM-T13 - Check Explain and Example for supported DBs - pdpqsql @qan @not-pr-pipeline',
-  async (I, qanOverview, qanFilters, qanDetails) => {
-    qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('pdpgsql-dev');
-    I.waitForElement(qanOverview.elements.querySelector, 30);
-    qanOverview.selectRow(1);
-    qanDetails.checkExamplesTab();
-  }
-);
-
-Scenario(
-  'PMM-T13 - Check Explain and Example for supported DBs - pgsql @qan @not-pr-pipeline',
-  async (I, qanOverview, qanFilters, qanDetails) => {
-    qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('pgsql-dev');
-    I.waitForElement(qanOverview.elements.querySelector, 30);
-    qanOverview.selectRow(1);
-    qanDetails.checkExamplesTab();
-  }
-);
-
-Scenario(
-  'PMM-T13 - Check Explain and Example for supported DBs - mongodb @qan @not-pr-pipeline',
-  async (I, qanOverview, qanFilters, qanDetails) => {
-    qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('mongodb');
-    I.waitForElement(qanOverview.elements.querySelector, 30);
-    qanOverview.selectRow(1);
-    qanDetails.checkExamplesTab();
-    qanDetails.checkExplainTab();
-  }
+    if (!/pdpgsql-dev|pgsql-dev/gim.test(current.db)) {
+      qanDetails.checkExplainTab();
+    }
+  },
 );
