@@ -1,4 +1,5 @@
 const assert = require('assert');
+const page = require('./pages/pmmSettingsPage');
 
 const validationValues = ['2147483648', '-1', '0'];
 
