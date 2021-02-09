@@ -45,6 +45,7 @@ Scenario(
     const scheme = 'http://';
     const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
+    I.amOnPage(pmmSettingsPage.url);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
     pmmSettingsPage.addAlertmanagerRule(
