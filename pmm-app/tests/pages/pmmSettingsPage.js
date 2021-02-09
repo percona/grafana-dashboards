@@ -310,7 +310,7 @@ module.exports = {
     I.amOnPage(this.prometheusAlertUrl);
   },
 
-  async verifyAlertmanagerRuleAdded(ruleName, checkState = false, added = true) {
+  async verifyAlertmanagerRuleAdded(ruleName, checkState = false) {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
     for (let i = 0; i < 30; i++) {
@@ -326,22 +326,12 @@ module.exports = {
         I.refreshPage();
         break;
       }
-
+    }
       I.refreshPage();
       I.wait(5);
-
-      // When rule is not added, we are waiting just 30 seconds.
-      if (!added && i === 5) {
-        break;
-      }
-    }
-
-    if (added) {
       I.seeElement(`//pre[contains(text(), '${ruleName}')]`);
       I.see(ruleName);
-    } else {
-      I.dontSeeElement(`//pre[contains(text(), '${ruleName}')]`);
-    }
+
   },
 
   async verifyExternalAlertManager(ruleName) {

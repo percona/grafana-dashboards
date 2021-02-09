@@ -54,18 +54,15 @@ Scenario(
     );
     await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
     pmmSettingsPage.openAlertsManagerUi();
-    await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName);
+    await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.editRuleName);
     // PMM-T109 starting here
     I.amOnPage(pmmSettingsPage.url);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
     pmmSettingsPage.addAlertmanagerRule('', '');
     pmmSettingsPage.openAlertsManagerUi();
-    await pmmSettingsPage.verifyAlertmanagerRuleAdded(
-      pmmSettingsPage.alertManager.notAddedRuleName,
-      false,
-      false,
-    );
+    I.wait(10);
+    I.dontSeeElement(`//pre[contains(text(), '${pmmSettingsPage.alertManager.editRuleName}')]`);
   },
 );
 
