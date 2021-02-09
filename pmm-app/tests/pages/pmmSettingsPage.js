@@ -327,11 +327,11 @@ module.exports = {
         break;
       }
     }
-      I.refreshPage();
-      I.wait(5);
-      I.seeElement(`//pre[contains(text(), '${ruleName}')]`);
-      I.see(ruleName);
 
+    I.refreshPage();
+    I.wait(5);
+    I.seeElement(`//pre[contains(text(), '${ruleName}')]`);
+    I.see(ruleName);
   },
 
   async verifyExternalAlertManager(ruleName) {
