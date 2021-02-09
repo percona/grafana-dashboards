@@ -66,6 +66,12 @@ class Grafana extends Helper {
     return existingPages.length;
   }
 
+  async moveCursor(locator) {
+    const { page } = this.helpers.Playwright;
+
+    page.hover(locator);
+  }
+
   // eslint-disable-next-line no-underscore-dangle, class-methods-use-this
   async _before(test) {
     const allure = codeceptjs.container.plugins('allure');
