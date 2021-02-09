@@ -108,4 +108,20 @@ module.exports = {
       );
     }
   },
+
+  async verifyBackgroundColor(element, expectedColor) {
+    const backgroundColor = await I.grabCssPropertyFrom(element, 'background-color');
+
+    assert.strictEqual(
+      backgroundColor[0],
+      expectedColor,
+      `The Background color of the ${element} is not matching, the actual value is ${backgroundColor}`,
+    );
+  },
+
+  customClearField(field) {
+    I.appendField(field, '');
+    I.pressKey(['Control', 'a']);
+    I.pressKey('Backspace');
+  },
 };

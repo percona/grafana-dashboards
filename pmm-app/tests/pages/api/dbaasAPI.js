@@ -27,4 +27,23 @@ module.exports = {
       `Failed to unregister cluster with name "${clusterName}". Response message is "${response.data.message}"`,
     );
   },
+
+  async apiCheckRegisteredClusterExist(clusterName) {
+    const body = JSON.stringify({});
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    const response = await I.sendPostRequest('v1/management/DBaaS/Kubernetes/List', body, headers);
+
+    if (typeof response.data.kubernetes_clusters !== 'undefined') {
+      const cluster = response.data.kubernetes_clusters.find(
+        (o) => o.kubernetes_cluster_name === clusterName,
+      );
+
+      if (typeof cluster !== 'undefined') return true;
+
+      return false;
+    }
+
+    return false;
+  },
 };
