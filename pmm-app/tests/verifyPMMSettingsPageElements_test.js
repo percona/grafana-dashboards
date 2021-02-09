@@ -17,6 +17,7 @@ Feature('PMM Settings Elements');
 Before(async (I, pmmSettingsPage, settingsAPI) => {
   I.Authorize();
   await settingsAPI.restoreSettingsDefaults();
+  I.amOnPage(pmmSettingsPage.url);
 });
 
 Data(dataRetentionTable).Scenario('PMM-T97 - Verify server diagnostics on PMM Settings Page', async (pmmSettingsPage, current) => {
