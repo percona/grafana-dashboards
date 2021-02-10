@@ -33,9 +33,9 @@ Scenario(
 
     qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('mysql');
-    //I.waitForVisible(qanOverview.fields.searchBy, 30);
-    //I.fillField(qanOverview.fields.searchBy, 'insert');
-    //I.pressKey('Enter');
+    // I.waitForVisible(qanOverview.fields.searchBy, 30);
+    // I.fillField(qanOverview.fields.searchBy, 'insert');
+    // I.pressKey('Enter');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
     I.waitForVisible(cellValue, 30);
