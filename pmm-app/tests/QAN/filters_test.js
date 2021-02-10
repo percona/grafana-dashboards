@@ -212,7 +212,10 @@ Scenario(
     assert.ok(countAfter !== countBefore, 'Query count was expected to change');
 
     await qanFilters.verifyCountOfFilterLinks(countOfFilters, false);
+
+    I.fillField(qanFilters.fields.filterBy, environment);
     qanFilters.checkDisabledFilter('Environment', environment);
+    I.clearField(qanFilters.fields.filterBy);
     qanFilters.applyFilter(serviceName);
     const percentageAfter = await qanFilters.getPercentage('Service Type', serviceType);
 
