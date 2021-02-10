@@ -72,7 +72,7 @@ export const AllChecksTab: FC = () => {
           </thead>
           <tbody data-qa="db-checks-all-checks-tbody">
             {checks?.map((check) => (
-              <CheckTableRow check={check} onSuccess={updateUI} />
+              <CheckTableRow key={check.name} check={check} onSuccess={updateUI} />
             ))}
           </tbody>
         </table>
