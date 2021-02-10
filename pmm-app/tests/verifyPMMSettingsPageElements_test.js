@@ -1,6 +1,7 @@
 const assert = require('assert');
 const page = require('./pages/pmmSettingsPage');
 
+// Value should be in range from 1 to 3650 days, so put a value outside of the range
 const validationValues = ['2147483648', '-1', '0'];
 
 const dataRetentionTable = new DataTable(['value', 'message']);
