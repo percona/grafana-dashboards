@@ -24,6 +24,7 @@ module.exports = {
     remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
     rulesAPI: './tests/ia/pages/api/rulesAPI.js',
     ruleTemplatesPage: './tests/ia/pages/ruleTemplatesPage.js',
+    securityChecksAPI: './tests/pages/api/securityChecksAPI.js',
     settingsAPI: './tests/pages/api/settingsAPI.js',
     templatesAPI: './tests/ia/pages/api/templatesAPI.js',
 
