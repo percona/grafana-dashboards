@@ -8,20 +8,21 @@ import { Messages } from './ConfigEditor.messages';
 export const QueryEditor = (props) => {
   const {
     query: {
-      queryType: { queryType, variableName },
+      queryType,
     },
   } = props;
 
   const [queryTypeSelectedValue, setQueryType] = useState<SelectableValue<string>>(
-    queryType || DATASOURCE_OPTIONS[0],
+    queryType?.queryType || DATASOURCE_OPTIONS[0],
   );
-  const [variableNameSelectedValue, setVariableName] = useState<SelectableValue<string>>(variableName);
+
+  const [variableSelectedValue, setVariableName] = useState<SelectableValue<string>>(queryType?.variableName);
 
   useEffect(() => {
     props.onChange({
-      queryType: { queryType: queryTypeSelectedValue.value, variableName: variableNameSelectedValue.value },
+      queryType: { queryType: queryTypeSelectedValue?.value, variableName: variableSelectedValue?.value },
     });
-  }, [queryTypeSelectedValue, variableNameSelectedValue]);
+  }, [queryTypeSelectedValue, variableSelectedValue]);
 
   const variablesOptions = getTemplateSrv()
     .getVariables()
@@ -35,7 +36,7 @@ export const QueryEditor = (props) => {
             <Select options={DATASOURCE_OPTIONS} value={queryTypeSelectedValue} onChange={setQueryType} />
           </Field>
           <Field label={Messages.labels.field.variableName}>
-            <Select options={variablesOptions} value={variableNameSelectedValue} onChange={setVariableName} />
+            <Select options={variablesOptions} value={variableSelectedValue} onChange={setVariableName} />
           </Field>
         </FieldSet>
       </div>
