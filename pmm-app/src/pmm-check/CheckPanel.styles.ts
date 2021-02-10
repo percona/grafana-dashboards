@@ -34,6 +34,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       justify-content: center;
       align-items: center;
       border: 1px solid ${borderColor};
+      white-space: pre-wrap;
     `,
     link: css`
       color: ${theme.colors.linkExternal};
