@@ -51,8 +51,9 @@ Scenario(
 
 Scenario(
   'PMM-T233 Verify user can see Number of failed checks at Home Page and open PMM Database Checks page from it [critical] @not-pr-pipeline',
-  async (I, homePage, databaseChecksPage, settingsAPI) => {
+  async (I, homePage, databaseChecksPage, settingsAPI, securityChecksAPI) => {
     await settingsAPI.apiEnableSTT();
+    await securityChecksAPI.waitForSecurityChecksResults(10);
     I.amOnPage(homePage.url);
     I.waitForVisible(homePage.fields.checksPanelSelector, 30);
     I.waitForVisible(homePage.fields.sttFailedChecksPanelSelector, 30);
