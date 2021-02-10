@@ -60,7 +60,7 @@ module.exports = {
   },
   messages: {
     successPopUpMessage: 'Settings updated',
-    invalidDataDurationMessage: 'Value should be in range from 1 to 3650',
+    invalidDataDurationMessage: 'Value should be in the range from 1 to 3650',
     invalidDataDurationPopUpMessage: 'data_retention: should be a natural number of days',
     requiredFieldMessage: 'Required field',
     invalidSSHKeyMessage: 'Invalid SSH key.',
@@ -75,6 +75,7 @@ module.exports = {
     advanced: 'Advanced Settings',
     ssh: 'SSH Key',
     alertmanager: 'Alertmanager Integration',
+    perconaPlatform: 'Percona Platform',
   },
   sectionButtonText: {
     applyChanges: 'Apply changes',
@@ -282,6 +283,14 @@ module.exports = {
     this.customClearField(this.fields.dataRetentionInput);
     I.fillField(this.fields.dataRetentionInput, days);
     I.click(this.fields.advancedButton);
+  },
+
+  checkDataRetentionInput(value, message) {
+    const messageField = `//div[contains(text(), '${message}')]`;
+
+    this.customClearField(this.fields.dataRetentionInput);
+    I.fillField(this.fields.dataRetentionInput, value);
+    I.seeElement(messageField);
   },
 
   addSSHKey(keyValue) {
