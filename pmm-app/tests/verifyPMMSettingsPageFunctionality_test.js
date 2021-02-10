@@ -131,13 +131,11 @@ Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Sett
   async (I, pmmSettingsPage, settingsAPI, adminPage) => {
     await settingsAPI.apiDisableIA();
     I.amOnPage(pmmSettingsPage.advancedSettingsUrl);
-    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    await pmmSettingsPage.disableIA();
+    I.waitForVisible(pmmSettingsPage.fields.iaSwitchSelector, 30);
     I.click(pmmSettingsPage.fields.iaSwitchSelector);
     I.dontSeeElement(pmmSettingsPage.communication.communicationSection);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.iaSwitchSelectorInput, 'on');
     I.click(pmmSettingsPage.fields.advancedButton);
-    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.waitForVisible(pmmSettingsPage.fields.iaSwitchSelectorInput, 30);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.iaSwitchSelectorInput, 'on');
     I.seeElementInDOM(adminPage.sideMenu.integratedAlerting);
@@ -146,7 +144,7 @@ Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Sett
     I.click(pmmSettingsPage.fields.iaSwitchSelector);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.iaSwitchSelectorInput, 'off');
     I.click(pmmSettingsPage.fields.advancedButton);
-    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    I.waitForVisible(pmmSettingsPage.fields.iaSwitchSelector, 30);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.iaSwitchSelectorInput, 'off');
     I.dontSeeElementInDOM(adminPage.sideMenu.integratedAlerting);
     I.dontSeeElement(pmmSettingsPage.communication.communicationSection);
