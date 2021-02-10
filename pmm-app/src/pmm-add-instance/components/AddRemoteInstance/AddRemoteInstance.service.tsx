@@ -42,7 +42,7 @@ class AddRemoteInstanceService {
       case Databases.proxysql:
         return AddRemoteInstanceService.addProxysql(toPayload(data));
       case Databases.haproxy:
-        return AddRemoteInstanceService.addHaproxy(toPayload(data));
+        return AddRemoteInstanceService.addHaproxy(toExternalServicePayload(data));
       case 'external':
         return AddRemoteInstanceService.addExternal(toExternalServicePayload(data));
       default:
