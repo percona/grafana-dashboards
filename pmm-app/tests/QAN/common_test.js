@@ -15,11 +15,11 @@ Scenario(
     await qanPagination.verifyPagesAndCount(25);
     I.waitForVisible(qanFilters.elements.environmentLabel, 30);
     await qanOverview.verifyRowCount(27);
-    qanFilters.applyFilter('mysql');
     I.waitForVisible(qanFilters.fields.filterBy, 30);
-    I.waitForVisible(qanOverview.fields.searchBy, 30);
-    I.fillField(qanOverview.fields.searchBy, 'insert');
-    I.pressKey('Enter');
+    qanFilters.applyFilter('mysql');
+    //I.waitForVisible(qanOverview.fields.searchBy, 30);
+    //I.fillField(qanOverview.fields.searchBy, 'insert');
+    //I.pressKey('Enter');
     I.waitForVisible(qanOverview.elements.querySelector, 30);
     I.click(qanOverview.elements.querySelector);
     I.waitForVisible(qanOverview.getColumnLocator('Lock Time'), 30);
@@ -33,9 +33,9 @@ Scenario(
 
     qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('mysql');
-    I.waitForVisible(qanOverview.fields.searchBy, 30);
-    I.fillField(qanOverview.fields.searchBy, 'insert');
-    I.pressKey('Enter');
+    //I.waitForVisible(qanOverview.fields.searchBy, 30);
+    //I.fillField(qanOverview.fields.searchBy, 'insert');
+    //I.pressKey('Enter');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
     I.waitForVisible(cellValue, 30);
