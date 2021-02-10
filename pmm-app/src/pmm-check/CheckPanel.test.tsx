@@ -4,6 +4,7 @@ import { dataQa } from '@percona/platform-core';
 import { ReactWrapper, mount } from 'enzyme';
 import { CheckPanelRouter } from './CheckPanel';
 import { CheckService } from './Check.service';
+import { Messages } from './CheckPanel.messages';
 
 jest.mock('shared/components/helpers/notification-manager');
 
@@ -72,7 +73,7 @@ describe('CheckPanel::', () => {
     wrapper.update();
 
     expect(wrapper.find(dataQa('db-check-panel-settings-link'))).toHaveLength(1);
-    const text = 'Security Threat Tool is disabled. You can enable it in PMM Settings.';
+    const text = `${Messages.sttDisabled} ${Messages.pmmSettings}`;
 
     expect(wrapper.find(dataQa('db-check-panel-settings-link')).text()).toEqual(text);
 

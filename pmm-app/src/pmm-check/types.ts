@@ -25,7 +25,18 @@ export interface ActiveCheck {
   key: string;
   name: string;
   failed: FailedChecks;
-  details: Array<{ description: string, labels: { [key: string]: string }}>;
+  details: Array<{
+    description: string,
+    labels: { [key: string]: string },
+    silenced: boolean,
+    readMoreUrl?: string;
+  }>;
+}
+
+export enum AlertState {
+  active = 'active',
+  suppressed = 'suppressed',
+  unprocessed = 'unprocessed',
 }
 
 export interface CheckDetails {
@@ -33,6 +44,7 @@ export interface CheckDetails {
   summary: string;
   description?: string;
   disabled?: boolean;
+  readMoreUrl?: string;
 }
 
 export interface AllChecks {
@@ -66,12 +78,16 @@ export interface Alert {
   annotations: {
     description: string;
     summary: string;
+    read_more_url?: string;
   };
   labels: {
     stt_check?: string;
     service_name: string;
     severity: Severity;
   };
+  status: {
+    state: AlertState;
+  }
 }
 
 export interface AlertRequestParams {
@@ -118,6 +134,8 @@ export interface DetailProps {
 export interface DetailsItem {
   description: string;
   labels: Labels
+  silenced: boolean;
+  readMoreUrl?: string;
 }
 
 export interface TableDataAlertDetailsProps {
