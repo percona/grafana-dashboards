@@ -14,7 +14,9 @@ Before((I, qanPage) => {
 
 Scenario(
   'Verify Details section tabs @qan @not-pr-pipeline',
-  async (I, qanDetails, qanOverview) => {
+  async (I, qanDetails, qanOverview, qanFilters) => {
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyFilter('mysql');
     qanOverview.selectRow(2);
     await within(qanDetails.root, () => {
       I.waitForVisible(qanDetails.buttons.close, 30);
