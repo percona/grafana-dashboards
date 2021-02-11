@@ -8,7 +8,7 @@ Before(async (I) => {
 
 Scenario(
   // eslint-disable-next-line max-len
-  'Open the MySQL Overview Dashboard and verify Metrics are present and graphs are displayed @not-ui-pipeline @nightly @not-pr-pipeline',
+  'Open the MySQL Overview Dashboard and verify Metrics are present and graphs are displayed @nightly @not-ui-pipeline',
   async (I, adminPage, dashboardPage) => {
     I.amOnPage(dashboardPage.mysqlInstanceSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
@@ -24,7 +24,7 @@ Scenario(
 
 Scenario(
   // eslint-disable-next-line max-len
-  'Open the ProxySQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  'Open the ProxySQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @nightly @not-pr-pipeline',
   async (I, adminPage, dashboardPage) => {
     I.amOnPage(`${dashboardPage.proxysqlInstanceSummaryDashboard.url}?from=now-5m&to=now`);
     dashboardPage.waitForDashboardOpened();
@@ -38,7 +38,7 @@ Scenario(
 
 Scenario(
   // eslint-disable-next-line max-len
-  'Open the PXCGalera Cluster Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  'Open the PXCGalera Cluster Summary Dashboard and verify Metrics are present and graphs are displayed @nightly @not-ui-pipeline',
   async (I, adminPage, dashboardPage) => {
     I.amOnPage(`${dashboardPage.pxcGaleraClusterSummaryDashboard.url}?from=now-5m&to=now`);
     dashboardPage.waitForDashboardOpened();
@@ -51,7 +51,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T324 - Verify MySQL - MySQL User Details dashboard @not-pr-pipeline',
+  'PMM-T324 - Verify MySQL - MySQL User Details dashboard @nightly @not-ui-pipeline',
   async (I, dashboardPage, adminPage) => {
     I.amOnPage(dashboardPage.mysqlUserDetailsDashboard.url);
     dashboardPage.waitForDashboardOpened();
@@ -66,7 +66,7 @@ Scenario(
 
 // Need to Skip due to wait issue on locator
 xScenario(
-  'PMM-T396 - Verify that parameters are passed from MySQL User Details dashboard to QAN @not-pr-pipeline',
+  'PMM-T396 - Verify that parameters are passed from MySQL User Details dashboard to QAN @nightly @not-ui-pipeline',
   async (I, dashboardPage, qanFilters, qanOverview, adminPage) => {
     const filters = ['ps_8.0', 'root'];
     const timeRange = 'Last 12 hours';
