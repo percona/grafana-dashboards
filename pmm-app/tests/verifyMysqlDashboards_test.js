@@ -24,7 +24,7 @@ Scenario(
 
 Scenario(
   // eslint-disable-next-line max-len
-  'Open the ProxySQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @nightly @not-pr-pipeline',
+  'Open the ProxySQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @nightly @not-ui-pipeline',
   async (I, adminPage, dashboardPage) => {
     I.amOnPage(`${dashboardPage.proxysqlInstanceSummaryDashboard.url}?from=now-5m&to=now`);
     dashboardPage.waitForDashboardOpened();
