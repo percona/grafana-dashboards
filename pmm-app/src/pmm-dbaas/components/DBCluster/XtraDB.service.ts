@@ -69,7 +69,7 @@ export class XtraDBService extends DBClusterService {
 
   getDBCluster(dbCluster: DBCluster): Promise<void | DBClusterConnectionAPI> {
     return apiRequestManagement.post<DBClusterConnectionAPI, any>(
-      '/DBaaS/XtraDBClusters/Get',
+      '/DBaaS/XtraDBClusters/GetCredentials',
       omit(toAPI(dbCluster), ['params']),
     );
   }
