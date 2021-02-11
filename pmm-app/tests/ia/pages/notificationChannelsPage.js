@@ -64,25 +64,29 @@ module.exports = {
     I.click(this.elements.notificationChannelsTab);
   },
 
-  selectChannelType(type) {
-    I.click(this.fields.typeDropdown);
-    I.click(this.fields.typeOptionLocator(type));
+  async selectChannelType(type) {
+    I.waitForVisible(this.fields.typeDropdown, 30);
+    await within(this.elements.modalContent, () => {
+      I.click(this.fields.typeDropdown);
+      I.waitForVisible(this.fields.typeOptionLocator(type), 30);
+      I.click(this.fields.typeOptionLocator(type));
+    });
     I.see(type, this.fields.typeDropdown);
   },
 
-  createChannel(name, type) {
+  async createChannel(name, type) {
     I.click(this.buttons.openAddChannelModal);
     I.waitForVisible(this.fields.typeDropdown, 30);
     I.seeElement(this.buttons.closeModal);
     I.seeElement(this.buttons.cancelAdding);
-    this.fillFields(name, type);
+    await this.fillFields(name, type);
     I.click(this.buttons.addChannel);
     this.verifyPopUpMessage(this.messages.successfullyAdded);
   },
 
-  fillFields(name, type) {
+  async fillFields(name, type) {
     I.fillField(this.fields.nameInput, name);
-    this.selectChannelType(type);
+    await this.selectChannelType(type);
 
     switch (type) {
       case this.types.email.type:
