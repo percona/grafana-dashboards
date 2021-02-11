@@ -29,7 +29,7 @@ Scenario(
     const cellValue = qanDetails.getMetricsCellLocator('Query Time', 3);
 
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('mysql');
+    qanFilters.applyFilter('ps-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
     I.waitForVisible(cellValue, 30);
