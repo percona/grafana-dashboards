@@ -28,7 +28,7 @@ Scenario(
     await dashboardPage.expandEachDashboardRow();
     dashboardPage.verifyMetricsExistence(dashboardPage.prometheusExporterStatusDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA(4);
-    //increasing to 15 because of failings
+    // increasing to 15 because of failings
     await dashboardPage.verifyThereAreNoGraphsWithoutData(15);
   },
 );
