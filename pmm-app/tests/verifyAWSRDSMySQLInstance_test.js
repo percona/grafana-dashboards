@@ -60,7 +60,7 @@ Scenario(
     await dashboardPage.expandEachDashboardRow();
     // Sevices has N/A - increasing to 1
     await dashboardPage.verifyThereAreNoGraphsWithNA(1);
-    // So many graphs have No Data - skipping the check
+    // 23 Graphs has No Data - skipping the check
     // await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
   },
 );

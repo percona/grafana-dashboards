@@ -130,7 +130,7 @@ Scenario(
     // md_someting - FC (normal traffic) is causing problems - increasing to 1
     await dashboardPage.verifyThereAreNoGraphsWithNA(1);
     // we need to figure out why all 'md' and 'pxc' graphs have No-Data
-    // skipping check for No Data
+    // skipping check for No Data - more than 15 graphs are without data
     // await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
   },
 );
