@@ -38,8 +38,9 @@ Scenario(
 
 Scenario(
   'PMM-T233 PMM-T234 Verify user is able to access PMM Database Checks through UI and with URL [critical] @not-pr-pipeline',
-  async (I, adminPage, databaseChecksPage, pmmSettingsPage, settingsAPI) => {
+  async (I, adminPage, databaseChecksPage, pmmSettingsPage, settingsAPI, securityChecksAPI) => {
     await settingsAPI.apiEnableSTT();
+    await securityChecksAPI.waitForSecurityChecksResults(20);
     I.amOnPage(pmmSettingsPage.url);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await adminPage.selectItemFromPMMDropdown('PMM Database Checks');
@@ -53,7 +54,7 @@ Scenario(
   'PMM-T233 Verify user can see Number of failed checks at Home Page and open PMM Database Checks page from it [critical] @not-pr-pipeline',
   async (I, homePage, databaseChecksPage, settingsAPI, securityChecksAPI) => {
     await settingsAPI.apiEnableSTT();
-    await securityChecksAPI.waitForSecurityChecksResults(10);
+    await securityChecksAPI.waitForSecurityChecksResults(20);
     I.amOnPage(homePage.url);
     I.waitForVisible(homePage.fields.checksPanelSelector, 30);
     I.waitForVisible(homePage.fields.sttFailedChecksPanelSelector, 30);
@@ -64,10 +65,11 @@ Scenario(
 
 Scenario(
   'PMM-T236 Verify user is able to hover Failed Checks values and see tooltip [minor] @not-pr-pipeline',
-  async (I, databaseChecksPage, settingsAPI) => {
+  async (I, databaseChecksPage, settingsAPI, securityChecksAPI) => {
     const row = 1;
 
     await settingsAPI.apiEnableSTT();
+    await securityChecksAPI.waitForSecurityChecksResults(20);
     I.amOnPage(databaseChecksPage.url);
     await databaseChecksPage.verifyDatabaseChecksPageOpened();
     databaseChecksPage.mouseOverInfoIcon(row);
@@ -77,8 +79,9 @@ Scenario(
 
 Scenario(
   'PMM-T241 Verify user can see correct service name for failed checks [critical] @not-pr-pipeline',
-  async (I, databaseChecksPage, settingsAPI) => {
+  async (I, databaseChecksPage, settingsAPI, securityChecksAPI) => {
     await settingsAPI.apiEnableSTT();
+    await securityChecksAPI.waitForSecurityChecksResults(20);
     I.amOnPage(databaseChecksPage.url);
     await databaseChecksPage.verifyDatabaseChecksPageOpened();
     await databaseChecksPage.verifyServiceNamesExistence();
