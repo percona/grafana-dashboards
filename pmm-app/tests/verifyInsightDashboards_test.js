@@ -16,6 +16,7 @@ Scenario(
   },
 );
 
+// Need to be fix by PMM-7502
 Scenario(
   // eslint-disable-next-line max-len
   'Open the Prometheus Exporters Status Dashboard and verify Metrics are present and graphs are displayed @not-ui-pipeline @nightly @not-pr-pipeline',

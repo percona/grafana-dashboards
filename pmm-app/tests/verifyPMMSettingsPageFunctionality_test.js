@@ -120,7 +120,7 @@ Scenario('PMM-T520 - Verify that alert is in Firing State - internal alert manag
 });
 
 
-// skipping check for external Alert Manager - investigation in future
+// Need to be fix by PMM-7502
 xScenario('PMM-T520 - Verify that alert is being fired to external Alert Manager @not-ui-pipeline @nightly @not-pr-pipeline', async (I, pmmSettingsPage) => {
   const scheme = 'http://';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;

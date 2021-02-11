@@ -99,6 +99,7 @@ xScenario(
   },
 );
 
+// Need to be fix by PMM-7502
 Scenario(
   'PMM-T348 - PXC/Galera Node Summary dashboard @not-pr-pipeline @not-ui-pipeline @nightly',
   async (I, dashboardPage, adminPage) => {
@@ -115,6 +116,7 @@ Scenario(
   },
 );
 
+// Need to be fix by PMM-7502
 Scenario(
   'PMM-T349 - PXC/Galera Nodes Compare dashboard @not-pr-pipeline @not-ui-pipeline @nightly',
   async (I, dashboardPage, adminPage) => {

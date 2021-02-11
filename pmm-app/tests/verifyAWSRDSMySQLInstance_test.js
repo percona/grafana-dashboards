@@ -51,6 +51,7 @@ xScenario(
   },
 );
 
+// Need to be fix by PMM-7502
 Scenario(
   'Verify MySQL Instances Overview Dashboard for AWS RDS MySQL 5.6 data after it was added for monitoring @not-ui-pipeline @nightly @not-pr-pipeline',
   async (I, dashboardPage) => {
