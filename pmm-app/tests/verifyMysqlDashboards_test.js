@@ -99,7 +99,6 @@ xScenario(
   },
 );
 
-// Need to be fix by PMM-7502
 Scenario(
   'PMM-T348 - PXC/Galera Node Summary dashboard @not-pr-pipeline @not-ui-pipeline @nightly',
   async (I, dashboardPage, adminPage) => {
@@ -109,14 +108,15 @@ Scenario(
     adminPage.peformPageDown(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.mysqlPXCGaleraNodeSummaryDashboard.metrics);
     // FC (normal traffic) causing the problem - increasing to 1
+    // Need to be fix by PMM-7502
     await dashboardPage.verifyThereAreNoGraphsWithNA(1);
     // Galera Network Usage Hourly can has No-Data
     // Galera Writeset Size is an issue - increasing to 2
+    // Need to be fix by PMM-7502
     await dashboardPage.verifyThereAreNoGraphsWithoutData(2);
   },
 );
 
-// Need to be fix by PMM-7502
 Scenario(
   'PMM-T349 - PXC/Galera Nodes Compare dashboard @not-pr-pipeline @not-ui-pipeline @nightly',
   async (I, dashboardPage, adminPage) => {
@@ -128,9 +128,11 @@ Scenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.mysqlPXCGaleraNodesSummaryDashboard.metrics);
     dashboardPage.verifyTabExistence(dashboardPage.mysqlPXCGaleraNodesSummaryDashboard.tabs);
     // md_someting - FC (normal traffic) is causing problems - increasing to 1
+    // Need to be fix by PMM-7502
     await dashboardPage.verifyThereAreNoGraphsWithNA(1);
     // we need to figure out why all 'md' and 'pxc' graphs have No-Data
     // skipping check for No Data - more than 15 graphs are without data
+    // Need to be fix by PMM-7502
     // await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
   },
 );
