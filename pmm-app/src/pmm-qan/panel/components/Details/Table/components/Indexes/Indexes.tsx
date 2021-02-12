@@ -1,8 +1,9 @@
 import React, {
   FC, useCallback, useEffect, useState,
 } from 'react';
-import { Spin, Table } from 'antd';
 import { ActionResult, getActionResult } from 'shared/components/Actions';
+import { Table } from 'shared/components/Elements/Table';
+import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
@@ -38,20 +39,13 @@ export const Indexes: FC<TableProps> = ({ tableName, databaseType, example }) =>
 
   return (
     <div>
-      <Spin spinning={indexes.loading}>
+      <Overlay isPending={indexes.loading}>
         {indexes.error ? <pre>{indexes.error}</pre> : null}
         {!indexes.error && data.rows.length ? (
-          <Table
-            dataSource={data.rows}
-            columns={data.columns}
-            scroll={{ x: '90%' }}
-            pagination={false}
-            size="small"
-            bordered
-          />
+          <Table columns={data.columns} data={data.rows} noData={null} />
         ) : null}
         {!indexes.error && !data.rows.length ? <pre>{Messages.noDataFound}</pre> : null}
-      </Spin>
+      </Overlay>
     </div>
   );
 };

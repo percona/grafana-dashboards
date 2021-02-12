@@ -17,7 +17,7 @@ export const useTables = (examples, databaseType): any[] => {
 
         const tablesResult = [
           get(parsedJSON, 'query_block.table.table_name')
-          || get(parsedJSON, 'query_block.ordering_operation.grouping_operation.table.table_name'),
+            || get(parsedJSON, 'query_block.ordering_operation.grouping_operation.table.table_name'),
         ].filter(Boolean);
 
         setTables(tablesResult);

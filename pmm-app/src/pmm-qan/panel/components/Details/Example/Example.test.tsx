@@ -32,9 +32,7 @@ describe('Example tab page render test', () => {
         },
       ],
     };
-    const component = mount(
-      <Example databaseType={props.databaseType} examples={props.examples} />,
-    );
+    const component = mount(<Example databaseType={props.databaseType} examples={props.examples} />);
 
     expect(component.find('.sql').text()).toEqual(sqlFormatter.format(props.examples[0].example));
   });
@@ -74,9 +72,7 @@ describe('Example tab page render test', () => {
         },
       ],
     };
-    const component = mount(
-      <Example databaseType={props.databaseType} examples={props.examples} />,
-    );
+    const component = mount(<Example databaseType={props.databaseType} examples={props.examples} />);
 
     expect(component.find('.sql').text()).toEqual(sqlFormatter.format(props.examples[0].example));
   });
