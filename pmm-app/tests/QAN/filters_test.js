@@ -171,19 +171,12 @@ Scenario(
 
     let count = qanOverview.getCountOfItems();
 
-    I.fillField(qanFilters.fields.filterBy, db1);
     qanFilters.applyFilterInSection(section, db1);
     count = await qanOverview.waitForNewItemsCount(count);
-    I.clearField(qanFilters.fields.filterBy);
-    I.fillField(qanFilters.fields.filterBy, db2);
     qanFilters.applyFilterInSection(section, db2);
     count = await qanOverview.waitForNewItemsCount(count);
-    I.clearField(qanFilters.fields.filterBy);
-    I.fillField(qanFilters.fields.filterBy, serviceName);
     qanFilters.applyFilter(serviceName);
     await qanOverview.waitForNewItemsCount(count);
-    I.clearField(qanFilters.fields.filterBy);
-    I.fillField(qanFilters.fields.filterBy, db2);
     qanFilters.applyFilterInSection(section, db2);
     await within(qanOverview.root, () => {
       I.waitForText('No queries available for this combination of filters', 30);
@@ -212,10 +205,7 @@ Scenario(
     assert.ok(countAfter !== countBefore, 'Query count was expected to change');
 
     await qanFilters.verifyCountOfFilterLinks(countOfFilters, false);
-
-    I.fillField(qanFilters.fields.filterBy, environment);
     qanFilters.checkDisabledFilter('Environment', environment);
-    I.clearField(qanFilters.fields.filterBy);
     qanFilters.applyFilter(serviceName);
     const percentageAfter = await qanFilters.getPercentage('Service Type', serviceType);
 
