@@ -1,13 +1,13 @@
 Feature('QAN details');
 
-Before((I, qanPage) => {
+Before(({ I, qanPage }) => {
   I.Authorize();
   I.amOnPage(qanPage.url);
 });
 
 Scenario(
   'Verify Details section tabs @qan @not-pr-pipeline',
-  async (I, qanDetails, qanOverview) => {
+  async ({ I, qanDetails, qanOverview }) => {
     qanOverview.selectRow(2);
     await within(qanDetails.root, () => {
       I.waitForVisible(qanDetails.buttons.close, 30);
@@ -21,7 +21,7 @@ Scenario(
 
 Scenario(
   'PMM-T223 - Verify time metrics are AVG per query (not per second) @qan @not-pr-pipeline',
-  async (I, qanOverview, qanFilters, qanDetails) => {
+  async ({ I, qanOverview, qanFilters, qanDetails }) => {
     const cellValue = qanDetails.getMetricsCellLocator('Query Time', 3);
 
     qanOverview.waitForOverviewLoaded();

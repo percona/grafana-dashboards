@@ -1,12 +1,12 @@
 Feature('PMM Settings Page Functionality');
 
-Before(async (I, pmmSettingsPage, settingsAPI) => {
+Before(async ({ I, pmmSettingsPage, settingsAPI }) => {
   I.Authorize();
   await settingsAPI.restoreSettingsDefaults();
   I.amOnPage(pmmSettingsPage.url);
 });
 
-Scenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
+Scenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async ({ I, pmmSettingsPage }) => {
   const resolutionToApply = 'Rare';
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -17,7 +17,7 @@ Scenario('Open PMM Settings page and verify changing Metrics Resolution [critica
   await pmmSettingsPage.verifySelectedResolution(resolutionToApply);
 });
 
-Scenario('Open PMM Settings page and verify changing Data Retention [critical]', async (I, pmmSettingsPage) => {
+Scenario('Open PMM Settings page and verify changing Data Retention [critical]', async ({ I, pmmSettingsPage }) => {
   const dataRetentionValue = '1';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
@@ -33,7 +33,7 @@ Scenario('Open PMM Settings page and verify changing Data Retention [critical]',
   I.waitForValue(pmmSettingsPage.fields.dataRetentionInput, dataRetentionValue, 30);
 });
 
-Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]', async (I, pmmSettingsPage) => {
+Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]', async ({ I, pmmSettingsPage }) => {
   const scheme = 'http://';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -50,7 +50,7 @@ Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]'
 
 Scenario(
   'PMM-T253 Verify user can see correct tooltip for STT [trivial]',
-  async (I, pmmSettingsPage) => {
+  async ({ I, pmmSettingsPage }) => {
     const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -63,7 +63,7 @@ Scenario(
 
 Scenario(
   'PMM-T253 Verify user can enable STT if Telemetry is enabled',
-  async (I, pmmSettingsPage) => {
+  async ({ I, pmmSettingsPage }) => {
     const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -81,7 +81,7 @@ Scenario(
   },
 );
 
-Scenario('PMM-T520 - Verify that alert is in Firing State - internal alert manager @not-ui-pipeline @nightly @not-pr-pipeline', async (I, pmmSettingsPage) => {
+Scenario('PMM-T520 - Verify that alert is in Firing State - internal alert manager @not-ui-pipeline @nightly @not-pr-pipeline', async ({ I, pmmSettingsPage }) => {
   const scheme = 'http://127.0.0.1';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -98,7 +98,7 @@ Scenario('PMM-T520 - Verify that alert is in Firing State - internal alert manag
   await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2, true);
 });
 
-Scenario('PMM-T520 - Verify that alert is being fired to external Alert Manager @not-ui-pipeline @nightly @not-pr-pipeline', async (I, pmmSettingsPage) => {
+Scenario('PMM-T520 - Verify that alert is being fired to external Alert Manager @not-ui-pipeline @nightly @not-pr-pipeline', async ({ I, pmmSettingsPage }) => {
   const scheme = 'http://';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 

@@ -11,12 +11,12 @@ Object.values(page.rules).forEach((rule) => {
 
 Feature('IA: Alert rules');
 
-Before(async (I, alertRulesPage, settingsAPI) => {
+Before(async ({ I, alertRulesPage, settingsAPI }) => {
   I.Authorize();
   await settingsAPI.apiEnableIA();
 });
 
-BeforeSuite(async (I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channelsAPI, ncPage) => {
+BeforeSuite(async ({ I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channelsAPI, ncPage }) => {
   await settingsAPI.apiEnableIA();
   await rulesAPI.clearAllRules();
   await templatesAPI.clearAllTemplates();
@@ -25,7 +25,7 @@ BeforeSuite(async (I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, chann
   await channelsAPI.createNotificationChannel('EmailChannelForRules', ncPage.types.email.type);
 });
 
-AfterSuite(async (I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channelsAPI) => {
+AfterSuite(async ({ I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channelsAPI }) => {
   await settingsAPI.apiEnableIA();
   await rulesAPI.clearAllRules();
   await templatesAPI.clearAllTemplates();
@@ -34,14 +34,14 @@ AfterSuite(async (I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channe
 
 Scenario(
   'Verify No data shown and alert rules list elements @ia @not-pr-pipeline',
-  async (I, alertRulesPage, rulesAPI) => {
+  async ({ I, alertRulesPage, rulesAPI }) => {
     alertRulesPage.openAlertRulesTab();
     I.see(alertRulesPage.messages.noRulesFound, alertRulesPage.elements.noRules);
     const ruleName = 'QAA PSQL rules List test';
     const ruleId = await rulesAPI.createAlertRule(ruleName);
 
     alertRulesPage.openAlertRulesTab();
-    alertRulesPage.columnHeaders.forEach((header) => {
+    alertRulesPage.columnHeaders.forEach(({ header }) => {
       const columnHeader = alertRulesPage.elements.columnHeaderLocator(header);
 
       I.waitForVisible(columnHeader, 30);
@@ -52,7 +52,7 @@ Scenario(
 
 Scenario(
   'Add alert rule modal elements @ia @not-pr-pipeline',
-  async (I, alertRulesPage, rulesAPI) => {
+  async ({ I, alertRulesPage, rulesAPI }) => {
     const ruleName = 'QAA PSQL Modal elements test';
     const ruleId = await rulesAPI.createAlertRule(ruleName);
 
@@ -77,7 +77,7 @@ Scenario(
 
 Scenario(
   'PMM-T538 Verify user is able to disable/enable a rule from the rules list @ia @not-pr-pipeline',
-  async (I, alertRulesPage, rulesAPI) => {
+  async ({ I, alertRulesPage, rulesAPI }) => {
     const ruleName = 'QAA PSQL Enable/Disable test';
     const ruleId = await rulesAPI.createAlertRule(ruleName);
 
@@ -100,7 +100,7 @@ Scenario(
 
 Data(rules).Scenario(
   'PMM-T515 PMM-T543 PMM-T544 PMM-T545 Create Alert rule @ia @not-pr-pipeline',
-  async (I, alertRulesPage, rulesAPI, templatesAPI, current) => {
+  async ({ I, alertRulesPage, rulesAPI, templatesAPI, current }) => {
     const rule = {
       template: current.template,
       templateType: current.templateType,
@@ -129,7 +129,7 @@ Data(rules).Scenario(
 
 Scenario(
   'PMM-T516 Update Alert rule @ia @not-pr-pipeline',
-  async (I, alertRulesPage, rulesAPI, channelsAPI, ncPage) => {
+  async ({ I, alertRulesPage, rulesAPI, channelsAPI, ncPage }) => {
     const ruleName = 'QAA PSQL Update test';
     const ruleId = await rulesAPI.createAlertRule(ruleName);
 

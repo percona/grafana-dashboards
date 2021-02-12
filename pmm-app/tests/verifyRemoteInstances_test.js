@@ -9,14 +9,14 @@ for (const i of Object.keys(page.services)) {
 
 Feature('Remote DB Instances');
 
-Before(async (I) => {
+Before(async ({ I }) => {
   I.Authorize();
 });
 
 // TODO: unskip the mongodb tests after resolving a creds issue
 Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
   'Verify Remote Instance Addition [critical] @not-pr-pipeline',
-  async (I, remoteInstancesPage, current) => {
+  async ({ I, remoteInstancesPage, current }) => {
     const serviceName = remoteInstancesPage.services[current.name];
 
     I.amOnPage(remoteInstancesPage.url);
@@ -29,7 +29,7 @@ Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
 
 Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
   'Verify Remote Instance has Status Running [critical] @not-pr-pipeline',
-  async (I, remoteInstancesPage, pmmInventoryPage, current) => {
+  async ({ I, remoteInstancesPage, pmmInventoryPage, current }) => {
     const serviceName = remoteInstancesPage.services[current.name];
 
     I.amOnPage(pmmInventoryPage.url);
@@ -40,7 +40,7 @@ Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
 
 Scenario(
   'TableStats UI Default table Options for Remote MySQL & AWS-RDS Instance',
-  async (I, remoteInstancesPage, adminPage) => {
+  async ({ I, remoteInstancesPage, adminPage }) => {
     I.amOnPage(remoteInstancesPage.url);
     remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
     remoteInstancesPage.openAddRemotePage('mysql');

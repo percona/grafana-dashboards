@@ -2,14 +2,14 @@ const assert = require('assert');
 
 Feature('Test the functionality inside DBaaS page');
 
-Before(async (I) => {
+Before(async ({ I }) => {
   I.Authorize();
 });
 
 // Need to Skip this for now, we need to setup correct config to be provided for this test https://jira.percona.com/browse/PMM-6457
 xScenario(
   'PMM-T426 - Verify adding new Kubernetes cluster, PMM-T428 - Verify adding new Kubernetes cluster with same name, PMM-T431 -Verify deleting Kubernetes cluster @not-pr-pipeline',
-  async (I, dbaasPage) => {
+  async ({ I, dbaasPage }) => {
     const clusterName = 'Kubernetes_Testing_Cluster';
 
     I.amOnPage(dbaasPage.url);
@@ -37,7 +37,7 @@ xScenario(
 
 Scenario(
   'PMM-T427 - Verify submitting blank Add kubernetes cluster form @not-pr-pipeline',
-  async (I, dbaasPage) => {
+  async ({ I, dbaasPage }) => {
     const clusterName = 'Kubernetes_Testing_Cluster';
 
     I.amOnPage(dbaasPage.url);
@@ -56,7 +56,7 @@ Scenario(
   },
 );
 
-Scenario('PMM-T427 - Verify elements on PMM DBaaS page @not-pr-pipeline', async (I, dbaasPage) => {
+Scenario('PMM-T427 - Verify elements on PMM DBaaS page @not-pr-pipeline', async ({ I, dbaasPage }) => {
   I.amOnPage(dbaasPage.url);
   I.waitForVisible(dbaasPage.fields.addKubernetesClusterButton, 30);
   I.waitForVisible(dbaasPage.fields.addKubernetesClusterButtonInTable, 30);

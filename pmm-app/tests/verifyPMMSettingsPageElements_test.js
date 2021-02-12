@@ -13,14 +13,14 @@ dataRetentionTable.add(['', page.messages.requiredFieldMessage]);
 
 Feature('PMM Settings Page Elements and Validations');
 
-Before(async (I, pmmSettingsPage) => {
+Before(async ({ I, pmmSettingsPage }) => {
   I.Authorize();
   I.amOnPage(pmmSettingsPage.url);
 });
 
-Scenario('Verify Section Tabs and Metrics Section Elements [critical]', async (I, pmmSettingsPage) => {
+Scenario('Verify Section Tabs and Metrics Section Elements [critical]', async ({ I, pmmSettingsPage }) => {
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-  Object.values(pmmSettingsPage.sectionTabsList).forEach((value) => {
+  Object.values(pmmSettingsPage.sectionTabsList).forEach(({ value }) => {
     I.see(value, pmmSettingsPage.fields.tabsSection);
   });
 
@@ -34,7 +34,7 @@ Scenario('Verify Section Tabs and Metrics Section Elements [critical]', async (I
   });
 });
 
-Scenario('Verify SSH Key Section Elements', async (I, pmmSettingsPage) => {
+Scenario('Verify SSH Key Section Elements', async ({ I, pmmSettingsPage }) => {
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.ssh;
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -43,7 +43,7 @@ Scenario('Verify SSH Key Section Elements', async (I, pmmSettingsPage) => {
   I.seeElement(pmmSettingsPage.fields.sshKeyInput);
 });
 
-Scenario('Verify Advanced Section Elements', async (I, pmmSettingsPage) => {
+Scenario('Verify Advanced Section Elements', async ({ I, pmmSettingsPage }) => {
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -60,7 +60,7 @@ Scenario('Verify Advanced Section Elements', async (I, pmmSettingsPage) => {
   I.seeElement(pmmSettingsPage.fields.sttLabel);
 });
 
-Scenario('Verify Alertmanager integration Section Elements', async (I, pmmSettingsPage) => {
+Scenario('Verify Alertmanager integration Section Elements', async ({ I, pmmSettingsPage }) => {
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -71,7 +71,7 @@ Scenario('Verify Alertmanager integration Section Elements', async (I, pmmSettin
   I.seeElement(pmmSettingsPage.fields.alertRulesInput);
 });
 
-Scenario('Verify validation for invalid SSH Key', async (I, pmmSettingsPage) => {
+Scenario('Verify validation for invalid SSH Key', async ({ I, pmmSettingsPage }) => {
   const sshKeyForTest = 'ssh-rsa testKey test@key.local';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.ssh;
 
@@ -81,7 +81,7 @@ Scenario('Verify validation for invalid SSH Key', async (I, pmmSettingsPage) => 
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidSSHKeyMessage);
 });
 
-Scenario('Verify validation for Alertmanager URL without scheme', async (I, pmmSettingsPage) => {
+Scenario('Verify validation for Alertmanager URL without scheme', async ({ I, pmmSettingsPage }) => {
   const urlWithoutScheme = 'invalid_url';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -91,7 +91,7 @@ Scenario('Verify validation for Alertmanager URL without scheme', async (I, pmmS
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerMissingSchemeMessage);
 });
 
-Scenario('Verify validation for Alertmanager URL without host', async (I, pmmSettingsPage) => {
+Scenario('Verify validation for Alertmanager URL without host', async ({ I, pmmSettingsPage }) => {
   const urlWithoutHost = 'http://';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -101,7 +101,7 @@ Scenario('Verify validation for Alertmanager URL without host', async (I, pmmSet
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerMissingHostMessage);
 });
 
-Scenario('Verify validation for invalid Alertmanager Rule', async (I, pmmSettingsPage) => {
+Scenario('Verify validation for invalid Alertmanager Rule', async ({ I, pmmSettingsPage }) => {
   const rule = 'invalid_rule';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -114,7 +114,7 @@ Scenario('Verify validation for invalid Alertmanager Rule', async (I, pmmSetting
 // Update the test to check IA switch logic too TODO: https://jira.percona.com/browse/PMM-7217
 Scenario(
   'PMM-T254 Verify validation for STT and Telemetry switches',
-  async (I, pmmSettingsPage, settingsAPI) => {
+  async ({ I, pmmSettingsPage, settingsAPI }) => {
     await settingsAPI.apiDisableSTT();
     I.amOnPage(pmmSettingsPage.url);
     const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
@@ -144,7 +144,7 @@ Scenario(
 // To be removed from Skip after https://jira.percona.com/browse/PMM-5791
 xScenario(
   'PMM-T227 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days @not-pr-pipeline',
-  async (I, pmmSettingsPage) => {
+  async ({ I, pmmSettingsPage }) => {
     const dataRetention = '2';
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -154,7 +154,7 @@ xScenario(
 
 Scenario(
   'PMM-T415 - Verify Percona Platform (Sign up) elements on PMM Settings Page',
-  async (I, pmmSettingsPage) => {
+  async ({ I, pmmSettingsPage }) => {
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.waitForElement(pmmSettingsPage.fields.perconaPlatformLink, 30);
     I.click(pmmSettingsPage.fields.perconaPlatformLink);
@@ -181,7 +181,7 @@ Scenario(
 
 Scenario(
   'PMM-T398 - Verify Percona Platform (Login) elements on PMM Settings Page',
-  async (I, pmmSettingsPage) => {
+  async ({ I, pmmSettingsPage }) => {
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.waitForElement(pmmSettingsPage.fields.perconaPlatformLink, 30);
     I.click(pmmSettingsPage.fields.perconaPlatformLink);

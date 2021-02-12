@@ -9,7 +9,7 @@ for (const i of Object.values(page.ruleTemplate.paths)) {
 
 Feature('IA: Alert rule templates');
 
-Before(async (I, ruleTemplatesPage, settingsAPI) => {
+Before(async ({ I, ruleTemplatesPage, settingsAPI }) => {
   I.Authorize();
   await settingsAPI.apiEnableIA();
   ruleTemplatesPage.openRuleTemplatesTab();
@@ -17,7 +17,7 @@ Before(async (I, ruleTemplatesPage, settingsAPI) => {
 
 Scenario(
   'PMM-T510 Verify built-in rule templates are non-editable @ia @not-pr-pipeline',
-  async (I, ruleTemplatesPage) => {
+  async ({ I, ruleTemplatesPage }) => {
     const editButton = ruleTemplatesPage.buttons
       .editButtonBySource(ruleTemplatesPage.templateSources.builtin);
 
@@ -28,15 +28,15 @@ Scenario(
 
 Scenario(
   'Verify rule templates list elements @ia @not-pr-pipeline',
-  async (I, ruleTemplatesPage) => {
-    ruleTemplatesPage.columnHeaders.forEach((header) => {
+  async ({ I, ruleTemplatesPage }) => {
+    ruleTemplatesPage.columnHeaders.forEach(({ header }) => {
       const columnHeader = ruleTemplatesPage.elements.columnHeaderLocator(header);
 
       I.waitForVisible(columnHeader, 30);
     });
     const templateName = await I.grabTextFrom(ruleTemplatesPage.elements.templateName);
 
-    templateName.forEach((name) => {
+    templateName.forEach(({ name }) => {
       assert.ok(name.length > 0, 'Rule Template name should not be empty');
     });
     I.seeElement(ruleTemplatesPage.buttons.openAddTemplateModal);
@@ -45,7 +45,7 @@ Scenario(
 
 Scenario(
   'Add rule template modal elements @ia @not-pr-pipeline',
-  async (I, ruleTemplatesPage) => {
+  async ({ I, ruleTemplatesPage }) => {
     I.click(ruleTemplatesPage.buttons.openAddTemplateModal);
     I.see(ruleTemplatesPage.messages.modalHeaderText, ruleTemplatesPage.elements.modalHeader);
     I.seeElement(ruleTemplatesPage.buttons.closeModal);
@@ -57,7 +57,7 @@ Scenario(
 
 Scenario(
   'PMM-T500 Add rule templates @ia @not-pr-pipeline',
-  async (I, ruleTemplatesPage) => {
+  async ({ I, ruleTemplatesPage }) => {
     const [templateName, fileContent] = await ruleTemplatesPage.ruleTemplate
       .templateNameAndContent(ruleTemplatesPage.ruleTemplate.inputFilePath);
     const expectedSourceLocator = ruleTemplatesPage
@@ -77,7 +77,7 @@ Scenario(
 Data(templates)
   .Scenario(
     'PMM-T482 PMM-T499 Upload rule templates @ia @not-pr-pipeline',
-    async (I, ruleTemplatesPage, current) => {
+    async ({ I, ruleTemplatesPage, current }) => {
       const { path } = current;
       const validFile = path.endsWith('.yaml') || path.endsWith('.yml');
       const [templateName] = await ruleTemplatesPage.ruleTemplate.templateNameAndContent(path);
@@ -103,7 +103,7 @@ Data(templates)
 
 Scenario(
   'PMM-T501 Upload duplicate rule template @ia @not-pr-pipeline',
-  async (I, ruleTemplatesPage) => {
+  async ({ I, ruleTemplatesPage }) => {
     const path = ruleTemplatesPage.ruleTemplate.paths.yaml;
     const [, , id] = await ruleTemplatesPage.ruleTemplate.templateNameAndContent(path);
     const message = ruleTemplatesPage.messages.duplicateTemplate(id);

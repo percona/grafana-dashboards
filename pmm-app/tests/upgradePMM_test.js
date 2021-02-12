@@ -25,14 +25,14 @@ function getVersions() {
 
 Feature('PMM server Upgrade Tests and Executing test cases related to Upgrade Testing Cycle');
 
-Before(async (I) => {
+Before(async ({ I }) => {
   I.Authorize();
   I.setRequestTimeout(30000);
 });
 
 Scenario(
   'PMM-T289 Verify Whats New link is presented on Update Widget @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, homePage) => {
+  async ({ I, homePage }) => {
     const versions = getVersions();
     const locators = homePage.getLocators(versions.dockerMinor);
 
@@ -51,7 +51,7 @@ Scenario(
 
 Scenario(
   'PMM-T288 Verify user can see Update widget before upgrade [critical]  @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, adminPage, homePage) => {
+  async ({ I, adminPage, homePage }) => {
     const versions = getVersions();
 
     I.amOnPage(homePage.url);
@@ -61,7 +61,7 @@ Scenario(
 
 Scenario(
   'Verify user can create Remote Instances before upgrade and they are in RUNNNING status @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, homePage, inventoryAPI, addInstanceAPI) => {
+  async ({ I, homePage, inventoryAPI, addInstanceAPI }) => {
     // Adding instances for monitoring
     for (const type of Object.values(addInstanceAPI.instanceTypes)) {
       if (type !== 'MongoDB') await addInstanceAPI.apiAddInstance(type, serviceNames[type.toLowerCase()]);
@@ -76,7 +76,7 @@ Scenario(
 
 Scenario(
   'Verify user is able to Upgrade PMM version [blocker] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, inventoryAPI, homePage) => {
+  async ({ I, inventoryAPI, homePage }) => {
     const versions = getVersions();
 
     I.amOnPage(homePage.url);
@@ -86,7 +86,7 @@ Scenario(
 
 Scenario(
   'Verify Agents are RUNNING after Upgrade (API) [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, inventoryAPI) => {
+  async ({ I, inventoryAPI }) => {
     for (const service of Object.values(inventoryAPI.services)) {
       if (service.service !== 'mongodb') await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
     }
@@ -95,7 +95,7 @@ Scenario(
 
 Scenario(
   'Verify user can see Update widget [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, adminPage, homePage) => {
+  async ({ I, adminPage, homePage }) => {
     I.amOnPage(homePage.url);
     await homePage.verifyPostUpdateWidgetIsPresent();
   },
@@ -103,7 +103,7 @@ Scenario(
 
 Scenario(
   'PMM-T262 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days after upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, pmmSettingsPage) => {
+  async ({ I, pmmSettingsPage }) => {
     const dataRetention = '2';
     const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
@@ -122,7 +122,7 @@ Scenario(
 
 Scenario(
   'Verify user can see News Panel @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, adminPage, homePage) => {
+  async ({ I, adminPage, homePage }) => {
     I.amOnPage(homePage.url);
     I.waitForVisible(homePage.fields.newsPanelTitleSelector, 30);
     I.waitForVisible(homePage.fields.newsPanelContentSelector, 30);
@@ -134,7 +134,7 @@ Scenario(
 
 Scenario(
   'PMM-T424 Verify PT Summary Panel is available after Upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, adminPage, dashboardPage) => {
+  async ({ I, adminPage, dashboardPage }) => {
     const filter = 'Node Name';
 
     I.amOnPage(`${dashboardPage.nodeSummaryDashboard.url}&var-node_name=pmm-server`);
@@ -149,7 +149,7 @@ Scenario(
 
 Scenario(
   'Verify Agents are RUNNING after Upgrade (UI) [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, adminPage, pmmInventoryPage) => {
+  async ({ I, adminPage, pmmInventoryPage }) => {
     for (const service of Object.values(serviceNames)) {
       I.amOnPage(pmmInventoryPage.url);
       await pmmInventoryPage.verifyAgentHasStatusRunning(service);
@@ -159,7 +159,7 @@ Scenario(
 
 Scenario(
   'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, qanPage, qanFilters, addInstanceAPI) => {
+  async ({ I, qanPage, qanFilters, addInstanceAPI }) => {
     I.amOnPage(qanPage.url);
     qanFilters.waitForFiltersToLoad();
     await qanFilters.expandAllFilters();
