@@ -11,6 +11,7 @@ import 'shared/styles.scss';
 import 'shared/style.less';
 import './qan.scss';
 import { getStyles } from './QueryAnalytics.styles';
+import { cx } from 'emotion';
 
 const QueryAnalyticsPanel: FC = () => {
   const theme = useTheme();
@@ -36,7 +37,7 @@ const QueryAnalyticsPanel: FC = () => {
       </div>
       <div className="query-analytics-data">
         <div className={styles.getContainerWrapper(size)}>
-          <div className={styles.overviewHeader}>
+          <div className={cx(styles.overviewHeader,'manage-columns')}>
             <ManageColumns onlyAdd />
           </div>
           <div className={styles.splitterWrapper}>

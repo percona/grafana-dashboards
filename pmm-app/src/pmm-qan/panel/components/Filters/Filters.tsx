@@ -16,6 +16,7 @@ import { useFilters } from './hooks/useFilters';
 import { useInitialFilterValues } from './hooks/useInitialFilterValues';
 import { useFiltersContainerHeight } from './hooks/useFiltersContainerHeight';
 import { Messages } from './Filters.messages';
+import 'shared/style.less';
 
 export const Filters: FC = () => {
   const theme = useTheme();

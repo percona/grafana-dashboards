@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import { Tab, TabContent, TabsBar, useTheme } from '@grafana/ui';
+import { Tab, TabContent, TabsBar, useTheme, Button } from '@grafana/ui';
 import { cx } from 'emotion';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import Explain from './Explain/Explain';
@@ -88,11 +88,6 @@ export const DetailsSection: FC = () => {
     <Scrollbar className={styles.scrollArea}>
       <div className={cx(styles.detailsGrid, 'query-analytics-details')} data-qa="query-analytics-details">
         <div className="details-tabs">
-          {/*  tabBarExtraContent={(*/}
-          {/*  <Button type="default" size="small" onClick={closeDetails}>*/}
-          {/*    {Messages.closeDetails}*/}
-          {/*  </Button>*/}
-          {/*)}*/}
           <TabsBar>
             {tabs.map((tab, index) => (
               <Tab
@@ -106,6 +101,14 @@ export const DetailsSection: FC = () => {
                 }}
               />
             ))}
+            <Button
+              variant={'secondary'}
+              size="sm"
+              onClick={closeDetails}
+              style={{ marginLeft: 'auto', marginRight: '10px', alignSelf: 'center' }}
+            >
+              {Messages.closeDetails}
+            </Button>
           </TabsBar>
           <TabContent>{tabs.map((tab) => tab.key === activeTab && tab.component)}</TabContent>
         </div>
