@@ -3,6 +3,9 @@ const assert = require('assert');
 
 module.exports = {
   url: 'graph/d/pmm-home/home-dashboard?orgId=1',
+  sideMenu: {
+    integratedAlerting: 'li > a[href="/graph/integrated-alerting"]',
+  },
   fields: {
     navigation: '//i[contains(@class, "navbar-page-btn__search")]',
     timePickerMenu: '//button[@aria-label="TimePicker Open Button"]',

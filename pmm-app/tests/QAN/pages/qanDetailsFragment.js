@@ -13,7 +13,7 @@ module.exports = {
     noExamples: '//pre[contains(text(), "Sorry, no examples found for this query")]',
     noClassic: '//pre[contains(text(), "No classic explain found")]',
     noJSON: '//pre[contains(text(), "No JSON explain found")]',
-    examplesCodeBlock: '//div[@data-qa=\'pmm-overlay-wrapper\']',
+    examplesCodeBlock: '$pmm-overlay-wrapper',
   },
 
   getFilterSectionLocator: (filterSectionName) => `//span[contains(text(), '${filterSectionName}')]`,

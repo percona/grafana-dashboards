@@ -28,7 +28,7 @@ describe('FailedChecksTab::', () => {
     const spy = jest.spyOn(CheckService, 'getActiveAlerts');
 
     const wrapper: ReactWrapper<FailedChecksTabProps, {}, any> = mount(
-      <FailedChecksTab hasNoAccess={false} isSttEnabled />,
+      <FailedChecksTab hasNoAccess={false} />,
     );
 
     expect(spy).toBeCalledTimes(1);
@@ -39,7 +39,7 @@ describe('FailedChecksTab::', () => {
 
   it('should render a spinner at startup, while loading', async () => {
     const wrapper: ReactWrapper<FailedChecksTabProps, {}, any> = mount(
-      <FailedChecksTab hasNoAccess={false} isSttEnabled />,
+      <FailedChecksTab hasNoAccess={false} />,
     );
 
     expect(wrapper.find(dataQa('db-checks-failed-checks-spinner'))).toHaveLength(1);
@@ -57,7 +57,7 @@ describe('FailedChecksTab::', () => {
     const spy = jest.spyOn(CheckService, 'getActiveAlerts').mockImplementation(() => { throw Error('test'); });
 
     const wrapper: ReactWrapper<FailedChecksTabProps, {}, any> = mount(
-      <FailedChecksTab hasNoAccess={false} isSttEnabled />,
+      <FailedChecksTab hasNoAccess={false} />,
     );
 
     expect(console.error).toBeCalledTimes(1);
@@ -69,7 +69,7 @@ describe('FailedChecksTab::', () => {
   it('should log an error if the run checks API call fails', () => {
     const spy = jest.spyOn(CheckService, 'runDbChecks').mockImplementation(() => { throw Error('test'); });
     const wrapper: ReactWrapper<FailedChecksTabProps, {}, any> = mount(
-      <FailedChecksTab hasNoAccess={false} isSttEnabled />,
+      <FailedChecksTab hasNoAccess={false} />,
     );
     const runChecksButton = wrapper.find(ButtonWithSpinner);
 
@@ -84,7 +84,7 @@ describe('FailedChecksTab::', () => {
   it('should call the API to run checks when the "run checks" button gets clicked', () => {
     const runChecksSpy = jest.spyOn(CheckService, 'runDbChecks');
     const wrapper: ReactWrapper<FailedChecksTabProps, {}, any> = mount(
-      <FailedChecksTab hasNoAccess={false} isSttEnabled />,
+      <FailedChecksTab hasNoAccess={false} />,
     );
     const runChecksButton = wrapper.find(ButtonWithSpinner);
 
@@ -101,7 +101,7 @@ describe('FailedChecksTab::', () => {
     jest.useFakeTimers();
     const getAlertsSpy = jest.spyOn(CheckService, 'getActiveAlerts');
     const wrapper: ReactWrapper<FailedChecksTabProps, {}, any> = mount(
-      <FailedChecksTab hasNoAccess={false} isSttEnabled />,
+      <FailedChecksTab hasNoAccess={false} />,
     );
     const runChecksButton = wrapper.find(ButtonWithSpinner);
 
@@ -122,7 +122,7 @@ describe('FailedChecksTab::', () => {
 
   it('should render a table after having fetched the alerts', async () => {
     const wrapper: ReactWrapper<FailedChecksTabProps, {}, any> = mount(
-      <FailedChecksTab hasNoAccess={false} isSttEnabled />,
+      <FailedChecksTab hasNoAccess={false} />,
     );
 
     expect(wrapper.find(Table)).toHaveLength(0);

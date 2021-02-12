@@ -11,7 +11,4 @@ export const getStyles = (theme: GrafanaTheme) => ({
     display: flex;
     justify-content: center;
   `,
-  tableWrapper: css`
-    padding: ${theme.spacing.md};
-  `,
 });

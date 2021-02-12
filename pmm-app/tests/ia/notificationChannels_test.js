@@ -32,7 +32,7 @@ Data(notificationChannels).Scenario(
   'PMM-T513,PMM-T512, PMM-T491 Add a notification channel @ia @not-pr-pipeline',
   async (I, ncPage, current) => {
     ncPage.openNotificationChannelsTab();
-    ncPage.createChannel(current.name, current.type);
+    await ncPage.createChannel(current.name, current.type);
     I.seeElement(ncPage.elements.channelInTable(current.name, current.type));
     I.seeElement(ncPage.buttons.editChannelLocator(current.name));
     I.seeElement(ncPage.buttons.deleteChannelLocator(current.name));

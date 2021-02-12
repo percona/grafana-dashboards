@@ -16,7 +16,7 @@ describe('CheckService::', () => {
   it('should properly convert Alerts to a total of FailedChecks', () => {
     const failedChecks = sumFailedChecks(processData(alertsStub as Alert[]));
 
-    expect(failedChecks).toEqual([1, 2, 1]);
+    expect(failedChecks).toEqual([1, 3, 1]);
   });
 
   it('should create a url for Alertmanager', () => {
