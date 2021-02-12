@@ -1,8 +1,6 @@
-import { Tooltip } from 'antd';
 import React, { FC, useState } from 'react';
 import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements/Charts';
 import { humanize } from 'shared/components/helpers/Humanization';
-import { Info } from 'shared/components/Elements/Icons/Info';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { Collapse, useTheme } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table';
@@ -10,6 +8,7 @@ import { MetricsTabs } from './Metrics.constants';
 import { MetricsProps } from './Metrics.types';
 import { Databases } from '../Details.types';
 import { getStyles } from './Metrics.styles';
+import { LinkTooltip } from '../../../../../shared/components/Elements/LinkTooltip/LinkTooltip';
 
 const Metrics: FC<MetricsProps> = ({ databaseType, totals, metrics, loading }) => {
   const theme = useTheme();
@@ -21,9 +20,7 @@ const Metrics: FC<MetricsProps> = ({ databaseType, totals, metrics, loading }) =
   const mainColumn = (item) => (
     <span className={styles.metricColumn}>
       <span>{item.name}</span>
-      <Tooltip title={item.tooltip} placement="leftTop">
-        <Info className={styles.metricTooltipIcon} />
-      </Tooltip>
+      <LinkTooltip className={styles.metricTooltipIcon} tooltipText={item.tooltip} icon={'info-circle'} />
     </span>
   );
 

@@ -1,10 +1,10 @@
 import React from 'react';
+import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
+import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
+import { Table } from '@grafana/ui';
 import { useExplains } from '../../Explain.hooks';
 import { processClassicExplain } from '../../Explain.tools';
-import { Scrollbar } from '../../../../../../../shared/components/Elements/Scrollbar/Scrollbar';
 import { Messages } from '../../../Details.messages';
-import { Overlay } from '../../../../../../../shared/components/Elements/Overlay/Overlay';
-import { Table } from '@grafana/ui';
 
 export const ClassicExplain = ({ examples, databaseType }) => {
   const [, classicExplain] = useExplains(examples, databaseType);

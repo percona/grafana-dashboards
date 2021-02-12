@@ -17,8 +17,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     detailsGrid: css`
       background-color: ${parameters.table.backgroundColor};
       display: grid;
-      grid-template-areas:
-        'details-tabs';
+      grid-template-areas: 'details-tabs';
       grid-template-rows: auto;
       grid-template-columns: auto;
       min-height: 60px;
