@@ -57,12 +57,8 @@ Scenario(
     I.amOnPage(dashboardPage.mySQLInstanceOverview.urlWithRDSFilter);
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();
-    // Sevices has N/A - increasing to 1
-    // Need to be fix by PMM-7502
-    await dashboardPage.verifyThereAreNoGraphsWithNA(1);
-    // 23 Graphs has No Data - skipping the check
-    // Need to be fix by PMM-7502
-    // await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
+    await dashboardPage.verifyThereAreNoGraphsWithNA();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
   },
 );
 
