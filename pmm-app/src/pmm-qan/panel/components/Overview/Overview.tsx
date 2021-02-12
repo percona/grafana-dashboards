@@ -86,7 +86,7 @@ export const Overview: FC = () => {
   );
 
   return (
-    <div className="table-wrapper" ref={tableWrapperRef}>
+    <div className="table-wrapper overview" ref={tableWrapperRef}>
       {useMemo(
         () => (
           <div>
