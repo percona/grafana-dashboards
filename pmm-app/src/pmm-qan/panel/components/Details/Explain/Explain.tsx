@@ -1,63 +1,46 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Collapse, Table } from 'antd';
-import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
-import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
-import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
-import { processClassicExplain } from './Explain.tools';
-import { styles } from './Explain.styles';
-import { ClassicExplain, ExplainProps, ExplainTabs } from './Explain.types';
-import { useExplains } from './Explain.hooks';
-import { Messages } from '../Details.messages';
+import React, { FC, useState } from 'react';
+import { Collapse } from '@grafana/ui';
+import { ExplainProps, ExplainTabs } from './Explain.types';
 import { Databases } from '../Details.types';
-
-const { Panel } = Collapse;
+import { VisualExplain } from './components/VisualExplain/VisualExplain';
+import { ClassicExplain } from './components/ClassicExplain/ClassicExplain';
+import { JsonExplain } from './components/JsonExplain/JsonExplain';
 
 const Explain: FC<ExplainProps> = ({ databaseType, examples }) => {
-  const [data, setData] = useState<ClassicExplain>({ columns: [], rows: [] });
-  const [jsonExplain, classicExplain] = useExplains(examples, databaseType);
-
-  useEffect(() => {
-    setData(processClassicExplain(classicExplain.value));
-  }, [classicExplain]);
+  const [classicExplainKey, setClassicExplainKey] = useState(true);
+  const [jsonExplainKey, setJsonExplainKey] = useState(true);
+  const [visualExplainKey, setVisualExplainKey] = useState(true);
 
   return (
     <div>
+      {databaseType !== Databases.mongodb ? (
+        <Collapse
+          collapsible
+          label={ExplainTabs.classic}
+          isOpen={classicExplainKey}
+          onToggle={() => setClassicExplainKey(!classicExplainKey)}
+        >
+          <ClassicExplain databaseType={databaseType} examples={examples} />
+        </Collapse>
+      ) : null}
       <Collapse
-        bordered={false}
-        defaultActiveKey={[ExplainTabs.classic, ExplainTabs.json]}
-        className={styles.collapse}
+        collapsible
+        label={ExplainTabs.json}
+        isOpen={jsonExplainKey}
+        onToggle={() => setJsonExplainKey(!jsonExplainKey)}
       >
-        {databaseType !== Databases.mongodb ? (
-          <Panel header={ExplainTabs.classic} key={ExplainTabs.classic} className={styles.panel}>
-            <Overlay isPending={classicExplain.loading}>
-              <Scrollbar>
-                {classicExplain.error ? <pre>{classicExplain.error}</pre> : null}
-                {!classicExplain.error && data.rows.length ? (
-                  <Table
-                    dataSource={data.rows}
-                    columns={data.columns}
-                    pagination={false}
-                    size="small"
-                    bordered
-                  />
-                ) : null}
-                {!classicExplain.error && !data.rows.length ? <pre>{Messages.noClassicExplain}</pre> : null}
-              </Scrollbar>
-            </Overlay>
-          </Panel>
-        ) : null}
-        <Panel header={ExplainTabs.json} key={ExplainTabs.json} className={styles.panel}>
-          <Overlay isPending={jsonExplain.loading}>
-            <Scrollbar>
-              {jsonExplain.error ? <pre>{jsonExplain.error}</pre> : null}
-              {!jsonExplain.error && jsonExplain.value ? (
-                <ReactJSON json={JSON.parse(jsonExplain.value)} />
-              ) : null}
-              {!jsonExplain.error && !jsonExplain.value ? <pre>{Messages.noJsonExplain}</pre> : null}
-            </Scrollbar>
-          </Overlay>
-        </Panel>
+        <JsonExplain databaseType={databaseType} examples={examples} />
       </Collapse>
+      {databaseType !== Databases.mongodb ? (
+        <Collapse
+          collapsible
+          label={ExplainTabs.visual}
+          isOpen={visualExplainKey}
+          onToggle={() => setVisualExplainKey(!visualExplainKey)}
+        >
+          <VisualExplain databaseType={databaseType} examples={examples} />
+        </Collapse>
+      ) : null}
     </div>
   );
 };
