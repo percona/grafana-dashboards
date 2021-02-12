@@ -12,6 +12,7 @@ const actionResult = {
 export const useExplains = (examples, databaseType): any[] => {
   const [jsonExplain, setJsonExplain] = useState(actionResult);
   const [classicExplain, setClassicExplain] = useState(actionResult);
+  const [visualExplain, setVisualExplain] = useState(actionResult);
 
   useEffect(() => {
     const getExplains = async () => {
@@ -20,6 +21,7 @@ export const useExplains = (examples, databaseType): any[] => {
       try {
         setJsonExplain(actionResult);
         setClassicExplain(actionResult);
+        setVisualExplain(actionResult);
         if (!notEmptyExample.length) {
           setJsonExplain({ ...actionResult, loading: false });
           setClassicExplain({ ...actionResult, loading: false });
@@ -53,5 +55,5 @@ export const useExplains = (examples, databaseType): any[] => {
     getExplains();
   }, [examples, databaseType]);
 
-  return [jsonExplain, classicExplain];
+  return [jsonExplain, classicExplain, visualExplain];
 };

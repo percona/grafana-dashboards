@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Collapse, Tabs } from 'antd';
 import { TableCreate } from './components/TableCreate/TableCreate';
-import { styles } from '../Explain/Explain.styles';
+import { styles } from './TableContainer.styles';
 import { Indexes } from './components/Indexes/Indexes';
 import { Status } from './components/Status/Status';
 import { TableTabs } from './TableContainer.constants';
