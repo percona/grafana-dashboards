@@ -82,6 +82,9 @@ export const toPayload = (values, discoverName?) => {
 
   delete data.tracking;
 
+  data.service_name = data.serviceName;
+  delete data.serviceName;
+
   if (!data.service_name) {
     data.service_name = data.address;
   }
@@ -128,6 +131,8 @@ export const toExternalServicePayload = (values): RemoteInstanceExternalserviceP
   }
 
   delete data.tracking;
+  data.service_name = data.serviceName;
+  delete data.serviceName;
 
   if (!data.service_name) {
     data.service_name = data.address;
