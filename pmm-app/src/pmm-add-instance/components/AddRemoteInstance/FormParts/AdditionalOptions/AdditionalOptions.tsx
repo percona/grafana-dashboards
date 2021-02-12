@@ -100,7 +100,10 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
       return (
         <>
           <CheckboxField label={Messages.form.labels.additionalOptions.tls} name="tls" />
-          <CheckboxField label={Messages.form.labels.additionalOptions.tlsSkipVerify} name="tls_skip_verify" />
+          <CheckboxField
+            label={Messages.form.labels.additionalOptions.tlsSkipVerify}
+            name="tls_skip_verify"
+          />
           <MySQLOptions form={form} />
           <CheckboxField
             label={Messages.form.labels.additionalOptions.qanMysqlPerfschema}
@@ -124,7 +127,10 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
       return (
         <>
           <CheckboxField label={Messages.form.labels.additionalOptions.tls} name="tls" />
-          <CheckboxField label={Messages.form.labels.additionalOptions.tlsSkipVerify} name="tls_skip_verify" />
+          <CheckboxField
+            label={Messages.form.labels.additionalOptions.tlsSkipVerify}
+            name="tls_skip_verify"
+          />
           <CheckboxField
             label={Messages.form.labels.additionalOptions.qanMongodbProfiler}
             name="qan_mongodb_profiler"
@@ -132,6 +138,14 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
         </>
       );
     default:
-      return null;
+      return (
+        <>
+          <CheckboxField label={Messages.form.labels.additionalOptions.tls} name="tls" />
+          <CheckboxField
+            label={Messages.form.labels.additionalOptions.tlsSkipVerify}
+            name="tls_skip_verify"
+          />
+        </>
+      );
   }
 };
