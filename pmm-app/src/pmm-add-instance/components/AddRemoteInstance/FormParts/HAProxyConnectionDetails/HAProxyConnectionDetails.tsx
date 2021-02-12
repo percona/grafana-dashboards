@@ -26,11 +26,11 @@ export const HAProxyConnectionDetails: FC<MainDetailsFormPartProps> = ({ remoteI
         placeholder={Messages.form.placeholders.mainDetails.address}
         validators={[validators.required]}
       />
-      <div className={styles.labelWrapper} data-qa="service_name-label">
+      <div className={styles.labelWrapper} data-qa="service-name-label">
         <span>{Messages.form.labels.mainDetails.serviceName}</span>
         <LinkTooltip tooltipText={Messages.form.tooltips.mainDetails.serviceName} icon="info-circle" />
       </div>
-      <TextInputField name="service_name" placeholder={Messages.form.placeholders.mainDetails.serviceName} />
+      <TextInputField name="serviceName" placeholder={Messages.form.placeholders.mainDetails.serviceName} />
       <div className={styles.labelWrapper} data-qa="port-label">
         <span>{Messages.form.labels.mainDetails.port}</span>
         <LinkTooltip tooltipText={Messages.form.tooltips.haproxy.port} icon="info-circle" />
