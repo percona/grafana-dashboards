@@ -10,7 +10,7 @@ export const processClassicExplain = (classic): ClassicExplainInterface => {
     .split('|')
     .map((e) => (String(e) ? e.trim() : ''))
     .filter(Boolean)
-    .map((title) => ({ title, key: title, dataIndex: title }));
+    .map((title) => ({ Header: title, key: title, accessor: title }));
 
   const rowsList = data.map((item) => item
     .split('|')
