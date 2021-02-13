@@ -1,7 +1,7 @@
 import React, { FC, useMemo, useState } from 'react';
 import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
 import { humanize } from 'shared/components/helpers/Humanization';
-import { useTheme, Icon } from '@grafana/ui';
+import { Icon, useTheme } from '@grafana/ui';
 import { getStyles } from './CheckboxGroup.styles';
 import { TOP_LIMIT } from './CheckboxGroup.constants';
 import { CheckboxGroupProps } from './CheckboxGroup.types';

@@ -14,10 +14,12 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     `,
     tooltipDivider: css`
       background: #363434 !important;
+      height: 1px !important;
       margin: 0 !important;
     `,
     tooltipLatencyDivider: css`
       background: #666666 !important;
+      height: 1px !important;
       margin: 0 !important;
     `,
     metricsWrapper: css`
@@ -34,6 +36,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     `,
     metricsListDivider: css`
       background: #a9a9a9 !important;
+      height: 1px !important;
       margin: 0 !important;
     `,
     summarize: (value) => css`

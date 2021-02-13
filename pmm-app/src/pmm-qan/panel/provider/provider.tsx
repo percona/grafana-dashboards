@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { omit, isEqual } from 'lodash';
+import { isEqual, omit } from 'lodash';
 import { parseURL, refreshGrafanaVariables, setLabels } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
 

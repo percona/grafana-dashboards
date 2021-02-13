@@ -1,11 +1,9 @@
 import React, {
   useCallback, useContext, useEffect, useState,
 } from 'react';
-import {
-  Divider, Icon, Select, Tooltip,
-} from 'antd';
+import { Select, Tooltip } from 'antd';
 import { cx } from 'emotion';
-import { useTheme } from '@grafana/ui';
+import { Icon, useTheme } from '@grafana/ui';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
 import { OptionContent } from './OptionContent/OptionContent';
@@ -89,16 +87,16 @@ export const ManageColumns = (props) => {
   const dropdownRender = (menu) => (
     <div className={styles.addColumnWrapper}>
       {menu}
-      {!onlyAdd ? <Divider className={styles.dividerMargin} /> : null}
+      {!onlyAdd ? <div className={styles.dividerMargin} /> : null}
       {!onlyAdd && columns.length > 1 ? (
         <div className={styles.actionElement} onMouseDown={(e) => e.preventDefault()} onClick={removeColumn}>
-          <Icon type="minus" className={styles.iconMargin} />
+          <Icon name="minus" className={styles.iconMargin} />
           Remove column
         </div>
       ) : null}
       {!onlyAdd && mainMetric !== currentMetric.simpleName ? (
         <div className={styles.actionElement} onMouseDown={(e) => e.preventDefault()} onClick={swapWithMain}>
-          <Icon type="swap" className={styles.iconMargin} />
+          <Icon name="exchange-alt" className={styles.iconMargin} />
           Swap with main metric
         </div>
       ) : null}

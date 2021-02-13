@@ -1,11 +1,9 @@
-import { Divider } from 'antd';
-import Tooltip from 'antd/es/tooltip';
 import React from 'react';
 import { cx } from 'emotion';
 import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Latency, Sparkline, TotalPercentage } from 'shared/components/Elements/Charts';
-import { useTheme } from '@grafana/ui';
+import { Tooltip, useTheme } from '@grafana/ui';
 import { COLUMN_WIDTH, FIXED_COLUMN_WIDTH } from '../../Overview.constants';
 import { ManageColumns } from '../../../ManageColumns/ManageColumns';
 import './MetricColumns.scss';
@@ -112,7 +110,7 @@ export const metricColumnRender = ({
           // eslint-disable-next-line react/jsx-key
           <div className={styles.singleMetricWrapper} data-qa={metricItem.key || ''}>
             <span className={styles.metricName}>{`${metricItem.header} : ${metricItem.value}`}</span>
-            {list.length === metricIndex + 1 ? null : <Divider className={styles.metricsListDivider} />}
+            {list.length === metricIndex + 1 ? null : <div className={styles.metricsListDivider} />}
           </div>
         ))}
       </div>
@@ -121,11 +119,11 @@ export const metricColumnRender = ({
     return (
       <div>
         <div className={styles.tooltipHeader}>{metric.humanizeName}</div>
-        <Divider className={styles.tooltipDivider} />
+        <div className={styles.tooltipDivider} />
         <MetricsList data={tooltipData} />
         {latencyTooltipData.length ? (
           <>
-            <Divider className={styles.tooltipLatencyDivider} />
+            <div className={styles.tooltipLatencyDivider} />
             {metricName === 'query_time' && (
               <Latency {...{ data: stats }} className="latency-chart-container" />
             )}
@@ -147,26 +145,37 @@ export const metricColumnRender = ({
       <div className="overview-column-sparkline">
         {columnIndex === 0 && <Sparkline {...polygonChartProps} />}
       </div>
-      <Tooltip
-        getPopupContainer={() => document.querySelector('#antd') || document.body}
-        placement="left"
-        overlayClassName="overview-column-tooltip"
-        title={
-          (stats.avg && stats.avg !== 'NaN') || (statPerSec && statPerSec !== 'NaN') ? (
-            <MetricTooltip />
-          ) : null
-        }
-      >
-        {isTimeMetric ? <TimeMetric value={stats.avg} cnt={stats.cnt} percentage={percentFromTotal} /> : null}
-        {!isTimeMetric ? (
-          <NonTimeMetric
-            value={statPerSec}
-            cnt={stats.cnt}
-            units={metric.units}
-            percentage={percentFromTotal}
-          />
-        ) : null}
-      </Tooltip>
+      {(stats.avg && stats.avg !== 'NaN') || (statPerSec && statPerSec !== 'NaN') ? (
+        <Tooltip content={() => <MetricTooltip />} theme="info">
+          <div>
+            {isTimeMetric ? (
+              <TimeMetric value={stats.avg} cnt={stats.cnt} percentage={percentFromTotal} />
+            ) : null}
+            {!isTimeMetric ? (
+              <NonTimeMetric
+                value={statPerSec}
+                cnt={stats.cnt}
+                units={metric.units}
+                percentage={percentFromTotal}
+              />
+            ) : null}
+          </div>
+        </Tooltip>
+      ) : (
+        <div>
+          {isTimeMetric ? (
+            <TimeMetric value={stats.avg} cnt={stats.cnt} percentage={percentFromTotal} />
+          ) : null}
+          {!isTimeMetric ? (
+            <NonTimeMetric
+              value={statPerSec}
+              cnt={stats.cnt}
+              units={metric.units}
+              percentage={percentFromTotal}
+            />
+          ) : null}
+        </div>
+      )}
     </div>
   );
 };

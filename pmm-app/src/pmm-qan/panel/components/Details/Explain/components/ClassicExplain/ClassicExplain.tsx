@@ -17,6 +17,7 @@ export const ClassicExplain = ({ examples, databaseType }) => {
           <div data-qa="classic-explain-value">
             <Table
               columns={processClassicExplain(classicExplain.value).columns}
+              // @ts-ignore
               data={processClassicExplain(classicExplain.value).rows}
               noData={null}
             />
