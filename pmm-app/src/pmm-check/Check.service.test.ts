@@ -1,4 +1,4 @@
-import { processData, sumFailedChecks, makeApiUrl } from './Check.service';
+import { makeApiUrl, processData, sumFailedChecks } from './Check.service';
 import { Alert } from './types';
 import { API } from '../shared/core';
 import { activeCheckStub, alertsStub } from './__mocks__/stubs';
