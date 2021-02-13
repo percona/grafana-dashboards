@@ -9,7 +9,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
 
   return {
     getFiltersWrapper: (height) => css`
-      border: 1px solid rgb(40, 40, 40);
+      border: 1px solid rgba(40, 40, 40);
       height: ${height}px;
       padding: 10px 16px !important;
       border-radius: 3px;

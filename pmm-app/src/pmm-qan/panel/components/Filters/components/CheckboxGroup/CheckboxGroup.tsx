@@ -1,5 +1,4 @@
 import React, { FC, useMemo, useState } from 'react';
-import { Divider } from 'antd';
 import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { useTheme, Icon } from '@grafana/ui';
@@ -115,7 +114,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
           <span />
         )}
       </p>
-      <Divider className={styles.divider} />
+      <div className={styles.divider} />
       {filteredList.map((item) => (
         <FilterCheckbox item={item} />
       ))}
