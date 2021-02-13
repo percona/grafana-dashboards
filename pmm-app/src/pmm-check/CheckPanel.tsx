@@ -46,12 +46,12 @@ export const CheckPanel: FC = () => {
     {
       label: Messages.failedChecksTitle,
       key: TabKeys.failedChecks,
-      component: <FailedChecksTab hasNoAccess={hasNoAccess} />,
+      component: <FailedChecksTab key="failed-checks" hasNoAccess={hasNoAccess} />,
     },
     {
       label: Messages.allChecksTitle,
       key: TabKeys.allChecks,
-      component: <AllChecksTab />,
+      component: <AllChecksTab key="all-checks" />,
     },
   ],
   [hasNoAccess, isSttEnabled]);
@@ -81,9 +81,10 @@ export const CheckPanel: FC = () => {
         </>
       ) : (
         <div className={styles.empty} data-qa="db-check-panel-settings-link">
-          Security Threat Tool is disabled. You can enable it in&nbsp;
+          {Messages.sttDisabled}
+          {' '}
           <Link className={styles.link} to={PMM_SETTINGS_URL}>
-            PMM Settings.
+            {Messages.pmmSettings}
           </Link>
         </div>
       ))}

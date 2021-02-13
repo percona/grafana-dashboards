@@ -69,7 +69,7 @@ export class PSMDBService extends DBClusterService {
 
   getDBCluster(dbCluster: DBCluster): Promise<void | DBClusterConnectionAPI> {
     return apiRequestManagement.post<DBClusterConnectionAPI, any>(
-      '/DBaaS/PSMDBClusters/Get',
+      '/DBaaS/PSMDBClusters/GetCredentials',
       omit(toAPI(dbCluster), ['params']),
     );
   }
