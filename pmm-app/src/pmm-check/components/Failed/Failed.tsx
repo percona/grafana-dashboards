@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Tooltip, Icon } from '@grafana/ui';
+import { Icon, Tooltip } from '@grafana/ui';
 import { FailedChecks } from 'pmm-check/types';
 import { TooltipText } from './TooltipText';
 import * as styles from './Failed.styles';
