@@ -7,7 +7,6 @@ import { useExplains } from '../../Explain.hooks';
 jest.mock('../../Explain.hooks');
 jest.mock('shared/components/Elements/Scrollbar/Scrollbar');
 jest.mock('shared/components/helpers/notification-manager');
-jest.mock('antd/es/tooltip', () => <div className="tooltip" />);
 
 describe('VisualExplain::', () => {
   it('should render explains correct for loading state', () => {
