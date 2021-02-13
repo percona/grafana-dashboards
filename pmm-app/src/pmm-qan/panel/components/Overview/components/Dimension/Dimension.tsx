@@ -1,13 +1,10 @@
 import React, { FC, useContext } from 'react';
-import { Select } from 'antd';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import { useTheme } from '@grafana/ui';
+import { useTheme, Select } from '@grafana/ui';
 import { Search } from '../Search/Search';
 import { getStyles } from './Dimension.styles';
 import { DIMENSIONS_OPTIONS } from './Dimension.constants';
 
-
-const { Option } = Select;
 
 export const Dimension: FC = () => {
   const {
@@ -18,26 +15,19 @@ export const Dimension: FC = () => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
+  const options = DIMENSIONS_OPTIONS.map((option) => ({ value: option.value, label: option.label }));
+  const value = options.filter((option) => option.value === groupBy);
+
   return (
     <div className={styles.groupByWrapper}>
       <Select
-        optionLabelProp="label"
-        defaultValue={groupBy}
-        onChange={contextActions.changeGroupBy}
+        options={options}
+        value={value}
+        onChange={({ value }) => contextActions.changeGroupBy(value)}
         className="group-by-selector"
         data-qa="group-by"
-        dropdownClassName="group-by-selector-dropdown"
-      >
-        {DIMENSIONS_OPTIONS.map((option) => (
-          <Option value={option.value} label={option.label} key={option.value}>
-            {option.label}
-          </Option>
-        ))}
-      </Select>
-      <Search
-        initialValue={dimensionSearchText}
-        handleSearch={contextActions.setDimensionSearchText}
       />
+      <Search initialValue={dimensionSearchText} handleSearch={contextActions.setDimensionSearchText} />
     </div>
   );
 };
