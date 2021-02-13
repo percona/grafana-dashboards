@@ -4,7 +4,6 @@ import Metrics from './Metrics';
 import { DatabasesType } from '../Details.types';
 
 jest.mock('shared/components/helpers/notification-manager');
-jest.mock('antd/es/tooltip', () => <div className="tooltip" />);
 
 const originalConsoleError = console.error;
 
