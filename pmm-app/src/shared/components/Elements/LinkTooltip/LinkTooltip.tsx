@@ -11,6 +11,7 @@ export interface LinkTooltipProps {
   icon: IconName;
   dataQa?: string;
   target?: string;
+  className?: string;
 }
 
 export const LinkTooltip: FC<LinkTooltipProps> = ({

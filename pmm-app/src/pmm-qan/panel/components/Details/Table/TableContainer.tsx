@@ -1,13 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Collapse, Tab, TabContent, TabsBar } from '@grafana/ui';
+import {
+  Collapse, Tab, TabContent, TabsBar,
+} from '@grafana/ui';
+import { Databases } from 'shared/core';
+import { Messages } from 'pmm-qan/panel/components/Details/Details.messages';
 import { TableCreate } from './components/TableCreate/TableCreate';
 import { Indexes } from './components/Indexes/Indexes';
 import { Status } from './components/Status/Status';
 import { TableTabs } from './TableContainer.constants';
 import { TableContainerProps } from './TableContainer.types';
 import { useTables } from './TableContainer.hooks';
-import { Databases } from '../Details.types';
-import { Messages } from 'pmm-qan/panel/components/Details/Details.messages';
 
 const TableCreateContainer: FC<TableContainerProps> = ({ databaseType, examples }) => {
   const [tables] = useTables(examples, databaseType);

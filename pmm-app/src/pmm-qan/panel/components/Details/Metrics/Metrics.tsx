@@ -4,13 +4,15 @@ import { humanize } from 'shared/components/helpers/Humanization';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { Collapse, useTheme } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table';
+import { Databases } from 'shared/core';
+import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { MetricsTabs } from './Metrics.constants';
 import { MetricsProps } from './Metrics.types';
-import { Databases } from '../Details.types';
 import { getStyles } from './Metrics.styles';
-import { LinkTooltip } from '../../../../../shared/components/Elements/LinkTooltip/LinkTooltip';
 
-const Metrics: FC<MetricsProps> = ({ databaseType, totals, metrics, loading }) => {
+const Metrics: FC<MetricsProps> = ({
+  databaseType, totals, metrics, loading,
+}) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -20,7 +22,7 @@ const Metrics: FC<MetricsProps> = ({ databaseType, totals, metrics, loading }) =
   const mainColumn = (item) => (
     <span className={styles.metricColumn}>
       <span>{item.name}</span>
-      <LinkTooltip className={styles.metricTooltipIcon} tooltipText={item.tooltip} icon={'info-circle'} />
+      <LinkTooltip className={styles.metricTooltipIcon} tooltipText={item.tooltip} icon="info-circle" />
     </span>
   );
 

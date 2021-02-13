@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ActionResult, getActionResult } from 'shared/components/Actions';
-import { Databases } from '../../../Details.types';
+import { Databases } from 'shared/core';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 
 export const useShowCreateTable = (databaseType, example, tableName) => {

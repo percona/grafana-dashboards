@@ -18,6 +18,6 @@ interface ClassicExplainHeader {
 }
 
 export interface ClassicExplainInterface {
-  rows: string[];
+  rows: any[];
   columns: ClassicExplainHeader[];
 }

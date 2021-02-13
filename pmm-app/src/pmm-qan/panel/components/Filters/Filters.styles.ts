@@ -12,6 +12,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       border: 1px solid rgb(40, 40, 40);
       height: ${height}px;
       padding: 10px 16px !important;
+      border-radius: 3px;
     `,
     filtersField: css`
       width: 100%;

@@ -1,10 +1,4 @@
-const actionResult = {
-  error: '',
-  loading: true,
-  value: null,
-};
-
-export const useExplains = jest.fn((examples, databaseType): any[] => {
+export const useExplains = jest.fn((): any[] => {
   const jsonExplain = {
     error: '',
     loading: true,

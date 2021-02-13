@@ -1,8 +1,13 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, {
+  FC, useContext, useEffect, useState,
+} from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import { Tab, TabContent, TabsBar, useTheme, Button } from '@grafana/ui';
+import {
+  Button, Tab, TabContent, TabsBar, useTheme,
+} from '@grafana/ui';
 import { cx } from 'emotion';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
+import { Databases } from 'shared/core';
 import Explain from './Explain/Explain';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
@@ -11,7 +16,6 @@ import { useDetails } from './Details.hooks';
 import { TabKeys } from './Details.constants';
 import { useMetricsDetails } from './Metrics/hooks/useMetricDetails';
 import { Messages } from './Details.messages';
-import { Databases } from './Details.types';
 import { getStyles } from './Details.styles';
 
 export const DetailsSection: FC = () => {
@@ -19,7 +23,9 @@ export const DetailsSection: FC = () => {
   const styles = getStyles(theme);
   const {
     contextActions: { closeDetails, setActiveTab, setLoadingDetails },
-    panelState: { queryId, groupBy, totals, openDetailsTab },
+    panelState: {
+      queryId, groupBy, totals, openDetailsTab,
+    },
   } = useContext(QueryAnalyticsProvider);
 
   const [loading, examples, databaseType] = useDetails();
@@ -27,7 +33,7 @@ export const DetailsSection: FC = () => {
 
   const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
   const showTablesTab = databaseType !== Databases.mongodb && groupBy === 'queryid' && !totals;
-  const showExplainTab = true || (databaseType !== Databases.postgresql && groupBy === 'queryid' && !totals);
+  const showExplainTab = databaseType !== Databases.postgresql && groupBy === 'queryid' && !totals;
   const showExamplesTab = groupBy === 'queryid' && !totals;
 
   useEffect(() => {
@@ -95,14 +101,13 @@ export const DetailsSection: FC = () => {
                 label={tab.label}
                 active={tab.key === activeTab}
                 onChangeTab={() => {
-                  setActiveTab(tab.key);
                   changeActiveTab(tab.key);
                   setActiveTab(tab.key);
                 }}
               />
             ))}
             <Button
-              variant={'secondary'}
+              variant="secondary"
               size="sm"
               onClick={closeDetails}
               style={{ marginLeft: 'auto', marginRight: '10px', alignSelf: 'center' }}

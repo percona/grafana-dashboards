@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { get } from 'lodash';
+import { Databases } from 'shared/core';
 import { useExplains } from '../Explain/Explain.hooks';
-import { Databases } from '../Details.types';
 
 export const useTables = (examples, databaseType): any[] => {
   const [jsonExplain, classicExplain] = useExplains(examples, databaseType);

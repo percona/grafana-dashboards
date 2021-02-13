@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getActionResult } from 'shared/components/Actions/Actions.utils';
+import { Databases } from 'shared/core';
 import { mongodbMethods, mysqlMethods } from '../database-models';
-import { Databases } from '../Details.types';
 
 const actionResult = {
   error: '',
