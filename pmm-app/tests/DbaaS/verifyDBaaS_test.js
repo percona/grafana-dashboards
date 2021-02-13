@@ -1,5 +1,5 @@
 const assert = require('assert');
-const dbaasPage = require('./pages/dbaasPage');
+const dbaasPage = require('./DbaaS/pages/dbaasPage');
 
 const clusterName = 'Kubernetes_Testing_Cluster_Minikube';
 
