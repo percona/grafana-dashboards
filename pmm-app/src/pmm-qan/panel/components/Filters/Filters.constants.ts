@@ -1,5 +1,5 @@
+import { Databases } from 'shared/core';
 import { getServiceType } from './Filters.tools';
-import { Databases } from '../Details/Details.types';
 
 export const FILTERS_BODY_HEIGHT = 600;
 export const FILTERS_HEADER_SIZE = 50;

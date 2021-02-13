@@ -1,39 +1,12 @@
-import React, {
-  FC, useCallback, useEffect, useState,
-} from 'react';
-import { ActionResult, getActionResult } from 'shared/components/Actions';
+import React, { FC } from 'react';
 import { Table } from 'shared/components/Elements/Table';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
-import { Databases } from '../../../Details.types';
-import { mysqlMethods } from '../../../database-models';
-import { processTableData } from '../../TableContainer.tools';
 import { Messages } from '../../../Details.messages';
 import { TableProps } from '../Table.types';
+import { useTableStatus } from './Status.hooks';
 
 export const Status: FC<TableProps> = ({ tableName, databaseType, example }) => {
-  const [data, setData] = useState<{ columns: any[]; rows: any[] }>({ columns: [], rows: [] });
-  const [status, setStatus] = useState<ActionResult>({
-    error: '',
-    loading: true,
-    value: null,
-  });
-
-  const getStatuses = useCallback(async () => {
-    let id;
-
-    if (databaseType === Databases.mysql) {
-      id = await mysqlMethods.getStatuses({ example, tableName });
-    }
-
-    const result = await getActionResult(id);
-
-    setStatus(result);
-    setData(processTableData(result.value));
-  }, [databaseType]);
-
-  useEffect(() => {
-    getStatuses();
-  }, [databaseType]);
+  const [data, status] = useTableStatus(databaseType, example, tableName);
 
   return (
     <div>

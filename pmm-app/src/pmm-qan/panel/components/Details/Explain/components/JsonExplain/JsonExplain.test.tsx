@@ -4,13 +4,15 @@ import { dataQa } from '@percona/platform-core';
 import { JsonExplain } from './JsonExplain';
 import { useExplains } from '../../Explain.hooks';
 
+import Mock = jest.Mock;
+
 jest.mock('../../Explain.hooks');
 jest.mock('shared/components/Elements/Scrollbar/Scrollbar');
 jest.mock('shared/components/helpers/notification-manager');
 
 describe('JsonExplain::', () => {
   it('should render explains correct for loading state', () => {
-    useExplains.mockImplementationOnce(() => [
+    (useExplains as Mock).mockImplementationOnce(() => [
       {
         error: '',
         loading: true,
@@ -24,7 +26,7 @@ describe('JsonExplain::', () => {
   });
 
   it('should render explains correct for error state', () => {
-    useExplains.mockImplementationOnce(() => [
+    (useExplains as Mock).mockImplementationOnce(() => [
       {
         error: 'some error',
         loading: false,
@@ -38,7 +40,7 @@ describe('JsonExplain::', () => {
   });
 
   it('should render explains correct for success state', () => {
-    useExplains.mockImplementationOnce(() => [
+    (useExplains as Mock).mockImplementationOnce(() => [
       {
         error: '',
         loading: false,

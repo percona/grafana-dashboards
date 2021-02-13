@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import SplitPane from 'react-split-pane';
 import { useTheme } from '@grafana/ui';
+import { cx } from 'emotion';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
   Details, Filters, ManageColumns, Overview,
@@ -11,7 +12,6 @@ import 'shared/styles.scss';
 import 'shared/style.less';
 import './qan.scss';
 import { getStyles } from './QueryAnalytics.styles';
-import { cx } from 'emotion';
 
 const QueryAnalyticsPanel: FC = () => {
   const theme = useTheme();
@@ -37,7 +37,7 @@ const QueryAnalyticsPanel: FC = () => {
       </div>
       <div className="query-analytics-data">
         <div className={styles.getContainerWrapper(size)}>
-          <div className={cx(styles.overviewHeader,'manage-columns')}>
+          <div className={cx(styles.overviewHeader, 'manage-columns')}>
             <ManageColumns onlyAdd />
           </div>
           <div className={styles.splitterWrapper}>

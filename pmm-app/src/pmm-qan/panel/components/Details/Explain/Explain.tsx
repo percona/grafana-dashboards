@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Collapse } from '@grafana/ui';
+import { Databases } from 'shared/core';
 import { ExplainProps, ExplainTabs } from './Explain.types';
-import { Databases } from '../Details.types';
 import { VisualExplain } from './components/VisualExplain/VisualExplain';
 import { ClassicExplain } from './components/ClassicExplain/ClassicExplain';
 import { JsonExplain } from './components/JsonExplain/JsonExplain';

@@ -4,14 +4,15 @@ import { dataQa } from '@percona/platform-core';
 import { VisualExplain } from './VisualExplain';
 import { useExplains } from '../../Explain.hooks';
 
+import Mock = jest.Mock;
+
 jest.mock('../../Explain.hooks');
 jest.mock('shared/components/Elements/Scrollbar/Scrollbar');
 jest.mock('shared/components/helpers/notification-manager');
 
 describe('VisualExplain::', () => {
   it('should render explains correct for loading state', () => {
-    useExplains.mockImplementationOnce(() => [, ,
-
+    (useExplains as Mock).mockImplementationOnce(() => [undefined, undefined,
       {
         error: '',
         loading: true,
@@ -25,7 +26,7 @@ describe('VisualExplain::', () => {
   });
 
   it('should render explains correct for error state', () => {
-    useExplains.mockImplementationOnce(() => [, ,
+    (useExplains as Mock).mockImplementationOnce(() => [undefined, undefined,
 
       {
         error: 'some error',
@@ -40,7 +41,7 @@ describe('VisualExplain::', () => {
   });
 
   it('should render explains correct for success state', () => {
-    useExplains.mockImplementationOnce(() => [, ,
+    (useExplains as Mock).mockImplementationOnce(() => [undefined, undefined,
 
       {
         error: '',
