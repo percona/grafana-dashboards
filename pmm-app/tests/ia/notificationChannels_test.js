@@ -9,19 +9,19 @@ for (const [, channel] of Object.entries(page.types)) {
 Feature('IA: Notification Channels');
 
 
-Before(async (I, channelsAPI, settingsAPI) => {
+Before(async ({ I, channelsAPI, settingsAPI }) => {
   I.Authorize();
   await settingsAPI.apiEnableIA();
   await channelsAPI.clearAllNotificationChannels();
 });
 
-After(async (I, channelsAPI) => {
+After(async ({ I, channelsAPI }) => {
   await channelsAPI.clearAllNotificationChannels();
 });
 
 Scenario(
   'Verify No Channels found message @ia @not-pr-pipeline',
-  async (I, ncPage) => {
+  async ({ I, ncPage }) => {
     ncPage.openNotificationChannelsTab();
     I.waitForVisible(ncPage.elements.noChannels, 30);
     I.see(ncPage.messages.noChannelsFound, ncPage.elements.noChannels);
@@ -30,7 +30,7 @@ Scenario(
 
 Data(notificationChannels).Scenario(
   'PMM-T513,PMM-T512, PMM-T491 Add a notification channel @ia @not-pr-pipeline',
-  async (I, ncPage, current) => {
+  async ({ I, ncPage, current }) => {
     ncPage.openNotificationChannelsTab();
     await ncPage.createChannel(current.name, current.type);
     I.seeElement(ncPage.elements.channelInTable(current.name, current.type));
@@ -41,7 +41,7 @@ Data(notificationChannels).Scenario(
 
 Data(notificationChannels).Scenario(
   'Edit notification channel @ia @not-pr-pipeline',
-  async (I, ncPage, channelsAPI, current) => {
+  async ({ I, ncPage, channelsAPI, current }) => {
     await channelsAPI.createNotificationChannel(current.name, current.type);
     ncPage.openNotificationChannelsTab();
     const newName = ncPage.editChannel(current.name, current.type);
@@ -56,7 +56,7 @@ Data(notificationChannels).Scenario(
 
 Data(notificationChannels).Scenario(
   'PMM-T493 Delete a notification channel @ia @not-pr-pipeline',
-  async (I, ncPage, channelsAPI, current) => {
+  async ({ I, ncPage, channelsAPI, current }) => {
     await channelsAPI.createNotificationChannel(current.name, current.type);
     ncPage.openNotificationChannelsTab();
     I.click(ncPage.buttons.deleteChannelLocator(current.name));

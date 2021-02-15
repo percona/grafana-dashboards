@@ -12,7 +12,7 @@ const users = {
   },
 };
 
-BeforeSuite(async (I) => {
+BeforeSuite(async ({ I }) => {
   I.say('Creating users for the permissions test suite');
   const viewerId = await I.createUser(users.viewer.username, users.viewer.password);
   const adminId = await I.createUser(users.admin.username, users.admin.password);
@@ -23,7 +23,7 @@ BeforeSuite(async (I) => {
   admin = adminId;
 });
 
-AfterSuite(async (I) => {
+AfterSuite(async ({ I }) => {
   I.say('Removing users');
   await I.deleteUser(viewer);
   await I.deleteUser(admin);
@@ -31,7 +31,7 @@ AfterSuite(async (I) => {
 
 Scenario(
   'PMM-T358 Verify Failed checks panel at Home page for the viewer role (STT is enabled) @not-pr-pipeline',
-  async (I, homePage, settingsAPI) => {
+  async ({ I, homePage, settingsAPI }) => {
     await settingsAPI.apiEnableSTT();
     await I.Authorize(users.viewer.username, users.viewer.password);
     I.amOnPage(homePage.url);
@@ -43,7 +43,7 @@ Scenario(
 
 Scenario(
   'PMM-T360 Verify Failed checks panel at Home page for the admin role (STT is enabled) @not-pr-pipeline',
-  async (I, homePage, settingsAPI) => {
+  async ({ I, homePage, settingsAPI }) => {
     await settingsAPI.apiEnableSTT();
     await I.Authorize(users.admin.username, users.admin.password);
     I.amOnPage(homePage.url);
@@ -55,7 +55,7 @@ Scenario(
 // FIXME: unskip this test after https://jira.percona.com/browse/PMM-7497
 xScenario(
   'PMM-T358 Verify Database Failed checks page for the viewer role (STT is enabled) [critical] @not-pr-pipeline',
-  async (I, databaseChecksPage, settingsAPI) => {
+  async ({ I, databaseChecksPage, settingsAPI }) => {
     await settingsAPI.apiEnableSTT();
     await I.Authorize(users.viewer.username, users.viewer.password);
     I.amOnPage(databaseChecksPage.url);
@@ -67,7 +67,7 @@ xScenario(
 
 Scenario(
   'PMM-T360 Verify Database Failed checks page for the admin role (STT is enabled) [critical] @not-pr-pipeline',
-  async (I, databaseChecksPage, settingsAPI) => {
+  async ({ I, databaseChecksPage, settingsAPI }) => {
     await settingsAPI.apiEnableSTT();
     await I.Authorize(users.admin.username, users.admin.password);
     I.amOnPage(databaseChecksPage.url);
@@ -78,7 +78,7 @@ Scenario(
 
 Scenario(
   'PMM-T358 Verify Failed checks panel at Home page for the viewer role (STT is disabled) @not-pr-pipeline',
-  async (I, homePage, settingsAPI) => {
+  async ({ I, homePage, settingsAPI }) => {
     await settingsAPI.apiDisableSTT();
     await I.Authorize(users.viewer.username, users.viewer.password);
     I.amOnPage(homePage.url);
@@ -90,7 +90,7 @@ Scenario(
 
 Scenario(
   'PMM-T360 Verify Failed checks panel at Home page for the admin role (STT is disabled) @not-pr-pipeline',
-  async (I, homePage, settingsAPI) => {
+  async ({ I, homePage, settingsAPI }) => {
     await settingsAPI.apiDisableSTT();
     await I.Authorize(users.admin.username, users.admin.password);
     I.amOnPage(homePage.url);
@@ -102,7 +102,7 @@ Scenario(
 // FIXME: unskip this test after https://jira.percona.com/browse/PMM-7497
 xScenario(
   'PMM-T358 Verify Database Failed checks page for the viewer role (STT is disabled) [critical] @not-pr-pipeline',
-  async (I, databaseChecksPage, settingsAPI) => {
+  async ({ I, databaseChecksPage, settingsAPI }) => {
     await settingsAPI.apiDisableSTT();
     await I.Authorize(users.viewer.username, users.viewer.password);
     I.amOnPage(databaseChecksPage.url);
@@ -114,7 +114,7 @@ xScenario(
 
 Scenario(
   'PMM-T360 Verify Database Failed checks page for the admin role (STT is disabled) [critical] @not-pr-pipeline',
-  async (I, databaseChecksPage, settingsAPI) => {
+  async ({ I, databaseChecksPage, settingsAPI }) => {
     await settingsAPI.apiDisableSTT();
     await I.Authorize(users.admin.username, users.admin.password);
     I.amOnPage(databaseChecksPage.url);

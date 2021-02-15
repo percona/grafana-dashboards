@@ -5,12 +5,12 @@ communicationDefaults.add(['slack']);
 
 Feature('PMM Settings Functionality');
 
-Before(async (I, pmmSettingsPage, settingsAPI) => {
+Before(async ({ I, pmmSettingsPage, settingsAPI }) => {
   I.Authorize();
   await settingsAPI.restoreSettingsDefaults();
 });
 
-Scenario('PMM-T93 - Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
+Scenario('PMM-T93 - Open PMM Settings page and verify changing Metrics Resolution [critical]', async ({ I, pmmSettingsPage }) => {
   const resolutionToApply = 'Rare';
 
   I.amOnPage(pmmSettingsPage.url);
@@ -22,7 +22,7 @@ Scenario('PMM-T93 - Open PMM Settings page and verify changing Metrics Resolutio
   await pmmSettingsPage.verifySelectedResolution(resolutionToApply);
 });
 
-Scenario('PMM-T94 - Open PMM Settings page and verify changing Data Retention [critical]', async (I, pmmSettingsPage) => {
+Scenario('PMM-T94 - Open PMM Settings page and verify changing Data Retention [critical]', async ({ I, pmmSettingsPage }) => {
   const dataRetentionValue = '1';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
@@ -41,7 +41,7 @@ Scenario('PMM-T94 - Open PMM Settings page and verify changing Data Retention [c
 
 Scenario(
   'PMM-T108 - Open PMM Settings page and verify adding Alertmanager Rule [critical] PMM-T109 - Verify adding and clearing Alertmanager rules',
-  async (I, pmmSettingsPage) => {
+  async ({ I, pmmSettingsPage }) => {
     const scheme = 'http://';
     const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -68,7 +68,7 @@ Scenario(
 
 Scenario(
   'PMM-T253 Verify user can see correct tooltip for STT [trivial]',
-  async (I, pmmSettingsPage) => {
+  async ({ I, pmmSettingsPage }) => {
     const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     I.amOnPage(pmmSettingsPage.url);
@@ -82,7 +82,7 @@ Scenario(
 
 Scenario(
   'PMM-T253 Verify user can enable STT if Telemetry is enabled',
-  async (I, pmmSettingsPage) => {
+  async ({ I, pmmSettingsPage }) => {
     const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     I.amOnPage(pmmSettingsPage.url);
@@ -101,7 +101,7 @@ Scenario(
   },
 );
 
-Scenario('PMM-T520 - Verify that alert is in Firing State - internal alert manager @not-ui-pipeline @nightly @not-pr-pipeline', async (I, pmmSettingsPage) => {
+Scenario('PMM-T520 - Verify that alert is in Firing State - internal alert manager @not-ui-pipeline @nightly @not-pr-pipeline', async ({ I, pmmSettingsPage }) => {
   const scheme = 'http://127.0.0.1';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -119,7 +119,7 @@ Scenario('PMM-T520 - Verify that alert is in Firing State - internal alert manag
   await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2, true);
 });
 
-Scenario('PMM-T520 - Verify that alert is being fired to external Alert Manager @not-ui-pipeline @nightly @not-pr-pipeline', async (I, pmmSettingsPage) => {
+Scenario('PMM-T520 - Verify that alert is being fired to external Alert Manager @not-ui-pipeline @nightly @not-pr-pipeline', async ({ I, pmmSettingsPage }) => {
   const scheme = 'http://';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -139,7 +139,7 @@ Scenario('PMM-T520 - Verify that alert is being fired to external Alert Manager 
 });
 
 Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Settings @ia @not-pr-pipeline',
-  async (I, pmmSettingsPage, settingsAPI, adminPage) => {
+  async ({ I, pmmSettingsPage, settingsAPI, adminPage }) => {
     await settingsAPI.apiDisableIA();
     I.amOnPage(pmmSettingsPage.advancedSettingsUrl);
     I.waitForVisible(pmmSettingsPage.fields.iaSwitchSelector, 30);
@@ -165,7 +165,7 @@ Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Sett
 
 Data(communicationDefaults)
   .Scenario('PMM-T534 PMM-T535 - Verify user is able to set up default Email/Slack communication settings @ia @not-pr-pipeline',
-    async (I, pmmSettingsPage, settingsAPI, current) => {
+    async ({ I, pmmSettingsPage, settingsAPI, current }) => {
       await settingsAPI.apiEnableIA();
       I.amOnPage(pmmSettingsPage.communicationSettingsUrl);
       await pmmSettingsPage.waitForPmmSettingsPageLoaded();

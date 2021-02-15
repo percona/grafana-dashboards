@@ -2,13 +2,13 @@ const assert = require('assert');
 
 Feature('Test the functionality inside DBaaS page');
 
-Before(async (I) => {
+Before(async ({ I }) => {
   I.Authorize();
 });
 
 Scenario(
   'PMM-T426 - Verify adding new Kubernetes cluster minikube, PMM-T428 - Verify adding new Kubernetes cluster with same name, PMM-T546, PMM-T431 -Verify unregistering Kubernetes cluster @not-pr-pipeline @dbaas',
-  async (I, dbaasPage) => {
+  async ({ I, dbaasPage }) => {
     const clusterName = 'Kubernetes_Testing_Cluster_Minikube';
 
     I.amOnPage(dbaasPage.url);
@@ -36,7 +36,7 @@ Scenario(
 
 Scenario(
   'PMM-T427 - Verify submitting blank Add kubernetes cluster form @not-pr-pipeline @dbaas',
-  async (I, dbaasPage) => {
+  async ({ I, dbaasPage }) => {
     const clusterName = 'Kubernetes_Testing_Cluster';
 
     I.amOnPage(dbaasPage.url);
@@ -55,13 +55,13 @@ Scenario(
   },
 );
 
-Scenario('PMM-T427 - Verify elements on PMM DBaaS page @not-pr-pipeline @dbaas', async (I, dbaasPage) => {
+Scenario('PMM-T427 - Verify elements on PMM DBaaS page @not-pr-pipeline @dbaas', async ({ I, dbaasPage }) => {
   I.amOnPage(dbaasPage.url);
   I.waitForVisible(dbaasPage.fields.addKubernetesClusterButton, 30);
   I.waitForVisible(dbaasPage.fields.addKubernetesClusterButtonInTable, 30);
 });
 
-Scenario('PMM-T547 Verify user is able to view config of registered Kubernetes cluster on Kubernetes Cluster Page @not-pr-pipeline @dbaas', async (I, dbaasPage, dbaasAPI) => {
+Scenario('PMM-T547 Verify user is able to view config of registered Kubernetes cluster on Kubernetes Cluster Page @not-pr-pipeline @dbaas', async ({ I, dbaasPage, dbaasAPI }) => {
   const clusterName = 'Kubernetes_Testing_Cluster';
 
   await dbaasAPI.apiRegisterCluster(process.env.kubeconfig_minikube, clusterName);
@@ -81,7 +81,7 @@ Scenario('PMM-T547 Verify user is able to view config of registered Kubernetes c
   await dbaasAPI.apiUnregisterCluster(clusterName);
 });
 
-Scenario('Verify user is able to add same cluster config with different Name @not-pr-pipeline @dbaas', async (I, dbaasPage, dbaasAPI) => {
+Scenario('Verify user is able to add same cluster config with different Name @not-pr-pipeline @dbaas', async ({ I, dbaasPage, dbaasAPI }) => {
   const clusterName1 = 'Kubernetes_Testing_Cluster_1';
   const clusterName2 = 'Kubernetes_Testing_Cluster_2';
 
