@@ -33,10 +33,8 @@ AfterSuite(async (I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channe
 });
 
 Scenario(
-  'Verify No data shown and alert rules list elements @ia @not-pr-pipeline',
+  'Verify alert rules list elements @ia @not-pr-pipeline',
   async (I, alertRulesPage, rulesAPI) => {
-    alertRulesPage.openAlertRulesTab();
-    I.see(alertRulesPage.messages.noRulesFound, alertRulesPage.elements.noRules);
     const ruleName = 'QAA PSQL rules List test';
     const ruleId = await rulesAPI.createAlertRule(ruleName);
 
