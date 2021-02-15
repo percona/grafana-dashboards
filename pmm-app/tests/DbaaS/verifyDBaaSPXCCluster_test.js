@@ -17,7 +17,7 @@ After(async (I, dbaasAPI) => {
 // This test covers a lot of cases, will be refactored and changed in terms of flow, this is initial setup
 Scenario('PMM-T575 Verify that Advanced Options are optional for DB Cluster Creation @dbaas @not-pr-pipeline',
   async (I, dbaasPage, dbaasAPI) => {
-    const pxc_cluster_name = 'pmm-t575-cluster-5';
+    const pxc_cluster_name = 'pmm-t575-dbcluster';
 
     I.amOnPage(dbaasPage.url);
     dbaasPage.checkCluster(clusterName, false);

@@ -179,31 +179,25 @@ Scenario('PMM-T456 Verify Create Cluster steps validation fields disabled/enable
     I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
     I.dontSeeElement(adminPage.fields.timePickerMenu);
     I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
-    assert.strictEqual(
+    assert.ok(
       await I.grabAttributeFrom(dbaasPage.tabs.dbClusterTab.createClusterButton, 'disabled'),
-      true,
       'Create Cluster Button Should be Disabled',
     );
     I.click(dbaasPage.tabs.dbClusterTab.optionsCountLocator(2));
-    assert.strictEqual(
+    assert.ok(
       await I.grabAttributeFrom(dbaasPage.tabs.dbClusterTab.createClusterButton, 'disabled'),
-      true,
       'Create Cluster Button Should Still be Disabled',
     );
-
-    assert.strictEqual(
+    assert.ok(
       await I.grabAttributeFrom(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryField, 'disabled'),
-      true,
       'Memory Field Should be Disabled',
     );
-    assert.strictEqual(
+    assert.ok(
       await I.grabAttributeFrom(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuNumberFields, 'disabled'),
-      true,
       'Number of CPU Field Should be disabled',
     );
-    assert.strictEqual(
+    assert.ok(
       await I.grabAttributeFrom(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.diskSizeInputField, 'disabled'),
-      true,
       'Disk Size field must be disabled',
     );
     I.click(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.resourcesPerNode('custom'));
@@ -233,9 +227,8 @@ Data(inputFields).Scenario('PMM-T456 Verify Create Cluster steps validation - fi
       current.errorMessageField,
       current.errorMessage,
     ));
-    assert.strictEqual(
+    assert.ok(
       await I.grabAttributeFrom(dbaasPage.tabs.dbClusterTab.createClusterButton, 'disabled'),
-      true,
       'Create Cluster Button Should Still be Disabled',
     );
     await dbaasAPI.apiUnregisterCluster(clusterName);

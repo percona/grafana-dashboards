@@ -46,7 +46,7 @@ module.exports = {
 
     const response = await I.sendPostRequest('v1/management/DBaaS/Kubernetes/List', body, headers);
 
-    if (typeof response.data.kubernetes_clusters !== 'undefined') {
+    if (response.data.kubernetes_clusters) {
       const cluster = response.data.kubernetes_clusters.find(
         (o) => o.kubernetes_cluster_name === clusterName,
       );
@@ -68,12 +68,12 @@ module.exports = {
     for (let i = 0; i < 30; i++) {
       const response = await I.sendPostRequest('v1/management/DBaaS/XtraDBClusters/List', body, headers);
 
-      if (typeof response.data.clusters !== 'undefined') {
+      if (response.data.clusters) {
         const cluster = response.data.clusters.find(
           (o) => o.name === dbClusterName,
         );
 
-        if (typeof cluster !== 'undefined' && cluster.state === 'XTRA_DB_CLUSTER_STATE_READY') {
+        if (cluster && cluster.state === 'XTRA_DB_CLUSTER_STATE_READY') {
           break;
         }
       }
@@ -94,12 +94,12 @@ module.exports = {
       const response = await I.sendPostRequest('v1/management/DBaaS/XtraDBClusters/List', body, headers);
 
 
-      if (typeof response.data.clusters !== 'undefined') {
+      if (response.data.clusters) {
         const cluster = response.data.clusters.find(
           (o) => o.name === dbClusterName,
         );
 
-        if (typeof cluster === 'undefined') {
+        if (cluster === undefined) {
           break;
         }
       } else break;
