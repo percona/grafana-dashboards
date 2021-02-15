@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Link } from 'react-router-dom';
 import { COLUMNS } from 'pmm-check/CheckPanel.constants';
 import { activeCheckStub } from 'pmm-check/__mocks__/stubs';
 import { Table, TableBody, TableHeader } from 'pmm-check/components/Table';
@@ -9,20 +8,8 @@ import { Table, TableBody, TableHeader } from 'pmm-check/components/Table';
 jest.mock('shared/components/helpers/notification-manager');
 
 describe('Table::', () => {
-  it('should render the link to Settings when STT is disabled', () => {
-    const root = shallow(<Table columns={COLUMNS} isSttEnabled={false} data={[]} />);
-
-    expect(root.find('[data-qa="db-check-panel-settings-link"]').length).toEqual(1);
-    const text = 'Security Threat Tool is disabled. You can enable it in PMM Settings.';
-
-    expect(root.find('[data-qa="db-check-panel-settings-link"]').text()).toEqual(text);
-
-    // See if the link is rendered
-    expect(root.find(Link).length).toEqual(1);
-  });
-
   it('should display a custom message if STT is enabled and data is empty', () => {
-    const root = shallow(<Table columns={COLUMNS} isSttEnabled data={[]} />);
+    const root = shallow(<Table columns={COLUMNS} data={[]} />);
 
     const emptyDiv = root.find('[data-qa="db-check-panel-table-empty"]');
 
@@ -31,7 +18,7 @@ describe('Table::', () => {
   });
 
   it('should render the table with a header and a body if STT is enabled and data is not empty', () => {
-    const root = shallow(<Table columns={COLUMNS} isSttEnabled data={activeCheckStub} />);
+    const root = shallow(<Table columns={COLUMNS} data={activeCheckStub} />);
 
     const table = root.find('[data-qa="db-check-panel-table"]');
 
@@ -41,7 +28,7 @@ describe('Table::', () => {
   });
 
   it('should render the table with a message when the user only has reader access', () => {
-    const root = shallow(<Table columns={COLUMNS} isSttEnabled hasNoAccess />);
+    const root = shallow(<Table columns={COLUMNS} hasNoAccess />);
 
     const empty = root.find('[data-qa="db-check-panel-no-access"]');
 

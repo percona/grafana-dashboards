@@ -6,7 +6,7 @@ Before(async (I) => {
 
 Scenario(
   // eslint-disable-next-line max-len
-  'Open Advanced Exploration Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  'Open Advanced Exploration Dashboard and verify Metrics are present and graphs are displayed @nightly @not-ui-pipeline',
   async (I, dashboardPage) => {
     I.amOnPage(dashboardPage.advancedDataExplorationDashboard.url);
     dashboardPage.waitForDashboardOpened();

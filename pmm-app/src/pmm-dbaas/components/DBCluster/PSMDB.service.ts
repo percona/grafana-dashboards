@@ -69,7 +69,7 @@ export class PSMDBService extends DBClusterService {
 
   getDBCluster(dbCluster: DBCluster): Promise<void | DBClusterConnectionAPI> {
     return apiRequestManagement.post<DBClusterConnectionAPI, any>(
-      '/DBaaS/PSMDBClusters/Get',
+      '/DBaaS/PSMDBClusters/GetCredentials',
       omit(toAPI(dbCluster), ['params']),
     );
   }
@@ -95,7 +95,9 @@ export class PSMDBService extends DBClusterService {
       cpu: (dbCluster.params.replicaset?.compute_resources?.cpu_m || 0) / 1000,
       disk: (dbCluster.params.replicaset?.disk_size || 0) / 10 ** 9,
       status: getClusterStatus(dbCluster.state, DBCLUSTER_STATUS_MAP),
-      errorMessage: dbCluster.operation?.message,
+      message: dbCluster.operation?.message,
+      finishedSteps: dbCluster.operation?.finished_steps || 0,
+      totalSteps: dbCluster.operation?.total_steps || 0,
     };
   }
 }
