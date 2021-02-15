@@ -16,7 +16,7 @@ inputFields.add([dbaasPage.tabs.dbClusterTab.advancedOptions.fields.nodesNumberF
 inputFields.add([dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryField, ['0.01', '-0.3', '0.0'], dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryFieldErrorMessage, dbaasPage.valueGreatThanErrorText(0.1)]);
 inputFields.add([dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuNumberFields, ['0.01', '-0.3', '0.0'], dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuFieldErrorMessage, dbaasPage.valueGreatThanErrorText(0.1)]);
 
-Feature('Test the functionality inside DBaaS page');
+Feature('Test the functionality for Kubernetes Cluster Registration UI');
 
 Before(async (I) => {
   I.Authorize();
