@@ -137,6 +137,8 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
           />
         </>
       );
+    case Databases.haproxy:
+      return null;
     default:
       return (
         <>
