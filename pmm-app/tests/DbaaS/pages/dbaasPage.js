@@ -1,4 +1,5 @@
 const { I } = inject();
+const assert = require('assert');
 
 module.exports = {
   url: 'graph/d/pmm-dbaas/dbaas?orgId=1',
@@ -25,6 +26,7 @@ module.exports = {
       modalWindow: '$modal-body',
       modalCloseButton: '$modal-close-button',
       modalContent: '$modal-content',
+      modalContentText: '//div[@data-qa=\'modal-content\']//h4',
       proceedButton: '$delete-kubernetes-button',
       requiredField: '//div[contains(text(), \'Required field\')]',
       unregisterButton: '//div[@data-qa=\'dropdown-menu-menu\']//span[1]',
@@ -38,6 +40,7 @@ module.exports = {
       monitoringWarningLocator: '$add-cluster-monitoring-warning',
       optionsCountLocator: (step) => `(//div[@data-qa='step-header']//div[1])[${step}]`,
       optionsHeader: '$step-header',
+      deleteDbClusterConfirmationText: (dbClusterName, clusterName, dbType) => `Are you sure that you want to delete ${dbType} cluster ${dbClusterName} from Kubernetes cluster ${clusterName} ?`,
       basicOptions: {
         fields: {
           clusterNameField: '$name-text-input',
@@ -66,6 +69,7 @@ module.exports = {
         },
       },
       fields: {
+        clusterAction: (action) => `//div[@data-qa='dropdown-menu-menu']//span[contains(text(), '${action}')]`,
         clusterConnection: {
           dbHost: '$cluster-connection-host',
           dbPort: '$cluster-connection-port',
@@ -89,7 +93,7 @@ module.exports = {
         clusterStatusPending: '$cluster-status-pending',
         clusterStatusDeleting: '$cluster-status-deleting',
         clusterTableRow: '$table-row',
-        clusterActionsMenu: '$dropdown-menu-container',
+        clusterActionsMenu: '$dropdown-menu-toggle',
         deleteDBClusterButton: '$delete-dbcluster-button',
         cancelDeleteDBCluster: '$cancel-delete-dbcluster-button',
         dashboardRedirectionLink: '//tr[@data-qa=\'table-row\']//td[1]//a',
@@ -135,4 +139,13 @@ module.exports = {
     I.seeTextEquals(message, errorField);
   },
 
+  async checkActionPossible(actionName, actionPosibilty) {
+    const actionClass = await I.grabAttributeFrom(this.tabs.dbClusterTab.fields.clusterAction(actionName), 'class');
+
+    if (actionPosibilty) {
+      assert.strictEqual(actionClass, null, `User Should be able to Perform ${actionName} on the DB Cluster`);
+    } else {
+      assert.notStrictEqual(actionClass, null, `User Should not be able to Perform ${actionName} on the DB Cluster`);
+    }
+  },
 };

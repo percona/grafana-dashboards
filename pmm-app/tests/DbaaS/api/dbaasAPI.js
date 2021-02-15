@@ -28,6 +28,18 @@ module.exports = {
     );
   },
 
+  async apiDeleteXtraDBCluster(dbClusterName, clusterName) {
+    const body = JSON.stringify({ kubernetes_cluster_name: `${clusterName}`, name: dbClusterName });
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    const response = await I.sendPostRequest('v1/management/DBaaS/XtraDBCluster/Delete', body, headers);
+
+    assert.ok(
+      response.status === 200,
+      `Failed to delete pxc cluster with name "${dbClusterName}". Response message is "${response.data.message}"`,
+    );
+  },
+
   async apiCheckRegisteredClusterExist(clusterName) {
     const body = JSON.stringify({});
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
@@ -39,11 +51,60 @@ module.exports = {
         (o) => o.kubernetes_cluster_name === clusterName,
       );
 
-      if (typeof cluster !== 'undefined') return true;
-
-      return false;
+      return typeof cluster !== 'undefined';
     }
 
     return false;
+  },
+
+  async waitForXtraDbClusterReady(dbClusterName, clusterName) {
+    const body = JSON.stringify({
+      kubernetesClusterName: clusterName,
+      operators: { xtradb: { status: 'OPERATORS_STATUS_OK' }, psmdb: { status: 'OPERATORS_STATUS_OK' } },
+      status: 'KUBERNETES_CLUSTER_STATUS_OK',
+    });
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    for (let i = 0; i < 30; i++) {
+      const response = await I.sendPostRequest('v1/management/DBaaS/XtraDBClusters/List', body, headers);
+
+      if (typeof response.data.clusters !== 'undefined') {
+        const cluster = response.data.clusters.find(
+          (o) => o.name === dbClusterName,
+        );
+
+        if (typeof cluster !== 'undefined' && cluster.state === 'XTRA_DB_CLUSTER_STATE_READY') {
+          break;
+        }
+      }
+
+      await new Promise((r) => setTimeout(r, 5000));
+    }
+  },
+
+  async waitForXtraDbClusterDeleted(dbClusterName, clusterName) {
+    const body = JSON.stringify({
+      kubernetesClusterName: clusterName,
+      operators: { xtradb: { status: 'OPERATORS_STATUS_OK' }, psmdb: { status: 'OPERATORS_STATUS_OK' } },
+      status: 'KUBERNETES_CLUSTER_STATUS_OK',
+    });
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    for (let i = 0; i < 30; i++) {
+      const response = await I.sendPostRequest('v1/management/DBaaS/XtraDBClusters/List', body, headers);
+
+
+      if (typeof response.data.clusters !== 'undefined') {
+        const cluster = response.data.clusters.find(
+          (o) => o.name === dbClusterName,
+        );
+
+        if (typeof cluster === 'undefined') {
+          break;
+        }
+      } else break;
+
+      await new Promise((r) => setTimeout(r, 5000));
+    }
   },
 };
