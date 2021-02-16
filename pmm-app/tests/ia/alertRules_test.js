@@ -208,25 +208,27 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T563 Verify user can see YAML content for the User-defined Alert rule @ia @not-pr-pipeline',
-  async ({
-    I, ruleTemplatesPage, alertRulesPage, rulesAPI,
-  }) => {
+  'PMM-T639 Verify alert rule details content @ia @not-pr-pipeline',
+  async (I, ruleTemplatesPage, alertRulesPage, rulesAPI) => {
     const ruleName = 'QAA PSQL yaml content test';
-    const ruleNameNoContent = 'Rule without yaml content';
-    const [, content, id] = await ruleTemplatesPage.ruleTemplate
+    const ruleNameWithBuiltInTemplate = 'Rule without yaml content';
+    const exprForBuiltInTemplate = 'sum(pg_stat_activity_count{datname!~"template.*|postgres"})\n'
+      + '> pg_settings_max_connections * [[ .threshold ]] / 100';
+    const [,, id, expr] = await ruleTemplatesPage.ruleTemplate
       .templateNameAndContent('tests/ia/templates/templateForRules.yaml');
 
     await rulesAPI.createAlertRule(ruleName, id);
-    await rulesAPI.createAlertRule(ruleNameNoContent);
+    await rulesAPI.createAlertRule(ruleNameWithBuiltInTemplate);
     alertRulesPage.openAlertRulesTab();
     I.click(alertRulesPage.buttons.showDetails(ruleName));
-    I.seeTextEquals(content, alertRulesPage.elements.ruleDetails);
+    I.seeTextEquals(expr.replace('[[ .threshold ]]', '1'),
+      alertRulesPage.elements.ruleDetails);
     I.click(alertRulesPage.buttons.hideDetails(ruleName));
     I.dontSeeElement(alertRulesPage.elements.ruleDetails);
-    I.click(alertRulesPage.buttons.showDetails(ruleNameNoContent));
-    I.seeTextEquals('', alertRulesPage.elements.ruleDetails);
-    I.click(alertRulesPage.buttons.hideDetails(ruleNameNoContent));
+    I.click(alertRulesPage.buttons.showDetails(ruleNameWithBuiltInTemplate));
+    I.seeTextEquals(exprForBuiltInTemplate.replace('[[ .threshold ]]', '1'),
+      alertRulesPage.elements.ruleDetails);
+    I.click(alertRulesPage.buttons.hideDetails(ruleNameWithBuiltInTemplate));
     I.dontSeeElement(alertRulesPage.elements.ruleDetails);
   },
 );
