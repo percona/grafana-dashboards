@@ -1,7 +1,7 @@
-import { Messages } from './ConfigEditor.messages';
+import { Messages } from './QueryEditor.messages';
 import { DatasourceType } from '../PTSummary.types';
 
-export const DATASOURCE_OPTIONS = [
+export const DATASOURCES = [
   {
     value: DatasourceType.node,
     label: Messages.labels.nodePTSummary,

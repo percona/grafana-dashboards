@@ -2,6 +2,7 @@ import { FieldType, MutableDataFrame } from '@grafana/data';
 import { ActionResult } from 'shared/components/Actions';
 import { PTSummaryDataSource } from './PTSummaryDataSource';
 import { PTSummaryService } from './PTSummary.service';
+import { DatasourceType } from './PTSummary.types';
 
 jest.mock('shared/components/helpers/notification-manager');
 jest.mock('@grafana/runtime', () => ({
@@ -28,7 +29,11 @@ describe('PTSummaryDatasource::', () => {
         }),
       ],
     };
-    const instance = new PTSummaryDataSource({} as any);
+    const instance = new PTSummaryDataSource({
+      jsonData: {
+        queryType: DatasourceType.node,
+      },
+    });
 
     PTSummaryService.getPTSummary = jest.fn().mockResolvedValueOnce({ value: 'Test data' });
 
@@ -47,7 +52,11 @@ describe('PTSummaryDatasource::', () => {
         }),
       ],
     };
-    const instance = new PTSummaryDataSource({} as any);
+    const instance = new PTSummaryDataSource({
+      jsonData: {
+        queryType: DatasourceType.mysql,
+      },
+    });
 
     PTSummaryService.getMysqlPTSummary = jest.fn().mockResolvedValueOnce({ value: 'Test data' });
 
@@ -66,7 +75,11 @@ describe('PTSummaryDatasource::', () => {
         }),
       ],
     };
-    const instance = new PTSummaryDataSource({} as any);
+    const instance = new PTSummaryDataSource({
+      jsonData: {
+        queryType: DatasourceType.mongodb,
+      },
+    });
 
     PTSummaryService.getMongodbPTSummary = jest.fn().mockResolvedValueOnce({ value: 'Test data' });
 
@@ -85,7 +98,11 @@ describe('PTSummaryDatasource::', () => {
         }),
       ],
     };
-    const instance = new PTSummaryDataSource({} as any);
+    const instance = new PTSummaryDataSource({
+      jsonData: {
+        queryType: DatasourceType.postgresql,
+      },
+    });
 
     PTSummaryService.getPostgresqlPTSummary = jest.fn().mockResolvedValueOnce({ value: 'Test data' });
 
