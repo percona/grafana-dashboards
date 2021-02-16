@@ -1000,13 +1000,57 @@
             "valueName": "current"
         },
         {
-            "collapsed": false,
+            "collapsed": true,
             "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
                 "y": 8
+            },
+            "id": 1007,
+            "panels": [
+                {
+                    "datasource": "PTSummary",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 16,
+                        "w": 24,
+                        "x": 0,
+                        "y": 9
+                    },
+                    "id": 1009,
+                    "pluginVersion": "7.1.3",
+                    "targets": [
+                        {
+                            "queryType": {
+                                "variableName": "service_id"
+                            },
+                            "refId": "A"
+                        }
+                    ],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Service Summary",
+                    "type": "pmm-pt-summary-panel"
+                }
+            ],
+            "title": "Service Summary",
+            "type": "row"
+        },
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 9
             },
             "id": 74,
             "panels": [],
@@ -1035,7 +1079,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 9
+                "y": 10
             },
             "hiddenSeries": false,
             "id": 23,
@@ -1158,7 +1202,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 9
+                "y": 10
             },
             "hiddenSeries": false,
             "id": 34,
@@ -1262,7 +1306,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 17
+                "y": 18
             },
             "id": 76,
             "panels": [],
@@ -1289,7 +1333,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 18
+                "y": 19
             },
             "hiddenSeries": false,
             "id": 36,
@@ -1422,7 +1466,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 18
+                "y": 19
             },
             "hiddenSeries": false,
             "id": 24,
@@ -1535,7 +1579,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 26
+                "y": 27
             },
             "hiddenSeries": false,
             "id": 25,
@@ -1645,7 +1689,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 34
+                "y": 35
             },
             "id": 78,
             "panels": [],
@@ -1672,7 +1716,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 35
+                "y": 36
             },
             "hiddenSeries": false,
             "id": 26,
@@ -1785,7 +1829,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 35
+                "y": 36
             },
             "hiddenSeries": false,
             "id": 18,
@@ -1816,7 +1860,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "avg by (service_name,state) (max_over_time(pg_stat_activity_max_tx_duration{datname=~\"$database\",service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_stat_activity_max_tx_duration{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+                    "expr": "avg by (service_name,state) (max_over_time(pg_stat_activity_max_tx_duration{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_stat_activity_max_tx_duration{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1875,7 +1919,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 43
+                "y": 44
             },
             "id": 80,
             "panels": [],
@@ -1903,7 +1947,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 44
+                "y": 45
             },
             "hiddenSeries": false,
             "id": 48,
@@ -1934,7 +1978,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_files{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"|template(0|1)\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_files{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"|template(0|1)\"}[5m]))",
+                    "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2005,7 +2049,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 44
+                "y": 45
             },
             "hiddenSeries": false,
             "id": 49,
@@ -2042,7 +2086,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname=~\"$database\",datname!~\"|template(0|1)\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname=~\"$database\",datname!~\"|template(0|1)\"}[5m]))",
+                    "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -2123,7 +2167,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 52
+                "y": 53
             },
             "hiddenSeries": false,
             "id": 1003,
@@ -2154,7 +2198,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max by (service_name,datname) (increase(pg_stat_database_temp_files{service_name=~\"$service_name\",datname=~\"$database\",datname!~\"|template(0|1)\"}[$interval]))",
+                    "expr": "max by (service_name,datname) (increase(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2225,7 +2269,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 52
+                "y": 53
             },
             "hiddenSeries": false,
             "id": 1004,
@@ -2320,7 +2364,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 60
+                "y": 61
             },
             "id": 82,
             "panels": [],
@@ -2350,7 +2394,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 61
+                "y": 62
             },
             "hiddenSeries": false,
             "id": 3,
@@ -2553,7 +2597,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 61
+                "y": 62
             },
             "hiddenSeries": false,
             "id": 61,
@@ -2687,7 +2731,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 69
+                "y": 70
             },
             "id": 84,
             "panels": [],
@@ -2714,7 +2758,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 70
+                "y": 71
             },
             "hiddenSeries": false,
             "id": 50,
@@ -2832,7 +2876,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 70
+                "y": 71
             },
             "hiddenSeries": false,
             "id": 2,
@@ -3180,7 +3224,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 78
+                "y": 79
             },
             "id": 72,
             "panels": [],
@@ -3208,7 +3252,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 79
+                "y": 80
             },
             "hiddenSeries": false,
             "id": 28,
@@ -3354,7 +3398,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 79
+                "y": 80
             },
             "hiddenSeries": false,
             "id": 14,
@@ -3458,7 +3502,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 87
+                "y": 88
             },
             "hiddenSeries": false,
             "id": 22,
@@ -3562,7 +3606,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 95
+                "y": 96
             },
             "id": 60,
             "panels": [
@@ -3593,7 +3637,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 96
+                "y": 97
             },
             "id": 291,
             "panels": [
@@ -5963,6 +6007,28 @@
                 "options": [],
                 "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
                 "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 5,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Metrics",
+                "definition": "label_values(pg_up{service_name=\"$service_name\"}, service_id)",
+                "hide": 2,
+                "includeAll": false,
+                "label": "Service ID",
+                "multi": false,
+                "name": "service_id",
+                "options": [],
+                "query": "label_values(pg_up{service_name=\"$service_name\"}, service_id)",
+                "refresh": 2,
                 "regex": "",
                 "skipUrlSync": false,
                 "sort": 5,
