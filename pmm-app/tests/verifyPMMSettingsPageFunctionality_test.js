@@ -5,7 +5,7 @@ communicationDefaults.add(['slack']);
 
 Feature('PMM Settings Functionality');
 
-Before(async ({ I, pmmSettingsPage, settingsAPI }) => {
+Before(async ({ I, settingsAPI }) => {
   I.Authorize();
   await settingsAPI.restoreSettingsDefaults();
 });
