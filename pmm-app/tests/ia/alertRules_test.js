@@ -41,7 +41,7 @@ Scenario(
     const ruleId = await rulesAPI.createAlertRule(ruleName);
 
     alertRulesPage.openAlertRulesTab();
-    alertRulesPage.columnHeaders.forEach(({ header }) => {
+    alertRulesPage.columnHeaders.forEach(( header ) => {
       const columnHeader = alertRulesPage.elements.columnHeaderLocator(header);
 
       I.waitForVisible(columnHeader, 30);
