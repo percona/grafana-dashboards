@@ -2,7 +2,7 @@ import {
   SEVERITIES_ORDER,
 } from 'pmm-check/CheckPanel.constants';
 import {
-  ActiveCheck, Alert, CheckDetails, FailedChecks, Settings, SilenceResponse,
+  ActiveCheck, Alert, CheckDetails, FailedChecks, Settings, SilenceResponse, AlertState,
 } from 'pmm-check/types';
 
 import { alertsStub } from './stubs';
@@ -37,7 +37,13 @@ export const CheckService = {
 export const processData = (data: Alert[]): ActiveCheck[] => {
   const result: Record<
     string,
-    Array<{ summary: string; description: string; severity: string; labels: { [key: string]: string } }>
+    Array<{
+      summary: string;
+      description: string;
+      severity: string;
+      labels: { [key: string]: string },
+      silenced: boolean;
+     }>
   > = data
     .filter((alert) => !!alert.labels.stt_check)
     .reduce((acc, alert) => {
@@ -56,6 +62,7 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
         description,
         severity: labels.severity,
         labels,
+        silenced: AlertState.suppressed,
       };
 
       if (acc[serviceName]) {
@@ -91,6 +98,7 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
       .map((val) => ({
         description: `${val.summary}${val.description ? `: ${val.description}` : ''}`,
         labels: val.labels ?? [],
+        silenced: val.silenced,
       }))
       .sort((a, b) => {
         const aSeverity = a.labels.severity;

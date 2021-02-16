@@ -11,6 +11,8 @@ export const dbClustersStub: DBCluster[] = [
     cpu: 1,
     disk: 25,
     status: DBClusterStatus.ready,
+    finishedSteps: 5,
+    totalSteps: 10,
   },
   {
     kubernetesClusterName: 'Kubernetes Cluster 2',
@@ -20,6 +22,8 @@ export const dbClustersStub: DBCluster[] = [
     memory: 2048,
     cpu: 4,
     disk: 25,
+    finishedSteps: 7,
+    totalSteps: 7,
   },
   {
     kubernetesClusterName: 'Kubernetes Cluster 1',
@@ -30,6 +34,8 @@ export const dbClustersStub: DBCluster[] = [
     cpu: 0,
     disk: 25,
     status: DBClusterStatus.ready,
+    finishedSteps: 1,
+    totalSteps: 2,
   },
   {
     kubernetesClusterName: 'Kubernetes Cluster 2',
@@ -40,6 +46,9 @@ export const dbClustersStub: DBCluster[] = [
     cpu: 4,
     disk: 25,
     status: DBClusterStatus.failed,
+    message: 'Cluster creation failed',
+    finishedSteps: 0,
+    totalSteps: 2,
   },
   {
     kubernetesClusterName: 'Kubernetes Cluster 1',
@@ -50,6 +59,8 @@ export const dbClustersStub: DBCluster[] = [
     cpu: 1,
     disk: 25,
     status: DBClusterStatus.failed,
+    finishedSteps: 5,
+    totalSteps: 10,
   },
 ];
 

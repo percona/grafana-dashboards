@@ -2,10 +2,10 @@ import React, { FC, useEffect, useState } from 'react';
 import { cx } from 'emotion';
 import { CheckDetails } from 'pmm-check/types';
 import { CheckService } from 'pmm-check/Check.service';
-import { Spinner, useTheme } from '@grafana/ui';
+import { Spinner, useTheme, useStyles } from '@grafana/ui';
 // TODO: make a shared table style
 import { getStyles as getTableStyles } from 'pmm-check/components/Table/Table.styles';
-import * as checkPanelStyles from 'pmm-check/CheckPanel.styles';
+import { getStyles as getCheckPanelStyles } from 'pmm-check/CheckPanel.styles';
 import { Messages } from './AllChecksTab.messages';
 import * as styles from './AllChecksTab.styles';
 import { FetchChecks } from './types';
@@ -16,6 +16,7 @@ export const AllChecksTab: FC = () => {
   const [checks, setChecks] = useState<CheckDetails[] | undefined>();
   const theme = useTheme();
   const tableStyles = getTableStyles(theme);
+  const checkPanelStyles = useStyles(getCheckPanelStyles);
 
   const updateUI = (check: CheckDetails) => {
     const { name, disabled } = check;
@@ -71,7 +72,7 @@ export const AllChecksTab: FC = () => {
           </thead>
           <tbody data-qa="db-checks-all-checks-tbody">
             {checks?.map((check) => (
-              <CheckTableRow check={check} onSuccess={updateUI} />
+              <CheckTableRow key={check.name} check={check} onSuccess={updateUI} />
             ))}
           </tbody>
         </table>
