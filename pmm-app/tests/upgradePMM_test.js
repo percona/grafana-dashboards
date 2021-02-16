@@ -51,7 +51,7 @@ Scenario(
 
 Scenario(
   'PMM-T288 Verify user can see Update widget before upgrade [critical]  @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, adminPage, homePage }) => {
+  async ({ I, homePage }) => {
     const versions = getVersions();
 
     I.amOnPage(homePage.url);
@@ -62,7 +62,7 @@ Scenario(
 Scenario(
   'Verify user can create Remote Instances before upgrade and they are in RUNNNING status @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async ({
-    I, homePage, inventoryAPI, addInstanceAPI,
+    inventoryAPI, addInstanceAPI,
   }) => {
     // Adding instances for monitoring
     for (const type of Object.values(addInstanceAPI.instanceTypes)) {
@@ -78,7 +78,7 @@ Scenario(
 
 Scenario(
   'Verify user is able to Upgrade PMM version [blocker] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, inventoryAPI, homePage }) => {
+  async ({ I, homePage }) => {
     const versions = getVersions();
 
     I.amOnPage(homePage.url);
@@ -88,7 +88,7 @@ Scenario(
 
 Scenario(
   'Verify Agents are RUNNING after Upgrade (API) [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, inventoryAPI }) => {
+  async ({ inventoryAPI }) => {
     for (const service of Object.values(inventoryAPI.services)) {
       if (service.service !== 'mongodb') await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
     }
@@ -97,7 +97,7 @@ Scenario(
 
 Scenario(
   'Verify user can see Update widget [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, adminPage, homePage }) => {
+  async ({ I, homePage }) => {
     I.amOnPage(homePage.url);
     await homePage.verifyPostUpdateWidgetIsPresent();
   },
@@ -124,7 +124,7 @@ Scenario(
 
 Scenario(
   'Verify user can see News Panel @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, adminPage, homePage }) => {
+  async ({ I, homePage }) => {
     I.amOnPage(homePage.url);
     I.waitForVisible(homePage.fields.newsPanelTitleSelector, 30);
     I.waitForVisible(homePage.fields.newsPanelContentSelector, 30);
@@ -136,7 +136,7 @@ Scenario(
 
 Scenario(
   'PMM-T424 Verify PT Summary Panel is available after Upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, adminPage, dashboardPage }) => {
+  async ({ I, dashboardPage }) => {
     const filter = 'Node Name';
 
     I.amOnPage(`${dashboardPage.nodeSummaryDashboard.url}&var-node_name=pmm-server`);
@@ -151,7 +151,7 @@ Scenario(
 
 Scenario(
   'Verify Agents are RUNNING after Upgrade (UI) [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, adminPage, pmmInventoryPage }) => {
+  async ({ I, pmmInventoryPage }) => {
     for (const service of Object.values(serviceNames)) {
       I.amOnPage(pmmInventoryPage.url);
       await pmmInventoryPage.verifyAgentHasStatusRunning(service);
