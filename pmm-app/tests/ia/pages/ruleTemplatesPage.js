@@ -47,10 +47,11 @@ module.exports = {
       try {
         const name = YAML.parse(content).templates[0].summary;
         const id = YAML.parse(content).templates[0].name;
+        const { expr } = YAML.parse(content).templates[0];
 
-        return [name, content, id];
+        return [name, content, id, expr];
       } catch (e) {
-        return ['', '', ''];
+        return ['', '', '', ''];
       }
     },
     inputFilePath: 'tests/ia/templates/inputTemplate.yml',
