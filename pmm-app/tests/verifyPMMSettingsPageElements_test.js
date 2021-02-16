@@ -43,7 +43,7 @@ Scenario('PMM-T87 - Verify server diagnostics on PMM Settings Page', async ({ pm
 
 Scenario('PMM-T84 - Verify Section Tabs and Metrics Section Elements [critical]', async ({ I, pmmSettingsPage }) => {
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-  Object.values(pmmSettingsPage.sectionTabsList).forEach(( value ) => {
+  Object.values(pmmSettingsPage.sectionTabsList).forEach((value) => {
     I.see(value, pmmSettingsPage.fields.tabsSection);
   });
 

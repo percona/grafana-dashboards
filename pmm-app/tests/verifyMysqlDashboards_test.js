@@ -67,7 +67,9 @@ Scenario(
 // Need to Skip due to wait issue on locator
 xScenario(
   'PMM-T396 - Verify that parameters are passed from MySQL User Details dashboard to QAN @nightly @not-ui-pipeline',
-  async ({ I, dashboardPage, qanFilters, qanOverview, adminPage }) => {
+  async ({
+    I, dashboardPage, qanFilters, qanOverview, adminPage,
+  }) => {
     const filters = ['ps_8.0', 'root'];
     const timeRange = 'Last 12 hours';
 

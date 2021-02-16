@@ -186,7 +186,9 @@ Scenario(
 
 Scenario(
   'PMM-T221 - Verify that all filter options are always visible (but some disabled) after selecting an item and % value is changed @not-pr-pipeline @qan',
-  async ({ I, adminPage, qanOverview, qanFilters }) => {
+  async ({
+    I, adminPage, qanOverview, qanFilters,
+  }) => {
     const serviceType = 'mysql';
     const environment = 'pgsql-dev';
     const serviceName = 'ps_8.0';

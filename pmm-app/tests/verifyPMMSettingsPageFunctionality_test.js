@@ -139,7 +139,9 @@ Scenario('PMM-T520 - Verify that alert is being fired to external Alert Manager 
 });
 
 Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Settings @ia @not-pr-pipeline',
-  async ({ I, pmmSettingsPage, settingsAPI, adminPage }) => {
+  async ({
+    I, pmmSettingsPage, settingsAPI, adminPage,
+  }) => {
     await settingsAPI.apiDisableIA();
     I.amOnPage(pmmSettingsPage.advancedSettingsUrl);
     I.waitForVisible(pmmSettingsPage.fields.iaSwitchSelector, 30);
@@ -165,7 +167,9 @@ Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Sett
 
 Data(communicationDefaults)
   .Scenario('PMM-T534 PMM-T535 - Verify user is able to set up default Email/Slack communication settings @ia @not-pr-pipeline',
-    async ({ I, pmmSettingsPage, settingsAPI, current }) => {
+    async ({
+      I, pmmSettingsPage, settingsAPI, current,
+    }) => {
       await settingsAPI.apiEnableIA();
       I.amOnPage(pmmSettingsPage.communicationSettingsUrl);
       await pmmSettingsPage.waitForPmmSettingsPageLoaded();

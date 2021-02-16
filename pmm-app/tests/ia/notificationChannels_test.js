@@ -41,7 +41,9 @@ Data(notificationChannels).Scenario(
 
 Data(notificationChannels).Scenario(
   'Edit notification channel @ia @not-pr-pipeline',
-  async ({ I, ncPage, channelsAPI, current }) => {
+  async ({
+    I, ncPage, channelsAPI, current,
+  }) => {
     await channelsAPI.createNotificationChannel(current.name, current.type);
     ncPage.openNotificationChannelsTab();
     const newName = ncPage.editChannel(current.name, current.type);
@@ -56,7 +58,9 @@ Data(notificationChannels).Scenario(
 
 Data(notificationChannels).Scenario(
   'PMM-T493 Delete a notification channel @ia @not-pr-pipeline',
-  async ({ I, ncPage, channelsAPI, current }) => {
+  async ({
+    I, ncPage, channelsAPI, current,
+  }) => {
     await channelsAPI.createNotificationChannel(current.name, current.type);
     ncPage.openNotificationChannelsTab();
     I.click(ncPage.buttons.deleteChannelLocator(current.name));

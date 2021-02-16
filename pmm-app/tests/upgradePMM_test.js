@@ -61,7 +61,9 @@ Scenario(
 
 Scenario(
   'Verify user can create Remote Instances before upgrade and they are in RUNNNING status @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, homePage, inventoryAPI, addInstanceAPI }) => {
+  async ({
+    I, homePage, inventoryAPI, addInstanceAPI,
+  }) => {
     // Adding instances for monitoring
     for (const type of Object.values(addInstanceAPI.instanceTypes)) {
       if (type !== 'MongoDB') await addInstanceAPI.apiAddInstance(type, serviceNames[type.toLowerCase()]);
@@ -159,7 +161,9 @@ Scenario(
 
 Scenario(
   'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, qanPage, qanFilters, addInstanceAPI }) => {
+  async ({
+    I, qanPage, qanFilters, addInstanceAPI,
+  }) => {
     I.amOnPage(qanPage.url);
     qanFilters.waitForFiltersToLoad();
     await qanFilters.expandAllFilters();

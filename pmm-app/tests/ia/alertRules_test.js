@@ -16,7 +16,9 @@ Before(async ({ I, alertRulesPage, settingsAPI }) => {
   await settingsAPI.apiEnableIA();
 });
 
-BeforeSuite(async ({ I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channelsAPI, ncPage }) => {
+BeforeSuite(async ({
+  I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channelsAPI, ncPage,
+}) => {
   await settingsAPI.apiEnableIA();
   await rulesAPI.clearAllRules();
   await templatesAPI.clearAllTemplates();
@@ -25,7 +27,9 @@ BeforeSuite(async ({ I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, cha
   await channelsAPI.createNotificationChannel('EmailChannelForRules', ncPage.types.email.type);
 });
 
-AfterSuite(async ({ I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channelsAPI }) => {
+AfterSuite(async ({
+  I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channelsAPI,
+}) => {
   await settingsAPI.apiEnableIA();
   await rulesAPI.clearAllRules();
   await templatesAPI.clearAllTemplates();
@@ -41,7 +45,7 @@ Scenario(
     const ruleId = await rulesAPI.createAlertRule(ruleName);
 
     alertRulesPage.openAlertRulesTab();
-    alertRulesPage.columnHeaders.forEach(( header ) => {
+    alertRulesPage.columnHeaders.forEach((header) => {
       const columnHeader = alertRulesPage.elements.columnHeaderLocator(header);
 
       I.waitForVisible(columnHeader, 30);
@@ -100,7 +104,9 @@ Scenario(
 
 Data(rules).Scenario(
   'PMM-T515 PMM-T543 PMM-T544 PMM-T545 PMM-T574 Create Alert rule @ia @not-pr-pipeline',
-  async ({ I, alertRulesPage, rulesAPI, templatesAPI, current }) => {
+  async ({
+    I, alertRulesPage, rulesAPI, templatesAPI, current,
+  }) => {
     const rule = {
       template: current.template,
       templateType: current.templateType,
@@ -131,7 +137,9 @@ Data(rules).Scenario(
 
 Scenario(
   'PMM-T516 Update Alert rule @ia @not-pr-pipeline',
-  async ({ I, alertRulesPage, rulesAPI, channelsAPI, ncPage }) => {
+  async ({
+    I, alertRulesPage, rulesAPI, channelsAPI, ncPage,
+  }) => {
     const rule = {
       ruleName: 'QAA PSQL Update test',
       threshold: '2',
@@ -201,7 +209,9 @@ Scenario(
 
 Scenario(
   'PMM-T563 Verify user can see YAML content for the User-defined Alert rule @ia @not-pr-pipeline',
-  async ({ I, ruleTemplatesPage, alertRulesPage, rulesAPI }) => {
+  async ({
+    I, ruleTemplatesPage, alertRulesPage, rulesAPI,
+  }) => {
     const ruleName = 'QAA PSQL yaml content test';
     const ruleNameNoContent = 'Rule without yaml content';
     const [, content, id] = await ruleTemplatesPage.ruleTemplate

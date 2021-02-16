@@ -3,7 +3,9 @@ Feature('Tests for PMM Demo Sanity Tests Cycle Dashboard Checks');
 Scenario(
   // eslint-disable-next-line max-len
   'PMM-T319 Open the MySQL Instance Overview Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, adminPage, dashboardPage, pmmDemoPage }) => {
+  async ({
+    I, adminPage, dashboardPage, pmmDemoPage,
+  }) => {
     const serviceName = ['ps8-mysql', 'pxc57-3-mysql', 'ps8-slave-mysql'];
 
     I.amOnPage(pmmDemoPage.url + dashboardPage.mySQLInstanceOverview.url);
@@ -24,7 +26,9 @@ Scenario(
 Scenario(
   // eslint-disable-next-line max-len
   'PMM-T319 Open the MySQL Summary Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, adminPage, dashboardPage, pmmDemoPage }) => {
+  async ({
+    I, adminPage, dashboardPage, pmmDemoPage,
+  }) => {
     const serviceName = ['ps8-mysql', 'pxc57-3-mysql', 'ps8-slave-mysql'];
 
     I.amOnPage(pmmDemoPage.url + dashboardPage.mysqlInstanceSummaryDashboard.url);
@@ -44,7 +48,9 @@ Scenario(
 
 Scenario(
   'PMM-T69 Open the PostgreSQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, dashboardPage, adminPage, pmmDemoPage }) => {
+  async ({
+    I, dashboardPage, adminPage, pmmDemoPage,
+  }) => {
     const serviceName = ['pg11-postgresql', 'pmm-server-postgresql'];
 
     I.amOnPage(pmmDemoPage.url + dashboardPage.postgresqlInstanceSummaryDashboard.url);
@@ -66,7 +72,9 @@ Scenario(
 
 Scenario(
   'PMM-T70 Open the MongoDB Instance Summary Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, adminPage, dashboardPage, pmmDemoPage }) => {
+  async ({
+    I, adminPage, dashboardPage, pmmDemoPage,
+  }) => {
     const serviceName = ['mongo-config-1-mongodb', 'mongo-rs1-1-mongodb', 'mongo-rs2-1-mongodb'];
 
     I.amOnPage(pmmDemoPage.url + dashboardPage.mongodbOverviewDashboard.url);
@@ -87,7 +95,9 @@ Scenario(
 // Need to skip due to rework on MongoDB Cluster Summary Dashboard
 xScenario(
   'PMM-T70 Open the MongoDB Cluster Summary Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, adminPage, dashboardPage, pmmDemoPage }) => {
+  async ({
+    I, adminPage, dashboardPage, pmmDemoPage,
+  }) => {
     I.amOnPage(pmmDemoPage.url + dashboardPage.mongoDbClusterSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(2);
@@ -100,7 +110,9 @@ xScenario(
 
 Scenario(
   'PMM-T307 MongoDB Instances Overview dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, adminPage, dashboardPage, pmmDemoPage }) => {
+  async ({
+    I, adminPage, dashboardPage, pmmDemoPage,
+  }) => {
     const serviceName = ['mongo-config-1-mongodb', 'mongo-rs1-1-mongodb', 'mongo-rs2-1-mongodb'];
 
     I.amOnPage(pmmDemoPage.url + dashboardPage.mongoDbInstanceOverview.url);
@@ -132,7 +144,9 @@ Scenario(
 Scenario(
   // eslint-disable-next-line max-len
   'PMM-T72 Open the Prometheus Exporters Status Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, dashboardPage, adminPage, pmmDemoPage }) => {
+  async ({
+    I, dashboardPage, adminPage, pmmDemoPage,
+  }) => {
     const nodeName = ['mongo-config-1', 'pg11', 'ps8'];
 
     I.amOnPage(pmmDemoPage.url + dashboardPage.prometheusExporterStatusDashboard.url);
@@ -151,7 +165,9 @@ Scenario(
 Scenario(
   // eslint-disable-next-line max-len
   'PMM-T72 Open the Prometheus Exporters Overview Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, dashboardPage, adminPage, pmmDemoPage }) => {
+  async ({
+    I, dashboardPage, adminPage, pmmDemoPage,
+  }) => {
     const nodeName = ['mongo-config-1', 'pg11', 'ps8', 'pxc57-1', 'pxc80-1', 'mongo-rs1-1'];
 
     I.amOnPage(pmmDemoPage.url + dashboardPage.prometheusExporterOverviewDashboard.url);
@@ -170,7 +186,9 @@ Scenario(
 
 Scenario(
   'PMM-T301 Open PMM Demo Home Dashboard and Verify if all Monitored services are visible [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
-  async ({ I, dashboardPage, adminPage, pmmDemoPage }) => {
+  async ({
+    I, dashboardPage, adminPage, pmmDemoPage,
+  }) => {
     I.amOnPage(pmmDemoPage.url);
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);

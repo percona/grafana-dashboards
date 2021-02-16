@@ -28,7 +28,9 @@ Scenario(
 
 Scenario(
   'PMM-T223 - Verify time metrics are AVG per query (not per second) @qan @not-pr-pipeline',
-  async ({ I, qanOverview, qanFilters, qanDetails }) => {
+  async ({
+    I, qanOverview, qanFilters, qanDetails,
+  }) => {
     const cellValue = qanDetails.getMetricsCellLocator('Query Time', 3);
 
     qanOverview.waitForOverviewLoaded();
@@ -46,7 +48,9 @@ Scenario(
 
 Data(dbsTable).Scenario(
   'PMM-T13 - Check Explain and Example for supported DBs @qan @not-pr-pipeline',
-  async ({ I, qanOverview, qanFilters, qanDetails, current }) => {
+  async ({
+    I, qanOverview, qanFilters, qanDetails, current,
+  }) => {
     qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter(current.db);
     if (current.db === 'mysql') {

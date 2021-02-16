@@ -29,7 +29,9 @@ Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
 
 Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
   'Verify Remote Instance has Status Running [critical] @not-pr-pipeline',
-  async ({ I, remoteInstancesPage, pmmInventoryPage, current }) => {
+  async ({
+    I, remoteInstancesPage, pmmInventoryPage, current,
+  }) => {
     const serviceName = remoteInstancesPage.services[current.name];
 
     I.amOnPage(pmmInventoryPage.url);

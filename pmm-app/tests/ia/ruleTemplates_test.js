@@ -29,14 +29,14 @@ Scenario(
 Scenario(
   'Verify rule templates list elements @ia @not-pr-pipeline',
   async ({ I, ruleTemplatesPage }) => {
-    ruleTemplatesPage.columnHeaders.forEach(( header ) => {
+    ruleTemplatesPage.columnHeaders.forEach((header) => {
       const columnHeader = ruleTemplatesPage.elements.columnHeaderLocator(header);
 
       I.waitForVisible(columnHeader, 30);
     });
     const templateName = await I.grabTextFrom(ruleTemplatesPage.elements.templateName);
 
-    templateName.forEach(( name ) => {
+    templateName.forEach((name) => {
       assert.ok(name.length > 0, 'Rule Template name should not be empty');
     });
     I.seeElement(ruleTemplatesPage.buttons.openAddTemplateModal);
