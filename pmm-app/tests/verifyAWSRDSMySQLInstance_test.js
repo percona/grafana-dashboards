@@ -37,7 +37,7 @@ Scenario(
 xScenario(
   'Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring @not-ui-pipeline @nightly @not-pr-pipeline',
   async ({
-    I, qanPage, remoteInstancesPage, qanOverview, qanFilters,
+    I, qanPage, remoteInstancesPage, qanFilters,
   }) => {
     const filters = remoteInstancesPage.rds;
 
