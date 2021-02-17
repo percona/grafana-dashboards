@@ -10,6 +10,10 @@ module.exports = {
   },
   elements: {
     resizer: 'span.Resizer.horizontal',
+    noExamples: '//pre[contains(text(), "Sorry, no examples found for this query")]',
+    noClassic: '//pre[contains(text(), "No classic explain found")]',
+    noJSON: '//pre[contains(text(), "No JSON explain found")]',
+    examplesCodeBlock: '$pmm-overlay-wrapper',
   },
 
   getFilterSectionLocator: (filterSectionName) => `//span[contains(text(), '${filterSectionName}')]`,
@@ -26,6 +30,20 @@ module.exports = {
     const result = (parseFloat(queryCountDetail) / 300).toFixed(4);
 
     compareCalculation(qpsvalue, result);
+  },
+
+  checkExamplesTab() {
+    I.waitForVisible(this.getTabLocator('Example'), 30);
+    I.click(this.getTabLocator('Example'));
+    I.waitForVisible(this.elements.examplesCodeBlock, 30);
+    I.dontSeeElement(this.elements.noExamples);
+  },
+
+  checkExplainTab() {
+    I.click(this.getTabLocator('Explain'));
+    I.wait(5);
+    I.dontSeeElement(this.elements.noClassic);
+    I.dontSeeElement(this.elements.noJSON);
   },
 
   async verifyAvgQueryTime() {

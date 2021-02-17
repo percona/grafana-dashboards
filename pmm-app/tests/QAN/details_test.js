@@ -1,3 +1,10 @@
+const dbsTable = new DataTable(['db']);
+const dbs = ['mysql', 'md-dev', 'ps-dev', 'pdpgsql-dev', 'pgsql-dev', 'mongodb'];
+
+dbs.forEach((db) => {
+  dbsTable.add([db]);
+});
+
 Feature('QAN details');
 
 Before((I, qanPage) => {
@@ -34,5 +41,25 @@ Scenario(
     I.waitForVisible(cellValue, 30);
     await qanDetails.verifyAvqQueryCount();
     await qanDetails.verifyAvgQueryTime();
+  },
+);
+
+Data(dbsTable).Scenario(
+  'PMM-T13 - Check Explain and Example for supported DBs @qan @not-pr-pipeline',
+  async (I, qanOverview, qanFilters, qanDetails, current) => {
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyFilter(current.db);
+    if (current.db === 'mysql') {
+      I.waitForVisible(qanOverview.fields.searchBy, 30);
+      I.fillField(qanOverview.fields.searchBy, 'insert');
+      I.pressKey('Enter');
+    }
+
+    I.waitForElement(qanOverview.elements.querySelector, 30);
+    qanOverview.selectRow(1);
+    qanDetails.checkExamplesTab();
+    if (!/pdpgsql-dev|pgsql-dev/gim.test(current.db)) {
+      qanDetails.checkExplainTab();
+    }
   },
 );
