@@ -5,7 +5,7 @@ dbs.forEach((db) => {
   dbsTable.add([db]);
 });
 
-Feature('QAN details').retry(2);
+Feature('QAN details');
 
 Before((I, qanPage) => {
   I.Authorize();

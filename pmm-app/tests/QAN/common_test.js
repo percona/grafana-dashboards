@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-Feature('QAN common').retry(2);
+Feature('QAN common');
 
 Before(async (I, qanPage) => {
   await I.Authorize();
