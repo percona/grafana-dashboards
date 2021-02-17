@@ -34,7 +34,7 @@ Scenario(
 
       I.waitForVisible(columnHeader, 30);
     });
-    const templateName = await I.grabTextFrom(ruleTemplatesPage.elements.templateName);
+    const templateName = await I.grabTextFromAll(ruleTemplatesPage.elements.templateName);
 
     templateName.forEach((name) => {
       assert.ok(name.length > 0, 'Rule Template name should not be empty');
