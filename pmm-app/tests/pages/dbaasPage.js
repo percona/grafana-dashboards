@@ -46,7 +46,9 @@ module.exports = {
   registerKubernetesCluster(clusterName, config) {
     I.click(this.fields.addKubernetesClusterButton);
     I.fillField(this.fields.kubernetesClusterNameInput, clusterName);
-    I.fill(this.fields.kubeconfigFileInput, config);
+    I.usePlaywrightTo('Fill config to the input', async ({ page }) => {
+      await page.type(this.fields.kubeconfigFileInput, config, { timeout: 120000 });
+    });
     I.click(this.fields.kubernetesAddButton);
   },
 

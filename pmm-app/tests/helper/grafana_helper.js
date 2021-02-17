@@ -125,12 +125,6 @@ class Grafana extends Helper {
 
     assert.equal(resp.status, 200, `Failed to delete ${userId}`);
   }
-
-  async fill(locator, string) {
-    const { page } = this.helpers.Playwright;
-
-    await page.type(locator, string, { timeout: 120000 });
-  }
 }
 
 module.exports = Grafana;
