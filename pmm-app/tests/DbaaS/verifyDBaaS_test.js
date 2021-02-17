@@ -130,9 +130,9 @@ Scenario('Verify DB Cluster Tab Page Elements & Steps Background @dbaas @not-pr-
     I.seeElement(dbaasPage.tabs.dbClusterTab.optionsCountLocator(2));
     I.seeElement(dbaasPage.tabs.dbClusterTab.optionsCountLocator(1));
     I.click(dbaasPage.tabs.dbClusterTab.optionsCountLocator(2));
-    I.seeElement(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.dbClusterTopologyField);
+    I.seeElement(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.dbClusterTopologyFieldLabel);
     I.seeElement(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.nodesNumberField);
-    I.seeElement(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.dbClusterResourceField);
+    I.seeElement(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.dbClusterResourceFieldLabel);
     I.seeElement(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryField);
     I.seeElement(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuNumberFields);
     I.seeElement(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.diskSizeInputField);
@@ -200,7 +200,7 @@ Scenario('PMM-T456 Verify Create Cluster steps validation fields disabled/enable
       await I.grabAttributeFrom(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.diskSizeInputField, 'disabled'),
       'Disk Size field must be disabled',
     );
-    I.click(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.resourcesPerNode('custom'));
+    I.click(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.resourcesPerNode('Custom'));
     I.waitForEnabled(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryField, 3);
     I.waitForEnabled(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.diskSizeInputField, 3);
     I.waitForEnabled(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuNumberFields, 3);
@@ -219,7 +219,7 @@ Data(inputFields).Scenario('PMM-T456 Verify Create Cluster steps validation - fi
     I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
     I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
     I.click(dbaasPage.tabs.dbClusterTab.optionsCountLocator(2));
-    I.click(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.resourcesPerNode('custom'));
+    I.click(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.resourcesPerNode('Custom'));
     adminPage.customClearField(current.field);
     current.value.forEach((input) => dbaasPage.verifyInputValidationMessages(
       current.field,

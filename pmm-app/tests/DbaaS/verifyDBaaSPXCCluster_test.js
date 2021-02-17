@@ -36,8 +36,7 @@ Scenario('PMM-T575 Verify that Advanced Options are optional for DB Cluster Crea
     I.waitForElement(dbaasPage.tabs.dbClusterTab.basicOptions.fields.dbClusterDatabaseTypeFieldSelect('MySQL'));
     I.click(dbaasPage.tabs.dbClusterTab.basicOptions.fields.dbClusterDatabaseTypeFieldSelect('MySQL'));
     I.click(dbaasPage.tabs.dbClusterTab.createClusterButton);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterStatusPending, 30);
-    I.seeElement(dbaasPage.tabs.dbClusterTab.fields.clusterConnectionLoading);
+    I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);
     I.click(dbaasPage.tabs.dbClusterTab.fields.clusterActionsMenu);
     await dbaasPage.checkActionPossible('Delete', true);
     await dbaasPage.checkActionPossible('Edit', false);
@@ -63,6 +62,5 @@ Scenario('PMM-T575 Verify that Advanced Options are optional for DB Cluster Crea
     );
     I.click(dbaasPage.tabs.dbClusterTab.fields.deleteDBClusterButton);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterStatusDeleting, 30);
-    I.seeElement(dbaasPage.tabs.dbClusterTab.fields.clusterConnectionLoading);
     await dbaasAPI.waitForXtraDbClusterDeleted(pxc_cluster_name, clusterName);
   });
