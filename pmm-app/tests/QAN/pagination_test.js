@@ -1,4 +1,4 @@
-Feature('QAN pagination');
+Feature('QAN pagination').retry(2);
 
 Before((I, qanPage, qanOverview) => {
   I.Authorize();

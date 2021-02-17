@@ -1,4 +1,4 @@
-Feature('Test Dashboards inside the MongoDB Folder');
+Feature('Test Dashboards inside the MongoDB Folder').retry(2);
 
 Before(async (I) => {
   I.Authorize();

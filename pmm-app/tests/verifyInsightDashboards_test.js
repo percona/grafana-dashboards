@@ -1,4 +1,4 @@
-Feature('Test Dashboards inside the Insights Folder');
+Feature('Test Dashboards inside the Insights Folder').retry(2);
 
 Before(async (I) => {
   I.Authorize();

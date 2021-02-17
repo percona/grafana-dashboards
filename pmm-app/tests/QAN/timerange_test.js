@@ -1,4 +1,4 @@
-Feature('QAN timerange');
+Feature('QAN timerange').retry(2);
 
 Before((I, qanPage, qanOverview) => {
   I.Authorize();
