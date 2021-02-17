@@ -12,8 +12,8 @@ export const QueryEditor = (props) => {
     .getVariables()
     .map((variable) => ({ value: variable.name, label: variable.label || undefined }));
 
-  const selectedOption = variablesOptions.find((variable) => variable.value === queryType.variableName);
-  const selectedTypeOption = DATASOURCES.find((datasource) => datasource.value === queryType.type);
+  const selectedOption = variablesOptions.find((variable) => variable.value === queryType?.variableName);
+  const selectedTypeOption = DATASOURCES.find((datasource) => datasource.value === queryType?.type);
 
   const [selectedVariable, selectVariable] = useState<SelectableValue<string> | undefined>(selectedOption);
   const [type, setType] = useState<SelectableValue<string>>(selectedTypeOption || DATASOURCES[0]);

@@ -12,7 +12,7 @@ export class PTSummaryDataSource extends DataSourceApi {
   }
 
   async query(options): Promise<DataQueryResponse> {
-    const { variableName, type } = options.targets[0].queryType;
+    const { variableName, type } = options.targets[0]?.queryType || {};
 
     const getRequest = (type) => {
       switch (type) {
