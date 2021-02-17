@@ -15,7 +15,7 @@ Before(async ({ I, channelsAPI, settingsAPI }) => {
   await channelsAPI.clearAllNotificationChannels();
 });
 
-After(async ({ I, channelsAPI }) => {
+After(async ({ channelsAPI }) => {
   await channelsAPI.clearAllNotificationChannels();
 });
 
