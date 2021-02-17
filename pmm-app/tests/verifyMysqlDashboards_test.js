@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-Feature('Test Dashboards inside the MySQL Folder').retry(2);
+Feature('Test Dashboards inside the MySQL Folder');
 
 Before(async (I) => {
   I.Authorize();

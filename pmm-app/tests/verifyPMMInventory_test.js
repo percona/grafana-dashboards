@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-Feature('Inventory page').retry(2);
+Feature('Inventory page');
 
 Before(async (I) => {
   I.Authorize();

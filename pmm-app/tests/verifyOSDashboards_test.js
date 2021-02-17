@@ -3,7 +3,7 @@ const nodes = new DataTable(['node-type', 'name']);
 nodes.add(['pmm-server', 'pmm-server']);
 nodes.add(['pmm-client', 'ip']);
 
-Feature('Test Dashboards inside the OS Folder').retry(2);
+Feature('Test Dashboards inside the OS Folder');
 
 Before(async (I) => {
   I.Authorize();

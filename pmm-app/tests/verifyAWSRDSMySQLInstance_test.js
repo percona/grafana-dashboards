@@ -1,4 +1,4 @@
-Feature('Monitoring AWS RDS MySQL DB').retry(2);
+Feature('Monitoring AWS RDS MySQL DB');
 
 Before(async (I) => {
   I.Authorize();
