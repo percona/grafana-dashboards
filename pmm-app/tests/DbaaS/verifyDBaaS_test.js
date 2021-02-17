@@ -179,6 +179,7 @@ Scenario('PMM-T456 Verify Create Cluster steps validation fields disabled/enable
     I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
     I.dontSeeElement(adminPage.fields.timePickerMenu);
     I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.optionsCountLocator(2), 30);
     assert.ok(
       await I.grabAttributeFrom(dbaasPage.tabs.dbClusterTab.createClusterButton, 'disabled'),
       'Create Cluster Button Should be Disabled',
@@ -218,6 +219,7 @@ Data(inputFields).Scenario('PMM-T456 Verify Create Cluster steps validation - fi
     I.click(dbaasPage.tabs.dbClusterTab.dbClusterTab);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
     I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.optionsCountLocator(2), 30);
     I.click(dbaasPage.tabs.dbClusterTab.optionsCountLocator(2));
     I.click(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.resourcesPerNode('Custom'));
     adminPage.customClearField(current.field);
