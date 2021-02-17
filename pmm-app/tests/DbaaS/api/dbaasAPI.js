@@ -51,7 +51,7 @@ module.exports = {
         (o) => o.kubernetes_cluster_name === clusterName,
       );
 
-      return typeof cluster !== 'undefined';
+      return cluster !== undefined;
     }
 
     return false;
