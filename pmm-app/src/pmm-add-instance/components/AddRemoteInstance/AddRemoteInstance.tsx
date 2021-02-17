@@ -24,7 +24,7 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const initialValues: any = { ...remoteInstanceCredentials, tracking: 'qan_postgresql_pgstatements_agent' };
 
-  if (type === DATABASE_LABELS[Databases.mysql]) {
+  if (type === Databases.mysql) {
     initialValues.qan_mysql_perfschema = true;
   }
 

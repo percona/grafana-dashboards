@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Spinner, useStyles } from '@grafana/ui';
+import { useStyles } from '@grafana/ui';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { DBClusterConnectionProps } from './DBClusterConnection.types';
 import {
@@ -11,7 +11,6 @@ import { INITIAL_CONNECTION } from './DBClusterConnection.constants';
 import { getStyles } from './DBClusterConnection.styles';
 import { DBClusterConnectionPassword } from './DBClusterConnectionPassword/DBClusterConnectionPassword';
 import { DBClusterConnectionItem } from './DBClusterConnectionItem/DBClusterConnectionItem';
-import { isClusterChanging } from '../DBCluster.utils';
 import { DBClusterServiceFactory } from '../DBClusterService.factory';
 
 export const DBClusterConnection: FC<DBClusterConnectionProps> = ({ dbCluster }) => {
@@ -22,6 +21,7 @@ export const DBClusterConnection: FC<DBClusterConnectionProps> = ({ dbCluster })
     host, password, port, username,
   } = connection;
   const { status, databaseType } = dbCluster;
+  const isClusterReady = status && status === DBClusterStatus.ready;
   const getClusterConnection = async () => {
     try {
       setLoading(true);
@@ -37,47 +37,39 @@ export const DBClusterConnection: FC<DBClusterConnectionProps> = ({ dbCluster })
   };
 
   useEffect(() => {
-    getClusterConnection();
-  }, []);
+    if (isClusterReady) {
+      getClusterConnection();
+    }
+  }, [status]);
 
   return (
     <>
-      {!loading && !isClusterChanging(dbCluster) ? (
-        <div className={styles.connectionWrapper}>
-          {status && status === DBClusterStatus.ready ? (
-            <>
-              <DBClusterConnectionItem
-                label={Messages.dbcluster.table.connection.host}
-                value={host}
-                dataQa="cluster-connection-host"
-              />
-              <DBClusterConnectionItem
-                label={Messages.dbcluster.table.connection.port}
-                value={port}
-                dataQa="cluster-connection-port"
-              />
-              <DBClusterConnectionItem
-                label={Messages.dbcluster.table.connection.username}
-                value={username}
-                dataQa="cluster-connection-username"
-              />
-              <DBClusterConnectionPassword
-                label={Messages.dbcluster.table.connection.password}
-                password={password}
-                dataQa="cluster-connection-password"
-              />
-            </>
-          ) : (
-            <span className={styles.connectionFailed} data-qa="cluster-connection-failed">
-              -
-            </span>
-          )}
-        </div>
-      ) : (
-        <div className={styles.connectionLoading} data-qa="cluster-connection-loading">
-          <Spinner />
-        </div>
-      )}
+      <div className={styles.connectionWrapper}>
+        {!loading && isClusterReady && (
+          <>
+            <DBClusterConnectionItem
+              label={Messages.dbcluster.table.connection.host}
+              value={host}
+              dataQa="cluster-connection-host"
+            />
+            <DBClusterConnectionItem
+              label={Messages.dbcluster.table.connection.port}
+              value={port}
+              dataQa="cluster-connection-port"
+            />
+            <DBClusterConnectionItem
+              label={Messages.dbcluster.table.connection.username}
+              value={username}
+              dataQa="cluster-connection-username"
+            />
+            <DBClusterConnectionPassword
+              label={Messages.dbcluster.table.connection.password}
+              password={password}
+              dataQa="cluster-connection-password"
+            />
+          </>
+        )}
+      </div>
     </>
   );
 };
