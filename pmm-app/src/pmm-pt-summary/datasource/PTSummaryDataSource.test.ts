@@ -2,7 +2,6 @@ import { FieldType, MutableDataFrame } from '@grafana/data';
 import { ActionResult } from 'shared/components/Actions';
 import { PTSummaryDataSource } from './PTSummaryDataSource';
 import { PTSummaryService } from './PTSummary.service';
-import { DatasourceType } from './PTSummary.types';
 
 jest.mock('shared/components/helpers/notification-manager');
 jest.mock('@grafana/runtime', () => ({
@@ -29,16 +28,12 @@ describe('PTSummaryDatasource::', () => {
         }),
       ],
     };
-    const instance = new PTSummaryDataSource({
-      jsonData: {
-        queryType: DatasourceType.node,
-      },
-    });
+    const instance = new PTSummaryDataSource({});
 
     PTSummaryService.getPTSummary = jest.fn().mockResolvedValueOnce({ value: 'Test data' });
 
     const result = await instance.query({
-      targets: [{ refId: 'A', queryType: { queryType: 'node', variableName: undefined } }],
+      targets: [{ refId: 'A', queryType: { type: 'node', variableName: undefined } }],
     } as any);
 
     expect(result).toEqual(expected);
@@ -52,16 +47,12 @@ describe('PTSummaryDatasource::', () => {
         }),
       ],
     };
-    const instance = new PTSummaryDataSource({
-      jsonData: {
-        queryType: DatasourceType.mysql,
-      },
-    });
+    const instance = new PTSummaryDataSource({});
 
     PTSummaryService.getMysqlPTSummary = jest.fn().mockResolvedValueOnce({ value: 'Test data' });
 
     const result = await instance.query({
-      targets: [{ refId: 'A', queryType: { queryType: 'mysql', variableName: undefined } }],
+      targets: [{ refId: 'A', queryType: { type: 'mysql', variableName: undefined } }],
     } as any);
 
     expect(result).toEqual(expected);
@@ -75,16 +66,12 @@ describe('PTSummaryDatasource::', () => {
         }),
       ],
     };
-    const instance = new PTSummaryDataSource({
-      jsonData: {
-        queryType: DatasourceType.mongodb,
-      },
-    });
+    const instance = new PTSummaryDataSource({});
 
     PTSummaryService.getMongodbPTSummary = jest.fn().mockResolvedValueOnce({ value: 'Test data' });
 
     const result = await instance.query({
-      targets: [{ refId: 'A', queryType: { queryType: 'mongodb', variableName: undefined } }],
+      targets: [{ refId: 'A', queryType: { type: 'mongodb', variableName: undefined } }],
     } as any);
 
     expect(result).toEqual(expected);
@@ -98,16 +85,12 @@ describe('PTSummaryDatasource::', () => {
         }),
       ],
     };
-    const instance = new PTSummaryDataSource({
-      jsonData: {
-        queryType: DatasourceType.postgresql,
-      },
-    });
+    const instance = new PTSummaryDataSource({});
 
     PTSummaryService.getPostgresqlPTSummary = jest.fn().mockResolvedValueOnce({ value: 'Test data' });
 
     const result = await instance.query({
-      targets: [{ refId: 'A', queryType: { queryType: 'postgresql', variableName: undefined } }],
+      targets: [{ refId: 'A', queryType: { type: 'postgresql', variableName: undefined } }],
     } as any);
 
     expect(result).toEqual(expected);

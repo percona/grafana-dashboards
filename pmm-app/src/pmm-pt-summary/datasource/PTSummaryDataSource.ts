@@ -1,8 +1,5 @@
 import {
-  DataQueryResponse,
-  DataSourceApi,
-  MutableDataFrame,
-  FieldType,
+  DataQueryResponse, DataSourceApi, MutableDataFrame, FieldType,
 } from '@grafana/data';
 import { getActionResult } from 'shared/components/Actions';
 import { PTSummaryService } from './PTSummary.service';
@@ -10,15 +7,12 @@ import { DatasourceType, PTSummaryResponse } from './PTSummary.types';
 
 /* eslint-disable no-useless-constructor, class-methods-use-this */
 export class PTSummaryDataSource extends DataSourceApi {
-  private queryType?: string;
-
   constructor(instanceSettings: any) {
     super(instanceSettings);
-    this.queryType = instanceSettings.jsonData?.queryType;
   }
 
   async query(options): Promise<DataQueryResponse> {
-    const { variableName } = options.targets[0].queryType;
+    const { variableName, type } = options.targets[0].queryType;
 
     const getRequest = (type) => {
       switch (type) {
@@ -35,7 +29,7 @@ export class PTSummaryDataSource extends DataSourceApi {
       }
     };
 
-    return getRequest(this.queryType)
+    return getRequest(type)
       .then(async (response) => {
         const result = await getActionResult((response as PTSummaryResponse).action_id);
 
