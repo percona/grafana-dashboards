@@ -1,4 +1,4 @@
-Feature('Test Dashboards inside the PostgreSQL Folder');
+Feature('Test Dashboards inside the PostgreSQL Folder').retry(2);
 
 Before(async (I) => {
   I.Authorize();

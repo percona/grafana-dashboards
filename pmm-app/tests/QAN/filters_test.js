@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-Feature('QAN filters');
+Feature('QAN filters').retry(2);
 
 Before((I, qanPage, qanOverview) => {
   I.Authorize();

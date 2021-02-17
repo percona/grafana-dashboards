@@ -3,7 +3,7 @@ const communicationDefaults = new DataTable(['type']);
 communicationDefaults.add(['email']);
 communicationDefaults.add(['slack']);
 
-Feature('PMM Settings Functionality');
+Feature('PMM Settings Functionality').retry(2);
 
 Before(async (I, pmmSettingsPage, settingsAPI) => {
   I.Authorize();

@@ -1,4 +1,4 @@
-Feature('to run AMI Setup Page and verify Instance ID');
+Feature('to run AMI Setup Page and verify Instance ID').retry(2);
 
 Scenario('Open the setup Page for AMI Instance @pmm-ami @not-ui-pipeline @not-pr-pipeline', async (I, amiInstanceSetupPage) => {
   I.amOnPage(amiInstanceSetupPage.url);

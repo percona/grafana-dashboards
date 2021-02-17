@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-Feature('Test the functionality inside DBaaS page');
+Feature('Test the functionality inside DBaaS page').retry(2);
 
 Before(async (I) => {
   I.Authorize();

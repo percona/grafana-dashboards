@@ -1,4 +1,4 @@
-Feature('QAN overview');
+Feature('QAN overview').retry(2);
 
 Before(async (I, qanPage, qanOverview) => {
   await I.Authorize();

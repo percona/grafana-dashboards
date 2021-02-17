@@ -1,4 +1,4 @@
-Feature('Check ');
+Feature('Check ').retry(2);
 
 Before(async (I) => {
   I.Authorize();
