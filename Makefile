@@ -15,6 +15,7 @@ coverage:
 e2e:
 	cd pmm-app \
 	&& mkdir -pv logs video || true \
+	&& docker volume rm pmm-app_logs-directory || true \
 	&& docker-compose up -d \
 	&& npm run e2e
 
