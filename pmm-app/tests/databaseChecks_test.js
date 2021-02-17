@@ -1,5 +1,6 @@
-Feature('Database Failed Checks');
 const config = require('../pr.codecept.js').config.helpers.Playwright;
+
+Feature('Database Failed Checks').retry(2);
 
 Before(async (I) => {
   I.Authorize();
