@@ -1,7 +1,7 @@
 const { I } = inject();
 
 module.exports = {
-  url: 'graph/d/pmm-dbaas/dbaas?orgId=1',
+  url: 'graph/dbaas',
   addedAlertMessage: 'Cluster was successfully registered',
   confirmDeleteText: 'Are you sure that you want to unregister this cluster?',
   deletedAlertMessage: 'Cluster successfully unregistered',
