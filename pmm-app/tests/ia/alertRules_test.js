@@ -207,7 +207,8 @@ Scenario(
   },
 );
 
-Scenario(
+// TODO: unskip after https://jira.percona.com/browse/PMM-7531
+xScenario(
   'PMM-T639 Verify alert rule details content @ia @not-pr-pipeline',
   async (I, ruleTemplatesPage, alertRulesPage, rulesAPI) => {
     const ruleName = 'QAA PSQL yaml content test';

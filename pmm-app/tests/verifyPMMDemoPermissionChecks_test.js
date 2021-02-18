@@ -1,4 +1,4 @@
-Feature('Tests for PMM Demo Sanity Tests Permissions Checks, QAN Checks Cycle');
+Feature('Tests for PMM Demo Sanity Tests Permissions Checks, QAN Checks Cycle').retry(2);
 
 Scenario(
   'PMM-T363 - Verify Copyrights & Legal section elements [critical] @not-pr-pipeline @pmm-demo @not-ui-pipeline',

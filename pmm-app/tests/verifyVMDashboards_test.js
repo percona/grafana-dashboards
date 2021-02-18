@@ -1,4 +1,4 @@
-Feature('Check ');
+Feature('VictoriaMetrics Dashboards');
 
 Before(async ({ I }) => {
   I.Authorize();

@@ -7,7 +7,7 @@ for (const i of Object.values(page.ruleTemplate.paths)) {
   templates.add([i]);
 }
 
-Feature('IA: Alert rule templates');
+Feature('IA: Alert rule templates').retry(2);
 
 Before(async ({ I, ruleTemplatesPage, settingsAPI }) => {
   I.Authorize();

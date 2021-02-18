@@ -7,7 +7,7 @@ for (const i of Object.keys(page.services)) {
   instances.add([i]);
 }
 
-Feature('Remote DB Instances');
+Feature('Remote DB Instances').retry(2);
 
 Before(async ({ I }) => {
   I.Authorize();
