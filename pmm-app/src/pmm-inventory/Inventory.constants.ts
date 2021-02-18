@@ -88,6 +88,7 @@ export const inventoryTypes = {
   mongodb_exporter: 'MongoDB exporter',
   mongodb: 'MongoDB',
   mysql: 'MySQL',
+  haproxy: 'HAProxy',
   mysqld_exporter: 'MySQL exporter',
   node_exporter: 'Node exporter',
   pmm_agent: 'PMM Agent',

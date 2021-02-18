@@ -1,5 +1,6 @@
 module.exports = {
   pageObjects: {
+    I: './tests/custom_steps.js',
     addInstanceAPI: './tests/pages/api/addInstanceAPI.js',
     adminPage: './tests/pages/adminPage.js',
     alertRulesPage: './tests/ia/pages/alertRulesPage.js',

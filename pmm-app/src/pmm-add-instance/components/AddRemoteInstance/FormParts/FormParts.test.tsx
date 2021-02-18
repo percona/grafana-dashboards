@@ -25,7 +25,7 @@ describe('MainDetailsFormPart ::', () => {
 
     expect(fields.length).toBe(5);
     expect(root.find('input[name="address"]').prop('disabled')).toBeTruthy();
-    expect(root.find('input[name="service_name"]').prop('disabled')).toBeFalsy();
+    expect(root.find('input[name="serviceName"]').prop('disabled')).toBeFalsy();
     expect(root.find('input[name="port"]').prop('disabled')).toBeFalsy();
     expect(root.find('input[name="username"]').prop('disabled')).toBeFalsy();
     expect(root.find('input[name="password"]').prop('disabled')).toBeFalsy();
@@ -43,7 +43,7 @@ describe('MainDetailsFormPart ::', () => {
 
     expect(fields.length).toBe(5);
     expect(root.find('input[name="address"]').prop('disabled')).toBeFalsy();
-    expect(root.find('input[name="service_name"]').prop('disabled')).toBeFalsy();
+    expect(root.find('input[name="serviceName"]').prop('disabled')).toBeFalsy();
     expect(root.find('input[name="port"]').prop('disabled')).toBeFalsy();
     expect(root.find('input[name="username"]').prop('disabled')).toBeFalsy();
     expect(root.find('input[name="password"]').prop('disabled')).toBeFalsy();
@@ -79,7 +79,7 @@ describe('LabelsFormPart ::', () => {
 
 describe('AdditionalOptionsFormPart ::', () => {
   it('should render correct for PostgreSQL instance', async () => {
-    const type = 'PostgreSQL';
+    const type = 'postgresql';
     const remoteInstanceCredentials = {
       isRDS: false,
     };
@@ -120,7 +120,7 @@ describe('getAdditionalOptions ::', () => {
     const fields = root.find('input');
 
     expect(root.find('input[name="qan_mongodb_profiler"]').length).toBe(1);
-    expect(fields.length).toBe(1);
+    expect(fields.length).toBe(3);
   });
 
   it('should render correct for MySQL', async () => {
@@ -138,7 +138,7 @@ describe('getAdditionalOptions ::', () => {
     const fields = root.find('input');
 
     expect(root.find('input[name="qan_mysql_perfschema"]').length).toBe(1);
-    expect(fields.length).toBe(5);
+    expect(fields.length).toBe(7);
   });
 
   it('should render correct for RDS MySQL', async () => {
@@ -158,7 +158,7 @@ describe('getAdditionalOptions ::', () => {
     expect(root.find('input[name="qan_mysql_perfschema"]').length).toBe(1);
     expect(root.find('input[name="disable_basic_metrics"]').length).toBe(1);
     expect(root.find('input[name="disable_enhanced_metrics"]').length).toBe(1);
-    expect(fields.length).toBe(7);
+    expect(fields.length).toBe(9);
   });
 
   it('should render correct for PostgreSQL', async () => {
@@ -176,6 +176,6 @@ describe('getAdditionalOptions ::', () => {
     const fields = root.find('input');
 
     expect(root.find('input[name="tracking"]').length).toBe(trackingOptions.length);
-    expect(fields.length).toBe(3);
+    expect(fields.length).toBe(5);
   });
 });

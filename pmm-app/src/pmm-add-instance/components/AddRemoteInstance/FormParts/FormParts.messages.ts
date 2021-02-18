@@ -88,6 +88,11 @@ export const Messages = {
         username: 'Your database user name',
         password: 'Your database password',
       },
+      haproxy: {
+        port: 'HAProxy prometheus exporter port',
+        username: 'username for HAProxy prometheus exporter',
+        password: 'password for HAProxy prometheus exporter',
+      },
       labels: {
         region: 'Region',
         az: 'Availability Zone',
