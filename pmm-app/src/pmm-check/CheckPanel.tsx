@@ -56,6 +56,16 @@ export const CheckPanel: FC = () => {
   ],
   [hasNoAccess, isSttEnabled]);
 
+  if (hasNoAccess) {
+    return (
+      <div className={styles.panel} data-qa="db-check-panel">
+        <div className={styles.empty} data-qa="db-check-panel-unauthorized">
+          {Messages.unauthorized}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={styles.panel} data-qa="db-check-panel">
       {getSettingsPending && (
