@@ -100,9 +100,9 @@ pipeline {
                             sg docker -c "
                                 export CHROME_VERSION=${params.CHROME_VERSION}
                                 source \"/usr/local/nvm/nvm.sh\"
-                                cd pmm-app
-                                docker-compose down
-                                cd ../
+                                pushd ./pmm-app
+                                docker-compose -v down
+                                popd
                                 make e2e
                             "
                         """
