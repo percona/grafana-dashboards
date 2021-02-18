@@ -9,7 +9,8 @@ module.exports = {
     for (let i = 0; i < timeout; i++) {
       const results = await this.getSecurityChecksResults();
 
-      if (results.length !== 0) {
+      // waiting 5 sec to avoid error "'length' of undefined".
+      if (results.length !== 0 && i === 5) {
         break;
       }
 
