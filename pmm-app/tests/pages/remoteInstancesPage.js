@@ -50,7 +50,7 @@ module.exports = {
     remoteInstanceTitleLocator: '//section/h3',
     replicationSet: '$replication_set-text-input',
     secretKeyInput: '$aws_secret_key-password-input',
-    serviceName: '$service_name-text-input',
+    serviceName: '$serviceName-text-input',
     skipConnectionCheck: '//input[@name="skip_connection_check"]/following-sibling::span[2]',
     skipTLS: '//input[@name="tls_skip_verify"]',
     skipTLSL: '//input[@name="tls_skip_verify"]/following-sibling::span[2]',

@@ -17,4 +17,5 @@ export enum InstanceTypes {
   proxysql = 'proxysql',
   mongodb = 'mongodb',
   external = 'external',
+  haproxy = 'haproxy',
 }
