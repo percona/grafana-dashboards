@@ -207,10 +207,12 @@ Scenario(
   },
 );
 
-// TODO: unskip after https://jira.percona.com/browse/PMM-7531
-xScenario(
+
+Scenario(
   'PMM-T639 Verify alert rule details content @ia @not-pr-pipeline',
-  async (I, ruleTemplatesPage, alertRulesPage, rulesAPI) => {
+  async ({
+    I, ruleTemplatesPage, alertRulesPage, rulesAPI,
+  }) => {
     const ruleName = 'QAA PSQL yaml content test';
     const ruleNameWithBuiltInTemplate = 'Rule without yaml content';
     const exprForBuiltInTemplate = 'sum(pg_stat_activity_count{datname!~"template.*|postgres"})\n'
