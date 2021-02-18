@@ -86,13 +86,13 @@ Scenario(
     const color = await I.grabCssPropertyFrom(alertRulesPage.elements.rulesNameCell(ruleName), 'background-color');
 
     I.click(alertRulesPage.buttons.toggleAlertRule(ruleName));
-    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyDisabled(ruleName));
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyDisabled(ruleName));
     const newColor = await I.grabCssPropertyFrom(alertRulesPage.elements.rulesNameCell(ruleName), 'background-color');
 
     assert.ok(color !== newColor, 'Background color should change after toggle');
 
     I.click(alertRulesPage.buttons.toggleAlertRule(ruleName));
-    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyEnabled(ruleName));
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyEnabled(ruleName));
     I.seeCssPropertiesOnElements(alertRulesPage.elements.rulesNameCell(ruleName), { 'background-color': color });
     await rulesAPI.removeAlertRule(ruleId);
   },
@@ -117,15 +117,11 @@ Data(rules).Scenario(
     I.click(alertRulesPage.buttons.openAddRuleModal);
     alertRulesPage.fillRuleFields(rule);
     I.click(alertRulesPage.buttons.addRule);
-    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyAdded);
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyAdded);
     I.seeElement(alertRulesPage.elements.rulesNameCell(rule.ruleName));
     if (rule.threshold.length === 0) { rule.threshold = 80; }
 
-    I.seeTextEquals(`${rule.threshold} %`, alertRulesPage.elements.thresholdCell(rule.ruleName));
-    I.seeTextEquals(`${rule.duration} seconds`, alertRulesPage.elements.durationCell(rule.ruleName));
-    I.seeTextEquals(rule.severity, alertRulesPage.elements.severityCell(rule.ruleName));
-    I.seeTextEquals(rule.filters, alertRulesPage.elements.filtersCell(rule.ruleName));
-    alertRulesPage.verifyRuleState(rule.activate, rule.ruleName);
+    alertRulesPage.verifyRowValues(rule);
   },
 );
 
@@ -148,7 +144,7 @@ Scenario(
     I.click(alertRulesPage.buttons.editAlertRule(rule.ruleName));
     alertRulesPage.fillRuleFields(rule);
     I.click(alertRulesPage.buttons.addRule);
-    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyEdited);
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyEdited);
     alertRulesPage.verifyRowValues(rule);
 
     await rulesAPI.removeAlertRule(ruleId);
@@ -172,7 +168,7 @@ Scenario(
 
     alertRulesPage.openAlertRulesTab();
     I.click(alertRulesPage.buttons.duplicateAlertRule(ruleName));
-    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyCreated(rule.ruleName));
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyCreated(rule.ruleName));
     alertRulesPage.verifyRowValues(rule);
 
     await rulesAPI.removeAlertRule(ruleId);
@@ -194,7 +190,7 @@ Scenario(
     I.seeElement(alertRulesPage.buttons.cancelDelete);
     I.seeElement(alertRulesPage.buttons.delete);
     I.click(alertRulesPage.buttons.delete);
-    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyDeleted(ruleName));
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyDeleted(ruleName));
     I.dontSeeElement(alertRulesPage.elements.rulesNameCell(ruleName));
   },
 );
