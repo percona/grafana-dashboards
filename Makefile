@@ -42,6 +42,6 @@ clean:
 
 .PHONY: docker_clean
 docker_clean:
-	docker-compose stop \
+	docker-compose down -v \
 	&& docker-compose rm -f -v \
-	&& docker system prune --volumes -f
+	&& docker volume prune -f
