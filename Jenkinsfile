@@ -126,6 +126,7 @@ pipeline {
         always {
             sh '''
                sg docker -c "make docker_clean"
+               cd pmm-app && sg docker -c "make docker_clean"
                sudo chmod 777 -R pmm-app/
             '''
             script {
