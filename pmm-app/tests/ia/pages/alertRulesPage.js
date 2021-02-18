@@ -110,12 +110,10 @@ module.exports = {
     filtersCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[4]//span`,
     modalHeader: '$modal-header',
     modalContent: '$modal-content',
-    popUpTitle: '.alert-title',
     columnHeaderLocator: (columnHeaderText) => `//th[text()="${columnHeaderText}"]`,
     ruleDetails: '$alert-rules-details',
   },
   buttons: {
-    closePopUp: '.alert-close',
     openAddRuleModal: '$alert-rule-template-add-modal-button',
     editRule: '$edit-alert-rule-button',
     closeModal: '$modal-close-button',
@@ -222,11 +220,5 @@ module.exports = {
     if (!activate) checked = null;
 
     I.seeAttributesOnElements(this.elements.activateSwitch(ruleName), { checked });
-  },
-
-  verifyPopUpMessage(message) {
-    I.waitForVisible(this.elements.popUpTitle, 30);
-    I.see(message, this.elements.popUpTitle);
-    I.click(this.buttons.closePopUp);
   },
 };
