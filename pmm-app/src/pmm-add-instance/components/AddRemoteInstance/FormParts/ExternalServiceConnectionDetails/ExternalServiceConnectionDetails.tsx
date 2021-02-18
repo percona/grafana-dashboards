@@ -50,7 +50,7 @@ export const ExternalServiceConnectionDetails: FC<ExternalServiceConnectionDetai
         <LinkTooltip tooltipText={Messages.form.tooltips.externalService.serviceName} icon="info-circle" />
       </div>
       <TextInputField
-        name="service_name"
+        name="serviceName"
         placeholder={Messages.form.placeholders.externalService.serviceName}
       />
       <div className={styles.labelWrapper} data-qa="address-label">
@@ -84,7 +84,7 @@ export const ExternalServiceConnectionDetails: FC<ExternalServiceConnectionDetai
         placeholder={Messages.form.placeholders.externalService.address}
         validators={[validators.required]}
       />
-      <div className={styles.labelWrapper} data-qa="service_name-label">
+      <div className={styles.labelWrapper} data-qa="service-name-label">
         <span>{Messages.form.labels.externalService.metricsPath}</span>
         <LinkTooltip tooltipText={Messages.form.tooltips.externalService.metricsPath} icon="info-circle" />
       </div>

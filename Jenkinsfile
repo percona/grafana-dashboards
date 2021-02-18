@@ -103,6 +103,7 @@ pipeline {
                                 pushd ./pmm-app
                                 docker-compose down -v
                                 popd
+                                make docker_clean
                                 make e2e
                             "
                         """
