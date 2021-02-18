@@ -100,6 +100,7 @@ pipeline {
                             sg docker -c "
                                 export CHROME_VERSION=${params.CHROME_VERSION}
                                 source \"/usr/local/nvm/nvm.sh\"
+                                cd pmm-app && sg docker -c "make docker_clean"
                                 make e2e
                             "
                         """
