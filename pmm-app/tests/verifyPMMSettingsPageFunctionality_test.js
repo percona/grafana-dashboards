@@ -16,7 +16,7 @@ Scenario('PMM-T93 - Open PMM Settings page and verify changing Metrics Resolutio
   I.amOnPage(pmmSettingsPage.url);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.selectMetricsResolution(resolutionToApply);
-  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+  I.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   I.refreshPage();
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.verifySelectedResolution(resolutionToApply);
@@ -31,7 +31,7 @@ Scenario('PMM-T94 - Open PMM Settings page and verify changing Data Retention [c
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
-  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+  I.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   I.refreshPage();
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
@@ -52,7 +52,7 @@ Scenario(
       scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
       pmmSettingsPage.alertManager.editRule.replace('{{ sec }}', Math.floor(Math.random() * 10) + 1),
     );
-    await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+    I.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
     pmmSettingsPage.openAlertsManagerUi();
     await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.editRuleName);
     // PMM-T109 starting here
@@ -92,7 +92,7 @@ Scenario(
     I.click(pmmSettingsPage.fields.sttSwitchSelector);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'on');
     I.click(pmmSettingsPage.fields.advancedButton);
-    await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+    I.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
     I.refreshPage();
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
@@ -112,7 +112,7 @@ Scenario('PMM-T520 - Verify that alert is in Firing State - internal alert manag
     scheme + pmmSettingsPage.alertManager.service,
     pmmSettingsPage.alertManager.rule2,
   );
-  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+  I.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   pmmSettingsPage.openAlertsManagerUi();
   await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2);
   I.amOnPage(pmmSettingsPage.stateOfAlertsUrl);
@@ -130,7 +130,7 @@ Scenario('PMM-T520 - Verify that alert is being fired to external Alert Manager 
     scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.externalAlertManagerPort,
     pmmSettingsPage.alertManager.rule2,
   );
-  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+  I.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   pmmSettingsPage.openAlertsManagerUi();
   await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2);
   I.amOnPage(pmmSettingsPage.stateOfAlertsUrl);
@@ -170,7 +170,7 @@ Data(communicationDefaults)
       I.amOnPage(pmmSettingsPage.communicationSettingsUrl);
       await pmmSettingsPage.waitForPmmSettingsPageLoaded();
       pmmSettingsPage.fillCommunicationFields(current.type);
-      pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+      I.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
       I.refreshPage();
       await pmmSettingsPage.waitForPmmSettingsPageLoaded();
       await pmmSettingsPage.verifyCommunicationFields(current.type);

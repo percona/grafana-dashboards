@@ -162,7 +162,6 @@ module.exports = {
     lowInput: '$metrics-resolution-lr-input',
     mediumInput: '$metrics-resolution-mr-input',
     highInput: '$metrics-resolution-hr-input',
-    popUpTitle: '//div[@class="alert-title"]',
     perconaPlatformLink: '//li[contains(text(), \'Percona Platform\')]',
     privacyPolicy: '//span[contains(text(), "Privacy Policy")]',
     sectionHeader: '//div[@class="ant-collapse-header"]',
@@ -206,16 +205,6 @@ module.exports = {
 
     I.click(sectionExpandLocator);
     I.waitForVisible(expectedContentLocator, 30);
-  },
-
-  async verifyPopUpMessage(successMessage) {
-    I.waitForVisible(this.fields.popUpTitle, 30);
-    I.see(successMessage, this.fields.popUpTitle);
-  },
-
-  async verifyValidationMessage(validationMessage) {
-    I.waitForVisible(this.fields.validationMessage, 30);
-    I.see(validationMessage, this.fields.validationMessage);
   },
 
   fillCommunicationFields(type) {

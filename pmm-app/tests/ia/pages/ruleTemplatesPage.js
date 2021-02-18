@@ -11,7 +11,6 @@ module.exports = {
     templatesTable: '$alert-rule-templates-table-tbody',
     templateName: '//tr/td[1]',
     modalHeader: '$modal-header',
-    popUpTitle: '.alert-title',
     columnHeaderLocator: (columnHeaderText) => `//th[text()="${columnHeaderText}"]`,
   },
   buttons: {
@@ -77,10 +76,5 @@ module.exports = {
     I.waitForVisible(this.elements.ruleTemplateTab, 30);
     I.click(this.elements.ruleTemplateTab);
     I.waitForVisible(this.elements.templatesTable, 30);
-  },
-
-  verifyPopUpMessage(message) {
-    I.waitForVisible(this.elements.popUpTitle, 30);
-    I.see(message, this.elements.popUpTitle);
   },
 };
