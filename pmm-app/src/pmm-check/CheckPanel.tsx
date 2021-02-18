@@ -63,7 +63,7 @@ export const CheckPanel: FC = () => {
           {Messages.unauthorized}
         </div>
       </div>
-    )
+    );
   }
 
   return (
