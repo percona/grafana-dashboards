@@ -28,7 +28,6 @@ module.exports = {
     nameFieldLabel: '$name-field-label',
     modalHeader: '$modal-header',
     modalContent: '$modal-content',
-    popUpTitle: '.alert-title',
   },
   buttons: {
     openAddChannelModal: '$notification-channel-add-modal-button',
@@ -81,7 +80,7 @@ module.exports = {
     I.seeElement(this.buttons.cancelAdding);
     await this.fillFields(name, type);
     I.click(this.buttons.addChannel);
-    this.verifyPopUpMessage(this.messages.successfullyAdded);
+    I.verifyPopUpMessage(this.messages.successfullyAdded);
   },
 
   async fillFields(name, type) {
@@ -126,13 +125,8 @@ module.exports = {
     }
 
     I.click(this.buttons.addChannel);
-    this.verifyPopUpMessage(this.messages.successfullyEdited);
+    I.verifyPopUpMessage(this.messages.successfullyEdited);
 
     return `${name}${suffix}`;
-  },
-
-  verifyPopUpMessage(message) {
-    I.waitForVisible(this.elements.popUpTitle, 30);
-    I.see(message, this.elements.popUpTitle);
   },
 };
