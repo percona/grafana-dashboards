@@ -12,7 +12,14 @@ class Grafana extends Helper {
     const { browserContext } = this.helpers.Playwright;
     const basicAuthEncoded = await this.getAuth(username, password);
 
-    await browserContext.setExtraHTTPHeaders({ Authorization: `Basic ${basicAuthEncoded}` });
+    for (let i = 0; i < 20; i++) {
+      if (browserContext !== undefined) {
+        await browserContext.setExtraHTTPHeaders({ Authorization: `Basic ${basicAuthEncoded}` });
+        break;
+      }
+
+      await new Promise((r) => setTimeout(r, 1000));
+    }
 
     return browserContext;
   }

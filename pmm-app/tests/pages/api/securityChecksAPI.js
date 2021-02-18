@@ -10,8 +10,10 @@ module.exports = {
       const results = await this.getSecurityChecksResults();
 
       // waiting 10 sec to avoid error "'length' of undefined".
-      if (results.length !== 0 && i < 10) {
-        break;
+      if (results !== undefined) {
+        if (results.length !== 0) {
+          break;
+        }
       }
 
       I.wait(1);
