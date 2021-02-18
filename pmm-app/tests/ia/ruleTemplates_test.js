@@ -74,8 +74,7 @@ Scenario(
   },
 );
 
-// TODO unskip page.ruleTemplate.paths.txt after fixing https://jira.percona.com/browse/PMM-7550
-Data(templates.filter((template) => template.path !== page.ruleTemplate.paths.txt))
+Data(templates)
   .Scenario(
     'PMM-T482 PMM-T499 Upload rule templates @ia @not-pr-pipeline',
     async (I, ruleTemplatesPage, current) => {
@@ -102,8 +101,7 @@ Data(templates.filter((template) => template.path !== page.ruleTemplate.paths.tx
     },
   );
 
-// TODO unskip after fixing https://jira.percona.com/browse/PMM-7550
-xScenario(
+Scenario(
   'PMM-T501 Upload duplicate rule template @ia @not-pr-pipeline',
   async (I, ruleTemplatesPage) => {
     const path = ruleTemplatesPage.ruleTemplate.paths.yaml;
