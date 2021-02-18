@@ -13,7 +13,7 @@ for (const i in validationValues) {
 dataRetentionTable.add([' ', page.messages.requiredFieldMessage]);
 dataRetentionTable.add(['e', page.messages.requiredFieldMessage]);
 
-Feature('PMM Settings Elements');
+Feature('PMM Settings Elements').retry(2);
 
 Before(async (I, pmmSettingsPage, settingsAPI) => {
   I.Authorize();
