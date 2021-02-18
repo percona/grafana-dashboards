@@ -11,7 +11,6 @@ module.exports = {
     templatesTable: '$alert-rule-templates-table-tbody',
     templateName: '//tr/td[1]',
     modalHeader: '$modal-header',
-    popUpTitle: '.alert-title',
     columnHeaderLocator: (columnHeaderText) => `//th[text()="${columnHeaderText}"]`,
   },
   buttons: {
@@ -47,10 +46,11 @@ module.exports = {
       try {
         const name = YAML.parse(content).templates[0].summary;
         const id = YAML.parse(content).templates[0].name;
+        const { expr } = YAML.parse(content).templates[0];
 
-        return [name, content, id];
+        return [name, content, id, expr];
       } catch (e) {
-        return ['', '', ''];
+        return ['', '', '', ''];
       }
     },
     inputFilePath: 'tests/ia/templates/inputTemplate.yml',
@@ -76,10 +76,5 @@ module.exports = {
     I.waitForVisible(this.elements.ruleTemplateTab, 30);
     I.click(this.elements.ruleTemplateTab);
     I.waitForVisible(this.elements.templatesTable, 30);
-  },
-
-  verifyPopUpMessage(message) {
-    I.waitForVisible(this.elements.popUpTitle, 30);
-    I.see(message, this.elements.popUpTitle);
   },
 };

@@ -84,13 +84,13 @@ Scenario(
     const color = await I.grabCssPropertyFrom(alertRulesPage.elements.rulesNameCell(ruleName), 'background-color');
 
     I.click(alertRulesPage.buttons.toggleAlertRule(ruleName));
-    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyDisabled(ruleName));
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyDisabled(ruleName));
     const newColor = await I.grabCssPropertyFrom(alertRulesPage.elements.rulesNameCell(ruleName), 'background-color');
 
     assert.ok(color !== newColor, 'Background color should change after toggle');
 
     I.click(alertRulesPage.buttons.toggleAlertRule(ruleName));
-    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyEnabled(ruleName));
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyEnabled(ruleName));
     I.seeCssPropertiesOnElements(alertRulesPage.elements.rulesNameCell(ruleName), { 'background-color': color });
     await rulesAPI.removeAlertRule(ruleId);
   },
@@ -115,15 +115,11 @@ Data(rules).Scenario(
     I.click(alertRulesPage.buttons.openAddRuleModal);
     alertRulesPage.fillRuleFields(rule);
     I.click(alertRulesPage.buttons.addRule);
-    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyAdded);
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyAdded);
     I.seeElement(alertRulesPage.elements.rulesNameCell(rule.ruleName));
     if (rule.threshold.length === 0) { rule.threshold = 80; }
 
-    I.seeTextEquals(`${rule.threshold} %`, alertRulesPage.elements.thresholdCell(rule.ruleName));
-    I.seeTextEquals(`${rule.duration} seconds`, alertRulesPage.elements.durationCell(rule.ruleName));
-    I.seeTextEquals(rule.severity, alertRulesPage.elements.severityCell(rule.ruleName));
-    I.seeTextEquals(rule.filters, alertRulesPage.elements.filtersCell(rule.ruleName));
-    alertRulesPage.verifyRuleState(rule.activate, rule.ruleName);
+    alertRulesPage.verifyRowValues(rule);
   },
 );
 
@@ -146,7 +142,7 @@ Scenario(
     I.click(alertRulesPage.buttons.editAlertRule(rule.ruleName));
     alertRulesPage.fillRuleFields(rule);
     I.click(alertRulesPage.buttons.addRule);
-    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyEdited);
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyEdited);
     alertRulesPage.verifyRowValues(rule);
 
     await rulesAPI.removeAlertRule(ruleId);
@@ -170,7 +166,7 @@ Scenario(
 
     alertRulesPage.openAlertRulesTab();
     I.click(alertRulesPage.buttons.duplicateAlertRule(ruleName));
-    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyCreated(rule.ruleName));
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyCreated(rule.ruleName));
     alertRulesPage.verifyRowValues(rule);
 
     await rulesAPI.removeAlertRule(ruleId);
@@ -192,29 +188,34 @@ Scenario(
     I.seeElement(alertRulesPage.buttons.cancelDelete);
     I.seeElement(alertRulesPage.buttons.delete);
     I.click(alertRulesPage.buttons.delete);
-    alertRulesPage.verifyPopUpMessage(alertRulesPage.messages.successfullyDeleted(ruleName));
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyDeleted(ruleName));
     I.dontSeeElement(alertRulesPage.elements.rulesNameCell(ruleName));
   },
 );
 
-Scenario(
-  'PMM-T563 Verify user can see YAML content for the User-defined Alert rule @ia @not-pr-pipeline',
+// TODO: unskip after https://jira.percona.com/browse/PMM-7531
+xScenario(
+  'PMM-T639 Verify alert rule details content @ia @not-pr-pipeline',
   async (I, ruleTemplatesPage, alertRulesPage, rulesAPI) => {
     const ruleName = 'QAA PSQL yaml content test';
-    const ruleNameNoContent = 'Rule without yaml content';
-    const [, content, id] = await ruleTemplatesPage.ruleTemplate
+    const ruleNameWithBuiltInTemplate = 'Rule without yaml content';
+    const exprForBuiltInTemplate = 'sum(pg_stat_activity_count{datname!~"template.*|postgres"})\n'
+      + '> pg_settings_max_connections * [[ .threshold ]] / 100';
+    const [,, id, expr] = await ruleTemplatesPage.ruleTemplate
       .templateNameAndContent('tests/ia/templates/templateForRules.yaml');
 
     await rulesAPI.createAlertRule(ruleName, id);
-    await rulesAPI.createAlertRule(ruleNameNoContent);
+    await rulesAPI.createAlertRule(ruleNameWithBuiltInTemplate);
     alertRulesPage.openAlertRulesTab();
     I.click(alertRulesPage.buttons.showDetails(ruleName));
-    I.seeTextEquals(content, alertRulesPage.elements.ruleDetails);
+    I.seeTextEquals(expr.replace('[[ .threshold ]]', '1'),
+      alertRulesPage.elements.ruleDetails);
     I.click(alertRulesPage.buttons.hideDetails(ruleName));
     I.dontSeeElement(alertRulesPage.elements.ruleDetails);
-    I.click(alertRulesPage.buttons.showDetails(ruleNameNoContent));
-    I.seeTextEquals('', alertRulesPage.elements.ruleDetails);
-    I.click(alertRulesPage.buttons.hideDetails(ruleNameNoContent));
+    I.click(alertRulesPage.buttons.showDetails(ruleNameWithBuiltInTemplate));
+    I.seeTextEquals(exprForBuiltInTemplate.replace('[[ .threshold ]]', '1'),
+      alertRulesPage.elements.ruleDetails);
+    I.click(alertRulesPage.buttons.hideDetails(ruleNameWithBuiltInTemplate));
     I.dontSeeElement(alertRulesPage.elements.ruleDetails);
   },
 );

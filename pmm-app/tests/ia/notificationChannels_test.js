@@ -6,7 +6,7 @@ for (const [, channel] of Object.entries(page.types)) {
   notificationChannels.add([channel.name, channel.type]);
 }
 
-Feature('IA: Notification Channels');
+Feature('IA: Notification Channels').retry(2);
 
 
 Before(async (I, channelsAPI, settingsAPI) => {
@@ -62,7 +62,7 @@ Data(notificationChannels).Scenario(
     I.click(ncPage.buttons.deleteChannelLocator(current.name));
     I.see(ncPage.messages.deleteConfirmation(current.name), ncPage.elements.modalContent);
     I.click(ncPage.buttons.confirmDelete);
-    ncPage.verifyPopUpMessage(ncPage.messages.successfullyDeleted(current.name));
+    I.verifyPopUpMessage(ncPage.messages.successfullyDeleted(current.name));
     I.dontSeeElement(ncPage.elements.channelInTable(current.name, current.type));
   },
 );

@@ -7,7 +7,7 @@ for (const i of Object.values(page.ruleTemplate.paths)) {
   templates.add([i]);
 }
 
-Feature('IA: Alert rule templates');
+Feature('IA: Alert rule templates').retry(2);
 
 Before(async (I, ruleTemplatesPage, settingsAPI) => {
   I.Authorize();
@@ -68,13 +68,14 @@ Scenario(
     I.click(ruleTemplatesPage.buttons.openAddTemplateModal);
     I.fillField(ruleTemplatesPage.fields.templateInput, fileContent);
     I.click(ruleTemplatesPage.buttons.addTemplate);
-    ruleTemplatesPage.verifyPopUpMessage(ruleTemplatesPage.messages.successfullyAdded);
+    I.verifyPopUpMessage(ruleTemplatesPage.messages.successfullyAdded);
     I.waitForVisible(expectedSourceLocator, 30);
     I.seeAttributesOnElements(editButton, { disabled: null });
   },
 );
 
-Data(templates)
+// TODO unskip page.ruleTemplate.paths.txt after fixing https://jira.percona.com/browse/PMM-7550
+Data(templates.filter((template) => template.path !== page.ruleTemplate.paths.txt))
   .Scenario(
     'PMM-T482 PMM-T499 Upload rule templates @ia @not-pr-pipeline',
     async (I, ruleTemplatesPage, current) => {
@@ -92,16 +93,17 @@ Data(templates)
       I.click(ruleTemplatesPage.buttons.addTemplate);
 
       if (validFile) {
-        ruleTemplatesPage.verifyPopUpMessage(ruleTemplatesPage.messages.successfullyAdded);
+        I.verifyPopUpMessage(ruleTemplatesPage.messages.successfullyAdded);
         I.waitForVisible(expectedSourceLocator, 30);
         I.seeAttributesOnElements(editButton, { disabled: null });
       } else {
-        ruleTemplatesPage.verifyPopUpMessage(ruleTemplatesPage.messages.failedToParse);
+        I.verifyPopUpMessage(ruleTemplatesPage.messages.failedToParse);
       }
     },
   );
 
-Scenario(
+// TODO unskip after fixing https://jira.percona.com/browse/PMM-7550
+xScenario(
   'PMM-T501 Upload duplicate rule template @ia @not-pr-pipeline',
   async (I, ruleTemplatesPage) => {
     const path = ruleTemplatesPage.ruleTemplate.paths.yaml;
@@ -112,6 +114,6 @@ Scenario(
     I.attachFile(ruleTemplatesPage.fields.fileInput, path);
     await ruleTemplatesPage.verifyInputContent(path);
     I.click(ruleTemplatesPage.buttons.addTemplate);
-    ruleTemplatesPage.verifyPopUpMessage(message);
+    I.verifyPopUpMessage(message);
   },
 );
