@@ -228,4 +228,40 @@ describe('Inventory data service', () => {
     // FIXME: types
     expect(InventoryDataService.getNodeModel(response as any)).toEqual(testTransformedData);
   });
+
+  it('Transform types for non existent entries', () => {
+    const response = {
+      some_random_node_type: [{ node_id: 'pmm-server', node_name: 'pmm-server', address: '127.0.0.1' }],
+      container: [
+        {
+          node_id: '/node_id/ef292f80-e7d4-49f1-af28-78a542a8e40e',
+          node_name: 'f803ef551888',
+          address: '172.18.0.9',
+          machine_id: '/machine_id/e568e8e9dbe3440dba8bf986e81a55dc',
+        },
+      ],
+    };
+    const testTransformedData = [
+      {
+        custom_labels: [],
+        type: 'Container',
+        isDeleted: false,
+        node_id: '/node_id/ef292f80-e7d4-49f1-af28-78a542a8e40e',
+        node_name: 'f803ef551888',
+        address: '172.18.0.9',
+        machine_id: '/machine_id/e568e8e9dbe3440dba8bf986e81a55dc',
+      },
+      {
+        custom_labels: [],
+        type: 'Some random node type',
+        isDeleted: false,
+        node_id: 'pmm-server',
+        node_name: 'pmm-server',
+        address: '127.0.0.1',
+      },
+    ];
+
+    // FIXME: types
+    expect(InventoryDataService.getNodeModel(response as any)).toEqual(testTransformedData);
+  });
 });
