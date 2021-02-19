@@ -23,7 +23,7 @@ module.exports = {
   elements: {
     notificationChannelsTab: '//li[@aria-label="Tab Notification Channels"]',
     channelInTable: (name, type) => `//td[text()="${name}"]/following-sibling::td[text()="${type}"]`,
-    templatesTableHeader: '$alert-rule-templates-table-thead',
+    templatesTableHeader: '$table-thead',
     noChannels: '[data-qa=table-no-data] > h1',
     nameFieldLabel: '$name-field-label',
     modalHeader: '$modal-header',

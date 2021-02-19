@@ -97,9 +97,9 @@ module.exports = {
   }],
   elements: {
     rulesTab: '//li[@aria-label="Tab Alert Rules"]',
-    noRules: '[data-qa=alert-rules-table-no-data] > h1',
-    rulesTableHeader: '$alert-rules-table-thead',
-    rulesTable: '$alert-rules-table-tbody',
+    noRules: '[data-qa=table-no-data] > h1',
+    rulesTableHeader: '$table-thead',
+    rulesTable: '$table-tbody',
     rulesNameCell: (ruleName) => rulesNameCell(ruleName),
     // activateSwitch returns enable/disabled rule switch locator which holds the state (enabled or disabled)
     // Note: not clickable one
