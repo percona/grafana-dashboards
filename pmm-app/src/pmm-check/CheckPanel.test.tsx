@@ -82,4 +82,27 @@ describe('CheckPanel::', () => {
     spy.mockClear();
     wrapper.unmount();
   });
+
+  it('should show a message to unauthorized users', async () => {
+    const UnauthorizedError = () => ({
+      response: {
+        status: 401,
+      },
+    });
+
+    const spy = jest.spyOn(CheckService, 'getSettings').mockImplementation(() => {
+      throw UnauthorizedError();
+    });
+
+    const wrapper: ReactWrapper<{}, {}, any> = mount(<CheckPanelRouter />);
+
+    await runAllPromises();
+    wrapper.update();
+
+    expect(wrapper.find(dataQa('db-check-panel-unauthorized'))).toHaveLength(1);
+    expect(wrapper.find(dataQa('db-check-panel-unauthorized')).text()).toEqual(Messages.unauthorized);
+
+    spy.mockClear();
+    wrapper.unmount();
+  });
 });

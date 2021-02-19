@@ -845,10 +845,10 @@ module.exports = {
 
   async applyFilter(filterName, filterValue) {
     // eslint-disable-next-line max-len
-    const filterSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]//parent::div//a`;
+    const filterSelector = `(//div[@class='variable-link-wrapper']//ancestor::div//label[contains(text(),'${filterName}')])[1]//parent::div//a`;
     const filterValueSelector = `//span[contains(text(), '${filterValue}')]`;
     // eslint-disable-next-line max-len
-    const filterNameSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]`;
+    const filterNameSelector = `(//div[@class='variable-link-wrapper']//ancestor::div//label[contains(text(),'${filterName}')])[1]`;
 
     I.waitForElement(filterSelector, 30);
     I.click(filterSelector);

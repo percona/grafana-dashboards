@@ -8,7 +8,7 @@ module.exports = {
     addedTemplate: '//td[text()="TemplateForAutomation"]/following-sibling::td[text()="User-defined (UI)"]',
     ruleTemplateTab: '//li[@aria-label="Tab Alert Rule Templates"]',
     templatesTableHeader: '$alert-rule-templates-table-thead',
-    templatesTable: '$alert-rule-templates-table-tbody',
+    templatesTable: '$table-tbody',
     templateName: '//tr/td[1]',
     modalHeader: '$modal-header',
     columnHeaderLocator: (columnHeaderText) => `//th[text()="${columnHeaderText}"]`,
