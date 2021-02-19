@@ -28,7 +28,8 @@ const getModel = (item: ServicesList) => {
 
   return addType.map((agent) => agent.params.map(
     (arrItem): Model => {
-      const type = inventoryTypes[agent.type] || '';
+      const transformAgentType = (type) => type.replace(/^\w/, (c) => c.toUpperCase()).replace(/[_-]/g, ' ');
+      const type = inventoryTypes[agent.type] || transformAgentType(agent.type);
 
       return getParams(arrItem, type);
     },

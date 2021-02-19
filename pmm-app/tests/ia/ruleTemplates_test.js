@@ -68,7 +68,7 @@ Scenario(
     I.click(ruleTemplatesPage.buttons.openAddTemplateModal);
     I.fillField(ruleTemplatesPage.fields.templateInput, fileContent);
     I.click(ruleTemplatesPage.buttons.addTemplate);
-    ruleTemplatesPage.verifyPopUpMessage(ruleTemplatesPage.messages.successfullyAdded);
+    I.verifyPopUpMessage(ruleTemplatesPage.messages.successfullyAdded);
     I.waitForVisible(expectedSourceLocator, 30);
     I.seeAttributesOnElements(editButton, { disabled: null });
   },
@@ -92,11 +92,11 @@ Data(templates)
       I.click(ruleTemplatesPage.buttons.addTemplate);
 
       if (validFile) {
-        ruleTemplatesPage.verifyPopUpMessage(ruleTemplatesPage.messages.successfullyAdded);
+        I.verifyPopUpMessage(ruleTemplatesPage.messages.successfullyAdded);
         I.waitForVisible(expectedSourceLocator, 30);
         I.seeAttributesOnElements(editButton, { disabled: null });
       } else {
-        ruleTemplatesPage.verifyPopUpMessage(ruleTemplatesPage.messages.failedToParse);
+        I.verifyPopUpMessage(ruleTemplatesPage.messages.failedToParse);
       }
     },
   );
@@ -112,6 +112,6 @@ Scenario(
     I.attachFile(ruleTemplatesPage.fields.fileInput, path);
     await ruleTemplatesPage.verifyInputContent(path);
     I.click(ruleTemplatesPage.buttons.addTemplate);
-    ruleTemplatesPage.verifyPopUpMessage(message);
+    I.verifyPopUpMessage(message);
   },
 );

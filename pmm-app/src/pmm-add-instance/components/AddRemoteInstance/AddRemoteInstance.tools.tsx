@@ -42,6 +42,10 @@ export const getInstanceData = (instanceType, credentials): InstanceData => {
       instance.instanceType = DATABASE_LABELS[Databases.proxysql];
       instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 6032;
       break;
+    case Databases.haproxy:
+      instance.instanceType = DATABASE_LABELS[Databases.haproxy];
+      instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 8404;
+      break;
     default:
       console.error('Not implemented');
   }
