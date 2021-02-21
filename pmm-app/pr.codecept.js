@@ -14,6 +14,7 @@ exports.config = {
       waitForAction: 500,
       pressKeyDelay: 5,
       chromium: {
+        executablePath: process.env.CHROMIUM_PATH,
         ignoreHTTPSErrors: true,
         args: [
           '--no-sandbox',
