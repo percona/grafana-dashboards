@@ -95,7 +95,7 @@ Scenario('PMM-T86 - Verify Alertmanager integration Section Elements', async ({ 
   I.seeElement(pmmSettingsPage.fields.diagnosticsButton);
 });
 
-Scenario('PMM-T89 - Verify validation for invalid SSH Key', async ({ pmmSettingsPage }) => {
+Scenario('PMM-T89 - Verify validation for invalid SSH Key', async ({ I, pmmSettingsPage }) => {
   const sshKeyForTest = 'ssh-rsa testKey test@key.local';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.ssh;
 
@@ -105,7 +105,7 @@ Scenario('PMM-T89 - Verify validation for invalid SSH Key', async ({ pmmSettings
   I.verifyPopUpMessage(pmmSettingsPage.messages.invalidSSHKeyMessage);
 });
 
-Scenario('PMM-T90 - Verify validation for Alertmanager URL without scheme', async ({ pmmSettingsPage }) => {
+Scenario('PMM-T90 - Verify validation for Alertmanager URL without scheme', async ({ I, pmmSettingsPage }) => {
   const urlWithoutScheme = 'invalid_url';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -115,7 +115,7 @@ Scenario('PMM-T90 - Verify validation for Alertmanager URL without scheme', asyn
   I.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerMissingSchemeMessage);
 });
 
-Scenario('PMM-T91 - Verify validation for Alertmanager URL without host', async ({ pmmSettingsPage }) => {
+Scenario('PMM-T91 - Verify validation for Alertmanager URL without host', async ({ I, pmmSettingsPage }) => {
   const urlWithoutHost = 'http://';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
@@ -125,7 +125,7 @@ Scenario('PMM-T91 - Verify validation for Alertmanager URL without host', async 
   I.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerMissingHostMessage);
 });
 
-Scenario('PMM-T92 - Verify validation for invalid Alertmanager Rule', async ({ pmmSettingsPage }) => {
+Scenario('PMM-T92 - Verify validation for invalid Alertmanager Rule', async ({ I, pmmSettingsPage }) => {
   const rule = 'invalid_rule';
   const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
