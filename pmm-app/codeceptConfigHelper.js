@@ -1,5 +1,6 @@
 module.exports = {
   pageObjects: {
+    I: './tests/custom_steps.js',
     addInstanceAPI: './tests/pages/api/addInstanceAPI.js',
     adminPage: './tests/pages/adminPage.js',
     alertRulesPage: './tests/ia/pages/alertRulesPage.js',
@@ -7,8 +8,8 @@ module.exports = {
     channelsAPI: './tests/ia/pages/api/channelsAPI.js',
     dashboardPage: './tests/pages/dashboardPage.js',
     databaseChecksPage: './tests/pages/databaseChecksPage.js',
-    dbaasAPI: './tests/pages/api/dbaasAPI.js',
-    dbaasPage: './tests/pages/dbaasPage.js',
+    dbaasAPI: './tests/DbaaS/api/dbaasAPI.js',
+    dbaasPage: './tests/DbaaS/pages/dbaasPage.js',
     homePage: './tests/pages/homePage.js',
     inventoryAPI: './tests/pages/api/inventoryAPI.js',
     mysqlTableDetailsPage: './tests/pages/mysqlTableDetailsPage.js',

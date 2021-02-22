@@ -8,4 +8,5 @@ export const instanceList = [
   { type: InstanceTypes.mongodb, title: Messages.titles.mongodb },
   { type: InstanceTypes.proxysql, title: Messages.titles.proxysql },
   { type: InstanceTypes.external, title: Messages.titles.external },
+  { type: InstanceTypes.haproxy, title: Messages.titles.haproxy },
 ];

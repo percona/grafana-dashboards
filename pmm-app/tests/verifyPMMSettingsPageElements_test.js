@@ -102,7 +102,7 @@ Scenario('PMM-T89 - Verify validation for invalid SSH Key', async ({ pmmSettings
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.sshKeyButton);
   pmmSettingsPage.addSSHKey(sshKeyForTest);
-  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidSSHKeyMessage);
+  I.verifyPopUpMessage(pmmSettingsPage.messages.invalidSSHKeyMessage);
 });
 
 Scenario('PMM-T90 - Verify validation for Alertmanager URL without scheme', async ({ pmmSettingsPage }) => {
@@ -112,7 +112,7 @@ Scenario('PMM-T90 - Verify validation for Alertmanager URL without scheme', asyn
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(urlWithoutScheme, '');
-  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerMissingSchemeMessage);
+  I.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerMissingSchemeMessage);
 });
 
 Scenario('PMM-T91 - Verify validation for Alertmanager URL without host', async ({ pmmSettingsPage }) => {
@@ -122,7 +122,7 @@ Scenario('PMM-T91 - Verify validation for Alertmanager URL without host', async 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(urlWithoutHost, '');
-  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerMissingHostMessage);
+  I.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerMissingHostMessage);
 });
 
 Scenario('PMM-T92 - Verify validation for invalid Alertmanager Rule', async ({ pmmSettingsPage }) => {
@@ -132,7 +132,7 @@ Scenario('PMM-T92 - Verify validation for invalid Alertmanager Rule', async ({ p
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule('', rule);
-  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerRulesMessage);
+  I.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerRulesMessage);
 });
 
 Scenario(

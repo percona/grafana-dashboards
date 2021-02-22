@@ -52,8 +52,7 @@ Scenario(
   },
 );
 
-// FIXME: unskip this test after https://jira.percona.com/browse/PMM-7497
-xScenario(
+Scenario(
   'PMM-T358 Verify Database Failed checks page for the viewer role (STT is enabled) [critical] @not-pr-pipeline',
   async ({ I, databaseChecksPage, settingsAPI }) => {
     await settingsAPI.apiEnableSTT();
@@ -99,8 +98,7 @@ Scenario(
   },
 );
 
-// FIXME: unskip this test after https://jira.percona.com/browse/PMM-7497
-xScenario(
+Scenario(
   'PMM-T358 Verify Database Failed checks page for the viewer role (STT is disabled) [critical] @not-pr-pipeline',
   async ({ I, databaseChecksPage, settingsAPI }) => {
     await settingsAPI.apiDisableSTT();

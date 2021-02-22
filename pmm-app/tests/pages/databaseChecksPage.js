@@ -25,7 +25,7 @@ module.exports = {
     disabledSTTMessageLinkSelector: locate('a').inside('$db-check-panel-settings-link'),
     failedChecksRowSelector: 'tbody > tr',
     tooltipSelector: locate('.ant-tooltip-inner > div > div').first(),
-    noAccessRightsSelector: '$db-check-panel-no-access',
+    noAccessRightsSelector: '$db-check-panel-unauthorized',
   },
   // introducing methods
 
