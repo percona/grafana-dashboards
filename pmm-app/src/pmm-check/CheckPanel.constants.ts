@@ -1,7 +1,7 @@
 import { Failed } from './components';
 import { CheckPanelOptions, Column, SeverityMap } from './types';
 
-export const PMM_SETTINGS_URL = '/graph/d/pmm-settings/pmm-settings?menu=advanced-settings';
+export const PMM_SETTINGS_URL = '/graph/settings?menu=advanced-settings';
 
 export const DEFAULTS: CheckPanelOptions = {
   title: 'Failed Database Checks',

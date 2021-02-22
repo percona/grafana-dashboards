@@ -4,9 +4,9 @@ const assert = require('assert');
 const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 
 module.exports = {
-  url: 'graph/d/pmm-settings/pmm-settings',
-  advancedSettingsUrl: 'graph/d/pmm-settings/pmm-settings?menu=advanced-settings',
-  communicationSettingsUrl: 'graph/d/pmm-settings/pmm-settings?menu=communication',
+  url: 'graph/settings',
+  advancedSettingsUrl: 'graph/settings?menu=advanced-settings',
+  communicationSettingsUrl: 'graph/settings?menu=communication',
   prometheusAlertUrl: '/prometheus/rules',
   stateOfAlertsUrl: '/prometheus/alerts',
   diagnosticsText:
