@@ -10,7 +10,7 @@ Before(async ({ I, dbaasAPI }) => {
   }
 });
 
-After(async ({ I, dbaasAPI }) => {
+After(async ({ dbaasAPI }) => {
   await dbaasAPI.apiUnregisterCluster(clusterName, true);
 });
 

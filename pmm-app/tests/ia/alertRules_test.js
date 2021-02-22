@@ -11,12 +11,14 @@ Object.values(page.rules).forEach((rule) => {
 
 Feature('IA: Alert rules').retry(2);
 
-Before(async ({ I, alertRulesPage, settingsAPI }) => {
+Before(async ({ I, settingsAPI }) => {
   I.Authorize();
   await settingsAPI.apiEnableIA();
 });
 
-BeforeSuite(async ({ I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channelsAPI, ncPage }) => {
+BeforeSuite(async ({
+  settingsAPI, rulesAPI, templatesAPI, channelsAPI, ncPage,
+}) => {
   await settingsAPI.apiEnableIA();
   await rulesAPI.clearAllRules();
   await templatesAPI.clearAllTemplates();
@@ -25,7 +27,9 @@ BeforeSuite(async ({ I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, cha
   await channelsAPI.createNotificationChannel('EmailChannelForRules', ncPage.types.email.type);
 });
 
-AfterSuite(async ({ I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channelsAPI }) => {
+AfterSuite(async ({
+  settingsAPI, rulesAPI, templatesAPI, channelsAPI,
+}) => {
   await settingsAPI.apiEnableIA();
   await rulesAPI.clearAllRules();
   await templatesAPI.clearAllTemplates();
@@ -99,7 +103,7 @@ Scenario(
 Data(rules).Scenario(
   'PMM-T515 PMM-T543 PMM-T544 PMM-T545 PMM-T574 Create Alert rule @ia @not-pr-pipeline',
   async ({
-    I, alertRulesPage, rulesAPI, templatesAPI, current,
+    I, alertRulesPage, current,
   }) => {
     const rule = {
       template: current.template,

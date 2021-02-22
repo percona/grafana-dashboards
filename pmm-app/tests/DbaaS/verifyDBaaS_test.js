@@ -141,7 +141,9 @@ Scenario('Verify DB Cluster Tab Page Elements & Steps Background @dbaas @not-pr-
   });
 
 Scenario('PMM-T456 PMM-T490 Verify DB Cluster Steps Background @dbaas @not-pr-pipeline',
-  async ({ I, dbaasPage, dbaasAPI, adminPage }) => {
+  async ({
+    I, dbaasPage, dbaasAPI, adminPage,
+  }) => {
     if (!await dbaasAPI.apiCheckRegisteredClusterExist(clusterName)) {
       await dbaasAPI.apiRegisterCluster(process.env.kubeconfig_minikube, clusterName);
     }
@@ -168,7 +170,9 @@ Scenario('PMM-T456 PMM-T490 Verify DB Cluster Steps Background @dbaas @not-pr-pi
   });
 
 Scenario('PMM-T456 Verify Create Cluster steps validation fields disabled/enabled @dbaas @not-pr-pipeline',
-  async ({ I, dbaasPage, dbaasAPI, adminPage }) => {
+  async ({
+    I, dbaasPage, dbaasAPI, adminPage,
+  }) => {
     if (!await dbaasAPI.apiCheckRegisteredClusterExist(clusterName)) {
       await dbaasAPI.apiRegisterCluster(process.env.kubeconfig_minikube, clusterName);
     }
@@ -209,7 +213,9 @@ Scenario('PMM-T456 Verify Create Cluster steps validation fields disabled/enable
   });
 
 Data(inputFields).Scenario('PMM-T456 Verify Create Cluster steps validation - field input validation @dbaas @not-pr-pipeline',
-  async ({ I, dbaasPage, dbaasAPI, adminPage, current }) => {
+  async ({
+    I, dbaasPage, dbaasAPI, adminPage, current,
+  }) => {
     if (!await dbaasAPI.apiCheckRegisteredClusterExist(clusterName)) {
       await dbaasAPI.apiRegisterCluster(process.env.kubeconfig_minikube, clusterName);
     }
