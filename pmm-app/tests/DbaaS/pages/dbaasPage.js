@@ -20,7 +20,7 @@ module.exports = {
       copyToClipboardButton: '//span[contains(text(), "Copy to clipboard")]',
       disabledAddButton: '//button[@data-qa="kubernetes-add-cluster-button" and @disabled]',
       forceUnreigsterCheckBox: '.checkbox-container__checkmark',
-      kubeconfigFileInput: '//textarea[@data-qa=\'kubeConfig-textarea-input\']',
+      kubeconfigFileInput: '//textarea[@data-qa="kubeConfig-textarea-input"]',
       kubernetesAddButton: '$kubernetes-add-cluster-button',
       kubernetesClusterNameInput: '$name-text-input',
       modalWindow: '$modal-body',
