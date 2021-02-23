@@ -124,7 +124,7 @@ module.exports = {
     I.click(this.tabs.kubernetesClusterTab.addKubernetesClusterButton);
     I.fillField(this.tabs.kubernetesClusterTab.kubernetesClusterNameInput, clusterName);
     I.usePlaywrightTo('Fill config to the input', async ({ page }) => {
-      await page.type(this.fields.kubeconfigFileInput, config, { timeout: 120000 });
+      await page.type(this.tabs.kubernetesClusterTab.kubeconfigFileInput, config, { timeout: 120000 });
     });
     I.click(this.tabs.kubernetesClusterTab.kubernetesAddButton);
   },
