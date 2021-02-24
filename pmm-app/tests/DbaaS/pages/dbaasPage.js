@@ -20,7 +20,7 @@ module.exports = {
       copyToClipboardButton: '//span[contains(text(), "Copy to clipboard")]',
       disabledAddButton: '//button[@data-qa="kubernetes-add-cluster-button" and @disabled]',
       forceUnreigsterCheckBox: '.checkbox-container__checkmark',
-      kubeconfigFileInput: '$kubeConfig-textarea-input',
+      kubeconfigFileInput: '//textarea[@data-qa="kubeConfig-textarea-input"]',
       kubernetesAddButton: '$kubernetes-add-cluster-button',
       kubernetesClusterNameInput: '$name-text-input',
       modalWindow: '$modal-body',
@@ -123,7 +123,9 @@ module.exports = {
   registerKubernetesCluster(clusterName, config) {
     I.click(this.tabs.kubernetesClusterTab.addKubernetesClusterButton);
     I.fillField(this.tabs.kubernetesClusterTab.kubernetesClusterNameInput, clusterName);
-    I.fillField(this.tabs.kubernetesClusterTab.kubeconfigFileInput, config);
+    I.usePlaywrightTo('Fill config to the input', async ({ page }) => {
+      await page.type(this.tabs.kubernetesClusterTab.kubeconfigFileInput, config, { timeout: 120000 });
+    });
     I.click(this.tabs.kubernetesClusterTab.kubernetesAddButton);
   },
 

@@ -97,7 +97,7 @@ module.exports = {
   async compareTooltipValues(rowNumber = 1) {
     let tableNumbers = await I.grabTextFrom(this.numberOfFailedChecksLocator(rowNumber));
     const tooltipTotalNumber = await I.grabTextFrom(this.fields.totalFailedChecksTooltipSelector);
-    const tooltipNumbers = await I.grabTextFrom(this.fields.failedChecksTooltipSelector);
+    const tooltipNumbers = await I.grabTextFromAll(this.fields.failedChecksTooltipSelector);
 
     tableNumbers = tableNumbers.split(/[^0-9]+/g);
     tableNumbers.pop();
