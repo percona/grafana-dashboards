@@ -3,20 +3,20 @@ const clusterName = 'Kubernetes_Testing_Cluster_Minikube';
 
 Feature('Test the functionality for PXC Cluster Creation, Modifications, Actions');
 
-Before(async (I, dbaasAPI) => {
+Before(async ({ I, dbaasAPI }) => {
   I.Authorize();
   if (!await dbaasAPI.apiCheckRegisteredClusterExist(clusterName)) {
     await dbaasAPI.apiRegisterCluster(process.env.kubeconfig_minikube, clusterName);
   }
 });
 
-After(async (I, dbaasAPI) => {
+After(async ({ dbaasAPI }) => {
   await dbaasAPI.apiUnregisterCluster(clusterName, true);
 });
 
 // This test covers a lot of cases, will be refactored and changed in terms of flow, this is initial setup
 Scenario('PMM-T575 Verify that Advanced Options are optional for DB Cluster Creation @dbaas @not-pr-pipeline',
-  async (I, dbaasPage, dbaasAPI) => {
+  async ({ I, dbaasPage, dbaasAPI }) => {
     const pxc_cluster_name = 'pmm-t575-dbcluster';
 
     I.amOnPage(dbaasPage.url);

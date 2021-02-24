@@ -116,7 +116,7 @@ module.exports = {
     const backgroundColor = await I.grabCssPropertyFrom(element, 'background-color');
 
     assert.strictEqual(
-      backgroundColor[0],
+      backgroundColor,
       expectedColor,
       `The Background color of the ${element} is not matching, the actual value is ${backgroundColor}`,
     );
