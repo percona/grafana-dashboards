@@ -147,7 +147,7 @@ module.exports = {
     callHomeSwitch: '//button[@class="toggle-field ant-switch ant-switch-checked"]',
     checkForUpdatesLabel: '//div[@data-qa="advanced-updates"]//div//span',
     checkForUpdatesSwitch: '//div[@data-qa="advanced-updates"]//div[2]//input',
-    dataRetentionInput: '$retention-field-container',
+    dataRetentionInput: '$retention-number-input',
     dataRetentionLabel: locateLabel('form-field-data-retention'),
     diagnosticsButton: '$diagnostics-button',
     diagnosticsLabel: '$diagnostics-label',
