@@ -2,16 +2,27 @@ import { Button } from '@grafana/ui';
 import React from 'react';
 import { DATABASE_LABELS, Databases } from 'shared/core';
 
-const getEngineType = (type) => {
+const getEngineLabel = (type) => {
   switch (type) {
     case 'DISCOVER_RDS_MYSQL':
       return DATABASE_LABELS[Databases.mysql];
-    case 'DISCOVER_RDS_POSTGRES':
+    case 'DISCOVER_RDS_POSTGRESQL':
       return DATABASE_LABELS[Databases.postgresql];
     case 'DISCOVER_RDS_INVALID':
       return 'Unknown type';
     default:
       return 'Unknown type';
+  }
+};
+
+const getDatabaseType = (type) => {
+  switch (type) {
+    case 'DISCOVER_RDS_MYSQL':
+      return Databases.mysql;
+    case 'DISCOVER_RDS_POSTGRESQL':
+      return Databases.postgresql;
+    default:
+      return '';
   }
 };
 
@@ -26,7 +37,7 @@ export const getInstancesColumns = (credentials, onSelectInstance) => [
   },
   {
     Header: 'Engine',
-    accessor: (element) => (element.engine ? `${getEngineType(element.engine)}  ${element.engine_version}` : 'nothing'),
+    accessor: (element) => (element.engine ? `${getEngineLabel(element.engine)}  ${element.engine_version}` : 'nothing'),
   },
   {
     Header: 'Instance ID',
@@ -41,7 +52,7 @@ export const getInstancesColumns = (credentials, onSelectInstance) => [
     accessor: (element) => {
       const selectionHandler = () => {
         onSelectInstance({
-          type: 'mysql',
+          type: getDatabaseType(element.engine),
           credentials: { ...{ ...element, ...credentials }, isRDS: true },
         });
       };

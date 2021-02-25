@@ -94,6 +94,18 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
             name="tls_skip_verify"
           />
           <PostgreSQLAdditionalOptions />
+          {remoteInstanceCredentials.isRDS ? (
+            <>
+              <CheckboxField
+                label={Messages.form.labels.additionalOptions.disableBasicMetrics}
+                name="disable_basic_metrics"
+              />
+              <CheckboxField
+                label={Messages.form.labels.additionalOptions.disableEnchancedMetrics}
+                name="disable_enhanced_metrics"
+              />
+            </>
+          ) : null}
         </>
       );
     case Databases.mysql:
