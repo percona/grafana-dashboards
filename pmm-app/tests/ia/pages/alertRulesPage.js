@@ -89,7 +89,7 @@ module.exports = {
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template with default params',
     threshold: '',
-    duration: '600',
+    duration: '50',
     severity: 'Notice',
     filters: 'service_name=pmm-server-postgresql',
     channels: ['EmailChannelForRules'],
