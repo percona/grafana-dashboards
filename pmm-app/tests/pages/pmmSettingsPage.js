@@ -269,7 +269,7 @@ module.exports = {
   },
 
   changeDataRetentionValueTo(days) {
-    this.customClearField(this.fields.dataRetentionInput);
+    I.clearField(this.fields.dataRetentionInput);
     I.fillField(this.fields.dataRetentionInput, days);
     I.click(this.fields.advancedButton);
   },
@@ -277,7 +277,7 @@ module.exports = {
   checkDataRetentionInput(value, message) {
     const messageField = `//div[contains(text(), '${message}')]`;
 
-    this.customClearField(this.fields.dataRetentionInput);
+    I.clearField(this.fields.dataRetentionInput);
     I.fillField(this.fields.dataRetentionInput, value);
     I.seeElement(messageField);
   },
@@ -288,9 +288,9 @@ module.exports = {
   },
 
   addAlertmanagerRule(url, rule) {
-    this.customClearField(this.fields.alertURLInput);
+    I.clearField(this.fields.alertURLInput);
     I.fillField(this.fields.alertURLInput, url);
-    this.customClearField(this.fields.alertRulesInput);
+    I.clearField(this.fields.alertRulesInput);
     I.fillField(this.fields.alertRulesInput, rule);
     I.click(this.fields.alertmanagerButton);
   },
