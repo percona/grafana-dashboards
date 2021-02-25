@@ -21,6 +21,8 @@ module.exports = {
   },
 
   async verifyAlert(ruleId, silenced = false) {
+    // waiting 5 seconds before checking alertmanager
+    I.wait(5);
     const alerts = await this.getAlerts();
     const silences = await this.getSilenced();
 

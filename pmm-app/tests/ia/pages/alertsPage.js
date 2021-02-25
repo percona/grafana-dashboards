@@ -1,4 +1,5 @@
 const { I } = inject();
+const assert = require('assert');
 
 const alertRow = (alertName) => `//tr[td[text()="${alertName}"]]`;
 
@@ -31,9 +32,23 @@ module.exports = {
     const title = await I.grabAttributeFrom(this.buttons.silenceActivate(alertName), 'title');
 
     if (title === 'Silence') {
+      const bgColorBeforeAction = await I.grabCssPropertyFrom(
+        `${this.elements.alertRow(alertName)}/td`,
+        'background-color',
+      );
+
       I.click(this.buttons.silenceActivate(alertName));
       I.verifyPopUpMessage(this.messages.successfullySilenced);
       I.seeTextEquals('Silenced', this.elements.stateCell(alertName));
+      const bgColorAfterAction = await I.grabCssPropertyFrom(
+        `${this.elements.alertRow(alertName)}/td`,
+        'background-color',
+      );
+
+      assert.ok(
+        bgColorBeforeAction !== bgColorAfterAction,
+        'Cell background color should change after silencing the alert',
+      );
     }
   },
 
@@ -41,9 +56,23 @@ module.exports = {
     const title = await I.grabAttributeFrom(`${this.buttons.silenceActivate(alertName)}`, 'title');
 
     if (title === 'Activate') {
+      const bgColorBeforeAction = await I.grabCssPropertyFrom(
+        `${this.elements.alertRow(alertName)}/td`,
+        'background-color',
+      );
+
       I.click(`${this.buttons.silenceActivate(alertName)}`);
       I.verifyPopUpMessage(this.messages.successfullyActivated);
       I.seeTextEquals('Firing', this.elements.stateCell(alertName));
+      const bgColorAfterAction = await I.grabCssPropertyFrom(
+        `${this.elements.alertRow(alertName)}/td`,
+        'background-color',
+      );
+
+      assert.ok(
+        bgColorBeforeAction !== bgColorAfterAction,
+        'Cell background color should change after activating the alert',
+      );
     }
   },
 };

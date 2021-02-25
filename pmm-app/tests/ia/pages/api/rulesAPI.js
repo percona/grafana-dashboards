@@ -80,16 +80,16 @@ module.exports = {
   },
 
   async clearAllRules(force = false) {
-    const headers = { Authorization: `Basic ${await I.getAuth()}` };
-    const resp = await I.sendPostRequest('v1/management/ia/Rules/List', {}, headers);
+    const rules = await this.getAlertRules();
     let rulesToDelete;
 
-    if (Object.keys(resp.data).length === 0) return;
+    // return if no rules found
+    if (!rules) return;
 
     if (!force) {
-      rulesToDelete = resp.data.rules.filter((rule) => !rule.summary.includes('immortal'));
+      rulesToDelete = rules.filter((rule) => !rule.summary.includes('immortal'));
     } else {
-      rulesToDelete = resp.data.rules;
+      rulesToDelete = rules;
     }
 
     for (const i in rulesToDelete) {
@@ -97,6 +97,13 @@ module.exports = {
 
       await this.removeAlertRule(rule.rule_id);
     }
+  },
+
+  async getAlertRules() {
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+    const resp = await I.sendPostRequest('v1/management/ia/Rules/List', {}, headers);
+
+    return resp.data.rules;
   },
 
   async removeAlertRule(ruleId) {
@@ -113,12 +120,9 @@ module.exports = {
   },
 
   async getAlertNameFromRule(ruleId) {
-    const headers = { Authorization: `Basic ${await I.getAuth()}` };
-    const resp = await I.sendPostRequest('v1/management/ia/Rules/List', {}, headers);
+    const rules = await this.getAlertRules();
 
-    assert.ok(resp.data.rules.length !== 0, `No Alert Rules found.\n ${resp.data}`);
-
-    const rule = resp.data.rules.filter((rule) => rule.rule_id === ruleId);
+    const rule = rules.filter((rule) => rule.rule_id === ruleId);
 
     return rule[0].template.annotations.summary.replace('{{ $labels.service_name }}', rule[0].filters[0].value);
   },

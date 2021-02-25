@@ -1,5 +1,3 @@
-const assert = require('assert');
-
 let ruleIdForAlerts;
 const ruleName = 'PSQL immortal rule';
 const rulesForAlerts = [{
@@ -109,37 +107,9 @@ Scenario(
   async (I, alertsPage, rulesAPI, alertsAPI, alertmanagerAPI) => {
     I.amOnPage(alertsPage.url);
     I.waitForVisible(alertsPage.elements.alertRow(alertName), 30);
-    let bgColorBeforeAction = await I.grabCssPropertyFrom(
-      `${alertsPage.elements.alertRow(alertName)}/td`,
-      'background-color',
-    );
-
     await alertsPage.silenceAlert(alertName);
-    let bgColorAfterAction = await I.grabCssPropertyFrom(
-      `${alertsPage.elements.alertRow(alertName)}/td`,
-      'background-color',
-    );
-
-    assert.ok(
-      bgColorBeforeAction !== bgColorAfterAction,
-      'Cell background color should change after silencing the alert',
-    );
-
     await alertmanagerAPI.verifyAlert(ruleIdForAlerts, true);
-    bgColorBeforeAction = await I.grabCssPropertyFrom(
-      `${alertsPage.elements.alertRow(alertName)}/td`,
-      'background-color',
-    );
     await alertsPage.activateAlert(alertName);
-    bgColorAfterAction = await I.grabCssPropertyFrom(
-      `${alertsPage.elements.alertRow(alertName)}/td`,
-      'background-color',
-    );
-    assert.ok(
-      bgColorBeforeAction !== bgColorAfterAction,
-      'Cell background color should change after activating the alert',
-    );
-
     await alertmanagerAPI.verifyAlert(ruleIdForAlerts);
   },
 );
