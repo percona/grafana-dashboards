@@ -4,10 +4,13 @@ const { I } = inject();
 
 module.exports = {
 
-  async getAlerts() {
+  async getAlerts(serviceName) {
+    let filter;
+
+    serviceName ? filter = `filter=service_name="${serviceName}"&` : filter = '';
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
-    const alerts = await I.sendGetRequest('alertmanager/api/v2/alerts/groups?silenced=false&inhibited=false&active=true', headers);
+    const alerts = await I.sendGetRequest(`alertmanager/api/v2/alerts/groups?${filter}silenced=false&inhibited=false&active=true`, headers);
 
     return alerts.data;
   },
@@ -20,8 +23,9 @@ module.exports = {
     return silences.data.filter(({ status }) => status.state === 'active');
   },
 
-  async verifyAlert(ruleId, silenced = false) {
-    const alerts = await this.getAlerts();
+  async verifyAlert(obj, silenced = false) {
+    const { ruleId, serviceName } = obj;
+    const alerts = await this.getAlerts(serviceName);
     const silences = await this.getSilenced();
 
     if (silenced) {

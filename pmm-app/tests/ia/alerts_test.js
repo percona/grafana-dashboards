@@ -82,7 +82,7 @@ Scenario(
     await inventoryAPI.verifyServiceIdExists(serviceId);
 
     // Verify Alert exists in alertmanager
-    await alertmanagerAPI.verifyAlert(ruleIdForAlerts);
+    await alertmanagerAPI.verifyAlert({ ruleId: ruleIdForAlerts, serviceName: 'pmm-server-postgresql' });
   },
 );
 
@@ -108,9 +108,9 @@ Scenario(
     I.amOnPage(alertsPage.url);
     I.waitForVisible(alertsPage.elements.alertRow(alertName), 30);
     await alertsPage.silenceAlert(alertName);
-    await alertmanagerAPI.verifyAlert(ruleIdForAlerts, true);
+    await alertmanagerAPI.verifyAlert({ ruleId: ruleIdForAlerts, serviceName: 'pmm-server-postgresql' }, true);
     await alertsPage.activateAlert(alertName);
-    await alertmanagerAPI.verifyAlert(ruleIdForAlerts);
+    await alertmanagerAPI.verifyAlert({ ruleId: ruleIdForAlerts, serviceName: 'pmm-server-postgresql' });
   },
 );
 
