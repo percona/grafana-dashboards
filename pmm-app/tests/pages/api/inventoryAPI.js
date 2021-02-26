@@ -77,4 +77,14 @@ module.exports = {
 
     return I.sendPostRequest('v1/inventory/Services/List', body, headers);
   },
+
+  async verifyServiceIdExists(serviceId) {
+    const services = await this.apiGetServices(this.services.postgresql.serviceType);
+
+    const present = Object.values(services.data)
+      .flat(Infinity)
+      .find(({ service_id }) => service_id === serviceId);
+
+    assert.ok(present, `Service with ID ${serviceId} does not exist.`);
+  },
 };
