@@ -69,9 +69,8 @@ Data(nodes).Scenario(
   'PMM-T418 PMM-T419 Verify the pt-summary on Node Summary dashboard @not-ui-pipeline @nightly @not-pr-pipeline',
   async (I, dashboardPage) => {
     I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
-    await dashboardPage.waitPTSummaryInformation();
     dashboardPage.waitForDashboardOpened();
-    await dashboardPage.waitPTSummaryInformation();
+    await dashboardPage.expandEachDashboardRow();
     I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 30);
     I.seeElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer);
   },
