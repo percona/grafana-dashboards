@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Run e2e tests locally
+      - name: Run e2e tests and upload artifacts
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
@@ -48,4 +48,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: make docker_clean
+        env:
+          CODECOV_TOKEN = ${{ secrets.CODECOV_GRAFANA_DASHBOARDS_TOKEN }}
+      - run: make generate_coverage
