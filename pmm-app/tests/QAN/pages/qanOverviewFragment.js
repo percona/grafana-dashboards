@@ -114,8 +114,7 @@ module.exports = {
 
       return;
     }
-
-    I.waitForVisible(`${sortingBlockSelector}/span`, 30);
+    I.waitForElement(`${sortingBlockSelector}/span`, 30);
     I.seeAttributesOnElements(`${sortingBlockSelector}/span`, { class: `sort-by ${sortDirection}` });
   },
 
