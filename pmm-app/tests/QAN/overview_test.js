@@ -210,7 +210,7 @@ Scenario(
 Scenario(
   'PMM-T204 - Verify small and N/A values on sparkline @not-pr-pipeline @qan',
   async (I, qanOverview) => {
-    const firstCell = qanOverview.getCellValueLocator(3, 1);
+    const firstCell = qanOverview.getCellValueLocator(0, 1);
     const secondCell = qanOverview.getCellValueLocator(3, 3);
 
     qanOverview.changeSorting(1);
