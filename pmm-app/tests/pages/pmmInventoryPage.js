@@ -57,10 +57,10 @@ module.exports = {
       assert.equal(
         numberOfServices,
         2,
-        ` Service ID must have only 2 Agents running for different services${serviceId}`,
+        ` Service ID must have only 2 Agents running for different services ${serviceId} , Actual Number of Services found is ${numberOfServices} for ${service_name}`,
       );
     } else {
-      assert.equal(numberOfServices, 1, ` Service ID must have only 1 Agent running${serviceId}`);
+      assert.equal(numberOfServices, 1, ` Service ID must have only 1 Agent running ${serviceId} , Actual Number of Services found is ${numberOfServices} for ${service_name}`);
     }
   },
 
