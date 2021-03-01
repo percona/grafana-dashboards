@@ -14,6 +14,7 @@ Scenario(
   async (I, dashboardPage, adminPage) => {
     I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
+    await dashboardPage.expandEachDashboardRow();
     await dashboardPage.applyFilter('Node Name', 'pmm-server');
     I.click(adminPage.fields.metricTitle);
     adminPage.peformPageDown(5);
