@@ -19,7 +19,7 @@ e2e:
 	&& npm run e2e
 
 .PHONY: e2e_local
-e2e:
+e2e_local:
 	cd pmm-app \
 	&& mkdir -pv logs video || true \
 	&& docker-compose up -d \
