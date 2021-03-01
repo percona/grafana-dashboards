@@ -797,7 +797,7 @@ module.exports = {
 
   async expandEachDashboardRow(halfToExpand) {
     let sectionsToExpand;
-    const sections = await I.grabTextFrom(this.fields.collapsedDashboardRow);
+    const sections = await I.grabTextFromAll(this.fields.collapsedDashboardRow);
 
     if (halfToExpand === 1) {
       sectionsToExpand = sections.slice(0, sections.length / 2);
