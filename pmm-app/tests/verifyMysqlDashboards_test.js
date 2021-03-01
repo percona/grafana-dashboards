@@ -119,6 +119,7 @@ Scenario(
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(5);
     await dashboardPage.expandEachDashboardRow();
+    await dashboardPage.applyFilter('Service Name', 'pxc');
     adminPage.performPageUp(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.mysqlPXCGaleraNodesSummaryDashboard.metrics);
     dashboardPage.verifyTabExistence(dashboardPage.mysqlPXCGaleraNodesSummaryDashboard.tabs);
