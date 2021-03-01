@@ -72,6 +72,7 @@ Data(nodes).Scenario(
     I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();
+    adminPage.performPageUp(5);
     I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 30);
     I.seeElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer);
   },
