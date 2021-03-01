@@ -57,7 +57,7 @@ Scenario(
     I.amOnPage(dashboardPage.mySQLInstanceOverview.urlWithRDSFilter);
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();
-    await dashboardPage.verifyThereAreNoGraphsWithNA();
+    await dashboardPage.verifyThereAreNoGraphsWithNA(1);
     await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
   },
 );
