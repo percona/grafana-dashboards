@@ -40,6 +40,7 @@ module.exports = {
   },
 
   checkExplainTab() {
+    I.waitForVisible(this.getTabLocator('Explain'), 30);
     I.click(this.getTabLocator('Explain'));
     I.wait(5);
     I.dontSeeElement(this.elements.noClassic);
