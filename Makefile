@@ -18,6 +18,14 @@ e2e:
 	&& docker-compose up -d \
 	&& npm run e2e
 
+.PHONY: e2e_local
+e2e:
+	cd pmm-app \
+	&& mkdir -pv logs video || true \
+	&& docker-compose up -d \
+	&& npm run e2e:local
+
+
 .PHONY: codecov
 codecov:
 	cd pmm-app \
