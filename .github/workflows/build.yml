@@ -1,10 +1,9 @@
-name: Node.js CI
+name: Grafana dashboards push checks
 
 on: push
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -13,11 +12,40 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Build grafana-dashboards
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
       - run: make release
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run e2e tests locally
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
       - run: make docker_clean
       - run: make e2e_local
 
+  code_coverage:
+    needs: build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Generate and upload code coverage
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: make docker_clean
