@@ -108,7 +108,7 @@ Scenario(
     adminPage.peformPageDown(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.mysqlPXCGaleraNodeSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
-    await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(2);
   },
 );
 
