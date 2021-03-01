@@ -109,7 +109,7 @@ module.exports = {
     const sortingBlockSelector = this.getMetricSortingLocator(columnNumber);
 
     if (!sortDirection) {
-      I.waitForVisible(`${sortingBlockSelector}/span`, 30);
+      I.waitForElement(`${sortingBlockSelector}/span`, 30);
       I.seeAttributesOnElements(`${sortingBlockSelector}/span`, { class: 'sort-by ' });
 
       return;
