@@ -170,7 +170,8 @@ Scenario(
     const section = 'Database';
 
     let count = qanOverview.getCountOfItems();
-
+    
+    qanFilters.applyShowAllLink(section);
     qanFilters.applyFilterInSection(section, db1);
     count = await qanOverview.waitForNewItemsCount(count);
     qanFilters.applyFilterInSection(section, db2);
@@ -205,6 +206,7 @@ Scenario(
     assert.ok(countAfter !== countBefore, 'Query count was expected to change');
 
     await qanFilters.verifyCountOfFilterLinks(countOfFilters, false);
+    qanFilters.applyShowAllLink('Environment');
     qanFilters.checkDisabledFilter('Environment', environment);
     qanFilters.applyFilter(serviceName);
     const percentageAfter = await qanFilters.getPercentage('Service Type', serviceType);
@@ -284,6 +286,7 @@ Scenario(
 );
 
 Scenario('PMM-T437 - Verify short-cut navigation for n/a items @qan @not-pr-pipeline', async (I, qanFilters) => {
+  qanFilters.applyShowAllLink('Cluster');
   qanFilters.checkLink('Cluster', 'ps-dev-cluster', true);
   I.fillField(qanFilters.fields.filterBy, 'n/a');
   qanFilters.checkLink('Cluster', 'n/a', false);
