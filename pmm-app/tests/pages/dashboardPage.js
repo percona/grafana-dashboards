@@ -406,7 +406,6 @@ module.exports = {
       'Lost Connections',
       'Denied Connections',
       'Access Denied',
-      'Total Sessions',
       'Users Activity',
       'Users by Connections Created',
       'Users by Concurrent Connections',
