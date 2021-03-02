@@ -136,7 +136,7 @@ Scenario('PMM-T520 - Verify that alert is being fired to external Alert Manager 
   I.amOnPage(pmmSettingsPage.stateOfAlertsUrl);
   await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName2, true);
   await pmmSettingsPage.verifyExternalAlertManager(pmmSettingsPage.alertManager.ruleName2);
-}).retry(0);
+}).retry(1);
 
 Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Settings @ia @not-pr-pipeline',
   async ({
