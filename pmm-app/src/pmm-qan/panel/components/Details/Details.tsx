@@ -64,6 +64,7 @@ export const DetailsSection: FC = () => {
     {
       label: Messages.tabs.details.tab,
       key: TabKeys.details,
+      show: true,
       component: (
         <Metrics databaseType={databaseType} totals={totals} metrics={metrics} loading={metricsLoading} />
       ),
@@ -95,17 +96,19 @@ export const DetailsSection: FC = () => {
       <div className={cx(styles.detailsGrid, 'query-analytics-details')} data-qa="query-analytics-details">
         <div className="details-tabs">
           <TabsBar>
-            {tabs.map((tab, index) => (
-              <Tab
-                key={index}
-                label={tab.label}
-                active={tab.key === activeTab}
-                onChangeTab={() => {
-                  changeActiveTab(tab.key);
-                  setActiveTab(tab.key);
-                }}
-              />
-            ))}
+            {tabs
+              .filter(({ show }) => show)
+              .map((tab, index) => (
+                <Tab
+                  key={index}
+                  label={tab.label}
+                  active={tab.key === activeTab}
+                  onChangeTab={() => {
+                    changeActiveTab(tab.key);
+                    setActiveTab(tab.key);
+                  }}
+                />
+              ))}
             <Button
               variant="secondary"
               size="sm"
