@@ -77,6 +77,11 @@ jobs:
       - run: make docker_clean
       - run: make e2e_local
 
+      - name: Upload math result for job 1
+        uses: actions/upload-artifact@v2
+        with:
+          path: pmm-app/tests/output/parallel_chunk*/*.png
+
       - name: Setup tmate session on failure
         if: ${{ failure() }}
         uses: percona-platform/action-tmate@v2
@@ -117,15 +122,3 @@ jobs:
 
       - run: make prepare_release
       - run: make generate_coverage
-
-  upload_artifacts:
-    name: Upload e2e testing artifacts
-    runs-on: ubuntu-latest
-    needs: e2e
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Upload math result for job 1
-        uses: actions/upload-artifact@v2
-        with:
-          path: pmm-app/tests/output/parallel_chunk*/*.png
