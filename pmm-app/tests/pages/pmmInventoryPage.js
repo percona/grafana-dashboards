@@ -1,4 +1,4 @@
-const { I, pmmInventoryPage } = inject();
+const { I, pmmInventoryPage, inventoryAPI } = inject();
 const assert = require('assert');
 
 module.exports = {
@@ -44,6 +44,7 @@ module.exports = {
     I.click(agentLinkLocator);
     I.waitForElement(this.fields.pmmAgentLocator, 60);
     I.waitForElement(this.fields.inventoryTable, 60);
+    await inventoryAPI.waitForRunningState(serviceId);
     I.scrollPageToBottom();
     const numberOfServices = await I.grabNumberOfVisibleElements(
       `//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`,
