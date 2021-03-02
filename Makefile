@@ -38,6 +38,17 @@ release:
 	&& npm ci \
 	&& npm run build
 
+.PHONY: prepare_release
+prepare_release:
+	cd pmm-app \
+	&& npm version \
+	&& npm ci \
+
+.PHONY: build_package
+build_package:
+	cd pmm-app \
+	&& npm run build
+
 .PHONY: generate_coverage
 generate_coverage: coverage codecov
 

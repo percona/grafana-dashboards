@@ -16,14 +16,20 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: make release
 
-      - name: Upload Node modules
-        uses: actions/upload-artifact@v2
+      - name: Enable node_modules cache
+        uses: percona-platform/cache@v2
         with:
-          name: build-node-modules
-          path: node-modules/
-          if-no-files-found: error
+          path: |
+            node_modules
+            */*/node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-yarn-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-yarn-
+
+      - run: make prepare_release
+      - run: make build_package
 
       - name: Upload Built interface
         uses: actions/upload-artifact@v2
@@ -45,6 +51,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Run e2e tests and upload artifacts
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
       - name: Download built packages
         uses: actions/download-artifact@v2
@@ -52,17 +62,18 @@ jobs:
           name: build-dist
           path: pmm-app/dist/
 
-      - name: Download Node modules
-        uses: actions/download-artifact@v2
+      - name: Enable node_modules cache
+        uses: percona-platform/cache@v2
         with:
-          name: build-node-modules
-          path: node-modules/
+          path: |
+            node_modules
+            */*/node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-yarn-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-yarn-
 
-      - uses: actions/checkout@v2
-      - name: Run e2e tests and upload artifacts
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
+      - run: make prepare_release
       - run: make docker_clean
       - run: make e2e_local
 
@@ -86,6 +97,25 @@ jobs:
           node-version: ${{ matrix.node-version }}
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_GRAFANA_DASHBOARDS_TOKEN }}
+
+      - name: Download built packages
+        uses: actions/download-artifact@v2
+        with:
+          name: build-dist
+          path: pmm-app/dist/
+
+      - name: Enable node_modules cache
+        uses: percona-platform/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-yarn-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-yarn-
+
+      - run: make prepare_release
       - run: make generate_coverage
 
   upload_artifacts:
