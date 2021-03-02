@@ -44,7 +44,7 @@ jobs:
           path: pmm-app/dist/
 
       - name: Download Node modules
-        uses: actions/upload-artifact@v2
+        uses: actions/download-artifact@v2
         with:
           name: build-node-modules
           path: node-modules/
@@ -56,6 +56,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: make docker_clean
       - run: make e2e_local
+
+      - name: Setup tmate session on failure
+        if: ${{ failure() }}
+        uses: percona-platform/action-tmate@v2
 
   code_coverage:
     needs: build
