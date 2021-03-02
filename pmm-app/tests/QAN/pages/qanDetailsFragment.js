@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const { I } = inject();
+const { I, qanFilters } = inject();
 
 module.exports = {
   root: '$query-analytics-details',
@@ -35,6 +35,7 @@ module.exports = {
   checkExamplesTab() {
     I.waitForVisible(this.getTabLocator('Example'), 30);
     I.click(this.getTabLocator('Example'));
+    qanFilters.waitForFiltersToLoad();
     I.waitForVisible(this.elements.examplesCodeBlock, 30);
     I.dontSeeElement(this.elements.noExamples);
   },
@@ -43,6 +44,7 @@ module.exports = {
     I.waitForVisible(this.getTabLocator('Explain'), 30);
     I.click(this.getTabLocator('Explain'));
     I.wait(5);
+    qanFilters.waitForFiltersToLoad();
     I.dontSeeElement(this.elements.noClassic);
     I.dontSeeElement(this.elements.noJSON);
   },
