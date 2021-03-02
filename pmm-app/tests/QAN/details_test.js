@@ -9,7 +9,7 @@ Scenario(
   'Verify Details section tabs @qan @not-pr-pipeline',
   async (I, qanDetails, qanOverview, qanFilters) => {
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('mysql');
+    qanFilters.applyFilter('ps-dev');
     qanOverview.selectRow(2);
     qanFilters.waitForFiltersToLoad();
     await within(qanDetails.root, () => {
