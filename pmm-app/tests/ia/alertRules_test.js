@@ -103,7 +103,7 @@ Scenario(
 Data(rules).Scenario(
   'PMM-T515 PMM-T543 PMM-T544 PMM-T545 PMM-T574 Create Alert rule @ia @not-pr-pipeline',
   async ({
-    I, alertRulesPage, current,
+    I, alertRulesPage, current, rulesAPI,
   }) => {
     const rule = {
       template: current.template,
