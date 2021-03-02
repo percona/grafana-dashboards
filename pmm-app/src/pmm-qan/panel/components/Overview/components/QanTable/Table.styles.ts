@@ -6,11 +6,7 @@ import { getPmmTheme } from 'shared/components/helpers/getPmmTheme';
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const parameters = getPmmTheme(theme);
 
-  const selectedRowColor = selectThemeVariant(
-    { light: 'deepskyblue', dark: '#234682' },
-    theme.type,
-  );
-
+  const selectedRowColor = selectThemeVariant({ light: 'deepskyblue', dark: '#234682' }, theme.type);
 
   return {
     tableWrap: (size) => css`

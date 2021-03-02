@@ -4,8 +4,10 @@ import { Highlight } from 'pmm-qan/panel/components/Highlight/Highlight';
 import { TableProps } from '../Table.types';
 import { useShowCreateTable } from './TableCreate.hooks';
 
-export const TableCreate: FC<TableProps> = ({ tableName, databaseType, example }) => {
-  const [showCreateTable] = useShowCreateTable(databaseType, example, tableName);
+export const TableCreate: FC<TableProps> = ({
+  tableName, databaseType, example, database,
+}) => {
+  const [showCreateTable] = useShowCreateTable(databaseType, example, tableName, database);
 
   return (
     <Overlay isPending={showCreateTable.loading}>

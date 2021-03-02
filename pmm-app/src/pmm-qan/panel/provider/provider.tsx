@@ -26,8 +26,9 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     setLoadingDetails: (value) => (state) => ({ ...state, loadingDetails: value }),
     selectQuery: (value, totals) => (state) => ({
       ...state,
-      queryId: value,
+      queryId: value.queryId,
       querySelected: true,
+      database: value.database,
       // openDetailsTab: 'details',
       totals,
     }),

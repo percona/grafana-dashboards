@@ -95,7 +95,13 @@ export const Overview: FC = () => {
               data={overviewMetricsList.rows.length > 1 ? overviewMetricsList.rows : []}
               rowClassName={getRowClassName}
               onRowClick={(selected) => {
-                contextActions.selectQuery(selected.original.dimension, selected.index === 0);
+                contextActions.selectQuery(
+                  {
+                    queryId: selected.original.dimension,
+                    database: selected.original.database,
+                  },
+                  selected.index === 0,
+                );
               }}
               scroll={{ y: Math.min(height, 550), x: '100%' }}
               onSortChange={onSortChange}

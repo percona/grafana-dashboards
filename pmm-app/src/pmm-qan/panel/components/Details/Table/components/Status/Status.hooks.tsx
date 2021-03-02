@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ActionResult, getActionResult } from 'shared/components/Actions';
+import { Databases } from 'shared/core';
 import { mysqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
-import { Databases } from '../../../../../../../shared/core';
 
 interface StatusData {
   columns: any[];
@@ -15,7 +15,7 @@ const actionResult = {
   value: null,
 };
 
-export const useTableStatus = (databaseType, example, tableName): [StatusData, ActionResult] => {
+export const useTableStatus = (databaseType, example, tableName, database): [StatusData, ActionResult] => {
   const [data, setData] = useState<StatusData>({ columns: [], rows: [] });
   const [status, setStatus] = useState<ActionResult>(actionResult);
 
@@ -23,7 +23,7 @@ export const useTableStatus = (databaseType, example, tableName): [StatusData, A
     let id;
 
     if (databaseType === Databases.mysql) {
-      id = await mysqlMethods.getStatuses({ example, tableName });
+      id = await mysqlMethods.getStatuses({ example, tableName, database });
     }
 
     const result = await getActionResult(id);

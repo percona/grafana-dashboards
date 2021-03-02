@@ -24,7 +24,7 @@ export const DetailsSection: FC = () => {
   const {
     contextActions: { closeDetails, setActiveTab, setLoadingDetails },
     panelState: {
-      queryId, groupBy, totals, openDetailsTab,
+      queryId, groupBy, totals, openDetailsTab, database,
     },
   } = useContext(QueryAnalyticsProvider);
 
@@ -87,7 +87,7 @@ export const DetailsSection: FC = () => {
       label: Messages.tabs.tables.tab,
       key: TabKeys.tables,
       show: showTablesTab,
-      component: <TableCreateContainer databaseType={databaseType} examples={examples} />,
+      component: <TableCreateContainer databaseType={databaseType} examples={examples} database={database} />,
     },
   ];
 

@@ -5,8 +5,10 @@ import { Messages } from '../../../Details.messages';
 import { TableProps } from '../Table.types';
 import { useIndexes } from './Indexes.hooks';
 
-export const Indexes: FC<TableProps> = ({ tableName, databaseType, example }) => {
-  const [data, indexes] = useIndexes(databaseType, example, tableName);
+export const Indexes: FC<TableProps> = ({
+  tableName, databaseType, example, database,
+}) => {
+  const [data, indexes] = useIndexes(databaseType, example, tableName, database);
 
   return (
     <div>

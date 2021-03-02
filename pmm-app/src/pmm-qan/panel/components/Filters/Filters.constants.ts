@@ -55,9 +55,7 @@ export const FILTERS_GROUPS = [
   {
     name: 'Node Name',
     dataKey: 'node_name',
-    getDashboardURL: (value: string) => (
-      `${subURL}node-instance-summary/node-summary?var-node_name=${value}`
-    ),
+    getDashboardURL: (value: string) => `${subURL}node-instance-summary/node-summary?var-node_name=${value}`,
   },
   {
     name: 'Service Name',

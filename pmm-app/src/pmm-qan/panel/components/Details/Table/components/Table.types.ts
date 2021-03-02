@@ -4,4 +4,5 @@ export interface TableProps {
   tableName: string;
   databaseType: DatabasesType;
   example: any;
+  database: string;
 }

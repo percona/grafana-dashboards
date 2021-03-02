@@ -2,14 +2,14 @@ import React, { FC, useState } from 'react';
 import { Collapse } from '@grafana/ui';
 import { Databases } from 'shared/core';
 import { ExplainProps, ExplainTabs } from './Explain.types';
-import { VisualExplain } from './components/VisualExplain/VisualExplain';
+// import { VisualExplain } from './components/VisualExplain/VisualExplain';
 import { ClassicExplain } from './components/ClassicExplain/ClassicExplain';
 import { JsonExplain } from './components/JsonExplain/JsonExplain';
 
 const Explain: FC<ExplainProps> = ({ databaseType, examples }) => {
   const [classicExplainKey, setClassicExplainKey] = useState(true);
   const [jsonExplainKey, setJsonExplainKey] = useState(true);
-  const [visualExplainKey, setVisualExplainKey] = useState(true);
+  // const [visualExplainKey, setVisualExplainKey] = useState(true);
 
   return (
     <div>
@@ -31,16 +31,16 @@ const Explain: FC<ExplainProps> = ({ databaseType, examples }) => {
       >
         <JsonExplain databaseType={databaseType} examples={examples} />
       </Collapse>
-      {databaseType !== Databases.mongodb ? (
-        <Collapse
-          collapsible
-          label={ExplainTabs.visual}
-          isOpen={visualExplainKey}
-          onToggle={() => setVisualExplainKey(!visualExplainKey)}
-        >
-          <VisualExplain databaseType={databaseType} examples={examples} />
-        </Collapse>
-      ) : null}
+      {/* {databaseType !== Databases.mongodb ? ( */}
+      {/*  <Collapse */}
+      {/*    collapsible */}
+      {/*    label={ExplainTabs.visual} */}
+      {/*    isOpen={visualExplainKey} */}
+      {/*    onToggle={() => setVisualExplainKey(!visualExplainKey)} */}
+      {/*  > */}
+      {/*    <VisualExplain databaseType={databaseType} examples={examples} /> */}
+      {/*  </Collapse> */}
+      {/* ) : null} */}
     </div>
   );
 };

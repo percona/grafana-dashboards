@@ -1,10 +1,13 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  FC, useEffect, useMemo, useRef, useState,
+} from 'react';
 import { Form } from 'react-final-form';
 import { cx } from 'emotion';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { Filter } from 'shared/components/Elements/Icons';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { Input, useTheme, Button } from '@grafana/ui';
+import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
 import { FILTERS_BODY_HEIGHT, FILTERS_GROUPS } from './Filters.constants';
 import { getSelectedCheckboxes } from './Filters.tools';
@@ -14,7 +17,6 @@ import { useInitialFilterValues } from './hooks/useInitialFilterValues';
 import { useFiltersContainerHeight } from './hooks/useFiltersContainerHeight';
 import { Messages } from './Filters.messages';
 import 'shared/style.less';
-import { Overlay } from '../../../../shared/components/Elements/Overlay/Overlay';
 
 export const Filters: FC = () => {
   const theme = useTheme();
@@ -40,9 +42,9 @@ export const Filters: FC = () => {
 
   const ShowAllButton = ({ loading }) => (
     <Button
-      variant={'link'}
-      size={'sm'}
-      key={'qan-filters-show-selected'}
+      variant="link"
+      size="sm"
+      key="qan-filters-show-selected"
       onClick={() => showSetAll(!showAll)}
       data-qa="qan-filters-show-selected"
       disabled={!selectedCheckboxes || loading}
@@ -54,13 +56,13 @@ export const Filters: FC = () => {
 
   const ResetButton = ({ loading }) => (
     <Button
-      variant={'link'}
-      size={'sm'}
-      key={'qan-filters-reset-all'}
+      variant="link"
+      size="sm"
+      key="qan-filters-reset-all"
       data-qa="qan-filters-reset-all"
       disabled={!selectedCheckboxes || loading}
       className={styles.resetButton}
-      type={'reset'}
+      type="reset"
     >
       {Messages.buttons.reset}
     </Button>

@@ -15,7 +15,7 @@ const actionResult = {
   value: null,
 };
 
-export const useIndexes = (databaseType, example, tableName): [StatusData, ActionResult] => {
+export const useIndexes = (databaseType, example, tableName, database): [StatusData, ActionResult] => {
   const [data, setData] = useState<StatusData>({ columns: [], rows: [] });
   const [indexes, setIndexes] = useState<ActionResult>(actionResult);
 
@@ -23,9 +23,9 @@ export const useIndexes = (databaseType, example, tableName): [StatusData, Actio
     let id;
 
     if (databaseType === Databases.postgresql) {
-      id = await postgresqlMethods.getIndexes({ example, tableName });
+      id = await postgresqlMethods.getIndexes({ example, tableName, database });
     } else if (databaseType === Databases.mysql) {
-      id = await mysqlMethods.getIndexes({ example, tableName });
+      id = await mysqlMethods.getIndexes({ example, tableName, database });
     }
 
     const result = await getActionResult(id);

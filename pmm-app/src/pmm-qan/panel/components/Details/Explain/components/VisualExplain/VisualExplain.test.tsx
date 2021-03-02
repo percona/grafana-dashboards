@@ -12,7 +12,9 @@ jest.mock('shared/components/helpers/notification-manager');
 
 describe('VisualExplain::', () => {
   it('should render explains correct for loading state', () => {
-    (useExplains as Mock).mockImplementationOnce(() => [undefined, undefined,
+    (useExplains as Mock).mockImplementationOnce(() => [
+      undefined,
+      undefined,
       {
         error: '',
         loading: true,
@@ -26,7 +28,9 @@ describe('VisualExplain::', () => {
   });
 
   it('should render explains correct for error state', () => {
-    (useExplains as Mock).mockImplementationOnce(() => [undefined, undefined,
+    (useExplains as Mock).mockImplementationOnce(() => [
+      undefined,
+      undefined,
 
       {
         error: 'some error',
@@ -41,7 +45,9 @@ describe('VisualExplain::', () => {
   });
 
   it('should render explains correct for success state', () => {
-    (useExplains as Mock).mockImplementationOnce(() => [undefined, undefined,
+    (useExplains as Mock).mockImplementationOnce(() => [
+      undefined,
+      undefined,
 
       {
         error: '',

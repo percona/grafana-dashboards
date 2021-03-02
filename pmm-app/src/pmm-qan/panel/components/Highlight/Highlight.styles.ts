@@ -4,10 +4,7 @@ import { selectThemeVariant, stylesFactory } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
-  const mainHighlightColor = selectThemeVariant(
-    { light: theme.colors.text, dark: '#e6e1dc' },
-    theme.type,
-  );
+  const mainHighlightColor = selectThemeVariant({ light: theme.colors.text, dark: '#e6e1dc' }, theme.type);
 
   return {
     highlightWrapper: css`

@@ -11,7 +11,7 @@ import { TableTabs } from './TableContainer.constants';
 import { TableContainerProps } from './TableContainer.types';
 import { useTables } from './TableContainer.hooks';
 
-const TableCreateContainer: FC<TableContainerProps> = ({ databaseType, examples }) => {
+const TableCreateContainer: FC<TableContainerProps> = ({ databaseType, examples, database }) => {
   const [tables] = useTables(examples, databaseType);
   const [isTableTableOpen, setTableTableOpen] = useState(true);
   const [isTableStatusOpen, setTableStatusOpen] = useState(true);
@@ -33,7 +33,12 @@ const TableCreateContainer: FC<TableContainerProps> = ({ databaseType, examples 
           isOpen={isTableTableOpen}
           onToggle={() => setTableTableOpen(!isTableTableOpen)}
         >
-          <TableCreate tableName={table} example={examples[0]} databaseType={databaseType} />
+          <TableCreate
+            tableName={table}
+            example={examples[0]}
+            databaseType={databaseType}
+            database={database}
+          />
         </Collapse>
         {databaseType === Databases.mysql ? (
           <Collapse
@@ -42,7 +47,7 @@ const TableCreateContainer: FC<TableContainerProps> = ({ databaseType, examples 
             isOpen={isTableStatusOpen}
             onToggle={() => setTableStatusOpen(!isTableStatusOpen)}
           >
-            <Status tableName={table} example={examples[0]} databaseType={databaseType} />
+            <Status tableName={table} example={examples[0]} databaseType={databaseType} database={database} />
           </Collapse>
         ) : null}
         <Collapse
@@ -51,7 +56,7 @@ const TableCreateContainer: FC<TableContainerProps> = ({ databaseType, examples 
           isOpen={isTableIndexesOpen}
           onToggle={() => setTableIndexesOpen(!isTableIndexesOpen)}
         >
-          <Indexes tableName={table} example={examples[0]} databaseType={databaseType} />
+          <Indexes tableName={table} example={examples[0]} databaseType={databaseType} database={database} />
         </Collapse>
       </div>
     ),
