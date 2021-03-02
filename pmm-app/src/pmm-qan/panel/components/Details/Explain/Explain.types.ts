@@ -11,13 +11,7 @@ export enum ExplainTabs {
   visual = 'Visual',
 }
 
-interface ClassicExplainHeader {
-  title: string;
-  key: string;
-  dataIndex: string;
-}
-
 export interface ClassicExplainInterface {
   rows: any[];
-  columns: ClassicExplainHeader[];
+  columns: any[];
 }

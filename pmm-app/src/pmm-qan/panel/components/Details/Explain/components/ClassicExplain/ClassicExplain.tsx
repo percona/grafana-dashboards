@@ -1,7 +1,7 @@
 import React from 'react';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
-import { Table } from '@grafana/ui';
+import { Table } from 'shared/components/Elements/Table';
 import { useExplains } from '../../Explain.hooks';
 import { processClassicExplain } from '../../Explain.tools';
 import { Messages } from '../../../Details.messages';

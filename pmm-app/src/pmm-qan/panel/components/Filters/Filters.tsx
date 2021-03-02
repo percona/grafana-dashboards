@@ -81,8 +81,8 @@ export const Filters: FC = () => {
       <Input
         suffix={<Filter className={styles.icon} />}
         placeholder="Filter by..."
-        onChange={(e) => {
-          setFilter(e.target.value);
+        onChange={(e: any) => {
+          setFilter(e.target?.value);
           e.stopPropagation();
         }}
         value={filter}
