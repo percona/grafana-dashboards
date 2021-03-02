@@ -69,7 +69,7 @@ Scenario(
 
 Data(nodes).Scenario(
   'PMM-T418 PMM-T419 Verify the pt-summary on Node Summary dashboard @not-ui-pipeline @nightly @not-pr-pipeline',
-  async ({I, dashboardPage, adminPage}) => {
+  async ({ I, dashboardPage, adminPage }) => {
     I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);

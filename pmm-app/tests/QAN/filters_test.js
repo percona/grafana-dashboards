@@ -170,7 +170,7 @@ Scenario(
     const section = 'Database';
 
     let count = qanOverview.getCountOfItems();
-    
+
     qanFilters.applyShowAllLink(section);
     qanFilters.applyFilterInSection(section, db1);
     count = await qanOverview.waitForNewItemsCount(count);
@@ -287,7 +287,7 @@ Scenario(
   },
 );
 
-Scenario('PMM-T437 - Verify short-cut navigation for n/a items @qan @not-pr-pipeline', async ({I, qanFilters}) => {
+Scenario('PMM-T437 - Verify short-cut navigation for n/a items @qan @not-pr-pipeline', async ({ I, qanFilters }) => {
   qanFilters.applyShowAllLink('Cluster');
   qanFilters.checkLink('Cluster', 'ps-dev-cluster', true);
   I.fillField(qanFilters.fields.filterBy, 'n/a');

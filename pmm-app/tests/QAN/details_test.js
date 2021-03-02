@@ -7,7 +7,9 @@ Before(({ I, qanPage }) => {
 
 Scenario(
   'Verify Details section tabs @qan @not-pr-pipeline',
-  async ({I, qanDetails, qanOverview, qanFilters}) => {
+  async ({
+    I, qanDetails, qanOverview, qanFilters,
+  }) => {
     qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('ps-dev');
     qanOverview.selectRow(2);
