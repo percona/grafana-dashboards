@@ -41,7 +41,7 @@ export const PostgreSQLAdditionalOptions: FC<PostgreSQLAdditionalOptionsProps> =
       dataQa="tracking-options-radio-button-group"
       name="tracking"
       label={Messages.form.labels.trackingOptions}
-      options={!isRDS ? rdsTrackingOptions : trackingOptions}
+      options={isRDS ? rdsTrackingOptions : trackingOptions}
       component={RadioButtonGroupAdapter}
     />
   </>
