@@ -64,7 +64,7 @@ pipeline {
                     sh '''
                         sudo mkdir -p /srv/pmm-qa || :
                         pushd /srv/pmm-qa
-                            sudo git clone --single-branch --branch PMM-7482 https://github.com/percona/pmm-qa.git .
+                            sudo git clone --single-branch --branch master https://github.com/percona/pmm-qa.git .
                             sudo git checkout \${PMM_QA_GIT_COMMIT_HASH}
                             sudo chmod 755 pmm-tests/install-google-chrome.sh
                             bash ./pmm-tests/install-google-chrome.sh
