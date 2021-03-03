@@ -108,7 +108,7 @@ Scenario(
     adminPage.peformPageDown(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.mysqlPXCGaleraNodeSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
-    await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(2);
   },
 );
 
@@ -119,6 +119,7 @@ Scenario(
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(5);
     await dashboardPage.expandEachDashboardRow();
+    await dashboardPage.applyFilter('Service Name', 'pxc');
     adminPage.performPageUp(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.mysqlPXCGaleraNodesSummaryDashboard.metrics);
     dashboardPage.verifyTabExistence(dashboardPage.mysqlPXCGaleraNodesSummaryDashboard.tabs);

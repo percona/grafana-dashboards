@@ -7,8 +7,11 @@ Before((I, qanPage) => {
 
 Scenario(
   'Verify Details section tabs @qan @not-pr-pipeline',
-  async (I, qanDetails, qanOverview) => {
+  async (I, qanDetails, qanOverview, qanFilters) => {
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyFilter('ps-dev');
     qanOverview.selectRow(2);
+    qanFilters.waitForFiltersToLoad();
     await within(qanDetails.root, () => {
       I.waitForVisible(qanDetails.buttons.close, 30);
       I.see('Details', qanDetails.getTabLocator('Details'));
@@ -31,6 +34,7 @@ Scenario(
     I.pressKey('Enter');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
+    qanFilters.waitForFiltersToLoad();
     I.waitForVisible(cellValue, 30);
     await qanDetails.verifyAvqQueryCount();
     await qanDetails.verifyAvgQueryTime();
@@ -47,6 +51,7 @@ Scenario(
     I.pressKey('Enter');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
+    qanFilters.waitForFiltersToLoad();
     qanDetails.checkExamplesTab();
     qanDetails.checkExplainTab();
   },
@@ -59,6 +64,7 @@ Scenario(
     qanFilters.applyFilter('md-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
+    qanFilters.waitForFiltersToLoad();
     qanDetails.checkExamplesTab();
     qanDetails.checkExplainTab();
   },
@@ -71,6 +77,7 @@ Scenario(
     qanFilters.applyFilter('ps-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
+    qanFilters.waitForFiltersToLoad();
     qanDetails.checkExamplesTab();
     qanDetails.checkExplainTab();
   },
@@ -83,6 +90,7 @@ Scenario(
     qanFilters.applyFilter('pdpgsql-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
+    qanFilters.waitForFiltersToLoad();
     qanDetails.checkExamplesTab();
   },
 );
@@ -94,6 +102,7 @@ Scenario(
     qanFilters.applyFilter('pgsql-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
+    qanFilters.waitForFiltersToLoad();
     qanDetails.checkExamplesTab();
   },
 );
@@ -105,6 +114,7 @@ Scenario(
     qanFilters.applyFilter('mongodb');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
+    qanFilters.waitForFiltersToLoad();
     qanDetails.checkExamplesTab();
     qanDetails.checkExplainTab();
   },

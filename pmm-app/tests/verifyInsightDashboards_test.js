@@ -28,7 +28,7 @@ Scenario(
     await dashboardPage.expandEachDashboardRow();
     dashboardPage.verifyMetricsExistence(dashboardPage.prometheusExporterStatusDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA(4);
-    await dashboardPage.verifyThereAreNoGraphsWithoutData(14);
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(15);
   },
 );
 

@@ -15,7 +15,7 @@ Scenario(
     await qanPagination.verifyPagesAndCount(25);
     I.waitForVisible(qanFilters.elements.environmentLabel, 30);
     await qanOverview.verifyRowCount(27);
-    qanFilters.applyFilter('mysql');
+    qanFilters.applyFilter('ps-dev');
     I.waitForVisible(qanFilters.fields.filterBy, 30);
     I.waitForVisible(qanOverview.fields.searchBy, 30);
     I.fillField(qanOverview.fields.searchBy, 'insert');
@@ -32,7 +32,7 @@ Scenario(
     const cellValue = qanDetails.getMetricsCellLocator('Query Time', 3);
 
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('mysql');
+    qanFilters.applyFilter('ps-dev');
     I.waitForVisible(qanOverview.fields.searchBy, 30);
     I.fillField(qanOverview.fields.searchBy, 'insert');
     I.pressKey('Enter');

@@ -14,6 +14,7 @@ Scenario(
   async (I, dashboardPage, adminPage) => {
     I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
+    await dashboardPage.expandEachDashboardRow();
     await dashboardPage.applyFilter('Node Name', 'pmm-server');
     I.click(adminPage.fields.metricTitle);
     adminPage.peformPageDown(5);
@@ -67,11 +68,12 @@ Scenario(
 
 Data(nodes).Scenario(
   'PMM-T418 PMM-T419 Verify the pt-summary on Node Summary dashboard @not-ui-pipeline @nightly @not-pr-pipeline',
-  async (I, dashboardPage) => {
+  async (I, dashboardPage, adminPage) => {
     I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
-    await dashboardPage.waitPTSummaryInformation();
     dashboardPage.waitForDashboardOpened();
-    await dashboardPage.waitPTSummaryInformation();
+    I.click(adminPage.fields.metricTitle);
+    await dashboardPage.expandEachDashboardRow();
+    adminPage.performPageUp(5);
     I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 30);
     I.seeElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer);
   },

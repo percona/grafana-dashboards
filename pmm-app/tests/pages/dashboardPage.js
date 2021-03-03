@@ -113,7 +113,7 @@ module.exports = {
     ],
   },
   processDetailsDashboard: {
-    url: 'graph/d/node-cpu-process/processes-details?from=now-30m&to=now',
+    url: 'graph/d/node-cpu-process/processes-details?from=now-45m&to=now',
   },
   nodeSummaryDashboard: {
     url: 'graph/d/node-instance-summary/node-summary?orgId=1&refresh=5m',
@@ -406,7 +406,6 @@ module.exports = {
       'Lost Connections',
       'Denied Connections',
       'Access Denied',
-      'Total Sessions',
       'Users Activity',
       'Users by Connections Created',
       'Users by Concurrent Connections',
