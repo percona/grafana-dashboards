@@ -9,7 +9,7 @@ import { Field } from 'react-final-form';
 import { AdditionalOptionsFormPartProps, PostgreSQLAdditionalOptionsProps } from '../FormParts.types';
 import { getStyles } from '../FormParts.styles';
 import { Messages } from '../FormParts.messages';
-import { trackingOptions } from '../FormParts.constants';
+import { rdsTrackingOptions, trackingOptions } from '../FormParts.constants';
 import { tablestatOptions } from './AdditionalOptions.constants';
 import { TablestatOptions } from './AdditionalOptions.types';
 
@@ -35,13 +35,13 @@ export const AdditionalOptionsFormPart: FC<AdditionalOptionsFormPartProps> = ({
   );
 };
 
-export const PostgreSQLAdditionalOptions: FC<PostgreSQLAdditionalOptionsProps> = () => (
+export const PostgreSQLAdditionalOptions: FC<PostgreSQLAdditionalOptionsProps> = ({ isRDS }) => (
   <>
     <Field
       dataQa="tracking-options-radio-button-group"
       name="tracking"
       label={Messages.form.labels.trackingOptions}
-      options={trackingOptions}
+      options={!isRDS ? rdsTrackingOptions : trackingOptions}
       component={RadioButtonGroupAdapter}
     />
   </>
@@ -93,7 +93,7 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
             label={Messages.form.labels.additionalOptions.tlsSkipVerify}
             name="tls_skip_verify"
           />
-          <PostgreSQLAdditionalOptions />
+          <PostgreSQLAdditionalOptions isRDS={remoteInstanceCredentials.isRDS} />
           {remoteInstanceCredentials.isRDS ? (
             <>
               <CheckboxField
