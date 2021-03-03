@@ -1,6 +1,6 @@
 Feature('QAN overview');
 
-Before(async (I, qanPage, qanOverview) => {
+Before(async ({ I, qanPage, qanOverview }) => {
   await I.Authorize();
   I.amOnPage(qanPage.url);
   qanOverview.waitForOverviewLoaded();
@@ -8,7 +8,7 @@ Before(async (I, qanPage, qanOverview) => {
 
 Scenario(
   'PMM-T146 Verify user is able to see  chart tooltip for time related metric  @not-pr-pipeline @qan',
-  async (I, qanOverview) => {
+  async ({ I, qanOverview }) => {
     const ROW_NUMBER = 1;
     const QUERY_TIME_COLUMN_NUMBER = 3;
 
@@ -19,7 +19,7 @@ Scenario(
 
 Scenario(
   'PMM-T151 Verify that hovering over a non-time metric displays a tooltip without a graph @not-pr-pipeline @qan',
-  async (I, qanOverview) => {
+  async ({ I, qanOverview }) => {
     const ROW_NUMBER = 1;
     const QUERY_COUNT_COLUMN_NUMBER = 2;
 
@@ -30,7 +30,7 @@ Scenario(
 
 Scenario(
   'Open the QAN Dashboard and check that sorting works correctly after sorting by another column. @not-pr-pipeline @qan',
-  async (qanOverview) => {
+  async ({ qanOverview }) => {
     qanOverview.changeSorting(2);
     qanOverview.verifySorting(2, 'asc');
     qanOverview.changeSorting(1);
@@ -43,7 +43,7 @@ Scenario(
 
 Scenario(
   'PMM-T156 Verify that by default, queries are sorted by Load, from max to min @not-pr-pipeline @qan',
-  async (qanOverview) => {
+  async ({ qanOverview }) => {
     qanOverview.waitForOverviewLoaded();
     qanOverview.verifySorting(1, 'asc');
   },
@@ -51,7 +51,7 @@ Scenario(
 
 Scenario(
   'PMM-T183 Verify that "Group by" in the overview table can be changed @not-pr-pipeline @qan',
-  async (I, qanOverview) => {
+  async ({ I, qanOverview }) => {
     I.waitForText('Query', 30, qanOverview.elements.groupBy);
     await qanOverview.changeGroupBy('Database');
     qanOverview.verifyGroupByIs('Database');
@@ -60,7 +60,7 @@ Scenario(
 
 Scenario(
   'PMM-T187 Verify that the selected row in the overview table is highlighted @not-pr-pipeline @qan',
-  async (I, qanOverview) => {
+  async ({ I, qanOverview }) => {
     qanOverview.selectRow('2');
     I.seeCssPropertiesOnElements('.selected-overview-row > div', {
       'background-color': 'rgb(35, 70, 130)',
@@ -70,7 +70,7 @@ Scenario(
 
 Scenario(
   'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing @not-pr-pipeline @qan',
-  async (I, qanOverview) => {
+  async ({ I, qanOverview }) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
     const newMetric = qanOverview.getColumnLocator(metricName);
@@ -90,7 +90,7 @@ Scenario(
 
 Scenario(
   'PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works @not-pr-pipeline @qan',
-  async (I, qanOverview) => {
+  async ({ I, qanOverview }) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
     const newMetric = qanOverview.getColumnLocator(metricName);
@@ -121,7 +121,7 @@ Scenario(
 
 Scenario(
   'PMM-T135 - Verify user is not able to add duplicate metric to the overview column @not-pr-pipeline @qan',
-  async (I, qanOverview) => {
+  async ({ I, qanOverview }) => {
     const columnName = 'Load';
     const column = qanOverview.getColumnLocator(columnName);
 
@@ -136,7 +136,7 @@ Scenario(
 
 xScenario(
   'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table @not-pr-pipeline @qan',
-  async (I, qanOverview, qanDetails) => {
+  async ({ I, qanOverview, qanDetails }) => {
     const columnsToAdd = [
       'Bytes Sent',
       'Reading Blocks Time',
@@ -167,7 +167,7 @@ xScenario(
 
 Scenario(
   'PMM-T156 Verify Queries are sorted by Load by Default Sorting from Max to Min, verify Sorting for Metrics works @not-pr-pipeline @qan',
-  async (qanOverview) => {
+  async ({ qanOverview }) => {
     qanOverview.verifySorting(1, 'asc');
     await qanOverview.verifyMetricsSorted('Load', 3, 'down');
     qanOverview.changeSorting(1);
@@ -190,7 +190,7 @@ Scenario(
 
 Scenario(
   'PMM-T179 - Verify user is able to hover sparkline buckets and see correct tooltip @not-pr-pipeline @qan',
-  async (I, qanOverview) => {
+  async ({ I, qanOverview }) => {
     const firstCell = qanOverview.getCellValueLocator(3, 2);
     const secondCell = qanOverview.getCellValueLocator(3, 3);
 
@@ -209,7 +209,7 @@ Scenario(
 
 Scenario(
   'PMM-T204 - Verify small and N/A values on sparkline @not-pr-pipeline @qan',
-  async (I, qanOverview) => {
+  async ({ I, qanOverview }) => {
     const firstCell = qanOverview.getCellValueLocator(0, 1);
     const secondCell = qanOverview.getCellValueLocator(3, 3);
 

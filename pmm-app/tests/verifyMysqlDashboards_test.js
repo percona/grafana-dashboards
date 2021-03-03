@@ -2,14 +2,14 @@ const assert = require('assert');
 
 Feature('Test Dashboards inside the MySQL Folder');
 
-Before(async (I) => {
+Before(async ({ I }) => {
   I.Authorize();
 });
 
 Scenario(
   // eslint-disable-next-line max-len
   'Open the MySQL Overview Dashboard and verify Metrics are present and graphs are displayed @nightly @not-ui-pipeline',
-  async (I, adminPage, dashboardPage) => {
+  async ({ I, adminPage, dashboardPage }) => {
     I.amOnPage(dashboardPage.mysqlInstanceSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.applyFilter('Service Name', 'ps_8.0');
@@ -25,7 +25,7 @@ Scenario(
 Scenario(
   // eslint-disable-next-line max-len
   'Open the ProxySQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @nightly @not-ui-pipeline',
-  async (I, adminPage, dashboardPage) => {
+  async ({ I, adminPage, dashboardPage }) => {
     I.amOnPage(`${dashboardPage.proxysqlInstanceSummaryDashboard.url}?from=now-5m&to=now`);
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);
@@ -39,7 +39,7 @@ Scenario(
 Scenario(
   // eslint-disable-next-line max-len
   'Open the PXCGalera Cluster Summary Dashboard and verify Metrics are present and graphs are displayed @nightly @not-ui-pipeline',
-  async (I, adminPage, dashboardPage) => {
+  async ({ I, adminPage, dashboardPage }) => {
     I.amOnPage(`${dashboardPage.pxcGaleraClusterSummaryDashboard.url}?from=now-5m&to=now`);
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);
@@ -52,7 +52,7 @@ Scenario(
 
 Scenario(
   'PMM-T324 - Verify MySQL - MySQL User Details dashboard @nightly @not-ui-pipeline',
-  async (I, dashboardPage, adminPage) => {
+  async ({ I, dashboardPage, adminPage }) => {
     I.amOnPage(dashboardPage.mysqlUserDetailsDashboard.url);
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(5);
@@ -67,7 +67,9 @@ Scenario(
 // Need to Skip due to wait issue on locator
 xScenario(
   'PMM-T396 - Verify that parameters are passed from MySQL User Details dashboard to QAN @nightly @not-ui-pipeline',
-  async (I, dashboardPage, qanFilters, qanOverview, adminPage) => {
+  async ({
+    I, dashboardPage, qanFilters, adminPage,
+  }) => {
     const filters = ['ps_8.0', 'root'];
     const timeRange = 'Last 12 hours';
 
@@ -101,7 +103,7 @@ xScenario(
 
 Scenario(
   'PMM-T348 - PXC/Galera Node Summary dashboard @not-pr-pipeline @not-ui-pipeline @nightly',
-  async (I, dashboardPage, adminPage) => {
+  async ({ I, dashboardPage, adminPage }) => {
     I.amOnPage(`${dashboardPage.mysqlPXCGaleraNodeSummaryDashboard.url}&from=now-15m&to=now`);
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.applyFilter('Service Name', 'pxc_node_8.0');
@@ -114,7 +116,7 @@ Scenario(
 
 Scenario(
   'PMM-T349 - PXC/Galera Nodes Compare dashboard @not-pr-pipeline @not-ui-pipeline @nightly',
-  async (I, dashboardPage, adminPage) => {
+  async ({ I, dashboardPage, adminPage }) => {
     I.amOnPage(`${dashboardPage.mysqlPXCGaleraNodesSummaryDashboard.url}&from=now-15m&to=now`);
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(5);
@@ -130,7 +132,7 @@ Scenario(
 
 Scenario(
   'Verify metrics on Group Replication Summary Dashboard @not-pr-pipeline @not-ui-pipeline @nightly',
-  async (I, dashboardPage, adminPage) => {
+  async ({ I, dashboardPage, adminPage }) => {
     I.amOnPage(dashboardPage.groupReplicationDashboard.url);
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(5);
