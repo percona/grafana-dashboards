@@ -77,6 +77,12 @@ jobs:
       - run: make docker_clean
       - run: make e2e_local
 
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v2
+        with:
+          report_paths: 'pmm-app/tests/output/parallel_chunk*/*.xml'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload math result for job 1
         uses: actions/upload-artifact@v2
         with:
@@ -122,3 +128,5 @@ jobs:
 
       - run: make prepare_release
       - run: make generate_coverage
+
+
