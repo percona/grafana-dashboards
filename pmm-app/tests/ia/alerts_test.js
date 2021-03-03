@@ -79,7 +79,7 @@ Scenario(
     // Verify correct labels
     I.see(`rule_id=${ruleIdForAlerts}`, alertsPage.elements.labelsCell(alertName));
     I.see('Critical', alertsPage.elements.severityCell(alertName));
-    const labels = await I.grabTextFrom(alertsPage.elements.labelsCell(alertName));
+    const labels = await I.grabTextFromAll(alertsPage.elements.labelsCell(alertName));
 
     const [, serviceId] = labels
       .find((label) => label.includes('service_id='))
