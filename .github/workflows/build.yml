@@ -128,4 +128,20 @@ jobs:
       - run: make prepare_release
       - run: make generate_coverage
 
+  slackNotification:
+    needs: e2e
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_CHANNEL: 'pmm-ci'
+          SLACK_USERNAME: 'Github actions bot'
+      - name: Slack Notification
+        uses: percona-platform/action-slack-notify@v2
+
 
