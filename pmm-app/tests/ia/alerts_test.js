@@ -20,12 +20,14 @@ const rulesToDelete = [];
 
 Feature('IA: Alerts').retry(2);
 
-Before(async (I, alertRulesPage, settingsAPI) => {
+Before(async ({ I, settingsAPI }) => {
   I.Authorize();
   await settingsAPI.apiEnableIA();
 });
 
-BeforeSuite(async (I, alertRulesPage, settingsAPI, rulesAPI, alertsAPI) => {
+BeforeSuite(async ({
+  settingsAPI, rulesAPI, alertsAPI,
+}) => {
   await settingsAPI.apiEnableIA();
   await rulesAPI.clearAllRules(true);
   for (const rule of rulesForAlerts) {
@@ -39,14 +41,16 @@ BeforeSuite(async (I, alertRulesPage, settingsAPI, rulesAPI, alertsAPI) => {
   await alertsAPI.waitForAlerts(300, rulesToDelete.length + 1);
 });
 
-AfterSuite(async (I, alertRulesPage, settingsAPI, rulesAPI) => {
+AfterSuite(async ({
+  settingsAPI, rulesAPI,
+}) => {
   await settingsAPI.apiEnableIA();
   await rulesAPI.clearAllRules(true);
 });
 
 Scenario(
   'PMM-T564 Verify Severity colors @ia @not-pr-pipeline',
-  async (I, alertsPage, rulesAPI) => {
+  async ({ I, alertsPage, rulesAPI }) => {
     I.amOnPage(alertsPage.url);
     I.waitForElement(alertsPage.elements.criticalSeverity, 30);
     I.seeCssPropertiesOnElements(alertsPage.elements.criticalSeverity, { color: 'rgb(224, 47, 68)' });
@@ -66,14 +70,16 @@ Scenario(
 
 Scenario(
   'Verify Firing Alert, labels and existence in alertmanager @ia @not-pr-pipeline',
-  async (I, alertsPage, rulesAPI, alertsAPI, inventoryAPI, alertmanagerAPI) => {
+  async ({
+    I, alertsPage, inventoryAPI, alertmanagerAPI,
+  }) => {
     I.amOnPage(alertsPage.url);
     I.waitForElement(alertsPage.elements.alertRow(alertName), 30);
 
     // Verify correct labels
     I.see(`rule_id=${ruleIdForAlerts}`, alertsPage.elements.labelsCell(alertName));
     I.see('Critical', alertsPage.elements.severityCell(alertName));
-    const labels = await I.grabTextFrom(alertsPage.elements.labelsCell(alertName));
+    const labels = await I.grabTextFromAll(alertsPage.elements.labelsCell(alertName));
 
     const [, serviceId] = labels
       .find((label) => label.includes('service_id='))
@@ -88,7 +94,7 @@ Scenario(
 
 Scenario(
   'PMM-T540 Alerts list columns @ia @not-pr-pipeline',
-  async (I, alertsPage) => {
+  async ({ I, alertsPage }) => {
     I.amOnPage(alertsPage.url);
     I.waitForElement(alertsPage.elements.alertRow(alertName), 30);
     alertsPage.columnHeaders.forEach((header) => {
@@ -104,7 +110,9 @@ Scenario(
 
 Scenario(
   'PMM-T541 Verify user is able to silence/activate the alert @ia @not-pr-pipeline',
-  async (I, alertsPage, rulesAPI, alertsAPI, alertmanagerAPI) => {
+  async ({
+    I, alertsPage, alertmanagerAPI,
+  }) => {
     I.amOnPage(alertsPage.url);
     I.waitForVisible(alertsPage.elements.alertRow(alertName), 30);
     await alertsPage.silenceAlert(alertName);
@@ -116,7 +124,7 @@ Scenario(
 
 Scenario(
   'PMM-T587 Verify user cant see Alert with non-existing filter @ia @not-pr-pipeline',
-  async (I, alertsPage, rulesAPI) => {
+  async ({ I, alertsPage, rulesAPI }) => {
     const rule = {
       ruleId: ruleIdForAlerts,
       ruleName,
@@ -139,7 +147,9 @@ Scenario(
 
 Scenario(
   'PMM-T625 Verify Alert disappears after issue in rule is fixed @ia @not-pr-pipeline',
-  async (I, alertsPage, rulesAPI, alertsAPI) => {
+  async ({
+    I, alertsPage, rulesAPI, alertsAPI,
+  }) => {
     const rule = {
       ruleId: ruleIdForAlerts,
       ruleName,

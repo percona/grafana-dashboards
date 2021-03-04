@@ -61,6 +61,16 @@ pipeline {
                             sudo docker-compose --version
                         fi
                     '''
+                    sh '''
+                        sudo mkdir -p /srv/pmm-qa || :
+                        pushd /srv/pmm-qa
+                            sudo git clone --single-branch --branch master https://github.com/percona/pmm-qa.git .
+                            sudo git checkout \${PMM_QA_GIT_COMMIT_HASH}
+                            sudo chmod 755 pmm-tests/install-google-chrome.sh
+                            bash ./pmm-tests/install-google-chrome.sh
+                        popd
+                        sudo ln -s /usr/bin/google-chrome-stable /usr/bin/chromium
+                    '''
                     sh """
                        export NVM_DIR=/usr/local/nvm
                        [[ ! -d \${NVM_DIR} ]] && sudo mkdir -p \${NVM_DIR}
@@ -99,6 +109,7 @@ pipeline {
                             envsubst < pmm-app/env.list > pmm-app/env.generated.list
                             sg docker -c "
                                 export CHROME_VERSION=${params.CHROME_VERSION}
+                                export CHROMIUM_PATH=/usr/bin/chromium
                                 source \"/usr/local/nvm/nvm.sh\"
                                 pushd ./pmm-app
                                 docker-compose down -v

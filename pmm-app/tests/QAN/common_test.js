@@ -2,20 +2,22 @@ const assert = require('assert');
 
 Feature('QAN common');
 
-Before(async (I, qanPage) => {
+Before(async ({ I, qanPage }) => {
   await I.Authorize();
   I.amOnPage(qanPage.url);
 });
 
 Scenario(
   'PMM-T122 - Verify QAN UI Elements are displayed @not-pr-pipeline @qan',
-  async (I, qanFilters, qanOverview, qanPagination) => {
+  async ({
+    I, qanFilters, qanOverview, qanPagination,
+  }) => {
     qanOverview.waitForOverviewLoaded();
     I.waitForVisible(qanOverview.buttons.addColumn, 30);
     await qanPagination.verifyPagesAndCount(25);
     I.waitForVisible(qanFilters.elements.environmentLabel, 30);
     await qanOverview.verifyRowCount(27);
-    qanFilters.applyFilter('mysql');
+    qanFilters.applyFilter('ps-dev');
     I.waitForVisible(qanFilters.fields.filterBy, 30);
     I.waitForVisible(qanOverview.fields.searchBy, 30);
     I.fillField(qanOverview.fields.searchBy, 'insert');
@@ -28,11 +30,13 @@ Scenario(
 
 Scenario(
   'PMM-T223 - Verify values in overview and in details match @qan @not-pr-pipeline',
-  async (I, qanOverview, qanFilters, qanDetails) => {
+  async ({
+    I, qanOverview, qanFilters, qanDetails,
+  }) => {
     const cellValue = qanDetails.getMetricsCellLocator('Query Time', 3);
 
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('mysql');
+    qanFilters.applyFilter('ps-dev');
     I.waitForVisible(qanOverview.fields.searchBy, 30);
     I.fillField(qanOverview.fields.searchBy, 'insert');
     I.pressKey('Enter');
@@ -53,7 +57,9 @@ Scenario(
 
 Scenario(
   'PMM-T215 - Verify that buttons in QAN are disabled and visible on the screen @not-pr-pipeline @qan',
-  async (I, qanPagination, qanFilters, qanOverview) => {
+  async ({
+    I, qanPagination, qanFilters, qanOverview,
+  }) => {
     qanFilters.waitForFiltersToLoad();
     qanOverview.waitForOverviewLoaded();
     I.seeAttributesOnElements(qanPagination.buttons.previousPage, { 'aria-disabled': 'true' });
