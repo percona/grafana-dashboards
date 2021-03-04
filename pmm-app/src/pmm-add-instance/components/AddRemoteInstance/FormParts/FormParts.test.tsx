@@ -176,6 +176,6 @@ describe('getAdditionalOptions ::', () => {
     const fields = root.find('input');
 
     expect(root.find('input[name="tracking"]').length).toBe(rdsTrackingOptions.length);
-    expect(fields.length).toBe(7);
+    expect(fields.length).toBe(6);
   });
 });
