@@ -17,6 +17,7 @@ describe('Get instance data:: ', () => {
     };
     const testInstance = {
       instanceType: 'PostgreSQL',
+      discoverName: 'DISCOVER_RDS_POSTGRESQL',
       remoteInstanceCredentials: {
         isRDS: false,
         address: 'test address',
@@ -47,6 +48,7 @@ describe('Get instance data:: ', () => {
     };
     const testInstance = {
       instanceType: 'PostgreSQL',
+      discoverName: 'DISCOVER_RDS_POSTGRESQL',
       remoteInstanceCredentials: {
         isRDS: true,
         address: 'test address',
