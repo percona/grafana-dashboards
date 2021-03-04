@@ -3,8 +3,8 @@ import { createBrowserHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import { PanelProps } from '@grafana/data';
 import { Spinner } from '@grafana/ui';
-import { CheckPanelOptions, Settings, FailedChecks } from 'pmm-check/types';
-import { CheckService } from 'pmm-check/Check.service';
+import { CheckPanelOptions, Settings, FailedChecks } from 'pmm-check-home/types';
+import { CheckService } from 'pmm-check-home/CheckPanel.service';
 import { Failed } from 'pmm-check-home/components';
 import * as styles from './CheckPanel.styles';
 
