@@ -4,11 +4,12 @@ jobs:
   slackNotification:
     name: Slack Notification
     runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      SLACK_CHANNEL: 'pmm-ci'
+      SLACK_USERNAME: 'Github actions bot'
+
     steps:
       - uses: actions/checkout@v2
       - name: Slack Notification
         uses: percona-platform/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_CHANNEL: 'pmm-ci'
-          SLACK_USERNAME: 'Github actions bot'
