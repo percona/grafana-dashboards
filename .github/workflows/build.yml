@@ -11,6 +11,14 @@ jobs:
         node-version: [12.x]
 
     steps:
+
+      - name: Upload Built interface
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-dist
+          path: pmm-app/dist/test/
+          if-no-files-found: error
+
       - uses: actions/checkout@v2
       - name: Build grafana-dashboards
         uses: actions/setup-node@v1
@@ -37,10 +45,6 @@ jobs:
           name: build-dist
           path: pmm-app/dist/
           if-no-files-found: error
-
-      - name: Setup tmate session on failure
-        if: ${{ failure() }}
-        uses: percona-platform/action-tmate@v2
 
   e2e:
     runs-on: ubuntu-latest
