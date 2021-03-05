@@ -18,6 +18,9 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_TOKEN }}
           SLACK_CHANNEL: 'pmm-ci'
           SLACK_USERNAME: 'Github actions bot'
+      - name: Setup tmate session on failure
+        if: ${{ failure() }}
+        uses: percona-platform/action-tmate@v2
 
   build:
     runs-on: ubuntu-latest
