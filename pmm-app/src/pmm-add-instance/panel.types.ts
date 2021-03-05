@@ -1,5 +1,5 @@
 export interface RemoteInstanceCredentials {
-  service_name?: string;
+  serviceName?: string;
   port?: number;
   address?: string;
   isRDS?: boolean;
