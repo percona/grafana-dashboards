@@ -17,11 +17,12 @@ describe('Get instance data:: ', () => {
     };
     const testInstance = {
       instanceType: 'PostgreSQL',
+      discoverName: 'DISCOVER_RDS_POSTGRESQL',
       remoteInstanceCredentials: {
         isRDS: false,
         address: 'test address',
         instance_id: 'test instance id',
-        service_name: 'test address',
+        serviceName: 'test address',
         port: '5432',
         region: 'us-west1',
         aws_access_key: 'aws-secret-key-example',
@@ -47,11 +48,12 @@ describe('Get instance data:: ', () => {
     };
     const testInstance = {
       instanceType: 'PostgreSQL',
+      discoverName: 'DISCOVER_RDS_POSTGRESQL',
       remoteInstanceCredentials: {
         isRDS: true,
         address: 'test address',
         instance_id: 'test instance id',
-        service_name: 'test instance id',
+        serviceName: 'test instance id',
         port: '5432',
         region: 'us-west1',
         aws_access_key: 'aws-secret-key-example',
@@ -80,7 +82,7 @@ describe('Get instance data:: ', () => {
         isRDS: false,
         address: 'test address',
         instance_id: 'test instance id',
-        service_name: 'test address',
+        serviceName: 'test address',
         port: 27017,
         region: 'us-west1',
         aws_access_key: 'aws-secret-key-example',
@@ -110,7 +112,7 @@ describe('Get instance data:: ', () => {
         isRDS: false,
         address: 'test address',
         instance_id: 'test instance id',
-        service_name: 'test address',
+        serviceName: 'test address',
         port: 3306,
         region: 'us-west1',
         aws_access_key: 'aws-secret-key-example',
@@ -139,7 +141,7 @@ describe('Get instance data:: ', () => {
         isRDS: false,
         address: 'test address',
         instance_id: 'test instance id',
-        service_name: 'test address',
+        serviceName: 'test address',
         port: 6032,
         region: 'us-west1',
         aws_access_key: 'aws-secret-key-example',

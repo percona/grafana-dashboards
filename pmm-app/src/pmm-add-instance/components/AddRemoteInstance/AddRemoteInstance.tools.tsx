@@ -9,7 +9,7 @@ export const getInstanceData = (instanceType, credentials): InstanceData => {
 
     return {
       remoteInstanceCredentials: {
-        service_name: !credentials.isRDS ? credentials.address : credentials.instance_id,
+        serviceName: !credentials.isRDS ? credentials.address : credentials.instance_id,
         port: credentials.port,
         address: credentials.address,
         isRDS: credentials.isRDS,
@@ -27,6 +27,7 @@ export const getInstanceData = (instanceType, credentials): InstanceData => {
   switch (instanceType) {
     case Databases.postgresql:
       instance.instanceType = DATABASE_LABELS[Databases.postgresql];
+      instance.discoverName = 'DISCOVER_RDS_POSTGRESQL';
       instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 5432;
       break;
     case Databases.mysql:

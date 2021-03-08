@@ -69,15 +69,12 @@ export const toPayload = (values, discoverName?) => {
       }, {});
   }
 
-  switch (data.tracking) {
-    case TrackingOptions.pgStatements:
-      data.qan_postgresql_pgstatements_agent = true;
-      break;
-    case TrackingOptions.pgMonitor:
-      data.qan_postgresql_pgstatmonitor_agent = true;
-      break;
-    default:
-      break;
+  if (data.isRDS && data.tracking === TrackingOptions.pgStatements) {
+    data.qan_postgresql_pgstatements = true;
+  } else if (!data.isRDS && data.tracking === TrackingOptions.pgStatements) {
+    data.qan_postgresql_pgstatements_agent = true;
+  } else if (!data.isRDS && data.tracking === TrackingOptions.pgMonitor) {
+    data.qan_postgresql_pgstatmonitor_agent = true;
   }
 
   delete data.tracking;
