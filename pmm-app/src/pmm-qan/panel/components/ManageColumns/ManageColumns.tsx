@@ -59,9 +59,7 @@ export const ManageColumns = (props) => {
     <Tooltip
       title={() => (
         <div className={styles.metricsTooltip}>
-          <b className={styles.placeholder}>
-            {placeholder && METRIC_CATALOGUE[placeholder].humanizeName}
-          </b>
+          <b className={styles.placeholder}>{placeholder && METRIC_CATALOGUE[placeholder].humanizeName}</b>
           <span className={styles.placeholder}>
             {placeholder && METRIC_CATALOGUE[placeholder].tooltipText}
           </span>
@@ -78,10 +76,10 @@ export const ManageColumns = (props) => {
   ) : (
     <div className={styles.placeholderAdd}>
       {!isDropdownOpen && (
-        <div>
-          <i className={cx('fa fa-plus-circle', styles.iconMargin)} />
-          <span>Add column</span>
-        </div>
+      <div>
+        <i className={cx('fa fa-plus-circle', styles.iconMargin)} />
+        <span>Add column</span>
+      </div>
       )}
     </div>
   ));

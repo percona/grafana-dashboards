@@ -2,6 +2,7 @@ export const Messages = {
   noExamplesFound: 'Sorry, no examples found for this query',
   noClassicExplain: 'No classic explain found',
   noJsonExplain: 'No JSON explain found',
+  noVisualExplain: 'No visual explain found',
   cantExtractTables: 'No table info from example nor explain',
   noDataFound: 'No data found',
   closeDetails: 'Close',

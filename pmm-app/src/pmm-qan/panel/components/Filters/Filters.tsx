@@ -1,13 +1,13 @@
 import React, {
   FC, useEffect, useMemo, useRef, useState,
 } from 'react';
-import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
 import { cx } from 'emotion';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { Filter } from 'shared/components/Elements/Icons';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
-import { useTheme } from '@grafana/ui';
+import { Input, useTheme, Button } from '@grafana/ui';
+import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
 import { FILTERS_BODY_HEIGHT, FILTERS_GROUPS } from './Filters.constants';
 import { getSelectedCheckboxes } from './Filters.tools';
@@ -16,6 +16,7 @@ import { useFilters } from './hooks/useFilters';
 import { useInitialFilterValues } from './hooks/useInitialFilterValues';
 import { useFiltersContainerHeight } from './hooks/useFiltersContainerHeight';
 import { Messages } from './Filters.messages';
+import 'shared/style.less';
 
 export const Filters: FC = () => {
   const theme = useTheme();
@@ -39,35 +40,39 @@ export const Filters: FC = () => {
     }
   }, [selectedCheckboxes]);
 
-  const ShowAllButton = () => (
+  const ShowAllButton = ({ loading }) => (
     <Button
-      type="link"
-      className={styles.showAllButton}
+      variant="link"
+      size="sm"
+      key="qan-filters-show-selected"
       onClick={() => showSetAll(!showAll)}
-      disabled={!selectedCheckboxes}
       data-qa="qan-filters-show-selected"
+      disabled={!selectedCheckboxes || loading}
+      className={styles.resetButton}
     >
       {showAll ? Messages.buttons.showSelected : Messages.buttons.showAll}
     </Button>
   );
 
-  const ResetButton = () => (
+  const ResetButton = ({ loading }) => (
     <Button
-      type="link"
-      htmlType="reset"
-      className={styles.resetButton}
+      variant="link"
+      size="sm"
+      key="qan-filters-reset-all"
       data-qa="qan-filters-reset-all"
-      disabled={!selectedCheckboxes}
+      disabled={!selectedCheckboxes || loading}
+      className={styles.resetButton}
+      type="reset"
     >
       {Messages.buttons.reset}
     </Button>
   );
 
-  const FiltersHeader = () => (
+  const FiltersHeader = ({ loading }) => (
     <div className={styles.filtersHeader}>
       <h5 className={styles.title}>Filters</h5>
-      <ShowAllButton />
-      <ResetButton />
+      <ShowAllButton loading={loading} />
+      <ResetButton loading={loading} />
     </div>
   );
 
@@ -76,13 +81,14 @@ export const Filters: FC = () => {
       <Input
         suffix={<Filter className={styles.icon} />}
         placeholder="Filter by..."
-        onChange={(e) => {
-          setFilter(e.target.value);
+        onChange={(e: React.FormEvent<HTMLInputElement>) => {
+          const element = e.target as HTMLInputElement;
+
+          setFilter(element.value);
           e.stopPropagation();
         }}
         value={filter}
         className={styles.filtersField}
-        data-qa="filters-search-field"
       />
     ),
     [],
@@ -93,19 +99,19 @@ export const Filters: FC = () => {
       onSubmit={() => {}}
       initialValues={initialValues}
       render={({ form, handleSubmit }) => (
-        <Spin spinning={loading}>
-          <form
-            onSubmit={handleSubmit}
-            onChange={() => {
-              contextActions.setLabels(form.getState().values);
-            }}
-            onReset={() => {
-              contextActions.resetLabels();
-              setFilter('');
-            }}
-          >
-            <div ref={filtersWrapperRef} className={cx({ [styles.filtersDisabled]: loadingDetails })}>
-              <FiltersHeader />
+        <form
+          onSubmit={handleSubmit}
+          onChange={() => {
+            contextActions.setLabels(form.getState().values);
+          }}
+          onReset={() => {
+            contextActions.resetLabels();
+            setFilter('');
+          }}
+        >
+          <div ref={filtersWrapperRef} className={cx({ [styles.filtersDisabled]: loadingDetails })}>
+            <FiltersHeader loading={loading} />
+            <Overlay isPending={loading}>
               <Scrollbar className={styles.getFiltersWrapper(height)}>
                 <FilterInput filter={filter} />
                 {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(
@@ -123,9 +129,9 @@ export const Filters: FC = () => {
                   ),
                 )}
               </Scrollbar>
-            </div>
-          </form>
-        </Spin>
+            </Overlay>
+          </div>
+        </form>
       )}
     />
   );

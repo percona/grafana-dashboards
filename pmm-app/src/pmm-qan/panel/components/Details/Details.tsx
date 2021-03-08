@@ -1,11 +1,13 @@
 import React, {
   FC, useContext, useEffect, useState,
 } from 'react';
-import { Button, Divider, Tabs } from 'antd';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import { useTheme } from '@grafana/ui';
+import {
+  Button, Tab, TabContent, TabsBar, useTheme,
+} from '@grafana/ui';
 import { cx } from 'emotion';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
+import { Databases } from 'shared/core';
 import Explain from './Explain/Explain';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
@@ -14,10 +16,7 @@ import { useDetails } from './Details.hooks';
 import { TabKeys } from './Details.constants';
 import { useMetricsDetails } from './Metrics/hooks/useMetricDetails';
 import { Messages } from './Details.messages';
-import { Databases } from './Details.types';
 import { getStyles } from './Details.styles';
-
-const { TabPane } = Tabs;
 
 export const DetailsSection: FC = () => {
   const theme = useTheme();
@@ -25,7 +24,7 @@ export const DetailsSection: FC = () => {
   const {
     contextActions: { closeDetails, setActiveTab, setLoadingDetails },
     panelState: {
-      queryId, groupBy, totals, openDetailsTab,
+      queryId, groupBy, totals, openDetailsTab, database,
     },
   } = useContext(QueryAnalyticsProvider);
 
@@ -61,57 +60,65 @@ export const DetailsSection: FC = () => {
 
   useEffect(() => setLoadingDetails(loading || metricsLoading), [loading, metricsLoading]);
 
+  const tabs = [
+    {
+      label: Messages.tabs.details.tab,
+      key: TabKeys.details,
+      show: true,
+      component: (
+        <Metrics databaseType={databaseType} totals={totals} metrics={metrics} loading={metricsLoading} />
+      ),
+    },
+    {
+      label: Messages.tabs.examples.tab,
+      key: TabKeys.examples,
+      show: showExamplesTab,
+      component: (
+        <Example databaseType={databaseType} examples={examples} loading={loading || metricsLoading} />
+      ),
+    },
+    {
+      label: Messages.tabs.explains.tab,
+      key: TabKeys.explain,
+      show: showExplainTab,
+      component: <Explain examples={examples} databaseType={databaseType} />,
+    },
+    {
+      label: Messages.tabs.tables.tab,
+      key: TabKeys.tables,
+      show: showTablesTab,
+      component: <TableCreateContainer databaseType={databaseType} examples={examples} database={database} />,
+    },
+  ];
+
   return (
     <Scrollbar className={styles.scrollArea}>
       <div className={cx(styles.detailsGrid, 'query-analytics-details')} data-qa="query-analytics-details">
         <div className="details-tabs">
-          <Divider className={styles.zeroMargin} />
-          <Tabs
-            activeKey={activeTab}
-            onChange={(newTab) => {
-              changeActiveTab(newTab);
-              setActiveTab(newTab);
-            }}
-            tabPosition="top"
-            destroyInactiveTabPane
-            tabBarExtraContent={(
-              <Button type="default" size="small" onClick={closeDetails}>
-                {Messages.closeDetails}
-              </Button>
-            )}
-          >
-            <TabPane tab={<span>{Messages.tabs.details.tab}</span>} key={TabKeys.details}>
-              <Metrics
-                databaseType={databaseType}
-                totals={totals}
-                metrics={metrics}
-                loading={metricsLoading}
-              />
-            </TabPane>
-            {showExamplesTab ? (
-              <TabPane tab={<span>{Messages.tabs.examples.tab}</span>} key={TabKeys.examples}>
-                <Example
-                  databaseType={databaseType}
-                  examples={examples}
-                  loading={loading || metricsLoading}
+          <TabsBar>
+            {tabs
+              .filter(({ show }) => show)
+              .map((tab, index) => (
+                <Tab
+                  key={index}
+                  label={tab.label}
+                  active={tab.key === activeTab}
+                  onChangeTab={() => {
+                    changeActiveTab(tab.key);
+                    setActiveTab(tab.key);
+                  }}
                 />
-              </TabPane>
-            ) : null}
-            {showExplainTab ? (
-              <TabPane
-                tab={<span>{Messages.tabs.explains.tab}</span>}
-                key={TabKeys.explain}
-                disabled={totals}
-              >
-                <Explain examples={examples} databaseType={databaseType} />
-              </TabPane>
-            ) : null}
-            {showTablesTab ? (
-              <TabPane tab={<span>{Messages.tabs.tables.tab}</span>} key={TabKeys.tables} disabled={totals}>
-                <TableCreateContainer databaseType={databaseType} examples={examples} />
-              </TabPane>
-            ) : null}
-          </Tabs>
+              ))}
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={closeDetails}
+              className={styles.closeDetailsButton}
+            >
+              {Messages.closeDetails}
+            </Button>
+          </TabsBar>
+          <TabContent>{tabs.map((tab) => tab.key === activeTab && tab.component)}</TabContent>
         </div>
       </div>
     </Scrollbar>

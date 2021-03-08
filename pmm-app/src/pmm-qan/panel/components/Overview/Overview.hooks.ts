@@ -14,7 +14,6 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
   const [data, setData] = useState<DataInterface>({ rows: [], columns: [] });
   const [loading, setLoading] = useState(false);
 
-
   useEffect(() => {
     const updateInstances = async () => {
       try {

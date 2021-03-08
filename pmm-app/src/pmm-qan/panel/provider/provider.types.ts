@@ -24,6 +24,7 @@ interface QueryAnalyticsPanelState {
   rawTime: RawTime;
   loadingDetails?: boolean;
   dimensionSearchText?: string;
+  database?: string;
 }
 
 export interface QueryAnalyticsContext {
