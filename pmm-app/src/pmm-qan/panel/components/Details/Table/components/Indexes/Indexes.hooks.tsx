@@ -12,7 +12,7 @@ interface StatusDataColumns {
 
 interface StatusData {
   columns: StatusDataColumns[];
-  rows: string[];
+  rows: object[];
 }
 
 const actionResult = {

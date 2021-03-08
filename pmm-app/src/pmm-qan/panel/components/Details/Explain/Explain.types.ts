@@ -18,6 +18,6 @@ interface ClassicExplainColumns {
 }
 
 export interface ClassicExplainInterface {
-  rows: string[];
+  rows: object[];
   columns: ClassicExplainColumns[];
 }
