@@ -81,8 +81,10 @@ export const Filters: FC = () => {
       <Input
         suffix={<Filter className={styles.icon} />}
         placeholder="Filter by..."
-        onChange={(e: any) => {
-          setFilter(e.target?.value);
+        onChange={(e: React.FormEvent<HTMLInputElement>) => {
+          const element = e.target as HTMLInputElement;
+
+          setFilter(element.value);
           e.stopPropagation();
         }}
         value={filter}

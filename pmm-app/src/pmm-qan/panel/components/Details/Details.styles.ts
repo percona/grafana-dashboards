@@ -29,5 +29,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         margin-top: 10px;
       }
     `,
+    closeDetailsButton: css`
+      margin-left: auto;
+      margin-right: 10px;
+      align-self: center;
+    `,
   };
 });

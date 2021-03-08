@@ -4,15 +4,26 @@ import { Databases } from 'shared/core';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
 
+interface StatusDataColumns {
+  Header: string;
+  key: string;
+  accessor: string;
+}
+
 interface StatusData {
-  columns: any[];
-  rows: any[];
+  columns: StatusDataColumns[];
+  rows: string[];
 }
 
 const actionResult = {
   error: '',
   loading: true,
   value: null,
+};
+
+const DATABASE_INSTANCES = {
+  [Databases.postgresql]: postgresqlMethods.getIndexes,
+  [Databases.mysql]: mysqlMethods.getIndexes,
 };
 
 export const useIndexes = (databaseType, example, tableName, database): [StatusData, ActionResult] => {
@@ -22,10 +33,10 @@ export const useIndexes = (databaseType, example, tableName, database): [StatusD
   const getIndexes = useCallback(async () => {
     let id;
 
-    if (databaseType === Databases.postgresql) {
-      id = await postgresqlMethods.getIndexes({ example, tableName, database });
-    } else if (databaseType === Databases.mysql) {
-      id = await mysqlMethods.getIndexes({ example, tableName, database });
+    const getIndexes = DATABASE_INSTANCES[databaseType];
+
+    if (getIndexes) {
+      id = await getIndexes({ example, tableName, database });
     }
 
     const result = await getActionResult(id);

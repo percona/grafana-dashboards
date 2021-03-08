@@ -113,7 +113,7 @@ export const DetailsSection: FC = () => {
               variant="secondary"
               size="sm"
               onClick={closeDetails}
-              style={{ marginLeft: 'auto', marginRight: '10px', alignSelf: 'center' }}
+              className={styles.closeDetailsButton}
             >
               {Messages.closeDetails}
             </Button>
