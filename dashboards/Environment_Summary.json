@@ -671,7 +671,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "avg by (node_name) (((clamp_max(avg by (node_name) (sum by (node_name,cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100 or\nsum by (node_name) (avg_over_time(node_cpu_average{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"total\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"total\"}[5m]))) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|external\",job=~\".*_hr-.*|^external-exporter.*\"})) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"}))",
+                    "expr": "avg by (node_name) (((clamp_max(avg by (node_name) (sum by (node_name,cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100 or\nsum by (node_name) (avg_over_time(node_cpu_average{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"total\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"total\"}[5m]))) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|external\",job=~\".*_hr-.*|^external-exporter.*\"})) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"} > 0))",
                     "interval": "$interval",
                     "legendFormat": "{{node_name}}",
                     "refId": "A"
@@ -776,7 +776,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "100 - avg by (node_name) ((((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} or\n(rdsosmetrics_memory_free{node_name=~\"$node_name\"} + rdsosmetrics_memory_buffers{node_name=~\"$node_name\"} + rdsosmetrics_memory_cached{node_name=~\"$node_name\"})/ rdsosmetrics_memory_total{node_name=~\"$node_name\"}) * 100) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"}))",
+                    "expr": "100 - avg by (node_name) ((((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} or\n(rdsosmetrics_memory_free{node_name=~\"$node_name\"} + rdsosmetrics_memory_buffers{node_name=~\"$node_name\"} + rdsosmetrics_memory_cached{node_name=~\"$node_name\"})/ rdsosmetrics_memory_total{node_name=~\"$node_name\"}) * 100) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"} > 0 ))",
                     "interval": "$interval",
                     "legendFormat": "{{node_name}}",
                     "refId": "A"
@@ -889,7 +889,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "100 - min by (node_name) (clamp_max((min by (node_name, environment) (node_filesystem_free_bytes{fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"}/\nnode_filesystem_size_bytes{fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"} > 0 )*100),100) * on(node_name) group_left(environment) avg by (node_name, environment) (up{service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\",environment!~\"\"}))",
+                    "expr": "100 - min by (node_name) (clamp_max((min by (node_name, environment) (node_filesystem_free_bytes{fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"}/\nnode_filesystem_size_bytes{fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"} > 0 )*100),100) * on(node_name) group_left(environment) avg by (node_name, environment) (up{service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\",environment!~\"\"} > 0 ))",
                     "interval": "$interval",
                     "legendFormat": "{{node_name}}",
                     "refId": "A"
@@ -991,7 +991,7 @@
             "targets": [
                 {
                     "datasource": "Metrics",
-                    "expr": "sum by(service_name)(max_over_time(mysql_global_status_threads_connected{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]) or \nlabel_replace(mysql_global_status_threads_connected{node_name=~\"$node_name\",node_type=\"remote\",environment=~\"$environment\"},\"node_name\",\"pmm-server\",\"\",\"\") or\nmax_over_time(mongodb_connections{node_name=~\"$node_name\",state=\"current\",environment=~\"$environment\"}[$interval]) or\nsum by (service_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval])))",
+                    "expr": "sum by(service_name)(max_over_time(mysql_global_status_threads_connected{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]) or \nlabel_replace(mysql_global_status_threads_connected{node_name=~\"$node_name\",node_type=\"remote\",environment=~\"$environment\"},\"node_name\",\"pmm-server\",\"\",\"\") or\nmax_over_time(mongodb_connections{node_name=~\"$node_name\",state=\"current\",environment=~\"$environment\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval])))",
                     "interval": "$interval",
                     "legendFormat": "{{service_name}}",
                     "refId": "A"
