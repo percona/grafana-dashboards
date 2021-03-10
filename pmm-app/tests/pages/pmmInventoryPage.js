@@ -2,7 +2,7 @@ const { I, pmmInventoryPage, inventoryAPI } = inject();
 const assert = require('assert');
 
 module.exports = {
-  url: 'graph/d/pmm-inventory/pmm-inventory?orgId=1',
+  url: 'graph/inventory?orgId=1',
   fields: {
     iframe: '//div[@class="panel-content"]//iframe',
     inventoryTable: '//table',

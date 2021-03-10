@@ -15,8 +15,8 @@ module.exports = {
     postgresql: 'postgresql_remote_new',
     proxysql: 'proxysql_remote_new',
   },
-  url: 'graph/d/pmm-add-instance/pmm-add-instance?orgId=1',
-  addMySQLRemoteURL: 'graph/d/pmm-add-instance/pmm-add-instance?instance_type=mysql',
+  url: 'graph/add-instance?orgId=1',
+  addMySQLRemoteURL: 'graph/add-instance?instance_type=mysql',
   rds: {
     'Service Name': 'rds-mysql56',
     Environment: 'RDS MySQL 5.6',
