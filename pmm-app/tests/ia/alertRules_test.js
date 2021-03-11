@@ -24,6 +24,7 @@ BeforeSuite(async ({
   await templatesAPI.clearAllTemplates();
   await channelsAPI.clearAllNotificationChannels();
   await templatesAPI.createRuleTemplate('tests/ia/templates/templateForRules.yaml');
+  await templatesAPI.createRuleTemplate('tests/ia/templates/range-empty.yaml');
   await channelsAPI.createNotificationChannel('EmailChannelForRules', ncPage.types.email.type);
 });
 
@@ -101,7 +102,7 @@ Scenario(
 );
 
 Data(rules).Scenario(
-  'PMM-T515 PMM-T543 PMM-T544 PMM-T545 PMM-T574 Create Alert rule @ia @not-pr-pipeline',
+  'PMM-T515 PMM-T543 PMM-T544 PMM-T545 PMM-T574 PMM-T596 Create Alert rule @ia @not-pr-pipeline',
   async ({
     I, alertRulesPage, current, rulesAPI,
   }) => {
