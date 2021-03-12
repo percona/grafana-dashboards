@@ -1,6 +1,6 @@
 const Helper = codecept_helper;
 const MailosaurClient = require('mailosaur');
-const { expect } = require('chai');
+const assert = require('assert');
 const faker = require('faker');
 
 class Mailosaur extends Helper {
@@ -30,8 +30,8 @@ class Mailosaur extends Helper {
 
   seeLinkInMessage(message, link) {
     link
-      ? expect(message.text.links[0].href).to.contain(link)
-      : expect(message.text.links).to.have.length;
+      ? assert.ok(message.text.links[0].href.contains(link))
+      : assert.ok(message.text.links.length);
   }
 
   async grabLinkFromMessage(message) {
@@ -59,7 +59,7 @@ class Mailosaur extends Helper {
   }
 
   seeTextInMessage(text, message) {
-    expect(message.text.body).to.contain(text);
+    assert.ok(message.text.body.contains(text));
   }
 }
 
