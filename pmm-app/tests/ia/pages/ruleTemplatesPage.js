@@ -2,7 +2,7 @@ const { I } = inject();
 const YAML = require('yaml');
 
 module.exports = {
-  url: 'graph/integrated-alerting',
+  url: 'graph/integrated-alerting/alert-rule-templates',
   columnHeaders: ['Name', 'Source', 'Created', 'Actions'],
   elements: {
     addedTemplate: '//td[text()="TemplateForAutomation"]/following-sibling::td[text()="User-defined (UI)"]',
