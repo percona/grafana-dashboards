@@ -18,6 +18,9 @@ module.exports = {
     rowsPerPage: locate('$pagination').find('div[class$="-singleValue"]'),
     rowsPerPageOption: (count) => locate('$pagination').find('[aria-label="Select option"] span').withText(count.toString()),
   },
+  messages: {
+    itemsShown: (leftNumber, rightNumber, totalItems) => `Showing ${leftNumber}-${rightNumber} of ${totalItems} items`,
+  },
 
   getCreateEntitiesAndPageUrl(page) {
     if (page === 'channels') {

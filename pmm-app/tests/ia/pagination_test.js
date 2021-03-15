@@ -150,7 +150,7 @@ Data(pages).Scenario(
 );
 
 Data(pages).Scenario(
-  'PMM-T662 PMM-T698 PMM-T702 Pagination rows per page persistence @ia @not-pr-pipeline',
+  'PMM-T662 PMM-T698 PMM-T702 PMM-T631 Pagination rows per page persistence @ia @not-pr-pipeline',
   async ({
     I, iaCommon, current,
   }) => {
@@ -194,12 +194,74 @@ Data(pages).Scenario(
     iaCommon.selectRowsPerPage(100);
     I.seeNumberOfElements(iaCommon.elements.rowInTable, 26);
     I.seeNumberOfElements(iaCommon.buttons.pageButton, 1);
+
+    // Create 75 entities more to have 101 in sum
+    await createEntities(75);
     I.refreshPage();
 
     // Verify 100 rows per page persists after refreshing a page
     I.waitForVisible(iaCommon.elements.pagination, 30);
     I.seeTextEquals('100', iaCommon.buttons.rowsPerPage);
-    I.seeNumberOfElements(iaCommon.elements.rowInTable, 26);
-    I.seeNumberOfElements(iaCommon.buttons.pageButton, 1);
+    I.seeNumberOfElements(iaCommon.elements.rowInTable, 100);
+    I.seeNumberOfElements(iaCommon.buttons.pageButton, 2);
+
+    // Go to 2nd page
+    I.click(locate(iaCommon.buttons.pageButton).at(2));
+
+    // Verify only 1 row on 2 page
+    I.waitForVisible(iaCommon.elements.rowInTable, 30);
+    I.seeTextEquals('100', iaCommon.buttons.rowsPerPage);
+    I.seeNumberOfElements(iaCommon.elements.rowInTable, 1);
+    I.seeNumberOfElements(iaCommon.buttons.pageButton, 2);
+  },
+);
+
+Data(pages).Scenario(
+  'PMM-T631 PMM-T633 Changing rows per page resets view to 1 page @ia @not-pr-pipeline',
+  async ({
+    I, iaCommon, current,
+  }) => {
+    const isTemplatesPage = current.page === 'templates';
+    const { createEntities, url } = iaCommon.getCreateEntitiesAndPageUrl(current.page);
+
+    // Create entities for to have 2 pages
+    isTemplatesPage
+      ? await createEntities(89)
+      : await createEntities(101);
+
+    I.amOnPage(url);
+
+    // Verify '25' rows per page is selected by default
+    I.waitForVisible(iaCommon.elements.pagination, 30);
+    I.seeTextEquals('25', iaCommon.buttons.rowsPerPage);
+    I.seeTextEquals(iaCommon.messages.itemsShown(1, 25, 101), iaCommon.elements.itemsShown);
+
+    // Go to 2nd page
+    I.click(locate(iaCommon.buttons.pageButton).at(2));
+
+    I.seeTextEquals(iaCommon.messages.itemsShown(26, 50, 101), iaCommon.elements.itemsShown);
+
+    // Change rows per page to '50'
+    iaCommon.selectRowsPerPage(50);
+    I.seeTextEquals('50', iaCommon.buttons.rowsPerPage);
+
+    I.seeTextEquals(iaCommon.messages.itemsShown(1, 50, 101), iaCommon.elements.itemsShown);
+
+    I.click(locate(iaCommon.buttons.pageButton).at(2));
+
+    I.seeTextEquals(iaCommon.messages.itemsShown(51, 100, 101), iaCommon.elements.itemsShown);
+
+    // Change rows per page to '100'
+    iaCommon.selectRowsPerPage(100);
+    I.seeTextEquals('100', iaCommon.buttons.rowsPerPage);
+
+    I.seeTextEquals(iaCommon.messages.itemsShown(1, 100, 101), iaCommon.elements.itemsShown);
+
+    I.click(locate(iaCommon.buttons.pageButton).at(2));
+
+    I.seeNumberOfElements(iaCommon.elements.rowInTable, 1);
+    I.seeNumberOfElements(iaCommon.buttons.pageButton, 2);
+
+    I.seeTextEquals(iaCommon.messages.itemsShown(101, 101, 101), iaCommon.elements.itemsShown);
   },
 );
