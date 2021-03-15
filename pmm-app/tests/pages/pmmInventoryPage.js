@@ -65,6 +65,15 @@ module.exports = {
     }
   },
 
+  async getNotRunningAgentsServiceId() {
+    let serviceIDs = await I.grabTextFromAll('//span[contains(text(), \'status: WAITING\')]/preceding-sibling::span[contains(text(), \'service_id:\')]');
+
+    serviceIDs = serviceIDs.concat(await I.grabTextFromAll('//span[contains(text(), \'status: STARTING\')]/preceding-sibling::span[contains(text(), \'service_id:\')]'));
+    serviceIDs = serviceIDs.concat(await I.grabTextFromAll('//span[contains(text(), \'status: UNKNOWN\')]/preceding-sibling::span[contains(text(), \'service_id:\')]'));
+
+    return serviceIDs;
+  },
+
   async verifyMetricsFlags(serviceName) {
     const servicesLink = this.fields.pmmServicesSelector;
     const agentLinkLocator = this.fields.agentsLink;

@@ -154,7 +154,8 @@ Scenario(
     const countOfRunning = await pmmInventoryPage.getCountOfRunningAgents();
     // Need countOfPMMAgentType because agents that have Type PMM Agent don't have status. We need subtract it
     const countOfPMMAgentType = await pmmInventoryPage.getCountOfPMMAgents();
+    const serviceIdsNotRunning = await pmmInventoryPage.getNotRunningAgentsServiceId();
 
-    assert.ok(countOfAllAgents - countOfPMMAgentType === countOfRunning, 'Some agents are not Running! Check the statuses!');
+    assert.ok(countOfAllAgents - countOfPMMAgentType === countOfRunning, `Some agents are not Running! ${serviceIdsNotRunning}`);
   },
 );
