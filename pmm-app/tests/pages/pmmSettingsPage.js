@@ -135,7 +135,7 @@ module.exports = {
   fields: {
     advancedLabel: '$advanced-label',
     advancedButton: '$advanced-button',
-    addAlertRuleButton: '//span[text()="Apply Alertmanager settings"]/parent::button',
+    addAlertRuleButton: '//span[text()="Apply Alertmanager settings"]/parent::span',
     alertRulesInput: '$alertmanager-rules',
     alertURLInput: '$alertmanager-url',
     alertingRules: locateLabel('form-field-alerting-rules'),
