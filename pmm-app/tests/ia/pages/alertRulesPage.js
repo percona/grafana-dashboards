@@ -3,12 +3,12 @@ const rulesNameCell = (ruleName) => `//td[1][div[text()="${ruleName}"]]`;
 
 module.exports = {
   url: 'graph/integrated-alerting',
-  columnHeaders: ['Name', 'Threshold', 'Duration', 'Severity', 'Filters', 'Created', 'Actions'],
+  columnHeaders: ['Name', 'Parameters', 'Duration', 'Severity', 'Filters', 'Created', 'Actions'],
   rules: [{
     template: 'PostgreSQL connections in use',
     templateType: 'BUILT_IN',
     ruleName: 'Rule with BUILT_IN template (activated, without channels)',
-    threshold: '200',
+    threshold: '100',
     duration: '1',
     severity: 'Warning',
     filters: 'service_name=pmm-server-postgresql',
@@ -18,7 +18,7 @@ module.exports = {
     template: 'PostgreSQL connections in use',
     templateType: 'BUILT_IN',
     ruleName: 'Rule with BUILT_IN template (not activated, without channels)',
-    threshold: '200',
+    threshold: '100',
     duration: '1',
     severity: 'Critical',
     filters: 'service_name=pmm-server-postgresql',
@@ -28,7 +28,7 @@ module.exports = {
     template: 'PostgreSQL connections in use',
     templateType: 'BUILT_IN',
     ruleName: 'Rule with BUILT_IN template (activated, with channels)',
-    threshold: '200',
+    threshold: '100',
     duration: '1',
     severity: 'High',
     filters: 'service_name=pmm-server-postgresql',
@@ -38,7 +38,7 @@ module.exports = {
     template: 'PostgreSQL connections in use',
     templateType: 'BUILT_IN',
     ruleName: 'Rule with BUILT_IN template (not activated, with channels)',
-    threshold: '200',
+    threshold: '100',
     duration: '1',
     severity: 'Notice',
     filters: 'service_name=pmm-server-postgresql',
@@ -48,7 +48,7 @@ module.exports = {
     template: 'E2E TemplateForRules YAML',
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template (activated, without channels)',
-    threshold: '200',
+    threshold: '100',
     duration: '1',
     severity: 'Warning',
     filters: 'service_name=pmm-server-postgresql',
@@ -58,7 +58,7 @@ module.exports = {
     template: 'E2E TemplateForRules YAML',
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template (not activated, without channels)',
-    threshold: '200',
+    threshold: '100',
     duration: '1',
     severity: 'Critical',
     filters: 'service_name=pmm-server-postgresql',
@@ -68,7 +68,7 @@ module.exports = {
     template: 'E2E TemplateForRules YAML',
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template (activated, with channels)',
-    threshold: '200',
+    threshold: '100',
     duration: '1',
     severity: 'High',
     filters: 'service_name=pmm-server-postgresql',
@@ -78,7 +78,7 @@ module.exports = {
     template: 'E2E TemplateForRules YAML',
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template (not activated, with channels)',
-    threshold: '200',
+    threshold: '100',
     duration: '1',
     severity: 'Notice',
     filters: 'service_name=pmm-server-postgresql',
@@ -124,7 +124,7 @@ module.exports = {
     // activateSwitch returns enable/disabled rule switch locator which holds the state (enabled or disabled)
     // Note: not clickable one
     activateSwitch: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td//input[@data-qa='toggle-alert-rule']`,
-    thresholdCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[1]`,
+    parametersCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[1]`,
     durationCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[2]`,
     severityCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[3]`,
     filtersCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[4]//span`,
@@ -161,7 +161,7 @@ module.exports = {
     // resultsLocator returns item locator in a search dropdown based on a text
     resultsLocator: (name) => `//div[@aria-label="Select option"]//span[text()="${name}"]`,
     ruleName: '$name-text-input',
-    threshold: '$threshold-text-input',
+    threshold: '$threshold-number-input',
     duration: '$duration-number-input',
     filters: '$filters-textarea-input',
   },
@@ -227,7 +227,7 @@ module.exports = {
     } = ruleObj;
 
     I.seeElement(this.elements.rulesNameCell(ruleName));
-    I.see(`${threshold} %`, this.elements.thresholdCell(ruleName));
+    I.see(`${threshold} %`, this.elements.parametersCell(ruleName));
     I.see(`${duration} seconds`, this.elements.durationCell(ruleName));
     I.see(severity, this.elements.severityCell(ruleName));
     I.see(filters, this.elements.filtersCell(ruleName));
