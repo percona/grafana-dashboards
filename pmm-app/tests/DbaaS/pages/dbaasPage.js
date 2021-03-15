@@ -1,4 +1,4 @@
-const { I } = inject();
+const { I, dbaasAPI, adminPage } = inject();
 const assert = require('assert');
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
       clusterConfigurationText: '//div[@data-qa="pmm-overlay-wrapper"]//pre',
       copyToClipboardButton: '//span[contains(text(), "Copy to clipboard")]',
       disabledAddButton: '//button[@data-qa="kubernetes-add-cluster-button" and @disabled]',
-      forceUnreigsterCheckBox: '.checkbox-container__checkmark',
+      forceUnreigsterCheckBox: locate('$force-field-container').find('span').at(1),
       kubeconfigFileInput: '//textarea[@data-qa="kubeConfig-textarea-input"]',
       kubernetesAddButton: '$kubernetes-add-cluster-button',
       kubernetesClusterNameInput: '$name-text-input',
@@ -60,6 +60,8 @@ module.exports = {
           clusterTopology: (type) => `//input[@data-qa='topology-radio-button']/../label[contains(text(), '${type}')]`,
           dbClusterResourceFieldLabel: '$resources-field-label',
           dbClusterTopologyFieldLabel: '$topology-field-label',
+          dbClusterResourcesBarMemory: '$dbcluster-resources-bar-memory',
+          dbClusterResourcesBarCpu: '$dbcluster-resources-bar-cpu',
           diskFieldErrorMessage: '$disk-field-error-message',
           diskSizeInputField: '$disk-number-input',
           memoryField: '$memory-number-input',
@@ -70,6 +72,7 @@ module.exports = {
         },
       },
       fields: {
+        clusterDetailHeaders: ['Name', 'Database Type', 'Connection', 'DB Cluster Parameters', 'Cluster Status', 'Actions'],
         clusterAction: (action) => `//div[@data-qa='dropdown-menu-menu']//span[contains(text(), '${action}')]`,
         clusterConnection: {
           dbHost: '$cluster-connection-host',
@@ -77,22 +80,24 @@ module.exports = {
           dbUsername: '$cluster-connection-username',
           dbPassword: '$cluster-connection-password',
           showPasswordButton: '$show-password-button',
-          dbPasswordValue: '//div[@data-qa="cluster-connection-password"]//span[2]',
         },
         clusterParameters: {
-          clusterParametersFailedValue: '$cluster-parameters-failed',
           clusterParametersClusterName: '$cluster-parameters-cluster-name',
           clusterParametersCPU: '$cluster-parameters-cpu',
           clusterParametersMemory: '$cluster-parameters-memory',
           clusterParametersDisk: '$cluster-parameters-disk',
         },
+        clusterParametersFailedValue: '$cluster-parameters-failed',
         clusterConnectionColumn: '//tr[@data-qa="table-row"]//td[3]',
         clusterConnectionLoading: '$cluster-connection-loading',
+        clusterDBPasswordValue: locate('$cluster-connection-password').find('span').at(2),
         clusterDatabaseType: '//tr[@data-qa="table-row"]//td[2]',
         clusterName: '//tr[@data-qa="table-row"]//td[1]//span',
+        clusterSummaryDashboard: '//tr[@data-qa="table-row"]//td[1]//a',
         clusterStatusActive: '$cluster-status-active',
         clusterStatusPending: '$cluster-status-pending',
         clusterStatusDeleting: '$cluster-status-deleting',
+        clusterTableHeader: '//tr[@data-qa="table-header"]//th',
         clusterTableRow: '$table-row',
         clusterActionsMenu: '$dropdown-menu-toggle',
         deleteDBClusterButton: '$delete-dbcluster-button',
@@ -120,6 +125,12 @@ module.exports = {
     I.waitForText(message, 10);
   },
 
+  seeErrorForAddedDBCluster(dbClusterName) {
+    const message = `Cluster '${dbClusterName}' already exists`;
+
+    I.waitForText(message, 10);
+  },
+
   registerKubernetesCluster(clusterName, config) {
     I.click(this.tabs.kubernetesClusterTab.addKubernetesClusterButton);
     I.fillField(this.tabs.kubernetesClusterTab.kubernetesClusterNameInput, clusterName);
@@ -129,12 +140,17 @@ module.exports = {
     I.click(this.tabs.kubernetesClusterTab.kubernetesAddButton);
   },
 
-  unregisterCluster(clusterName) {
+  unregisterCluster(clusterName, force = false) {
     I.waitForVisible(this.tabs.kubernetesClusterTab.actionsLocator(clusterName), 30);
     I.click(this.tabs.kubernetesClusterTab.actionsLocator(clusterName));
     I.waitForElement(this.tabs.kubernetesClusterTab.unregisterButton, 30);
     I.click(this.tabs.kubernetesClusterTab.unregisterButton);
     I.waitForText(this.confirmDeleteText, 10);
+    if (force) {
+      I.waitForElement(this.tabs.kubernetesClusterTab.forceUnreigsterCheckBox, 30);
+      I.click(this.tabs.kubernetesClusterTab.forceUnreigsterCheckBox);
+    }
+
     I.click(this.tabs.kubernetesClusterTab.proceedButton);
     I.waitForText(this.deletedAlertMessage, 10);
   },
@@ -152,5 +168,106 @@ module.exports = {
     } else {
       assert.notStrictEqual(actionClass, null, `User Should not be able to Perform ${actionName} on the DB Cluster`);
     }
+  },
+
+  async verifyElementInSection(section) {
+    for (const element in section) {
+      I.waitForElement(section[element], 30);
+      I.seeElement(section[element]);
+      if (element !== 'showPasswordButton') {
+        I.seeElement(locate(section[element]).find('span').at(2));
+      }
+    }
+  },
+
+  async createClusterBasicOptions(k8sClusterName, dbClusterName, dbType) {
+    const dbaasPage = this;
+
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
+    I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, 30);
+    I.fillField(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, dbClusterName);
+    I.click(dbaasPage.tabs.dbClusterTab.basicOptions.fields.kubernetesClusterDropDown);
+    I.waitForElement(
+      dbaasPage.tabs.dbClusterTab.basicOptions.fields.kubernetesClusterDropDownSelect(k8sClusterName),
+      30,
+    );
+    I.click(dbaasPage.tabs.dbClusterTab.basicOptions.fields.kubernetesClusterDropDownSelect(k8sClusterName));
+    I.click(dbaasPage.tabs.dbClusterTab.basicOptions.fields.dbClusterDatabaseTypeField);
+    I.waitForElement(
+      dbaasPage.tabs.dbClusterTab.basicOptions.fields.dbClusterDatabaseTypeFieldSelect(dbType),
+    );
+    I.click(dbaasPage.tabs.dbClusterTab.basicOptions.fields.dbClusterDatabaseTypeFieldSelect(dbType));
+  },
+
+  async createClusterAdvancedOption(k8sClusterName, dbClusterName, dbType, configuration) {
+    const dbaasPage = this;
+
+    this.createClusterBasicOptions(k8sClusterName, dbClusterName, dbType);
+    I.click(dbaasPage.tabs.dbClusterTab.optionsCountLocator(2));
+    I.waitForElement(
+      dbaasPage.tabs.dbClusterTab.advancedOptions.fields.clusterTopology(configuration.topology), 30,
+    );
+    I.click(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.clusterTopology(configuration.topology));
+    if (configuration.resourcePerNode === 'Custom') {
+      I.click(
+        dbaasPage.tabs.dbClusterTab.advancedOptions.fields.resourcesPerNode(configuration.resourcePerNode),
+      );
+      adminPage.customClearField(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryField);
+      I.fillField(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryField, configuration.memory);
+      adminPage.customClearField(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuNumberFields);
+      I.fillField(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuNumberFields, configuration.cpu);
+      adminPage.customClearField(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.diskSizeInputField);
+      I.fillField(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.diskSizeInputField, configuration.disk);
+    }
+  },
+
+  async postClusterCreationValidation(dbClusterName, k8sClusterName) {
+    const dbaasPage = this;
+
+    I.click(dbaasPage.tabs.dbClusterTab.fields.clusterActionsMenu);
+    await dbaasPage.checkActionPossible('Delete', true);
+    await dbaasPage.checkActionPossible('Edit', false);
+    await dbaasPage.checkActionPossible('Restart', false);
+    await dbaasPage.checkActionPossible('Resume', false);
+    await dbaasAPI.waitForXtraDbClusterReady(dbClusterName, k8sClusterName);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterStatusActive, 60);
+    I.seeElement(dbaasPage.tabs.dbClusterTab.fields.clusterStatusActive);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterConnection.showPasswordButton, 30);
+    I.click(dbaasPage.tabs.dbClusterTab.fields.clusterConnection.showPasswordButton);
+    I.click(dbaasPage.tabs.dbClusterTab.fields.clusterActionsMenu);
+    await dbaasPage.checkActionPossible('Delete', true);
+    await dbaasPage.checkActionPossible('Edit', true);
+    await dbaasPage.checkActionPossible('Restart', true);
+    await dbaasPage.checkActionPossible('Suspend', true);
+    I.click(dbaasPage.tabs.dbClusterTab.fields.clusterActionsMenu);
+  },
+
+  async waitForDbClusterTab(clusterName) {
+    const dbaasPage = this;
+
+    I.amOnPage(dbaasPage.url);
+    dbaasPage.checkCluster(clusterName, false);
+    I.click(dbaasPage.tabs.dbClusterTab.dbClusterTab);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
+  },
+
+  async deleteXtraDBCluster(dbClusterName, k8sClusterName) {
+    const dbaasPage = this;
+
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterTableHeader, 30);
+    I.click(dbaasPage.tabs.dbClusterTab.fields.clusterActionsMenu);
+    await dbaasPage.checkActionPossible('Delete', true);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterAction('Delete'), 30);
+    I.click(dbaasPage.tabs.dbClusterTab.fields.clusterAction('Delete'));
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.deleteDBClusterButton, 30);
+    I.seeElement(dbaasPage.tabs.dbClusterTab.fields.cancelDeleteDBCluster, 30);
+    I.seeTextEquals(
+      dbaasPage.tabs.dbClusterTab.deleteDbClusterConfirmationText(dbClusterName, k8sClusterName, 'MySQL'),
+      dbaasPage.tabs.kubernetesClusterTab.modalContentText,
+    );
+    I.click(dbaasPage.tabs.dbClusterTab.fields.deleteDBClusterButton);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterStatusDeleting, 30);
+    await dbaasAPI.waitForXtraDbClusterDeleted(dbClusterName, k8sClusterName);
   },
 };
