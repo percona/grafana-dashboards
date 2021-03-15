@@ -5,8 +5,8 @@ const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 
 module.exports = {
   url: 'graph/settings',
-  advancedSettingsUrl: 'graph/settings?menu=advanced-settings',
-  communicationSettingsUrl: 'graph/settings?menu=communication',
+  advancedSettingsUrl: 'graph/settings/advanced-settings',
+  communicationSettingsUrl: 'graph/settings/communication',
   prometheusAlertUrl: '/prometheus/rules',
   stateOfAlertsUrl: '/prometheus/alerts',
   diagnosticsText:
