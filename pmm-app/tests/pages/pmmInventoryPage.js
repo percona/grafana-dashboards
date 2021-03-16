@@ -65,11 +65,9 @@ module.exports = {
     }
   },
 
-  async getNotRunningAgentsServiceId() {
-    let serviceIDs = await I.grabTextFromAll('//span[contains(text(), \'status: WAITING\')]/preceding-sibling::span[contains(text(), \'service_id:\')]');
-
-    serviceIDs = serviceIDs.concat(await I.grabTextFromAll('//span[contains(text(), \'status: STARTING\')]/preceding-sibling::span[contains(text(), \'service_id:\')]'));
-    serviceIDs = serviceIDs.concat(await I.grabTextFromAll('//span[contains(text(), \'status: UNKNOWN\')]/preceding-sibling::span[contains(text(), \'service_id:\')]'));
+  async getNotRunningAgentsServiceId(status) {
+    const locator = locate('span').withText('service_id:').before(locate('span').withText(`status: ${status}`));
+    const serviceIDs = await I.grabTextFromAll(locator);
 
     return serviceIDs;
   },

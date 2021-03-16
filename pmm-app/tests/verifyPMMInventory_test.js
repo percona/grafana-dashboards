@@ -147,6 +147,10 @@ Scenario(
 Scenario(
   'PMM-T554 - Check that all agents have status "RUNNING" @not-pr-pipeline @nightly',
   async ({ I, pmmInventoryPage }) => {
+    const status = ['WAITING', 'STARTING', 'UNKNOWN'];
+    let serviceIDs;
+    let serviceIdsNotRunning = [];
+
     I.amOnPage(pmmInventoryPage.url);
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
     I.click(pmmInventoryPage.fields.agentsLink);
@@ -154,8 +158,13 @@ Scenario(
     const countOfRunning = await pmmInventoryPage.getCountOfRunningAgents();
     // Need countOfPMMAgentType because agents that have Type PMM Agent don't have status. We need subtract it
     const countOfPMMAgentType = await pmmInventoryPage.getCountOfPMMAgents();
-    const serviceIdsNotRunning = await pmmInventoryPage.getNotRunningAgentsServiceId();
 
+    for (let i = 0; i < status.length; i++) {
+      serviceIDs = await pmmInventoryPage.getNotRunningAgentsServiceId(status[i]);
+      serviceIdsNotRunning = serviceIdsNotRunning.concat(serviceIDs);
+    }
+
+    console.log(serviceIdsNotRunning);
     assert.ok(countOfAllAgents - countOfPMMAgentType === countOfRunning, `Some agents are not Running! ${serviceIdsNotRunning}`);
   },
 );
