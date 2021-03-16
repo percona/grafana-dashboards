@@ -2,7 +2,7 @@ const { I } = inject();
 const assert = require('assert');
 
 module.exports = {
-  url: 'graph/integrated-alerting',
+  url: 'graph/integrated-alerting/notification-channels',
   types: {
     email: {
       name: 'Email Channel',
@@ -24,7 +24,7 @@ module.exports = {
     notificationChannelsTab: '//li[@aria-label="Tab Notification Channels"]',
     channelInTable: (name, type) => `//td[text()="${name}"]/following-sibling::td[text()="${type}"]`,
     templatesTableHeader: '$alert-rule-templates-table-thead',
-    noChannels: '[data-qa=table-no-data] > h1',
+    noData: locate('$table-no-data').find('h1'),
     nameFieldLabel: '$name-field-label',
     modalHeader: '$modal-header',
     modalContent: '$modal-content',
