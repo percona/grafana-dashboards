@@ -5,7 +5,7 @@ Feature('Inventory page');
 Before(async ({ I }) => {
   I.Authorize();
 });
-
+/*
 Scenario(
   'PMM-T371 - Verify sorting in Inventory page(Services tab) @not-pr-pipeline @not-ui-pipeline @nightly',
   async ({ I, pmmInventoryPage }) => {
@@ -143,13 +143,14 @@ Scenario(
     await pmmInventoryPage.checkAllNotDeletedAgents(countBefore);
   },
 );
-
+*/
 Scenario(
   'PMM-T554 - Check that all agents have status "RUNNING" @not-pr-pipeline @nightly',
-  async ({ I, pmmInventoryPage }) => {
+  async ({ I, pmmInventoryPage, inventoryAPI }) => {
     const status = ['WAITING', 'STARTING', 'UNKNOWN'];
     let serviceIDs;
     let serviceIdsNotRunning = [];
+    let servicesNotRunning = [];
 
     I.amOnPage(pmmInventoryPage.url);
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
@@ -164,7 +165,11 @@ Scenario(
       serviceIdsNotRunning = serviceIdsNotRunning.concat(serviceIDs);
     }
 
-    console.log(serviceIdsNotRunning);
-    assert.ok(countOfAllAgents - countOfPMMAgentType === countOfRunning, `Some agents are not Running! ${serviceIdsNotRunning}`);
+    for (const id of serviceIdsNotRunning) {
+      const service = await inventoryAPI.getServiceById(id);
+      servicesNotRunning.push(...service);
+    }
+    assert.fail(`These services do not have RUNNING state: \n ${JSON.stringify(servicesNotRunning)}`);
+
   },
 );

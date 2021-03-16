@@ -66,8 +66,16 @@ module.exports = {
   },
 
   async getNotRunningAgentsServiceId(status) {
+    let agents = [];
     const locator = locate('span').withText('service_id:').before(locate('span').withText(`status: ${status}`));
     const serviceIDs = await I.grabTextFromAll(locator);
+
+    for (let i = 0; i < serviceIDs.length; i++) {
+      agents = agents.concat(await inventoryAPI.apiGetAgents(serviceIDs[i].slice(12, serviceIDs[i].lenght)));
+      console.log(serviceIDs[i].slice(12, serviceIDs[i].lenght));
+    }
+
+    console.log(agents);
 
     return serviceIDs;
   },
