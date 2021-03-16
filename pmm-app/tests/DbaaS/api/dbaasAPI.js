@@ -48,7 +48,7 @@ module.exports = {
 
     assert.ok(
       response.status === 200,
-      `Failed to delete pxc cluster with name "${dbClusterName}". Response message is "${response.data.message}"`,
+      `Failed to delete MongoDB cluster with name "${dbClusterName}". Response message is "${response.data.message}"`,
     );
   },
 
