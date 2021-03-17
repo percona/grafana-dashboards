@@ -25,7 +25,7 @@ Before(async ({ I, dbaasAPI }) => {
   }
 });
 
-Scenario('PSMDB Cluster with Custom Resources @dbaas @not-pr-pipeline',
+Scenario('PMM-T642 PMM-T484 PSMDB Cluster with Custom Resources, Verify MongoDB Cluster can be restarted @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage }) => {
     const configuration = {
       topology: 'Cluster',
@@ -44,6 +44,8 @@ Scenario('PSMDB Cluster with Custom Resources @dbaas @not-pr-pipeline',
     I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);
     await dbaasPage.postClusterCreationValidation(psmdb_cluster, clusterName, 'MongoDB');
     await dbaasPage.validateClusterDetail(psmdb_cluster, clusterName, configuration);
+    await dbaasPage.restartCluster(psmdb_cluster, clusterName, 'MongoDB');
+    await dbaasPage.validateClusterDetail(psmdb_cluster, clusterName, configuration);
     await dbaasPage.deletePSMDBCluster(psmdb_cluster, clusterName);
   });
 
@@ -61,7 +63,7 @@ async ({ I, dbaasPage }) => {
 Scenario('PMM-T459, PMM-T473, PMM-T478 Verify DB Cluster Details are listed, shortcut link for DB Cluster, Show/Hide password button @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage }) => {
     const clusterDetails = {
-      clusterDashboardRedirectionLink: '/graph/d/pxc-cluster-summary/pxc-galera-cluster-summary?var-cluster=pxc-dbcluster-pxc',
+      clusterDashboardRedirectionLink: `/graph/d/pxc-cluster-summary/pxc-galera-cluster-summary?var-cluster=${pxc_cluster_name}-pxc`,
       dbType: 'MySQL',
       memory: '2 GB',
       cpu: '1',
@@ -70,6 +72,8 @@ Scenario('PMM-T459, PMM-T473, PMM-T478 Verify DB Cluster Details are listed, sho
 
     await dbaasPage.waitForDbClusterTab(clusterName);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterTableHeader, 30);
+    await dbaasPage.validateClusterDetail(pxc_cluster_name, clusterName, clusterDetails);
+    await dbaasPage.restartCluster(pxc_cluster_name, clusterName, 'MySQL');
     await dbaasPage.validateClusterDetail(pxc_cluster_name, clusterName, clusterDetails);
   });
 
