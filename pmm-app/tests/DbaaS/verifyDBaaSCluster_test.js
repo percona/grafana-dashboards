@@ -100,7 +100,7 @@ Scenario('PMM-T524 Delete PXC Cluster and Unregister K8s Cluster @dbaas @not-pr-
     await dbaasPage.deleteXtraDBCluster(pxc_cluster_name, clusterName);
   });
 
-Scenario('Single Node PXC Cluster with Custom Resources @dbaas @not-pr-pipeline',
+Scenario('PMM-T640 Single Node PXC Cluster with Custom Resources @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage }) => {
     const configuration = {
       topology: 'Single',
