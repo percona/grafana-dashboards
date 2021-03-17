@@ -26,7 +26,7 @@ Before(async ({ I, dbaasAPI }) => {
 
 // These test covers a lot of cases, will be refactored and changed in terms of flow, this is initial setup
 
-Scenario('PMM-T642 PMM-T484 PMM-T477 PSMDB Cluster with Custom Resources, Verify MongoDB Cluster can be restarted @dbaas @not-pr-pipeline',
+Scenario('PMM-T642 PMM-T484 PMM-T477 PMM-T461 PSMDB Cluster with Custom Resources, Verify MongoDB Cluster can be restarted @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage }) => {
     const configuration = {
       topology: 'Cluster',

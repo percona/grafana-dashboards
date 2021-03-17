@@ -171,8 +171,6 @@ module.exports = {
     }
 
     I.click(this.tabs.kubernetesClusterTab.proceedButton);
-
-    //
   },
 
   verifyInputValidationMessages(field, value, errorField, message) {
@@ -285,7 +283,7 @@ module.exports = {
 
     I.amOnPage(dbaasPage.url);
     dbaasPage.checkCluster(k8sClusterName, false);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
+    I.waitForElement(dbaasPage.tabs.kubernetesClusterTab.addKubernetesClusterButton, 30);
   },
 
   async deleteXtraDBCluster(dbClusterName, k8sClusterName) {
