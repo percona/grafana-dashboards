@@ -35,7 +35,7 @@ Scenario('PSMDB Cluster with Custom Resources @dbaas @not-pr-pipeline',
       cpu: '2',
       disk: '5 GB',
       dbType: 'MongoDB',
-      clusterDashboardRedirectionLink: `/graph/d/mongodb-cluster-summary/mongodb-cluster-summary?var-cluster=${psmdb_cluster_name_single}`,
+      clusterDashboardRedirectionLink: `/graph/d/mongodb-cluster-summary/mongodb-cluster-summary?var-cluster=${psmdb_cluster}`,
     };
 
     await dbaasPage.waitForDbClusterTab(clusterName);
