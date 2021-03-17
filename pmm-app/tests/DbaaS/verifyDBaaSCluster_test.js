@@ -3,7 +3,6 @@ const clusterName = 'Kubernetes_Testing_Cluster_Minikube';
 const pxc_cluster_name = 'pxc-dbcluster';
 const pxc_cluster_name_single = 'pxc-singlenode';
 const psmdb_cluster = 'psmdb-cluster';
-const psmdb_cluster_name_single = 'psmdb-singlenode';
 
 Feature('Test the functionality for PXC/MongoDB Cluster Creation, Modifications, Actions, Verification tests');
 
