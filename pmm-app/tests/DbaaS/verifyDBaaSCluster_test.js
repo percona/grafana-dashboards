@@ -5,7 +5,7 @@ const pxc_cluster_name_single = 'pxc-singlenode';
 const psmdb_cluster = 'psmdb-cluster';
 const psmdb_cluster_name_single = 'psmdb-singlenode';
 
-Feature('Test the functionality for PXC Cluster Creation, Modifications, Actions, Verification tests');
+Feature('Test the functionality for PXC/MongoDB Cluster Creation, Modifications, Actions, Verification tests');
 
 
 BeforeSuite(async ({ dbaasAPI }) => {
@@ -24,6 +24,28 @@ Before(async ({ I, dbaasAPI }) => {
     await dbaasAPI.apiRegisterCluster(process.env.kubeconfig_minikube, clusterName);
   }
 });
+
+Scenario('PSMDB Cluster with Custom Resources @dbaas @not-pr-pipeline',
+  async ({ I, dbaasPage }) => {
+    const configuration = {
+      topology: 'Cluster',
+      numberOfNodes: '1',
+      resourcePerNode: 'Custom',
+      memory: '2 GB',
+      cpu: '2',
+      disk: '5 GB',
+      dbType: 'MongoDB',
+      clusterDashboardRedirectionLink: `/graph/d/mongodb-cluster-summary/mongodb-cluster-summary?var-cluster=${psmdb_cluster_name_single}`,
+    };
+
+    await dbaasPage.waitForDbClusterTab(clusterName);
+    await dbaasPage.createClusterAdvancedOption(clusterName, psmdb_cluster, 'MongoDB', configuration);
+    I.click(dbaasPage.tabs.dbClusterTab.createClusterButton);
+    I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);
+    await dbaasPage.postClusterCreationValidation(psmdb_cluster, clusterName, 'MongoDB');
+    await dbaasPage.validateClusterDetail(psmdb_cluster, clusterName, configuration);
+    await dbaasPage.deletePSMDBCluster(psmdb_cluster, clusterName);
+  });
 
 // This test covers a lot of cases, will be refactored and changed in terms of flow, this is initial setup
 Scenario('PMM-T455 PMM-T575 Verify that Advanced Options are optional for DB Cluster Creation, '
@@ -94,26 +116,4 @@ Scenario('Single Node PXC Cluster with Custom Resources @dbaas @not-pr-pipeline'
     await dbaasPage.postClusterCreationValidation(pxc_cluster_name_single, clusterName);
     await dbaasPage.validateClusterDetail(pxc_cluster_name_single, clusterName, configuration);
     await dbaasPage.deleteXtraDBCluster(pxc_cluster_name_single, clusterName);
-  });
-
-Scenario('PSMDB Cluster with Custom Resources @dbaas @not-pr-pipeline',
-  async ({ I, dbaasPage }) => {
-    const configuration = {
-      topology: 'Cluster',
-      numberOfNodes: '1',
-      resourcePerNode: 'Custom',
-      memory: '2 GB',
-      cpu: '2',
-      disk: '5 GB',
-      dbType: 'MongoDB',
-      clusterDashboardRedirectionLink: `/graph/d/mongodb-cluster-summary/mongodb-cluster-summary?var-cluster=${psmdb_cluster_name_single}`,
-    };
-
-    await dbaasPage.waitForDbClusterTab(clusterName);
-    await dbaasPage.createClusterAdvancedOption(clusterName, psmdb_cluster, 'MongoDB', configuration);
-    I.click(dbaasPage.tabs.dbClusterTab.createClusterButton);
-    I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);
-    await dbaasPage.postClusterCreationValidation(psmdb_cluster, clusterName, 'MongoDB');
-    await dbaasPage.validateClusterDetail(psmdb_cluster, clusterName, configuration);
-    await dbaasPage.deletePSMDBCluster(psmdb_cluster, clusterName);
   });
