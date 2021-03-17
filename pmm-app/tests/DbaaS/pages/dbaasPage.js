@@ -6,6 +6,7 @@ module.exports = {
   addedAlertMessage: 'Cluster was successfully registered',
   confirmDeleteText: 'Are you sure that you want to unregister this cluster?',
   deletedAlertMessage: 'Cluster successfully unregistered',
+  failedUnregisterCluster: (clusterName, dbType) => `Kubernetes cluster ${clusterName} has ${dbType} clusters`,
   configurationCopiedMessage: 'Copied',
   monitoringWarningMessage: 'If you want to use monitoring, you need to set your PMM installation public address in',
   requiredFieldError: 'Required field',
@@ -170,7 +171,8 @@ module.exports = {
     }
 
     I.click(this.tabs.kubernetesClusterTab.proceedButton);
-    I.waitForText(this.deletedAlertMessage, 10);
+
+    //
   },
 
   verifyInputValidationMessages(field, value, errorField, message) {
@@ -275,6 +277,14 @@ module.exports = {
     I.amOnPage(dbaasPage.url);
     dbaasPage.checkCluster(clusterName, false);
     I.click(dbaasPage.tabs.dbClusterTab.dbClusterTab);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
+  },
+
+  async waitForKubernetesClusterTab(k8sClusterName) {
+    const dbaasPage = this;
+
+    I.amOnPage(dbaasPage.url);
+    dbaasPage.checkCluster(k8sClusterName, false);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
   },
 

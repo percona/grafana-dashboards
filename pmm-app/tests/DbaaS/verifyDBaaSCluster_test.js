@@ -25,7 +25,9 @@ Before(async ({ I, dbaasAPI }) => {
   }
 });
 
-Scenario('PMM-T642 PMM-T484 PSMDB Cluster with Custom Resources, Verify MongoDB Cluster can be restarted @dbaas @not-pr-pipeline',
+// These test covers a lot of cases, will be refactored and changed in terms of flow, this is initial setup
+
+Scenario('PMM-T642 PMM-T484 PMM-T477 PSMDB Cluster with Custom Resources, Verify MongoDB Cluster can be restarted @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage }) => {
     const configuration = {
       topology: 'Cluster',
@@ -44,12 +46,16 @@ Scenario('PMM-T642 PMM-T484 PSMDB Cluster with Custom Resources, Verify MongoDB 
     I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);
     await dbaasPage.postClusterCreationValidation(psmdb_cluster, clusterName, 'MongoDB');
     await dbaasPage.validateClusterDetail(psmdb_cluster, clusterName, configuration);
+    await dbaasPage.waitForKubernetesClusterTab(clusterName);
+    dbaasPage.unregisterCluster(clusterName);
+    I.waitForText(dbaasPage.failedUnregisterCluster(clusterName, 'PSMDB'));
+    await dbaasPage.waitForDbClusterTab(clusterName);
     await dbaasPage.restartCluster(psmdb_cluster, clusterName, 'MongoDB');
     await dbaasPage.validateClusterDetail(psmdb_cluster, clusterName, configuration);
     await dbaasPage.deletePSMDBCluster(psmdb_cluster, clusterName);
   });
 
-// This test covers a lot of cases, will be refactored and changed in terms of flow, this is initial setup
+
 Scenario('PMM-T455 PMM-T575 Verify that Advanced Options are optional for DB Cluster Creation, '
   + 'creating PXC cluster with default settings @dbaas @not-pr-pipeline',
 async ({ I, dbaasPage }) => {
@@ -60,7 +66,7 @@ async ({ I, dbaasPage }) => {
   await dbaasPage.postClusterCreationValidation(pxc_cluster_name, clusterName);
 });
 
-Scenario('PMM-T459, PMM-T473, PMM-T478 Verify DB Cluster Details are listed, shortcut link for DB Cluster, Show/Hide password button @dbaas @not-pr-pipeline',
+Scenario('PMM-T459, PMM-T473, PMM-T478, PMM-T524 Verify DB Cluster Details are listed, shortcut link for DB Cluster, Show/Hide password button @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage }) => {
     const clusterDetails = {
       clusterDashboardRedirectionLink: `/graph/d/pxc-cluster-summary/pxc-galera-cluster-summary?var-cluster=${pxc_cluster_name}-pxc`,
@@ -85,11 +91,13 @@ Scenario('PMM-T582 Verify Adding Cluster with Same Name and Same DB Type @dbaas 
     await dbaasPage.seeErrorForAddedDBCluster(pxc_cluster_name);
   });
 
-Scenario('PMM-T452 Verify force unregistering Kubernetes cluster @dbaas @not-pr-pipeline',
+Scenario('PMM-T460, PMM-T452 Verify force unregistering Kubernetes cluster @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage }) => {
-    I.amOnPage(dbaasPage.url);
-    dbaasPage.checkCluster(clusterName, false);
+    await dbaasPage.waitForKubernetesClusterTab(clusterName);
+    dbaasPage.unregisterCluster(clusterName);
+    I.waitForText(dbaasPage.failedUnregisterCluster(clusterName, 'XtraDB'));
     dbaasPage.unregisterCluster(clusterName, true);
+    I.waitForText(dbaasPage.deletedAlertMessage, 20);
     dbaasPage.checkCluster(clusterName, true);
   });
 
@@ -100,7 +108,7 @@ Scenario('PMM-T524 Delete PXC Cluster and Unregister K8s Cluster @dbaas @not-pr-
     await dbaasPage.deleteXtraDBCluster(pxc_cluster_name, clusterName);
   });
 
-Scenario('PMM-T640 Single Node PXC Cluster with Custom Resources @dbaas @not-pr-pipeline',
+Scenario('PMM-T640 PMM-T479 Single Node PXC Cluster with Custom Resources @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage }) => {
     const configuration = {
       topology: 'Single',
