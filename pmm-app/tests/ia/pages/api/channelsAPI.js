@@ -1,5 +1,6 @@
 const { I, ncPage } = inject();
 const assert = require('assert');
+const faker = require('faker');
 
 module.exports = {
   types: ncPage.types,
@@ -70,5 +71,11 @@ module.exports = {
       resp.status === 200,
       `Failed to remove channel with channel_id "${channelId}". Response message is "${resp.data.message}"`,
     );
+  },
+
+  async createNotificationChannels(numberOfChannelsToCreate) {
+    for (let i = 0; i < numberOfChannelsToCreate; i++) {
+      await this.createNotificationChannel(`${faker.lorem.word()}_channel`, ncPage.types.email.type);
+    }
   },
 };

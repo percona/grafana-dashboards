@@ -23,8 +23,8 @@ Scenario(
   'Verify No Channels found message @ia @not-pr-pipeline',
   async ({ I, ncPage }) => {
     ncPage.openNotificationChannelsTab();
-    I.waitForVisible(ncPage.elements.noChannels, 30);
-    I.see(ncPage.messages.noChannelsFound, ncPage.elements.noChannels);
+    I.waitForVisible(ncPage.elements.noData, 30);
+    I.see(ncPage.messages.noChannelsFound, ncPage.elements.noData);
   },
 );
 
