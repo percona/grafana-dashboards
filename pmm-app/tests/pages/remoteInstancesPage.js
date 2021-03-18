@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-undef
 const { I, adminPage, pmmInventoryPage } = inject();
+const assert = require('assert');
 
 module.exports = {
   accessKey: process.env.AWS_ACCESS_KEY_ID,
@@ -46,6 +47,7 @@ module.exports = {
     iframe: '//div[@class="panel-content"]//iframe',
     metricsPath: '$metrics_path-text-input',
     pageHeaderText: 'PMM Add Instance',
+    parseUrlButton: '$parse-url-button',
     password: '$password-password-input',
     portNumber: '$port-text-input',
     remoteInstanceTitle: 'Add instance',
@@ -64,6 +66,7 @@ module.exports = {
     useQANMongoDBProfiler: '//input[@name="qan_mongodb_profiler"]',
     useTLS: '$tls-field-label',
     userName: '$username-text-input',
+    urlInput: '$url-text-input',
   },
 
   tableStatsLimitRadioButtonLocator(limit) {
@@ -226,5 +229,26 @@ module.exports = {
     I.fillField(this.fields.cluster, 'rds56-cluster');
     I.fillField(this.fields.replicationSet, 'rds56-replication');
     I.scrollPageToBottom();
+  },
+
+  parseURL(url) {
+    I.waitForVisible(this.fields.urlInput, 30);
+    I.fillField(this.fields.urlInput, url);
+    I.click(this.fields.parseUrlButton);
+  },
+
+  async checkParsing(hostName, metricsPath, port, credentials) {
+    const grabbedHostname = await I.grabValueFrom(this.fields.hostName);
+    const grabbedMetricPath = await I.grabValueFrom(this.fields.metricsPath);
+    const grabbedPort = await I.grabValueFrom(this.fields.portNumber);
+    const grabbedCredentials = await I.grabValueFrom(this.fields.userName);
+    const httpsLocator = '//label[contains(@class, "active") and contains(text(), "HTTPS")]';
+
+    assert.ok(grabbedHostname === hostName, `Hostname is not parsed correctly: ${grabbedHostname}`);
+    assert.ok(grabbedMetricPath === metricsPath, `Metrics path is not parsed correctly: ${grabbedMetricPath}`);
+    assert.ok(grabbedPort === port, `Port is not parsed correctly: ${grabbedPort}`);
+    assert.ok(grabbedCredentials === credentials, `Username is not parsed correctly: ${grabbedCredentials}`);
+    assert.ok(grabbedCredentials === credentials, `Password is not parsed correctly: ${grabbedCredentials}`);
+    I.waitForVisible(httpsLocator, 30);
   },
 };

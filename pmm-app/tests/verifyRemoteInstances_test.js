@@ -44,6 +44,22 @@ Scenario(
   },
 );
 
+Scenario(
+  'PMM-T590 - Verify parsing URL on adding External service page @not-pr-pipeline',
+  async ({ I, remoteInstancesPage }) => {
+    const hostname = '10.30.3.50';
+    const metricsPath = '/metrics2';
+    const port = '9121';
+    const credentials = 'admin';
+
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('external');
+    remoteInstancesPage.parseURL('https://admin:admin@10.30.3.50:9121/metrics2');
+    await remoteInstancesPage.checkParsing(hostname, metricsPath, port, credentials);
+  },
+);
+
 Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
   'Verify Remote Instance has Status Running [critical] @not-pr-pipeline',
   async ({
