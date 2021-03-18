@@ -65,19 +65,20 @@ module.exports = {
     }
   },
 
-  async getNotRunningAgentsServiceId(status) {
-    let agents = [];
-    const locator = locate('span').withText('service_id:').before(locate('span').withText(`status: ${status}`));
-    const serviceIDs = await I.grabTextFromAll(locator);
 
-    for (let i = 0; i < serviceIDs.length; i++) {
-      agents = agents.concat(await inventoryAPI.apiGetAgents(serviceIDs[i].slice(12, serviceIDs[i].lenght)));
-      console.log(serviceIDs[i].slice(12, serviceIDs[i].lenght));
-    }
+  async getServiceIdWithStatus(status) {
+    const serviceIds = [];
+    const locator = locate('span')
+      .withText('service_id:')
+      .before(locate('span')
+        .withText(`status: ${status}`));
 
-    console.log(agents);
+    const strings = await I.grabTextFromAll(locator);
 
-    return serviceIDs;
+    // we need to cut "service_id: " prefix from grabbed strings
+    strings.forEach((item) => serviceIds.push(item.split(': ')[1]));
+
+    return serviceIds;
   },
 
   async verifyMetricsFlags(serviceName) {
