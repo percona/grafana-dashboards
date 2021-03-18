@@ -5,10 +5,10 @@ const { I } = inject();
 module.exports = {
 
   async apiRegisterCluster(clusterConfiguration, clusterName) {
-    const body = JSON.stringify({
+    const body = {
       kubernetes_cluster_name: clusterName,
       kube_auth: { kubeconfig: clusterConfiguration },
-    });
+    };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
     const response = await I.sendPostRequest('v1/management/DBaaS/Kubernetes/Register', body, headers);
@@ -20,7 +20,7 @@ module.exports = {
   },
 
   async apiUnregisterCluster(clusterName, forceBoolean = false) {
-    const body = JSON.stringify({ kubernetes_cluster_name: clusterName, force: forceBoolean });
+    const body = { kubernetes_cluster_name: clusterName, force: forceBoolean };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
     const response = await I.sendPostRequest('v1/management/DBaaS/Kubernetes/Unregister', body, headers);
@@ -32,7 +32,7 @@ module.exports = {
   },
 
   async apiDeleteXtraDBCluster(dbClusterName, clusterName) {
-    const body = JSON.stringify({ kubernetes_cluster_name: `${clusterName}`, name: dbClusterName });
+    const body = { kubernetes_cluster_name: `${clusterName}`, name: dbClusterName };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
     const response = await I.sendPostRequest('v1/management/DBaaS/XtraDBCluster/Delete', body, headers);
@@ -44,7 +44,7 @@ module.exports = {
   },
 
   async apiDeletePSMDBCluster(dbClusterName, clusterName) {
-    const body = JSON.stringify({ kubernetes_cluster_name: clusterName, name: dbClusterName });
+    const body = { kubernetes_cluster_name: clusterName, name: dbClusterName };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
     const response = await I.sendPostRequest('v1/management/DBaaS/PSMDBCluster/Delete', body, headers);
@@ -56,7 +56,7 @@ module.exports = {
   },
 
   async apiCheckRegisteredClusterExist(clusterName) {
-    const body = JSON.stringify({});
+    const body = {};
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
     const response = await I.sendPostRequest('v1/management/DBaaS/Kubernetes/List', body, headers);
@@ -73,11 +73,11 @@ module.exports = {
   },
 
   async apiCheckDbClusterExist(dbClusterName, k8sClusterName, dbType = 'MySQL') {
-    const body = JSON.stringify({
+    const body = {
       kubernetesClusterName: k8sClusterName,
       operators: { xtradb: { status: 'OPERATORS_STATUS_OK' }, psmdb: { status: 'OPERATORS_STATUS_OK' } },
       status: 'KUBERNETES_CLUSTER_STATUS_OK',
-    });
+    };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     let response;
 
@@ -99,11 +99,11 @@ module.exports = {
   },
 
   async waitForXtraDbClusterReady(dbClusterName, clusterName) {
-    const body = JSON.stringify({
+    const body = {
       kubernetesClusterName: clusterName,
       operators: { xtradb: { status: 'OPERATORS_STATUS_OK' }, psmdb: { status: 'OPERATORS_STATUS_OK' } },
       status: 'KUBERNETES_CLUSTER_STATUS_OK',
-    });
+    };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
     for (let i = 0; i < 30; i++) {
@@ -124,11 +124,11 @@ module.exports = {
   },
 
   async waitForPSMDBClusterReady(dbClusterName, clusterName) {
-    const body = JSON.stringify({
+    const body = {
       kubernetesClusterName: clusterName,
       operators: { xtradb: { status: 'OPERATORS_STATUS_OK' }, psmdb: { status: 'OPERATORS_STATUS_OK' } },
       status: 'KUBERNETES_CLUSTER_STATUS_OK',
-    });
+    };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
     for (let i = 0; i < 30; i++) {
@@ -149,11 +149,11 @@ module.exports = {
   },
 
   async waitForDbClusterDeleted(dbClusterName, clusterName, dbType = 'MySQL') {
-    const body = JSON.stringify({
+    const body = {
       kubernetesClusterName: clusterName,
       operators: { xtradb: { status: 'OPERATORS_STATUS_OK' }, psmdb: { status: 'OPERATORS_STATUS_OK' } },
       status: 'KUBERNETES_CLUSTER_STATUS_OK',
-    });
+    };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
     for (let i = 0; i < 30; i++) {
