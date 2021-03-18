@@ -47,7 +47,7 @@ module.exports = {
     const body = JSON.stringify({ kubernetes_cluster_name: clusterName, name: dbClusterName });
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
-    const response = await I.sendPostRequest('v1/management/DBaaS/XtraDBCluster/Delete', body, headers);
+    const response = await I.sendPostRequest('v1/management/DBaaS/PSMDBCluster/Delete', body, headers);
 
     assert.ok(
       response.status === 200,
@@ -67,6 +67,32 @@ module.exports = {
       );
 
       return cluster !== undefined;
+    }
+
+    return false;
+  },
+
+  async apiCheckDbClusterExist(dbClusterName, k8sClusterName, dbType = 'MySQL') {
+    const body = JSON.stringify({
+      kubernetesClusterName: k8sClusterName,
+      operators: { xtradb: { status: 'OPERATORS_STATUS_OK' }, psmdb: { status: 'OPERATORS_STATUS_OK' } },
+      status: 'KUBERNETES_CLUSTER_STATUS_OK',
+    });
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+    let response;
+
+    if (dbType === 'MySQL') {
+      response = await I.sendPostRequest('v1/management/DBaaS/XtraDBClusters/List', body, headers);
+    } else {
+      response = await I.sendPostRequest('v1/management/DBaaS/PSMDBClusters/List', body, headers);
+    }
+
+    if (response.data.clusters) {
+      const cluster = response.data.clusters.find(
+        (o) => o.name === dbClusterName,
+      );
+
+      return !!cluster;
     }
 
     return false;
