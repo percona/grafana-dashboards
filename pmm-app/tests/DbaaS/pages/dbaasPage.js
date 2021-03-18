@@ -262,7 +262,7 @@ module.exports = {
       await dbaasAPI.waitForXtraDbClusterReady(dbClusterName, k8sClusterName);
     } else {
       await dbaasAPI.waitForPSMDBClusterReady(dbClusterName, k8sClusterName);
-      await dbaasPage.waitForDbClusterTab(dbClusterName);
+      await dbaasPage.waitForDbClusterTab(k8sClusterName);
     }
 
     I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterStatusActive, 60);
