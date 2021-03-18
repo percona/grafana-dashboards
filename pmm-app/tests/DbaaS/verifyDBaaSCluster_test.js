@@ -2,7 +2,7 @@ const clusterName = 'Kubernetes_Testing_Cluster_Minikube';
 
 const pxc_cluster_name = 'pxc-dbcluster';
 const pxc_cluster_name_single = 'pxc-singlenode';
-const psmdb_cluster = 'mongodb';
+const psmdb_cluster = 'psmdb-cluster';
 
 const psmdb_configuration = {
   topology: 'Cluster',
