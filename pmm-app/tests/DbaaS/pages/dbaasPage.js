@@ -179,6 +179,14 @@ module.exports = {
   },
 
   async checkActionPossible(actionName, actionPosibilty) {
+    const numOfElements = await I.grabNumberOfVisibleElements(
+      this.tabs.dbClusterTab.fields.clusterAction(actionName),
+    );
+
+    if (numOfElements === 0) {
+      I.click(this.tabs.dbClusterTab.fields.clusterActionsMenu);
+    }
+
     const actionClass = await I.grabAttributeFrom(this.tabs.dbClusterTab.fields.clusterAction(actionName), 'class');
 
     if (actionPosibilty) {
@@ -254,7 +262,7 @@ module.exports = {
       await dbaasAPI.waitForXtraDbClusterReady(dbClusterName, k8sClusterName);
     } else {
       await dbaasAPI.waitForPSMDBClusterReady(dbClusterName, k8sClusterName);
-      await dbaasPage.waitForDbClusterTab(clusterName);
+      await dbaasPage.waitForDbClusterTab(dbClusterName);
     }
 
     I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterStatusActive, 60);
