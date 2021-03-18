@@ -27,6 +27,21 @@ Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
   },
 );
 
+Scenario.only(
+  'PMM-T588 - Verify adding external exporter service via UI @not-pr-pipeline',
+  async ({ I, remoteInstancesPage, pmmInventoryPage }) => {
+    const serviceName = 'external_service_new';
+
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('external');
+    remoteInstancesPage.fillRemoteFields(serviceName);
+    I.waitForVisible(remoteInstancesPage.fields.addService, 30);
+    I.click(remoteInstancesPage.fields.addService);
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
+  },
+);
+
 Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
   'Verify Remote Instance has Status Running [critical] @not-pr-pipeline',
   async ({

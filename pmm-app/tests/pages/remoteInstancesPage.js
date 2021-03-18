@@ -26,6 +26,7 @@ module.exports = {
   fields: {
     accessKeyInput: '$aws_access_key-text-input',
     addAWSRDSMySQLbtn: '$rds-instance',
+    addExternalServiceRemote: '$external-instance',
     addInstanceDiv: '//div[@class="view"]',
     addInstancesList: '//nav[@class="navigation"]',
     addMongoDBRemote: '$mongodb-instance',
@@ -43,6 +44,7 @@ module.exports = {
     environment: '$environment-text-input',
     hostName: '$address-text-input',
     iframe: '//div[@class="panel-content"]//iframe',
+    metricsPath: '$metrics_path-text-input',
     pageHeaderText: 'PMM Add Instance',
     password: '$password-password-input',
     portNumber: '$port-text-input',
@@ -98,6 +100,9 @@ module.exports = {
       case 'proxysql':
         I.click(this.fields.addProxySQLRemote);
         break;
+      case 'external':
+        I.click(this.fields.addExternalServiceRemote);
+        break;
     }
     I.waitForElement(this.fields.serviceName, 60);
 
@@ -143,6 +148,13 @@ module.exports = {
         I.fillField(this.fields.environment, 'remote-proxysql');
         I.fillField(this.fields.cluster, 'remote-proxysql-cluster');
         break;
+      case 'external_service_new':
+        I.fillField(this.fields.serviceName, serviceName);
+        I.fillField(this.fields.hostName, '142.93.247.109');
+        I.fillField(this.fields.metricsPath, '/metrics');
+        I.fillField(this.fields.portNumber, '9121');
+        I.fillField(this.fields.environment, 'remote-external-service');
+        I.fillField(this.fields.cluster, 'remote-external-cluster');
     }
     adminPage.peformPageDown(1);
   },
