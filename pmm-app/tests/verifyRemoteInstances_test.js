@@ -27,7 +27,7 @@ Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
   },
 );
 
-Scenario.only(
+Scenario(
   'PMM-T588 - Verify adding external exporter service via UI @not-pr-pipeline',
   async ({ I, remoteInstancesPage, pmmInventoryPage }) => {
     const serviceName = 'external_service_new';
@@ -39,6 +39,8 @@ Scenario.only(
     I.waitForVisible(remoteInstancesPage.fields.addService, 30);
     I.click(remoteInstancesPage.fields.addService);
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
+    I.click(pmmInventoryPage.fields.agentsLink);
+    I.waitForVisible(pmmInventoryPage.fields.externalExporter, 30);
   },
 );
 

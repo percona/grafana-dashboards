@@ -21,6 +21,7 @@ module.exports = {
     tableCheckbox: 'div[data-qa="select-row"]',
     tableRow: '//tr[@data-qa="table-row"]',
     runningStatus: '//span[contains(text(), "RUNNING")]',
+    externalExporter: '//td[contains(text(), "External exporter")]',
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
