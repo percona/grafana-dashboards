@@ -46,6 +46,7 @@ Scenario(
     dbaasPage.seeErrorForAddedCluster(clusterName);
     // PMM-T431, PMM-T546 - starting here, unregister cluster using unregister option
     dbaasPage.unregisterCluster(clusterName);
+    I.waitForText(dbaasPage.deletedAlertMessage, 20);
     dbaasPage.checkCluster(clusterName, true);
   },
 );
