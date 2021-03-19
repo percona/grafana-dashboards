@@ -2,7 +2,7 @@ const { I } = inject();
 const rulesNameCell = (ruleName) => `//td[1][div[text()="${ruleName}"]]`;
 
 module.exports = {
-  url: 'graph/integrated-alerting',
+  url: 'graph/integrated-alerting/alert-rules',
   columnHeaders: ['Name', 'Threshold', 'Duration', 'Severity', 'Filters', 'Created', 'Actions'],
   rules: [{
     template: 'PostgreSQL connections in use',
@@ -89,6 +89,26 @@ module.exports = {
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template with default params',
     threshold: '',
+    duration: '50',
+    severity: 'Notice',
+    filters: 'service_name=pmm-server-postgresql',
+    channels: ['EmailChannelForRules'],
+    activate: true,
+  }, {
+    template: 'range-empty',
+    templateType: 'User-defined (UI)',
+    ruleName: 'Rule with User-defined (UI) template with default params (empty-range template)',
+    threshold: '',
+    duration: '50',
+    severity: 'Notice',
+    filters: 'service_name=pmm-server-postgresql',
+    channels: ['EmailChannelForRules'],
+    activate: true,
+  }, {
+    template: 'range-empty',
+    templateType: 'User-defined (UI)',
+    ruleName: 'Rule with User-defined (UI) template (empty-range template)',
+    threshold: '666',
     duration: '50',
     severity: 'Notice',
     filters: 'service_name=pmm-server-postgresql',
