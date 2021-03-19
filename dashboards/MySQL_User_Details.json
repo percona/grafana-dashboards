@@ -153,7 +153,6 @@
             "type": "digiapulssi-breadcrumb-panel"
         },
         {
-            "content": "\nThese graphs are available only for [Percona Server](https://www.percona.com/doc/percona-server/8.0/diagnostics/user_stats.html) and [MariaDB](https://mariadb.com/kb/en/mariadb/user-statistics/) and require `userstat` variable turned on.",
             "datasource": null,
             "editable": true,
             "error": false,
@@ -172,12 +171,11 @@
             "height": "50px",
             "id": 36,
             "links": [],
-            "mode": "markdown",
             "options": {
                 "content": "\nThese graphs are available only for [Percona Server](https://www.percona.com/doc/percona-server/8.0/diagnostics/user_stats.html) and [MariaDB](https://mariadb.com/kb/en/mariadb/user-statistics/) and require `userstat` variable turned on.",
                 "mode": "markdown"
             },
-            "pluginVersion": "7.1.0",
+            "pluginVersion": "7.3.7",
             "style": {},
             "title": " ",
             "type": "text"
@@ -749,7 +747,7 @@
                 },
                 "showUnfilled": true
             },
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "targets": [
                 {
                     "expr": "topk(10,(increase(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range])/$__range_ms) / \nignoring(user) group_left sum without(user) (\nincrease(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range])/$__range_ms\n))",
@@ -1753,8 +1751,11 @@
             "lines": false,
             "linewidth": 1,
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -1855,8 +1856,11 @@
             "lines": false,
             "linewidth": 1,
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -4341,6 +4345,12 @@
                     "description": "The parameter shows how long a system has been \u201cup\u201d and running without a shut down or restart.",
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "format": "s",
                     "gauge": {
                         "maxValue": 100,
@@ -4373,7 +4383,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "s",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -4427,6 +4436,12 @@
                     "datasource": null,
                     "decimals": 2,
                     "description": "The system load is a measurement of the computational work the system is performing. Each running process either using or waiting for CPU resources adds 1 to the load.",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "format": "none",
                     "gauge": {
                         "maxValue": 100,
@@ -4458,7 +4473,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -4515,6 +4529,12 @@
                     "description": "RAM (Random Access Memory) is the hardware in a computing device where the operating system, application programs and data in current use are kept so they can be quickly reached by the device's processor.",
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "format": "bytes",
                     "gauge": {
                         "maxValue": 100,
@@ -4547,7 +4567,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -4601,6 +4620,12 @@
                     "datasource": null,
                     "decimals": 2,
                     "description": "Percent of Memory Available\nNote: on Modern Linux Kernels amount of Memory Available for application is not the same as Free+Cached+Buffers",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "format": "percent",
                     "gauge": {
                         "maxValue": 100,
@@ -4632,7 +4657,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -4655,10 +4679,11 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "avg by (node_name) ((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} * 100)",
+                            "expr": "avg by (node_name) (((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) * 100 or (100 - azure_memory_percent_average{node_name=~\"$node_name\"}))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
+                            "legendFormat": "",
                             "refId": "A"
                         }
                     ],
@@ -4689,6 +4714,12 @@
                     "description": "RAM + SWAP",
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "format": "bytes",
                     "gauge": {
                         "maxValue": 100,
@@ -4721,7 +4752,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -4777,6 +4807,12 @@
                     "description": "Sum of disk space on all partitions. Note  it can be significantly over-reported in some installations",
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "format": "bytes",
                     "gauge": {
                         "maxValue": 100,
@@ -4815,7 +4851,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -4869,6 +4904,12 @@
                     "datasource": null,
                     "decimals": 2,
                     "description": "Lowest percent of the disk space available",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "format": "percent",
                     "gauge": {
                         "maxValue": 100,
@@ -4900,7 +4941,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -4923,10 +4963,11 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "avg by (node_name) (min(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100)",
+                            "expr": "avg by (node_name) (min(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100 or \n(100 - azure_storage_percent_average{node_name=~\"$node_name\"}))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
+                            "legendFormat": "",
                             "refId": "A"
                         }
                     ],
@@ -4945,9 +4986,14 @@
                 },
                 {
                     "cacheTimeout": null,
-                    "content": "<h5 style='color:#e68a00;font-weight:bold;text-align:center'><a href=\"/graph/d/node-instance-summary/node-summary?var-node_name=$node_name\" target=\"_blank\">$crop_host...</a></h5>",
                     "datasource": null,
                     "description": "",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 2,
                         "w": 3,
@@ -4956,8 +5002,11 @@
                     },
                     "id": 387,
                     "links": [],
-                    "mode": "html",
-                    "options": {},
+                    "options": {
+                        "content": "<h5 style='color:#e68a00;font-weight:bold;text-align:center'><a href=\"/graph/d/node-instance-summary/node-summary?var-node_name=$node_name\" target=\"_blank\">$crop_host...</a></h5>",
+                        "mode": "html"
+                    },
+                    "pluginVersion": "7.3.7",
                     "targets": [
                         {
                             "calculatedInterval": "10m",
@@ -4995,6 +5044,13 @@
                     "description": "The CPU time is measured in clock ticks or seconds. It is useful to measure CPU time as a percentage of the CPU's capacity, which is called the CPU usage.",
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 6,
                     "fillGradient": 0,
                     "grid": {},
@@ -5027,10 +5083,11 @@
                     "links": [],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": []
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -5126,6 +5183,13 @@
                     "description": "When a system is running with maximum CPU utilization, the transmitting and receiving threads must all share the available CPU. This will cause data to be queued more frequently to cope with the lack of CPU. CPU Saturation may be measured as the length of a wait queue, or the time spent waiting on the queue.",
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -5156,10 +5220,11 @@
                     "links": [],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": []
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -5264,6 +5329,13 @@
                     "description": "Disk I/O includes read or write or input/output operations involving a physical disk. It is the speed with which the data transfer takes place between the hard disk drive and RAM.\n\nSwap Activity is memory management that involves swapping sections of memory to and from physical storage.",
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -5300,9 +5372,10 @@
                     ],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": []
+                        "alertThreshold": true
                     },
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -5430,6 +5503,13 @@
                     "description": "Network traffic refers to the amount of data moving across a network at a given point in time.",
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -5460,9 +5540,10 @@
                     "links": [],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": []
+                        "alertThreshold": true
                     },
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
@@ -5568,6 +5649,7 @@
                 "auto_min": "1s",
                 "current": {},
                 "datasource": "Metrics",
+                "error": null,
                 "hide": 0,
                 "includeAll": false,
                 "label": "Interval",
@@ -5627,6 +5709,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(mysql_info_schema_user_statistics_bytes_sent_total{service_name=~\"$service_name\"}, node_name)",
+                "error": null,
                 "hide": 2,
                 "includeAll": false,
                 "label": "Node Name",
@@ -5651,6 +5734,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(mysql_info_schema_user_statistics_bytes_sent_total, service_name)",
+                "error": null,
                 "hide": 0,
                 "includeAll": false,
                 "label": "Service Name",
@@ -5673,6 +5757,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "query_result(mysql_version_info{service_name=~\"$service_name\"})",
+                "error": null,
                 "hide": 2,
                 "includeAll": false,
                 "label": null,
@@ -5695,6 +5780,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(mysql_up{service_name=~\"$service_name\"}, service_name)",
+                "error": null,
                 "hide": 2,
                 "includeAll": false,
                 "label": "Service Name",
@@ -5718,6 +5804,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(mysql_up{node_name=\"$node_name\"},node_name)",
+                "error": null,
                 "hide": 2,
                 "includeAll": false,
                 "label": "Crop Node Name",
@@ -5742,6 +5829,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Environment",
@@ -5764,6 +5852,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Cluster",
@@ -5786,6 +5875,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Replication Set",
@@ -5808,6 +5898,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Database",
@@ -5830,6 +5921,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Type",
@@ -5852,6 +5944,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Type",
@@ -5874,6 +5967,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Username",
@@ -5896,6 +5990,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Schema",
