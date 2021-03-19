@@ -18,6 +18,14 @@ e2e:
 	&& docker-compose up -d \
 	&& npm run e2e
 
+.PHONY: e2e_local
+e2e_local:
+	cd pmm-app \
+	&& mkdir -pv logs video || true \
+	&& docker-compose up -d \
+	&& npm run e2e:local
+
+
 .PHONY: codecov
 codecov:
 	cd pmm-app \
@@ -28,6 +36,17 @@ release:
 	cd pmm-app \
 	&& npm version \
 	&& npm ci \
+	&& npm run build
+
+.PHONY: prepare_release
+prepare_release:
+	cd pmm-app \
+	&& npm version \
+	&& npm ci \
+
+.PHONY: build_package
+build_package:
+	cd pmm-app \
 	&& npm run build
 
 .PHONY: generate_coverage

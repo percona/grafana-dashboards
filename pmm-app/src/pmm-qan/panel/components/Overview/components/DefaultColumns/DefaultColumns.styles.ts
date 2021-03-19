@@ -9,10 +9,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     theme.type,
   );
 
-  const totalTextColor = selectThemeVariant(
-    { light: 'red', dark: '#8AA4FF' },
-    theme.type,
-  );
+  const totalTextColor = selectThemeVariant({ light: 'red', dark: '#8AA4FF' }, theme.type);
 
   return {
     getMainMetric: (isTotal) => css`
@@ -32,7 +29,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       justify-content: space-between;
     `,
     tooltipIcon: css`
-  margin-left: auto;
-`,
+      margin-left: auto;
+    `,
   };
 });

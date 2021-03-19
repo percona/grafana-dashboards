@@ -1,16 +1,14 @@
-import { Collapse, Table, Tooltip } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements/Charts';
 import { humanize } from 'shared/components/helpers/Humanization';
-import { Info } from 'shared/components/Elements/Icons/Info';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
-import { useTheme } from '@grafana/ui';
+import { Collapse, useTheme } from '@grafana/ui';
+import { Table } from 'shared/components/Elements/Table';
+import { Databases } from 'shared/core';
+import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { MetricsTabs } from './Metrics.constants';
 import { MetricsProps } from './Metrics.types';
-import { Databases } from '../Details.types';
 import { getStyles } from './Metrics.styles';
-
-const { Panel } = Collapse;
 
 const Metrics: FC<MetricsProps> = ({
   databaseType, totals, metrics, loading,
@@ -18,16 +16,17 @@ const Metrics: FC<MetricsProps> = ({
   const theme = useTheme();
   const styles = getStyles(theme);
 
-  const mainColumn = (text, item) => (
+  const [isDistributionPanelOpen, setDistributionPanelVisibility] = useState(true);
+  const [isMetricsPanelOpen, setMetricsPanelVisibility] = useState(true);
+
+  const mainColumn = (item) => (
     <span className={styles.metricColumn}>
       <span>{item.name}</span>
-      <Tooltip title={item.tooltip} placement="leftTop">
-        <Info className={styles.metricTooltipIcon} />
-      </Tooltip>
+      <LinkTooltip className={styles.metricTooltipIcon} tooltipText={item.tooltip} icon="info-circle" />
     </span>
   );
 
-  const rateColumn = (totals) => (text, item) => {
+  const rateColumn = (totals) => (item) => {
     const polygonChartProps = {
       data: item.sparkline,
       ykey: 'metric',
@@ -47,7 +46,7 @@ const Metrics: FC<MetricsProps> = ({
     );
   };
 
-  const sumColumn = (text, item) => (
+  const sumColumn = (item) => (
     <>
       <div>
         {item.isSum && (
@@ -67,7 +66,7 @@ const Metrics: FC<MetricsProps> = ({
     </>
   );
 
-  const perQueryStatsColumn = (text, item) => {
+  const perQueryStatsColumn = (item) => {
     const latencyChartProps = {
       data: item.metric,
     };
@@ -86,49 +85,42 @@ const Metrics: FC<MetricsProps> = ({
 
   const columns = [
     {
-      title: 'Metric',
-      width: '20%',
-      render: mainColumn,
+      Header: 'Metric',
+      accessor: mainColumn,
     },
     {
-      title: 'Rate/Second',
-      width: '35%',
-      render: rateColumn(totals),
+      Header: 'Rate/Second',
+      accessor: rateColumn(totals),
     },
     {
-      title: 'Sum',
-      width: '20%',
-      render: sumColumn,
+      Header: 'Sum',
+      accessor: sumColumn,
     },
     {
-      title: 'Per Query Stats',
-      width: '25%',
-      render: perQueryStatsColumn,
+      Header: 'Per Query Stats',
+      accessor: perQueryStatsColumn,
     },
   ];
 
   return (
     <Overlay isPending={loading} className="metrics-wrapper" size={35}>
+      {databaseType !== Databases.mongodb ? (
+        <Collapse
+          collapsible
+          label={MetricsTabs.distribution}
+          isOpen={isDistributionPanelOpen}
+          onToggle={() => setDistributionPanelVisibility(!isDistributionPanelOpen)}
+        >
+          <TimeDistribution data={metrics} />
+        </Collapse>
+      ) : null}
       <Collapse
-        bordered={false}
-        defaultActiveKey={[MetricsTabs.distribution, MetricsTabs.metrics]}
-        className={styles.collapse}
+        collapsible
+        label={MetricsTabs.metrics}
+        isOpen={isMetricsPanelOpen}
+        onToggle={() => setMetricsPanelVisibility(!isMetricsPanelOpen)}
       >
-        {databaseType !== Databases.mongodb ? (
-          <Panel header={MetricsTabs.distribution} key={MetricsTabs.distribution} className={styles.panel}>
-            <TimeDistribution data={metrics} />
-          </Panel>
-        ) : null}
-        <Panel header={MetricsTabs.metrics} key={MetricsTabs.metrics} className={styles.panel}>
-          <Table
-            dataSource={metrics}
-            columns={columns}
-            pagination={false}
-            size="small"
-            bordered
-            rowKey="metricName"
-          />
-        </Panel>
+        <Table columns={columns} data={metrics} loading={loading} noData={null} />
       </Collapse>
     </Overlay>
   );

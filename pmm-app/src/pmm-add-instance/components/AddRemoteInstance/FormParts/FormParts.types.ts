@@ -16,4 +16,6 @@ export interface AdditionalOptionsFormPartProps {
   form: FormApi;
 }
 
-export interface PostgreSQLAdditionalOptionsProps {}
+export interface PostgreSQLAdditionalOptionsProps {
+  isRDS: boolean;
+}

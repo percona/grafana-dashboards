@@ -1,6 +1,6 @@
-import { ClassicExplain } from './Explain.types';
+import { ClassicExplainInterface } from './Explain.types';
 
-export const processClassicExplain = (classic): ClassicExplain => {
+export const processClassicExplain = (classic): ClassicExplainInterface => {
   if (!classic) {
     return { columns: [], rows: [] };
   }
@@ -10,14 +10,14 @@ export const processClassicExplain = (classic): ClassicExplain => {
     .split('|')
     .map((e) => (String(e) ? e.trim() : ''))
     .filter(Boolean)
-    .map((title) => ({ title, key: title, dataIndex: title }));
+    .map((title) => ({ Header: title, key: title, accessor: title }));
 
   const rowsList = data.map((item) => item
     .split('|')
     .map((e) => (String(e) ? e.trim() : ''))
     .filter(Boolean)
     .reduce((acc, row, index) => {
-      acc[headerList[index].title] = row;
+      acc[headerList[index].accessor] = row;
 
       return acc;
     }, {}));

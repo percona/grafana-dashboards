@@ -7,12 +7,12 @@ export const processTableData = (input): { columns: any[]; rows: any[] } => {
   const headerList = header
     .map((e) => (String(e) ? String(e).trim() : 'NULL'))
     .filter(Boolean)
-    .map((title) => ({ title, key: title, dataIndex: title }));
+    .map((title) => ({ Header: title, key: title, accessor: title }));
   const rowsList = data.map((item) => item
     .map((e) => (String(e) ? String(e).trim() : 'NULL'))
     .filter(Boolean)
     .reduce((acc, row, index) => {
-      acc[headerList[index].title] = row;
+      acc[headerList[index].accessor] = row;
 
       return acc;
     }, {}));

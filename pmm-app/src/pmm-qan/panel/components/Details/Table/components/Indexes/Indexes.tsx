@@ -1,57 +1,24 @@
-import React, {
-  FC, useCallback, useEffect, useState,
-} from 'react';
-import { Spin, Table } from 'antd';
-import { ActionResult, getActionResult } from 'shared/components/Actions';
-import { Databases } from '../../../Details.types';
-import { mysqlMethods, postgresqlMethods } from '../../../database-models';
-import { processTableData } from '../../TableContainer.tools';
+import React, { FC } from 'react';
+import { Table } from 'shared/components/Elements/Table';
+import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { Messages } from '../../../Details.messages';
 import { TableProps } from '../Table.types';
+import { useIndexes } from './Indexes.hooks';
 
-export const Indexes: FC<TableProps> = ({ tableName, databaseType, example }) => {
-  const [data, setData] = useState<{ columns: any[]; rows: any[] }>({ columns: [], rows: [] });
-  const [indexes, setIndexes] = useState<ActionResult>({
-    error: '',
-    loading: true,
-    value: null,
-  });
-
-  const getIndexes = useCallback(async () => {
-    let id;
-
-    if (databaseType === Databases.postgresql) {
-      id = await postgresqlMethods.getIndexes({ example, tableName });
-    } else if (databaseType === Databases.mysql) {
-      id = await mysqlMethods.getIndexes({ example, tableName });
-    }
-
-    const result = await getActionResult(id);
-
-    setIndexes(result);
-    setData(processTableData(result.value));
-  }, [databaseType]);
-
-  useEffect(() => {
-    getIndexes();
-  }, [databaseType]);
+export const Indexes: FC<TableProps> = ({
+  tableName, databaseType, example, database,
+}) => {
+  const [data, indexes] = useIndexes(databaseType, example, tableName, database);
 
   return (
     <div>
-      <Spin spinning={indexes.loading}>
+      <Overlay isPending={indexes.loading}>
         {indexes.error ? <pre>{indexes.error}</pre> : null}
         {!indexes.error && data.rows.length ? (
-          <Table
-            dataSource={data.rows}
-            columns={data.columns}
-            scroll={{ x: '90%' }}
-            pagination={false}
-            size="small"
-            bordered
-          />
+          <Table columns={data.columns} data={data.rows} noData={null} />
         ) : null}
         {!indexes.error && !data.rows.length ? <pre>{Messages.noDataFound}</pre> : null}
-      </Spin>
+      </Overlay>
     </div>
   );
 };

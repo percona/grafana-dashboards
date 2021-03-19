@@ -11,21 +11,26 @@ Object.values(page.rules).forEach((rule) => {
 
 Feature('IA: Alert rules').retry(2);
 
-Before(async (I, alertRulesPage, settingsAPI) => {
+Before(async ({ I, settingsAPI }) => {
   I.Authorize();
   await settingsAPI.apiEnableIA();
 });
 
-BeforeSuite(async (I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channelsAPI, ncPage) => {
+BeforeSuite(async ({
+  settingsAPI, rulesAPI, templatesAPI, channelsAPI, ncPage,
+}) => {
   await settingsAPI.apiEnableIA();
   await rulesAPI.clearAllRules();
   await templatesAPI.clearAllTemplates();
   await channelsAPI.clearAllNotificationChannels();
   await templatesAPI.createRuleTemplate('tests/ia/templates/templateForRules.yaml');
+  await templatesAPI.createRuleTemplate('tests/ia/templates/range-empty.yaml');
   await channelsAPI.createNotificationChannel('EmailChannelForRules', ncPage.types.email.type);
 });
 
-AfterSuite(async (I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channelsAPI) => {
+AfterSuite(async ({
+  settingsAPI, rulesAPI, templatesAPI, channelsAPI,
+}) => {
   await settingsAPI.apiEnableIA();
   await rulesAPI.clearAllRules();
   await templatesAPI.clearAllTemplates();
@@ -34,9 +39,9 @@ AfterSuite(async (I, alertRulesPage, settingsAPI, rulesAPI, templatesAPI, channe
 
 Scenario(
   'Verify alert rules list elements @ia @not-pr-pipeline',
-  async (I, alertRulesPage, rulesAPI) => {
+  async ({ I, alertRulesPage, rulesAPI }) => {
     const ruleName = 'QAA PSQL rules List test';
-    const ruleId = await rulesAPI.createAlertRule(ruleName);
+    const ruleId = await rulesAPI.createAlertRule({ ruleName });
 
     alertRulesPage.openAlertRulesTab();
     alertRulesPage.columnHeaders.forEach((header) => {
@@ -50,9 +55,9 @@ Scenario(
 
 Scenario(
   'Add alert rule modal elements @ia @not-pr-pipeline',
-  async (I, alertRulesPage, rulesAPI) => {
+  async ({ I, alertRulesPage, rulesAPI }) => {
     const ruleName = 'QAA PSQL Modal elements test';
-    const ruleId = await rulesAPI.createAlertRule(ruleName);
+    const ruleId = await rulesAPI.createAlertRule({ ruleName });
 
     alertRulesPage.openAlertRulesTab();
     I.click(alertRulesPage.buttons.openAddRuleModal);
@@ -75,9 +80,9 @@ Scenario(
 
 Scenario(
   'PMM-T538 Verify user is able to disable/enable a rule from the rules list @ia @not-pr-pipeline',
-  async (I, alertRulesPage, rulesAPI) => {
+  async ({ I, alertRulesPage, rulesAPI }) => {
     const ruleName = 'QAA PSQL Enable/Disable test';
-    const ruleId = await rulesAPI.createAlertRule(ruleName);
+    const ruleId = await rulesAPI.createAlertRule({ ruleName });
 
     alertRulesPage.openAlertRulesTab();
     I.waitForVisible(alertRulesPage.buttons.toggleAlertRule(ruleName), 30);
@@ -97,8 +102,10 @@ Scenario(
 );
 
 Data(rules).Scenario(
-  'PMM-T515 PMM-T543 PMM-T544 PMM-T545 PMM-T574 Create Alert rule @ia @not-pr-pipeline',
-  async (I, alertRulesPage, rulesAPI, templatesAPI, current) => {
+  'PMM-T515 PMM-T543 PMM-T544 PMM-T545 PMM-T574 PMM-T596 Create Alert rule @ia @not-pr-pipeline',
+  async ({
+    I, alertRulesPage, current, rulesAPI,
+  }) => {
     const rule = {
       template: current.template,
       templateType: current.templateType,
@@ -120,12 +127,16 @@ Data(rules).Scenario(
     if (rule.threshold.length === 0) { rule.threshold = 80; }
 
     alertRulesPage.verifyRowValues(rule);
+
+    await rulesAPI.clearAllRules();
   },
 );
 
 Scenario(
   'PMM-T516 Update Alert rule @ia @not-pr-pipeline',
-  async (I, alertRulesPage, rulesAPI, channelsAPI, ncPage) => {
+  async ({
+    I, alertRulesPage, rulesAPI, channelsAPI, ncPage,
+  }) => {
     const rule = {
       ruleName: 'QAA PSQL Update test',
       threshold: '2',
@@ -135,7 +146,8 @@ Scenario(
       channels: ['EmailChannelForRules', 'EmailChannelForEditRules'],
       activate: false,
     };
-    const ruleId = await rulesAPI.createAlertRule(rule.ruleName);
+    const { ruleName } = rule;
+    const ruleId = await rulesAPI.createAlertRule({ ruleName });
 
     await channelsAPI.createNotificationChannel('EmailChannelForEditRules', ncPage.types.email.type);
     alertRulesPage.openAlertRulesTab();
@@ -151,9 +163,9 @@ Scenario(
 
 Scenario(
   'PMM-T566 Verify user can copy Alert rule @ia @not-pr-pipeline',
-  async (I, alertRulesPage, rulesAPI) => {
+  async ({ I, alertRulesPage, rulesAPI }) => {
     const ruleName = 'QAA PSQL duplicate test';
-    const ruleId = await rulesAPI.createAlertRule(ruleName);
+    const ruleId = await rulesAPI.createAlertRule({ ruleName });
     const rule = {
       ruleName: `Copy of ${ruleName}`,
       threshold: '1',
@@ -175,10 +187,10 @@ Scenario(
 
 Scenario(
   'PMM-T517 Verify user can delete Alert rule @ia @not-pr-pipeline',
-  async (I, alertRulesPage, rulesAPI) => {
+  async ({ I, alertRulesPage, rulesAPI }) => {
     const ruleName = 'QAA PSQL delete test';
 
-    await rulesAPI.createAlertRule(ruleName);
+    await rulesAPI.createAlertRule({ ruleName });
     alertRulesPage.openAlertRulesTab();
     I.click(alertRulesPage.buttons.deleteAlertRule(ruleName));
     I.seeTextEquals(alertRulesPage.messages.deleteRuleModalHeader, alertRulesPage.elements.modalHeader);
@@ -193,19 +205,20 @@ Scenario(
   },
 );
 
-// TODO: unskip after https://jira.percona.com/browse/PMM-7531
-xScenario(
+Scenario(
   'PMM-T639 Verify alert rule details content @ia @not-pr-pipeline',
-  async (I, ruleTemplatesPage, alertRulesPage, rulesAPI) => {
+  async ({
+    I, ruleTemplatesPage, alertRulesPage, rulesAPI,
+  }) => {
     const ruleName = 'QAA PSQL yaml content test';
-    const ruleNameWithBuiltInTemplate = 'Rule without yaml content';
+    const ruleNameWithBuiltInTemplate = 'Rule with Built-In template';
     const exprForBuiltInTemplate = 'sum(pg_stat_activity_count{datname!~"template.*|postgres"})\n'
       + '> pg_settings_max_connections * [[ .threshold ]] / 100';
     const [,, id, expr] = await ruleTemplatesPage.ruleTemplate
       .templateNameAndContent('tests/ia/templates/templateForRules.yaml');
 
-    await rulesAPI.createAlertRule(ruleName, id);
-    await rulesAPI.createAlertRule(ruleNameWithBuiltInTemplate);
+    await rulesAPI.createAlertRule({ ruleName }, id);
+    await rulesAPI.createAlertRule({ ruleName: ruleNameWithBuiltInTemplate });
     alertRulesPage.openAlertRulesTab();
     I.click(alertRulesPage.buttons.showDetails(ruleName));
     I.seeTextEquals(expr.replace('[[ .threshold ]]', '1'),

@@ -28,7 +28,7 @@ interface GrafanaVariables {
 }
 export const refreshGrafanaVariables = (state) => {
   const {
-    labels, columns, groupBy, queryId, orderBy, rawTime, dimensionSearchText,
+    labels, columns, groupBy, queryId, orderBy, rawTime, dimensionSearchText, database,
   } = state;
 
   const variablesQuery: GrafanaVariables = {};
@@ -44,6 +44,10 @@ export const refreshGrafanaVariables = (state) => {
 
   if (groupBy) {
     variablesQuery.group_by = groupBy;
+  }
+
+  if (database) {
+    variablesQuery.selected_query_database = database;
   }
 
   if (queryId) {
@@ -92,6 +96,7 @@ export const parseURL = (query) => ({
   pageSize: DEFAULT_PAGE_SIZE,
   orderBy: query.get('order_by') || `-${(JSON.parse(query.get('columns')) || DEFAULT_COLUMNS)[0]}`,
   queryId: query.get('filter_by'),
+  database: query.get('selected_query_database'),
   totals: query.get('totals') === 'true',
   querySelected: !!query.get('filter_by') || query.get('query_selected') === 'true',
   groupBy: query.get('group_by') || 'queryid',
