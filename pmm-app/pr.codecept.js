@@ -4,7 +4,8 @@ exports.config = {
   output: 'tests/output',
   helpers: {
     Playwright: {
-      url: process.env.PMM_UI_URL || 'http://localhost/',
+      url: process.env.PMM_UI_URL || 'http://3.17.193.29/',
+      show: true,
       restart: true,
       browser: 'chromium',
       windowSize: '1920x1080',
@@ -31,7 +32,7 @@ exports.config = {
       password: process.env.GRAFANA_PASSWORD,
     },
     REST: {
-      endpoint: process.env.PMM_UI_URL || 'http://localhost/',
+      endpoint: process.env.PMM_UI_URL || 'http://3.17.193.29/',
       timeout: 20000,
     },
   },
