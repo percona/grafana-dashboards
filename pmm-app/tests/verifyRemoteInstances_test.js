@@ -46,7 +46,6 @@ Scenario(
     I.amOnPage(remoteInstancesPage.url);
     remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
     remoteInstancesPage.openAddRemotePage('mysql');
-    I.click(adminPage.fields.metricTitle);
     adminPage.peformPageDown(1);
     I.waitForVisible(remoteInstancesPage.fields.tableStatsGroupTableLimit, 30);
     assert.strictEqual('-1', await remoteInstancesPage.getTableLimitFieldValue(), 'Count for Disabled Table Stats dont Match, was expecting -1');

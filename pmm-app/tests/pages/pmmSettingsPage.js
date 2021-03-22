@@ -5,8 +5,8 @@ const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 
 module.exports = {
   url: 'graph/settings',
-  advancedSettingsUrl: 'graph/settings?menu=advanced-settings',
-  communicationSettingsUrl: 'graph/settings?menu=communication',
+  advancedSettingsUrl: 'graph/settings/advanced-settings',
+  communicationSettingsUrl: 'graph/settings/communication',
   prometheusAlertUrl: '/prometheus/rules',
   stateOfAlertsUrl: '/prometheus/alerts',
   diagnosticsText:
@@ -126,7 +126,9 @@ module.exports = {
         value: 'https://hook',
       },
     },
-    communicationSection: locate('$settings-tabs').find('li').withAttr({ 'aria-label': 'Tab Communication' }),
+    communicationSection: locate('$settings-tabs')
+      .find('li')
+      .withAttr({ 'aria-label': 'Tab Communication' }),
     emailTab: 'li[aria-label="Tab Email"]',
     submitEmailButton: '$email-settings-submit-button',
     slackTab: 'li[aria-label="Tab Slack"]',
@@ -135,7 +137,7 @@ module.exports = {
   fields: {
     advancedLabel: '$advanced-label',
     advancedButton: '$advanced-button',
-    addAlertRuleButton: '//span[text()="Apply Alertmanager settings"]/parent::button',
+    addAlertRuleButton: '//span[text()="Apply Alertmanager settings"]/parent::span',
     alertRulesInput: '$alertmanager-rules',
     alertURLInput: '$alertmanager-url',
     alertingRules: locateLabel('form-field-alerting-rules'),
@@ -166,8 +168,8 @@ module.exports = {
     privacyPolicy: '//span[contains(text(), "Privacy Policy")]',
     sectionHeader: '//div[@class="ant-collapse-header"]',
     selectedResolution: 'span.ant-slider-mark-text-active',
-    signInEmail: '$sign-in-email-input',
-    signInPassword: '$sign-in-password-input',
+    signInEmail: '$email-text-input',
+    signInPassword: '$email-text-input',
     sshKeyInput: '$ssh-key',
     sshKeyLabel: locateLabel('ssh-key-label'),
     sshKeyButton: '$ssh-key-button',
@@ -176,8 +178,8 @@ module.exports = {
     sttSwitchSelectorInput: '//div[@data-qa="advanced-stt"]//div[2]//input',
     sttSwitchSelector: '//div[@data-qa="advanced-stt"]//div[2]//label',
     subSectionHeader: '//following-sibling::div//div[@class="ant-collapse-header"]',
-    signUpEmail: '$sign-up-email-input',
-    signUpPassword: '$sign-up-password-input',
+    signUpEmail: '$email-text-input',
+    signUpPassword: '$password-password-input',
     signUpAgreementLabel: '$sign-up-agreement-checkbox-label',
     signUpButton: '$sign-up-submit-button',
     singInToSignUpButton: '$sign-in-to-sign-up-button',
@@ -234,18 +236,17 @@ module.exports = {
   async verifyCommunicationFields(type) {
     if (type === 'slack') I.click(this.communication.slackTab);
 
-    Object.values(this.communication[type])
-      .forEach((key) => {
-        let { value } = key;
+    Object.values(this.communication[type]).forEach((key) => {
+      let { value } = key;
 
-        if (key.locator === this.communication.email.password.locator) value = '';
+      if (key.locator === this.communication.email.password.locator) value = '';
 
-        if (key.locator !== this.communication.email.secret.locator) {
-          I.seeInField(key.locator, value);
-        } else {
-          I.seeAttributesOnElements(key.locator, { type: 'password' });
-        }
-      });
+      if (key.locator !== this.communication.email.secret.locator) {
+        I.seeInField(key.locator, value);
+      } else {
+        I.seeAttributesOnElements(key.locator, { type: 'password' });
+      }
+    });
   },
 
   async selectMetricsResolution(resolution) {
@@ -255,12 +256,12 @@ module.exports = {
   },
 
   async verifySelectedResolution(resolution) {
-    const selector = `${this.fields.metricsResolution + resolution}"]`;
+    const selector = '$resolutions-radio-state';
 
     I.waitForElement(selector, 30);
-    const className = await I.grabAttributeFrom(selector, 'class');
+    const value = await I.grabAttributeFrom(selector, 'value');
 
-    assert.equal(className.includes('active'), true, 'Metric resolution should be active');
+    assert.equal(value.includes(resolution.toLowerCase()), true, 'Metric resolution should be selected');
   },
 
   customClearField(field) {
@@ -329,7 +330,9 @@ module.exports = {
     let response;
 
     for (let i = 0; i < 20; i++) {
-      response = await I.sendGetRequest(`http://${this.alertManager.ip}${this.alertManager.externalAlertManagerPort}/api/v2/alerts/groups?silenced=false&inhibited=false&active=true`);
+      response = await I.sendGetRequest(
+        `http://${this.alertManager.ip}${this.alertManager.externalAlertManagerPort}/api/v2/alerts/groups?silenced=false&inhibited=false&active=true`,
+      );
       if (JSON.stringify(response.data).includes(ruleName)) {
         break;
       }
@@ -337,7 +340,11 @@ module.exports = {
       I.wait(5);
     }
 
-    assert.equal(JSON.stringify(response.data).includes(ruleName), true, 'Alert Should be firing at External Alert Manager');
+    assert.equal(
+      JSON.stringify(response.data).includes(ruleName),
+      true,
+      'Alert Should be firing at External Alert Manager',
+    );
   },
 
   async verifyTooltip(tooltipObj) {

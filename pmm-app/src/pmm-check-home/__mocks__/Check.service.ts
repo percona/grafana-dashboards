@@ -1,9 +1,13 @@
+import { SEVERITIES_ORDER } from 'pmm-check-home/CheckPanel.constants';
 import {
-  SEVERITIES_ORDER,
-} from 'pmm-check/CheckPanel.constants';
-import {
-  ActiveCheck, Alert, CheckDetails, FailedChecks, Settings, SilenceResponse, AlertState,
-} from 'pmm-check/types';
+  ActiveCheck,
+  Alert,
+  CheckDetails,
+  FailedChecks,
+  Settings,
+  SilenceResponse,
+  AlertState,
+} from 'pmm-check-home/types';
 
 import { alertsStub } from './stubs';
 
@@ -41,9 +45,9 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
       summary: string;
       description: string;
       severity: string;
-      labels: { [key: string]: string },
+      labels: { [key: string]: string };
       silenced: boolean;
-     }>
+    }>
   > = data
     .filter((alert) => !!alert.labels.stt_check)
     .reduce((acc, alert) => {
