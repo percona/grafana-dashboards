@@ -9,10 +9,7 @@ describe('Search::', () => {
     expect(root.find('form').children().length).toBe(2);
   });
   it('renders correctly with initial value', () => {
-    const root = mount(<Search
-      handleSearch={() => {}}
-      initialValue="Test value"
-    />);
+    const root = mount(<Search handleSearch={() => {}} initialValue="Test value" />);
 
     expect(root.find('input').prop('value')).toEqual('Test value');
   });

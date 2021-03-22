@@ -1,12 +1,17 @@
 const { I, ruleTemplatesPage } = inject();
 const assert = require('assert');
+const faker = require('faker');
 
 module.exports = {
-  async createRuleTemplate(path) {
+  async createRuleTemplate(path = ruleTemplatesPage.ruleTemplate.inputFilePath) {
     const [, content, id] = await ruleTemplatesPage.ruleTemplate.templateNameAndContent(path);
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
+    // Ternary is used to generate different ids for templates
+    const templateText = path === ruleTemplatesPage.ruleTemplate.inputFilePath
+      ? content.replace('name: input_template_yml', `name: ${faker.internet.userName()}_template`)
+      : content;
     const body = {
-      yaml: content,
+      yaml: templateText,
     };
     const resp = await I.sendPostRequest('v1/management/ia/Templates/Create', body, headers);
 
@@ -42,5 +47,11 @@ module.exports = {
       resp.status === 200,
       `Failed to remove template with templateID "${templateId}". Response message is "${resp.data.message}"`,
     );
+  },
+
+  async createRuleTemplates(numberOfTemplatesToCreate) {
+    for (let i = 0; i < numberOfTemplatesToCreate; i++) {
+      await this.createRuleTemplate();
+    }
   },
 };

@@ -1,4 +1,4 @@
-const { I, pmmInventoryPage } = inject();
+const { I, pmmInventoryPage, inventoryAPI } = inject();
 const assert = require('assert');
 
 module.exports = {
@@ -44,6 +44,7 @@ module.exports = {
     I.click(agentLinkLocator);
     I.waitForElement(this.fields.pmmAgentLocator, 60);
     I.waitForElement(this.fields.inventoryTable, 60);
+    await inventoryAPI.waitForRunningState(serviceId);
     I.scrollPageToBottom();
     const numberOfServices = await I.grabNumberOfVisibleElements(
       `//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`,
@@ -57,11 +58,27 @@ module.exports = {
       assert.equal(
         numberOfServices,
         2,
-        ` Service ID must have only 2 Agents running for different services${serviceId}`,
+        ` Service ID must have only 2 Agents running for different services ${serviceId} , Actual Number of Services found is ${numberOfServices} for ${service_name}`,
       );
     } else {
-      assert.equal(numberOfServices, 1, ` Service ID must have only 1 Agent running${serviceId}`);
+      assert.equal(numberOfServices, 1, ` Service ID must have only 1 Agent running ${serviceId} , Actual Number of Services found is ${numberOfServices} for ${service_name}`);
     }
+  },
+
+
+  async getServiceIdWithStatus(status) {
+    const serviceIds = [];
+    const locator = locate('span')
+      .withText('service_id:')
+      .before(locate('span')
+        .withText(`status: ${status}`));
+
+    const strings = await I.grabTextFromAll(locator);
+
+    // we need to cut "service_id: " prefix from grabbed strings
+    strings.forEach((item) => serviceIds.push(item.split(': ')[1]));
+
+    return serviceIds;
   },
 
   async verifyMetricsFlags(serviceName) {

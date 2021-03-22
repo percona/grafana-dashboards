@@ -1,7 +1,6 @@
 import { apiRequestQAN } from 'shared/components/helpers/api';
 import { getLabelQueryParams } from 'pmm-qan/panel/QueryAnalytics.tools';
 
-
 const getExample = async ({
   filterBy, groupBy, labels = [], from, to, tables = [],
 }) => {

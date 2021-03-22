@@ -225,7 +225,6 @@ export const Table: FC<TableProps> = ({
                   )}
                 </Scrollbar>
               </div>
-
             </div>
           ) : null}
         </div>

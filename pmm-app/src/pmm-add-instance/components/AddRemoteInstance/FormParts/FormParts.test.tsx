@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Form } from 'react-final-form';
 import { FormApi } from 'final-form';
-import { trackingOptions } from './FormParts.constants';
+import { rdsTrackingOptions } from './FormParts.constants';
 import { AdditionalOptionsFormPart, getAdditionalOptions } from './AdditionalOptions/AdditionalOptions';
 import { LabelsFormPart } from './Labels/Labels';
 import { MainDetailsFormPart } from './MainDetails/MainDetails';
@@ -175,7 +175,7 @@ describe('getAdditionalOptions ::', () => {
     );
     const fields = root.find('input');
 
-    expect(root.find('input[name="tracking"]').length).toBe(trackingOptions.length);
-    expect(fields.length).toBe(5);
+    expect(root.find('input[name="tracking"]').length).toBe(rdsTrackingOptions.length);
+    expect(fields.length).toBe(6);
   });
 });

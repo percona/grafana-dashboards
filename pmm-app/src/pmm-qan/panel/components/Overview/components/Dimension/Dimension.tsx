@@ -6,7 +6,6 @@ import { Search } from '../Search/Search';
 import { getStyles } from './Dimension.styles';
 import { DIMENSIONS_OPTIONS } from './Dimension.constants';
 
-
 const { Option } = Select;
 
 export const Dimension: FC = () => {
@@ -34,10 +33,7 @@ export const Dimension: FC = () => {
           </Option>
         ))}
       </Select>
-      <Search
-        initialValue={dimensionSearchText}
-        handleSearch={contextActions.setDimensionSearchText}
-      />
+      <Search initialValue={dimensionSearchText} handleSearch={contextActions.setDimensionSearchText} />
     </div>
   );
 };

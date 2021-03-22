@@ -25,7 +25,7 @@ export const styles = {
   `,
   tag: css`
     background-color: #646464;
-    border: 1px solid #8A8A8A;
+    border: 1px solid #8a8a8a;
     border-radius: 3px;
     color: #f2f2f2;
     font-size: 11px;

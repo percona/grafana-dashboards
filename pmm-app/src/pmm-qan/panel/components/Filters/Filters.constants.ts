@@ -1,5 +1,5 @@
+import { Databases } from 'shared/core';
 import { getServiceType } from './Filters.tools';
-import { Databases } from '../Details/Details.types';
 
 export const FILTERS_BODY_HEIGHT = 600;
 export const FILTERS_HEADER_SIZE = 50;
@@ -55,9 +55,7 @@ export const FILTERS_GROUPS = [
   {
     name: 'Node Name',
     dataKey: 'node_name',
-    getDashboardURL: (value: string) => (
-      `${subURL}node-instance-summary/node-summary?var-node_name=${value}`
-    ),
+    getDashboardURL: (value: string) => `${subURL}node-instance-summary/node-summary?var-node_name=${value}`,
   },
   {
     name: 'Service Name',

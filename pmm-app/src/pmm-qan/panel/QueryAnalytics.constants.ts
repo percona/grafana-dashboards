@@ -1,16 +1,11 @@
 import { get } from 'lodash';
 import { humanize } from 'shared/components/helpers/Humanization';
+import { Databases } from 'shared/core';
 
 enum PageSizes {
   low = '25',
   medium = '50',
   high = '100',
-}
-
-enum Databases {
-  postgresql= 'postgresql',
-  mysql = 'mysql',
-  mongodb = 'mongodb',
 }
 
 export const PAGE_SIZE_OPTIONS = [PageSizes.low, PageSizes.medium, PageSizes.high];

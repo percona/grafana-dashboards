@@ -1,6 +1,6 @@
 Feature('QAN pagination');
 
-Before((I, qanPage, qanOverview) => {
+Before(({ I, qanPage, qanOverview }) => {
   I.Authorize();
   I.amOnPage(qanPage.url);
   qanOverview.waitForOverviewLoaded();
@@ -8,7 +8,7 @@ Before((I, qanPage, qanOverview) => {
 
 Scenario(
   'PMM-T128 - Verify qanPagination works correctly @not-pr-pipeline @qan',
-  async (I, qanPagination, qanOverview) => {
+  async ({ I, qanPagination, qanOverview }) => {
     await qanPagination.verifySelectedCountPerPage('25 / page');
     const countOfItems = await qanOverview.getCountOfItems();
 
@@ -48,7 +48,7 @@ Scenario(
 
 Scenario(
   'PMM-T193 - Verify user is able to change per page elements display and qanPagination is updated according to this value, PMM-T256 - Verify that switching view from 25 to 50/100 pages works correctly @not-pr-pipeline @qan',
-  async (qanPagination, qanOverview) => {
+  async ({ qanPagination, qanOverview }) => {
     const countOfItems = await qanOverview.getCountOfItems();
 
     await qanOverview.verifyRowCount(27);

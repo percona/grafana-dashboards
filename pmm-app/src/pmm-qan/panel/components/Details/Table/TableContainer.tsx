@@ -1,62 +1,87 @@
-import React, { FC } from 'react';
-import { Collapse, Tabs } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
+import {
+  Collapse, Tab, TabContent, TabsBar,
+} from '@grafana/ui';
+import { Databases } from 'shared/core';
+import { Messages } from 'pmm-qan/panel/components/Details/Details.messages';
 import { TableCreate } from './components/TableCreate/TableCreate';
-import { styles } from '../Explain/Explain.styles';
 import { Indexes } from './components/Indexes/Indexes';
 import { Status } from './components/Status/Status';
 import { TableTabs } from './TableContainer.constants';
 import { TableContainerProps } from './TableContainer.types';
 import { useTables } from './TableContainer.hooks';
-import { Messages } from '../Details.messages';
-import { Databases } from '../Details.types';
 
-const { TabPane } = Tabs;
-const { Panel } = Collapse;
-
-const TableCreateContainer: FC<TableContainerProps> = ({
-  databaseType,
-  examples,
-}) => {
+const TableCreateContainer: FC<TableContainerProps> = ({ databaseType, examples, database }) => {
   const [tables] = useTables(examples, databaseType);
+  const [isTableTableOpen, setTableTableOpen] = useState(true);
+  const [isTableStatusOpen, setTableStatusOpen] = useState(true);
+  const [isTableIndexesOpen, setTableIndexesOpen] = useState(true);
+  const [activeTab, changeActiveTab] = useState(tables[0]);
 
-  return (
-    tables && tables.length ? (
-      <Tabs defaultActiveKey="0" onChange={() => {}} tabPosition="top">
-        {tables.map((table) => (
-          <TabPane tab={<span>{table}</span>} key={table}>
-            <Collapse bordered={false} defaultActiveKey={[TableTabs.table]} className={styles.collapse}>
-              <Panel header={TableTabs.table} key={TableTabs.table} className={styles.panel}>
-                <TableCreate
-                  tableName={table}
-                  example={examples[0]}
-                  databaseType={databaseType}
-                />
-              </Panel>
-              {databaseType === Databases.mysql ? (
-                <Panel header={TableTabs.status} key={TableTabs.status} className={styles.panel}>
-                  <Status
-                    tableName={table}
-                    example={examples[0]}
-                    databaseType={databaseType}
-                  />
-                </Panel>
-              ) : null}
-              <Panel header={TableTabs.indexes} key={TableTabs.indexes} className={styles.panel}>
-                <Indexes
-                  tableName={table}
-                  example={examples[0]}
-                  databaseType={databaseType}
-                />
-              </Panel>
-            </Collapse>
-          </TabPane>
-        ))}
-      </Tabs>
-    ) : (
+  useEffect(() => {
+    changeActiveTab(tables[0]);
+  }, [tables]);
+
+  const tabs = tables.map((table) => ({
+    label: table,
+    key: table,
+    component: (
       <div>
-        <pre>{Messages.cantExtractTables}</pre>
+        <Collapse
+          collapsible
+          label={TableTabs.table}
+          isOpen={isTableTableOpen}
+          onToggle={() => setTableTableOpen(!isTableTableOpen)}
+        >
+          <TableCreate
+            tableName={table}
+            example={examples[0]}
+            databaseType={databaseType}
+            database={database}
+          />
+        </Collapse>
+        {databaseType === Databases.mysql ? (
+          <Collapse
+            collapsible
+            label={TableTabs.status}
+            isOpen={isTableStatusOpen}
+            onToggle={() => setTableStatusOpen(!isTableStatusOpen)}
+          >
+            <Status tableName={table} example={examples[0]} databaseType={databaseType} database={database} />
+          </Collapse>
+        ) : null}
+        <Collapse
+          collapsible
+          label={TableTabs.indexes}
+          isOpen={isTableIndexesOpen}
+          onToggle={() => setTableIndexesOpen(!isTableIndexesOpen)}
+        >
+          <Indexes tableName={table} example={examples[0]} databaseType={databaseType} database={database} />
+        </Collapse>
       </div>
-    )
+    ),
+  }));
+
+  return tables && tables.length ? (
+    <>
+      <TabsBar>
+        {tabs.map((tab, index) => (
+          <Tab
+            key={index}
+            label={tab.label}
+            active={tab.key === activeTab}
+            onChangeTab={() => {
+              changeActiveTab(tab.key);
+            }}
+          />
+        ))}
+      </TabsBar>
+      <TabContent>{tabs.map((tab) => tab.key === activeTab && tab.component)}</TabContent>
+    </>
+  ) : (
+    <div>
+      <pre>{Messages.cantExtractTables}</pre>
+    </div>
   );
 };
 

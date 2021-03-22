@@ -9,7 +9,7 @@ module.exports = {
     for (let i = 0; i < timeout; i++) {
       const results = await this.getSecurityChecksResults();
 
-      if (results.length !== 0) {
+      if (results && results.length) {
         break;
       }
 

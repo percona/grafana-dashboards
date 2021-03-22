@@ -211,6 +211,7 @@ module.exports = {
     if (type === 'slack') I.click(this.communication.slackTab);
 
     Object.values(this.communication[type]).forEach((key) => {
+      I.waitForVisible(key.locator, 30);
       I.clearField(key.locator);
       I.fillField(key.locator, key.value);
     });
