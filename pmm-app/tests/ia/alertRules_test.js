@@ -65,7 +65,6 @@ Scenario(
     I.seeElement(alertRulesPage.buttons.closeModal);
     I.seeElement(alertRulesPage.fields.searchDropdown('Template'));
     I.seeElement(alertRulesPage.fields.ruleName);
-    I.seeElement(alertRulesPage.fields.threshold);
     I.seeElement(alertRulesPage.fields.duration);
     I.seeElement(alertRulesPage.fields.searchDropdown('Severity'));
     I.seeElement(alertRulesPage.fields.filters);
