@@ -1,5 +1,6 @@
 const { I } = inject();
 const assert = require('assert');
+const faker = require('faker');
 
 module.exports = {
   async createAlertRule(ruleObj, templateName) {
@@ -127,5 +128,9 @@ module.exports = {
     return rule[0].template.annotations.summary.replace('{{ $labels.service_name }}', rule[0].filters[0].value);
   },
 
-
+  async createAlertRules(numberOfRulesToCreate) {
+    for (let i = 0; i < numberOfRulesToCreate; i++) {
+      await this.createAlertRule(`${faker.lorem.word()}_alert_rule`);
+    }
+  },
 };

@@ -20,7 +20,7 @@ export const PTSummaryService = {
       service_id: getTemplateSrv().replace(`$${variableName || 'service_name'}`),
     };
 
-    return apiRequestManagement.post<PTSummaryResponse, any>('/Actions/StartPTPostgreSQLSummary', body, true);
+    return apiRequestManagement.post<PTSummaryResponse, any>('/Actions/StartPTPgSummary', body, true);
   },
   async getMongodbPTSummary(variableName) {
     const body: DatabaseSummaryRequest = {
