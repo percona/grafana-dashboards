@@ -60,6 +60,18 @@ Scenario(
   },
 );
 
+Scenario(
+  'PMM-T630 - Verify adding External service with empty fields via UI @not-pr-pipeline',
+  async ({ I, remoteInstancesPage }) => {
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('external');
+    I.waitForVisible(remoteInstancesPage.fields.addService, 30);
+    I.click(remoteInstancesPage.fields.addService);
+    remoteInstancesPage.checkRequiredField();
+  },
+);
+
 Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
   'Verify Remote Instance has Status Running [critical] @not-pr-pipeline',
   async ({

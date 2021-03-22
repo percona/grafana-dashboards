@@ -251,4 +251,12 @@ module.exports = {
     assert.ok(grabbedCredentials === credentials, `Password is not parsed correctly: ${grabbedCredentials}`);
     I.waitForVisible(httpsLocator, 30);
   },
+
+  checkRequiredField() {
+    const hostname = '//div[@data-qa="address-field-container"]/child::div[@data-qa="address-field-error-message"]';
+    const port = '//div[@data-qa="port-field-container"]/child::div[@data-qa="port-field-error-message"]';
+
+    I.waitForVisible(hostname, 30);
+    I.waitForVisible(port, 30);
+  },
 };
