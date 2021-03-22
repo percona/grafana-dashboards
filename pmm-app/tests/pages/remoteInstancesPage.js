@@ -153,9 +153,9 @@ module.exports = {
         break;
       case 'external_service_new':
         I.fillField(this.fields.serviceName, serviceName);
-        I.fillField(this.fields.hostName, '142.93.247.109');
+        I.fillField(this.fields.hostName, process.env.MONITORING_HOST);
         I.fillField(this.fields.metricsPath, '/metrics');
-        I.fillField(this.fields.portNumber, '9121');
+        I.fillField(this.fields.portNumber, process.env.EXTERNAL_EXPORTER_PORT);
         I.fillField(this.fields.environment, 'remote-external-service');
         I.fillField(this.fields.cluster, 'remote-external-cluster');
     }
@@ -237,16 +237,16 @@ module.exports = {
     I.click(this.fields.parseUrlButton);
   },
 
-  async checkParsing(hostName, metricsPath, port, credentials) {
+  async checkParsing(metricsPath, credentials) {
     const grabbedHostname = await I.grabValueFrom(this.fields.hostName);
     const grabbedMetricPath = await I.grabValueFrom(this.fields.metricsPath);
     const grabbedPort = await I.grabValueFrom(this.fields.portNumber);
     const grabbedCredentials = await I.grabValueFrom(this.fields.userName);
     const httpsLocator = '//label[contains(@class, "active") and contains(text(), "HTTPS")]';
 
-    assert.ok(grabbedHostname === hostName, `Hostname is not parsed correctly: ${grabbedHostname}`);
+    assert.ok(grabbedHostname === process.env.MONITORING_HOST, `Hostname is not parsed correctly: ${grabbedHostname}`);
     assert.ok(grabbedMetricPath === metricsPath, `Metrics path is not parsed correctly: ${grabbedMetricPath}`);
-    assert.ok(grabbedPort === port, `Port is not parsed correctly: ${grabbedPort}`);
+    assert.ok(grabbedPort === process.env.EXTERNAL_EXPORTER_PORT, `Port is not parsed correctly: ${grabbedPort}`);
     assert.ok(grabbedCredentials === credentials, `Username is not parsed correctly: ${grabbedCredentials}`);
     assert.ok(grabbedCredentials === credentials, `Password is not parsed correctly: ${grabbedCredentials}`);
     I.waitForVisible(httpsLocator, 30);

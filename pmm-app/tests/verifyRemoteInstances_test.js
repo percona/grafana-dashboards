@@ -47,16 +47,15 @@ Scenario(
 Scenario(
   'PMM-T590 - Verify parsing URL on adding External service page @not-pr-pipeline',
   async ({ I, remoteInstancesPage }) => {
-    const hostname = '10.30.3.50';
     const metricsPath = '/metrics2';
-    const port = '9121';
-    const credentials = 'admin';
+    const credentials = 'something';
+    const url = `https://something:something@${process.env.MONITORING_HOST}:${process.env.EXTERNAL_EXPORTER_PORT}/metrics2`;
 
     I.amOnPage(remoteInstancesPage.url);
     remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
     remoteInstancesPage.openAddRemotePage('external');
-    remoteInstancesPage.parseURL('https://admin:admin@10.30.3.50:9121/metrics2');
-    await remoteInstancesPage.checkParsing(hostname, metricsPath, port, credentials);
+    remoteInstancesPage.parseURL(url);
+    await remoteInstancesPage.checkParsing(metricsPath, credentials);
   },
 );
 
