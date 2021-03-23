@@ -67,6 +67,8 @@ module.exports = {
     useTLS: '$tls-field-label',
     userName: '$username-text-input',
     urlInput: '$url-text-input',
+    requiredFieldHostname: locate('[data-qa=\'address-field-error-message\']'),
+    requiredFieldPort: locate('[data-qa=\'port-field-error-message\']'),
   },
 
   tableStatsLimitRadioButtonLocator(limit) {
@@ -253,10 +255,7 @@ module.exports = {
   },
 
   checkRequiredField() {
-    const hostname = '//div[@data-qa="address-field-container"]/child::div[@data-qa="address-field-error-message"]';
-    const port = '//div[@data-qa="port-field-container"]/child::div[@data-qa="port-field-error-message"]';
-
-    I.waitForVisible(hostname, 30);
-    I.waitForVisible(port, 30);
+    I.waitForVisible(this.fields.requiredFieldHostname, 30);
+    I.waitForVisible(this.fields.requiredFieldPort, 30);
   },
 };
