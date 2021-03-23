@@ -67,8 +67,8 @@ module.exports = {
     useTLS: '$tls-field-label',
     userName: '$username-text-input',
     urlInput: '$url-text-input',
-    requiredFieldHostname: locate('[data-qa=\'address-field-error-message\']'),
-    requiredFieldPort: locate('[data-qa=\'port-field-error-message\']'),
+    requiredFieldHostname: locate('$address-field-error-message'),
+    requiredFieldPort: locate('$port-field-error-message'),
   },
 
   tableStatsLimitRadioButtonLocator(limit) {
