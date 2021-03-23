@@ -66,6 +66,22 @@ module.exports = {
     }
   },
 
+
+  async getServiceIdWithStatus(status) {
+    const serviceIds = [];
+    const locator = locate('span')
+      .withText('service_id:')
+      .before(locate('span')
+        .withText(`status: ${status}`));
+
+    const strings = await I.grabTextFromAll(locator);
+
+    // we need to cut "service_id: " prefix from grabbed strings
+    strings.forEach((item) => serviceIds.push(item.split(': ')[1]));
+
+    return serviceIds;
+  },
+
   async verifyMetricsFlags(serviceName) {
     const servicesLink = this.fields.pmmServicesSelector;
     const agentLinkLocator = this.fields.agentsLink;
