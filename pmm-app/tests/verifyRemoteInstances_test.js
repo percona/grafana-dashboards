@@ -27,6 +27,50 @@ Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
   },
 );
 
+Scenario(
+  'PMM-T588 - Verify adding external exporter service via UI @not-pr-pipeline',
+  async ({ I, remoteInstancesPage, pmmInventoryPage }) => {
+    const serviceName = 'external_service_new';
+
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('external');
+    remoteInstancesPage.fillRemoteFields(serviceName);
+    I.waitForVisible(remoteInstancesPage.fields.addService, 30);
+    I.click(remoteInstancesPage.fields.addService);
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
+    I.click(pmmInventoryPage.fields.agentsLink);
+    I.waitForVisible(pmmInventoryPage.fields.externalExporter, 30);
+  },
+);
+
+Scenario(
+  'PMM-T590 - Verify parsing URL on adding External service page @not-pr-pipeline',
+  async ({ I, remoteInstancesPage }) => {
+    const metricsPath = '/metrics2';
+    const credentials = 'something';
+    const url = `https://something:something@${process.env.MONITORING_HOST}:${process.env.EXTERNAL_EXPORTER_PORT}/metrics2`;
+
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('external');
+    remoteInstancesPage.parseURL(url);
+    await remoteInstancesPage.checkParsing(metricsPath, credentials);
+  },
+);
+
+Scenario(
+  'PMM-T630 - Verify adding External service with empty fields via UI @not-pr-pipeline',
+  async ({ I, remoteInstancesPage }) => {
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('external');
+    I.waitForVisible(remoteInstancesPage.fields.addService, 30);
+    I.click(remoteInstancesPage.fields.addService);
+    remoteInstancesPage.checkRequiredField();
+  },
+);
+
 Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
   'Verify Remote Instance has Status Running [critical] @not-pr-pipeline',
   async ({
