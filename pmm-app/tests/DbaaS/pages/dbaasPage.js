@@ -113,7 +113,6 @@ module.exports = {
           dbClusterLogsAction: '$dbcluster-logs-actions',
           closeButton: '$modal-close-button',
           modalHeader: '$modal-header',
-
         },
         cancelDeleteDBCluster: '$cancel-delete-dbcluster-button',
         progressBarSteps: '$progress-bar-steps',
