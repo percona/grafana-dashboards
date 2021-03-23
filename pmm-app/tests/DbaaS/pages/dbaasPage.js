@@ -1,4 +1,6 @@
-const { I, dbaasAPI, dbaasActionsPage } = inject();
+const {
+  I, dbaasAPI, dbaasActionsPage,
+} = inject();
 const assert = require('assert');
 
 module.exports = {
