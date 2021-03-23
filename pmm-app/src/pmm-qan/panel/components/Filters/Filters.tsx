@@ -81,6 +81,7 @@ export const Filters: FC = () => {
       <Input
         suffix={<Filter className={styles.icon} />}
         placeholder="Filter by..."
+        data-qa="filters-search-field"
         onChange={(e: React.FormEvent<HTMLInputElement>) => {
           const element = e.target as HTMLInputElement;
 
