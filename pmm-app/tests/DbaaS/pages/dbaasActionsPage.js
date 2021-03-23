@@ -24,8 +24,8 @@ module.exports = {
   },
 
   async createClusterBasicOptions(k8sClusterName, dbClusterName, dbType) {
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
-    I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop, 30);
+    I.click(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, 30);
     I.fillField(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, dbClusterName);
     I.click(dbaasPage.tabs.dbClusterTab.basicOptions.fields.kubernetesClusterDropDown);

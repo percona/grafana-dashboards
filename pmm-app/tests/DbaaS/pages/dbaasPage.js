@@ -36,6 +36,7 @@ module.exports = {
     dbClusterTab: {
       defaultPassword: '***************',
       addDbClusterButton: locate('$table-no-data').find('button'),
+      dbClusterAddButtonTop: '$dbcluster-add-cluster-button',
       createClusterButton: '$step-progress-submit-button',
       updateClusterButton: '$dbcluster-update-cluster-button',
       dbClusterTab: '//li[@aria-label="Tab DB Cluster"]',
@@ -232,7 +233,7 @@ module.exports = {
     I.amOnPage(dbaasPage.url);
     dbaasPage.checkCluster(clusterName, false);
     I.click(dbaasPage.tabs.dbClusterTab.dbClusterTab);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop, 30);
   },
 
   async waitForKubernetesClusterTab(k8sClusterName) {
