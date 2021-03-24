@@ -34,7 +34,9 @@ Scenario(
     const cellValue = qanDetails.getMetricsCellLocator('Query Time', 3);
 
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('mysql');
+    adminPage.applyTimeRange('Last 1 hour');
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyFilter('ps-dev');
     I.waitForVisible(qanOverview.fields.searchBy, 30);
     I.fillField(qanOverview.fields.searchBy, 'insert');
     I.pressKey('Enter');
@@ -55,7 +57,7 @@ Scenario(
     qanOverview.waitForOverviewLoaded();
     adminPage.applyTimeRange('Last 1 hour');
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('mysql');
+    qanFilters.applyFilter('ps-dev');
     I.waitForVisible(qanOverview.fields.searchBy, 30);
     I.fillField(qanOverview.fields.searchBy, 'insert');
     I.pressKey('Enter');

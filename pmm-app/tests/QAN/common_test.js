@@ -31,10 +31,12 @@ Scenario(
 Scenario(
   'PMM-T223 - Verify values in overview and in details match @qan @not-pr-pipeline',
   async ({
-    I, qanOverview, qanFilters, qanDetails,
+    I, qanOverview, qanFilters, qanDetails, adminPage,
   }) => {
     const cellValue = qanDetails.getMetricsCellLocator('Query Time', 3);
 
+    qanOverview.waitForOverviewLoaded();
+    adminPage.applyTimeRange('Last 1 hour');
     qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('ps-dev');
     I.waitForVisible(qanOverview.fields.searchBy, 30);
