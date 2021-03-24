@@ -49,9 +49,9 @@ Scenario(
     adminPage.peformPageDown(1);
     I.waitForVisible(remoteInstancesPage.fields.tableStatsGroupTableLimit, 30);
     assert.strictEqual('-1', await remoteInstancesPage.getTableLimitFieldValue(), 'Count for Disabled Table Stats dont Match, was expecting -1');
-    I.click(remoteInstancesPage.tableStatsLimitRadioButtonLocator('default'));
+    I.click(remoteInstancesPage.tableStatsLimitRadioButtonLocator('Default'));
     assert.strictEqual('1000', await remoteInstancesPage.getTableLimitFieldValue(), 'Count for Default Table Stats dont Match, was expecting 1000');
-    I.click(remoteInstancesPage.tableStatsLimitRadioButtonLocator('custom'));
+    I.click(remoteInstancesPage.tableStatsLimitRadioButtonLocator('Custom'));
     assert.strictEqual('1000', await remoteInstancesPage.getTableLimitFieldValue(), 'Count for Custom Table Stats dont Match, was expecting 1000');
   },
 );
