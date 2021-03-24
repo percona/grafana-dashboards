@@ -178,8 +178,9 @@ module.exports = {
   },
 
   async verifyTooltipValue(value) {
+    I.waitForText(value, 5, this.elements.tooltipQPSValue);
     const tooltip = await I.grabTextFrom(this.elements.tooltipQPSValue);
 
-    assert.ok(tooltip.includes(value), `The tooltip has wrong value ${value}`);
+    assert.ok(tooltip.includes(value), `The tooltip value is ${tooltip} while expected value was ${value}`);
   },
 };
