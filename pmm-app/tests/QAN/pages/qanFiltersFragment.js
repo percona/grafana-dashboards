@@ -91,7 +91,6 @@ module.exports = {
     I.fillField(this.fields.filterBy, filterName);
     I.waitForVisible(filterToApply, 20);
     I.forceClick(filterToApply);
-    I.click(this.fields.filterBy);
     I.clearField(this.fields.filterBy);
     // workaround for clearing the field completely
     I.fillField(this.fields.filterBy, ' ');

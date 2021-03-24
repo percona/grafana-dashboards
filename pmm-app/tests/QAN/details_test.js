@@ -1,5 +1,7 @@
 Feature('QAN details');
 
+const { adminPage } = inject();
+
 Before(({ I, qanPage }) => {
   I.Authorize();
   I.amOnPage(qanPage.url);
@@ -51,6 +53,8 @@ Scenario(
     I, qanOverview, qanFilters, qanDetails,
   }) => {
     qanOverview.waitForOverviewLoaded();
+    adminPage.applyTimeRange('Last 1 hour');
+    qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('mysql');
     I.waitForVisible(qanOverview.fields.searchBy, 30);
     I.fillField(qanOverview.fields.searchBy, 'insert');
@@ -69,6 +73,8 @@ Scenario(
     I, qanOverview, qanFilters, qanDetails,
   }) => {
     qanOverview.waitForOverviewLoaded();
+    adminPage.applyTimeRange('Last 1 hour');
+    qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('md-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
@@ -83,6 +89,8 @@ Scenario(
   async ({
     I, qanOverview, qanFilters, qanDetails,
   }) => {
+    qanOverview.waitForOverviewLoaded();
+    adminPage.applyTimeRange('Last 1 hour');
     qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('ps-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
@@ -99,6 +107,8 @@ Scenario(
     I, qanOverview, qanFilters, qanDetails,
   }) => {
     qanOverview.waitForOverviewLoaded();
+    adminPage.applyTimeRange('Last 1 hour');
+    qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('pdpgsql-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
@@ -113,6 +123,8 @@ Scenario(
     I, qanOverview, qanFilters, qanDetails,
   }) => {
     qanOverview.waitForOverviewLoaded();
+    adminPage.applyTimeRange('Last 1 hour');
+    qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('pgsql-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
@@ -126,6 +138,8 @@ Scenario(
   async ({
     I, qanOverview, qanFilters, qanDetails,
   }) => {
+    qanOverview.waitForOverviewLoaded();
+    adminPage.applyTimeRange('Last 1 hour');
     qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('mongodb');
     I.waitForElement(qanOverview.elements.querySelector, 30);
