@@ -123,6 +123,57 @@ module.exports = {
     }
   },
 
+  async waitForXtraDbClusterPaused(dbClusterName, clusterName) {
+    const body = {
+      kubernetesClusterName: clusterName,
+      operators: { xtradb: { status: 'OPERATORS_STATUS_OK' }, psmdb: { status: 'OPERATORS_STATUS_OK' } },
+      status: 'KUBERNETES_CLUSTER_STATUS_OK',
+    };
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    for (let i = 0; i < 30; i++) {
+      const response = await I.sendPostRequest('v1/management/DBaaS/XtraDBClusters/List', body, headers);
+
+      if (response.data.clusters) {
+        const cluster = response.data.clusters.find(
+          (o) => o.name === dbClusterName,
+        );
+
+        if (cluster && cluster.state === 'XTRA_DB_CLUSTER_STATE_PAUSED') {
+          break;
+        }
+      }
+
+      await new Promise((r) => setTimeout(r, 5000));
+    }
+  },
+
+  async waitForPSMDBClusterPaused(dbClusterName, clusterName) {
+    const body = {
+      kubernetesClusterName: clusterName,
+      operators: { xtradb: { status: 'OPERATORS_STATUS_OK' }, psmdb: { status: 'OPERATORS_STATUS_OK' } },
+      status: 'KUBERNETES_CLUSTER_STATUS_OK',
+    };
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    for (let i = 0; i < 30; i++) {
+      const response = await I.sendPostRequest('v1/management/DBaaS/PSMDBClusters/List', body, headers);
+
+      if (response.data.clusters) {
+        const cluster = response.data.clusters.find(
+          (o) => o.name === dbClusterName,
+        );
+
+        if (cluster && cluster.state === 'PSMDB_CLUSTER_STATE_PAUSED') {
+          break;
+        }
+      }
+
+      await new Promise((r) => setTimeout(r, 5000));
+    }
+  },
+
+
   async waitForPSMDBClusterReady(dbClusterName, clusterName) {
     const body = {
       kubernetesClusterName: clusterName,

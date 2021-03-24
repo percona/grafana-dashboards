@@ -1,4 +1,6 @@
-const { I, dbaasAPI, adminPage } = inject();
+const {
+  I, dbaasAPI, dbaasActionsPage,
+} = inject();
 const assert = require('assert');
 
 module.exports = {
@@ -35,8 +37,10 @@ module.exports = {
     },
     dbClusterTab: {
       defaultPassword: '***************',
-      addDbClusterButton: '$dbcluster-add-cluster-button',
+      addDbClusterButton: locate('$table-no-data').find('button'),
+      dbClusterAddButtonTop: '$dbcluster-add-cluster-button',
       createClusterButton: '$step-progress-submit-button',
+      updateClusterButton: '$dbcluster-update-cluster-button',
       dbClusterTab: '//li[@aria-label="Tab DB Cluster"]',
       monitoringWarningLocator: '$add-cluster-monitoring-warning',
       optionsCountLocator: (step) => `(//div[@data-qa='step-header']//div[1])[${step}]`,
@@ -99,11 +103,17 @@ module.exports = {
         clusterSummaryDashboard: locate('$table-row').find('td').at(1).find('a'),
         clusterStatusActive: '$cluster-status-active',
         clusterStatusPending: '$cluster-status-pending',
+        clusterStatusPaused: '$cluster-status-suspended',
         clusterStatusDeleting: '$cluster-status-deleting',
         clusterTableHeader: locate('$table-header').find('th'),
         clusterTableRow: '$table-row',
         clusterActionsMenu: '$dropdown-menu-toggle',
         deleteDBClusterButton: '$delete-dbcluster-button',
+        dbClusterLogs: {
+          dbClusterLogsAction: '$dbcluster-logs-actions',
+          closeButton: '$modal-close-button',
+          modalHeader: '$modal-header',
+        },
         cancelDeleteDBCluster: '$cancel-delete-dbcluster-button',
         progressBarSteps: '$progress-bar-steps',
         progressBarContent: '$progress-bar-message',
@@ -178,24 +188,6 @@ module.exports = {
     I.seeTextEquals(message, errorField);
   },
 
-  async checkActionPossible(actionName, actionPosibilty) {
-    const numOfElements = await I.grabNumberOfVisibleElements(
-      this.tabs.dbClusterTab.fields.clusterAction(actionName),
-    );
-
-    if (numOfElements === 0) {
-      I.click(this.tabs.dbClusterTab.fields.clusterActionsMenu);
-    }
-
-    const actionClass = await I.grabAttributeFrom(this.tabs.dbClusterTab.fields.clusterAction(actionName), 'class');
-
-    if (actionPosibilty) {
-      assert.strictEqual(actionClass, null, `User Should be able to Perform ${actionName} on the DB Cluster`);
-    } else {
-      assert.notStrictEqual(actionClass, null, `User Should not be able to Perform ${actionName} on the DB Cluster`);
-    }
-  },
-
   async verifyElementInSection(section) {
     for (const element in section) {
       I.waitForElement(section[element], 30);
@@ -206,58 +198,15 @@ module.exports = {
     }
   },
 
-  async createClusterBasicOptions(k8sClusterName, dbClusterName, dbType) {
-    const dbaasPage = this;
-
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
-    I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, 30);
-    I.fillField(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, dbClusterName);
-    I.click(dbaasPage.tabs.dbClusterTab.basicOptions.fields.kubernetesClusterDropDown);
-    I.waitForElement(
-      dbaasPage.tabs.dbClusterTab.basicOptions.fields.kubernetesClusterDropDownSelect(k8sClusterName),
-      30,
-    );
-    I.click(dbaasPage.tabs.dbClusterTab.basicOptions.fields.kubernetesClusterDropDownSelect(k8sClusterName));
-    I.click(dbaasPage.tabs.dbClusterTab.basicOptions.fields.dbClusterDatabaseTypeField);
-    I.fillField(dbaasPage.tabs.dbClusterTab.basicOptions.fields.dbClusterDatabaseTypeInputField, dbType);
-    I.waitForElement(
-      dbaasPage.tabs.dbClusterTab.basicOptions.fields.dbClusterDatabaseTypeFieldSelect(dbType),
-    );
-    I.click(dbaasPage.tabs.dbClusterTab.basicOptions.fields.dbClusterDatabaseTypeFieldSelect(dbType));
-  },
-
-  async createClusterAdvancedOption(k8sClusterName, dbClusterName, dbType, configuration) {
-    const dbaasPage = this;
-
-    this.createClusterBasicOptions(k8sClusterName, dbClusterName, dbType);
-    I.click(dbaasPage.tabs.dbClusterTab.optionsCountLocator(2));
-    I.waitForElement(
-      dbaasPage.tabs.dbClusterTab.advancedOptions.fields.clusterTopology(configuration.topology), 30,
-    );
-    I.click(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.clusterTopology(configuration.topology));
-    if (configuration.resourcePerNode === 'Custom') {
-      I.click(
-        dbaasPage.tabs.dbClusterTab.advancedOptions.fields.resourcesPerNode(configuration.resourcePerNode),
-      );
-      adminPage.customClearField(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryField);
-      I.fillField(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryField, configuration.memory);
-      adminPage.customClearField(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuNumberFields);
-      I.fillField(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuNumberFields, configuration.cpu);
-      adminPage.customClearField(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.diskSizeInputField);
-      I.fillField(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.diskSizeInputField, configuration.disk);
-    }
-  },
-
   async postClusterCreationValidation(dbClusterName, k8sClusterName, clusterDBType = 'MySQL') {
     const dbaasPage = this;
 
     I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterActionsMenu, 60);
     I.click(dbaasPage.tabs.dbClusterTab.fields.clusterActionsMenu);
-    await dbaasPage.checkActionPossible('Delete', true);
-    await dbaasPage.checkActionPossible('Edit', false);
-    await dbaasPage.checkActionPossible('Restart', false);
-    await dbaasPage.checkActionPossible('Resume', false);
+    await dbaasActionsPage.checkActionPossible('Delete', true);
+    await dbaasActionsPage.checkActionPossible('Edit', false);
+    await dbaasActionsPage.checkActionPossible('Restart', false);
+    await dbaasActionsPage.checkActionPossible('Resume', false);
     if (clusterDBType === 'MySQL') {
       await dbaasAPI.waitForXtraDbClusterReady(dbClusterName, k8sClusterName);
     } else {
@@ -270,13 +219,14 @@ module.exports = {
     I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterConnection.showPasswordButton, 30);
     I.click(dbaasPage.tabs.dbClusterTab.fields.clusterConnection.showPasswordButton);
     I.click(dbaasPage.tabs.dbClusterTab.fields.clusterActionsMenu);
-    await dbaasPage.checkActionPossible('Delete', true);
-    await dbaasPage.checkActionPossible('Edit', true);
-    await dbaasPage.checkActionPossible('Restart', true);
-    await dbaasPage.checkActionPossible('Suspend', true);
+    await dbaasActionsPage.checkActionPossible('Delete', true);
+    await dbaasActionsPage.checkActionPossible('Edit', true);
+    await dbaasActionsPage.checkActionPossible('Restart', true);
+    await dbaasActionsPage.checkActionPossible('Suspend', true);
     I.click(dbaasPage.tabs.dbClusterTab.fields.clusterActionsMenu);
     I.click(dbaasPage.tabs.dbClusterTab.fields.clusterConnection.showPasswordButton);
   },
+
 
   async waitForDbClusterTab(clusterName) {
     const dbaasPage = this;
@@ -284,7 +234,7 @@ module.exports = {
     I.amOnPage(dbaasPage.url);
     dbaasPage.checkCluster(clusterName, false);
     I.click(dbaasPage.tabs.dbClusterTab.dbClusterTab);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop, 30);
   },
 
   async waitForKubernetesClusterTab(k8sClusterName) {
@@ -295,59 +245,6 @@ module.exports = {
     I.waitForElement(dbaasPage.tabs.kubernetesClusterTab.addKubernetesClusterButton, 30);
   },
 
-  async deleteXtraDBCluster(dbClusterName, k8sClusterName) {
-    const dbaasPage = this;
-
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterTableHeader, 30);
-    I.click(dbaasPage.tabs.dbClusterTab.fields.clusterActionsMenu);
-    await dbaasPage.checkActionPossible('Delete', true);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterAction('Delete'), 30);
-    I.click(dbaasPage.tabs.dbClusterTab.fields.clusterAction('Delete'));
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.deleteDBClusterButton, 30);
-    I.seeElement(dbaasPage.tabs.dbClusterTab.fields.cancelDeleteDBCluster, 30);
-    I.seeTextEquals(
-      dbaasPage.tabs.dbClusterTab.deleteDbClusterConfirmationText(dbClusterName, k8sClusterName, 'MySQL'),
-      dbaasPage.tabs.kubernetesClusterTab.modalContentText,
-    );
-    I.click(dbaasPage.tabs.dbClusterTab.fields.deleteDBClusterButton);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterStatusDeleting, 30);
-    await dbaasAPI.waitForDbClusterDeleted(dbClusterName, k8sClusterName);
-  },
-
-  async restartCluster(dbClusterName, k8sClusterName, clusterDBType = 'MySQL') {
-    const dbaasPage = this;
-
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterTableHeader, 30);
-    I.click(dbaasPage.tabs.dbClusterTab.fields.clusterActionsMenu);
-    await dbaasPage.checkActionPossible('Restart', true);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterAction('Restart'), 30);
-    I.click(dbaasPage.tabs.dbClusterTab.fields.clusterAction('Restart'));
-    I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);
-    if (clusterDBType === 'MySQL') {
-      await dbaasAPI.waitForXtraDbClusterReady(dbClusterName, k8sClusterName);
-    } else {
-      await dbaasAPI.waitForPSMDBClusterReady(dbClusterName, k8sClusterName);
-    }
-  },
-
-  async deletePSMDBCluster(dbClusterName, k8sClusterName) {
-    const dbaasPage = this;
-
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterTableHeader, 30);
-    I.click(dbaasPage.tabs.dbClusterTab.fields.clusterActionsMenu);
-    await dbaasPage.checkActionPossible('Delete', true);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterAction('Delete'), 30);
-    I.click(dbaasPage.tabs.dbClusterTab.fields.clusterAction('Delete'));
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.deleteDBClusterButton, 30);
-    I.seeElement(dbaasPage.tabs.dbClusterTab.fields.cancelDeleteDBCluster, 30);
-    I.seeTextEquals(
-      dbaasPage.tabs.dbClusterTab.deleteDbClusterConfirmationText(dbClusterName, k8sClusterName, 'MongoDB'),
-      dbaasPage.tabs.kubernetesClusterTab.modalContentText,
-    );
-    I.click(dbaasPage.tabs.dbClusterTab.fields.deleteDBClusterButton);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterStatusDeleting, 30);
-    await dbaasAPI.waitForDbClusterDeleted(dbClusterName, k8sClusterName, 'MongoDB');
-  },
 
   async validateClusterDetail(dbsClusterName, k8sClusterName, configuration) {
     const dbaasPage = this;

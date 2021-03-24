@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-undef
 const { I, adminPage, pmmInventoryPage } = inject();
+const assert = require('assert');
 
 module.exports = {
   accessKey: process.env.AWS_ACCESS_KEY_ID,
@@ -26,6 +27,7 @@ module.exports = {
   fields: {
     accessKeyInput: '$aws_access_key-text-input',
     addAWSRDSMySQLbtn: '$rds-instance',
+    addExternalServiceRemote: '$external-instance',
     addInstanceDiv: '//div[@class="view"]',
     addInstancesList: '//nav[@class="navigation"]',
     addMongoDBRemote: '$mongodb-instance',
@@ -43,7 +45,9 @@ module.exports = {
     environment: '$environment-text-input',
     hostName: '$address-text-input',
     iframe: '//div[@class="panel-content"]//iframe',
+    metricsPath: '$metrics_path-text-input',
     pageHeaderText: 'PMM Add Instance',
+    parseUrlButton: '$parse-url-button',
     password: '$password-password-input',
     portNumber: '$port-text-input',
     remoteInstanceTitle: 'Add instance',
@@ -62,6 +66,9 @@ module.exports = {
     useQANMongoDBProfiler: '//input[@name="qan_mongodb_profiler"]',
     useTLS: '$tls-field-label',
     userName: '$username-text-input',
+    urlInput: '$url-text-input',
+    requiredFieldHostname: locate('$address-field-error-message'),
+    requiredFieldPort: locate('$port-field-error-message'),
   },
 
   tableStatsLimitRadioButtonLocator(limit) {
@@ -97,6 +104,9 @@ module.exports = {
         break;
       case 'proxysql':
         I.click(this.fields.addProxySQLRemote);
+        break;
+      case 'external':
+        I.click(this.fields.addExternalServiceRemote);
         break;
     }
     I.waitForElement(this.fields.serviceName, 60);
@@ -143,6 +153,13 @@ module.exports = {
         I.fillField(this.fields.environment, 'remote-proxysql');
         I.fillField(this.fields.cluster, 'remote-proxysql-cluster');
         break;
+      case 'external_service_new':
+        I.fillField(this.fields.serviceName, serviceName);
+        I.fillField(this.fields.hostName, process.env.MONITORING_HOST);
+        I.fillField(this.fields.metricsPath, '/metrics');
+        I.fillField(this.fields.portNumber, process.env.EXTERNAL_EXPORTER_PORT);
+        I.fillField(this.fields.environment, 'remote-external-service');
+        I.fillField(this.fields.cluster, 'remote-external-cluster');
     }
     adminPage.peformPageDown(1);
   },
@@ -214,5 +231,31 @@ module.exports = {
     I.fillField(this.fields.cluster, 'rds56-cluster');
     I.fillField(this.fields.replicationSet, 'rds56-replication');
     I.scrollPageToBottom();
+  },
+
+  parseURL(url) {
+    I.waitForVisible(this.fields.urlInput, 30);
+    I.fillField(this.fields.urlInput, url);
+    I.click(this.fields.parseUrlButton);
+  },
+
+  async checkParsing(metricsPath, credentials) {
+    const grabbedHostname = await I.grabValueFrom(this.fields.hostName);
+    const grabbedMetricPath = await I.grabValueFrom(this.fields.metricsPath);
+    const grabbedPort = await I.grabValueFrom(this.fields.portNumber);
+    const grabbedCredentials = await I.grabValueFrom(this.fields.userName);
+    const httpsLocator = '//label[contains(@class, "active") and contains(text(), "HTTPS")]';
+
+    assert.ok(grabbedHostname === process.env.MONITORING_HOST, `Hostname is not parsed correctly: ${grabbedHostname}`);
+    assert.ok(grabbedMetricPath === metricsPath, `Metrics path is not parsed correctly: ${grabbedMetricPath}`);
+    assert.ok(grabbedPort === process.env.EXTERNAL_EXPORTER_PORT, `Port is not parsed correctly: ${grabbedPort}`);
+    assert.ok(grabbedCredentials === credentials, `Username is not parsed correctly: ${grabbedCredentials}`);
+    assert.ok(grabbedCredentials === credentials, `Password is not parsed correctly: ${grabbedCredentials}`);
+    I.waitForVisible(httpsLocator, 30);
+  },
+
+  checkRequiredField() {
+    I.waitForVisible(this.fields.requiredFieldHostname, 30);
+    I.waitForVisible(this.fields.requiredFieldPort, 30);
   },
 };
