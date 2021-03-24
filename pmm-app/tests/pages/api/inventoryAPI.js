@@ -70,9 +70,7 @@ module.exports = {
   },
 
   async apiGetServices(serviceType) {
-    const body = {
-      service_type: serviceType,
-    };
+    const body = serviceType ? { service_type: serviceType } : {};
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
     return I.sendPostRequest('v1/inventory/Services/List', body, headers);
@@ -86,5 +84,13 @@ module.exports = {
       .find(({ service_id }) => service_id === serviceId);
 
     assert.ok(present, `Service with ID ${serviceId} does not exist.`);
+  },
+
+  async getServiceById(serviceId) {
+    const resp = await this.apiGetServices();
+
+    return Object.values(resp.data)
+      .flat(Infinity)
+      .filter(({ service_id }) => service_id === serviceId);
   },
 };

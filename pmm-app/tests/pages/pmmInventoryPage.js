@@ -21,6 +21,7 @@ module.exports = {
     tableCheckbox: 'div[data-qa="select-row"]',
     tableRow: '//tr[@data-qa="table-row"]',
     runningStatus: '//span[contains(text(), "RUNNING")]',
+    externalExporter: locate('td').withText('External exporter'),
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
@@ -63,6 +64,22 @@ module.exports = {
     } else {
       assert.equal(numberOfServices, 1, ` Service ID must have only 1 Agent running ${serviceId} , Actual Number of Services found is ${numberOfServices} for ${service_name}`);
     }
+  },
+
+
+  async getServiceIdWithStatus(status) {
+    const serviceIds = [];
+    const locator = locate('span')
+      .withText('service_id:')
+      .before(locate('span')
+        .withText(`status: ${status}`));
+
+    const strings = await I.grabTextFromAll(locator);
+
+    // we need to cut "service_id: " prefix from grabbed strings
+    strings.forEach((item) => serviceIds.push(item.split(': ')[1]));
+
+    return serviceIds;
   },
 
   async verifyMetricsFlags(serviceName) {

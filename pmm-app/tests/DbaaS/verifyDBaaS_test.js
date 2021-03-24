@@ -1,5 +1,6 @@
 const assert = require('assert');
-const dbaasPage = require('./pages/dbaasPage');
+
+const { dbaasPage } = inject();
 
 const clusterName = 'Kubernetes_Testing_Cluster_Minikube';
 
@@ -225,8 +226,8 @@ Data(inputFields).Scenario('PMM-T456 Verify Create Cluster steps validation - fi
     I.amOnPage(dbaasPage.url);
     dbaasPage.checkCluster(clusterName, false);
     I.click(dbaasPage.tabs.dbClusterTab.dbClusterTab);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
-    I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop, 30);
+    I.click(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.optionsCountLocator(2), 30);
     I.click(dbaasPage.tabs.dbClusterTab.optionsCountLocator(2));
     I.click(dbaasPage.tabs.dbClusterTab.advancedOptions.fields.resourcesPerNode('Custom'));
