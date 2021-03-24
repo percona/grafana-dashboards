@@ -1,5 +1,6 @@
 const { I } = inject();
 const assert = require('assert');
+const adminPage = require('./adminPage');
 
 const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 
@@ -290,9 +291,9 @@ module.exports = {
   },
 
   addAlertmanagerRule(url, rule) {
-    I.clearField(this.fields.alertURLInput);
+    adminPage.customClearField(this.fields.alertURLInput);
     I.fillField(this.fields.alertURLInput, url);
-    I.clearField(this.fields.alertRulesInput);
+    adminPage.customClearField(this.fields.alertRulesInput);
     I.fillField(this.fields.alertRulesInput, rule);
     I.click(this.fields.alertmanagerButton);
   },
