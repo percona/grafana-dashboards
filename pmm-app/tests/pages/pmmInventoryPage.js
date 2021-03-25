@@ -42,10 +42,10 @@ module.exports = {
     const serviceId = await this.getServiceId(service_name);
     const agentLinkLocator = this.fields.agentsLink;
 
+    await inventoryAPI.waitForRunningState(serviceId);
     I.click(agentLinkLocator);
     I.waitForElement(this.fields.pmmAgentLocator, 60);
     I.waitForElement(this.fields.inventoryTable, 60);
-    await inventoryAPI.waitForRunningState(serviceId);
     I.scrollPageToBottom();
     const numberOfServices = await I.grabNumberOfVisibleElements(
       `//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`,

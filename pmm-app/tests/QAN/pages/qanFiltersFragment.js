@@ -66,7 +66,7 @@ module.exports = {
   },
 
   waitForFiltersToLoad() {
-    I.waitForInvisible(this.elements.spinner, 30);
+    I.waitForInvisible(this.elements.spinner, 60);
   },
 
   async expandAllFilters() {
