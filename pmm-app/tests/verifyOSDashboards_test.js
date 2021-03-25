@@ -75,7 +75,7 @@ Data(nodes).Scenario(
     I.click(adminPage.fields.metricTitle);
     await dashboardPage.expandEachDashboardRow();
     adminPage.performPageUp(5);
-    I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 30);
+    I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 60);
     I.seeElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer);
   },
 );

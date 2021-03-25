@@ -6,7 +6,7 @@ module.exports = {
   root: '$query-analytics-details',
   fields: {},
   buttons: {
-    close: '//div[@role="tablist"]//button/span[text()="Close"]',
+    close: locate('button').find('span').withText('Close'),
   },
   elements: {
     resizer: 'span.Resizer.horizontal',
@@ -18,7 +18,7 @@ module.exports = {
 
   getFilterSectionLocator: (filterSectionName) => `//span[contains(text(), '${filterSectionName}')]`,
 
-  getTabLocator: (tabName) => `//span[contains(text(), '${tabName}')]`,
+  getTabLocator: (tabName) => `//li[contains(text(), '${tabName}')]`,
 
   getMetricsCellLocator: (metricName, columnNumber) => `//td//span[contains(text(), "${metricName}")]/ancestor::tr/td[${columnNumber}]//span[1]`,
 
@@ -33,8 +33,8 @@ module.exports = {
   },
 
   checkExamplesTab() {
-    I.waitForVisible(this.getTabLocator('Example'), 30);
-    I.click(this.getTabLocator('Example'));
+    I.waitForVisible(this.getTabLocator('Examples'), 30);
+    I.click(this.getTabLocator('Examples'));
     qanFilters.waitForFiltersToLoad();
     I.waitForVisible(this.elements.examplesCodeBlock, 30);
     I.dontSeeElement(this.elements.noExamples);

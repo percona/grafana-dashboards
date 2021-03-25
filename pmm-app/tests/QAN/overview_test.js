@@ -189,16 +189,23 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T179 - Verify user is able to hover sparkline buckets and see correct tooltip @not-pr-pipeline @qan',
+  'PMM-T179 - Verify user is able to hover sparkline buckets and see correct Query Count Value @not-pr-pipeline @qan',
   async ({ I, qanOverview }) => {
     const firstCell = qanOverview.getCellValueLocator(3, 2);
-    const secondCell = qanOverview.getCellValueLocator(3, 3);
 
     const [queryCount] = (await I.grabTextFrom(firstCell)).split(' ');
 
     I.moveCursorTo(firstCell);
     I.waitForVisible(qanOverview.elements.tooltip, 20);
     await qanOverview.verifyTooltipValue(queryCount);
+  },
+);
+
+Scenario(
+  'PMM-T179 - Verify user is able to hover sparkline buckets and see correct Query Time Value @not-pr-pipeline @qan',
+  async ({ I, qanOverview }) => {
+    const secondCell = qanOverview.getCellValueLocator(3, 3);
+
     const queryTime = await I.grabTextFrom(secondCell);
 
     I.moveCursorTo(secondCell);
