@@ -961,7 +961,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "count(node_load1{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}) by (region)",
+                            "expr": "count(node_load1{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} or azure_resource_info{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}) by (region)",
                             "format": "table",
                             "instant": true,
                             "interval": "$interval",
@@ -1044,11 +1044,12 @@
                     ],
                     "targets": [
                         {
-                            "expr": "count(node_load1{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}) by (node_type)",
+                            "expr": "count(node_load1{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} or azure_resource_info{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}) by (node_type)",
                             "format": "table",
                             "instant": true,
                             "interval": "$interval",
                             "intervalFactor": 1,
+                            "legendFormat": "",
                             "refId": "A"
                         }
                     ],
@@ -1148,10 +1149,11 @@
                     ],
                     "targets": [
                         {
-                            "expr": "node_load1{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}",
+                            "expr": "node_load1{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} or azure_resource_info{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}",
                             "format": "table",
                             "instant": true,
                             "interval": "$interval",
+                            "legendFormat": "",
                             "refId": "B"
                         }
                     ],
@@ -1827,7 +1829,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max(clamp_max(sum by (node_name) (avg by (mode,node_name)((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m]))),100))",
+                    "expr": "max(clamp_max(sum by (node_name) (avg by (mode,node_name)((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"|total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"|total\"}[5m]))),100))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2562,9 +2564,12 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {
+                        "alertThreshold": true
+                    },
                     "paceLength": 10,
                     "percentage": false,
-                    "pluginVersion": "7.1.3",
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -2584,7 +2589,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(5,clamp_max(avg by (node_name) (sum by (node_name) (avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",\nnode_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m]))),100))",
+                            "expr": "topk(5,clamp_max(avg by (node_name) (sum by (node_name) (avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",\nnode_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"|total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"|total\"}[5m]))),100))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2785,7 +2790,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "avg by (node_name) (clamp_max(sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m]))),100))",
+                            "expr": "avg by (node_name) (clamp_max(sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"|total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"|total\"}[5m]))),100))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2867,9 +2872,12 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {
+                        "alertThreshold": true
+                    },
                     "paceLength": 10,
                     "percentage": false,
-                    "pluginVersion": "7.1.3",
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -3172,9 +3180,12 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {
+                        "alertThreshold": true
+                    },
                     "paceLength": 10,
                     "percentage": false,
-                    "pluginVersion": "7.1.3",
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -3475,9 +3486,12 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {
+                        "alertThreshold": true
+                    },
                     "paceLength": 10,
                     "percentage": false,
-                    "pluginVersion": "7.1.3",
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -3775,9 +3789,12 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {
+                        "alertThreshold": true
+                    },
                     "paceLength": 10,
                     "percentage": false,
-                    "pluginVersion": "7.1.3",
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -4084,9 +4101,12 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {
+                        "alertThreshold": true
+                    },
                     "paceLength": 10,
                     "percentage": false,
-                    "pluginVersion": "7.1.3",
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -4388,9 +4408,12 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {
+                        "alertThreshold": true
+                    },
                     "paceLength": 10,
                     "percentage": false,
-                    "pluginVersion": "7.1.3",
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -4715,8 +4738,9 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "clamp_max(min by () ((node_memory_MemAvailable_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} or \n(node_memory_MemFree_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} + \nnode_memory_Cached_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}) * 100,100)",
+                    "expr": "clamp_max(min by () (((node_memory_MemAvailable_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} or \n(node_memory_MemFree_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} + \nnode_memory_Cached_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}) * 100 or\n(100 - azure_memory_percent_average{node_name=~\"$node_name\"})),100)",
                     "format": "time_series",
+                    "instant": true,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -5210,25 +5234,44 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 8,
                         "x": 0,
-                        "y": 70
+                        "y": 14
                     },
                     "id": 336,
                     "links": [],
-                    "options": {},
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
                         "columns": "",
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": false,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -5238,7 +5281,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "percentunit",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -5253,12 +5296,20 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [],
                     "savedOverrides": [
                         {
@@ -5300,43 +5351,75 @@
                     ],
                     "targets": [
                         {
-                            "expr": "clamp_max(avg by (node_name) ((((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[$interval]) or\nmax_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[5m])) or \n(node_memory_MemFree_bytes{node_name=~\"$node_name\"} + \nnode_memory_Buffers_bytes{node_name=~\"$node_name\"} + \nnode_memory_Cached_bytes{node_name=~\"$node_name\"})) /\n(max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval])))),1)",
+                            "expr": "clamp_max(avg by (node_name) ((((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[$interval]) or\nmax_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[5m])) or\n(node_memory_MemFree_bytes{node_name=~\"$node_name\"} + \nnode_memory_Buffers_bytes{node_name=~\"$node_name\"} + \nnode_memory_Cached_bytes{node_name=~\"$node_name\"})) /\n(max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval])))),1)",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{node_name}}",
                             "refId": "B"
+                        },
+                        {
+                            "expr": "avg by (node_name) (100 - azure_memory_percent_average{node_name=~\"$node_name\"})/100",
+                            "interval": "$interval",
+                            "legendFormat": "{{node_name}}",
+                            "refId": "A"
                         }
                     ],
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Free Memory Percent",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 8,
                         "x": 8,
-                        "y": 70
+                        "y": 14
                     },
                     "id": 338,
                     "links": [],
-                    "options": {},
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
                         "columns": "",
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": false,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -5346,7 +5429,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "percent",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -5361,12 +5444,20 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [],
                     "savedOverrides": [
                         {
@@ -5419,31 +5510,57 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Available Virtual Memory Percent",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 8,
                         "x": 16,
-                        "y": 70
+                        "y": 14
                     },
                     "id": 337,
                     "links": [],
-                    "options": {},
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
                         "columns": "",
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": false,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -5453,7 +5570,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "percent",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -5468,12 +5585,20 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [],
                     "savedOverrides": [
                         {
@@ -5526,7 +5651,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Free Swap Space Percent",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "aliasColors": {
@@ -5542,6 +5674,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Memory Details - ${__series.name}",
+                                    "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -5549,7 +5694,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 78
+                        "y": 22
                     },
                     "height": "",
                     "hiddenSeries": false,
@@ -5573,16 +5718,11 @@
                     "links": [],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Memory Details - ${__series.name}",
-                                "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -5681,6 +5821,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Memory Details - ${__series.name}",
+                                    "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -5688,7 +5841,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 78
+                        "y": 22
                     },
                     "height": "",
                     "hiddenSeries": false,
@@ -5712,16 +5865,11 @@
                     "links": [],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Memory Details - ${__series.name}",
-                                "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -5817,6 +5965,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Memory Details - ${__series.name}",
+                                    "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -5824,7 +5985,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 86
+                        "y": 30
                     },
                     "height": "",
                     "hiddenSeries": false,
@@ -5854,16 +6015,11 @@
                     ],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Memory Details - ${__series.name}",
-                                "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -5954,6 +6110,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Memory Details - ${__series.name}",
+                                    "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -5961,7 +6130,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 86
+                        "y": 30
                     },
                     "height": "",
                     "hiddenSeries": false,
@@ -5991,16 +6160,11 @@
                     ],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Memory Details - ${__series.name}",
-                                "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -6097,6 +6261,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Memory Details - ${__series.name}",
+                                    "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -6104,7 +6281,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 94
+                        "y": 38
                     },
                     "hiddenSeries": false,
                     "id": 23,
@@ -6127,16 +6304,11 @@
                     "links": [],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Memory Details - ${__series.name}",
-                                "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -6233,6 +6405,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Memory Details - ${__series.name}",
+                                    "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -6240,7 +6425,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 94
+                        "y": 38
                     },
                     "hiddenSeries": false,
                     "id": 161,
@@ -6263,16 +6448,11 @@
                     "links": [],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Memory Details - ${__series.name}",
-                                "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -6368,6 +6548,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Memory Details - ${__series.name}",
+                                    "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -6375,7 +6568,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 102
+                        "y": 46
                     },
                     "hiddenSeries": false,
                     "id": 30,
@@ -6398,16 +6591,11 @@
                     "links": [],
                     "nullPointMode": "null as zero",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Memory Details - ${__series.name}",
-                                "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -6502,6 +6690,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Memory Details - ${__series.name}",
+                                    "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -6509,7 +6710,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 102
+                        "y": 46
                     },
                     "hiddenSeries": false,
                     "id": 162,
@@ -6532,16 +6733,11 @@
                     "links": [],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Memory Details - ${__series.name}",
-                                "url": "/graph/d/node-memory/memory-details/?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -6713,8 +6909,9 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "clamp_max((min(node_filesystem_free_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"}/\nnode_filesystem_size_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"} > 0 )*100),100)",
+                    "expr": "clamp_max((min((node_filesystem_free_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"}/\nnode_filesystem_size_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"} > 0 )*100 or \n(100 - azure_storage_percent_average{node_name=~\"$node_name\"}))),100)",
                     "format": "time_series",
+                    "instant": true,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -7219,6 +7416,19 @@
                     "description": "Shows how much disk was loaded for reads or writes as average number of outstanding requests at different period of time.  High disk load is a good measure of actual storage utilization. Different storage types handle load differently - some will show latency increases on low loads others can handle higher load with no problems.",
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Disk Details - ${__series.name}",
+                                    "url": "/graph/d/node-disk/disk-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -7256,16 +7466,11 @@
                     ],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Disk Details - ${__series.name}",
-                                "url": "/graph/d/node-disk/disk-details?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -7353,9 +7558,16 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
@@ -7365,7 +7577,17 @@
                     "id": 339,
                     "interval": "",
                     "links": [],
-                    "options": {},
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
@@ -7374,6 +7596,7 @@
                         "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -7402,8 +7625,16 @@
                         "tooltipPrimarySortField": "thresholdLevel",
                         "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -7567,7 +7798,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Disk I/O Load",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "aliasColors": {
@@ -7580,6 +7818,19 @@
                     "datasource": null,
                     "decimals": 2,
                     "description": "Shows average latency for Reads and Writes IO Devices.  Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems.  Higher than normal latency also can indicate internal storage problems.",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Disk Details - ${__series.name}",
+                                    "url": "/graph/d/node-disk/disk-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "gridPos": {
@@ -7615,16 +7866,11 @@
                     ],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Disk Details - ${__series.name}",
-                                "url": "/graph/d/node-disk/disk-details?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -7707,9 +7953,16 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
@@ -7719,7 +7972,17 @@
                     "id": 340,
                     "interval": "",
                     "links": [],
-                    "options": {},
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
@@ -7728,6 +7991,7 @@
                         "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -7756,8 +8020,16 @@
                         "tooltipPrimarySortField": "thresholdLevel",
                         "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -7921,7 +8193,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": " Disk Latency",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "aliasColors": {
@@ -7934,6 +8213,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Disk Details - ${__series.name}",
+                                    "url": "/graph/d/node-disk/disk-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -7970,16 +8262,11 @@
                     ],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Disk Details - ${__series.name}",
-                                "url": "/graph/d/node-disk/disk-details?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -8067,9 +8354,16 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
@@ -8079,7 +8373,17 @@
                     "id": 341,
                     "interval": "",
                     "links": [],
-                    "options": {},
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
@@ -8088,6 +8392,7 @@
                         "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -8116,8 +8421,16 @@
                         "tooltipPrimarySortField": "thresholdLevel",
                         "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -8281,7 +8594,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": " Disk Bandwidth",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "aliasColors": {
@@ -8294,6 +8614,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Disk Details - ${__series.name}",
+                                    "url": "/graph/d/node-disk/disk-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -8330,16 +8663,11 @@
                     ],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Disk Details - ${__series.name}",
-                                "url": "/graph/d/node-disk/disk-details?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -8427,9 +8755,16 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
@@ -8439,14 +8774,26 @@
                     "id": 343,
                     "interval": "",
                     "links": [],
-                    "options": {},
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -8456,7 +8803,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "Bps",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -8471,12 +8818,20 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -8640,7 +8995,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "I/O Activity",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 }
             ],
             "title": "Disk Details",
@@ -9243,6 +9605,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Network Details - ${__series.name}",
+                                    "url": "/graph/d/node-network/network-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -9250,7 +9625,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 118
+                        "y": 22
                     },
                     "hiddenSeries": false,
                     "id": 21,
@@ -9273,16 +9648,11 @@
                     "links": [],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Network Details - ${__series.name}",
-                                "url": "/graph/d/node-network/network-details?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -9369,26 +9739,45 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 118
+                        "y": 22
                     },
                     "id": 303,
                     "interval": "",
                     "links": [],
-                    "options": {},
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
                         "columns": 5,
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -9398,7 +9787,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "short",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -9413,12 +9802,20 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -9546,7 +9943,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Network Traffic",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "aliasColors": {
@@ -9563,6 +9967,19 @@
                     "description": "Total Number of Local Network Interface Transmit Errors, Receive Errors and Drops.  Should be  Zero",
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Network Details - ${__series.name}",
+                                    "url": "/graph/d/node-network/network-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -9570,7 +9987,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 126
+                        "y": 30
                     },
                     "hiddenSeries": false,
                     "id": 52,
@@ -9594,16 +10011,11 @@
                     "links": [],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Network Details - ${__series.name}",
-                                "url": "/graph/d/node-network/network-details?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -9691,26 +10103,45 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 126
+                        "y": 30
                     },
                     "id": 324,
                     "interval": "",
                     "links": [],
-                    "options": {},
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
                         "columns": 5,
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -9720,7 +10151,7 @@
                         "globalOperatorName": "avg",
                         "globalUnitFormat": "short",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -9735,12 +10166,20 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -9813,7 +10252,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Errors",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "aliasColors": {
@@ -9826,6 +10272,19 @@
                     "decimals": 2,
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Network Details - ${__series.name}",
+                                    "url": "/graph/d/node-network/network-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -9833,7 +10292,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 134
+                        "y": 38
                     },
                     "hiddenSeries": false,
                     "id": 53,
@@ -9856,16 +10315,11 @@
                     "links": [],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Network Details - ${__series.name}",
-                                "url": "/graph/d/node-network/network-details?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -9954,26 +10408,45 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 134
+                        "y": 38
                     },
                     "id": 322,
                     "interval": "",
                     "links": [],
-                    "options": {},
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
                         "columns": 5,
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -9983,7 +10456,7 @@
                         "globalOperatorName": "avg",
                         "globalUnitFormat": "short",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -9998,12 +10471,20 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -10148,7 +10629,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Retransmission",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 },
                 {
                     "aliasColors": {
@@ -10165,6 +10653,19 @@
                     "description": "Total Number of Local Network Interface Transmit Errors, Receive Errors and Drops.  Should be  Zero",
                     "editable": true,
                     "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": [
+                                {
+                                    "targetBlank": true,
+                                    "title": "Network Details - ${__series.name}",
+                                    "url": "/graph/d/node-network/network-details?var-node_name=${__series.name}&$__url_time_range"
+                                }
+                            ]
+                        },
+                        "overrides": []
+                    },
                     "fill": 2,
                     "fillGradient": 0,
                     "grid": {},
@@ -10172,7 +10673,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 142
+                        "y": 46
                     },
                     "hiddenSeries": false,
                     "id": 168,
@@ -10195,16 +10696,11 @@
                     "links": [],
                     "nullPointMode": "null",
                     "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Network Details - ${__series.name}",
-                                "url": "/graph/d/node-network/network-details?var-node_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
+                        "alertThreshold": true
                     },
                     "paceLength": 10,
                     "percentage": false,
+                    "pluginVersion": "7.3.7",
                     "pointradius": 1,
                     "points": true,
                     "renderer": "flot",
@@ -10294,26 +10790,45 @@
                     "colors": [
                         "#299c46",
                         "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
+                        "#d44a3a",
+                        "#4040a0"
                     ],
                     "datasource": null,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 142
+                        "y": 46
                     },
                     "id": 323,
                     "interval": "",
                     "links": [],
-                    "options": {},
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
                     "polystat": {
                         "animationSpeed": 2500,
                         "columnAutoSize": true,
                         "columns": 5,
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
+                        "fontAutoColor": true,
                         "fontAutoScale": true,
                         "fontSize": 12,
                         "fontType": "Roboto",
@@ -10323,7 +10838,7 @@
                         "globalOperatorName": "avg",
                         "globalUnitFormat": "short",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -10338,12 +10853,20 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
+                        "tooltipTimestampEnabled": true,
+                        "valueEnabled": true
                     },
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
                     "savedComposites": [
                         {
                             "animateMode": "all",
@@ -10416,7 +10939,14 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Drop",
-                    "type": "grafana-polystat-panel"
+                    "type": "grafana-polystat-panel",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ]
                 }
             ],
             "title": "Network Details",
@@ -10440,6 +10970,7 @@
                 "auto_min": "1s",
                 "current": {},
                 "datasource": "Metrics",
+                "error": null,
                 "hide": 0,
                 "includeAll": false,
                 "label": "Interval",
@@ -10499,6 +11030,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(node_load1{node_type=~\"generic|remote_rds|container|remote\"}, region)",
+                "error": null,
                 "hide": 0,
                 "includeAll": true,
                 "label": "Region",
@@ -10524,6 +11056,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(up{region=~\"$region\"}, node_type)",
+                "error": null,
                 "hide": 0,
                 "includeAll": true,
                 "label": "Type",
@@ -10549,6 +11082,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(up{region=~\"$region\",node_type=~\"$node_type\"}, node_name)",
+                "error": null,
                 "hide": 0,
                 "includeAll": true,
                 "label": "Node Names",
@@ -10573,6 +11107,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|up\",node_name=~\"$node_name\"}, service_name)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Service Name",
@@ -10595,6 +11130,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Database",
@@ -10617,6 +11153,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Type",
@@ -10639,6 +11176,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Environment",
@@ -10661,6 +11199,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Cluster",
@@ -10683,6 +11222,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Replication Set",
@@ -10705,6 +11245,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Username",
@@ -10727,6 +11268,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Schema",
