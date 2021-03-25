@@ -60,7 +60,7 @@ Scenario(
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();
     await dashboardPage.verifyThereAreNoGraphsWithNA(1);
-    await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(6);
   },
 );
 
