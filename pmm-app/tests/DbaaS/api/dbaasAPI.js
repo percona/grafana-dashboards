@@ -182,7 +182,7 @@ module.exports = {
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 60; i++) {
       const response = await I.sendPostRequest('v1/management/DBaaS/PSMDBClusters/List', body, headers);
 
       if (response.data.clusters) {
