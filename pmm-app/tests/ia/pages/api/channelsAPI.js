@@ -5,7 +5,7 @@ const faker = require('faker');
 module.exports = {
   types: ncPage.types,
 
-  async createNotificationChannel(name, type) {
+  async createNotificationChannel(name, type, values) {
     let body = {
       summary: name,
     };
@@ -15,7 +15,7 @@ module.exports = {
         body = {
           ...body,
           email_config: {
-            to: [this.types.email.addresses],
+            to: [values || this.types.email.addresses],
           },
         };
         break;
@@ -47,6 +47,8 @@ module.exports = {
       resp.status === 200,
       `Failed to create a channel with name "${name}". Response message is "${resp.data.message}"`,
     );
+
+    return resp.data.channel_id;
   },
 
   async clearAllNotificationChannels() {
