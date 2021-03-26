@@ -44,8 +44,8 @@ Scenario(
     qanOverview.selectRow(1);
     qanFilters.waitForFiltersToLoad();
     I.waitForVisible(cellValue, 30);
-    await qanDetails.verifyAvqQueryCount();
-    await qanDetails.verifyAvgQueryTime();
+    await qanDetails.verifyAvqQueryCount(3600);
+    await qanDetails.verifyAvgQueryTime(3600);
   },
 );
 
