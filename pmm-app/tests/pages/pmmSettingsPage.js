@@ -164,6 +164,8 @@ module.exports = {
     highInput: '$metrics-resolution-hr-input',
     perconaPlatformLink: '//li[contains(text(), \'Percona Platform\')]',
     privacyPolicy: '//span[contains(text(), "Privacy Policy")]',
+    publicAddressInput: '$publicAddress-text-input',
+    publicAddressButton: '$public-address-button',
     sectionHeader: '//div[@class="ant-collapse-header"]',
     selectedResolution: 'span.ant-slider-mark-text-active',
     signInEmail: '$sign-in-email-input',
@@ -286,6 +288,12 @@ module.exports = {
   addSSHKey(keyValue) {
     I.fillField(this.fields.sshKeyInput, keyValue);
     I.click(this.fields.sshKeyButton);
+  },
+
+  addPublicAddress(address = process.env.SERVER_IP) {
+    I.fillField(this.fields.publicAddressInput, address);
+    I.click(this.fields.advancedButton);
+    I.verifyPopUpMessage(this.messages.successPopUpMessage);
   },
 
   addAlertmanagerRule(url, rule) {
