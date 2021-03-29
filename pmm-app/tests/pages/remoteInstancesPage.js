@@ -65,7 +65,7 @@ module.exports = {
   },
 
   tableStatsLimitRadioButtonLocator(limit) {
-    return `//label[contains(text(), '${limit}')]`;
+    return locate('label').withText(limit);
   },
 
   async getTableLimitFieldValue() {

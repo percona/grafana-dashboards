@@ -1,6 +1,5 @@
-const { I } = inject();
+const { I, adminPage } = inject();
 const assert = require('assert');
-const adminPage = require('./adminPage');
 
 const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 
