@@ -1,4 +1,9 @@
+const assert = require('assert');
+
 let ruleIdForAlerts;
+let ruleIdForEmailCheck;
+let testEmail;
+const ruleNameForEmailCheck = 'Rule with BUILT_IN template (check email)';
 const ruleName = 'PSQL immortal rule';
 const rulesForAlerts = [{
   ruleName,
@@ -21,12 +26,12 @@ const rulesToDelete = [];
 Feature('IA: Alerts').retry(2);
 
 Before(async ({ I, settingsAPI }) => {
-  I.Authorize();
+  await I.Authorize();
   await settingsAPI.apiEnableIA();
 });
 
 BeforeSuite(async ({
-  settingsAPI, rulesAPI, alertsAPI,
+  I, settingsAPI, rulesAPI, alertsAPI, channelsAPI, ncPage,
 }) => {
   await settingsAPI.apiEnableIA();
   await rulesAPI.clearAllRules(true);
@@ -38,7 +43,25 @@ BeforeSuite(async ({
 
   ruleIdForAlerts = await rulesAPI.createAlertRule({ ruleName });
 
-  await alertsAPI.waitForAlerts(300, rulesToDelete.length + 1);
+  // Preparation steps for checking Alert via email
+  const channelName = 'EmailChannel';
+
+  testEmail = await I.generateNewEmail();
+
+  await settingsAPI.setEmailAlertingSettings();
+  const channelId = await channelsAPI.createNotificationChannel(
+    channelName,
+    ncPage.types.email.type,
+    testEmail,
+  );
+
+  ruleIdForEmailCheck = await rulesAPI.createAlertRule({
+    ruleName: ruleNameForEmailCheck,
+    channels: [channelId],
+  });
+
+  // Wait for all alerts to appear
+  await alertsAPI.waitForAlerts(60, rulesToDelete.length + 2);
 });
 
 AfterSuite(async ({
@@ -65,6 +88,23 @@ Scenario(
     for (const ruleId of rulesToDelete) {
       await rulesAPI.removeAlertRule(ruleId);
     }
+  },
+);
+
+Scenario(
+  'PMM-T569 Verify Alerts on Email @ia @not-pr-pipeline',
+  async ({ I, rulesAPI }) => {
+    // Get message from the inbox
+    const message = await I.getLastMessage(testEmail, 120000);
+
+    await I.seeTextInSubject(ruleIdForEmailCheck, message);
+    await I.seeTextInSubject('PMM Integrated Alerting', message);
+
+    assert.ok(message.html.body.includes(ruleNameForEmailCheck));
+
+    await rulesAPI.removeAlertRule(ruleIdForEmailCheck);
+
+    await I.deleteMessage(message.id);
   },
 );
 
@@ -163,7 +203,7 @@ Scenario(
     };
 
     await rulesAPI.updateAlertRule(rule);
-    await alertsAPI.waitForAlertsToDisappear(300);
+    await alertsAPI.waitForAlertsToDisappear(60);
 
     I.amOnPage(alertsPage.url);
     I.waitForVisible(alertsPage.elements.noData);

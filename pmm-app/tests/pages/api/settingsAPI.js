@@ -1,4 +1,5 @@
 const assert = require('assert');
+const mailosaur = require('../../../pr.codecept.js').config.helpers.Mailosaur;
 
 const { I } = inject();
 
@@ -76,5 +77,24 @@ module.exports = {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
     await I.sendPostRequest('v1/Settings/Change', body, headers);
+  },
+
+  async setEmailAlertingSettings(settings) {
+    const body = {
+      email_alerting_settings: settings || {
+        from: 'pmm@mail.com',
+        smarthost: 'mailosaur.net:465',
+        username: `${mailosaur.serverId}@mailosaur.net`,
+        password: process.env.MAILOSAUR_SMTP_PASSWORD,
+      },
+    };
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    const resp = await I.sendPostRequest('v1/Settings/Change', body, headers);
+
+    assert.ok(
+      resp.status === 200,
+      `Failed to set Email Alerting settings. ${resp.data.message}`,
+    );
   },
 };
