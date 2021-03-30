@@ -38,7 +38,7 @@ Before(async ({ I, dbaasAPI }) => {
 });
 
 
-Scenario('Verify Adding PMM-Server Public Address via Settings works @dbaas @not-pr-pipeline',
+xScenario('Verify Adding PMM-Server Public Address via Settings works @dbaas @not-pr-pipeline',
   async ({
     I, dbaasPage, dbaasAPI, pmmSettingsPage,
   }) => {
