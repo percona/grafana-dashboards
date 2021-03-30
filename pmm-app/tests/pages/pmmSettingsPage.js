@@ -1,12 +1,12 @@
-const { I } = inject();
+const { I, adminPage } = inject();
 const assert = require('assert');
 
 const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 
 module.exports = {
-  url: 'graph/d/pmm-settings/pmm-settings',
-  advancedSettingsUrl: 'graph/d/pmm-settings/pmm-settings?menu=advanced-settings',
-  communicationSettingsUrl: 'graph/d/pmm-settings/pmm-settings?menu=communication',
+  url: 'graph/settings',
+  advancedSettingsUrl: 'graph/settings/advanced-settings',
+  communicationSettingsUrl: 'graph/settings/communication',
   prometheusAlertUrl: '/prometheus/rules',
   stateOfAlertsUrl: '/prometheus/alerts',
   diagnosticsText:
@@ -126,7 +126,9 @@ module.exports = {
         value: 'https://hook',
       },
     },
-    communicationSection: locate('$settings-tabs').find('li').withAttr({ 'aria-label': 'Tab Communication' }),
+    communicationSection: locate('$settings-tabs')
+      .find('li')
+      .withAttr({ 'aria-label': 'Tab Communication' }),
     emailTab: 'li[aria-label="Tab Email"]',
     submitEmailButton: '$email-settings-submit-button',
     slackTab: 'li[aria-label="Tab Slack"]',
@@ -135,7 +137,7 @@ module.exports = {
   fields: {
     advancedLabel: '$advanced-label',
     advancedButton: '$advanced-button',
-    addAlertRuleButton: '//span[text()="Apply Alertmanager settings"]/parent::button',
+    addAlertRuleButton: '//span[text()="Apply Alertmanager settings"]/parent::span',
     alertRulesInput: '$alertmanager-rules',
     alertURLInput: '$alertmanager-url',
     alertingRules: locateLabel('form-field-alerting-rules'),
@@ -147,7 +149,7 @@ module.exports = {
     callHomeSwitch: '//button[@class="toggle-field ant-switch ant-switch-checked"]',
     checkForUpdatesLabel: '//div[@data-qa="advanced-updates"]//div//span',
     checkForUpdatesSwitch: '//div[@data-qa="advanced-updates"]//div[2]//input',
-    dataRetentionInput: '$advanced-retention-input',
+    dataRetentionInput: '$retention-number-input',
     dataRetentionLabel: locateLabel('form-field-data-retention'),
     diagnosticsButton: '$diagnostics-button',
     diagnosticsLabel: '$diagnostics-label',
@@ -155,19 +157,19 @@ module.exports = {
     diagnosticsInfo: '//div[@data-qa="diagnostics-label"]/div/div',
     iframe: '//div[@class="panel-content"]//iframe',
     metricsResolutionButton: '$metrics-resolution-button',
-    metricsResolution: '//div[@data-qa="metrics-resolution-radio-button-group"]/label[text()="',
+    metricsResolution: '//label[text()="',
     metricsResolutionLabel: '$metrics-resolution-label',
-    metricsResolutionRadio: '$metrics-resolution-radio-button-group',
+    metricsResolutionRadio: '$resolutions-radio-button',
     loginButton: '$sign-in-submit-button',
-    lowInput: '$metrics-resolution-lr-input',
-    mediumInput: '$metrics-resolution-mr-input',
-    highInput: '$metrics-resolution-hr-input',
+    lowInput: '$lr-number-input',
+    mediumInput: '$mr-number-input',
+    highInput: '$hr-number-input',
     perconaPlatformLink: '//li[contains(text(), \'Percona Platform\')]',
     privacyPolicy: '//span[contains(text(), "Privacy Policy")]',
     sectionHeader: '//div[@class="ant-collapse-header"]',
     selectedResolution: 'span.ant-slider-mark-text-active',
-    signInEmail: '$sign-in-email-input',
-    signInPassword: '$sign-in-password-input',
+    signInEmail: '$email-text-input',
+    signInPassword: '$email-text-input',
     sshKeyInput: '$ssh-key',
     sshKeyLabel: locateLabel('ssh-key-label'),
     sshKeyButton: '$ssh-key-button',
@@ -176,8 +178,8 @@ module.exports = {
     sttSwitchSelectorInput: '//div[@data-qa="advanced-stt"]//div[2]//input',
     sttSwitchSelector: '//div[@data-qa="advanced-stt"]//div[2]//label',
     subSectionHeader: '//following-sibling::div//div[@class="ant-collapse-header"]',
-    signUpEmail: '$sign-up-email-input',
-    signUpPassword: '$sign-up-password-input',
+    signUpEmail: '$email-text-input',
+    signUpPassword: '$password-password-input',
     signUpAgreementLabel: '$sign-up-agreement-checkbox-label',
     signUpButton: '$sign-up-submit-button',
     singInToSignUpButton: '$sign-in-to-sign-up-button',
@@ -234,18 +236,17 @@ module.exports = {
   async verifyCommunicationFields(type) {
     if (type === 'slack') I.click(this.communication.slackTab);
 
-    Object.values(this.communication[type])
-      .forEach((key) => {
-        let { value } = key;
+    Object.values(this.communication[type]).forEach((key) => {
+      let { value } = key;
 
-        if (key.locator === this.communication.email.password.locator) value = '';
+      if (key.locator === this.communication.email.password.locator) value = '';
 
-        if (key.locator !== this.communication.email.secret.locator) {
-          I.seeInField(key.locator, value);
-        } else {
-          I.seeAttributesOnElements(key.locator, { type: 'password' });
-        }
-      });
+      if (key.locator !== this.communication.email.secret.locator) {
+        I.seeInField(key.locator, value);
+      } else {
+        I.seeAttributesOnElements(key.locator, { type: 'password' });
+      }
+    });
   },
 
   async selectMetricsResolution(resolution) {
@@ -255,12 +256,12 @@ module.exports = {
   },
 
   async verifySelectedResolution(resolution) {
-    const selector = `${this.fields.metricsResolution + resolution}"]`;
+    const selector = '$resolutions-radio-state';
 
     I.waitForElement(selector, 30);
-    const className = await I.grabAttributeFrom(selector, 'class');
+    const value = await I.grabAttributeFrom(selector, 'value');
 
-    assert.equal(className.includes('active'), true, 'Metric resolution should be active');
+    assert.equal(value.includes(resolution.toLowerCase()), true, 'Metric resolution should be selected');
   },
 
   customClearField(field) {
@@ -270,7 +271,7 @@ module.exports = {
   },
 
   changeDataRetentionValueTo(days) {
-    this.customClearField(this.fields.dataRetentionInput);
+    I.clearField(this.fields.dataRetentionInput);
     I.fillField(this.fields.dataRetentionInput, days);
     I.click(this.fields.advancedButton);
   },
@@ -278,7 +279,7 @@ module.exports = {
   checkDataRetentionInput(value, message) {
     const messageField = `//div[contains(text(), '${message}')]`;
 
-    this.customClearField(this.fields.dataRetentionInput);
+    I.clearField(this.fields.dataRetentionInput);
     I.fillField(this.fields.dataRetentionInput, value);
     I.seeElement(messageField);
   },
@@ -289,9 +290,9 @@ module.exports = {
   },
 
   addAlertmanagerRule(url, rule) {
-    this.customClearField(this.fields.alertURLInput);
+    adminPage.customClearField(this.fields.alertURLInput);
     I.fillField(this.fields.alertURLInput, url);
-    this.customClearField(this.fields.alertRulesInput);
+    adminPage.customClearField(this.fields.alertRulesInput);
     I.fillField(this.fields.alertRulesInput, rule);
     I.waitForElement(this.fields.alertmanagerButton, 30);
     I.click(this.fields.alertmanagerButton);
@@ -330,7 +331,9 @@ module.exports = {
     let response;
 
     for (let i = 0; i < 20; i++) {
-      response = await I.sendGetRequest(`http://${this.alertManager.ip}${this.alertManager.externalAlertManagerPort}/api/v2/alerts/groups?silenced=false&inhibited=false&active=true`);
+      response = await I.sendGetRequest(
+        `http://${this.alertManager.ip}${this.alertManager.externalAlertManagerPort}/api/v2/alerts/groups?silenced=false&inhibited=false&active=true`,
+      );
       if (JSON.stringify(response.data).includes(ruleName)) {
         break;
       }
@@ -338,7 +341,11 @@ module.exports = {
       I.wait(5);
     }
 
-    assert.equal(JSON.stringify(response.data).includes(ruleName), true, 'Alert Should be firing at External Alert Manager');
+    assert.equal(
+      JSON.stringify(response.data).includes(ruleName),
+      true,
+      'Alert Should be firing at External Alert Manager',
+    );
   },
 
   async verifyTooltip(tooltipObj) {

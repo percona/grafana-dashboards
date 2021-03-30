@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { mount, ReactWrapper } from 'enzyme';
-import { activeCheckStub } from 'pmm-check/__mocks__/stubs';
+import { activeCheckStub } from 'pmm-check-home/__mocks__/stubs';
 import { CheckPanel, CheckPanelProps, CheckPanelState } from './CheckPanel';
 import { Failed } from './components';
 
 jest.mock('shared/components/helpers/notification-manager');
 
-jest.mock('../pmm-check/Check.service');
+jest.mock('pmm-check-home/CheckPanel.service');
 
 const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
   <MemoryRouter>

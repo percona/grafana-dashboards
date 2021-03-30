@@ -12,8 +12,8 @@ import {
   Settings,
   SilenceBody,
   SilenceResponse,
-} from 'pmm-check/types';
-import { SEVERITIES_ORDER } from 'pmm-check/CheckPanel.constants';
+} from 'pmm-check-home/types';
+import { SEVERITIES_ORDER } from 'pmm-check-home/CheckPanel.constants';
 
 export const makeApiUrl: (segment: string) => string = (segment) => `${API.ALERTMANAGER}/${segment}`;
 
@@ -64,34 +64,34 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
       labels: { [key: string]: string },
       silenced: boolean;
       readMoreUrl: string;
-     }>
-  > = data
-    .filter((alert) => !!alert.labels.stt_check)
-    .reduce((acc, alert) => {
-      const {
-        labels,
-        annotations: { summary, description, read_more_url },
-        status: { state },
-      } = alert;
-      const serviceName = labels.service_name;
+    }>
+    > = data
+      .filter((alert) => !!alert.labels.stt_check)
+      .reduce((acc, alert) => {
+        const {
+          labels,
+          annotations: { summary, description, read_more_url },
+          status: { state },
+        } = alert;
+        const serviceName = labels.service_name;
 
-      if (!serviceName) {
+        if (!serviceName) {
+          return acc;
+        }
+
+        const item = {
+          summary,
+          description,
+          severity: labels.severity,
+          labels,
+          silenced: state === AlertState.suppressed,
+          readMoreUrl: read_more_url,
+        };
+
+        acc[serviceName] = (acc[serviceName] ?? []).concat(item);
+
         return acc;
-      }
-
-      const item = {
-        summary,
-        description,
-        severity: labels.severity,
-        labels,
-        silenced: state === AlertState.suppressed,
-        readMoreUrl: read_more_url,
-      };
-
-      acc[serviceName] = (acc[serviceName] ?? []).concat(item);
-
-      return acc;
-    }, {});
+      }, {});
 
   return Object.entries(result).map(([name, value], i) => {
     const failed = value.reduce(
