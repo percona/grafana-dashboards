@@ -6,7 +6,7 @@ module.exports = {
   root: '$query-analytics-details',
   fields: {},
   buttons: {
-    close: '//div[@role="tablist"]//button/span[text()="Close"]',
+    close: locate('button').find('span').withText('Close'),
   },
   elements: {
     resizer: 'span.Resizer.horizontal',
@@ -18,23 +18,23 @@ module.exports = {
 
   getFilterSectionLocator: (filterSectionName) => `//span[contains(text(), '${filterSectionName}')]`,
 
-  getTabLocator: (tabName) => `//span[contains(text(), '${tabName}')]`,
+  getTabLocator: (tabName) => `//li[contains(text(), '${tabName}')]`,
 
   getMetricsCellLocator: (metricName, columnNumber) => `//td//span[contains(text(), "${metricName}")]/ancestor::tr/td[${columnNumber}]//span[1]`,
 
-  async verifyAvqQueryCount() {
+  async verifyAvqQueryCount(timeRangeInSec = 300) {
     const qpsvalue = await I.grabTextFrom(this.getMetricsCellLocator('Query Count', 2));
     const queryCountDetail = await I.grabTextFrom(this.getMetricsCellLocator('Query Count', 3));
 
     // We divide by 300 because we are using last 5 mins filter.
-    const result = (parseFloat(queryCountDetail) / 300).toFixed(4);
+    const result = (parseFloat(queryCountDetail) / timeRangeInSec).toFixed(4);
 
     compareCalculation(qpsvalue, result);
   },
 
   checkExamplesTab() {
-    I.waitForVisible(this.getTabLocator('Example'), 30);
-    I.click(this.getTabLocator('Example'));
+    I.waitForVisible(this.getTabLocator('Examples'), 30);
+    I.click(this.getTabLocator('Examples'));
     qanFilters.waitForFiltersToLoad();
     I.waitForVisible(this.elements.examplesCodeBlock, 30);
     I.dontSeeElement(this.elements.noExamples);
@@ -49,7 +49,7 @@ module.exports = {
     I.dontSeeElement(this.elements.noJSON);
   },
 
-  async verifyAvgQueryTime() {
+  async verifyAvgQueryTime(timeRangeInSec = 300) {
     const timeLocator = this.getMetricsCellLocator('Query Time', 4);
     const countLocator = this.getMetricsCellLocator('Query Count', 3);
     const loadLocator = this.getMetricsCellLocator('Query Time', 2);
@@ -63,7 +63,7 @@ module.exports = {
 
     const queryCountDetail = await I.grabTextFrom(countLocator);
     const [load] = (await I.grabTextFrom(loadLocator)).split(' ');
-    const result = ((parseFloat(queryCountDetail) * parseFloat(perQueryStats)) / 300).toFixed(4);
+    const result = ((parseFloat(queryCountDetail) * parseFloat(perQueryStats)) / timeRangeInSec).toFixed(4);
 
     compareCalculation(load, result);
   },

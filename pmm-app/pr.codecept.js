@@ -34,6 +34,12 @@ exports.config = {
       endpoint: process.env.PMM_UI_URL || 'http://localhost/',
       timeout: 20000,
     },
+    Mailosaur: {
+      require: 'codeceptjs-mailosaurhelper',
+      apiKey: process.env.MAILOSAUR_API_KEY,
+      serverId: process.env.MAILOSAUR_SERVER_ID,
+      timeout: 15000,
+    },
   },
   include: pageObjects,
   multiple: {

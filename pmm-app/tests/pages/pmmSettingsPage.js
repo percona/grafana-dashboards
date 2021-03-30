@@ -23,8 +23,8 @@ module.exports = {
       + '  - name: AutoTestAlerts\n'
       + '    rules:\n'
       + '    - alert: InstanceDown\n'
-      + '      expr: up == 0\n'
-      + '      for: 20s\n'
+      + '      expr: up == 1\n'
+      + '      for: 2s\n'
       + '      labels:\n'
       + '        severity: critical\n'
       + '      annotations:\n'
@@ -294,6 +294,7 @@ module.exports = {
     I.fillField(this.fields.alertURLInput, url);
     adminPage.customClearField(this.fields.alertRulesInput);
     I.fillField(this.fields.alertRulesInput, rule);
+    I.waitForElement(this.fields.alertmanagerButton, 30);
     I.click(this.fields.alertmanagerButton);
   },
 

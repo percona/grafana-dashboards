@@ -1,6 +1,5 @@
 const nodes = new DataTable(['node-type', 'name']);
 
-nodes.add(['pmm-server', 'pmm-server']);
 nodes.add(['pmm-client', 'ip']);
 
 Feature('Test Dashboards inside the OS Folder');
@@ -75,7 +74,7 @@ Data(nodes).Scenario(
     I.click(adminPage.fields.metricTitle);
     await dashboardPage.expandEachDashboardRow();
     adminPage.performPageUp(5);
-    I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 30);
+    I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 60);
     I.seeElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer);
   },
 );

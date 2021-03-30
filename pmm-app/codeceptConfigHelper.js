@@ -33,15 +33,16 @@ module.exports = {
     securityChecksAPI: './tests/pages/api/securityChecksAPI.js',
     settingsAPI: './tests/pages/api/settingsAPI.js',
     templatesAPI: './tests/ia/pages/api/templatesAPI.js',
-
   },
   getChunks: (files) => {
     const dependentTests = files.filter((value) => /PMMSettings|database|ia|permissions/.test(value));
-    const otherTests = files.filter((val) => !dependentTests.includes(val));
+    const dbaasTests = files.filter((value) => /DbaaS/.test(value));
+    const otherTests = files.filter((val) => !dependentTests.includes(val) && !dbaasTests.includes(val));
 
     return [
       dependentTests,
       otherTests,
+      dbaasTests,
     ];
   },
 };

@@ -1,5 +1,7 @@
 Feature('QAN details');
 
+const { adminPage } = inject();
+
 Before(({ I, qanPage }) => {
   I.Authorize();
   I.amOnPage(qanPage.url);
@@ -32,7 +34,9 @@ Scenario(
     const cellValue = qanDetails.getMetricsCellLocator('Query Time', 3);
 
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('mysql');
+    adminPage.applyTimeRange('Last 1 hour');
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyFilter('ps-dev');
     I.waitForVisible(qanOverview.fields.searchBy, 30);
     I.fillField(qanOverview.fields.searchBy, 'insert');
     I.pressKey('Enter');
@@ -40,8 +44,8 @@ Scenario(
     qanOverview.selectRow(1);
     qanFilters.waitForFiltersToLoad();
     I.waitForVisible(cellValue, 30);
-    await qanDetails.verifyAvqQueryCount();
-    await qanDetails.verifyAvgQueryTime();
+    await qanDetails.verifyAvqQueryCount(3600);
+    await qanDetails.verifyAvgQueryTime(3600);
   },
 );
 
@@ -51,7 +55,9 @@ Scenario(
     I, qanOverview, qanFilters, qanDetails,
   }) => {
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('mysql');
+    adminPage.applyTimeRange('Last 1 hour');
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyFilter('ps-dev');
     I.waitForVisible(qanOverview.fields.searchBy, 30);
     I.fillField(qanOverview.fields.searchBy, 'insert');
     I.pressKey('Enter');
@@ -69,6 +75,8 @@ Scenario(
     I, qanOverview, qanFilters, qanDetails,
   }) => {
     qanOverview.waitForOverviewLoaded();
+    adminPage.applyTimeRange('Last 1 hour');
+    qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('md-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
@@ -83,6 +91,8 @@ Scenario(
   async ({
     I, qanOverview, qanFilters, qanDetails,
   }) => {
+    qanOverview.waitForOverviewLoaded();
+    adminPage.applyTimeRange('Last 1 hour');
     qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('ps-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
@@ -99,6 +109,8 @@ Scenario(
     I, qanOverview, qanFilters, qanDetails,
   }) => {
     qanOverview.waitForOverviewLoaded();
+    adminPage.applyTimeRange('Last 1 hour');
+    qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('pdpgsql-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
@@ -113,6 +125,8 @@ Scenario(
     I, qanOverview, qanFilters, qanDetails,
   }) => {
     qanOverview.waitForOverviewLoaded();
+    adminPage.applyTimeRange('Last 1 hour');
+    qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('pgsql-dev');
     I.waitForElement(qanOverview.elements.querySelector, 30);
     qanOverview.selectRow(1);
@@ -126,6 +140,8 @@ Scenario(
   async ({
     I, qanOverview, qanFilters, qanDetails,
   }) => {
+    qanOverview.waitForOverviewLoaded();
+    adminPage.applyTimeRange('Last 1 hour');
     qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('mongodb');
     I.waitForElement(qanOverview.elements.querySelector, 30);

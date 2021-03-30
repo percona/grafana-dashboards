@@ -146,12 +146,14 @@ Scenario(
     I.click(qanFilters.buttons.showSelected);
     await qanFilters.verifyCountOfFilterLinks(2, false);
     I.click(qanFilters.buttons.resetAll);
+    I.waitForInvisible(qanFilters.elements.spinner, 30);
     await qanFilters.verifyCountOfFilterLinks(2, true);
 
     qanFilters.applyFilter(environmentName1);
     I.click(qanFilters.buttons.showSelected);
     await qanFilters.verifyCountOfFilterLinks(1, false);
     qanFilters.applyFilter(environmentName1);
+    I.waitForInvisible(qanFilters.elements.spinner, 30);
     await qanFilters.verifyCountOfFilterLinks(1, true);
   },
 );
@@ -163,7 +165,9 @@ Scenario('PMM-T190 - Verify user is able to see n/a filter @not-pr-pipeline @qan
 
 Scenario(
   'PMM-T390 - Verify that we show info message when empty result is returned @not-pr-pipeline @qan',
-  async ({ I, qanOverview, qanFilters }) => {
+  async ({
+    I, qanOverview, qanFilters, adminPage,
+  }) => {
     const serviceName = 'ps_8.0';
     const db1 = 'postgres';
     const db2 = 'n/a';
@@ -171,9 +175,12 @@ Scenario(
 
     let count = qanOverview.getCountOfItems();
 
+    adminPage.applyTimeRange('Last 3 hour');
+    qanOverview.waitForOverviewLoaded();
     qanFilters.applyShowAllLink(section);
     qanFilters.applyFilterInSection(section, db1);
     count = await qanOverview.waitForNewItemsCount(count);
+    qanFilters.applyShowAllLink(section);
     qanFilters.applyFilterInSection(section, db2);
     count = await qanOverview.waitForNewItemsCount(count);
     qanFilters.applyFilter(serviceName);
