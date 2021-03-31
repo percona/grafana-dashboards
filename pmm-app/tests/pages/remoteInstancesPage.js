@@ -244,14 +244,14 @@ module.exports = {
     const grabbedMetricPath = await I.grabValueFrom(this.fields.metricsPath);
     const grabbedPort = await I.grabValueFrom(this.fields.portNumber);
     const grabbedCredentials = await I.grabValueFrom(this.fields.userName);
-    const httpsLocator = '//label[contains(@class, "active") and contains(text(), "HTTPS")]';
+    const protocol = locate('$schema-radio-state');
 
     assert.ok(grabbedHostname === process.env.MONITORING_HOST, `Hostname is not parsed correctly: ${grabbedHostname}`);
     assert.ok(grabbedMetricPath === metricsPath, `Metrics path is not parsed correctly: ${grabbedMetricPath}`);
     assert.ok(grabbedPort === process.env.EXTERNAL_EXPORTER_PORT, `Port is not parsed correctly: ${grabbedPort}`);
     assert.ok(grabbedCredentials === credentials, `Username is not parsed correctly: ${grabbedCredentials}`);
     assert.ok(grabbedCredentials === credentials, `Password is not parsed correctly: ${grabbedCredentials}`);
-    I.waitForVisible(httpsLocator, 30);
+    I.seeAttributesOnElements(protocol, { value: 'https' });
   },
 
   checkRequiredField() {

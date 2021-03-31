@@ -3,7 +3,7 @@ const config = require('../pr.codecept.js').config.helpers.Playwright;
 Feature('Database Failed Checks').retry(2);
 
 Before(async ({ I }) => {
-  I.Authorize();
+  await I.Authorize();
 });
 
 Scenario(
@@ -32,7 +32,7 @@ Scenario(
     I.waitForVisible(databaseChecksPage.fields.disabledSTTMessageSelector, 30);
     I.see(
       databaseChecksPage.messages.disabledSTTMessage,
-      databaseChecksPage.fields.disabledSTTMessageSelector,
+      locate('div').withChild(databaseChecksPage.fields.disabledSTTMessageSelector),
     );
     I.seeElement(databaseChecksPage.fields.disabledSTTMessageLinkSelector);
     I.seeAttributesOnElements(databaseChecksPage.fields.disabledSTTMessageLinkSelector, {

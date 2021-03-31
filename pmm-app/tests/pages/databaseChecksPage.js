@@ -22,7 +22,7 @@ module.exports = {
     serviceNameHeaderSelector: locateChecksHeader('Service name'),
     detailsHeaderSelector: locateChecksHeader('Details'),
     noOfFailedChecksHeaderSelector: locateChecksHeader('Failed Checks'),
-    disabledSTTMessageLinkSelector: locate('a').inside('$db-check-panel-settings-link'),
+    disabledSTTMessageLinkSelector: locate('$db-check-panel-settings-link'),
     failedChecksRowSelector: 'tbody > tr',
     tooltipSelector: locate('.ant-tooltip-inner > div > div').first(),
     noAccessRightsSelector: '$db-check-panel-unauthorized',

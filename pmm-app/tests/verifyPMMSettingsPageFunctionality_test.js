@@ -165,17 +165,17 @@ Scenario('PMM-T532 PMM-T533 PMM-T536 - Verify user can enable/disable IA in Sett
   }).retry(2);
 
 
-Data(communicationDefaults)
-  .Scenario('PMM-T534 PMM-T535 - Verify user is able to set up default Email/Slack communication settings @ia @not-pr-pipeline',
-    async ({
-      I, pmmSettingsPage, settingsAPI, current,
-    }) => {
-      await settingsAPI.apiEnableIA();
-      I.amOnPage(pmmSettingsPage.communicationSettingsUrl);
-      await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-      pmmSettingsPage.fillCommunicationFields(current.type);
-      I.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
-      I.refreshPage();
-      await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-      await pmmSettingsPage.verifyCommunicationFields(current.type);
-    }).retry(2);
+// TODO: unskip and fix in scope of https://jira.percona.com/browse/PMM-7830
+Scenario.skip('PMM-T534 PMM-T535 - Verify user is able to set up default Email/Slack communication settings @ia @not-pr-pipeline',
+  async ({
+    I, pmmSettingsPage, settingsAPI, current,
+  }) => {
+    await settingsAPI.apiEnableIA();
+    I.amOnPage(pmmSettingsPage.communicationSettingsUrl);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    pmmSettingsPage.fillCommunicationFields(current.type);
+    I.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+    I.refreshPage();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.verifyCommunicationFields(current.type);
+  }).retry(2);
