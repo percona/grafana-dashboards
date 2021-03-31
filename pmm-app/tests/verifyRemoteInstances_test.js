@@ -49,8 +49,11 @@ Scenario(
 Scenario(
   'PMM-T743 - Check metrics from external exporter on Advanced Data Exploration Dashboard @not-pr-pipeline',
   async ({ I, dashboardPage }) => {
-    I.amOnPage(dashboardPage.advancedDataExplorationDashboardExternal.url);
+    const metricName = 'redis_uptime_in_seconds';
+
+    I.amOnPage(dashboardPage.createAdvancedDataExplorationURL(metricName));
     dashboardPage.waitForDashboardOpened();
+    dashboardPage.verifyMetricName(metricName);
     dashboardPage.verifyMetricsExistence(dashboardPage.advancedDataExplorationDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData();

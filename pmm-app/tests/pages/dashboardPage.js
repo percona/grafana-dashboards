@@ -32,9 +32,6 @@ module.exports = {
       'I/O Activity',
     ],
   },
-  advancedDataExplorationDashboardExternal: {
-    url: 'graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=redis_uptime_in_seconds',
-  },
   advancedDataExplorationDashboard: {
     url:
       'graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=go_gc_duration_seconds',
@@ -712,6 +709,10 @@ module.exports = {
     navbarLocator: '.navbar-page-btn',
   },
 
+  createAdvancedDataExplorationURL(metricName, time = '&from=now-1m&to=now', nodeName = 'All') {
+    return `graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=${metricName}&var-interval=$__auto_interval_interval&var-node_name=${nodeName}${time}`;
+  },
+
   async checkNavigationBar(text) {
     I.waitForVisible(this.fields.navbarLocator, 30);
     const navbarText = await I.grabTextFrom(this.fields.navbarLocator);
@@ -746,6 +747,10 @@ module.exports = {
     for (const i in metrics) {
       I.seeElement(this.graphsLocator(metrics[i]));
     }
+  },
+
+  verifyMetricName(metricName) {
+    I.waitForVisible(locate('span').withText(metricName), 30);
   },
 
   verifyTabExistence(tabs) {
