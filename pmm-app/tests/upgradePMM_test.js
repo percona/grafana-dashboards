@@ -180,3 +180,30 @@ Scenario(
     }
   },
 );
+
+Scenario(
+  'Verify Metrics from custom queries for mysqld_exporter after upgrade (UI) @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
+  async ({ dashboardPage }) => {
+    const metricName = 'mysql_performance_schema_memory_summary_current_bytes';
+
+    const response = await dashboardPage.checkMetricExist(metricName);
+    const result = JSON.stringify(response.data.data.result);
+
+    assert.ok(response.data.data.result.length !== 0, `Custom Metrics Should be available but got empty ${result}`);
+  },
+);
+
+Scenario(
+  'PMM-T102 Verify Custom Prometheus Configuration File is still available at targets after Upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
+  async ({ I }) => {
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    const response = await I.sendGetRequest('prometheus/api/v1/targets', headers);
+
+    const targets = response.data.data.activeTargets.find(
+      (o) => o.labels.job === 'blackbox80',
+    );
+
+    assert.ok(targets.labels.job === 'blackbox80', 'Active Target from Custom Prometheus Config After Upgrade is not Available');
+  },
+);

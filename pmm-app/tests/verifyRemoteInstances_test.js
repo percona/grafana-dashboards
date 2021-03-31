@@ -48,15 +48,13 @@ Scenario(
 // It must be run after the creation of external exporter
 Scenario(
   'PMM-T743 - Check metrics from external exporter on Advanced Data Exploration Dashboard @not-pr-pipeline',
-  async ({ I, dashboardPage }) => {
+  async ({ dashboardPage }) => {
     const metricName = 'redis_uptime_in_seconds';
 
-    I.amOnPage(dashboardPage.createAdvancedDataExplorationURL(metricName));
-    dashboardPage.waitForDashboardOpened();
-    dashboardPage.verifyMetricName(metricName);
-    dashboardPage.verifyMetricsExistence(dashboardPage.advancedDataExplorationDashboard.metrics);
-    await dashboardPage.verifyThereAreNoGraphsWithNA();
-    await dashboardPage.verifyThereAreNoGraphsWithoutData();
+    const response = await dashboardPage.checkMetricExist(metricName);
+    const result = JSON.stringify(response.data.data.result);
+
+    assert.ok(response.data.data.result.length !== 0, `Custom Metrics Should be available but got empty ${result}`);
   },
 );
 
