@@ -6,19 +6,11 @@ import { Form } from 'react-final-form';
 import { FormApi } from 'final-form';
 import { Button, HorizontalGroup, useStyles } from '@grafana/ui';
 import { LoaderButton, Modal } from '@percona/platform-core';
+import { CheckService } from 'pmm-check/Check.service';
+import { Interval } from 'pmm-check/types';
 import { getStyles } from './ChangeCheckIntervalModal.styles';
-
-export interface ChangeCheckIntervalModalProps {
-  checkName: string;
-  isVisible: boolean;
-  setVisible: (value: boolean) => void;
-}
-
-export const checkIntervalOptions = [
-  { value: 'Pippo', label: 'pippo' },
-  { value: 'Baudo', label: 'baudo' },
-  { value: 'Mimmo', label: 'mimmo' },
-];
+import { ChangeCheckIntervalModalProps } from './types';
+import { checkIntervalOptions } from './ChangeCheckIntervalModal.constants';
 
 export const ChangeCheckIntervalModal: FC<ChangeCheckIntervalModalProps> = ({
   checkName,
@@ -27,11 +19,15 @@ export const ChangeCheckIntervalModal: FC<ChangeCheckIntervalModalProps> = ({
 }) => {
   const styles = useStyles(getStyles);
   const [pending, setPending] = useState(false);
+  const [selectedInterval, setSelectedInterval] = useState(Interval.STANDARD);
 
   const onSave = async () => {
     try {
       setPending(true);
-      await //AlertRuleTemplateService.delete({ name });
+      await CheckService.changeInterval({
+        name: checkName,
+        interval: selectedInterval,
+      });
       setVisible(false);
       showSuccessNotification({ message: Messages.getSuccess(checkName) });
     } catch (e) {
@@ -41,8 +37,16 @@ export const ChangeCheckIntervalModal: FC<ChangeCheckIntervalModalProps> = ({
     }
   };
 
-  const updateCheckInterval = (form: FormApi<any>) => {
-    console.log(form.getFieldState('checkInterval'))
+  interface Values {
+    interval: Interval;
+  }
+
+  const updateCheckInterval = (form: FormApi<Values>) => {
+    console.log(form.getFieldState('interval'));
+  }
+
+  const initialValues = {
+    interval: Interval.STANDARD,
   }
 
   return (
@@ -51,9 +55,10 @@ export const ChangeCheckIntervalModal: FC<ChangeCheckIntervalModalProps> = ({
         <h4 className={styles.title}>{Messages.getDescription(checkName)}</h4>
         <Form
           onSubmit={() => {}}
+          initialValues={initialValues}
           render={({ form, handleSubmit, valid, pristine }) => (
             <form className={styles.form} onSubmit={handleSubmit} onChange={() => updateCheckInterval(form)}>
-              <RadioButtonGroupField name="checkInterval" options={checkIntervalOptions} />
+              <RadioButtonGroupField name="interval" options={checkIntervalOptions} />
             </form>
           )}
         />
