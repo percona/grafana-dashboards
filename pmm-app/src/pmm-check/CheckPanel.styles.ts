@@ -25,7 +25,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       height: 42px;
     `,
     tabContent: css`
-      height: calc(100% - 42px);
+      max-height: calc(100% - 42px);
     `,
     empty: css`
       display: flex;
