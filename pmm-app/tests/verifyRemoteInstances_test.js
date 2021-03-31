@@ -51,6 +51,7 @@ Scenario(
   async ({ I, dashboardPage }) => {
     I.amOnPage(dashboardPage.advancedDataExplorationDashboardExternal.url);
     dashboardPage.waitForDashboardOpened();
+    dashboardPage.verifyMetricsExistence(dashboardPage.advancedDataExplorationDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData();
   },
