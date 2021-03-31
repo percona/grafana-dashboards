@@ -7,4 +7,5 @@ export const Messages = {
   enabled: 'Enabled',
   name: 'Name',
   status: 'Status',
+  changeIntervalButtonTitle: 'Change check interval',
 };
