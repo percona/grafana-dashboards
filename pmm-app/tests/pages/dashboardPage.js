@@ -709,8 +709,8 @@ module.exports = {
     navbarLocator: '.navbar-page-btn',
   },
 
-  createAdvancedDataExplorationURL(metricName, time = '&from=now-1m&to=now', nodeName = 'All') {
-    return `graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=${metricName}&var-interval=$__auto_interval_interval&var-node_name=${nodeName}${time}`;
+  createAdvancedDataExplorationURL(metricName, time = '1m', nodeName = 'All') {
+    return `graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=${metricName}&var-interval=$__auto_interval_interval&var-node_name=${nodeName}&from=now-${time}&to=now`;
   },
 
   async checkNavigationBar(text) {
