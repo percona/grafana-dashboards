@@ -32,6 +32,9 @@ module.exports = {
       'I/O Activity',
     ],
   },
+  advancedDataExplorationDashboardExternal: {
+    url: 'graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=redis_uptime_in_seconds',
+  },
   advancedDataExplorationDashboard: {
     url:
       'graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=go_gc_duration_seconds',
