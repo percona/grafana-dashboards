@@ -218,6 +218,17 @@ Scenario('PMM-T509 Verify Deleting Db Cluster in Pending Status is possible @dba
     await dbaasActionsPage.deleteXtraDBCluster(pxc_cluster_pending_delete, clusterName);
   });
 
+Scenario('PMM-T489 Verify Increase Decrease @dbaas @not-pr-pipeline',
+  async ({ I, dbaasPage, dbaasActionsPage }) => {
+    const pxc_cluster_pending_delete = 'pxc-pending-delete';
+
+    await dbaasPage.waitForDbClusterTab(clusterName);
+    await dbaasActionsPage.createClusterBasicOptions(clusterName, pxc_cluster_pending_delete, 'MySQL');
+    I.click(dbaasPage.tabs.dbClusterTab.createClusterButton);
+    I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);
+    await dbaasActionsPage.deleteXtraDBCluster(pxc_cluster_pending_delete, clusterName);
+  });
+
 Scenario('Verify Adding PMM-Server Public Address via Settings works @dbaas @not-pr-pipeline',
   async ({
     I, dbaasPage, dbaasAPI, pmmSettingsPage,
@@ -257,6 +268,7 @@ Scenario('Verify Adding PMM-Server Public Address via Settings works @dbaas @not
       `Expected the Public Address to be saved and Match ${process.env.SERVER_IP} but found ${publicAddress}`,
     );
     await dbaasPage.waitForDbClusterTab(clusterName);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
     I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, 30);
     I.dontSeeElement(dbaasPage.tabs.dbClusterTab.monitoringWarningLocator, 30);
