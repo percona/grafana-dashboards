@@ -1,4 +1,4 @@
-import { ActiveCheck } from '../types';
+import { ActiveCheck, CheckDetails } from '../types';
 
 export const activeCheckStub: ActiveCheck[] = [
   {
@@ -271,5 +271,35 @@ export const alertsStub = [
       node_type: 'generic',
       severity: 'warning',
     },
+  },
+];
+
+export const allChecksStub: CheckDetails[] = [
+  {
+    name: 'test1',
+    summary: 'Test 1',
+    description: 'Test number 1',
+    readMoreUrl: 'https://example.com',
+  },
+  {
+    name: 'test2',
+    summary: 'Test 2',
+    description: 'Test number 2',
+  },
+  {
+    name: 'test3',
+    summary: 'Test 3',
+    description: 'Test number 3',
+    disabled: true,
+    readMoreUrl: 'https://example.com',
+  },
+  {
+    name: 'test4',
+    summary: 'Test 4',
+  },
+  {
+    name: 'test5',
+    summary: 'Test 5',
+    disabled: true,
   },
 ];
