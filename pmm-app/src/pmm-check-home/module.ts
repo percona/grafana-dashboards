@@ -1,5 +1,5 @@
 import { PanelPlugin } from '@grafana/data';
-import { CheckPanelOptions } from 'pmm-check/types';
+import { CheckPanelOptions } from 'pmm-check-home/types';
 import { DEFAULTS } from './CheckPanel.constants';
 import { CheckPanelRouter } from './CheckPanel';
 import { CheckPanelEditor } from './CheckPanelEditor';

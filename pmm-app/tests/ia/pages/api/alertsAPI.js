@@ -14,7 +14,7 @@ module.exports = {
       // waiting for some exact number of alerts to be active
       if (results && results.length >= expectedAlertsCount) break;
 
-      I.wait(1);
+      I.wait(5);
     }
 
     return await this.getAlertsList();
@@ -27,7 +27,7 @@ module.exports = {
 
       if (!results) break;
 
-      I.wait(1);
+      I.wait(5);
     }
   },
 

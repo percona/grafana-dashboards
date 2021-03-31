@@ -1,6 +1,5 @@
 const nodes = new DataTable(['node-type', 'name']);
 
-nodes.add(['pmm-server', 'pmm-server']);
 nodes.add(['pmm-client', 'ip']);
 
 Feature('Test Dashboards inside the OS Folder');

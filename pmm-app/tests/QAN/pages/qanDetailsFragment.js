@@ -22,12 +22,12 @@ module.exports = {
 
   getMetricsCellLocator: (metricName, columnNumber) => `//td//span[contains(text(), "${metricName}")]/ancestor::tr/td[${columnNumber}]//span[1]`,
 
-  async verifyAvqQueryCount() {
+  async verifyAvqQueryCount(timeRangeInSec = 300) {
     const qpsvalue = await I.grabTextFrom(this.getMetricsCellLocator('Query Count', 2));
     const queryCountDetail = await I.grabTextFrom(this.getMetricsCellLocator('Query Count', 3));
 
     // We divide by 300 because we are using last 5 mins filter.
-    const result = (parseFloat(queryCountDetail) / 300).toFixed(4);
+    const result = (parseFloat(queryCountDetail) / timeRangeInSec).toFixed(4);
 
     compareCalculation(qpsvalue, result);
   },
@@ -49,7 +49,7 @@ module.exports = {
     I.dontSeeElement(this.elements.noJSON);
   },
 
-  async verifyAvgQueryTime() {
+  async verifyAvgQueryTime(timeRangeInSec = 300) {
     const timeLocator = this.getMetricsCellLocator('Query Time', 4);
     const countLocator = this.getMetricsCellLocator('Query Count', 3);
     const loadLocator = this.getMetricsCellLocator('Query Time', 2);
@@ -63,7 +63,7 @@ module.exports = {
 
     const queryCountDetail = await I.grabTextFrom(countLocator);
     const [load] = (await I.grabTextFrom(loadLocator)).split(' ');
-    const result = ((parseFloat(queryCountDetail) * parseFloat(perQueryStats)) / 300).toFixed(4);
+    const result = ((parseFloat(queryCountDetail) * parseFloat(perQueryStats)) / timeRangeInSec).toFixed(4);
 
     compareCalculation(load, result);
   },

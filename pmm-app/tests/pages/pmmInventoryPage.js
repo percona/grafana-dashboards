@@ -2,7 +2,7 @@ const { I, pmmInventoryPage, inventoryAPI } = inject();
 const assert = require('assert');
 
 module.exports = {
-  url: 'graph/d/pmm-inventory/pmm-inventory?orgId=1',
+  url: 'graph/inventory?orgId=1',
   fields: {
     iframe: '//div[@class="panel-content"]//iframe',
     inventoryTable: '//table',
@@ -17,7 +17,7 @@ module.exports = {
     serviceIdLocatorPrefix: '//table//tr/td[4][contains(text(),"',
     deleteButton: '//span[contains(text(), "Delete")]',
     proceedButton: '//span[contains(text(), "Proceed")]',
-    forceModeCheckbox: 'div[data-qa="form-field-force"] span.checkbox-container__checkmark',
+    forceModeCheckbox: 'span[data-qa="force-field-label"]',
     tableCheckbox: 'div[data-qa="select-row"]',
     tableRow: '//tr[@data-qa="table-row"]',
     runningStatus: '//span[contains(text(), "RUNNING")]',
@@ -42,10 +42,10 @@ module.exports = {
     const serviceId = await this.getServiceId(service_name);
     const agentLinkLocator = this.fields.agentsLink;
 
+    await inventoryAPI.waitForRunningState(serviceId);
     I.click(agentLinkLocator);
     I.waitForElement(this.fields.pmmAgentLocator, 60);
     I.waitForElement(this.fields.inventoryTable, 60);
-    await inventoryAPI.waitForRunningState(serviceId);
     I.scrollPageToBottom();
     const numberOfServices = await I.grabNumberOfVisibleElements(
       `//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`,
