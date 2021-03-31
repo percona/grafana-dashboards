@@ -22,7 +22,7 @@ module.exports = {
     serviceNameHeaderSelector: locateChecksHeader('Service name'),
     detailsHeaderSelector: locateChecksHeader('Details'),
     noOfFailedChecksHeaderSelector: locateChecksHeader('Failed Checks'),
-    disabledSTTMessageLinkSelector: locate('a').inside('$db-check-panel-settings-link'),
+    disabledSTTMessageLinkSelector: locate('$db-check-panel-settings-link'),
     failedChecksRowSelector: 'tbody > tr',
     tooltipSelector: locate('.ant-tooltip-inner > div > div').first(),
     noAccessRightsSelector: '$db-check-panel-unauthorized',
@@ -119,17 +119,14 @@ module.exports = {
      and compares names with existing Service Names in PMM Inventory
    */
   async verifyServiceNamesExistence() {
-    let serviceNames = await I.grabTextFrom(this.fields.serviceNameSelector);
+    const serviceNames = await I.grabTextFromAll(this.fields.serviceNameSelector);
 
     I.amOnPage(pmmInventoryPage.url);
     I.waitForVisible(pmmInventoryPage.fields.inventoryTableColumn, 30);
     I.scrollPageToBottom();
-    if (typeof serviceNames === 'string') {
-      serviceNames = [serviceNames];
-    }
 
-    serviceNames.forEach((name) => {
-      I.see(name, pmmInventoryPage.fields.inventoryTableColumn);
-    });
+    for (const name of serviceNames) {
+      I.seeElement(locate('$table-row').find('td').withText(name));
+    }
   },
 };
