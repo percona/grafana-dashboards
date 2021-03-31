@@ -44,6 +44,22 @@ Scenario(
   },
 );
 
+// Test is connected with T588
+// It must be run after the creation of external exporter
+Scenario(
+  'PMM-T743 - Check metrics from external exporter on Advanced Data Exploration Dashboard @not-pr-pipeline',
+  async ({ I, dashboardPage }) => {
+    const metricName = 'redis_uptime_in_seconds';
+
+    I.amOnPage(dashboardPage.createAdvancedDataExplorationURL(metricName));
+    dashboardPage.waitForDashboardOpened();
+    dashboardPage.verifyMetricName(metricName);
+    dashboardPage.verifyMetricsExistence(dashboardPage.advancedDataExplorationDashboard.metrics);
+    await dashboardPage.verifyThereAreNoGraphsWithNA();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData();
+  },
+);
+
 Scenario(
   'PMM-T590 - Verify parsing URL on adding External service page @not-pr-pipeline',
   async ({ I, remoteInstancesPage }) => {
