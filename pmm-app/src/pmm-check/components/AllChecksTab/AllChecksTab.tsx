@@ -60,6 +60,7 @@ export const AllChecksTab: FC = () => {
             <col className={styles.nameColumn} />
             <col />
             <col className={styles.statusColumn} />
+            <col className={styles.intervalColumn} />
             <col className={styles.actionsColumn} />
           </colgroup>
           <thead data-qa="db-checks-all-checks-thead">
@@ -67,6 +68,7 @@ export const AllChecksTab: FC = () => {
               <th>{Messages.name}</th>
               <th>{Messages.description}</th>
               <th>{Messages.status}</th>
+              <th>{Messages.interval}</th>
               <th>{Messages.actions}</th>
             </tr>
           </thead>
