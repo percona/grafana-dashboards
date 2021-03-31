@@ -1,4 +1,4 @@
-import { ActiveCheck, CheckDetails } from '../types';
+import { ActiveCheck, CheckDetails, Interval } from '../types';
 
 export const activeCheckStub: ActiveCheck[] = [
   {
@@ -279,32 +279,32 @@ export const allChecksStub: CheckDetails[] = [
     name: 'test1',
     summary: 'Test 1',
     description: 'Test number 1',
-    interval: 'STANDARD',
+    interval: Interval.STANDARD,
     readMoreUrl: 'https://example.com',
   },
   {
     name: 'test2',
     summary: 'Test 2',
     description: 'Test number 2',
-    interval: 'FREQUENT',
+    interval: Interval.RARE,
   },
   {
     name: 'test3',
     summary: 'Test 3',
     description: 'Test number 3',
-    interval: 'RARE',
+    interval: Interval.STANDARD,
     disabled: true,
     readMoreUrl: 'https://example.com',
   },
   {
     name: 'test4',
     summary: 'Test 4',
-    interval: 'STANDARD',
+    interval: Interval.FREQUENT,
   },
   {
     name: 'test5',
     summary: 'Test 5',
     disabled: true,
-    interval: 'STANDARD',
+    interval: Interval.STANDARD,
   },
 ];
