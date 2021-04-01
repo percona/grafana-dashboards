@@ -1,13 +1,18 @@
 const assert = require('assert');
 const page = require('./pages/alertRulesPage');
 
-const rules = new DataTable(['template', 'templateType', 'ruleName', 'threshold', 'duration',
+const rules = new DataTable(['template', 'templateType', 'ruleName', 'threshold', 'thresholdUnit', 'duration',
   'severity', 'filters', 'channels', 'activate']);
 
 Object.values(page.rules).forEach((rule) => {
-  rules.add([rule.template, rule.templateType, rule.ruleName, rule.threshold, rule.duration,
-    rule.severity, rule.filters, rule.channels, rule.activate]);
+  rules.add([rule.template, rule.templateType, rule.ruleName, rule.threshold,
+    rule.thresholdUnit, rule.duration, rule.severity, rule.filters, rule.channels, rule.activate]);
 });
+
+const rulesStates = new DataTable(['disabled']);
+
+rulesStates.add([true]);
+rulesStates.add([false]);
 
 Feature('IA: Alert rules').retry(2);
 
@@ -55,10 +60,7 @@ Scenario(
 
 Scenario(
   'Add alert rule modal elements @ia @not-pr-pipeline',
-  async ({ I, alertRulesPage, rulesAPI }) => {
-    const ruleName = 'QAA PSQL Modal elements test';
-    const ruleId = await rulesAPI.createAlertRule({ ruleName });
-
+  async ({ I, alertRulesPage }) => {
     alertRulesPage.openAlertRulesTab();
     I.click(alertRulesPage.buttons.openAddRuleModal);
     I.see(alertRulesPage.messages.addRuleModalHeader, alertRulesPage.elements.modalHeader);
@@ -72,8 +74,6 @@ Scenario(
     I.seeElement(alertRulesPage.buttons.toogleInModal);
     I.seeElement(alertRulesPage.buttons.addRule);
     I.seeElement(alertRulesPage.buttons.cancelAdding);
-
-    await rulesAPI.removeAlertRule(ruleId);
   },
 );
 
@@ -110,6 +110,7 @@ Data(rules).Scenario(
       templateType: current.templateType,
       ruleName: current.ruleName,
       threshold: current.threshold,
+      thresholdUnit: current.thresholdUnit,
       duration: current.duration,
       severity: current.severity,
       filters: current.filters,
@@ -132,13 +133,28 @@ Data(rules).Scenario(
 );
 
 Scenario(
-  'PMM-T516 Update Alert rule @ia @not-pr-pipeline',
+  'PMM-T516 PMM-T687 Update Alert rule @ia @not-pr-pipeline',
   async ({
     I, alertRulesPage, rulesAPI, channelsAPI, ncPage,
   }) => {
     const rule = {
       ruleName: 'QAA PSQL Update test',
+      template: 'PostgreSQL connections in use',
+      threshold: '1',
+      thresholdUnit: '%',
+      duration: '1',
+      severity: 'Critical',
+      filters: 'service_name=pmm-server-postgresql',
+      channels: '',
+      activate: true,
+      expression: 'sum(pg_stat_activity_count{datname!~"template.*|postgres"})\n'
+        + '> pg_settings_max_connections * [[ .threshold ]] / 100',
+      alert: 'PostgreSQL too many connections ({{ $labels.service_name }})',
+    };
+    const ruleAfterUpdate = {
+      ruleName: 'QAA PSQL Update test after Update',
       threshold: '2',
+      thresholdUnit: '%',
       duration: '2',
       severity: 'High',
       filters: 'service_name=pmm-server-postgresql-updated',
@@ -151,23 +167,29 @@ Scenario(
     await channelsAPI.createNotificationChannel('EmailChannelForEditRules', ncPage.types.email.type);
     alertRulesPage.openAlertRulesTab();
     I.click(alertRulesPage.buttons.editAlertRule(rule.ruleName));
-    alertRulesPage.fillRuleFields(rule);
+    alertRulesPage.verifyEditRuleDialogElements(rule);
+    alertRulesPage.fillRuleFields(ruleAfterUpdate);
     I.click(alertRulesPage.buttons.addRule);
     I.verifyPopUpMessage(alertRulesPage.messages.successfullyEdited);
-    alertRulesPage.verifyRowValues(rule);
+    alertRulesPage.verifyRowValues(ruleAfterUpdate);
 
     await rulesAPI.removeAlertRule(ruleId);
   },
 );
 
-Scenario(
+Data(rulesStates).Scenario(
   'PMM-T566 Verify user can copy Alert rule @ia @not-pr-pipeline',
-  async ({ I, alertRulesPage, rulesAPI }) => {
-    const ruleName = 'QAA PSQL duplicate test';
-    const ruleId = await rulesAPI.createAlertRule({ ruleName });
+  async ({
+    I, alertRulesPage, rulesAPI, current,
+  }) => {
     const rule = {
-      ruleName: `Copy of ${ruleName}`,
+      ruleName: 'QQAA PSQL duplicate test',
+      disabled: current.disabled,
+    };
+    const ruleCopy = {
+      ruleName: `Copy of ${rule.ruleName}`,
       threshold: '1',
+      thresholdUnit: '%',
       duration: '1',
       severity: 'Critical',
       filters: 'service_name=pmm-server-postgresql',
@@ -175,32 +197,42 @@ Scenario(
       activate: false,
     };
 
-    alertRulesPage.openAlertRulesTab();
-    I.click(alertRulesPage.buttons.duplicateAlertRule(ruleName));
-    I.verifyPopUpMessage(alertRulesPage.messages.successfullyCreated(rule.ruleName));
-    alertRulesPage.verifyRowValues(rule);
+    await rulesAPI.createAlertRule(rule);
 
-    await rulesAPI.removeAlertRule(ruleId);
+    alertRulesPage.openAlertRulesTab();
+    alertRulesPage.verifyRuleState(!rule.disabled, rule.ruleName);
+    I.click(alertRulesPage.buttons.duplicateAlertRule(rule.ruleName));
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyCreated(ruleCopy.ruleName));
+    alertRulesPage.verifyRowValues(ruleCopy);
+
+    await rulesAPI.clearAllRules();
   },
 );
 
-Scenario(
+Data(rulesStates).Scenario(
   'PMM-T517 Verify user can delete Alert rule @ia @not-pr-pipeline',
-  async ({ I, alertRulesPage, rulesAPI }) => {
-    const ruleName = 'QAA PSQL delete test';
+  async ({
+    I, alertRulesPage, rulesAPI, current,
+  }) => {
+    const rule = {
+      ruleName: 'QAA PSQL delete test',
+      disabled: current.disabled,
+    };
 
-    await rulesAPI.createAlertRule({ ruleName });
+    await rulesAPI.createAlertRule(rule);
+
     alertRulesPage.openAlertRulesTab();
-    I.click(alertRulesPage.buttons.deleteAlertRule(ruleName));
+    alertRulesPage.verifyRuleState(!rule.disabled, rule.ruleName);
+    I.click(alertRulesPage.buttons.deleteAlertRule(rule.ruleName));
     I.seeTextEquals(alertRulesPage.messages.deleteRuleModalHeader, alertRulesPage.elements.modalHeader);
     I.seeElement(alertRulesPage.buttons.closeModal, alertRulesPage.elements.modalHeader);
-    I.seeTextEquals(alertRulesPage.messages.confirmDelete(ruleName),
+    I.seeTextEquals(alertRulesPage.messages.confirmDelete(rule.ruleName),
       locate(alertRulesPage.elements.modalContent).find('h4'));
     I.seeElement(alertRulesPage.buttons.cancelDelete);
     I.seeElement(alertRulesPage.buttons.delete);
     I.click(alertRulesPage.buttons.delete);
-    I.verifyPopUpMessage(alertRulesPage.messages.successfullyDeleted(ruleName));
-    I.dontSeeElement(alertRulesPage.elements.rulesNameCell(ruleName));
+    I.verifyPopUpMessage(alertRulesPage.messages.successfullyDeleted(rule.ruleName));
+    I.dontSeeElement(alertRulesPage.elements.rulesNameCell(rule.ruleName));
   },
 );
 
