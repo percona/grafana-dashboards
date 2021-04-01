@@ -168,7 +168,8 @@ xScenario(
   },
 );
 
-Scenario(
+// TODO: unskip and fix in scope of https://jira.percona.com/browse/PMM-7733
+xScenario(
   'PMM-T415 - Verify Percona Platform (Sign up) elements on PMM Settings Page',
   async ({ I, pmmSettingsPage }) => {
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
