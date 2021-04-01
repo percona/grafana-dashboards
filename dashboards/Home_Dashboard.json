@@ -503,7 +503,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg by () ((sum by (node_name,cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!='idle',mode!=\"iowait\"}[5m]),1)) ))*100 or sum by () (avg_over_time(node_cpu_average{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"total\",mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"total\",mode!=\"idle\"}[5m])))",
+                    "expr": "avg by () (\n(sum by (node_name,cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!='idle',mode!=\"iowait\"}[5m]),1)) ))*100 or sum by () (avg_over_time(node_cpu_average{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"total\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"total\"}[5m]))\n)",
                     "interval": "$interval",
                     "refId": "A"
                 }
@@ -592,7 +592,9 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg by () ((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} or\n(rdsosmetrics_memory_free{node_name=~\"$node_name\"} + rdsosmetrics_memory_buffers{node_name=~\"$node_name\"} + rdsosmetrics_memory_cached{node_name=~\"$node_name\"})/ rdsosmetrics_memory_total{node_name=~\"$node_name\"}) * 100",
+                    "expr": "avg by () (\n(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) * 100/ node_memory_MemTotal_bytes{node_name=~\"$node_name\"} or\n(rdsosmetrics_memory_free{node_name=~\"$node_name\"} + rdsosmetrics_memory_buffers{node_name=~\"$node_name\"} + rdsosmetrics_memory_cached{node_name=~\"$node_name\"}) * 100 / rdsosmetrics_memory_total{node_name=~\"$node_name\"} or (100 - azure_memory_percent_average{node_name=~\"$node_name\"})\n)",
+                    "interval": "$interval",
+                    "legendFormat": "",
                     "refId": "B"
                 }
             ],
@@ -1669,7 +1671,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg(((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} or\n(rdsosmetrics_memory_free{node_name=~\"$node_name\"} + rdsosmetrics_memory_buffers{node_name=~\"$node_name\"} + rdsosmetrics_memory_cached{node_name=~\"$node_name\"})/ rdsosmetrics_memory_total{node_name=~\"$node_name\"}) * 100)",
+                    "expr": "avg(((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} or\n(rdsosmetrics_memory_free{node_name=~\"$node_name\"} + rdsosmetrics_memory_buffers{node_name=~\"$node_name\"} + rdsosmetrics_memory_cached{node_name=~\"$node_name\"})/ rdsosmetrics_memory_total{node_name=~\"$node_name\"}) * 100 or (100 - azure_memory_percent_average{node_name=~\"$node_name\"}))",
                     "interval": "$interval",
                     "refId": "A"
                 }
@@ -2667,7 +2669,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Metrics",
-                "definition": "label_values(up{environment=~\"$environment\",node_type=~\"generic|remote_rds|container|remote\"}, node_name)",
+                "definition": "label_values(up{environment=~\"$environment\",node_type=~\"generic|remote_rds|container|remote|remote_azure_database\"}, node_name)",
                 "hide": 0,
                 "includeAll": true,
                 "index": -1,
@@ -2676,7 +2678,7 @@
                 "multiFormat": "regex values",
                 "name": "node_name",
                 "options": [],
-                "query": "label_values(up{environment=~\"$environment\",node_type=~\"generic|remote_rds|container|remote\"}, node_name)",
+                "query": "label_values(up{environment=~\"$environment\",node_type=~\"generic|remote_rds|container|remote|remote_azure_database\"}, node_name)",
                 "refresh": 2,
                 "refresh_on_load": false,
                 "regex": "",
