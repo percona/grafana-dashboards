@@ -6,6 +6,7 @@ const serviceNames = {
   proxysql: 'proxysql_upgrade_service',
   rds: 'mysql_rds_uprgade_service',
 };
+let customDashboardUrl;
 
 // For running on local env set PMM_SERVER_LATEST and DOCKER_VERSION variables
 function getVersions() {
@@ -23,16 +24,16 @@ function getVersions() {
   };
 }
 
-Feature('PMM server Upgrade Tests and Executing test cases related to Upgrade Testing Cycle');
+Feature('PMM server Upgrade Tests and Executing test cases related to Upgrade Testing Cycle').retry(2);
 
-Before(async (I) => {
-  I.Authorize();
+Before(async ({ I }) => {
+  await I.Authorize();
   I.setRequestTimeout(30000);
 });
 
 Scenario(
   'PMM-T289 Verify Whats New link is presented on Update Widget @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, homePage) => {
+  async ({ I, homePage }) => {
     const versions = getVersions();
     const locators = homePage.getLocators(versions.dockerMinor);
 
@@ -51,7 +52,7 @@ Scenario(
 
 Scenario(
   'PMM-T288 Verify user can see Update widget before upgrade [critical]  @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, adminPage, homePage) => {
+  async ({ I, homePage }) => {
     const versions = getVersions();
 
     I.amOnPage(homePage.url);
@@ -60,8 +61,27 @@ Scenario(
 );
 
 Scenario(
+  'PMM-T391 Verify user is able to create and set custom home dashboard @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
+  async ({ I, grafanaAPI, dashboardPage }) => {
+    const resp = await grafanaAPI.createCustomDashboard();
+
+    customDashboardUrl = resp.url;
+
+    await grafanaAPI.starDashboard(resp.id);
+    await grafanaAPI.setHomeDashboard(resp.id);
+
+    I.amOnPage('');
+    dashboardPage.waitForDashboardOpened();
+    dashboardPage.verifyMetricsExistence(['Custom Panel']);
+    I.seeInCurrentUrl(resp.url);
+  },
+);
+
+Scenario(
   'Verify user can create Remote Instances before upgrade and they are in RUNNNING status @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, homePage, inventoryAPI, addInstanceAPI) => {
+  async ({
+    inventoryAPI, addInstanceAPI,
+  }) => {
     // Adding instances for monitoring
     for (const type of Object.values(addInstanceAPI.instanceTypes)) {
       if (type !== 'MongoDB') await addInstanceAPI.apiAddInstance(type, serviceNames[type.toLowerCase()]);
@@ -76,7 +96,7 @@ Scenario(
 
 Scenario(
   'Verify user is able to Upgrade PMM version [blocker] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, inventoryAPI, homePage) => {
+  async ({ I, homePage }) => {
     const versions = getVersions();
 
     I.amOnPage(homePage.url);
@@ -85,8 +105,20 @@ Scenario(
 );
 
 Scenario(
+  'PMM-T391 Verify that custom home dashboard stays as home dashboard after upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
+  async ({ I, dashboardPage }) => {
+    I.amOnPage('');
+    dashboardPage.waitForDashboardOpened();
+    dashboardPage.verifyMetricsExistence(['Custom Panel']);
+    await dashboardPage.verifyThereAreNoGraphsWithNA();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData();
+    I.seeInCurrentUrl(customDashboardUrl);
+  },
+);
+
+Scenario(
   'Verify Agents are RUNNING after Upgrade (API) [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, inventoryAPI) => {
+  async ({ inventoryAPI }) => {
     for (const service of Object.values(inventoryAPI.services)) {
       if (service.service !== 'mongodb') await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
     }
@@ -95,7 +127,7 @@ Scenario(
 
 Scenario(
   'Verify user can see Update widget [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, adminPage, homePage) => {
+  async ({ I, homePage }) => {
     I.amOnPage(homePage.url);
     await homePage.verifyPostUpdateWidgetIsPresent();
   },
@@ -103,7 +135,7 @@ Scenario(
 
 Scenario(
   'PMM-T262 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days after upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, pmmSettingsPage) => {
+  async ({ I, pmmSettingsPage }) => {
     const dataRetention = '2';
     const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
@@ -122,7 +154,7 @@ Scenario(
 
 Scenario(
   'Verify user can see News Panel @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, adminPage, homePage) => {
+  async ({ I, homePage }) => {
     I.amOnPage(homePage.url);
     I.waitForVisible(homePage.fields.newsPanelTitleSelector, 30);
     I.waitForVisible(homePage.fields.newsPanelContentSelector, 30);
@@ -134,12 +166,12 @@ Scenario(
 
 Scenario(
   'PMM-T424 Verify PT Summary Panel is available after Upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, adminPage, dashboardPage) => {
+  async ({ I, dashboardPage }) => {
     const filter = 'Node Name';
 
     I.amOnPage(`${dashboardPage.nodeSummaryDashboard.url}&var-node_name=pmm-server`);
-    dashboardPage.waitPTSummaryInformation();
     dashboardPage.waitForDashboardOpened();
+    await dashboardPage.expandEachDashboardRow();
     await dashboardPage.applyFilter(filter, 'pmm-server');
 
     I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 60);
@@ -149,7 +181,7 @@ Scenario(
 
 Scenario(
   'Verify Agents are RUNNING after Upgrade (UI) [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, adminPage, pmmInventoryPage) => {
+  async ({ I, pmmInventoryPage }) => {
     for (const service of Object.values(serviceNames)) {
       I.amOnPage(pmmInventoryPage.url);
       await pmmInventoryPage.verifyAgentHasStatusRunning(service);
@@ -159,7 +191,9 @@ Scenario(
 
 Scenario(
   'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, qanPage, qanFilters, addInstanceAPI) => {
+  async ({
+    I, qanPage, qanFilters, addInstanceAPI,
+  }) => {
     I.amOnPage(qanPage.url);
     qanFilters.waitForFiltersToLoad();
     await qanFilters.expandAllFilters();
@@ -174,5 +208,32 @@ Scenario(
         I.seeElement(filter);
       }
     }
+  },
+);
+
+Scenario(
+  'Verify Metrics from custom queries for mysqld_exporter after upgrade (UI) @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
+  async ({ dashboardPage }) => {
+    const metricName = 'mysql_performance_schema_memory_summary_current_bytes';
+
+    const response = await dashboardPage.checkMetricExist(metricName);
+    const result = JSON.stringify(response.data.data.result);
+
+    assert.ok(response.data.data.result.length !== 0, `Custom Metrics Should be available but got empty ${result}`);
+  },
+);
+
+Scenario(
+  'PMM-T102 Verify Custom Prometheus Configuration File is still available at targets after Upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
+  async ({ I }) => {
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    const response = await I.sendGetRequest('prometheus/api/v1/targets', headers);
+
+    const targets = response.data.data.activeTargets.find(
+      (o) => o.labels.job === 'blackbox80',
+    );
+
+    assert.ok(targets.labels.job === 'blackbox80', 'Active Target from Custom Prometheus Config After Upgrade is not Available');
   },
 );

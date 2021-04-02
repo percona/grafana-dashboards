@@ -1,13 +1,15 @@
 const { I } = inject();
+const rulesNameCell = (ruleName) => `//td[1][div[text()="${ruleName}"]]`;
 
 module.exports = {
-  url: 'graph/integrated-alerting',
-  columnHeaders: ['Name', 'Threshold', 'Duration', 'Severity', 'Filters', 'Created', 'Actions'],
+  url: 'graph/integrated-alerting/alert-rules',
+  columnHeaders: ['Name', 'Parameters', 'Duration', 'Severity', 'Filters', 'Created', 'Actions'],
   rules: [{
     template: 'PostgreSQL connections in use',
     templateType: 'BUILT_IN',
     ruleName: 'Rule with BUILT_IN template (activated, without channels)',
-    threshold: '1',
+    threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'Warning',
     filters: 'service_name=pmm-server-postgresql',
@@ -17,7 +19,8 @@ module.exports = {
     template: 'PostgreSQL connections in use',
     templateType: 'BUILT_IN',
     ruleName: 'Rule with BUILT_IN template (not activated, without channels)',
-    threshold: '1',
+    threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'Critical',
     filters: 'service_name=pmm-server-postgresql',
@@ -27,7 +30,8 @@ module.exports = {
     template: 'PostgreSQL connections in use',
     templateType: 'BUILT_IN',
     ruleName: 'Rule with BUILT_IN template (activated, with channels)',
-    threshold: '1',
+    threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'High',
     filters: 'service_name=pmm-server-postgresql',
@@ -37,7 +41,8 @@ module.exports = {
     template: 'PostgreSQL connections in use',
     templateType: 'BUILT_IN',
     ruleName: 'Rule with BUILT_IN template (not activated, with channels)',
-    threshold: '1',
+    threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'Notice',
     filters: 'service_name=pmm-server-postgresql',
@@ -47,7 +52,8 @@ module.exports = {
     template: 'E2E TemplateForRules YAML',
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template (activated, without channels)',
-    threshold: '1',
+    threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'Warning',
     filters: 'service_name=pmm-server-postgresql',
@@ -57,7 +63,8 @@ module.exports = {
     template: 'E2E TemplateForRules YAML',
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template (not activated, without channels)',
-    threshold: '1',
+    threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'Critical',
     filters: 'service_name=pmm-server-postgresql',
@@ -67,7 +74,8 @@ module.exports = {
     template: 'E2E TemplateForRules YAML',
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template (activated, with channels)',
-    threshold: '1',
+    threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'High',
     filters: 'service_name=pmm-server-postgresql',
@@ -77,41 +85,87 @@ module.exports = {
     template: 'E2E TemplateForRules YAML',
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template (not activated, with channels)',
-    threshold: '1',
+    threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'Notice',
     filters: 'service_name=pmm-server-postgresql',
     channels: ['EmailChannelForRules'],
     activate: false,
+  }, {
+    template: 'E2E TemplateForRules YAML',
+    templateType: 'User-defined (UI)',
+    ruleName: 'Rule with User-defined (UI) template with default params',
+    threshold: '',
+    thresholdUnit: '%',
+    duration: '50',
+    severity: 'Notice',
+    filters: 'service_name=pmm-server-postgresql',
+    channels: ['EmailChannelForRules'],
+    activate: true,
+  }, {
+    template: 'range-empty',
+    templateType: 'User-defined (UI)',
+    ruleName: 'Rule with User-defined (UI) template with default params (empty-range template)',
+    threshold: '',
+    thresholdUnit: '%',
+    duration: '50',
+    severity: 'Notice',
+    filters: 'service_name=pmm-server-postgresql',
+    channels: ['EmailChannelForRules'],
+    activate: true,
+  }, {
+    template: 'range-empty',
+    templateType: 'User-defined (UI)',
+    ruleName: 'Rule with User-defined (UI) template (empty-range template)',
+    threshold: '666',
+    thresholdUnit: '%',
+    duration: '50',
+    severity: 'Notice',
+    filters: 'service_name=pmm-server-postgresql',
+    channels: ['EmailChannelForRules'],
+    activate: true,
   }],
   elements: {
     rulesTab: '//li[@aria-label="Tab Alert Rules"]',
     noRules: '[data-qa=alert-rules-table-no-data] > h1',
     rulesTableHeader: '$alert-rules-table-thead',
     rulesTable: '$alert-rules-table-tbody',
-    rulesNameCell: (ruleName) => `//td[1][div[text()="${ruleName}"]]`,
+    rulesNameCell: (ruleName) => rulesNameCell(ruleName),
     // activateSwitch returns enable/disabled rule switch locator which holds the state (enabled or disabled)
     // Note: not clickable one
-    activateSwitch: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//input[@data-qa='toggle-alert-rule']`,
-    thresholdCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[1]`,
-    durationCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[2]`,
-    severityCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[3]`,
-    filtersCell: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td[4]//span`,
+    activateSwitch: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td//input[@data-qa='toggle-alert-rule']`,
+    parametersCell: (ruleName) => locate('td').after(rulesNameCell(ruleName)).find('$alert-rule-param'),
+    durationCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[2]`,
+    severityCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[3]`,
+    filtersCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[4]//span`,
     modalHeader: '$modal-header',
-    popUpTitle: '.alert-title',
+    modalContent: '$modal-content',
     columnHeaderLocator: (columnHeaderText) => `//th[text()="${columnHeaderText}"]`,
+    ruleDetails: '$alert-rules-details',
+    expression: locate('$template-expression').find('pre'),
+    templateAlert: locate('$template-alert').find('pre'),
   },
   buttons: {
-    closePopUp: '.alert-close',
     openAddRuleModal: '$alert-rule-template-add-modal-button',
     editRule: '$edit-alert-rule-button',
     closeModal: '$modal-close-button',
     addRule: '$add-alert-rule-modal-add-button',
     cancelAdding: '$add-alert-rule-modal-cancel-button',
-    // editAlertRule returns Edit template button locators for a given source
-    editAlertRule: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='edit-alert-rule-button']`,
-    // toggleAlertRule returns enable/disabled rule switch locator in alert rules list
-    toggleAlertRule: (ruleName) => `${module.exports.elements.rulesNameCell(ruleName)}/following-sibling::td//input[@data-qa='toggle-alert-rule']/following-sibling::label`,
+    cancelDelete: '$cancel-delete-modal-button',
+    delete: '$confirm-delete-modal-button',
+    // showDetails returns Show rule details button locator for a given rule name
+    showDetails: (ruleName) => `${rulesNameCell(ruleName)}//button[@data-qa="show-alert-rule-details"]`,
+    // hideDetails returns Hide rule details button locator for a given rule name
+    hideDetails: (ruleName) => `${rulesNameCell(ruleName)}//button[@data-qa="hide-alert-rule-details"]`,
+    // editAlertRule returns Edit rule button locator for a given rule name
+    editAlertRule: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='edit-alert-rule-button']`,
+    // duplicateAlertRule returns Copy rule button locator for a given rule name
+    duplicateAlertRule: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='copy-alert-rule-button']`,
+    // deleteAlertRule returns Delete rule button locator for a given rule name
+    deleteAlertRule: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td//button[@data-qa='delete-alert-rule-button']`,
+    // toggleAlertRule returns Enable/Disable rule switch locator in alert rules list
+    toggleAlertRule: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td//input[@data-qa='toggle-alert-rule']/following-sibling::label`,
     toogleInModal: '//input[@data-qa="enabled-toggle-input"]/following-sibling::label',
   },
   fields: {
@@ -120,15 +174,20 @@ module.exports = {
     // resultsLocator returns item locator in a search dropdown based on a text
     resultsLocator: (name) => `//div[@aria-label="Select option"]//span[text()="${name}"]`,
     ruleName: '$name-text-input',
-    threshold: '$threshold-text-input',
+    threshold: '$threshold-number-input',
     duration: '$duration-number-input',
     filters: '$filters-textarea-input',
+    template: locate('$add-alert-rule-modal-form').find('div').first().find('div[class$="-singleValue"]'),
   },
   messages: {
     noRulesFound: 'No alert rules found',
-    modalHeaderText: 'Add Alert Rule',
+    addRuleModalHeader: 'Add Alert Rule',
+    deleteRuleModalHeader: 'Delete Alert Rule',
+    confirmDelete: (name) => `Are you sure you want to delete the alert rule "${name}"?`,
     successfullyAdded: 'Alert rule created',
+    successfullyCreated: (name) => `Alert rule ${name} successfully created`,
     successfullyEdited: 'Alert rule updated',
+    successfullyDeleted: (name) => `Alert rule ${name} successfully deleted`,
     successfullyDisabled: (name) => `Alert rule "${name}" successfully disabled`,
     successfullyEnabled: (name) => `Alert rule "${name}" successfully enabled`,
   },
@@ -139,12 +198,13 @@ module.exports = {
       severity, filters, channels, activate,
     } = ruleObj;
 
-    // skipping these steps while editing an Alert rule
-    if (template && ruleName) {
+    // skipping this step while editing an Alert rule
+    if (template) {
       this.searchAndSelectResult('Template', template);
-      I.fillField(this.fields.ruleName, ruleName);
     }
 
+    I.clearField(this.fields.ruleName);
+    I.fillField(this.fields.ruleName, ruleName);
     I.clearField(this.fields.threshold);
     I.fillField(this.fields.threshold, threshold);
     I.clearField(this.fields.duration);
@@ -163,6 +223,22 @@ module.exports = {
     }
   },
 
+  verifyEditRuleDialogElements(rule) {
+    const {
+      template, ruleName, threshold, duration,
+      filters, expression, alert,
+    } = rule;
+
+    I.waitForVisible(this.fields.template, 30);
+    I.seeTextEquals(template, this.fields.template);
+    I.waitForValue(this.fields.ruleName, ruleName, 10);
+    I.waitForValue(this.fields.threshold, threshold, 10);
+    I.waitForValue(this.fields.duration, duration, 10);
+    I.waitForValue(this.fields.filters, filters, 10);
+    I.seeTextEquals(expression, this.elements.expression);
+    I.seeTextEquals(alert, this.elements.templateAlert);
+  },
+
   openAlertRulesTab() {
     I.amOnPage(this.url);
     I.waitForVisible(this.elements.rulesTab, 30);
@@ -174,17 +250,26 @@ module.exports = {
     I.click(this.fields.resultsLocator(option));
   },
 
+  verifyRowValues(ruleObj) {
+    const {
+      ruleName, threshold, duration,
+      severity, filters, activate, thresholdUnit = '%',
+    } = ruleObj;
+
+    I.seeElement(this.elements.rulesNameCell(ruleName));
+    I.see(`Threshold:\n${threshold} ${thresholdUnit}`, this.elements.parametersCell(ruleName));
+    I.see(`${duration} seconds`, this.elements.durationCell(ruleName));
+    I.see(severity, this.elements.severityCell(ruleName));
+    I.see(filters, this.elements.filtersCell(ruleName));
+    this.verifyRuleState(activate, ruleName);
+  },
+
   verifyRuleState(activate, ruleName) {
     let checked = activate;
 
     if (!activate) checked = null;
 
+    I.waitForVisible(this.elements.activateSwitch(ruleName), 30);
     I.seeAttributesOnElements(this.elements.activateSwitch(ruleName), { checked });
-  },
-
-  verifyPopUpMessage(message) {
-    I.waitForVisible(this.elements.popUpTitle, 30);
-    I.see(message, this.elements.popUpTitle);
-    I.click(this.buttons.closePopUp);
   },
 };

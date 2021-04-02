@@ -142,7 +142,6 @@
             "type": "digiapulssi-breadcrumb-panel"
         },
         {
-            "content": "<h1 style='color:#5991A7;font-weight:bold;text-align:center;font-style:italic'>Data for <span style='color:#e68a00'>$node_name</span> with <span style='color:#e68a00'>$interval</span> resolution</h1>",
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
@@ -158,12 +157,11 @@
             },
             "id": 36,
             "links": [],
-            "mode": "html",
             "options": {
                 "content": "<h1 style='color:#5991A7;font-weight:bold;text-align:center;font-style:italic'>Data for <span style='color:#e68a00'>$node_name</span> with <span style='color:#e68a00'>$interval</span> resolution</h1>",
                 "mode": "html"
             },
-            "pluginVersion": "7.1.0",
+            "pluginVersion": "7.3.7",
             "title": "",
             "type": "text"
         },
@@ -613,10 +611,11 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg by (node_name) (min(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100)",
+                    "expr": "avg by (node_name) (min(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100 or \n(100 - azure_storage_percent_average{node_name=~\"$node_name\"}))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
+                    "legendFormat": "",
                     "refId": "A"
                 }
             ],
@@ -887,10 +886,11 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg by (node_name) (((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) * 100)",
+                    "expr": "avg by (node_name) (((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) * 100 or (100 - azure_memory_percent_average{node_name=~\"$node_name\"}))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
+                    "legendFormat": "",
                     "refId": "A"
                 }
             ],
@@ -1608,9 +1608,12 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -1752,9 +1755,12 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -1904,9 +1910,12 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -2045,9 +2054,12 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null as zero",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -2202,9 +2214,12 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -2399,9 +2414,12 @@
                 }
             ],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -2560,9 +2578,12 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -2713,9 +2734,12 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -2887,9 +2911,12 @@
                 }
             ],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -3041,9 +3068,12 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -3180,9 +3210,12 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 1,
             "points": true,
             "renderer": "flot",
@@ -3342,9 +3375,12 @@
                 }
             ],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 1,
             "points": false,
             "renderer": "flot",
@@ -3509,9 +3545,12 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -3643,9 +3682,12 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -3799,9 +3841,12 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 1,
             "points": true,
             "renderer": "flot",
@@ -3946,9 +3991,12 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
             "paceLength": 10,
             "percentage": false,
-            "pluginVersion": "7.1.3",
+            "pluginVersion": "7.3.7",
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
@@ -4054,6 +4102,7 @@
                 "auto_min": "1s",
                 "current": {},
                 "datasource": "Metrics",
+                "error": null,
                 "hide": 0,
                 "includeAll": false,
                 "label": "Interval",
@@ -4113,6 +4162,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(up, node_name)",
+                "error": null,
                 "hide": 0,
                 "includeAll": false,
                 "label": "Node Name",
@@ -4137,6 +4187,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_name)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Service Name",
@@ -4159,6 +4210,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Environment",
@@ -4181,6 +4233,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Cluster",
@@ -4203,6 +4256,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Replication Set",
@@ -4225,6 +4279,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Database",
@@ -4247,6 +4302,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Type",
@@ -4269,6 +4325,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Type",
@@ -4291,6 +4348,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Username",
@@ -4313,6 +4371,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
+                "error": null,
                 "hide": 2,
                 "includeAll": true,
                 "label": "Schema",
@@ -4336,6 +4395,7 @@
                 "current": {},
                 "datasource": "Metrics",
                 "definition": "label_values(up{node_name=~\"$node_name\"}, node_id)",
+                "error": null,
                 "hide": 2,
                 "includeAll": false,
                 "label": "Node ID",

@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
+import { Databases } from 'shared/core';
 import DetailsService from './Details.service';
-import { Databases, DatabasesType } from './Details.types';
+import { DatabasesType } from './Details.types';
 
 export const useDetails = (): [boolean, any, DatabasesType] => {
   const {

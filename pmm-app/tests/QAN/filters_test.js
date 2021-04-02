@@ -2,7 +2,7 @@ const assert = require('assert');
 
 Feature('QAN filters');
 
-Before((I, qanPage, qanOverview) => {
+Before(({ I, qanPage, qanOverview }) => {
   I.Authorize();
   I.amOnPage(qanPage.url);
   qanOverview.waitForOverviewLoaded();
@@ -10,7 +10,7 @@ Before((I, qanPage, qanOverview) => {
 
 Scenario(
   'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline @qan',
-  async (I, qanOverview, qanFilters) => {
+  async ({ I, qanOverview, qanFilters }) => {
     const serviceName = 'ps_8.0';
 
     const countBefore = await qanOverview.getCountOfItems();
@@ -25,7 +25,7 @@ Scenario(
 
 Scenario(
   'PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline @qan',
-  async (I, qanOverview, qanFilters) => {
+  async ({ I, qanOverview, qanFilters }) => {
     const environmentName = 'ps-dev';
 
     const countBefore = await qanOverview.getCountOfItems();
@@ -40,7 +40,7 @@ Scenario(
 
 Scenario(
   'PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline @qan',
-  async (I, qanOverview, qanFilters) => {
+  async ({ I, qanOverview, qanFilters }) => {
     const environmentName1 = 'ps-dev';
     const environmentName2 = 'pgsql-dev';
 
@@ -63,7 +63,7 @@ Scenario(
 
 Scenario(
   'PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline @qan',
-  async (qanFilters) => {
+  async ({ qanFilters }) => {
     const filterSection = 'Database';
 
     await qanFilters.verifySectionItemsCount(filterSection, 5);
@@ -78,7 +78,7 @@ Scenario(
 
 Scenario(
   'PMM-T125 - Verify user is able to Show only selected filter values and Show All filter values @not-pr-pipeline @qan',
-  async (I, qanFilters) => {
+  async ({ I, qanFilters }) => {
     const environmentName1 = 'ps-dev';
     const environmentName2 = 'pgsql-dev';
 
@@ -95,7 +95,7 @@ Scenario(
 // Skipping because of a random failings
 xScenario(
   'PMM-T123 - Verify User is able to search for DB types, Env and Cluster @not-pr-pipeline @qan',
-  async (I, qanOverview, qanFilters) => {
+  async ({ I, qanOverview, qanFilters }) => {
     const filters = [
       'postgres',
       'mysql',
@@ -125,7 +125,7 @@ xScenario(
 
 Scenario(
   'Check All Filter Groups Exists in the Filter Section @not-pr-pipeline @qan',
-  async (I, qanFilters) => {
+  async ({ I, qanFilters }) => {
     for (const i in qanFilters.filterGroups) {
       I.fillField(qanFilters.fields.filterBy, qanFilters.filterGroups[i]);
       I.waitForVisible(qanFilters.getFilterSectionLocator(qanFilters.filterGroups[i]), 30);
@@ -137,7 +137,7 @@ Scenario(
 
 Scenario(
   'PMM-T191 - Verify Reset All and Show Selected filters @not-pr-pipeline @qan',
-  async (I, qanFilters) => {
+  async ({ I, qanFilters }) => {
     const environmentName1 = 'ps-dev';
     const environmentName2 = 'pgsql-dev';
 
@@ -146,24 +146,28 @@ Scenario(
     I.click(qanFilters.buttons.showSelected);
     await qanFilters.verifyCountOfFilterLinks(2, false);
     I.click(qanFilters.buttons.resetAll);
+    I.waitForInvisible(qanFilters.elements.spinner, 30);
     await qanFilters.verifyCountOfFilterLinks(2, true);
 
     qanFilters.applyFilter(environmentName1);
     I.click(qanFilters.buttons.showSelected);
     await qanFilters.verifyCountOfFilterLinks(1, false);
     qanFilters.applyFilter(environmentName1);
+    I.waitForInvisible(qanFilters.elements.spinner, 30);
     await qanFilters.verifyCountOfFilterLinks(1, true);
   },
 );
 
-Scenario('PMM-T190 - Verify user is able to see n/a filter @not-pr-pipeline @qan', async (I, qanFilters) => {
+Scenario('PMM-T190 - Verify user is able to see n/a filter @not-pr-pipeline @qan', async ({ I, qanFilters }) => {
   I.fillField(qanFilters.fields.filterBy, 'n/a');
   await qanFilters.verifyCountOfFilterLinks(0, true);
 });
 
 Scenario(
   'PMM-T390 - Verify that we show info message when empty result is returned @not-pr-pipeline @qan',
-  async (I, qanOverview, qanFilters) => {
+  async ({
+    I, qanOverview, qanFilters, adminPage,
+  }) => {
     const serviceName = 'ps_8.0';
     const db1 = 'postgres';
     const db2 = 'n/a';
@@ -171,8 +175,12 @@ Scenario(
 
     let count = qanOverview.getCountOfItems();
 
+    adminPage.applyTimeRange('Last 3 hour');
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyShowAllLink(section);
     qanFilters.applyFilterInSection(section, db1);
     count = await qanOverview.waitForNewItemsCount(count);
+    qanFilters.applyShowAllLink(section);
     qanFilters.applyFilterInSection(section, db2);
     count = await qanOverview.waitForNewItemsCount(count);
     qanFilters.applyFilter(serviceName);
@@ -186,7 +194,9 @@ Scenario(
 
 Scenario(
   'PMM-T221 - Verify that all filter options are always visible (but some disabled) after selecting an item and % value is changed @not-pr-pipeline @qan',
-  async (I, adminPage, qanOverview, qanFilters) => {
+  async ({
+    I, adminPage, qanOverview, qanFilters,
+  }) => {
     const serviceType = 'mysql';
     const environment = 'pgsql-dev';
     const serviceName = 'ps_8.0';
@@ -205,6 +215,7 @@ Scenario(
     assert.ok(countAfter !== countBefore, 'Query count was expected to change');
 
     await qanFilters.verifyCountOfFilterLinks(countOfFilters, false);
+    qanFilters.applyShowAllLink('Environment');
     qanFilters.checkDisabledFilter('Environment', environment);
     qanFilters.applyFilter(serviceName);
     const percentageAfter = await qanFilters.getPercentage('Service Type', serviceType);
@@ -218,7 +229,7 @@ Scenario(
 
 Scenario(
   'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Cluster @qan @not-pr-pipeline',
-  async (I, qanFilters, dashboardPage) => {
+  async ({ I, qanFilters, dashboardPage }) => {
     const mongoLink = '/graph/d/mongodb-cluster-summary/mongodb-cluster-summary';
     const header = 'MongoDB Cluster Summary';
 
@@ -234,7 +245,7 @@ Scenario(
 
 Scenario(
   'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Replication Set @qan @not-pr-pipeline',
-  async (I, qanFilters, dashboardPage) => {
+  async ({ I, qanFilters, dashboardPage }) => {
     const replicationSetLink = '/graph/d/mysql-replicaset-summary/mysql-replication-summary';
     const header = 'MySQL Replication Summary';
 
@@ -250,7 +261,7 @@ Scenario(
 
 Scenario(
   'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Node Name @qan @not-pr-pipeline',
-  async (I, qanFilters, dashboardPage) => {
+  async ({ I, qanFilters, dashboardPage }) => {
     const shortCut = '/graph/d/node-instance-summary/node-summary?var-node_name=pmm-server';
     const nodeNameLink = 'node_name=pmm-server';
     const link = '/graph/d/node-instance-summary/node-summary';
@@ -269,7 +280,7 @@ Scenario(
 
 Scenario(
   'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Service Name @qan @not-pr-pipeline',
-  async (I, qanFilters, dashboardPage) => {
+  async ({ I, qanFilters, dashboardPage }) => {
     const serviceNameLink = '/graph/d/mongodb-instance-summary/mongodb-instance-summary';
     const header = 'MongoDB Instance Summary';
 
@@ -283,7 +294,8 @@ Scenario(
   },
 );
 
-Scenario('PMM-T437 - Verify short-cut navigation for n/a items @qan @not-pr-pipeline', async (I, qanFilters) => {
+Scenario('PMM-T437 - Verify short-cut navigation for n/a items @qan @not-pr-pipeline', async ({ I, qanFilters }) => {
+  qanFilters.applyShowAllLink('Cluster');
   qanFilters.checkLink('Cluster', 'ps-dev-cluster', true);
   I.fillField(qanFilters.fields.filterBy, 'n/a');
   qanFilters.checkLink('Cluster', 'n/a', false);

@@ -1,5 +1,6 @@
 const { I, adminPage } = inject();
 const assert = require('assert');
+const FormData = require('form-data');
 
 module.exports = {
   // insert your locators and methods here
@@ -113,7 +114,7 @@ module.exports = {
     ],
   },
   processDetailsDashboard: {
-    url: 'graph/d/node-cpu-process/processes-details?from=now-30m&to=now',
+    url: 'graph/d/node-cpu-process/processes-details?from=now-45m&to=now',
   },
   nodeSummaryDashboard: {
     url: 'graph/d/node-instance-summary/node-summary?orgId=1&refresh=5m',
@@ -406,7 +407,6 @@ module.exports = {
       'Lost Connections',
       'Denied Connections',
       'Access Denied',
-      'Total Sessions',
       'Users Activity',
       'Users by Connections Created',
       'Users by Concurrent Connections',
@@ -710,6 +710,10 @@ module.exports = {
     navbarLocator: '.navbar-page-btn',
   },
 
+  createAdvancedDataExplorationURL(metricName, time = '1m', nodeName = 'All') {
+    return `graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=${metricName}&var-interval=$__auto_interval_interval&var-node_name=${nodeName}&from=now-${time}&to=now`;
+  },
+
   async checkNavigationBar(text) {
     I.waitForVisible(this.fields.navbarLocator, 30);
     const navbarText = await I.grabTextFrom(this.fields.navbarLocator);
@@ -744,6 +748,32 @@ module.exports = {
     for (const i in metrics) {
       I.seeElement(this.graphsLocator(metrics[i]));
     }
+  },
+
+  // Should be refactored and added to Grafana Helper as a custom function
+  async checkMetricExist(metricName) {
+    const timeStamp = Date.now();
+    const bodyFormData = new FormData();
+    const body = {
+      query: metricName,
+      start: Math.floor((timeStamp - 3600) / 1000),
+      end: Math.floor((timeStamp) / 1000),
+      step: 60,
+    };
+
+    Object.keys(body).forEach((key) => bodyFormData.append(key, body[key]));
+    const headers = {
+      Authorization: `Basic ${await I.getAuth()}`,
+      ...bodyFormData.getHeaders(),
+    };
+
+    const response = await I.sendPostRequest(
+      'graph/api/datasources/proxy/1/api/v1/query_range',
+      bodyFormData,
+      headers,
+    );
+
+    return response;
   },
 
   verifyTabExistence(tabs) {
@@ -798,7 +828,7 @@ module.exports = {
 
   async expandEachDashboardRow(halfToExpand) {
     let sectionsToExpand;
-    const sections = await I.grabTextFrom(this.fields.collapsedDashboardRow);
+    const sections = await I.grabTextFromAll(this.fields.collapsedDashboardRow);
 
     if (halfToExpand === 1) {
       sectionsToExpand = sections.slice(0, sections.length / 2);
@@ -845,10 +875,10 @@ module.exports = {
 
   async applyFilter(filterName, filterValue) {
     // eslint-disable-next-line max-len
-    const filterSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]//parent::div//a`;
+    const filterSelector = `(//div[@class='variable-link-wrapper']//ancestor::div//label[contains(text(),'${filterName}')])[1]//parent::div//a`;
     const filterValueSelector = `//span[contains(text(), '${filterValue}')]`;
     // eslint-disable-next-line max-len
-    const filterNameSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]`;
+    const filterNameSelector = `(//div[@class='variable-link-wrapper']//ancestor::div//label[contains(text(),'${filterName}')])[1]`;
 
     I.waitForElement(filterSelector, 30);
     I.click(filterSelector);

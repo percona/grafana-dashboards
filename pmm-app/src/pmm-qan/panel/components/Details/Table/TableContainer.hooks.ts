@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { get } from 'lodash';
+import { Databases } from 'shared/core';
 import { useExplains } from '../Explain/Explain.hooks';
-import { Databases } from '../Details.types';
 
 export const useTables = (examples, databaseType): any[] => {
   const [jsonExplain, classicExplain] = useExplains(examples, databaseType);
@@ -17,7 +17,7 @@ export const useTables = (examples, databaseType): any[] => {
 
         const tablesResult = [
           get(parsedJSON, 'query_block.table.table_name')
-          || get(parsedJSON, 'query_block.ordering_operation.grouping_operation.table.table_name'),
+            || get(parsedJSON, 'query_block.ordering_operation.grouping_operation.table.table_name'),
         ].filter(Boolean);
 
         setTables(tablesResult);

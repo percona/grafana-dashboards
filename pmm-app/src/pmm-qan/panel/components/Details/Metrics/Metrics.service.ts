@@ -1,7 +1,6 @@
 import { apiRequestQAN } from 'shared/components/helpers/api';
 import { getLabelQueryParams } from 'pmm-qan/panel/QueryAnalytics.tools';
 
-
 export const getMetrics = async ({
   filterBy, groupBy, labels = [], from, to, tables = [], totals,
 }) => {
@@ -17,7 +16,6 @@ export const getMetrics = async ({
 
   return apiRequestQAN.post<any, any>('/ObjectDetails/GetMetrics', body);
 };
-
 
 export default {
   getMetrics,

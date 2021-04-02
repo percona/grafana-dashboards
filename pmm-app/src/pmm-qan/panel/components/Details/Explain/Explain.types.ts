@@ -7,16 +7,17 @@ export interface ExplainProps {
 
 export enum ExplainTabs {
   json = 'JSON',
-  classic = 'Classic'
+  classic = 'Classic',
+  visual = 'Visual',
 }
 
-interface ClassicExplainHeader {
-  title: string,
-  key: string,
-  dataIndex: string
+interface ClassicExplainColumns {
+  Header: string;
+  key: string;
+  accessor: string;
 }
 
-export interface ClassicExplain {
-  rows: string[],
-  columns: ClassicExplainHeader[]
+export interface ClassicExplainInterface {
+  rows: object[];
+  columns: ClassicExplainColumns[];
 }

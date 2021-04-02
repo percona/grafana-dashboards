@@ -1,10 +1,11 @@
 const { I, ncPage } = inject();
 const assert = require('assert');
+const faker = require('faker');
 
 module.exports = {
   types: ncPage.types,
 
-  async createNotificationChannel(name, type) {
+  async createNotificationChannel(name, type, values) {
     let body = {
       summary: name,
     };
@@ -14,7 +15,7 @@ module.exports = {
         body = {
           ...body,
           email_config: {
-            to: [this.types.email.addresses],
+            to: [values || this.types.email.addresses],
           },
         };
         break;
@@ -46,6 +47,8 @@ module.exports = {
       resp.status === 200,
       `Failed to create a channel with name "${name}". Response message is "${resp.data.message}"`,
     );
+
+    return resp.data.channel_id;
   },
 
   async clearAllNotificationChannels() {
@@ -70,5 +73,11 @@ module.exports = {
       resp.status === 200,
       `Failed to remove channel with channel_id "${channelId}". Response message is "${resp.data.message}"`,
     );
+  },
+
+  async createNotificationChannels(numberOfChannelsToCreate) {
+    for (let i = 0; i < numberOfChannelsToCreate; i++) {
+      await this.createNotificationChannel(`${faker.lorem.word()}_channel`, ncPage.types.email.type);
+    }
   },
 };

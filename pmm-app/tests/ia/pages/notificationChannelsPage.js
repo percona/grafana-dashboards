@@ -2,7 +2,7 @@ const { I } = inject();
 const assert = require('assert');
 
 module.exports = {
-  url: 'graph/integrated-alerting',
+  url: 'graph/integrated-alerting/notification-channels',
   types: {
     email: {
       name: 'Email Channel',
@@ -24,11 +24,10 @@ module.exports = {
     notificationChannelsTab: '//li[@aria-label="Tab Notification Channels"]',
     channelInTable: (name, type) => `//td[text()="${name}"]/following-sibling::td[text()="${type}"]`,
     templatesTableHeader: '$alert-rule-templates-table-thead',
-    noChannels: '[data-qa=table-no-data] > h1',
+    noData: locate('$table-no-data').find('h1'),
     nameFieldLabel: '$name-field-label',
     modalHeader: '$modal-header',
     modalContent: '$modal-content',
-    popUpTitle: '.alert-title',
   },
   buttons: {
     openAddChannelModal: '$notification-channel-add-modal-button',
@@ -64,25 +63,29 @@ module.exports = {
     I.click(this.elements.notificationChannelsTab);
   },
 
-  selectChannelType(type) {
-    I.click(this.fields.typeDropdown);
-    I.click(this.fields.typeOptionLocator(type));
+  async selectChannelType(type) {
+    I.waitForVisible(this.fields.typeDropdown, 30);
+    await within(this.elements.modalContent, () => {
+      I.click(this.fields.typeDropdown);
+      I.waitForVisible(this.fields.typeOptionLocator(type), 30);
+      I.click(this.fields.typeOptionLocator(type));
+    });
     I.see(type, this.fields.typeDropdown);
   },
 
-  createChannel(name, type) {
+  async createChannel(name, type) {
     I.click(this.buttons.openAddChannelModal);
     I.waitForVisible(this.fields.typeDropdown, 30);
     I.seeElement(this.buttons.closeModal);
     I.seeElement(this.buttons.cancelAdding);
-    this.fillFields(name, type);
+    await this.fillFields(name, type);
     I.click(this.buttons.addChannel);
-    this.verifyPopUpMessage(this.messages.successfullyAdded);
+    I.verifyPopUpMessage(this.messages.successfullyAdded);
   },
 
-  fillFields(name, type) {
+  async fillFields(name, type) {
     I.fillField(this.fields.nameInput, name);
-    this.selectChannelType(type);
+    await this.selectChannelType(type);
 
     switch (type) {
       case this.types.email.type:
@@ -122,13 +125,8 @@ module.exports = {
     }
 
     I.click(this.buttons.addChannel);
-    this.verifyPopUpMessage(this.messages.successfullyEdited);
+    I.verifyPopUpMessage(this.messages.successfullyEdited);
 
     return `${name}${suffix}`;
-  },
-
-  verifyPopUpMessage(message) {
-    I.waitForVisible(this.elements.popUpTitle, 30);
-    I.see(message, this.elements.popUpTitle);
   },
 };

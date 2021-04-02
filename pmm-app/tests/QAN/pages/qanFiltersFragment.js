@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const { I } = inject();
+const { I, adminPage } = inject();
 
 module.exports = {
   root: '.overview-filters',
@@ -24,7 +24,7 @@ module.exports = {
     showSelected: '$qan-filters-show-selected',
   },
   elements: {
-    spinner: 'i.fa-spinner',
+    spinner: locate('$pmm-overlay-wrapper').find('//i[contains(@class,"fa-spinner")]'),
     disabledResetAll: '//button[@data-qa="qan-filters-reset-all" and @disabled ]',
     environmentLabel: '//span[contains(text(), "Environment")]',
     filterName: 'span.checkbox-container__label-text',
@@ -66,7 +66,7 @@ module.exports = {
   },
 
   waitForFiltersToLoad() {
-    I.waitForInvisible(this.elements.spinner, 30);
+    I.waitForInvisible(this.elements.spinner, 60);
   },
 
   async expandAllFilters() {
@@ -91,11 +91,12 @@ module.exports = {
     I.fillField(this.fields.filterBy, filterName);
     I.waitForVisible(filterToApply, 20);
     I.forceClick(filterToApply);
-    I.click(this.fields.filterBy);
-    I.clearField(this.fields.filterBy);
+    I.waitForInvisible(this.elements.spinner, 30);
+    I.waitForElement(this.fields.filterBy, 30);
     // workaround for clearing the field completely
-    I.fillField(this.fields.filterBy, ' ');
-    I.pressKey('Backspace');
+    I.forceClick(this.fields.filterBy);
+    adminPage.customClearField(this.fields.filterBy);
+    I.wait(2);
   },
 
   applyFilterInSection(section, filter) {
@@ -143,9 +144,9 @@ module.exports = {
   },
 
   checkDisabledFilter(groupName, filter) {
-    const filterLocator = `//span[contains(text(), '${groupName}')]/parent::p/following-sibling::div//input[contains(@name, '${filter}') and @disabled]`;
+    const filterLocator = `//span[contains(text(), '${groupName}')]/parent::p/following-sibling::div[@data-qa='filter-checkbox-${filter}']//input[contains(@name, '${filter}') and @disabled]`;
 
-    I.waitForVisible(filterLocator, 20);
+    I.waitForElement(filterLocator, 20);
   },
 
   async verifySelectedFilters(filters) {

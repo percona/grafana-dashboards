@@ -2,13 +2,13 @@ const assert = require('assert');
 
 Feature('Inventory page');
 
-Before(async (I) => {
+Before(async ({ I }) => {
   I.Authorize();
 });
 
 Scenario(
   'PMM-T371 - Verify sorting in Inventory page(Services tab) @not-pr-pipeline @not-ui-pipeline @nightly',
-  async (I, pmmInventoryPage) => {
+  async ({ I, pmmInventoryPage }) => {
     I.amOnPage(pmmInventoryPage.url);
     await pmmInventoryPage.checkSort(4);
   },
@@ -16,7 +16,7 @@ Scenario(
 
 Scenario(
   'PMM-T371 - Verify sorting in Inventory page(Agents tab) @not-pr-pipeline @not-ui-pipeline @nightly',
-  async (I, pmmInventoryPage) => {
+  async ({ I, pmmInventoryPage }) => {
     I.amOnPage(pmmInventoryPage.url);
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
     I.click(pmmInventoryPage.fields.agentsLink);
@@ -26,7 +26,7 @@ Scenario(
 
 Scenario(
   'PMM-T371 - Verify sorting in Inventory page(Nodes tab) @not-pr-pipeline @not-ui-pipeline @nightly',
-  async (I, pmmInventoryPage) => {
+  async ({ I, pmmInventoryPage }) => {
     I.amOnPage(pmmInventoryPage.url);
     I.waitForVisible(pmmInventoryPage.fields.nodesLink, 20);
     I.click(pmmInventoryPage.fields.nodesLink);
@@ -36,7 +36,7 @@ Scenario(
 
 Scenario(
   'PMM-T339 - Verify MySQL service is removed on PMM Inventory page @not-pr-pipeline',
-  async (I, addInstanceAPI, pmmInventoryPage) => {
+  async ({ I, addInstanceAPI, pmmInventoryPage }) => {
     const serviceType = 'MySQL';
     const serviceName = 'ServiceToDelete';
 
@@ -60,7 +60,7 @@ Scenario(
 
 Scenario(
   'PMM-T340 - Verify node with agents, services can be removed on PMM Inventory page @not-pr-pipeline',
-  async (I, addInstanceAPI, pmmInventoryPage) => {
+  async ({ I, addInstanceAPI, pmmInventoryPage }) => {
     const serviceType = 'MySQL';
     const serviceName = 'NodeToDelete';
 
@@ -81,7 +81,7 @@ Scenario(
 
 Scenario(
   'PMM-T342 - Verify pmm-server node cannot be removed from PMM Inventory page @not-pr-pipeline',
-  async (I, pmmInventoryPage) => {
+  async ({ I, pmmInventoryPage }) => {
     const node = 'pmm-server';
 
     I.amOnPage(pmmInventoryPage.url);
@@ -95,7 +95,7 @@ Scenario(
 
 Scenario(
   'PMM-T343 - Verify agent can be removed on PMM Inventory page @not-pr-pipeline',
-  async (I, pmmInventoryPage) => {
+  async ({ I, pmmInventoryPage }) => {
     const agentType = 'MySQL exporter';
 
     I.amOnPage(pmmInventoryPage.url);
@@ -123,7 +123,7 @@ Scenario(
 
 Scenario(
   'PMM-T345 - Verify removing pmm-agent on PMM Inventory page removes all associated agents @not-pr-pipeline',
-  async (I, pmmInventoryPage) => {
+  async ({ I, pmmInventoryPage }) => {
     const agentID = 'pmm-server';
     const agentType = 'PMM Agent';
 
@@ -146,15 +146,29 @@ Scenario(
 
 Scenario(
   'PMM-T554 - Check that all agents have status "RUNNING" @not-pr-pipeline @nightly',
-  async (I, pmmInventoryPage) => {
+  async ({ I, pmmInventoryPage, inventoryAPI }) => {
+    const statuses = ['WAITING', 'STARTING', 'UNKNOWN'];
+    const serviceIdsNotRunning = [];
+    const servicesNotRunning = [];
+
     I.amOnPage(pmmInventoryPage.url);
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
     I.click(pmmInventoryPage.fields.agentsLink);
-    const countOfAllAgents = await pmmInventoryPage.getCountOfItems();
-    const countOfRunning = await pmmInventoryPage.getCountOfRunningAgents();
-    // Need countOfPMMAgentType because agents that have Type PMM Agent don't have status. We need subtract it
-    const countOfPMMAgentType = await pmmInventoryPage.getCountOfPMMAgents();
 
-    assert.ok(countOfAllAgents - countOfPMMAgentType === countOfRunning, 'Some agents are not Running! Check the statuses!');
+    for (const status of statuses) {
+      const ids = await pmmInventoryPage.getServiceIdWithStatus(status);
+
+      serviceIdsNotRunning.push(...ids);
+    }
+
+    if (serviceIdsNotRunning.length) {
+      for (const id of serviceIdsNotRunning) {
+        const service = await inventoryAPI.getServiceById(id);
+
+        servicesNotRunning.push(...service);
+      }
+
+      assert.fail(`These services do not have RUNNING state: \n ${JSON.stringify(servicesNotRunning, null, 2)}`);
+    }
   },
 );

@@ -1,3 +1,6 @@
+const assert = require('assert');
+const mailosaur = require('../../../pr.codecept.js').config.helpers.Mailosaur;
+
 const { I } = inject();
 
 module.exports = {
@@ -9,7 +12,12 @@ module.exports = {
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
-    await I.sendPostRequest('v1/Settings/Change', body, headers);
+    const resp = await I.sendPostRequest('v1/Settings/Change', body, headers);
+
+    assert.ok(
+      resp.status === 200,
+      `Failed to enabled STT. ${resp.data.message}`,
+    );
   },
 
   async apiDisableSTT() {
@@ -19,7 +27,12 @@ module.exports = {
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
-    await I.sendPostRequest('v1/Settings/Change', body, headers);
+    const resp = await I.sendPostRequest('v1/Settings/Change', body, headers);
+
+    assert.ok(
+      resp.status === 200,
+      `Failed to disable STT. ${resp.data.message}`,
+    );
   },
 
   async apiDisableIA() {
@@ -28,7 +41,12 @@ module.exports = {
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
-    await I.sendPostRequest('v1/Settings/Change', body, headers);
+    const resp = await I.sendPostRequest('v1/Settings/Change', body, headers);
+
+    assert.ok(
+      resp.status === 200,
+      `Failed to disable Integrated alerting. ${resp.data.message}`,
+    );
   },
 
   async apiEnableIA() {
@@ -37,7 +55,12 @@ module.exports = {
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
-    await I.sendPostRequest('v1/Settings/Change', body, headers);
+    const resp = await I.sendPostRequest('v1/Settings/Change', body, headers);
+
+    assert.ok(
+      resp.status === 200,
+      `Failed to enable Integrated alerting. ${resp.data.message}`,
+    );
   },
 
   async restoreSettingsDefaults() {
@@ -54,5 +77,24 @@ module.exports = {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
     await I.sendPostRequest('v1/Settings/Change', body, headers);
+  },
+
+  async setEmailAlertingSettings(settings) {
+    const body = {
+      email_alerting_settings: settings || {
+        from: 'pmm@mail.com',
+        smarthost: 'mailosaur.net:465',
+        username: `${mailosaur.serverId}@mailosaur.net`,
+        password: process.env.MAILOSAUR_SMTP_PASSWORD,
+      },
+    };
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    const resp = await I.sendPostRequest('v1/Settings/Change', body, headers);
+
+    assert.ok(
+      resp.status === 200,
+      `Failed to set Email Alerting settings. ${resp.data.message}`,
+    );
   },
 };

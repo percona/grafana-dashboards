@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { styles } from './OptionContent.styles';
 
 interface OptionContentProps {
-    title: string;
-    description: string;
-    tags: string[];
+  title: string;
+  description: string;
+  tags: string[];
 }
 
 export const OptionContent: FC<OptionContentProps> = ({ title, description, tags }) => (
@@ -15,7 +15,9 @@ export const OptionContent: FC<OptionContentProps> = ({ title, description, tags
     </div>
     <div className={styles.tagWrapper}>
       {tags.map((tag) => (
-        <span key={tag} className={styles.tag}>{tag}</span>
+        <span key={tag} className={styles.tag}>
+          {tag}
+        </span>
       ))}
     </div>
   </div>

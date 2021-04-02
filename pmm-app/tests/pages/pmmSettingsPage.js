@@ -1,10 +1,12 @@
-const { I } = inject();
+const { I, adminPage } = inject();
 const assert = require('assert');
 
 const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 
 module.exports = {
-  url: 'graph/d/pmm-settings/pmm-settings',
+  url: 'graph/settings',
+  advancedSettingsUrl: 'graph/settings/advanced-settings',
+  communicationSettingsUrl: 'graph/settings/communication',
   prometheusAlertUrl: '/prometheus/rules',
   stateOfAlertsUrl: '/prometheus/alerts',
   diagnosticsText:
@@ -21,8 +23,8 @@ module.exports = {
       + '  - name: AutoTestAlerts\n'
       + '    rules:\n'
       + '    - alert: InstanceDown\n'
-      + '      expr: up == 0\n'
-      + '      for: 20s\n'
+      + '      expr: up == 1\n'
+      + '      for: 2s\n'
       + '      labels:\n'
       + '        severity: critical\n'
       + '      annotations:\n'
@@ -58,7 +60,7 @@ module.exports = {
   },
   messages: {
     successPopUpMessage: 'Settings updated',
-    invalidDataDurationMessage: 'Value should be in range from 1 to 3650',
+    invalidDataDurationMessage: 'Value should be in the range from 1 to 3650',
     invalidDataDurationPopUpMessage: 'data_retention: should be a natural number of days',
     requiredFieldMessage: 'Required field',
     invalidSSHKeyMessage: 'Invalid SSH key.',
@@ -73,13 +75,13 @@ module.exports = {
     advanced: 'Advanced Settings',
     ssh: 'SSH Key',
     alertmanager: 'Alertmanager Integration',
+    perconaPlatform: 'Percona Platform',
   },
   sectionButtonText: {
     applyChanges: 'Apply changes',
     applySSHKey: 'Apply SSH key',
     applyAlertmanager: 'Apply Alertmanager settings',
   },
-
   tooltips: {
     stt: {
       text: 'Enable Security Threat Tool and get updated checks from Percona.',
@@ -87,11 +89,55 @@ module.exports = {
         'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#security-threat-tool',
     },
   },
-
+  communication: {
+    email: {
+      serverAddress: {
+        locator: '$smarthost-text-input',
+        value: 'test.server.com',
+      },
+      from: {
+        locator: '$from-text-input',
+        value: 'sender',
+      },
+      username: {
+        locator: '$username-text-input',
+        value: 'user',
+      },
+      password: {
+        locator: '$password-password-input',
+        value: 'secret',
+      },
+      hello: {
+        locator: '$hello-text-input',
+        value: 'Hey there',
+      },
+      identity: {
+        locator: '$identity-text-input',
+        value: 'test',
+      },
+      secret: {
+        locator: '$secret-password-input',
+        value: 'test',
+      },
+    },
+    slack: {
+      url: {
+        locator: '$url-text-input',
+        value: 'https://hook',
+      },
+    },
+    communicationSection: locate('$settings-tabs')
+      .find('li')
+      .withAttr({ 'aria-label': 'Tab Communication' }),
+    emailTab: 'li[aria-label="Tab Email"]',
+    submitEmailButton: '$email-settings-submit-button',
+    slackTab: 'li[aria-label="Tab Slack"]',
+    submitSlackButton: '$slack-settings--submit-button',
+  },
   fields: {
     advancedLabel: '$advanced-label',
     advancedButton: '$advanced-button',
-    addAlertRuleButton: '//span[text()="Apply Alertmanager settings"]/parent::button',
+    addAlertRuleButton: '//span[text()="Apply Alertmanager settings"]/parent::span',
     alertRulesInput: '$alertmanager-rules',
     alertURLInput: '$alertmanager-url',
     alertingRules: locateLabel('form-field-alerting-rules'),
@@ -103,7 +149,7 @@ module.exports = {
     callHomeSwitch: '//button[@class="toggle-field ant-switch ant-switch-checked"]',
     checkForUpdatesLabel: '//div[@data-qa="advanced-updates"]//div//span',
     checkForUpdatesSwitch: '//div[@data-qa="advanced-updates"]//div[2]//input',
-    dataRetentionInput: '$advanced-retention-input',
+    dataRetentionInput: '$retention-number-input',
     dataRetentionLabel: locateLabel('form-field-data-retention'),
     diagnosticsButton: '$diagnostics-button',
     diagnosticsLabel: '$diagnostics-label',
@@ -111,20 +157,19 @@ module.exports = {
     diagnosticsInfo: '//div[@data-qa="diagnostics-label"]/div/div',
     iframe: '//div[@class="panel-content"]//iframe',
     metricsResolutionButton: '$metrics-resolution-button',
-    metricsResolution: '//div[@data-qa="metrics-resolution-radio-button-group"]/label[text()="',
+    metricsResolution: '//label[text()="',
     metricsResolutionLabel: '$metrics-resolution-label',
-    metricsResolutionRadio: '$metrics-resolution-radio-button-group',
+    metricsResolutionRadio: '$resolutions-radio-button',
     loginButton: '$sign-in-submit-button',
-    lowInput: '$metrics-resolution-lr-input',
-    mediumInput: '$metrics-resolution-mr-input',
-    highInput: '$metrics-resolution-hr-input',
-    popUpTitle: '//div[@class="alert-title"]',
+    lowInput: '$lr-number-input',
+    mediumInput: '$mr-number-input',
+    highInput: '$hr-number-input',
     perconaPlatformLink: '//li[contains(text(), \'Percona Platform\')]',
     privacyPolicy: '//span[contains(text(), "Privacy Policy")]',
     sectionHeader: '//div[@class="ant-collapse-header"]',
     selectedResolution: 'span.ant-slider-mark-text-active',
-    signInEmail: '$sign-in-email-input',
-    signInPassword: '$sign-in-password-input',
+    signInEmail: '$email-text-input',
+    signInPassword: '$email-text-input',
     sshKeyInput: '$ssh-key',
     sshKeyLabel: locateLabel('ssh-key-label'),
     sshKeyButton: '$ssh-key-button',
@@ -133,8 +178,8 @@ module.exports = {
     sttSwitchSelectorInput: '//div[@data-qa="advanced-stt"]//div[2]//input',
     sttSwitchSelector: '//div[@data-qa="advanced-stt"]//div[2]//label',
     subSectionHeader: '//following-sibling::div//div[@class="ant-collapse-header"]',
-    signUpEmail: '$sign-up-email-input',
-    signUpPassword: '$sign-up-password-input',
+    signUpEmail: '$email-text-input',
+    signUpPassword: '$password-password-input',
     signUpAgreementLabel: '$sign-up-agreement-checkbox-label',
     signUpButton: '$sign-up-submit-button',
     singInToSignUpButton: '$sign-in-to-sign-up-button',
@@ -164,14 +209,44 @@ module.exports = {
     I.waitForVisible(expectedContentLocator, 30);
   },
 
-  async verifyPopUpMessage(successMessage) {
-    I.waitForVisible(this.fields.popUpTitle, 30);
-    I.see(successMessage, this.fields.popUpTitle);
+  fillCommunicationFields(type) {
+    if (type === 'slack') I.click(this.communication.slackTab);
+
+    Object.values(this.communication[type]).forEach((key) => {
+      I.waitForVisible(key.locator, 30);
+      I.clearField(key.locator);
+      I.fillField(key.locator, key.value);
+    });
+
+    if (type === 'email') {
+      I.click(this.communication.submitEmailButton);
+    } else {
+      I.click(this.communication.submitSlackButton);
+    }
   },
 
-  async verifyValidationMessage(validationMessage) {
-    I.waitForVisible(this.fields.validationMessage, 30);
-    I.see(validationMessage, this.fields.validationMessage);
+  async disableIA() {
+    const iaEnabled = await I.grabAttributeFrom(this.fields.iaSwitchSelectorInput, 'checked');
+
+    if (iaEnabled) {
+      I.click(this.fields.iaSwitchSelector);
+    }
+  },
+
+  async verifyCommunicationFields(type) {
+    if (type === 'slack') I.click(this.communication.slackTab);
+
+    Object.values(this.communication[type]).forEach((key) => {
+      let { value } = key;
+
+      if (key.locator === this.communication.email.password.locator) value = '';
+
+      if (key.locator !== this.communication.email.secret.locator) {
+        I.seeInField(key.locator, value);
+      } else {
+        I.seeAttributesOnElements(key.locator, { type: 'password' });
+      }
+    });
   },
 
   async selectMetricsResolution(resolution) {
@@ -181,12 +256,12 @@ module.exports = {
   },
 
   async verifySelectedResolution(resolution) {
-    const selector = `${this.fields.metricsResolution + resolution}"]`;
+    const selector = '$resolutions-radio-state';
 
     I.waitForElement(selector, 30);
-    const className = await I.grabAttributeFrom(selector, 'class');
+    const value = await I.grabAttributeFrom(selector, 'value');
 
-    assert.equal(className.includes('active'), true, 'Metric resolution should be active');
+    assert.equal(value.includes(resolution.toLowerCase()), true, 'Metric resolution should be selected');
   },
 
   customClearField(field) {
@@ -196,10 +271,17 @@ module.exports = {
   },
 
   changeDataRetentionValueTo(days) {
-    this.customClearField(this.fields.dataRetentionInput);
+    I.clearField(this.fields.dataRetentionInput);
     I.fillField(this.fields.dataRetentionInput, days);
-    I.moveCursorTo(this.fields.advancedButton);
     I.click(this.fields.advancedButton);
+  },
+
+  checkDataRetentionInput(value, message) {
+    const messageField = `//div[contains(text(), '${message}')]`;
+
+    I.clearField(this.fields.dataRetentionInput);
+    I.fillField(this.fields.dataRetentionInput, value);
+    I.seeElement(messageField);
   },
 
   addSSHKey(keyValue) {
@@ -208,10 +290,11 @@ module.exports = {
   },
 
   addAlertmanagerRule(url, rule) {
-    this.customClearField(this.fields.alertURLInput);
+    adminPage.customClearField(this.fields.alertURLInput);
     I.fillField(this.fields.alertURLInput, url);
-    this.customClearField(this.fields.alertRulesInput);
+    adminPage.customClearField(this.fields.alertRulesInput);
     I.fillField(this.fields.alertRulesInput, rule);
+    I.waitForElement(this.fields.alertmanagerButton, 30);
     I.click(this.fields.alertmanagerButton);
   },
 
@@ -248,7 +331,9 @@ module.exports = {
     let response;
 
     for (let i = 0; i < 20; i++) {
-      response = await I.sendGetRequest(`http://${this.alertManager.ip}${this.alertManager.externalAlertManagerPort}/api/v2/alerts/groups?silenced=false&inhibited=false&active=true`);
+      response = await I.sendGetRequest(
+        `http://${this.alertManager.ip}${this.alertManager.externalAlertManagerPort}/api/v2/alerts/groups?silenced=false&inhibited=false&active=true`,
+      );
       if (JSON.stringify(response.data).includes(ruleName)) {
         break;
       }
@@ -256,10 +341,15 @@ module.exports = {
       I.wait(5);
     }
 
-    assert.equal(JSON.stringify(response.data).includes(ruleName), true, 'Alert Should be firing at External Alert Manager');
+    assert.equal(
+      JSON.stringify(response.data).includes(ruleName),
+      true,
+      'Alert Should be firing at External Alert Manager',
+    );
   },
 
   async verifyTooltip(tooltipObj) {
+    I.waitForVisible(this.fields.tooltipSelector, 30);
     I.see(tooltipObj.text, this.fields.tooltipSelector);
     I.seeAttributesOnElements(`${this.fields.tooltipSelector} > div > a`, { href: tooltipObj.link });
   },

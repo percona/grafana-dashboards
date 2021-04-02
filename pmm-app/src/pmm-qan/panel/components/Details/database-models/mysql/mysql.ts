@@ -1,13 +1,13 @@
 import MysqlDatabaseService from './service';
 
 export const mysqlMethods = {
-  getShowCreateTables: async ({ example, tableName }) => {
+  getShowCreateTables: async ({ example, tableName, database }) => {
     if (!tableName) {
       return null;
     }
 
     const result = await MysqlDatabaseService.getShowCreateTableMySQL({
-      database: example.schema,
+      database: database || example.schema,
       table_name: tableName,
       service_id: example.service_id,
     });
@@ -15,13 +15,13 @@ export const mysqlMethods = {
     return result.action_id;
   },
 
-  getIndexes: async ({ example, tableName }) => {
+  getIndexes: async ({ example, tableName, database }) => {
     if (!tableName) {
       return null;
     }
 
     const result = await MysqlDatabaseService.getMysqlIndex({
-      database: example.schema,
+      database: database || example.schema,
       table_name: tableName,
       service_id: example.service_id,
     });
@@ -29,13 +29,13 @@ export const mysqlMethods = {
     return result.action_id;
   },
 
-  getStatuses: async ({ example, tableName }) => {
+  getStatuses: async ({ example, tableName, database }) => {
     if (!tableName) {
       return null;
     }
 
     const result = await MysqlDatabaseService.getMysqlTableStatus({
-      database: example.schema,
+      database: database || example.schema,
       table_name: tableName,
       service_id: example.service_id,
     });

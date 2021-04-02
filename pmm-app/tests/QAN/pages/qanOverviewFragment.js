@@ -6,7 +6,7 @@ module.exports = {
   root: '.query-analytics-data',
   fields: {
     columnSearchField: 'input.ant-select-search__field',
-    searchBy: '//input[contains(@name, "search")]'
+    searchBy: '//input[contains(@name, "search")]',
   },
   buttons: {
     addColumn: '//span[contains(text(), "Add column")]',
@@ -109,13 +109,13 @@ module.exports = {
     const sortingBlockSelector = this.getMetricSortingLocator(columnNumber);
 
     if (!sortDirection) {
-      I.waitForVisible(`${sortingBlockSelector}/span`, 30);
+      I.waitForElement(`${sortingBlockSelector}/span`, 30);
       I.seeAttributesOnElements(`${sortingBlockSelector}/span`, { class: 'sort-by ' });
 
       return;
     }
 
-    I.waitForVisible(`${sortingBlockSelector}/span`, 30);
+    I.waitForElement(`${sortingBlockSelector}/span`, 30);
     I.seeAttributesOnElements(`${sortingBlockSelector}/span`, { class: `sort-by ${sortDirection}` });
   },
 
@@ -178,8 +178,9 @@ module.exports = {
   },
 
   async verifyTooltipValue(value) {
+    I.waitForText(value, 5, this.elements.tooltipQPSValue);
     const tooltip = await I.grabTextFrom(this.elements.tooltipQPSValue);
 
-    assert.ok(tooltip.includes(value), `The tooltip has wrong value ${value}`);
+    assert.ok(tooltip.includes(value), `The tooltip value is ${tooltip} while expected value was ${value}`);
   },
 };

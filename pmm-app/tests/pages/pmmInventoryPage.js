@@ -1,8 +1,8 @@
-const { I, pmmInventoryPage } = inject();
+const { I, pmmInventoryPage, inventoryAPI } = inject();
 const assert = require('assert');
 
 module.exports = {
-  url: 'graph/d/pmm-inventory/pmm-inventory?orgId=1',
+  url: 'graph/inventory?orgId=1',
   fields: {
     iframe: '//div[@class="panel-content"]//iframe',
     inventoryTable: '//table',
@@ -17,10 +17,11 @@ module.exports = {
     serviceIdLocatorPrefix: '//table//tr/td[4][contains(text(),"',
     deleteButton: '//span[contains(text(), "Delete")]',
     proceedButton: '//span[contains(text(), "Proceed")]',
-    forceModeCheckbox: 'div[data-qa="form-field-force"] span.checkbox-container__checkmark',
+    forceModeCheckbox: 'span[data-qa="force-field-label"]',
     tableCheckbox: 'div[data-qa="select-row"]',
     tableRow: '//tr[@data-qa="table-row"]',
     runningStatus: '//span[contains(text(), "RUNNING")]',
+    externalExporter: locate('td').withText('External exporter'),
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
@@ -41,6 +42,7 @@ module.exports = {
     const serviceId = await this.getServiceId(service_name);
     const agentLinkLocator = this.fields.agentsLink;
 
+    await inventoryAPI.waitForRunningState(serviceId);
     I.click(agentLinkLocator);
     I.waitForElement(this.fields.pmmAgentLocator, 60);
     I.waitForElement(this.fields.inventoryTable, 60);
@@ -57,11 +59,27 @@ module.exports = {
       assert.equal(
         numberOfServices,
         2,
-        ` Service ID must have only 2 Agents running for different services${serviceId}`,
+        ` Service ID must have only 2 Agents running for different services ${serviceId} , Actual Number of Services found is ${numberOfServices} for ${service_name}`,
       );
     } else {
-      assert.equal(numberOfServices, 1, ` Service ID must have only 1 Agent running${serviceId}`);
+      assert.equal(numberOfServices, 1, ` Service ID must have only 1 Agent running ${serviceId} , Actual Number of Services found is ${numberOfServices} for ${service_name}`);
     }
+  },
+
+
+  async getServiceIdWithStatus(status) {
+    const serviceIds = [];
+    const locator = locate('span')
+      .withText('service_id:')
+      .before(locate('span')
+        .withText(`status: ${status}`));
+
+    const strings = await I.grabTextFromAll(locator);
+
+    // we need to cut "service_id: " prefix from grabbed strings
+    strings.forEach((item) => serviceIds.push(item.split(': ')[1]));
+
+    return serviceIds;
   },
 
   async verifyMetricsFlags(serviceName) {

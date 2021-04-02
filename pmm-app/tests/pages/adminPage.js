@@ -3,6 +3,9 @@ const assert = require('assert');
 
 module.exports = {
   url: 'graph/d/pmm-home/home-dashboard?orgId=1',
+  sideMenu: {
+    integratedAlerting: 'li > a[href="/graph/integrated-alerting"]',
+  },
   fields: {
     navigation: '//i[contains(@class, "navbar-page-btn__search")]',
     timePickerMenu: '//button[@aria-label="TimePicker Open Button"]',
@@ -107,5 +110,21 @@ module.exports = {
         `${numOfElements} Reports with N/A found on dashboard ${reportTitle}`,
       );
     }
+  },
+
+  async verifyBackgroundColor(element, expectedColor) {
+    const backgroundColor = await I.grabCssPropertyFrom(element, 'background-color');
+
+    assert.strictEqual(
+      backgroundColor,
+      expectedColor,
+      `The Background color of the ${element} is not matching, the actual value is ${backgroundColor}`,
+    );
+  },
+
+  customClearField(field) {
+    I.appendField(field, '');
+    I.pressKey(['Control', 'a']);
+    I.pressKey('Backspace');
   },
 };
