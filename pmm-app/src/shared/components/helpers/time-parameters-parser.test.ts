@@ -37,4 +37,12 @@ describe('Time parameters parser::', () => {
 
     expect(result1.toISOString()).toStrictEqual('2020-11-22T00:00:00.000Z');
   });
+
+  it('date is incorrect', () => {
+    const result1 = ParseQueryParamDate.transform('6h', 'from');
+    const result2 = ParseQueryParamDate.transform('6h', 'to');
+
+    expect(result1.toISOString()).toStrictEqual('2020-11-21T23:00:00.000Z');
+    expect(result2.toISOString()).toStrictEqual('2020-11-22T00:00:00.000Z');
+  });
 });
