@@ -1,5 +1,6 @@
 const { I, adminPage } = inject();
 const assert = require('assert');
+const FormData = require('form-data');
 
 module.exports = {
   // insert your locators and methods here
@@ -749,8 +750,30 @@ module.exports = {
     }
   },
 
-  verifyMetricName(metricName) {
-    I.waitForVisible(locate('span').withText(metricName), 30);
+  // Should be refactored and added to Grafana Helper as a custom function
+  async checkMetricExist(metricName) {
+    const timeStamp = Date.now();
+    const bodyFormData = new FormData();
+    const body = {
+      query: metricName,
+      start: Math.floor((timeStamp - 3600) / 1000),
+      end: Math.floor((timeStamp) / 1000),
+      step: 60,
+    };
+
+    Object.keys(body).forEach((key) => bodyFormData.append(key, body[key]));
+    const headers = {
+      Authorization: `Basic ${await I.getAuth()}`,
+      ...bodyFormData.getHeaders(),
+    };
+
+    const response = await I.sendPostRequest(
+      'graph/api/datasources/proxy/1/api/v1/query_range',
+      bodyFormData,
+      headers,
+    );
+
+    return response;
   },
 
   verifyTabExistence(tabs) {
