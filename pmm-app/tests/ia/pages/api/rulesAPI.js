@@ -6,11 +6,11 @@ module.exports = {
   async createAlertRule(ruleObj, templateName) {
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
     const {
-      ruleName, severity, filters, params, duration, channels,
+      ruleName, severity, filters, params, duration, channels, disabled,
     } = ruleObj;
     const body = {
       custom_labels: {},
-      disabled: false,
+      disabled: disabled || false,
       channel_ids: channels || [],
       filters: filters || [
         {
