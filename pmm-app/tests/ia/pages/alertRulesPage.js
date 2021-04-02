@@ -1,5 +1,5 @@
 const { I } = inject();
-const rulesNameCell = (ruleName) => `//td[1][div[text()="${ruleName}"]]`;
+const rulesNameCell = (ruleName) => `//td[1][div/span[text()="${ruleName}"]]`;
 
 module.exports = {
   url: 'graph/integrated-alerting/alert-rules',
