@@ -9,6 +9,7 @@ module.exports = {
     templateType: 'BUILT_IN',
     ruleName: 'Rule with BUILT_IN template (activated, without channels)',
     threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'Warning',
     filters: 'service_name=pmm-server-postgresql',
@@ -19,6 +20,7 @@ module.exports = {
     templateType: 'BUILT_IN',
     ruleName: 'Rule with BUILT_IN template (not activated, without channels)',
     threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'Critical',
     filters: 'service_name=pmm-server-postgresql',
@@ -29,6 +31,7 @@ module.exports = {
     templateType: 'BUILT_IN',
     ruleName: 'Rule with BUILT_IN template (activated, with channels)',
     threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'High',
     filters: 'service_name=pmm-server-postgresql',
@@ -39,6 +42,7 @@ module.exports = {
     templateType: 'BUILT_IN',
     ruleName: 'Rule with BUILT_IN template (not activated, with channels)',
     threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'Notice',
     filters: 'service_name=pmm-server-postgresql',
@@ -49,6 +53,7 @@ module.exports = {
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template (activated, without channels)',
     threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'Warning',
     filters: 'service_name=pmm-server-postgresql',
@@ -59,6 +64,7 @@ module.exports = {
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template (not activated, without channels)',
     threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'Critical',
     filters: 'service_name=pmm-server-postgresql',
@@ -69,6 +75,7 @@ module.exports = {
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template (activated, with channels)',
     threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'High',
     filters: 'service_name=pmm-server-postgresql',
@@ -79,6 +86,7 @@ module.exports = {
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template (not activated, with channels)',
     threshold: '100',
+    thresholdUnit: '%',
     duration: '1',
     severity: 'Notice',
     filters: 'service_name=pmm-server-postgresql',
@@ -89,6 +97,7 @@ module.exports = {
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template with default params',
     threshold: '',
+    thresholdUnit: '%',
     duration: '50',
     severity: 'Notice',
     filters: 'service_name=pmm-server-postgresql',
@@ -99,6 +108,7 @@ module.exports = {
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template with default params (empty-range template)',
     threshold: '',
+    thresholdUnit: '%',
     duration: '50',
     severity: 'Notice',
     filters: 'service_name=pmm-server-postgresql',
@@ -109,6 +119,7 @@ module.exports = {
     templateType: 'User-defined (UI)',
     ruleName: 'Rule with User-defined (UI) template (empty-range template)',
     threshold: '666',
+    thresholdUnit: '%',
     duration: '50',
     severity: 'Notice',
     filters: 'service_name=pmm-server-postgresql',
@@ -124,7 +135,7 @@ module.exports = {
     // activateSwitch returns enable/disabled rule switch locator which holds the state (enabled or disabled)
     // Note: not clickable one
     activateSwitch: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td//input[@data-qa='toggle-alert-rule']`,
-    parametersCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[1]`,
+    parametersCell: (ruleName) => locate('td').after(rulesNameCell(ruleName)).find('$alert-rule-param'),
     durationCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[2]`,
     severityCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[3]`,
     filtersCell: (ruleName) => `${rulesNameCell(ruleName)}/following-sibling::td[4]//span`,
@@ -132,6 +143,8 @@ module.exports = {
     modalContent: '$modal-content',
     columnHeaderLocator: (columnHeaderText) => `//th[text()="${columnHeaderText}"]`,
     ruleDetails: '$alert-rules-details',
+    expression: locate('$template-expression').find('pre'),
+    templateAlert: locate('$template-alert').find('pre'),
   },
   buttons: {
     openAddRuleModal: '$alert-rule-template-add-modal-button',
@@ -164,6 +177,7 @@ module.exports = {
     threshold: '$threshold-number-input',
     duration: '$duration-number-input',
     filters: '$filters-textarea-input',
+    template: locate('$add-alert-rule-modal-form').find('div').first().find('div[class$="-singleValue"]'),
   },
   messages: {
     noRulesFound: 'No alert rules found',
@@ -184,13 +198,13 @@ module.exports = {
       severity, filters, channels, activate,
     } = ruleObj;
 
-    // skipping these steps while editing an Alert rule
-    if (template && ruleName) {
+    // skipping this step while editing an Alert rule
+    if (template) {
       this.searchAndSelectResult('Template', template);
-      I.clearField(this.fields.ruleName);
-      I.fillField(this.fields.ruleName, ruleName);
     }
 
+    I.clearField(this.fields.ruleName);
+    I.fillField(this.fields.ruleName, ruleName);
     I.clearField(this.fields.threshold);
     I.fillField(this.fields.threshold, threshold);
     I.clearField(this.fields.duration);
@@ -209,6 +223,22 @@ module.exports = {
     }
   },
 
+  verifyEditRuleDialogElements(rule) {
+    const {
+      template, ruleName, threshold, duration,
+      filters, expression, alert,
+    } = rule;
+
+    I.waitForVisible(this.fields.template, 30);
+    I.seeTextEquals(template, this.fields.template);
+    I.waitForValue(this.fields.ruleName, ruleName, 10);
+    I.waitForValue(this.fields.threshold, threshold, 10);
+    I.waitForValue(this.fields.duration, duration, 10);
+    I.waitForValue(this.fields.filters, filters, 10);
+    I.seeTextEquals(expression, this.elements.expression);
+    I.seeTextEquals(alert, this.elements.templateAlert);
+  },
+
   openAlertRulesTab() {
     I.amOnPage(this.url);
     I.waitForVisible(this.elements.rulesTab, 30);
@@ -223,11 +253,11 @@ module.exports = {
   verifyRowValues(ruleObj) {
     const {
       ruleName, threshold, duration,
-      severity, filters, activate,
+      severity, filters, activate, thresholdUnit = '%',
     } = ruleObj;
 
     I.seeElement(this.elements.rulesNameCell(ruleName));
-    I.see(`${threshold} %`, this.elements.parametersCell(ruleName));
+    I.see(`Threshold:\n${threshold} ${thresholdUnit}`, this.elements.parametersCell(ruleName));
     I.see(`${duration} seconds`, this.elements.durationCell(ruleName));
     I.see(severity, this.elements.severityCell(ruleName));
     I.see(filters, this.elements.filtersCell(ruleName));
@@ -239,6 +269,7 @@ module.exports = {
 
     if (!activate) checked = null;
 
+    I.waitForVisible(this.elements.activateSwitch(ruleName), 30);
     I.seeAttributesOnElements(this.elements.activateSwitch(ruleName), { checked });
   },
 };
