@@ -16,8 +16,8 @@ module.exports = {
     postgresql: 'postgresql_remote_new',
     proxysql: 'proxysql_remote_new',
   },
-  url: 'graph/d/pmm-add-instance/pmm-add-instance?orgId=1',
-  addMySQLRemoteURL: 'graph/d/pmm-add-instance/pmm-add-instance?instance_type=mysql',
+  url: 'graph/add-instance?orgId=1',
+  addMySQLRemoteURL: 'graph/add-instance?instance_type=mysql',
   rds: {
     'Service Name': 'rds-mysql56',
     Environment: 'RDS MySQL 5.6',
@@ -61,8 +61,8 @@ module.exports = {
     startMonitoring: '/following-sibling::td/a',
     tableStatsGroupTableLimit: '$tablestats_group_table_limit-number-input',
     usePerformanceSchema2: '//input[@name="qan_mysql_perfschema"]/following-sibling::span[2]',
-    usePgStatMonitor: '//label[@for="qan_postgresql_pgstatmonitor_agent"]',
-    usePgStatStatements: '//label[@for="qan_postgresql_pgstatements_agent"]',
+    usePgStatMonitor: '//label[text()="PG Stat Monitor"]',
+    usePgStatStatements: '//label[text()="PG Stat Statements"]',
     useQANMongoDBProfiler: '//input[@name="qan_mongodb_profiler"]',
     useTLS: '$tls-field-label',
     userName: '$username-text-input',
@@ -72,7 +72,7 @@ module.exports = {
   },
 
   tableStatsLimitRadioButtonLocator(limit) {
-    return `//label[@for='${limit}']`;
+    return locate('label').withText(limit);
   },
 
   async getTableLimitFieldValue() {
@@ -244,14 +244,14 @@ module.exports = {
     const grabbedMetricPath = await I.grabValueFrom(this.fields.metricsPath);
     const grabbedPort = await I.grabValueFrom(this.fields.portNumber);
     const grabbedCredentials = await I.grabValueFrom(this.fields.userName);
-    const httpsLocator = '//label[contains(@class, "active") and contains(text(), "HTTPS")]';
+    const protocol = locate('$schema-radio-state');
 
     assert.ok(grabbedHostname === process.env.MONITORING_HOST, `Hostname is not parsed correctly: ${grabbedHostname}`);
     assert.ok(grabbedMetricPath === metricsPath, `Metrics path is not parsed correctly: ${grabbedMetricPath}`);
     assert.ok(grabbedPort === process.env.EXTERNAL_EXPORTER_PORT, `Port is not parsed correctly: ${grabbedPort}`);
     assert.ok(grabbedCredentials === credentials, `Username is not parsed correctly: ${grabbedCredentials}`);
     assert.ok(grabbedCredentials === credentials, `Password is not parsed correctly: ${grabbedCredentials}`);
-    I.waitForVisible(httpsLocator, 30);
+    I.seeAttributesOnElements(protocol, { value: 'https' });
   },
 
   checkRequiredField() {

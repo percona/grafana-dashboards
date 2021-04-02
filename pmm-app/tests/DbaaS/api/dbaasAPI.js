@@ -119,7 +119,7 @@ module.exports = {
         }
       }
 
-      await new Promise((r) => setTimeout(r, 5000));
+      await new Promise((r) => setTimeout(r, 10000));
     }
   },
 
@@ -144,7 +144,7 @@ module.exports = {
         }
       }
 
-      await new Promise((r) => setTimeout(r, 5000));
+      await new Promise((r) => setTimeout(r, 10000));
     }
   },
 
@@ -169,7 +169,7 @@ module.exports = {
         }
       }
 
-      await new Promise((r) => setTimeout(r, 5000));
+      await new Promise((r) => setTimeout(r, 10000));
     }
   },
 
@@ -195,7 +195,7 @@ module.exports = {
         }
       }
 
-      await new Promise((r) => setTimeout(r, 5000));
+      await new Promise((r) => setTimeout(r, 10000));
     }
   },
 
@@ -226,7 +226,7 @@ module.exports = {
         }
       } else break;
 
-      await new Promise((r) => setTimeout(r, 5000));
+      await new Promise((r) => setTimeout(r, 10000));
     }
   },
 };

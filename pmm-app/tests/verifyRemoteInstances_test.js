@@ -13,20 +13,6 @@ Before(async ({ I }) => {
   I.Authorize();
 });
 
-// TODO: unskip the mongodb tests after resolving a creds issue
-Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
-  'Verify Remote Instance Addition [critical] @not-pr-pipeline',
-  async ({ I, remoteInstancesPage, current }) => {
-    const serviceName = remoteInstancesPage.services[current.name];
-
-    I.amOnPage(remoteInstancesPage.url);
-    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
-    remoteInstancesPage.openAddRemotePage(current.name);
-    remoteInstancesPage.fillRemoteFields(serviceName);
-    remoteInstancesPage.createRemoteInstance(serviceName);
-  },
-);
-
 Scenario(
   'PMM-T588 - Verify adding external exporter service via UI @not-pr-pipeline',
   async ({ I, remoteInstancesPage, pmmInventoryPage }) => {
@@ -41,6 +27,20 @@ Scenario(
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
     I.click(pmmInventoryPage.fields.agentsLink);
     I.waitForVisible(pmmInventoryPage.fields.externalExporter, 30);
+  },
+);
+
+// TODO: unskip the mongodb tests after resolving a creds issue
+Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
+  'Verify Remote Instance Addition [critical] @not-pr-pipeline',
+  async ({ I, remoteInstancesPage, current }) => {
+    const serviceName = remoteInstancesPage.services[current.name];
+
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage(current.name);
+    remoteInstancesPage.fillRemoteFields(serviceName);
+    remoteInstancesPage.createRemoteInstance(serviceName);
   },
 );
 
@@ -90,13 +90,26 @@ Scenario(
     I.amOnPage(remoteInstancesPage.url);
     remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
     remoteInstancesPage.openAddRemotePage('mysql');
-    I.click(adminPage.fields.metricTitle);
     adminPage.peformPageDown(1);
     I.waitForVisible(remoteInstancesPage.fields.tableStatsGroupTableLimit, 30);
     assert.strictEqual('-1', await remoteInstancesPage.getTableLimitFieldValue(), 'Count for Disabled Table Stats dont Match, was expecting -1');
-    I.click(remoteInstancesPage.tableStatsLimitRadioButtonLocator('default'));
+    I.click(remoteInstancesPage.tableStatsLimitRadioButtonLocator('Default'));
     assert.strictEqual('1000', await remoteInstancesPage.getTableLimitFieldValue(), 'Count for Default Table Stats dont Match, was expecting 1000');
-    I.click(remoteInstancesPage.tableStatsLimitRadioButtonLocator('custom'));
+    I.click(remoteInstancesPage.tableStatsLimitRadioButtonLocator('Custom'));
     assert.strictEqual('1000', await remoteInstancesPage.getTableLimitFieldValue(), 'Count for Custom Table Stats dont Match, was expecting 1000');
+  },
+);
+
+// Test is connected with T588
+// It must be run after the creation of external exporter
+Scenario(
+  'PMM-T743 - Check metrics from external exporter on Advanced Data Exploration Dashboard @not-pr-pipeline',
+  async ({ dashboardPage }) => {
+    const metricName = 'redis_uptime_in_seconds';
+
+    const response = await dashboardPage.checkMetricExist(metricName);
+    const result = JSON.stringify(response.data.data.result);
+
+    assert.ok(response.data.data.result.length !== 0, `Custom Metrics Should be available but got empty ${result}`);
   },
 );

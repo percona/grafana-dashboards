@@ -3,7 +3,7 @@ const config = require('../pr.codecept.js').config.helpers.Playwright;
 Feature('Database Failed Checks').retry(2);
 
 Before(async ({ I }) => {
-  I.Authorize();
+  await I.Authorize();
 });
 
 Scenario(
@@ -32,16 +32,17 @@ Scenario(
     I.waitForVisible(databaseChecksPage.fields.disabledSTTMessageSelector, 30);
     I.see(
       databaseChecksPage.messages.disabledSTTMessage,
-      databaseChecksPage.fields.disabledSTTMessageSelector,
+      locate('div').withChild(databaseChecksPage.fields.disabledSTTMessageSelector),
     );
     I.seeElement(databaseChecksPage.fields.disabledSTTMessageLinkSelector);
     I.seeAttributesOnElements(databaseChecksPage.fields.disabledSTTMessageLinkSelector, {
-      href: `${config.url}${pmmSettingsPage.url}?menu=advanced-settings`,
+      href: `${config.url}${pmmSettingsPage.url}/advanced-settings`,
     });
   },
 );
 
-Scenario(
+// TODO: need to add functions to access pages via left side menu
+xScenario(
   'PMM-T233 PMM-T234 Verify user is able to access PMM Database Checks through UI and with URL [critical] @not-pr-pipeline',
   async ({
     I, adminPage, databaseChecksPage, pmmSettingsPage, settingsAPI, securityChecksAPI,

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { FailedChecks } from 'pmm-check/types';
+import { FailedChecks } from 'pmm-check-home/types';
 import * as styles from './Failed.styles';
 
 interface TooltipTextProps {
