@@ -1,4 +1,4 @@
-const { I, dbaasAPI } = inject();
+const { dbaasAPI } = inject();
 const clusterName = 'Kubernetes_Testing_Cluster_Minikube';
 const pxc_cluster_name = 'pxc-dbcluster';
 const pxc_cluster_name_single = 'pxc-singlenode';
