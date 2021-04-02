@@ -78,10 +78,20 @@ export class ParseQueryParamDate {
       parsedDate = getComplexTimeValue(date, nowFunc, edge);
     } else {
       // expect unix timestamp in milliseconds
-      const isnum = /^\d+$/.test(date);
+      const isNum = /^\d+$/.test(date);
 
-      if (isnum) {
+      if (isNum) {
         return nowFunc(parseInt(date, 10));
+      }
+
+      if (!Number.isFinite(date)) {
+        if (edge === 'from') {
+          return nowFunc().subtract(1, 'h');
+        }
+
+        if (edge === 'to') {
+          return nowFunc();
+        }
       }
 
       return nowFunc(date);
