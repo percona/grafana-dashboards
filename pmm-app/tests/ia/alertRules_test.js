@@ -101,7 +101,7 @@ Scenario(
 );
 
 Data(rules).Scenario(
-  'PMM-T515 PMM-T543 PMM-T544 PMM-T545 PMM-T574 PMM-T596 Create Alert rule @ia @not-pr-pipeline',
+  'PMM-T515 PMM-T543 PMM-T544 PMM-T545 PMM-T574 PMM-T596 PMM-T753 Create Alert rule @ia @not-pr-pipeline',
   async ({
     I, alertRulesPage, current, rulesAPI,
   }) => {

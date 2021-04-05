@@ -262,6 +262,10 @@ module.exports = {
     I.see(severity, this.elements.severityCell(ruleName));
     I.see(filters, this.elements.filtersCell(ruleName));
     this.verifyRuleState(activate, ruleName);
+    I.seeAttributesOnElements(this.buttons.showDetails(ruleName), { disabled: null });
+    I.seeAttributesOnElements(this.buttons.deleteAlertRule(ruleName), { disabled: null });
+    I.seeAttributesOnElements(this.buttons.editAlertRule(ruleName), { disabled: null });
+    I.seeAttributesOnElements(this.buttons.duplicateAlertRule(ruleName), { disabled: null });
   },
 
   verifyRuleState(activate, ruleName) {
