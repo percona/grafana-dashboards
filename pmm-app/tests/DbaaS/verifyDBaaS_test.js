@@ -18,7 +18,7 @@ inputFields.add([dbaasPage.tabs.dbClusterTab.advancedOptions.fields.nodesNumberF
 inputFields.add([dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryField, ['0.01', '-0.3', '0.0'], dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryFieldErrorMessage, dbaasPage.valueGreatThanErrorText(0.1)]);
 inputFields.add([dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuNumberFields, ['0.01', '-0.3', '0.0'], dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuFieldErrorMessage, dbaasPage.valueGreatThanErrorText(0.1)]);
 
-Feature('Test the functionality for Kubernetes Cluster Registration UI');
+Feature('DbaaS: Kubernetes Cluster Registration UI');
 
 Before(async ({ I }) => {
   I.Authorize();
@@ -243,4 +243,43 @@ Data(inputFields).Scenario('PMM-T456 Verify Create Cluster steps validation - fi
       'Create Cluster Button Should Still be Disabled',
     );
     await dbaasAPI.apiUnregisterCluster(clusterName);
+  });
+Scenario('Verify Adding PMM-Server Public Address via Settings works @dbaas @not-pr-pipeline',
+  async ({
+    I, dbaasPage, pmmSettingsPage,
+  }) => {
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
+
+    I.amOnPage(pmmSettingsPage.url);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+
+    I.waitForElement(pmmSettingsPage.fields.publicAddressInput, 30);
+    I.seeElement(pmmSettingsPage.fields.publicAddressInput);
+    I.seeElement(pmmSettingsPage.fields.publicAddressButton);
+    I.click(pmmSettingsPage.fields.publicAddressButton);
+    let publicAddress = await I.grabValueFrom(pmmSettingsPage.fields.publicAddressInput);
+
+    assert.ok(
+      publicAddress === process.env.SERVER_IP,
+      `Expected the Public Address Input Field to Match ${process.env.SERVER_IP} but found ${publicAddress}`,
+    );
+    I.click(pmmSettingsPage.fields.advancedButton);
+    I.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+    I.refreshPage();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    publicAddress = await I.grabValueFrom(pmmSettingsPage.fields.publicAddressInput);
+
+    assert.ok(
+      publicAddress === process.env.SERVER_IP,
+      `Expected the Public Address to be saved and Match ${process.env.SERVER_IP} but found ${publicAddress}`,
+    );
+    await dbaasPage.waitForDbClusterTab(clusterName);
+    I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, 30);
+    I.dontSeeElement(dbaasPage.tabs.dbClusterTab.monitoringWarningLocator, 30);
+    I.dontSee(dbaasPage.monitoringWarningMessage);
   });
