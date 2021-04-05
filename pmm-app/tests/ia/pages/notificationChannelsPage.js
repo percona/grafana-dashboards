@@ -28,6 +28,9 @@ module.exports = {
     nameFieldLabel: '$name-field-label',
     modalHeader: '$modal-header',
     modalContent: '$modal-content',
+    channelFieldValidation: '$channel-field-error-message',
+    serviceKeyFieldLabel: '$service-field-label',
+    routingKeyFieldLabel: '$routing-field-label',
   },
   buttons: {
     openAddChannelModal: '$notification-channel-add-modal-button',
@@ -39,6 +42,8 @@ module.exports = {
     deleteChannelLocator: (name) => `//td[text()="${name}"]/following-sibling::td//button[@data-qa="delete-notification-channel-button"]`,
     // editChannelLocator returns delete channel button locators for a given channel name
     editChannelLocator: (name) => `//td[text()="${name}"]/following-sibling::td//button[@data-qa="edit-notification-channel-button"]`,
+    pagerDutyServiceKeyOption: locate('label').withText('Service key'),
+    pagerDutyRoutingKeyOption: locate('label').withText('Routing key'),
   },
   fields: {
     nameInput: '$name-text-input',
@@ -55,12 +60,12 @@ module.exports = {
     successfullyEdited: 'Notification channel was successfully edited',
     deleteConfirmation: (name) => `Are you sure you want to delete the notification channel "${name}"?`,
     successfullyDeleted: (name) => `Notification channel "${name}" successfully deleted.`,
+    channelUsedByRule: (channelId) => `Failed to delete notification channel ${channelId}, as it is being used by some rule.`,
+    invalidCharacter: 'Channel shouldn\'t have # character.',
   },
 
   openNotificationChannelsTab() {
     I.amOnPage(this.url);
-    I.waitForVisible(this.elements.notificationChannelsTab, 30);
-    I.click(this.elements.notificationChannelsTab);
   },
 
   async selectChannelType(type) {
@@ -115,10 +120,10 @@ module.exports = {
         I.appendField(this.fields.emailsInput, suffix);
         break;
       case this.types.pagerDuty.type:
-        I.fillField(this.fields.routingKeyInput, suffix);
+        I.appendField(this.fields.routingKeyInput, suffix);
         break;
       case this.types.slack.type:
-        I.fillField(this.fields.slackChannelInput, suffix);
+        I.appendField(this.fields.slackChannelInput, suffix);
         break;
       default:
         assert.ok(false, `Did not find a matching notification channel type ${type}`);
@@ -128,5 +133,18 @@ module.exports = {
     I.verifyPopUpMessage(this.messages.successfullyEdited);
 
     return `${name}${suffix}`;
+  },
+
+  deleteChannel(name, type) {
+    I.waitForVisible(this.elements.channelInTable(name, type), 30);
+    I.click(this.buttons.deleteChannelLocator(name));
+    I.waitForText(this.messages.deleteConfirmation(name), 10, this.elements.modalContent);
+    I.click(this.buttons.confirmDelete);
+  },
+
+  verifyChannelInList(channelName, type) {
+    I.seeElement(this.elements.channelInTable(channelName, type));
+    I.seeElement(this.buttons.editChannelLocator(channelName));
+    I.seeElement(this.buttons.deleteChannelLocator(channelName));
   },
 };

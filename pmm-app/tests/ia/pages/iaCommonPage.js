@@ -27,6 +27,7 @@ module.exports = {
       return {
         createEntities: channelsAPI.createNotificationChannels,
         url: ncPage.url,
+        getListOfItems: channelsAPI.getChannelsList,
       };
     }
 
@@ -34,6 +35,7 @@ module.exports = {
       return {
         createEntities: rulesAPI.createAlertRules,
         url: alertRulesPage.url,
+        getListOfItems: rulesAPI.getAlertRules,
       };
     }
 
@@ -41,6 +43,7 @@ module.exports = {
       return {
         createEntities: templatesAPI.createRuleTemplates,
         url: ruleTemplatesPage.url,
+        getListOfItems: templatesAPI.getTemplatesList,
       };
     }
 

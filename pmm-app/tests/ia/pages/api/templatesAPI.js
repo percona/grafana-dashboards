@@ -24,16 +24,20 @@ module.exports = {
   },
 
   async clearAllTemplates() {
-    const headers = { Authorization: `Basic ${await I.getAuth()}` };
-    const resp = await I.sendPostRequest('v1/management/ia/Templates/List', { reload: true }, headers);
+    const templates = await this.getTemplatesList();
 
-    if (Object.keys(resp.data).length === 0) return;
-
-    for (const i in resp.data.templates) {
-      const template = resp.data.templates[i];
+    for (const i in templates) {
+      const template = templates[i];
 
       if (template.source !== 'BUILT_IN') { await this.removeTemplate(template.name); }
     }
+  },
+
+  async getTemplatesList() {
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+    const resp = await I.sendPostRequest('v1/management/ia/Templates/List', {}, headers);
+
+    return resp.data.templates;
   },
 
   async removeTemplate(templateId) {
