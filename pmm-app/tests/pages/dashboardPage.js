@@ -756,7 +756,7 @@ module.exports = {
     const bodyFormData = new FormData();
     const body = {
       query: metricName,
-      start: Math.floor((timeStamp - 3600) / 1000),
+      start: Math.floor((timeStamp - 10000) / 1000),
       end: Math.floor((timeStamp) / 1000),
       step: 60,
     };

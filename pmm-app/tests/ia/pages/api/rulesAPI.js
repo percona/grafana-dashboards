@@ -22,7 +22,7 @@ module.exports = {
       for: `${(duration || 1)}s`,
       severity: severity || 'SEVERITY_CRITICAL',
       template_name: templateName || 'pmm_postgresql_too_many_connections',
-      summary: ruleName,
+      summary: ruleName || 'Test Rule',
       params: params || [
         {
           name: 'threshold',
@@ -130,7 +130,7 @@ module.exports = {
 
   async createAlertRules(numberOfRulesToCreate) {
     for (let i = 0; i < numberOfRulesToCreate; i++) {
-      await this.createAlertRule(`${faker.lorem.word()}_alert_rule`);
+      await this.createAlertRule({ ruleName: `${faker.lorem.word()}_alert_rule` });
     }
   },
 };
