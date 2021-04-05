@@ -52,16 +52,20 @@ module.exports = {
   },
 
   async clearAllNotificationChannels() {
-    const headers = { Authorization: `Basic ${await I.getAuth()}` };
-    const resp = await I.sendPostRequest('v1/management/ia/Channels/List', {}, headers);
+    const channels = await this.getChannelsList();
 
-    if (Object.keys(resp.data).length === 0) return;
-
-    for (const i in resp.data.channels) {
-      const channel = resp.data.channels[i];
+    for (const i in channels) {
+      const channel = channels[i];
 
       await this.deleteNotificationChannel(channel.channel_id);
     }
+  },
+
+  async getChannelsList() {
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+    const resp = await I.sendPostRequest('v1/management/ia/Channels/List', {}, headers);
+
+    return resp.data.channels;
   },
 
   async deleteNotificationChannel(channelId) {
