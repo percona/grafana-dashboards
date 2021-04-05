@@ -1,5 +1,6 @@
 const { I, adminPage } = inject();
 const assert = require('assert');
+const FormData = require('form-data');
 
 module.exports = {
   // insert your locators and methods here
@@ -709,6 +710,10 @@ module.exports = {
     navbarLocator: '.navbar-page-btn',
   },
 
+  createAdvancedDataExplorationURL(metricName, time = '1m', nodeName = 'All') {
+    return `graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=${metricName}&var-interval=$__auto_interval_interval&var-node_name=${nodeName}&from=now-${time}&to=now`;
+  },
+
   async checkNavigationBar(text) {
     I.waitForVisible(this.fields.navbarLocator, 30);
     const navbarText = await I.grabTextFrom(this.fields.navbarLocator);
@@ -743,6 +748,32 @@ module.exports = {
     for (const i in metrics) {
       I.seeElement(this.graphsLocator(metrics[i]));
     }
+  },
+
+  // Should be refactored and added to Grafana Helper as a custom function
+  async checkMetricExist(metricName) {
+    const timeStamp = Date.now();
+    const bodyFormData = new FormData();
+    const body = {
+      query: metricName,
+      start: Math.floor((timeStamp - 10000) / 1000),
+      end: Math.floor((timeStamp) / 1000),
+      step: 60,
+    };
+
+    Object.keys(body).forEach((key) => bodyFormData.append(key, body[key]));
+    const headers = {
+      Authorization: `Basic ${await I.getAuth()}`,
+      ...bodyFormData.getHeaders(),
+    };
+
+    const response = await I.sendPostRequest(
+      'graph/api/datasources/proxy/1/api/v1/query_range',
+      bodyFormData,
+      headers,
+    );
+
+    return response;
   },
 
   verifyTabExistence(tabs) {

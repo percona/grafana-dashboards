@@ -36,8 +36,8 @@ exports.config = {
     },
     Mailosaur: {
       require: 'codeceptjs-mailosaurhelper',
-      apiKey: process.env.MAILOSAUR_API_KEY,
-      serverId: process.env.MAILOSAUR_SERVER_ID,
+      apiKey: process.env.MAILOSAUR_API_KEY || 'key',
+      serverId: process.env.MAILOSAUR_SERVER_ID || 'id',
       timeout: 15000,
     },
   },

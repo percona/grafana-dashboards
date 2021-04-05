@@ -1,5 +1,4 @@
-const assert = require('assert');
-
+const { dbaasAPI } = inject();
 const clusterName = 'Kubernetes_Testing_Cluster_Minikube';
 const pxc_cluster_name = 'pxc-dbcluster';
 const pxc_cluster_name_single = 'pxc-singlenode';
@@ -11,7 +10,7 @@ const psmdb_configuration = {
   numberOfNodes: '1',
   resourcePerNode: 'Custom',
   memory: '2 GB',
-  cpu: '1',
+  cpu: '2',
   disk: '5 GB',
   dbType: 'MongoDB',
   clusterDashboardRedirectionLink: `/graph/d/mongodb-cluster-summary/mongodb-cluster-summary?var-cluster=${psmdb_cluster}`,
@@ -35,11 +34,16 @@ Before(async ({ I, dbaasAPI }) => {
   if (!await dbaasAPI.apiCheckRegisteredClusterExist(clusterName)) {
     await dbaasAPI.apiRegisterCluster(process.env.kubeconfig_minikube, clusterName);
   }
+
+  if (await dbaasAPI.apiCheckDbClusterExist(psmdb_cluster, clusterName, 'MongoDB')) {
+    await dbaasAPI.apiDeletePSMDBCluster(psmdb_cluster, clusterName);
+    await dbaasAPI.waitForDbClusterDeleted(psmdb_cluster, clusterName, 'MongoDB');
+  }
 });
 
 // These test covers a lot of cases, will be refactored and changed in terms of flow, this is initial setup
 
-Scenario('PMM-T642 PMM-T484  PSMDB Cluster with Custom Resources, Verify MongoDB Cluster can be restarted @dbaas @not-pr-pipeline',
+xScenario('PMM-T642 PMM-T484  PSMDB Cluster with Custom Resources, Verify MongoDB Cluster can be restarted @dbaas @not-pr-pipeline',
   async ({
     I, dbaasPage, dbaasAPI, dbaasActionsPage,
   }) => {
@@ -56,7 +60,7 @@ Scenario('PMM-T642 PMM-T484  PSMDB Cluster with Custom Resources, Verify MongoDB
     await dbaasPage.validateClusterDetail(psmdb_cluster, clusterName, psmdb_configuration);
   });
 
-Scenario('PMM-T477 PMM-T461 Verify MongoDB Cluster can be restarted, unregister k8s Cluster when Db Cluster Exist @dbaas @not-pr-pipeline',
+xScenario('PMM-T477 PMM-T461 Verify MongoDB Cluster can be restarted, unregister k8s Cluster when Db Cluster Exist @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage, dbaasActionsPage }) => {
     await dbaasPage.waitForKubernetesClusterTab(clusterName);
     dbaasPage.unregisterCluster(clusterName);
@@ -77,7 +81,9 @@ async ({
     await dbaasAPI.waitForDbClusterDeleted(psmdb_cluster, clusterName, 'MongoDB');
   }
 
+  await dbaasAPI.deleteAllDBCluster(clusterName);
   await dbaasPage.waitForDbClusterTab(clusterName);
+  I.waitForInvisible(dbaasPage.tabs.kubernetesClusterTab.disabledAddButton, 30);
   await dbaasActionsPage.createClusterBasicOptions(clusterName, pxc_cluster_name, 'MySQL');
   I.click(dbaasPage.tabs.dbClusterTab.createClusterButton);
   I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);
@@ -127,14 +133,7 @@ Scenario('PMM-T524 Delete PXC Cluster and Unregister K8s Cluster @dbaas @not-pr-
   });
 
 Scenario('PMM-T640 PMM-T479 Single Node PXC Cluster with Custom Resources @dbaas @not-pr-pipeline',
-  async ({
-    I, dbaasPage, dbaasActionsPage, dbaasAPI,
-  }) => {
-    if (await dbaasAPI.apiCheckDbClusterExist(psmdb_cluster, clusterName, 'MongoDB')) {
-      await dbaasAPI.apiDeletePSMDBCluster(psmdb_cluster, clusterName);
-      await dbaasAPI.waitForDbClusterDeleted(psmdb_cluster, clusterName, 'MongoDB');
-    }
-
+  async ({ I, dbaasPage, dbaasActionsPage }) => {
     const configuration = {
       topology: 'Single',
       numberOfNodes: '1',
@@ -146,7 +145,9 @@ Scenario('PMM-T640 PMM-T479 Single Node PXC Cluster with Custom Resources @dbaas
       clusterDashboardRedirectionLink: `/graph/d/pxc-cluster-summary/pxc-galera-cluster-summary?var-cluster=${pxc_cluster_name_single}-pxc`,
     };
 
+    await dbaasAPI.deleteAllDBCluster(clusterName);
     await dbaasPage.waitForDbClusterTab(clusterName);
+    I.waitForInvisible(dbaasPage.tabs.kubernetesClusterTab.disabledAddButton, 30);
     await dbaasActionsPage.createClusterAdvancedOption(clusterName, pxc_cluster_name_single, 'MySQL', configuration);
     I.click(dbaasPage.tabs.dbClusterTab.createClusterButton);
     I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);
@@ -156,8 +157,12 @@ Scenario('PMM-T640 PMM-T479 Single Node PXC Cluster with Custom Resources @dbaas
   });
 
 Scenario('PMM-T522 Verify Editing a Cluster with Custom Setting and float values is possible @dbaas @not-pr-pipeline',
-  async ({ I, dbaasPage, dbaasActionsPage }) => {
+  async ({
+    I, dbaasPage, dbaasActionsPage, dbaasAPI,
+  }) => {
+    await dbaasAPI.deleteAllDBCluster(clusterName);
     await dbaasPage.waitForDbClusterTab(clusterName);
+    I.waitForInvisible(dbaasPage.tabs.kubernetesClusterTab.disabledAddButton, 30);
     await dbaasActionsPage.createClusterBasicOptions(clusterName, pxc_cluster_small, 'MySQL');
     I.click(dbaasPage.tabs.dbClusterTab.createClusterButton);
     I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);
@@ -183,7 +188,7 @@ Scenario('PMM-T522 Verify Editing a Cluster with Custom Setting and float values
 
 Scenario('PMM-T525 PMM-T528 Verify Suspend & Resume for DB Cluster Works as expected @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage, dbaasActionsPage }) => {
-    const pxc_cluster_suspend_resume = 'pxc-suspend-resume7';
+    const pxc_cluster_suspend_resume = 'pxc-suspend-resume';
     const clusterDetails = {
       clusterDashboardRedirectionLink: `/graph/d/pxc-cluster-summary/pxc-galera-cluster-summary?var-cluster=${pxc_cluster_suspend_resume}-pxc`,
       dbType: 'MySQL',
@@ -192,7 +197,9 @@ Scenario('PMM-T525 PMM-T528 Verify Suspend & Resume for DB Cluster Works as expe
       disk: '25 GB',
     };
 
+    await dbaasAPI.deleteAllDBCluster(clusterName);
     await dbaasPage.waitForDbClusterTab(clusterName);
+    I.waitForInvisible(dbaasPage.tabs.kubernetesClusterTab.disabledAddButton, 30);
     await dbaasActionsPage.createClusterBasicOptions(clusterName, pxc_cluster_suspend_resume, 'MySQL');
     I.click(dbaasPage.tabs.dbClusterTab.createClusterButton);
     I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);
@@ -211,7 +218,9 @@ Scenario('PMM-T509 Verify Deleting Db Cluster in Pending Status is possible @dba
   async ({ I, dbaasPage, dbaasActionsPage }) => {
     const pxc_cluster_pending_delete = 'pxc-pending-delete';
 
+    await dbaasAPI.deleteAllDBCluster(clusterName);
     await dbaasPage.waitForDbClusterTab(clusterName);
+    I.waitForInvisible(dbaasPage.tabs.kubernetesClusterTab.disabledAddButton, 30);
     await dbaasActionsPage.createClusterBasicOptions(clusterName, pxc_cluster_pending_delete, 'MySQL');
     I.click(dbaasPage.tabs.dbClusterTab.createClusterButton);
     I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);

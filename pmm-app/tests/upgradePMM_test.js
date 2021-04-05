@@ -6,6 +6,7 @@ const serviceNames = {
   proxysql: 'proxysql_upgrade_service',
   rds: 'mysql_rds_uprgade_service',
 };
+let customDashboardUrl;
 
 // For running on local env set PMM_SERVER_LATEST and DOCKER_VERSION variables
 function getVersions() {
@@ -26,7 +27,7 @@ function getVersions() {
 Feature('PMM server Upgrade Tests and Executing test cases related to Upgrade Testing Cycle').retry(2);
 
 Before(async ({ I }) => {
-  I.Authorize();
+  await I.Authorize();
   I.setRequestTimeout(30000);
 });
 
@@ -60,6 +61,23 @@ Scenario(
 );
 
 Scenario(
+  'PMM-T391 Verify user is able to create and set custom home dashboard @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
+  async ({ I, grafanaAPI, dashboardPage }) => {
+    const resp = await grafanaAPI.createCustomDashboard();
+
+    customDashboardUrl = resp.url;
+
+    await grafanaAPI.starDashboard(resp.id);
+    await grafanaAPI.setHomeDashboard(resp.id);
+
+    I.amOnPage('');
+    dashboardPage.waitForDashboardOpened();
+    dashboardPage.verifyMetricsExistence(['Custom Panel']);
+    I.seeInCurrentUrl(resp.url);
+  },
+);
+
+Scenario(
   'Verify user can create Remote Instances before upgrade and they are in RUNNNING status @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async ({
     inventoryAPI, addInstanceAPI,
@@ -83,6 +101,18 @@ Scenario(
 
     I.amOnPage(homePage.url);
     await homePage.upgradePMM(versions.dockerMinor);
+  },
+);
+
+Scenario(
+  'PMM-T391 Verify that custom home dashboard stays as home dashboard after upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
+  async ({ I, dashboardPage }) => {
+    I.amOnPage('');
+    dashboardPage.waitForDashboardOpened();
+    dashboardPage.verifyMetricsExistence(['Custom Panel']);
+    await dashboardPage.verifyThereAreNoGraphsWithNA();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData();
+    I.seeInCurrentUrl(customDashboardUrl);
   },
 );
 
@@ -178,5 +208,32 @@ Scenario(
         I.seeElement(filter);
       }
     }
+  },
+);
+
+Scenario(
+  'Verify Metrics from custom queries for mysqld_exporter after upgrade (UI) @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
+  async ({ dashboardPage }) => {
+    const metricName = 'mysql_performance_schema_memory_summary_current_bytes';
+
+    const response = await dashboardPage.checkMetricExist(metricName);
+    const result = JSON.stringify(response.data.data.result);
+
+    assert.ok(response.data.data.result.length !== 0, `Custom Metrics Should be available but got empty ${result}`);
+  },
+);
+
+Scenario(
+  'PMM-T102 Verify Custom Prometheus Configuration File is still available at targets after Upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
+  async ({ I }) => {
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    const response = await I.sendGetRequest('prometheus/api/v1/targets', headers);
+
+    const targets = response.data.data.activeTargets.find(
+      (o) => o.labels.job === 'blackbox80',
+    );
+
+    assert.ok(targets.labels.job === 'blackbox80', 'Active Target from Custom Prometheus Config After Upgrade is not Available');
   },
 );

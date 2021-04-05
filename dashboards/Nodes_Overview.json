@@ -1829,7 +1829,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max(clamp_max(sum by (node_name) (avg by (mode,node_name)((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"|total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"|total\"}[5m]))),100))",
+                    "expr": "max(clamp_max(sum by (node_name) (avg by (mode,node_name)((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(max_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"total\"}[$interval]) or \nmax_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"total\"}[5m]) or max_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",node_type=\"remote_azure_database\"}[$interval]) or \nmax_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",node_type=\"remote_azure_database\"}[5m]))),100))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2377,7 +2377,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max((max_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval]) - 1) or \n(max_over_time(node_procs_running{node_name=~\"$node_name\"}[5m]) -1))",
+                    "expr": "clamp_min(max((max_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval]) - 1) or \n(max_over_time(node_procs_running{node_name=~\"$node_name\"}[5m]) -1)),0)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2589,7 +2589,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(5,clamp_max(avg by (node_name) (sum by (node_name) (avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",\nnode_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"|total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"|total\"}[5m]))),100))",
+                            "expr": "topk(5,clamp_max(avg by (node_name) (sum by (node_name) (avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",\nnode_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"total\"}[5m]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"total\",node_type=\"remote_azure_database\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",node_type=\"remote_azure_database\"}[5m]))),100))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2598,7 +2598,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "avg by () (clamp_max(sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",\nnode_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m])),100))",
+                            "expr": "avg by () (clamp_max(sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",\nnode_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"total\"}[5m]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",node_type=\"remote_azure_database\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",node_type=\"remote_azure_database\"}[5m])),100))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2790,7 +2790,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "avg by (node_name) (clamp_max(sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"|total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"|total\"}[5m]))),100))",
+                            "expr": "avg by (node_name) (clamp_max(sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=~\"total\"}[5m]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",node_type=\"remote_azure_database\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",node_type=\"remote_azure_database\"}[5m]))),100))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -11020,6 +11020,7 @@
                     }
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
+                "queryValue": "",
                 "refresh": 2,
                 "skipUrlSync": false,
                 "type": "interval"
