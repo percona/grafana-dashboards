@@ -214,6 +214,7 @@ Scenario('Verify Adding PMM-Server Public Address via Settings works @dbaas @not
     );
     await dbaasPage.waitForDbClusterTab(clusterName);
     I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
+    I.waitForInvisible(dbaasPage.tabs.kubernetesClusterTab.disabledAddButton, 30);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, 30);
     I.dontSeeElement(dbaasPage.tabs.dbClusterTab.monitoringWarningLocator, 30);
     I.dontSee(dbaasPage.monitoringWarningMessage);
