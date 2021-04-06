@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 const { dbaasAPI } = inject();
 const clusterName = 'Kubernetes_Testing_Cluster_Minikube';
 const pxc_cluster_name = 'pxc-dbcluster';
@@ -175,4 +177,44 @@ Scenario('PMM-T509 Verify Deleting Db Cluster in Pending Status is possible @dba
     I.click(dbaasPage.tabs.dbClusterTab.createClusterButton);
     I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);
     await dbaasActionsPage.deleteXtraDBCluster(pxc_cluster_pending_delete, clusterName);
+  });
+
+Scenario('Verify Adding PMM-Server Public Address via Settings works @dbaas @not-pr-pipeline',
+  async ({
+    I, dbaasPage, pmmSettingsPage,
+  }) => {
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
+
+    I.amOnPage(pmmSettingsPage.url);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+
+    I.waitForElement(pmmSettingsPage.fields.publicAddressInput, 30);
+    I.seeElement(pmmSettingsPage.fields.publicAddressInput);
+    I.seeElement(pmmSettingsPage.fields.publicAddressButton);
+    I.click(pmmSettingsPage.fields.publicAddressButton);
+    let publicAddress = await I.grabValueFrom(pmmSettingsPage.fields.publicAddressInput);
+
+    assert.ok(
+      publicAddress === process.env.SERVER_IP,
+      `Expected the Public Address Input Field to Match ${process.env.SERVER_IP} but found ${publicAddress}`,
+    );
+    I.click(pmmSettingsPage.fields.advancedButton);
+    I.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+    I.refreshPage();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    publicAddress = await I.grabValueFrom(pmmSettingsPage.fields.publicAddressInput);
+
+    assert.ok(
+      publicAddress === process.env.SERVER_IP,
+      `Expected the Public Address to be saved and Match ${process.env.SERVER_IP} but found ${publicAddress}`,
+    );
+    await dbaasPage.waitForDbClusterTab(clusterName);
+    I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, 30);
+    I.dontSeeElement(dbaasPage.tabs.dbClusterTab.monitoringWarningLocator, 30);
+    I.dontSee(dbaasPage.monitoringWarningMessage);
   });
