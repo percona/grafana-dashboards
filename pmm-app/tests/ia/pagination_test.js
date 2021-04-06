@@ -65,6 +65,7 @@ Data(pages).Scenario(
     I.say(`1st checkpoint, URL = ${url}, Count of elements = ${(await getListOfItems()).length}`);
 
     I.refreshPage();
+    I.waitForVisible(iaCommon.elements.pagination, 30);
 
     iaCommon.verifyPaginationButtonsState({
       ...initialButtonsState,
@@ -80,6 +81,7 @@ Data(pages).Scenario(
     I.scrollTo(iaCommon.elements.pagination);
     I.click(locate(iaCommon.buttons.pageButton).at(2));
 
+    I.waitForVisible(iaCommon.elements.pagination, 30);
     iaCommon.verifyPaginationButtonsState({
       ...initialButtonsState,
       firstPageButton: 'enabled',
@@ -94,6 +96,7 @@ Data(pages).Scenario(
 
     I.say(`2nd checkpoint, URL = ${url}, Count of elements = ${(await getListOfItems()).length}`);
     I.refreshPage();
+    I.waitForVisible(iaCommon.elements.pagination, 30);
 
     // Go to 2nd page
     I.scrollTo(iaCommon.elements.pagination);
@@ -115,17 +118,20 @@ Data(pages).Scenario(
     I.scrollTo(iaCommon.elements.pagination);
     I.click(iaCommon.buttons.nextPageButton);
 
+    I.waitForVisible(iaCommon.elements.pagination, 30);
     iaCommon.verifyPaginationButtonsState({
       ...initialButtonsState,
       firstPageButton: 'enabled',
       prevPageButton: 'enabled',
     });
+
     // Verify 3d page has 1 row
     I.seeNumberOfElements(iaCommon.elements.rowInTable, 1);
 
     // Go back to 1st page
     I.scrollTo(iaCommon.elements.pagination);
     I.click(iaCommon.buttons.firstPageButton);
+    I.waitForVisible(iaCommon.elements.pagination, 30);
     I.seeNumberOfElements(iaCommon.elements.rowInTable, 25);
 
     iaCommon.verifyPaginationButtonsState({
@@ -137,6 +143,7 @@ Data(pages).Scenario(
     // Go to the last page
     I.scrollTo(iaCommon.elements.pagination);
     I.click(iaCommon.buttons.lastPageButton);
+    I.waitForVisible(iaCommon.elements.pagination, 30);
     I.seeNumberOfElements(iaCommon.elements.rowInTable, 1);
     iaCommon.verifyPaginationButtonsState({
       ...initialButtonsState,
@@ -147,6 +154,7 @@ Data(pages).Scenario(
     // Go to 2nd page
     I.scrollTo(iaCommon.elements.pagination);
     I.click(iaCommon.buttons.prevPageButton);
+    I.waitForVisible(iaCommon.elements.pagination, 30);
     I.seeNumberOfElements(iaCommon.elements.rowInTable, 25);
 
     iaCommon.verifyPaginationButtonsState({
@@ -197,6 +205,7 @@ Data(pages).Scenario(
     I.seeNumberOfElements(iaCommon.buttons.pageButton, 1);
 
     // Change rows per page to '25'
+    I.waitForVisible(iaCommon.elements.pagination, 30);
     iaCommon.selectRowsPerPage(25);
 
     // Verify that we have 25 rows and 2 pages
@@ -205,6 +214,7 @@ Data(pages).Scenario(
 
     // Change rows to 100
     iaCommon.selectRowsPerPage(100);
+    I.waitForVisible(iaCommon.elements.pagination, 30);
     I.seeNumberOfElements(iaCommon.elements.rowInTable, 26);
     I.seeNumberOfElements(iaCommon.buttons.pageButton, 1);
 
@@ -226,6 +236,7 @@ Data(pages).Scenario(
     I.click(locate(iaCommon.buttons.pageButton).at(2));
 
     // Verify only 1 row on 2 page
+    I.waitForVisible(iaCommon.elements.pagination, 30);
     I.waitForVisible(iaCommon.elements.rowInTable, 30);
     I.seeTextEquals('100', iaCommon.buttons.rowsPerPage);
     I.seeNumberOfElements(iaCommon.elements.rowInTable, 1);
@@ -258,10 +269,12 @@ Data(pages).Scenario(
     I.scrollTo(iaCommon.elements.pagination);
     I.click(locate(iaCommon.buttons.pageButton).at(2));
 
+    I.waitForVisible(iaCommon.elements.pagination, 30);
     I.seeTextEquals(iaCommon.messages.itemsShown(26, 50, 101), iaCommon.elements.itemsShown);
 
     // Change rows per page to '50'
     iaCommon.selectRowsPerPage(50);
+    I.waitForVisible(iaCommon.elements.pagination, 30);
     I.scrollTo(iaCommon.elements.pagination);
     I.seeTextEquals('50', iaCommon.buttons.rowsPerPage);
 
@@ -270,10 +283,12 @@ Data(pages).Scenario(
     I.scrollTo(iaCommon.elements.pagination);
     I.click(locate(iaCommon.buttons.pageButton).at(2));
 
+    I.waitForVisible(iaCommon.elements.pagination, 30);
     I.seeTextEquals(iaCommon.messages.itemsShown(51, 100, 101), iaCommon.elements.itemsShown);
 
     // Change rows per page to '100'
     iaCommon.selectRowsPerPage(100);
+    I.waitForVisible(iaCommon.elements.pagination, 30);
     I.scrollTo(iaCommon.elements.pagination);
     I.seeTextEquals('100', iaCommon.buttons.rowsPerPage);
 
@@ -282,6 +297,7 @@ Data(pages).Scenario(
     I.scrollTo(iaCommon.elements.pagination);
     I.click(locate(iaCommon.buttons.pageButton).at(2));
 
+    I.waitForVisible(iaCommon.elements.pagination, 30);
     I.seeNumberOfElements(iaCommon.elements.rowInTable, 1);
     I.seeNumberOfElements(iaCommon.buttons.pageButton, 2);
 
