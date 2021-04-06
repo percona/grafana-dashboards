@@ -215,7 +215,7 @@ Scenario('PMM-T456 Verify Create Cluster steps validation fields disabled/enable
     await dbaasAPI.apiUnregisterCluster(clusterName);
   });
 
-Data(inputFields).Scenario('PMM-T456 Verify Create Cluster steps validation - field input validation @dbaas @not-pr-pipeline',
+Data(inputFields).Scenario('PMM-T456 Verify Create Cluster steps validation - field input validation @nightly @dbaas @not-pr-pipeline',
   async ({
     I, dbaasPage, dbaasAPI, adminPage, current,
   }) => {
