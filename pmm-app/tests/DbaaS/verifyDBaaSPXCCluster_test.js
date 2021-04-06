@@ -138,7 +138,7 @@ Scenario('PMM-T522 Verify Editing a Cluster with Custom Setting and float values
     await dbaasActionsPage.deleteXtraDBCluster(pxc_cluster_small, clusterName);
   });
 
-Scenario('PMM-T525 PMM-T528 Verify Suspend & Resume for DB Cluster Works as expected @dbaas @not-pr-pipeline',
+Scenario('PMM-T525 PMM-T528 Verify Suspend & Resume for DB Cluster Works as expected @nightly @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage, dbaasActionsPage }) => {
     const pxc_cluster_suspend_resume = 'pxc-suspend-resume';
     const clusterDetails = {

@@ -61,7 +61,7 @@ Scenario('PMM-T477 PMM-T461 Verify MongoDB Cluster can be restarted, unregister 
     await dbaasActionsPage.deletePSMDBCluster(psmdb_cluster, clusterName);
   });
 
-Scenario('PMM-T525 PMM-T528 Verify Suspend & Resume for Mongo DB Cluster Works as expected @dbaas @not-pr-pipeline',
+Scenario('PMM-T525 PMM-T528 Verify Suspend & Resume for Mongo DB Cluster Works as expected @nightly @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage, dbaasActionsPage }) => {
     const psmdb_cluster_suspend_resume = 'psmdb-suspend-resume';
     const clusterDetails = {
@@ -93,7 +93,7 @@ Scenario('PMM-T525 PMM-T528 Verify Suspend & Resume for Mongo DB Cluster Works a
     await dbaasActionsPage.deletePSMDBCluster(psmdb_cluster_suspend_resume, clusterName);
   });
 
-Scenario('PMM-T509 Verify Deleting Mongo Db Cluster in Pending Status is possible @dbaas @not-pr-pipeline',
+Scenario('PMM-T509 Verify Deleting Mongo Db Cluster in Pending Status is possible @nightly @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage, dbaasActionsPage }) => {
     const psmdb_cluster_pending_delete = 'psmdb-pending-delete';
 
