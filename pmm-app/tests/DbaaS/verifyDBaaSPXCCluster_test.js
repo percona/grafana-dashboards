@@ -213,8 +213,8 @@ Scenario('Verify Adding PMM-Server Public Address via Settings works @dbaas @not
       `Expected the Public Address to be saved and Match ${process.env.SERVER_IP} but found ${publicAddress}`,
     );
     await dbaasPage.waitForDbClusterTab(clusterName);
-    I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
     I.waitForInvisible(dbaasPage.tabs.kubernetesClusterTab.disabledAddButton, 30);
+    I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, 30);
     I.dontSeeElement(dbaasPage.tabs.dbClusterTab.monitoringWarningLocator, 30);
     I.dontSee(dbaasPage.monitoringWarningMessage);
