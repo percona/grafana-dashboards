@@ -73,7 +73,7 @@ AfterSuite(async ({
 
 Scenario(
   'PMM-T564 Verify Severity colors @ia @not-pr-pipeline',
-  async ({ I, alertsPage, rulesAPI }) => {
+  async ({ I, alertsPage }) => {
     I.amOnPage(alertsPage.url);
     I.waitForElement(alertsPage.elements.criticalSeverity, 30);
     I.seeCssPropertiesOnElements(alertsPage.elements.criticalSeverity, { color: 'rgb(224, 47, 68)' });
@@ -83,10 +83,22 @@ Scenario(
     I.seeCssPropertiesOnElements(alertsPage.elements.noticeSeverity, { color: 'rgb(50, 116, 217)' });
     I.waitForElement(alertsPage.elements.warningSeverity, 30);
     I.seeCssPropertiesOnElements(alertsPage.elements.warningSeverity, { color: 'rgb(236, 187, 19)' });
+  },
+);
 
-    // Deleting used rules
+Scenario(
+  'PMM-T659 Verify alerts are deleted after deleting rules @ia @not-pr-pipeline',
+  async ({ I, alertsPage, rulesAPI }) => {
+    // Deleting rules
     for (const ruleId of rulesToDelete) {
       await rulesAPI.removeAlertRule(ruleId);
+    }
+
+    I.amOnPage(alertsPage.url);
+    I.waitForElement(alertsPage.elements.alertRow(alertName), 30);
+
+    for (const ruleId of rulesToDelete) {
+      I.dontSee(`rule_id=${ruleId}`, alertsPage.elements.labelsCell(alertName));
     }
   },
 );
