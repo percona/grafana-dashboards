@@ -17,7 +17,7 @@ for (const i in validationValues) {
 Feature('PMM Settings Elements').retry(2);
 
 Before(async ({ I, pmmSettingsPage, settingsAPI }) => {
-  I.Authorize();
+  await I.Authorize();
   await settingsAPI.restoreSettingsDefaults();
   I.amOnPage(pmmSettingsPage.url);
 });

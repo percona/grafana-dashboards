@@ -21,7 +21,7 @@ inputFields.add([dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuNumberFie
 Feature('DbaaS: Kubernetes Cluster Registration UI');
 
 Before(async ({ I }) => {
-  I.Authorize();
+  await I.Authorize();
 });
 
 Scenario(

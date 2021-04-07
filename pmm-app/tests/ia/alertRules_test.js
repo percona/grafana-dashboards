@@ -17,7 +17,7 @@ rulesStates.add([false]);
 Feature('IA: Alert rules').retry(2);
 
 Before(async ({ I, settingsAPI }) => {
-  I.Authorize();
+  await I.Authorize();
   await settingsAPI.apiEnableIA();
 });
 

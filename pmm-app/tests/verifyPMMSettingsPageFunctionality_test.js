@@ -6,7 +6,7 @@ communicationDefaults.add(['slack']);
 Feature('PMM Settings Functionality').retry(2);
 
 Before(async ({ I, settingsAPI }) => {
-  I.Authorize();
+  await I.Authorize();
   await settingsAPI.restoreSettingsDefaults();
 });
 
@@ -99,7 +99,7 @@ Scenario(
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'on');
   },
-);
+).retry(2);
 
 Scenario('PMM-T520 - Verify that alert is in Firing State - internal alert manager @not-ui-pipeline @nightly @not-pr-pipeline', async ({ I, pmmSettingsPage }) => {
   const scheme = 'http://127.0.0.1';

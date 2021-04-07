@@ -27,7 +27,7 @@ AfterSuite(async ({ dbaasAPI }) => {
 });
 
 Before(async ({ I, dbaasAPI }) => {
-  I.Authorize();
+  await I.Authorize();
   if (!await dbaasAPI.apiCheckRegisteredClusterExist(clusterName)) {
     await dbaasAPI.apiRegisterCluster(process.env.kubeconfig_minikube, clusterName);
   }
