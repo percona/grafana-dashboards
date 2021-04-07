@@ -179,8 +179,7 @@ Scenario('PMM-T509 Verify Deleting Db Cluster in Pending Status is possible @dba
     await dbaasActionsPage.deleteXtraDBCluster(pxc_cluster_pending_delete, clusterName);
   });
 
-//Will Investigate cause and fix 
-xScenario('Verify Adding PMM-Server Public Address via Settings works @dbaas @not-pr-pipeline',
+Scenario('Verify Adding PMM-Server Public Address via Settings works @dbaas @not-pr-pipeline',
   async ({
     I, dbaasPage, pmmSettingsPage,
   }) => {
@@ -216,6 +215,13 @@ xScenario('Verify Adding PMM-Server Public Address via Settings works @dbaas @no
     await dbaasPage.waitForDbClusterTab(clusterName);
     I.waitForInvisible(dbaasPage.tabs.kubernetesClusterTab.disabledAddButton, 30);
     I.waitForInvisible(dbaasPage.tabs.kubernetesClusterTab.tableLoading, 30);
+    const count = await I.grabNumberOfVisibleElements(
+      dbaasPage.tabs.dbClusterTab.fields.clusterStatusDeleting,
+    );
+
+    if (count > 0) {
+      I.waitForInvisible(dbaasPage.tabs.dbClusterTab.fields.clusterStatusDeleting, 30);
+    }
     I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, 30);
     I.dontSeeElement(dbaasPage.tabs.dbClusterTab.monitoringWarningLocator, 30);
