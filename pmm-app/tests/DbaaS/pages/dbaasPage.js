@@ -32,6 +32,7 @@ module.exports = {
       modalContentText: locate('$modal-content').find('h4'),
       proceedButton: '$delete-kubernetes-button',
       requiredField: '//div[contains(text(), "Required field")]',
+      tableLoading: '$table-loading',
       unregisterButton: locate('$dropdown-menu-menu').find('span').at(1),
       viewClusterConfiguration: locate('$dropdown-menu-menu').find('span').at(2),
     },
