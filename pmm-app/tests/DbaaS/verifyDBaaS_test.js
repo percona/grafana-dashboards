@@ -18,7 +18,7 @@ inputFields.add([dbaasPage.tabs.dbClusterTab.advancedOptions.fields.nodesNumberF
 inputFields.add([dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryField, ['0.01', '-0.3', '0.0'], dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryFieldErrorMessage, dbaasPage.valueGreatThanErrorText(0.1)]);
 inputFields.add([dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuNumberFields, ['0.01', '-0.3', '0.0'], dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuFieldErrorMessage, dbaasPage.valueGreatThanErrorText(0.1)]);
 
-Feature('Test the functionality for Kubernetes Cluster Registration UI');
+Feature('DbaaS: Kubernetes Cluster Registration UI');
 
 Before(async ({ I }) => {
   I.Authorize();
@@ -215,7 +215,7 @@ Scenario('PMM-T456 Verify Create Cluster steps validation fields disabled/enable
     await dbaasAPI.apiUnregisterCluster(clusterName);
   });
 
-Data(inputFields).Scenario('PMM-T456 Verify Create Cluster steps validation - field input validation @dbaas @not-pr-pipeline',
+Data(inputFields).Scenario('PMM-T456 Verify Create Cluster steps validation - field input validation @nightly @not-pr-pipeline',
   async ({
     I, dbaasPage, dbaasAPI, adminPage, current,
   }) => {

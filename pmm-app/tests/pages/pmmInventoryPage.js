@@ -233,8 +233,11 @@ module.exports = {
       '//table//tr/td[4]//span[contains(text(), "pmm-server")]',
     );
 
-    assert.ok(otherDetails === 4, 'PMM Agent on PMM Server should still be running');
-    assert.ok(countBefore > countAfter, `Some PMM Agents should have been deleted, before deleting ${countBefore} and after deleting ${countAfter}`);
+    /* we are using count 7 because we have two agents for RDS Instance also,
+    hence (pmm-agent, Node exporter, postgres exporter, mysql exporter, QAN RDS, QAN postgres, RDS exporter)
+     */
+    assert.ok((otherDetails <= 7 && otherDetails >= 4), 'Total Agents running on PMM-Server Instance can not be greater then 7');
+    assert.ok(countBefore > countAfter, `Some PMM Agents should have been deleted, Agents running before deleting ${countBefore} and after deleting ${countAfter}`);
   },
 
   async getCellValue(rowNumber, columnNumber) {
