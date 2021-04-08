@@ -20,7 +20,7 @@ AfterSuite(async ({ dbaasAPI }) => {
 });
 
 Before(async ({ I, dbaasAPI }) => {
-  I.Authorize();
+  await I.Authorize();
   if (!await dbaasAPI.apiCheckRegisteredClusterExist(clusterName)) {
     await dbaasAPI.apiRegisterCluster(process.env.kubeconfig_minikube, clusterName);
   }
@@ -51,7 +51,7 @@ Scenario('PMM-T459, PMM-T473, PMM-T478, PMM-T524 Verify DB Cluster Details are l
     };
 
     await dbaasPage.waitForDbClusterTab(clusterName);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterTableHeader, 30);
+    I.waitForVisible(dbaasPage.tabs.dbClusterTab.fields.clusterTableHeader, 30);
     await dbaasPage.validateClusterDetail(pxc_cluster_name, clusterName, clusterDetails);
     await dbaasActionsPage.restartCluster(pxc_cluster_name, clusterName, 'MySQL');
     await dbaasPage.validateClusterDetail(pxc_cluster_name, clusterName, clusterDetails);
@@ -78,7 +78,7 @@ Scenario('PMM-T460, PMM-T452 Verify force unregistering Kubernetes cluster @dbaa
 Scenario('PMM-T524 Delete PXC Cluster and Unregister K8s Cluster @dbaas @not-pr-pipeline',
   async ({ I, dbaasPage, dbaasActionsPage }) => {
     await dbaasPage.waitForDbClusterTab(clusterName);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop, 30);
+    I.waitForVisible(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop, 30);
     await dbaasActionsPage.deleteXtraDBCluster(pxc_cluster_name, clusterName);
   });
 
@@ -157,10 +157,10 @@ Scenario('PMM-T525 PMM-T528 Verify Suspend & Resume for DB Cluster Works as expe
     I.waitForText('Processing', 30, dbaasPage.tabs.dbClusterTab.fields.progressBarContent);
     await dbaasPage.postClusterCreationValidation(pxc_cluster_suspend_resume, clusterName);
     await dbaasActionsPage.suspendCluster(pxc_cluster_suspend_resume, clusterName);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterStatusPaused, 60);
+    I.waitForVisible(dbaasPage.tabs.dbClusterTab.fields.clusterStatusPaused, 60);
     I.seeElement(dbaasPage.tabs.dbClusterTab.fields.clusterStatusPaused);
     await dbaasActionsPage.resumeCluster(pxc_cluster_suspend_resume, clusterName);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.fields.clusterStatusActive, 60);
+    I.waitForVisible(dbaasPage.tabs.dbClusterTab.fields.clusterStatusActive, 60);
     I.seeElement(dbaasPage.tabs.dbClusterTab.fields.clusterStatusActive);
     await dbaasPage.validateClusterDetail(pxc_cluster_suspend_resume, clusterName, clusterDetails);
     await dbaasActionsPage.deleteXtraDBCluster(pxc_cluster_suspend_resume, clusterName);
@@ -190,7 +190,7 @@ Scenario('Verify Adding PMM-Server Public Address via Settings works @dbaas @not
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
 
-    I.waitForElement(pmmSettingsPage.fields.publicAddressInput, 30);
+    I.waitForVisible(pmmSettingsPage.fields.publicAddressInput, 30);
     I.seeElement(pmmSettingsPage.fields.publicAddressInput);
     I.seeElement(pmmSettingsPage.fields.publicAddressButton);
     I.click(pmmSettingsPage.fields.publicAddressButton);
@@ -222,8 +222,9 @@ Scenario('Verify Adding PMM-Server Public Address via Settings works @dbaas @not
     if (count > 0) {
       I.waitForInvisible(dbaasPage.tabs.dbClusterTab.fields.clusterStatusDeleting, 30);
     }
+
     I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, 30);
+    I.waitForVisible(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField, 30);
     I.dontSeeElement(dbaasPage.tabs.dbClusterTab.monitoringWarningLocator, 30);
     I.dontSee(dbaasPage.monitoringWarningMessage);
   });

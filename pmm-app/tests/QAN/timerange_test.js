@@ -1,7 +1,7 @@
 Feature('QAN timerange');
 
-Before(({ I, qanPage, qanOverview }) => {
-  I.Authorize();
+Before(async ({ I, qanPage, qanOverview }) => {
+  await I.Authorize();
   I.amOnPage(qanPage.url);
   qanOverview.waitForOverviewLoaded();
 });
