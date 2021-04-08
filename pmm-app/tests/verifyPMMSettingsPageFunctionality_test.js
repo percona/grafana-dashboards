@@ -92,7 +92,6 @@ Scenario(
     I.click(pmmSettingsPage.fields.sttSwitchSelector);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'on');
     I.click(pmmSettingsPage.fields.advancedButton);
-    I.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
     I.refreshPage();
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
