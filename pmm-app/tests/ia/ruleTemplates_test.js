@@ -18,7 +18,7 @@ Feature('IA: Alert rule templates').retry(2);
 Before(async ({
   I, settingsAPI, templatesAPI, rulesAPI,
 }) => {
-  I.Authorize();
+  await I.Authorize();
   await settingsAPI.apiEnableIA();
   await rulesAPI.clearAllRules();
   await templatesAPI.clearAllTemplates();
