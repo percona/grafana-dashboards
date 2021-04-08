@@ -123,8 +123,8 @@ Scenario('Verify DB Cluster Tab Page Elements & Steps Background @dbaas @not-pr-
     I.amOnPage(dbaasPage.url);
     dbaasPage.checkCluster(clusterName, false);
     I.click(dbaasPage.tabs.dbClusterTab.dbClusterTab);
-    I.waitForVisible(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 60);
-    I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop, 30);
+    I.click(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.monitoringWarningLocator, 30);
     I.waitForText(dbaasPage.monitoringWarningMessage, 30);
     I.seeElement(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField);
