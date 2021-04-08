@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 Feature('Monitoring AWS RDS MySQL DB');
 
 Before(async ({ I }) => {
@@ -15,7 +17,7 @@ Scenario(
     remoteInstancesPage.verifyInstanceIsDiscovered(instanceIdToMonitor);
     remoteInstancesPage.startMonitoringOfInstance(instanceIdToMonitor);
     remoteInstancesPage.verifyAddInstancePageOpened();
-    remoteInstancesPage.fillRemoteRDSMySQLFields();
+    remoteInstancesPage.fillRemoteRDSMySQLFields(instanceIdToMonitor);
     remoteInstancesPage.createRemoteInstance(instanceIdToMonitor);
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(instanceIdToMonitor);
     await pmmInventoryPage.verifyAgentHasStatusRunning(instanceIdToMonitor);
@@ -78,5 +80,33 @@ Scenario(
         I.seeElement(locate('span').withText(filters[key]));
       });
     }
+  },
+);
+
+Scenario(
+  'PMM-T716 - Verify adding PostgreSQL RDS monitoring to PMM via UI @not-pr-pipeline',
+  async ({
+    I, remoteInstancesPage, pmmInventoryPage, qanPage, qanFilters, qanOverview, dashboardPage,
+  }) => {
+    const serviceName = remoteInstancesPage.rds['Postgres RDS'];
+
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded().openAddAWSRDSMySQLPage();
+    remoteInstancesPage.discoverRDS();
+    remoteInstancesPage.verifyInstanceIsDiscovered(serviceName);
+    remoteInstancesPage.startMonitoringOfInstance(serviceName);
+    remoteInstancesPage.verifyAddInstancePageOpened();
+    remoteInstancesPage.fillRemoteRDSMySQLFields(serviceName);
+    remoteInstancesPage.createRemoteInstance(serviceName);
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
+    await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
+    I.amOnPage(qanPage.url);
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyFilter('RDS Postgres');
+    qanOverview.waitForOverviewLoaded();
+    const count = await qanOverview.getCountOfItems();
+
+    assert.ok(count > 0, 'The queries for added RDS Postgres do NOT exist');
+    I.amOnPage(dashboardPage.postgresqlInstanceOverviewDashboard.url);
   },
 );

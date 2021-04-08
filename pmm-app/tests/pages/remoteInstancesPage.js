@@ -22,6 +22,7 @@ module.exports = {
     'Service Name': 'rds-mysql56',
     Environment: 'RDS MySQL 5.6',
     'Replication Set': 'rds56-replication',
+    'Postgres RDS': 'pmm-qa-postgres-12',
     Cluster: 'rds56-cluster',
   },
   fields: {
@@ -224,12 +225,24 @@ module.exports = {
     I.seeElement(this.fields.userName);
   },
 
-  fillRemoteRDSMySQLFields() {
-    I.fillField(this.fields.userName, this.usernameRDSMySQL);
-    I.fillField(this.fields.password, this.passwordRDSMySQL);
-    I.fillField(this.fields.environment, 'RDS MySQL 5.6');
-    I.fillField(this.fields.cluster, 'rds56-cluster');
-    I.fillField(this.fields.replicationSet, 'rds56-replication');
+  fillRemoteRDSMySQLFields(serviceName) {
+    // eslint-disable-next-line default-case
+    switch (serviceName) {
+      case 'rds-mysql56':
+        I.fillField(this.fields.userName, this.usernameRDSMySQL);
+        I.fillField(this.fields.password, this.passwordRDSMySQL);
+        I.fillField(this.fields.environment, 'RDS MySQL 5.6');
+        I.fillField(this.fields.cluster, 'rds56-cluster');
+        I.fillField(this.fields.replicationSet, 'rds56-replication');
+        break;
+      case 'pmm-qa-postgres-12':
+        I.fillField(this.fields.userName, process.env.REMOTE_AWS_POSTGRES12_USER);
+        I.fillField(this.fields.password, process.env.REMOTE_AWS_POSTGRES12_PASSWORD);
+        I.fillField(this.fields.environment, 'RDS Postgres');
+        I.fillField(this.fields.cluster, 'rdsPostgres-cluster');
+        I.fillField(this.fields.replicationSet, 'rdsPostgres-replication');
+        break;
+    }
     I.scrollPageToBottom();
   },
 
