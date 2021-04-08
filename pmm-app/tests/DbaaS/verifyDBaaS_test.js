@@ -155,9 +155,9 @@ Scenario('PMM-T456 PMM-T490 Verify DB Cluster Steps Background @dbaas @not-pr-pi
     dbaasPage.checkCluster(clusterName, false);
     I.dontSeeElement(adminPage.fields.timePickerMenu);
     I.click(dbaasPage.tabs.dbClusterTab.dbClusterTab);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
+    I.waitForVisible(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
     I.dontSeeElement(adminPage.fields.timePickerMenu);
-    I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
+    I.click(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.monitoringWarningLocator, 30);
     I.waitForText(dbaasPage.monitoringWarningMessage, 30);
     await adminPage.verifyBackgroundColor(dbaasPage.tabs.dbClusterTab.optionsCountLocator(1), 'rgb(235, 123, 24)');
