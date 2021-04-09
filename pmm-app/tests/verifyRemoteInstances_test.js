@@ -10,7 +10,7 @@ for (const i of Object.keys(page.services)) {
 Feature('Remote DB Instances').retry(2);
 
 Before(async ({ I }) => {
-  I.Authorize();
+  await I.Authorize();
 });
 
 Scenario(

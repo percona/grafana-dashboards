@@ -2,8 +2,8 @@ Feature('QAN details');
 
 const { adminPage } = inject();
 
-Before(({ I, qanPage }) => {
-  I.Authorize();
+Before(async ({ I, qanPage }) => {
+  await I.Authorize();
   I.amOnPage(qanPage.url);
 });
 
