@@ -100,6 +100,7 @@ Scenario(
     remoteInstancesPage.createRemoteInstance(serviceName);
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
     await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
+    await pmmInventoryPage.verifyMetricsFlags(serviceName);
     I.amOnPage(qanPage.url);
     qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('RDS Postgres');

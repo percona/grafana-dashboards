@@ -183,6 +183,10 @@ module.exports = {
         I.click(this.fields.disableEnhancedMetrics);
         I.click(this.fields.disableBasicMetrics);
         break;
+      case 'pmm-qa-postgres-12':
+        I.click(this.fields.disableEnhancedMetrics);
+        I.click(this.fields.disableBasicMetrics);
+        break;
     }
     I.click(this.fields.addService);
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 30);
