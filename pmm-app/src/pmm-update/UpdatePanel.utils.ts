@@ -6,4 +6,4 @@ const timestampToEnLocale = (timestamp: ISOTimestamp) => moment(timestamp).local
 
 export const formatDateWithTime = (timestamp: ISOTimestamp) => timestampToEnLocale(timestamp).format('MMMM DD, H:mm');
 
-export const formatDateWithYear = (timestamp: ISOTimestamp) => timestampToEnLocale(timestamp).format('MMMM DD, 2020');
+export const formatDateWithYear = (timestamp: ISOTimestamp) => timestampToEnLocale(timestamp).format('MMMM DD, YYYY');
