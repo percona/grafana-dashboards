@@ -135,3 +135,16 @@ Scenario(
     I.waitForVisible(remoteInstancesPage.fields.skipConnectionCheck, 30);
   },
 );
+
+Scenario(
+  'PMM-T636 - Verify adding HAProxy with all empty fields @not-pr-pipeline',
+  async ({ I, remoteInstancesPage }) => {
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('haproxy');
+    I.waitForVisible(remoteInstancesPage.fields.addService, 30)
+    I.click(remoteInstancesPage.fields.addService);
+    I.waitForVisible(remoteInstancesPage.fields.requiredFieldHostname, 30);
+  },
+);
+
