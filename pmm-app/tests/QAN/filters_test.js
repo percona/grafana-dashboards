@@ -268,7 +268,7 @@ Scenario(
     const nodeNameLink = 'node_name=pmm-server';
     const link = '/graph/d/node-instance-summary/node-summary';
     const header = 'Node Summary';
-    const filterValue = 'pmm-server'
+    const filterValue = 'pmm-server';
 
     I.fillField(qanFilters.fields.filterBy, filterValue);
     qanFilters.navigateByShortCut(shortCut, filterValue);

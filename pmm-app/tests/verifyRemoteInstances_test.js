@@ -113,3 +113,25 @@ Scenario(
     assert.ok(response.data.data.result.length !== 0, `Custom Metrics Should be available but got empty ${result}`);
   },
 );
+
+Scenario(
+  'PMM-T637 - Verify elements on HAProxy page @not-pr-pipeline',
+  async ({ I, remoteInstancesPage }) => {
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('haproxy');
+    I.waitForVisible(remoteInstancesPage.fields.returnToMenuButton, 30);
+    I.waitForVisible(remoteInstancesPage.fields.hostName, 30);
+    I.waitForVisible(remoteInstancesPage.fields.serviceName, 30);
+    I.waitForVisible(remoteInstancesPage.fields.portNumber, 30);
+    I.waitForVisible(remoteInstancesPage.fields.userName, 30);
+    I.waitForVisible(remoteInstancesPage.fields.password, 30);
+    I.waitForVisible(remoteInstancesPage.fields.environment, 30);
+    I.waitForVisible(remoteInstancesPage.fields.region, 30);
+    I.waitForVisible(remoteInstancesPage.fields.availabilityZone, 30);
+    I.waitForVisible(remoteInstancesPage.fields.replicationSet, 30);
+    I.waitForVisible(remoteInstancesPage.fields.cluster, 30);
+    I.waitForVisible(remoteInstancesPage.fields.customLabels, 30);
+    I.waitForVisible(remoteInstancesPage.fields.skipConnectionCheck, 30);
+  },
+);
