@@ -142,9 +142,35 @@ Scenario(
     I.amOnPage(remoteInstancesPage.url);
     remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
     remoteInstancesPage.openAddRemotePage('haproxy');
-    I.waitForVisible(remoteInstancesPage.fields.addService, 30)
+    I.waitForVisible(remoteInstancesPage.fields.addService, 30);
     I.click(remoteInstancesPage.fields.addService);
     I.waitForVisible(remoteInstancesPage.fields.requiredFieldHostname, 30);
   },
 );
 
+Scenario(
+  'PMM-T635 - Verify Adding HAProxy service via UI @not-pr-pipeline',
+  async ({
+    I, remoteInstancesPage, pmmInventoryPage,
+  }) => {
+    const serviceName = 'haproxy_remote';
+    const url = process.env.PMM_UI_URL;
+
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('haproxy');
+    I.waitForVisible(remoteInstancesPage.fields.hostName, 30);
+    I.fillField(remoteInstancesPage.fields.hostName, url.slice(7, url.length - 1));
+    I.fillField(remoteInstancesPage.fields.serviceName, serviceName);
+    I.clearField(remoteInstancesPage.fields.portNumber);
+    I.fillField(remoteInstancesPage.fields.portNumber, '42100');
+    I.click(remoteInstancesPage.fields.addService);
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
+    const serviceId = await pmmInventoryPage.getServiceId(serviceName);
+
+    I.click(pmmInventoryPage.fields.agentsLink);
+    await pmmInventoryPage.getOtherDetails(serviceId, 'scheme:', 'scheme: http');
+    await pmmInventoryPage.getOtherDetails(serviceId, 'metrics_path:', 'metrics_path: /metrics');
+    await pmmInventoryPage.getOtherDetails(serviceId, 'listen_port:', 'listen_port: 42100');
+  },
+);
