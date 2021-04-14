@@ -17,7 +17,7 @@ module.exports = {
     pagination: '$pagination',
     itemsShown: '$pagination-items-inverval',
     rowInTable: locate('$table-tbody').find('tr'),
-    tab: (tabName) => `//li[@aria-label="Tab ${tabName}"]`,
+    tab: (tabName) => locate('li').withAttr({ 'aria-label': `Tab ${tabName}` }),
     table: '$table-tbody',
     breadcrumbActive: locate('$breadcrumb-section').last(),
     disabledIa: '$empty-block',
