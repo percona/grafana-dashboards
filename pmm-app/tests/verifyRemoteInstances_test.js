@@ -164,6 +164,8 @@ Scenario(
     I.fillField(remoteInstancesPage.fields.serviceName, serviceName);
     I.clearField(remoteInstancesPage.fields.portNumber);
     I.fillField(remoteInstancesPage.fields.portNumber, '42100');
+    I.scrollPageToBottom();
+    I.waitForVisible(remoteInstancesPage.fields.addService, 30);
     I.click(remoteInstancesPage.fields.addService);
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
     const serviceId = await pmmInventoryPage.getServiceId(serviceName);
