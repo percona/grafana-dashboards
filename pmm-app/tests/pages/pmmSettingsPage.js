@@ -2,6 +2,7 @@ const { I, adminPage } = inject();
 const assert = require('assert');
 
 const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
+const communicationDocsLink = 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/how-to/configure.html#communication';
 
 module.exports = {
   url: 'graph/settings',
@@ -95,33 +96,27 @@ module.exports = {
     },
     serverAddress: {
       text: 'The SMTP host server address through which emails are sent',
-      link:
-        'https://www.percona.com/doc/percona-monitoring-and-management/2.x/how-to/configure.html#communication',
+      link: communicationDocsLink,
     },
     hello: {
       text: 'The hostname to identify the SMTP server',
-      link:
-        'https://www.percona.com/doc/percona-monitoring-and-management/2.x/how-to/configure.html#communication',
+      link: communicationDocsLink,
     },
     from: {
       text: 'The sender address',
-      link:
-        'https://www.percona.com/doc/percona-monitoring-and-management/2.x/how-to/configure.html#communication',
+      link: communicationDocsLink,
     },
     auth: {
       text: 'SMTP authentication information',
-      link:
-        'https://www.percona.com/doc/percona-monitoring-and-management/2.x/how-to/configure.html#communication',
+      link: communicationDocsLink,
     },
     authType: {
       text: 'Authentication type',
-      link:
-        'https://www.percona.com/doc/percona-monitoring-and-management/2.x/how-to/configure.html#communication',
+      link: communicationDocsLink,
     },
     slackUrl: {
       text: 'Slack incoming webhook URL',
-      link:
-        'https://www.percona.com/doc/percona-monitoring-and-management/2.x/how-to/configure.html#communication',
+      link: communicationDocsLink,
     },
   },
   communication: {
@@ -143,7 +138,6 @@ module.exports = {
       },
       authType: {
         tooltipLocator: locate('div').after(locate('span').withText('Auth Type')),
-        // tooltipLocator: locate('div[class$="-Icon"]'),
         locator: '$hello-text-input',
         value: 'Hey there',
       },
