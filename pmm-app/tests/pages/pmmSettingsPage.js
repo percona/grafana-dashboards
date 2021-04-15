@@ -1,8 +1,7 @@
-const { I, adminPage } = inject();
+const { I, adminPage, links } = inject();
 const assert = require('assert');
 
 const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
-const communicationDocsLink = 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/how-to/configure.html#communication';
 
 module.exports = {
   url: 'graph/settings',
@@ -86,37 +85,35 @@ module.exports = {
   tooltips: {
     stt: {
       text: 'Enable Security Threat Tool and get updated checks from Percona.',
-      link:
-        'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#security-threat-tool',
+      link: links.sttDocs,
     },
     integratedAlerting: {
       text: 'Option to enable/disable Integrated Alerting features.',
-      link:
-        'https://www.percona.com/doc/percona-monitoring-and-management/2.x/how-to/configure.html#integrated-alerting',
+      link: links.integratedAlertingDocs,
     },
     serverAddress: {
       text: 'The SMTP host server address through which emails are sent',
-      link: communicationDocsLink,
+      link: links.communicationDocs,
     },
     hello: {
       text: 'The hostname to identify the SMTP server',
-      link: communicationDocsLink,
+      link: links.communicationDocs,
     },
     from: {
       text: 'The sender address',
-      link: communicationDocsLink,
+      link: links.communicationDocs,
     },
     auth: {
       text: 'SMTP authentication information',
-      link: communicationDocsLink,
+      link: links.communicationDocs,
     },
     authType: {
       text: 'Authentication type',
-      link: communicationDocsLink,
+      link: links.communicationDocs,
     },
     slackUrl: {
       text: 'Slack incoming webhook URL',
-      link: communicationDocsLink,
+      link: links.communicationDocs,
     },
   },
   communication: {
