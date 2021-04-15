@@ -1,7 +1,8 @@
 const assert = require('assert');
-const mailosaur = require('../../../pr.codecept.js').config.helpers.Mailosaur;
 
-const { I } = inject();
+const { I, codeceptjsConfig } = inject();
+
+const mailosaur = codeceptjsConfig.config.helpers.Mailosaur;
 
 module.exports = {
   // methods for preparing state of application before test
