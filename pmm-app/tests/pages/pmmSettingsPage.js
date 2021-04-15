@@ -1,4 +1,4 @@
-const { I, adminPage } = inject();
+const { I, adminPage, links } = inject();
 const assert = require('assert');
 
 const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
@@ -85,43 +85,73 @@ module.exports = {
   tooltips: {
     stt: {
       text: 'Enable Security Threat Tool and get updated checks from Percona.',
-      link:
-        'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#security-threat-tool',
+      link: links.sttDocs,
+    },
+    integratedAlerting: {
+      text: 'Option to enable/disable Integrated Alerting features.',
+      link: links.integratedAlertingDocs,
+    },
+    serverAddress: {
+      text: 'The SMTP host server address through which emails are sent',
+      link: links.communicationDocs,
+    },
+    hello: {
+      text: 'The hostname to identify the SMTP server',
+      link: links.communicationDocs,
+    },
+    from: {
+      text: 'The sender address',
+      link: links.communicationDocs,
+    },
+    auth: {
+      text: 'SMTP authentication information',
+      link: links.communicationDocs,
+    },
+    authType: {
+      text: 'Authentication type',
+      link: links.communicationDocs,
+    },
+    slackUrl: {
+      text: 'Slack incoming webhook URL',
+      link: links.communicationDocs,
     },
   },
   communication: {
     email: {
       serverAddress: {
+        tooltipLocator: locate('div').after(locate('span').withText('Server Address')),
         locator: '$smarthost-text-input',
         value: 'test.server.com',
       },
+      hello: {
+        tooltipLocator: locate('div').after(locate('span').withText('Hello')),
+        locator: '$hello-text-input',
+        value: 'Hey there',
+      },
       from: {
+        tooltipLocator: locate('div').after(locate('span').withText('From')),
         locator: '$from-text-input',
         value: 'sender',
       },
+      authType: {
+        tooltipLocator: locate('div').after(locate('span').withText('Auth Type')),
+        locator: '$hello-text-input',
+        value: 'Hey there',
+      },
       username: {
+        tooltipLocator: locate('div').after(locate('span').withText('Username')),
         locator: '$username-text-input',
         value: 'user',
       },
       password: {
+        tooltipLocator: locate('div').after(locate('span').withText('Password')),
         locator: '$password-password-input',
         value: 'secret',
-      },
-      hello: {
-        locator: '$hello-text-input',
-        value: 'Hey there',
-      },
-      identity: {
-        locator: '$identity-text-input',
-        value: 'test',
-      },
-      secret: {
-        locator: '$secret-password-input',
-        value: 'test',
       },
     },
     slack: {
       url: {
+        tooltipLocator: locate('div').after(locate('span').withText('URL')),
         locator: '$url-text-input',
         value: 'https://hook',
       },
@@ -196,6 +226,7 @@ module.exports = {
     tabContent: '$settings-tab-content',
     termsOfService: '//span[contains(text(), "Terms of Service")]',
     validationMessage: 'span.error-message',
+    iaLabelTooltipSelector: locate('$advanced-alerting').find('div[class$="-Icon"]'),
   },
 
   async waitForPmmSettingsPageLoaded() {
@@ -358,7 +389,7 @@ module.exports = {
 
   async verifyTooltip(tooltipObj) {
     I.waitForVisible(this.fields.tooltipSelector, 30);
-    I.see(tooltipObj.text, this.fields.tooltipSelector);
+    I.seeTextEquals(`${tooltipObj.text}\nRead more`, this.fields.tooltipSelector);
     I.seeAttributesOnElements(`${this.fields.tooltipSelector} > div > a`, { href: tooltipObj.link });
   },
 

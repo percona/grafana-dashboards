@@ -81,6 +81,41 @@ Scenario(
 );
 
 Scenario(
+  'PMM-T560 Verify IA related tooltips [trivial] @ia @not-pr-pipeline',
+  async ({ I, pmmSettingsPage, settingsAPI }) => {
+    await settingsAPI.apiEnableIA();
+
+    I.amOnPage(pmmSettingsPage.advancedSettingsUrl);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    I.waitForVisible(pmmSettingsPage.fields.iaLabelTooltipSelector, 30);
+
+    // Verify tooltip for Enable/Disable IA toggle
+    I.moveCursorTo(pmmSettingsPage.fields.iaLabelTooltipSelector);
+    await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.integratedAlerting);
+
+    I.amOnPage(pmmSettingsPage.communicationSettingsUrl);
+    I.waitForVisible(pmmSettingsPage.communication.email.serverAddress.locator, 30);
+
+    // Verify tooltips for Communication > Email fields
+    for (const o of Object.keys(pmmSettingsPage.communication.email)) {
+      I.moveCursorTo(pmmSettingsPage.communication.submitEmailButton);
+      I.moveCursorTo(pmmSettingsPage.communication.email[o].tooltipLocator);
+
+      if (o === 'password' || o === 'username') {
+        await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.auth);
+      } else {
+        await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips[o]);
+      }
+    }
+
+    // Verify tooltips for Communication > Slack URL field
+    I.click(pmmSettingsPage.communication.slackTab);
+    I.moveCursorTo(pmmSettingsPage.communication.slack.url.tooltipLocator);
+    await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.slackUrl);
+  },
+);
+
+Scenario(
   'PMM-T253 Verify user can enable STT if Telemetry is enabled',
   async ({ I, pmmSettingsPage }) => {
     const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;

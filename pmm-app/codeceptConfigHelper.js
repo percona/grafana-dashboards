@@ -1,6 +1,7 @@
 module.exports = {
   pageObjects: {
     I: './tests/custom_steps.js',
+    codeceptjsConfig: './pr.codecept.js',
     addInstanceAPI: './tests/pages/api/addInstanceAPI.js',
     adminPage: './tests/pages/adminPage.js',
     alertRulesPage: './tests/ia/pages/alertRulesPage.js',
@@ -18,6 +19,7 @@ module.exports = {
     homePage: './tests/pages/homePage.js',
     inventoryAPI: './tests/pages/api/inventoryAPI.js',
     mysqlTableDetailsPage: './tests/pages/mysqlTableDetailsPage.js',
+    links: './linksHelper.js',
     ncPage: './tests/ia/pages/notificationChannelsPage.js',
     pmmDemoPage: './tests/pages/pmmDemoPage.js',
     pmmInventoryPage: './tests/pages/pmmInventoryPage.js',
