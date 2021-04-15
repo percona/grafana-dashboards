@@ -161,7 +161,6 @@ Scenario(
     remoteInstancesPage.openAddRemotePage('haproxy');
     I.waitForVisible(remoteInstancesPage.fields.hostName, 30);
     I.fillField(remoteInstancesPage.fields.hostName, url.slice(7, url.length - 1));
-    assert.fail('url image');
     I.fillField(remoteInstancesPage.fields.serviceName, serviceName);
     I.clearField(remoteInstancesPage.fields.portNumber);
     I.fillField(remoteInstancesPage.fields.portNumber, '42100');
