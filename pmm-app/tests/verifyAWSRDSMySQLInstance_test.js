@@ -88,7 +88,7 @@ Scenario(
   async ({
     I, remoteInstancesPage, pmmInventoryPage, qanPage, qanFilters, qanOverview, dashboardPage,
   }) => {
-    const serviceName = remoteInstancesPage.rds['Postgres RDS'];
+    const serviceName = 'pmm-qa-postgres-12';
 
     I.amOnPage(remoteInstancesPage.url);
     remoteInstancesPage.waitUntilRemoteInstancesPageLoaded().openAddAWSRDSMySQLPage();

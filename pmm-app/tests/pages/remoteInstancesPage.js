@@ -22,7 +22,6 @@ module.exports = {
     'Service Name': 'rds-mysql56',
     Environment: 'RDS MySQL 5.6',
     'Replication Set': 'rds56-replication',
-    'Postgres RDS': 'pmm-qa-postgres-12',
     Cluster: 'rds56-cluster',
   },
   fields: {
