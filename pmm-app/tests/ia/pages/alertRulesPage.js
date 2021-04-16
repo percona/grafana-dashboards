@@ -1,131 +1,13 @@
 const { I } = inject();
+const { rules, templates } = require('./testData');
+
 const rulesNameCell = (ruleName) => `//td[1][div/span[text()="${ruleName}"]]`;
 
 module.exports = {
   url: 'graph/integrated-alerting/alert-rules',
   columnHeaders: ['Name', 'Parameters', 'Duration', 'Severity', 'Filters', 'Created', 'Actions'],
-  rules: [{
-    template: 'PostgreSQL connections in use',
-    templateType: 'BUILT_IN',
-    ruleName: 'Rule with BUILT_IN template (activated, without channels)',
-    threshold: '100',
-    thresholdUnit: '%',
-    duration: '1',
-    severity: 'Warning',
-    filters: 'service_name=pmm-server-postgresql',
-    channels: [],
-    activate: true,
-  }, {
-    template: 'PostgreSQL connections in use',
-    templateType: 'BUILT_IN',
-    ruleName: 'Rule with BUILT_IN template (not activated, without channels)',
-    threshold: '100',
-    thresholdUnit: '%',
-    duration: '1',
-    severity: 'Critical',
-    filters: 'service_name=pmm-server-postgresql',
-    channels: [],
-    activate: false,
-  }, {
-    template: 'PostgreSQL connections in use',
-    templateType: 'BUILT_IN',
-    ruleName: 'Rule with BUILT_IN template (activated, with channels)',
-    threshold: '100',
-    thresholdUnit: '%',
-    duration: '1',
-    severity: 'High',
-    filters: 'service_name=pmm-server-postgresql',
-    channels: ['EmailChannelForRules'],
-    activate: true,
-  }, {
-    template: 'PostgreSQL connections in use',
-    templateType: 'BUILT_IN',
-    ruleName: 'Rule with BUILT_IN template (not activated, with channels)',
-    threshold: '100',
-    thresholdUnit: '%',
-    duration: '1',
-    severity: 'Notice',
-    filters: 'service_name=pmm-server-postgresql',
-    channels: ['EmailChannelForRules'],
-    activate: false,
-  }, {
-    template: 'E2E TemplateForRules YAML',
-    templateType: 'User-defined (UI)',
-    ruleName: 'Rule with User-defined (UI) template (activated, without channels)',
-    threshold: '100',
-    thresholdUnit: '%',
-    duration: '1',
-    severity: 'Warning',
-    filters: 'service_name=pmm-server-postgresql',
-    channels: [],
-    activate: true,
-  }, {
-    template: 'E2E TemplateForRules YAML',
-    templateType: 'User-defined (UI)',
-    ruleName: 'Rule with User-defined (UI) template (not activated, without channels)',
-    threshold: '100',
-    thresholdUnit: '%',
-    duration: '1',
-    severity: 'Critical',
-    filters: 'service_name=pmm-server-postgresql',
-    channels: [],
-    activate: false,
-  }, {
-    template: 'E2E TemplateForRules YAML',
-    templateType: 'User-defined (UI)',
-    ruleName: 'Rule with User-defined (UI) template (activated, with channels)',
-    threshold: '100',
-    thresholdUnit: '%',
-    duration: '1',
-    severity: 'High',
-    filters: 'service_name=pmm-server-postgresql',
-    channels: ['EmailChannelForRules'],
-    activate: true,
-  }, {
-    template: 'E2E TemplateForRules YAML',
-    templateType: 'User-defined (UI)',
-    ruleName: 'Rule with User-defined (UI) template (not activated, with channels)',
-    threshold: '100',
-    thresholdUnit: '%',
-    duration: '1',
-    severity: 'Notice',
-    filters: 'service_name=pmm-server-postgresql',
-    channels: ['EmailChannelForRules'],
-    activate: false,
-  }, {
-    template: 'E2E TemplateForRules YAML',
-    templateType: 'User-defined (UI)',
-    ruleName: 'Rule with User-defined (UI) template with default params',
-    threshold: '',
-    thresholdUnit: '%',
-    duration: '50',
-    severity: 'Notice',
-    filters: 'service_name=pmm-server-postgresql',
-    channels: ['EmailChannelForRules'],
-    activate: true,
-  }, {
-    template: 'range-empty',
-    templateType: 'User-defined (UI)',
-    ruleName: 'Rule with User-defined (UI) template with default params (empty-range template)',
-    threshold: '',
-    thresholdUnit: '%',
-    duration: '50',
-    severity: 'Notice',
-    filters: 'service_name=pmm-server-postgresql',
-    channels: ['EmailChannelForRules'],
-    activate: true,
-  }, {
-    template: 'range-empty',
-    templateType: 'User-defined (UI)',
-    ruleName: 'Rule with User-defined (UI) template (empty-range template)',
-    threshold: '666',
-    thresholdUnit: '%',
-    duration: '50',
-    severity: 'Notice',
-    filters: 'service_name=pmm-server-postgresql',
-    channels: ['EmailChannelForRules'],
-    activate: true,
-  }],
+  rules,
+  templates,
   elements: {
     rulesTab: '//li[@aria-label="Tab Alert Rules"]',
     noRules: '[data-qa=alert-rules-table-no-data] > h1',
@@ -145,6 +27,7 @@ module.exports = {
     ruleDetails: '$alert-rules-details',
     expression: locate('$template-expression').find('pre'),
     templateAlert: locate('$template-alert').find('pre'),
+    durationError: '$duration-field-error-message',
   },
   buttons: {
     openAddRuleModal: '$alert-rule-template-add-modal-button',
@@ -225,14 +108,19 @@ module.exports = {
 
   verifyEditRuleDialogElements(rule) {
     const {
-      template, ruleName, threshold, duration,
-      filters, expression, alert,
+      template, ruleName = '', threshold, duration,
+      filters = '', expression, alert,
     } = rule;
 
     I.waitForVisible(this.fields.template, 30);
     I.seeTextEquals(template, this.fields.template);
     I.waitForValue(this.fields.ruleName, ruleName, 10);
-    I.waitForValue(this.fields.threshold, threshold, 10);
+    if (threshold) {
+      I.waitForValue(this.fields.threshold, threshold, 10);
+    } else {
+      I.dontSeeElement(this.fields.threshold);
+    }
+
     I.waitForValue(this.fields.duration, duration, 10);
     I.waitForValue(this.fields.filters, filters, 10);
     I.seeTextEquals(expression, this.elements.expression);
@@ -241,8 +129,7 @@ module.exports = {
 
   openAlertRulesTab() {
     I.amOnPage(this.url);
-    I.waitForVisible(this.elements.rulesTab, 30);
-    I.click(this.elements.rulesTab);
+    I.waitForVisible(this.buttons.openAddRuleModal, 30);
   },
 
   searchAndSelectResult(dropdownLabel, option) {
@@ -260,7 +147,10 @@ module.exports = {
     I.see(`Threshold:\n${threshold} ${thresholdUnit}`, this.elements.parametersCell(ruleName));
     I.see(`${duration} seconds`, this.elements.durationCell(ruleName));
     I.see(severity, this.elements.severityCell(ruleName));
-    I.see(filters, this.elements.filtersCell(ruleName));
+    // for cases when there are few filters
+    filters.split(',').forEach((filter) => {
+      I.see(filter.trim(), this.elements.filtersCell(ruleName));
+    });
     this.verifyRuleState(activate, ruleName);
     I.seeAttributesOnElements(this.buttons.showDetails(ruleName), { disabled: null });
     I.seeAttributesOnElements(this.buttons.deleteAlertRule(ruleName), { disabled: null });

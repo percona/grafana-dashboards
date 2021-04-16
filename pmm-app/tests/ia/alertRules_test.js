@@ -14,6 +14,13 @@ const rulesStates = new DataTable(['disabled']);
 rulesStates.add([true]);
 rulesStates.add([false]);
 
+const templates = new DataTable(['template', 'threshold', 'duration', 'severity', 'expression', 'alert']);
+
+Object.values(page.templates).forEach((template) => {
+  templates.add([template.template, template.threshold, template.duration, template.severity,
+    template.expression, template.alert]);
+});
+
 Feature('IA: Alert rules').retry(2);
 
 Before(async ({ I, settingsAPI }) => {
@@ -100,8 +107,31 @@ Scenario(
   },
 );
 
+Data(templates).Scenario(
+  'PMM-T750 PMM-T752 Verify parsing a template in Add Alert rule dialog @ia @not-pr-pipeline',
+  async ({ I, alertRulesPage, current }) => {
+    const rule = {
+      template: current.template,
+      threshold: current.threshold,
+      duration: current.duration,
+      severity: current.severity,
+      expression: current.expression,
+      alert: current.alert,
+    };
+
+    alertRulesPage.openAlertRulesTab();
+    I.click(alertRulesPage.buttons.openAddRuleModal);
+
+    I.waitForVisible(alertRulesPage.fields.ruleName, 30);
+    alertRulesPage.searchAndSelectResult('Template', current.template);
+    I.waitForVisible(alertRulesPage.elements.expression, 30);
+
+    alertRulesPage.verifyEditRuleDialogElements(rule);
+  },
+);
+
 Data(rules).Scenario(
-  'PMM-T515 PMM-T543 PMM-T544 PMM-T545 PMM-T574 PMM-T596 PMM-T753 Create Alert rule @ia @not-pr-pipeline',
+  'PMM-T515 PMM-T543 PMM-T544 PMM-T545 PMM-T574 PMM-T596 PMM-T753 PMM-T624 Create Alert rule @ia @not-pr-pipeline',
   async ({
     I, alertRulesPage, current, rulesAPI,
   }) => {
@@ -261,5 +291,30 @@ Scenario(
       alertRulesPage.elements.ruleDetails);
     I.click(alertRulesPage.buttons.hideDetails(ruleNameWithBuiltInTemplate));
     I.dontSeeElement(alertRulesPage.elements.ruleDetails);
+  },
+);
+
+Scenario(
+  'PMM-T646 Verify user can not create Rule with negative duration time @ia @not-pr-pipeline',
+  async ({
+    I, alertRulesPage,
+  }) => {
+    alertRulesPage.openAlertRulesTab();
+    I.click(alertRulesPage.buttons.openAddRuleModal);
+
+    I.waitForVisible(alertRulesPage.fields.ruleName, 30);
+    alertRulesPage.searchAndSelectResult('Template', 'Memory used by MongoDB');
+    I.waitForVisible(alertRulesPage.elements.expression, 30);
+
+    I.clearField(alertRulesPage.fields.duration);
+    I.fillField(alertRulesPage.fields.duration, '-1');
+
+    I.seeTextEquals('Must be greater than or equal to 1', alertRulesPage.elements.durationError);
+    I.seeAttributesOnElements(alertRulesPage.buttons.addRule, { disabled: true });
+
+    I.clearField(alertRulesPage.fields.duration);
+    I.fillField(alertRulesPage.fields.duration, '1');
+
+    I.seeTextEquals('', alertRulesPage.elements.durationError);
   },
 );
