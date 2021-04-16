@@ -101,13 +101,17 @@ Scenario(
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
     await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
     await pmmInventoryPage.verifyMetricsFlags(serviceName);
+
     I.amOnPage(qanPage.url);
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter('RDS Postgres');
+    qanFilters.applyFilter(serviceName);
     qanOverview.waitForOverviewLoaded();
     const count = await qanOverview.getCountOfItems();
 
     assert.ok(count > 0, 'The queries for added RDS Postgres do NOT exist');
     I.amOnPage(dashboardPage.postgresqlInstanceOverviewDashboard.url);
+    dashboardPage.applyFilter('Node Name', serviceName);
+    await dashboardPage.verifyThereAreNoGraphsWithNA();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData();
   },
 );
