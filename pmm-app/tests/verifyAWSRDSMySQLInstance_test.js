@@ -104,7 +104,7 @@ Scenario(
 
     I.amOnPage(qanPage.url);
     qanOverview.waitForOverviewLoaded();
-    qanFilters.applyFilter(serviceName);
+    qanFilters.applyFilter('RDS Postgres');
     qanOverview.waitForOverviewLoaded();
     const count = await qanOverview.getCountOfItems();
 
