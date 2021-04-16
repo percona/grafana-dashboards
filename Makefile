@@ -11,21 +11,6 @@ coverage:
 	cd pmm-app \
 	&& npm run coverage
 
-.PHONY: e2e
-e2e:
-	cd pmm-app \
-	&& mkdir -pv logs video || true \
-	&& docker-compose up -d \
-	&& npm run e2e
-
-.PHONY: e2e_local
-e2e_local:
-	cd pmm-app \
-	&& mkdir -pv logs video || true \
-	&& docker-compose up -d \
-	&& npm run e2e:local
-
-
 .PHONY: codecov
 codecov:
 	cd pmm-app \
@@ -53,7 +38,7 @@ build_package:
 generate_coverage: coverage codecov
 
 .PHONY: test
-test: release e2e coverage codecov
+test: release coverage codecov
 
 .PHONY: clean
 clean:
