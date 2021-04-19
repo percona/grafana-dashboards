@@ -182,7 +182,7 @@ module.exports = {
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 60; i++) {
       const response = await I.sendPostRequest('v1/management/DBaaS/PSMDBClusters/List', body, headers);
 
       if (response.data.clusters) {
@@ -227,6 +227,33 @@ module.exports = {
       } else break;
 
       await new Promise((r) => setTimeout(r, 10000));
+    }
+  },
+
+  async deleteAllDBCluster(clusterName) {
+    const body = {
+      kubernetesClusterName: clusterName,
+      operators: { xtradb: { status: 'OPERATORS_STATUS_OK' }, psmdb: { status: 'OPERATORS_STATUS_OK' } },
+      status: 'KUBERNETES_CLUSTER_STATUS_OK',
+    };
+    const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
+    let response = await I.sendPostRequest('v1/management/DBaaS/XtraDBClusters/List', body, headers);
+
+    if (response.data.clusters) {
+      for (const db of response.data.clusters) {
+        await this.apiDeleteXtraDBCluster(db.name, clusterName);
+        await this.waitForDbClusterDeleted(db.name, clusterName);
+      }
+    }
+
+    response = await I.sendPostRequest('v1/management/DBaaS/PSMDBClusters/List', body, headers);
+
+    if (response.data.clusters) {
+      for (const db of response.data.clusters) {
+        await this.apiDeletePSMDBCluster(db.name, clusterName);
+        await this.waitForDbClusterDeleted(db.name, clusterName, 'MongoDB');
+      }
     }
   },
 };

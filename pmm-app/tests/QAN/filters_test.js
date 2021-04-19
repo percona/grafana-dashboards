@@ -2,8 +2,8 @@ const assert = require('assert');
 
 Feature('QAN filters');
 
-Before(({ I, qanPage, qanOverview }) => {
-  I.Authorize();
+Before(async ({ I, qanPage, qanOverview }) => {
+  await I.Authorize();
   I.amOnPage(qanPage.url);
   qanOverview.waitForOverviewLoaded();
 });
@@ -232,9 +232,10 @@ Scenario(
   async ({ I, qanFilters, dashboardPage }) => {
     const mongoLink = '/graph/d/mongodb-cluster-summary/mongodb-cluster-summary';
     const header = 'MongoDB Cluster Summary';
+    const filterValue = 'mongodb_node_cluster';
 
-    I.fillField(qanFilters.fields.filterBy, 'mongodb');
-    qanFilters.navigateByShortCut(mongoLink);
+    I.fillField(qanFilters.fields.filterBy, filterValue);
+    await qanFilters.navigateByShortCut(mongoLink, filterValue);
     // wait for open new tab
     I.wait(2);
     await dashboardPage.waitAndSwitchTabs(2);
@@ -248,9 +249,10 @@ Scenario(
   async ({ I, qanFilters, dashboardPage }) => {
     const replicationSetLink = '/graph/d/mysql-replicaset-summary/mysql-replication-summary';
     const header = 'MySQL Replication Summary';
+    const filterValue = 'ps-repl1';
 
     I.fillField(qanFilters.fields.filterBy, 'ps-repl1');
-    qanFilters.navigateByShortCut(replicationSetLink);
+    await qanFilters.navigateByShortCut(replicationSetLink, filterValue);
     // wait for open new tab
     I.wait(2);
     await dashboardPage.waitAndSwitchTabs(2);
@@ -266,9 +268,10 @@ Scenario(
     const nodeNameLink = 'node_name=pmm-server';
     const link = '/graph/d/node-instance-summary/node-summary';
     const header = 'Node Summary';
+    const filterValue = 'pmm-server'
 
-    I.fillField(qanFilters.fields.filterBy, 'pmm-server');
-    qanFilters.navigateByShortCut(shortCut);
+    I.fillField(qanFilters.fields.filterBy, filterValue);
+    qanFilters.navigateByShortCut(shortCut, filterValue);
     // wait for open new tab
     I.wait(2);
     await dashboardPage.waitAndSwitchTabs(2);
@@ -283,9 +286,10 @@ Scenario(
   async ({ I, qanFilters, dashboardPage }) => {
     const serviceNameLink = '/graph/d/mongodb-instance-summary/mongodb-instance-summary';
     const header = 'MongoDB Instance Summary';
+    const filterValue = 'mongodb_rs1_2';
 
-    I.fillField(qanFilters.fields.filterBy, 'mongodb');
-    qanFilters.navigateByShortCut(serviceNameLink);
+    I.fillField(qanFilters.fields.filterBy, 'mongodb_rs1_2');
+    await qanFilters.navigateByShortCut(serviceNameLink, filterValue);
     // wait for open new tab
     I.wait(2);
     await dashboardPage.waitAndSwitchTabs(2);

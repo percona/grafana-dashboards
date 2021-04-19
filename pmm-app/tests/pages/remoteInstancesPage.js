@@ -80,7 +80,7 @@ module.exports = {
   },
 
   rdsInstanceIdLocator(instance) {
-    return `//tr/td[text()="${instance}"]/following-sibling::td/button`;
+    return `//tr/td[text()="${instance}"]/following-sibling::td/div/button`;
   },
 
   waitUntilRemoteInstancesPageLoaded() {

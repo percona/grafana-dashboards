@@ -18,10 +18,10 @@ inputFields.add([dbaasPage.tabs.dbClusterTab.advancedOptions.fields.nodesNumberF
 inputFields.add([dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryField, ['0.01', '-0.3', '0.0'], dbaasPage.tabs.dbClusterTab.advancedOptions.fields.memoryFieldErrorMessage, dbaasPage.valueGreatThanErrorText(0.1)]);
 inputFields.add([dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuNumberFields, ['0.01', '-0.3', '0.0'], dbaasPage.tabs.dbClusterTab.advancedOptions.fields.cpuFieldErrorMessage, dbaasPage.valueGreatThanErrorText(0.1)]);
 
-Feature('Test the functionality for Kubernetes Cluster Registration UI');
+Feature('DbaaS: Kubernetes Cluster Registration UI');
 
 Before(async ({ I }) => {
-  I.Authorize();
+  await I.Authorize();
 });
 
 Scenario(
@@ -123,8 +123,8 @@ Scenario('Verify DB Cluster Tab Page Elements & Steps Background @dbaas @not-pr-
     I.amOnPage(dbaasPage.url);
     dbaasPage.checkCluster(clusterName, false);
     I.click(dbaasPage.tabs.dbClusterTab.dbClusterTab);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
-    I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
+    I.waitForElement(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop, 30);
+    I.click(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.monitoringWarningLocator, 30);
     I.waitForText(dbaasPage.monitoringWarningMessage, 30);
     I.seeElement(dbaasPage.tabs.dbClusterTab.basicOptions.fields.clusterNameField);
@@ -155,9 +155,9 @@ Scenario('PMM-T456 PMM-T490 Verify DB Cluster Steps Background @dbaas @not-pr-pi
     dbaasPage.checkCluster(clusterName, false);
     I.dontSeeElement(adminPage.fields.timePickerMenu);
     I.click(dbaasPage.tabs.dbClusterTab.dbClusterTab);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
+    I.waitForVisible(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 60);
     I.dontSeeElement(adminPage.fields.timePickerMenu);
-    I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
+    I.click(dbaasPage.tabs.dbClusterTab.dbClusterAddButtonTop);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.monitoringWarningLocator, 30);
     I.waitForText(dbaasPage.monitoringWarningMessage, 30);
     await adminPage.verifyBackgroundColor(dbaasPage.tabs.dbClusterTab.optionsCountLocator(1), 'rgb(235, 123, 24)');
@@ -183,7 +183,7 @@ Scenario('PMM-T456 Verify Create Cluster steps validation fields disabled/enable
     I.amOnPage(dbaasPage.url);
     dbaasPage.checkCluster(clusterName, false);
     I.click(dbaasPage.tabs.dbClusterTab.dbClusterTab);
-    I.waitForElement(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 30);
+    I.waitForVisible(dbaasPage.tabs.dbClusterTab.addDbClusterButton, 60);
     I.dontSeeElement(adminPage.fields.timePickerMenu);
     I.click(dbaasPage.tabs.dbClusterTab.addDbClusterButton);
     I.waitForElement(dbaasPage.tabs.dbClusterTab.optionsCountLocator(2), 30);
@@ -215,7 +215,7 @@ Scenario('PMM-T456 Verify Create Cluster steps validation fields disabled/enable
     await dbaasAPI.apiUnregisterCluster(clusterName);
   });
 
-Data(inputFields).Scenario('PMM-T456 Verify Create Cluster steps validation - field input validation @dbaas @not-pr-pipeline',
+Data(inputFields).Scenario('PMM-T456 Verify Create Cluster steps validation - field input validation @nightly @not-pr-pipeline',
   async ({
     I, dbaasPage, dbaasAPI, adminPage, current,
   }) => {
