@@ -274,4 +274,10 @@ module.exports = {
     I.waitForVisible(this.fields.requiredFieldHostname, 30);
     I.waitForVisible(this.fields.requiredFieldPort, 30);
   },
+
+  async checkField(field, value) {
+    const grabbedValue = await I.grabValueFrom(field);
+
+    assert.ok(grabbedValue.includes(value), `The field does not contain: ${value}. The value is: ${grabbedValue}`);
+  },
 };

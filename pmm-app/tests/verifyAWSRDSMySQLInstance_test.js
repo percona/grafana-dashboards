@@ -96,6 +96,8 @@ Scenario(
     remoteInstancesPage.verifyInstanceIsDiscovered(serviceName);
     remoteInstancesPage.startMonitoringOfInstance(serviceName);
     remoteInstancesPage.verifyAddInstancePageOpened();
+    await remoteInstancesPage.checkField(remoteInstancesPage.fields.serviceName, serviceName);
+    await remoteInstancesPage.checkField(remoteInstancesPage.fields.hostName, serviceName);
     remoteInstancesPage.fillRemoteRDSMySQLFields(serviceName);
     remoteInstancesPage.createRemoteInstance(serviceName);
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
@@ -106,7 +108,7 @@ Scenario(
     dashboardPage.applyFilter('Node Name', serviceName);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData();
-
+    I.wait(30);
     I.amOnPage(qanPage.url);
     qanOverview.waitForOverviewLoaded();
     qanFilters.applyFilter('RDS Postgres');
@@ -114,6 +116,5 @@ Scenario(
     const count = await qanOverview.getCountOfItems();
 
     assert.ok(count > 0, 'The queries for added RDS Postgres do NOT exist');
-
   },
 );
