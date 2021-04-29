@@ -34,47 +34,6 @@ jobs:
           path: pmm-app/dist/
           if-no-files-found: error
 
-  e2e:
-    runs-on: ubuntu-latest
-    needs: build
-    strategy:
-      matrix:
-        node-version: [14.x]
-
-    steps:
-      - uses: percona-platform/checkout@v2
-      - name: Run e2e tests and upload artifacts
-        uses: percona-platform/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Download built packages
-        uses: percona-platform/download-artifact@v2
-        with:
-          name: build-dist
-          path: pmm-app/dist/
-
-      - name: Enable node_modules cache
-        uses: percona-platform/cache@v2
-        with:
-          path: |
-            node_modules
-            */*/node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ matrix.node-version }}-yarn-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ matrix.node-version }}-yarn-
-
-      - run: make prepare_release
-      - run: make docker_clean
-      - run: make e2e_local
-
-      - name: Publish Test Report
-        uses: percona-platform/action-junit-report@v2
-        with:
-          report_paths: "pmm-app/tests/output/parallel_chunk*/*.xml"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
   code_coverage:
     needs: build
     runs-on: ubuntu-latest
@@ -113,7 +72,7 @@ jobs:
       - run: make generate_coverage
 
   workflow_success:
-    needs: [e2e, code_coverage, build]
+    needs: [code_coverage, build]
     name: Slack Notification success
     runs-on: ubuntu-latest
     env:
@@ -134,7 +93,7 @@ jobs:
 
   workflow_failure:
     if: ${{ failure() }}
-    needs: [e2e, code_coverage, build]
+    needs: [code_coverage, build]
     name: Slack Notification failure
     runs-on: ubuntu-latest
     env:
