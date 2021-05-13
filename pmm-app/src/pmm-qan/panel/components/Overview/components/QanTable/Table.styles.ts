@@ -134,7 +134,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         content: '';
         display: block;
         height: 0;
-        right: 5px;
+        right: 13px;
         top: 50%;
         position: absolute;
         width: 0;
