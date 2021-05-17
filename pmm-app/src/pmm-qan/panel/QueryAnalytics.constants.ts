@@ -8,6 +8,8 @@ enum PageSizes {
   high = '100',
 }
 
+export const ALL_VARIABLE_TEXT = 'All';
+export const AUTO_VARIABLE_TEXT = 'auto';
 export const PAGE_SIZE_OPTIONS = [PageSizes.low, PageSizes.medium, PageSizes.high];
 export const DEFAULT_PAGE_NUMBER = 1;
 export const DEFAULT_PAGE_SIZE = +PageSizes.low;
