@@ -1,11 +1,20 @@
 import { getLocationSrv } from '@grafana/runtime';
 import { ParseQueryParamDate } from 'shared/components/helpers/time-parameters-parser';
-import { DEFAULT_COLUMNS, DEFAULT_PAGE_SIZE, FILTERS_NAMES } from '../QueryAnalytics.constants';
+import {
+  ALL_VARIABLE_TEXT, AUTO_VARIABLE_TEXT, DEFAULT_COLUMNS, DEFAULT_PAGE_SIZE, FILTERS_NAMES,
+} from '../QueryAnalytics.constants';
 
 const setFilters = (query) => FILTERS_NAMES.reduce((acc, filterName) => {
   const filters = query.getAll(`var-${filterName}`);
 
   if (!filters.length) {
+    return acc;
+  }
+
+  // if there's only one empty filter use default value
+  if (filters.length === 1 && filters[0] === '') {
+    acc[filterName] = [ALL_VARIABLE_TEXT];
+
     return acc;
   }
 
@@ -34,10 +43,26 @@ export const refreshGrafanaVariables = (state) => {
   const variablesQuery: GrafanaVariables = {};
 
   Object.keys(labels).forEach((key) => {
-    const variables = labels[key];
+    const variables = labels[key].length > 1
+      ? labels[key].filter((label) => label !== ALL_VARIABLE_TEXT)
+      : labels[key];
 
     variablesQuery[`var-${key}`] = variables.map((variable) => (variable === 'na' ? '' : variable));
   });
+
+  // set defaults when filters are empty
+  FILTERS_NAMES.forEach((filter) => {
+    const filterName = `var-${filter}`;
+
+    if (!variablesQuery[filterName]) {
+      if (filter !== 'interval') {
+        variablesQuery[filterName] = [ALL_VARIABLE_TEXT];
+      } else {
+        variablesQuery[filterName] = [AUTO_VARIABLE_TEXT];
+      }
+    }
+  });
+
   if (columns) {
     variablesQuery.columns = JSON.stringify(columns);
   }
