@@ -1053,7 +1053,7 @@ export const METRIC_CATALOGUE = {
   },
   wal_fpi: {
     humanizeName: 'Full Page Images',
-    tooltipText: 'Total number of FPI (full page images) in WAL (Write-ahead logging) records. (PG13)',
+    tooltipText: 'Total number of FPI (full page images) in WAL (Write-ahead logging) records',
     simpleName: 'wal_fpi',
     serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
@@ -1068,7 +1068,7 @@ export const METRIC_CATALOGUE = {
   },
   wal_records: {
     humanizeName: 'Write-ahead Logging Records',
-    tooltipText: 'Total number of WAL (Write-ahead logging) records. (PG13)',
+    tooltipText: 'Total number of WAL (Write-ahead logging) records',
     simpleName: 'wal_records',
     serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
