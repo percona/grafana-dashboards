@@ -40,7 +40,7 @@ describe('useApiCall::', () => {
 
     wrapper?.update();
 
-    const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop('data-hook');
+    const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(data).toEqual(undefined);
     expect(errorMessage).toEqual('');
@@ -64,7 +64,7 @@ describe('useApiCall::', () => {
 
     wrapper?.update();
 
-    const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop('data-hook');
+    const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(data).toEqual(fakeData);
     expect(errorMessage).toEqual('');
@@ -88,7 +88,7 @@ describe('useApiCall::', () => {
 
     wrapper?.update();
 
-    const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop('data-hook');
+    const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(data).toBe(undefined);
     expect(errorMessage).toEqual(Error('Invalid response received'));

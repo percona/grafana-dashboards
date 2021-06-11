@@ -35,17 +35,17 @@ export const getAllColumnsWidth = (mainColumnWidth, columns) => {
   return Math.max(getAllColumns(columns) + mainColumnWidth - FIXED_COLUMN_WIDTH, width) - SCROLLBAR_WIDTH;
 };
 
-const dimensionColumnRender = (record, index) => {
+const DimensionColumnRender = ({ fingerprint, dimension }, index) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
   return (
     <div className={styles.metricWrapper}>
       <div className={styles.getMainMetric(index === 0)}>
-        {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
+        {index === 0 ? 'TOTAL' : fingerprint || dimension || 'N/A'}
       </div>
-      {index !== 0 && record.fingerprint ? (
-        <QueryTooltip query={record.fingerprint} queryId={record.dimension}>
+      {index !== 0 && fingerprint ? (
+        <QueryTooltip query={fingerprint} queryId={dimension}>
           <Info className={styles.tooltipIcon} />
         </QueryTooltip>
       ) : null}
@@ -57,6 +57,6 @@ export const getDefaultColumns = () => [
   {
     Header: 'Main column',
     HeaderAccessor: () => <Dimension />,
-    accessor: dimensionColumnRender,
+    accessor: DimensionColumnRender,
   },
 ];
