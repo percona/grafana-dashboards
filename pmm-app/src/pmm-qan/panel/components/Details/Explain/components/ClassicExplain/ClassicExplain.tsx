@@ -9,8 +9,8 @@ import { ReplacedQueryMessage } from '../ReplacedQueryMessage/ReplacedQueryMessa
 
 export const ClassicExplain = ({ examples, databaseType }) => {
   const [, classicExplain] = useExplains(examples, databaseType);
-
-  const explain = classicExplain.value?.output;
+  const { value: explain } = classicExplain;
+  const processedExplain = processClassicExplain(explain?.explain_result);
 
   return (
     <Overlay isPending={classicExplain.loading}>
@@ -18,31 +18,18 @@ export const ClassicExplain = ({ examples, databaseType }) => {
       <Scrollbar>
         {classicExplain.error ? <pre data-qa="classic-explain-error">{classicExplain.error}</pre> : null}
         {!classicExplain.error
-        && processClassicExplain(
-          explain?.is_dml ? explain?.explain_result : explain,
-        ).rows.length ? (
+        && processedExplain.rows.length ? (
           <div data-qa="classic-explain-value">
             <Table
-              columns={
-                processClassicExplain(
-                  explain?.is_dml ? explain?.explain_result : explain,
-                ).columns
-              }
-              data={
-                processClassicExplain(
-                  explain?.is_dml ? explain?.explain_result : explain,
-                ).rows
-              }
+              columns={processedExplain.columns}
+              data={processedExplain.rows}
               noData={null}
             />
           </div>
           ) : null}
-        {!classicExplain.error
-        && !processClassicExplain(
-          explain?.is_dml ? explain?.explain_result : explain,
-        ).rows.length ? (
+        {!classicExplain.error && !processedExplain.rows.length ? (
           <pre data-qa="classic-explain-no-data">{Messages.noClassicExplain}</pre>
-          ) : null}
+        ) : null}
       </Scrollbar>
     </Overlay>
   );
