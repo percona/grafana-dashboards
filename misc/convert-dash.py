@@ -3,7 +3,7 @@
 import sys
 import json
 
-""" Prometheus has been replaced by VictoriaMetrics since PMM 2.13.0 """
+# Prometheus has been replaced by VictoriaMetrics since PMM 2.13.0
 datasources = {
     '${DS_METRICS}': 'Metrics',
     '${DS_PTSUMMARY}': 'PTSummary',
@@ -23,8 +23,6 @@ def drop_some_internal_elements(dashboard):
             del dashboard['__inputs']
         if '__requires' in element:
             del dashboard['__requires']
-#    for datasource in datasources:
-#        print '%s: %s' % (datasource, datasources[datasource])
     return dashboard
 
 
@@ -33,27 +31,31 @@ def fix_datasource(dashboard):
         if 'panels' in element:
             for panel_index, panel in enumerate(dashboard['panels']):
                 if 'datasource' in panel:
-                    if datasources.get(dashboard['panels'][panel_index]['datasource']) is not None:
-                        dashboard['panels'][panel_index]['datasource'] = datasources.get(dashboard['panels'][panel_index]['datasource'])
+                    dataSourceName = datasources.get(dashboard['panels'][panel_index]['datasource'])
+                    if dataSourceName is not None:
+                        dashboard['panels'][panel_index]['datasource'] = dataSourceName
 
                 if 'panels' in panel:
                         if len(dashboard['panels'][panel_index]['panels']) > 0:
                             for panelIn_index, panelIn in enumerate(dashboard['panels'][panel_index]['panels']):
                                 if 'datasource' in panelIn:
-                                    if datasources.get(dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource']) is not None:
-                                        dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = datasources.get(dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'])
+                                    dataSourceName = datasources.get(dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'])
+                                    if dataSourceName is not None:
+                                        dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = dataSourceName
 
                 if 'mappingTypes' in panel:
                         for mappingTypes_index, mappingTypes in enumerate(dashboard['panels'][panel_index]['mappingTypes']):
                             if 'datasource' in mappingTypes:
-                                 if datasources.get(dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource']) is not None:
-                                     dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] = datasources.get(dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'])
+                                 dataSourceName = datasources.get(dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'])
+                                 if  dataSourceName is not None:
+                                     dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] = dataSourceName
 
         if 'templating' in element:
             for panel_index, panel in enumerate(dashboard['templating']['list']):
                     if 'datasource' in panel.keys():
-                        if datasources.get(dashboard['templating']['list'][panel_index]['datasource']) is not None:
-                            dashboard['templating']['list'][panel_index]['datasource'] = datasources.get(dashboard['templating']['list'][panel_index]['datasource'])
+                        dataSourceName = datasources.get(dashboard['templating']['list'][panel_index]['datasource'])
+                        if dataSourceName is not None:
+                            dashboard['templating']['list'][panel_index]['datasource'] = dataSourceName
 
     return dashboard
 
@@ -66,7 +68,7 @@ def check_formulas(dashboard, currentVariableName, newVariableName):
                     for target_index, target in enumerate(dashboard['panels'][panel_index]['targets']):
                         if 'expr' in target:
                             expr = dashboard['panels'][panel_index]['targets'][target_index]['expr']
-                            if expr.find(currentVariableName) != -1:
+                            if expr.find(currentVariableName) != -1:    # check if variable is used in an expration
                                 print ' >>>> %s' % expr
                                 prompt = ' Replace variable %s to %s (Y/N)? [N]: ' % (currentVariableName, newVariableName)
                                 user_input = raw_input(prompt).upper()
@@ -81,7 +83,7 @@ def check_formulas(dashboard, currentVariableName, newVariableName):
                                     for target_index, target in enumerate(dashboard['panels'][panel_index]['panels'][panelIn_index]['targets']):
                                         if 'expr' in target:
                                             expr = dashboard['panels'][panel_index]['panels'][panelIn_index]['targets'][target_index]['expr']
-                                            if expr.find(currentVariableName) != -1:
+                                            if expr.find(currentVariableName) != -1:    # check if variable is used in an expration
                                                 print ' >>>> %s' % expr
                                                 prompt = ' Replace variable %s to %s (Y/N)? [N]: ' % (currentVariableName, newVariableName)
                                                 user_input = raw_input(prompt).upper()
@@ -93,13 +95,13 @@ def check_formulas(dashboard, currentVariableName, newVariableName):
             for list_index, lists in enumerate(dashboard['templating']['list']):
                     if 'query' in lists.keys():
                         expr = dashboard['templating']['list'][list_index]['query']
-                        if expr.find(currentVariableName) != -1:
+                        if expr.find(currentVariableName) != -1:    # check if variable is used in an expration
                             print ' >>>> %s' % expr 
                             prompt = ' Replace variable %s to %s (Y/N)? [N]: ' % (currentVariableName, newVariableName)
                             user_input = raw_input(prompt).upper()
                             if user_input == 'Y':
                                 dashboard['templating']['list'][list_index]['query'] = expr.replace(currentVariableName, newVariableName)
-                                print ' >>>> Done! %s\n' % dashboard['templating']['list'][list_index]['query'] 
+                                print ' >>>> Done! %s\n' % dashboard['templating']['list'][list_index]['query']
 
     return dashboard
 
