@@ -68,7 +68,7 @@ def check_formulas(dashboard, currentVariableName, newVariableName):
                     for target_index, target in enumerate(dashboard['panels'][panel_index]['targets']):
                         if 'expr' in target:
                             expr = dashboard['panels'][panel_index]['targets'][target_index]['expr']
-                            if expr.find(currentVariableName) != -1:    # check if variable is used in an expration
+                            if expr.find(currentVariableName) != -1:    # check if variable is used in an expression
                                 print ' >>>> %s' % expr
                                 prompt = ' Replace variable %s to %s (Y/N)? [N]: ' % (currentVariableName, newVariableName)
                                 user_input = raw_input(prompt).upper()
@@ -83,7 +83,7 @@ def check_formulas(dashboard, currentVariableName, newVariableName):
                                     for target_index, target in enumerate(dashboard['panels'][panel_index]['panels'][panelIn_index]['targets']):
                                         if 'expr' in target:
                                             expr = dashboard['panels'][panel_index]['panels'][panelIn_index]['targets'][target_index]['expr']
-                                            if expr.find(currentVariableName) != -1:    # check if variable is used in an expration
+                                            if expr.find(currentVariableName) != -1:    # check if variable is used in an expression
                                                 print ' >>>> %s' % expr
                                                 prompt = ' Replace variable %s to %s (Y/N)? [N]: ' % (currentVariableName, newVariableName)
                                                 user_input = raw_input(prompt).upper()
@@ -95,7 +95,7 @@ def check_formulas(dashboard, currentVariableName, newVariableName):
             for list_index, lists in enumerate(dashboard['templating']['list']):
                     if 'query' in lists.keys():
                         expr = dashboard['templating']['list'][list_index]['query']
-                        if expr.find(currentVariableName) != -1:    # check if variable is used in an expration
+                        if expr.find(currentVariableName) != -1:    # check if variable is used in an expression
                             print ' >>>> %s' % expr 
                             prompt = ' Replace variable %s to %s (Y/N)? [N]: ' % (currentVariableName, newVariableName)
                             user_input = raw_input(prompt).upper()
