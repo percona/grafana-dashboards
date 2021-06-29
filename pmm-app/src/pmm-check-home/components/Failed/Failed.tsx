@@ -18,8 +18,8 @@ export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled, hasN
 
   if (hasNoAccess) {
     return (
-      <div className={styles.Empty} data-qa="db-check-panel-no-access">
-        Insufficient access rights.
+      <div className={styles.Empty} data-qa="unauthorized">
+        Insufficient access permissions.
       </div>
     );
   }
