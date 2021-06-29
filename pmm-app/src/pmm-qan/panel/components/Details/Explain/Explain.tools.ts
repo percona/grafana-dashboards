@@ -1,3 +1,5 @@
+import { logger } from '@percona/platform-core';
+import { ActionResult } from 'shared/components/Actions';
 import { ClassicExplainInterface } from './Explain.types';
 
 export const processClassicExplain = (classic): ClassicExplainInterface => {
@@ -23,4 +25,30 @@ export const processClassicExplain = (classic): ClassicExplainInterface => {
     }, {}));
 
   return { columns: headerList, rows: rowsList };
+};
+
+export const base64Decode = (encoded: string) => {
+  let decoded = encoded;
+
+  try {
+    decoded = atob(encoded);
+  } catch (error) {
+    logger.error(error);
+  }
+
+  return decoded;
+};
+
+export const parseExplain = (result: ActionResult) => {
+  try {
+    const value = JSON.parse(result.value);
+
+    if (value && value.explain_result) {
+      return { ...value, explain_result: base64Decode(value.explain_result) };
+    }
+  } catch (error) {
+    logger.error(error);
+  }
+
+  return result.value;
 };

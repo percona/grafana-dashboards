@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getActionResult } from 'shared/components/Actions/Actions.utils';
 import { Databases } from 'shared/core';
 import { mongodbMethods, mysqlMethods } from '../database-models';
+import { parseExplain } from './Explain.tools';
 
 const actionResult = {
   error: '',
@@ -37,9 +38,11 @@ export const useExplains = (examples, databaseType): any[] => {
 
           const jsonResult = await getActionResult(jsonExplainActionId);
           const classicResult = await getActionResult(traditionalExplainActionId);
+          const jsonValue = parseExplain(jsonResult);
+          const classicValue = parseExplain(classicResult);
 
-          setJsonExplain(jsonResult);
-          setClassicExplain(classicResult);
+          setJsonExplain({ ...jsonResult, value: jsonValue ? jsonValue.explain_result : jsonValue });
+          setClassicExplain({ ...classicResult, value: classicValue });
         } else if (databaseType === Databases.mongodb) {
           const jsonExplainActionId = await mongodbMethods.getExplainJSON({ example: notEmptyExample[0] });
 
