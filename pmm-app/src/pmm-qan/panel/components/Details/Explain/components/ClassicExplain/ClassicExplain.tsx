@@ -5,24 +5,29 @@ import { Table } from 'shared/components/Elements/Table';
 import { useExplains } from '../../Explain.hooks';
 import { processClassicExplain } from '../../Explain.tools';
 import { Messages } from '../../../Details.messages';
+import { ReplacedQueryMessage } from '../ReplacedQueryMessage/ReplacedQueryMessage';
 
 export const ClassicExplain = ({ examples, databaseType }) => {
   const [, classicExplain] = useExplains(examples, databaseType);
+  const { value: explain } = classicExplain;
+  const processedExplain = processClassicExplain(explain?.explain_result);
 
   return (
     <Overlay isPending={classicExplain.loading}>
+      <ReplacedQueryMessage originalQuery={explain?.explained_query} isVisible={explain?.is_dml} />
       <Scrollbar>
         {classicExplain.error ? <pre data-qa="classic-explain-error">{classicExplain.error}</pre> : null}
-        {!classicExplain.error && processClassicExplain(classicExplain.value).rows.length ? (
+        {!classicExplain.error
+        && processedExplain.rows.length ? (
           <div data-qa="classic-explain-value">
             <Table
-              columns={processClassicExplain(classicExplain.value).columns}
-              data={processClassicExplain(classicExplain.value).rows}
+              columns={processedExplain.columns}
+              data={processedExplain.rows}
               noData={null}
             />
           </div>
-        ) : null}
-        {!classicExplain.error && !processClassicExplain(classicExplain.value).rows.length ? (
+          ) : null}
+        {!classicExplain.error && !processedExplain.rows.length ? (
           <pre data-qa="classic-explain-no-data">{Messages.noClassicExplain}</pre>
         ) : null}
       </Scrollbar>
