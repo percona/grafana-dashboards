@@ -27,21 +27,24 @@ const Metrics: FC<MetricsProps> = ({
   );
 
   const rateColumn = (totals) => (item) => {
+    const {
+      sparkline, metricName, isRate, units, metric, pipeTypes,
+    } = item;
     const polygonChartProps = {
-      data: item.sparkline,
+      data: sparkline,
       ykey: 'metric',
-      metricName: item.metricName,
+      metricName,
       color: totals ? 'rgba(223, 159, 85, 0.8)' : undefined,
     };
 
     return (
       <div className={styles.metricColumn}>
         <span className={styles.metricData}>
-          {`${item.isRate ? humanize.transform(item.metric.rate, item.pipeTypes.ratePipe) : '0'} ${
-            item.units
+          {`${isRate ? humanize.transform(metric.rate, pipeTypes.ratePipe) : '0'} ${
+            units
           }`}
         </span>
-        <span className={styles.sparkline}>{item.sparkline && <Sparkline {...polygonChartProps} />}</span>
+        <span className={styles.sparkline}>{sparkline && <Sparkline {...polygonChartProps} />}</span>
       </div>
     );
   };

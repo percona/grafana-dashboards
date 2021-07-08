@@ -43,7 +43,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   };
 
   const itemsList = filteredData
-    .filter((item, index, list) => {
+    .filter((item, _, list) => {
       if (showAll && !item.value && list.length === 1) {
         return false;
       }

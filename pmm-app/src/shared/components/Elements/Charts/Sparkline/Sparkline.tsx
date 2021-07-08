@@ -122,7 +122,7 @@ export const Sparkline = ({
 
       // ReactTooltip.show(sparklineCanvas);
       ctx.clearRect(0, 0, 300, 30);
-      drawData.forEach((item, index) => {
+      drawData.forEach((_, index) => {
         drawBar(index, color);
       });
 
@@ -132,7 +132,7 @@ export const Sparkline = ({
     sparklineCanvas.current.addEventListener('mouseout', () => {
       updateGraphs(NaN);
       ctx.clearRect(0, 0, 300, 30);
-      drawData.forEach((item, index) => {
+      drawData.forEach((_, index) => {
         drawBar(index, color);
       });
     });
@@ -172,13 +172,13 @@ export const Sparkline = ({
     //   sparklineCanvas.current.addEventListener('mousemove', mouseMove);
     // });
     ctx.clearRect(0, 0, 300, 30);
-    drawData.forEach((item, index) => {
+    drawData.forEach((_, index) => {
       drawBar(index, color);
     });
 
     const drawHighlighted = (e) => {
       ctx.clearRect(0, 0, 300, 30);
-      drawData.forEach((item, index) => drawBar(index, color));
+      drawData.forEach((_, index) => drawBar(index, color));
 
       if (!e.detail) {
         return;

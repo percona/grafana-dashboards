@@ -98,7 +98,7 @@ describe('useVersionDetails', () => {
       isLoading,
       isDefaultView,
       getVersionDetails,
-    ] = wrapper?.find('div').prop('data-hook');
+    ] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(installedVersionDetails).toEqual(emptyInstalledVersionDetails);
     expect(lastCheckDate).toEqual('');
@@ -132,7 +132,7 @@ describe('useVersionDetails', () => {
       isLoading,
       isDefaultView,
       getVersionDetails,
-    ] = wrapper?.find('div').prop('data-hook');
+    ] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(installedVersionDetails).toEqual(emptyInstalledVersionDetails);
     expect(lastCheckDate).toEqual('');
@@ -166,7 +166,7 @@ describe('useVersionDetails', () => {
       isLoading,
       isDefaultView,
       getVersionDetails,
-    ] = wrapper?.find('div').prop('data-hook');
+    ] = wrapper?.find('div').prop<any>('data-hook');
 
     const expectedNextVersionDetails = {
       nextFullVersion: fakeData.latest.full_version,

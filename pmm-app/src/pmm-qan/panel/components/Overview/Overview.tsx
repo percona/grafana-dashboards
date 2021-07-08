@@ -37,7 +37,7 @@ export const Overview: FC = () => {
     contextActions.changePage(page);
   }, []);
 
-  const changePageSize = useCallback((current, size) => {
+  const changePageSize = useCallback((_, size) => {
     contextActions.changePageSize(size);
   }, []);
 
