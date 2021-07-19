@@ -29,7 +29,7 @@ export const UpdatePanel: FC<{}> = () => {
       setForceUpdate(true);
     }
 
-    getCurrentVersionDetails(true);
+    getCurrentVersionDetails({ force: true });
   };
 
   useEffect(() => {
