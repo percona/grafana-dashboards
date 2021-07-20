@@ -131,9 +131,9 @@ export const Table: FC<TableProps> = ({
     onSortChange((state as any).sortBy);
   }, [(state as any).sortBy]);
 
-  const RenderHeader = (headerGroup: HeaderGroup) => (
-    <div {...headerGroup.getHeaderGroupProps()} className={cx('tr', styles.headerRow)}>
-      {headerGroup.headers.map((column: any, index) => {
+  const RenderHeader = ({ headers, getHeaderGroupProps }: HeaderGroup) => (
+    <div {...getHeaderGroupProps()} className={cx('tr', styles.headerRow)}>
+      {headers.map((column: any, index) => {
         const { HeaderAccessor } = column;
 
         column.Header = () => HeaderAccessor();

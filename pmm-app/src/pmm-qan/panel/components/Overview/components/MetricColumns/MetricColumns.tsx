@@ -63,8 +63,8 @@ const getSorting = (orderBy, metricName) => {
 
 export const metricColumnRender = ({
   metricName, metric, totalValues, columnIndex,
-}) => (item, index) => {
-  const { stats } = item.metrics[metricName];
+}) => ({ metrics, sparkline }, index) => {
+  const { stats } = metrics[metricName];
   const isTimeMetric = metricName.endsWith('_time');
   const statPerSec = stats.qps || stats.sum_per_sec;
   const percentFromTotal = (
@@ -137,7 +137,7 @@ export const metricColumnRender = ({
   };
 
   const polygonChartProps = {
-    data: item.sparkline,
+    data: sparkline,
     metricName,
     color: index === 0 ? 'rgba(223, 159, 85, 0.8)' : undefined,
   };
