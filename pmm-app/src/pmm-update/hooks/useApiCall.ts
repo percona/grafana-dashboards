@@ -2,12 +2,17 @@ import { useEffect, useState } from 'react';
 
 import { ApiCall } from 'pmm-update/types';
 
-export const useApiCall = <R, A>(apiFn: (apiFnArgs?: A) => Promise<R>, apiFnArgs?: A): ApiCall<R, A> => {
+export const useApiCall = <R, A>(
+  apiFn: (apiFnArgs?: A) => Promise<R>,
+  apiFnArgs?: A,
+  apiFnArgsRetry?: A,
+  retryDefault = true,
+): ApiCall<R, A> => {
   const [data, setData] = useState<R>();
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const apiCall = async (apiFnArgs?: A) => {
+  const apiCall = async (apiFnArgs?: A, retry = retryDefault) => {
     setIsLoading(true);
 
     try {
@@ -19,8 +24,13 @@ export const useApiCall = <R, A>(apiFn: (apiFnArgs?: A) => Promise<R>, apiFnArgs
 
       setData(response);
     } catch (e) {
-      console.error(e);
-      setErrorMessage(e);
+      // retry the call once with different arguments
+      if (retry) {
+        await apiCall(apiFnArgsRetry, false);
+      } else {
+        console.error(e);
+        setErrorMessage(e);
+      }
     } finally {
       setIsLoading(false);
     }
