@@ -131,7 +131,7 @@ export const parseURL = (query) => ({
 export const setLabels = (filters) => Object.keys(filters)
   .filter((filter) => filters[filter])
   .reduce((labels, filter) => {
-    const [group, value] = filter.split(':');
+    const [group, value] = filter.split(';');
 
     // TODO: using '--' because final form think that it is a nested fields
     //  need to replace it with something better
