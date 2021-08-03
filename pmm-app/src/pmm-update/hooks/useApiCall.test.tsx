@@ -30,6 +30,13 @@ describe('useApiCall::', () => {
 
     return Promise.resolve(fakeData);
   });
+  const fakeApiRetry = jest.fn().mockImplementation(async (value: number) => {
+    if (value !== fakeData) {
+      return Promise.reject();
+    }
+
+    return Promise.resolve(fakeData);
+  });
 
   it('should return the correct values if the api call is pending', async () => {
     let wrapper: ReturnType<typeof mount> | undefined;
@@ -40,7 +47,7 @@ describe('useApiCall::', () => {
 
     wrapper?.update();
 
-    const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop('data-hook');
+    const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(data).toEqual(undefined);
     expect(errorMessage).toEqual('');
@@ -64,7 +71,7 @@ describe('useApiCall::', () => {
 
     wrapper?.update();
 
-    const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop('data-hook');
+    const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(data).toEqual(fakeData);
     expect(errorMessage).toEqual('');
@@ -83,12 +90,12 @@ describe('useApiCall::', () => {
     let wrapper: ReturnType<typeof mount> | undefined;
 
     await act(async () => {
-      wrapper = mount(<HookWrapper hook={() => useApiCall(fakeApiInvalid)} />);
+      wrapper = mount(<HookWrapper hook={() => useApiCall(fakeApiInvalid, {}, {}, false)} />);
     });
 
     wrapper?.update();
 
-    const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop('data-hook');
+    const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(data).toBe(undefined);
     expect(errorMessage).toEqual(Error('Invalid response received'));
@@ -99,6 +106,27 @@ describe('useApiCall::', () => {
     });
 
     expect(fakeApiInvalid).toBeCalledTimes(2);
+
+    wrapper?.unmount();
+  });
+
+  it('should retry the call with different arguments if retry is true', async () => {
+    let wrapper: ReturnType<typeof mount> | undefined;
+
+    await act(async () => {
+      wrapper = mount(<HookWrapper hook={() => useApiCall(fakeApiRetry, null, fakeData)} />);
+    });
+
+    wrapper?.update();
+
+    const [data, errorMessage, isLoading] = wrapper?.find('div').prop<any>('data-hook');
+
+    expect(data).toBe(fakeData);
+    expect(errorMessage).toEqual('');
+    expect(isLoading).toEqual(false);
+
+    // called 2 times due to retry being enabled
+    expect(fakeApiRetry).toBeCalledTimes(2);
 
     wrapper?.unmount();
   });

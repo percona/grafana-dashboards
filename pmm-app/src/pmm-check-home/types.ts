@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 export interface CheckPanelOptions {

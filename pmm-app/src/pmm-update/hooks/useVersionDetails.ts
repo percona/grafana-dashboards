@@ -5,6 +5,7 @@ import { formatDateWithYear, formatDateWithTime } from 'pmm-update/UpdatePanel.u
 import { getCurrentVersion } from 'pmm-update/UpdatePanel.service';
 import {
   CurrentOrNextVersionDetails,
+  GetUpdatesBody,
   GetUpdatesResponse,
   InstalledVersionDetails,
   NextVersionDetails,
@@ -25,9 +26,15 @@ export const useVersionDetails = (initialForceUpdate = false): CurrentOrNextVers
   });
   const [lastCheckDate, setLastCheckDate] = useState('');
   const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
-  const [data, errorMessage, isLoading, getVersionDetails] = useApiCall<GetUpdatesResponse | void, boolean>(
+  const [
+    data,
+    errorMessage,
+    isLoading,
+    getVersionDetails,
+  ] = useApiCall<GetUpdatesResponse | void, GetUpdatesBody>(
     getCurrentVersion,
-    initialForceUpdate,
+    { force: initialForceUpdate },
+    { force: initialForceUpdate, onlyInstalledVersion: true },
   );
 
   useEffect(() => {
@@ -36,7 +43,15 @@ export const useVersionDetails = (initialForceUpdate = false): CurrentOrNextVers
     }
 
     const {
-      last_check, latest, latest_news_url, installed, update_available,
+      last_check,
+      latest = {
+        full_version: undefined,
+        timestamp: undefined,
+        version: undefined,
+      },
+      latest_news_url,
+      installed,
+      update_available,
     } = data;
     const { full_version: latestFullVersion, timestamp: latestTimestamp, version: latestVersion } = latest;
     const {

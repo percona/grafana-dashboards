@@ -59,20 +59,17 @@ describe('ProgressModal::', () => {
   });
 
   it('should reload the page when the close button is clicked', () => {
-    // eslint-disable-next-line no-restricted-globals
-    const originalReload = location.reload;
     const mockedReload = jest.fn();
 
-    // eslint-disable-next-line no-restricted-globals
-    location.reload = mockedReload;
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      value: { reload: mockedReload },
+    });
 
     const wrapper = shallow(<ProgressModal isUpdated version={version} />);
 
     wrapper.find('[data-qa="modal-close"]').simulate('click');
 
     expect(mockedReload).toBeCalledTimes(1);
-
-    // eslint-disable-next-line no-restricted-globals
-    location.reload = originalReload;
   });
 });
