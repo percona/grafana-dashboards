@@ -105,15 +105,17 @@ npm run dev
 
         from dbazhenov:PMM-5053-dbazhenov-tooltip to percona:PMM-2.0
 
+
 === Code Reviews
 
-9. Your Pull Request must pass certain checks, i.e. Jenkins CI, and Contributor License Agreement.
+9. After submitting your PR please add `pmm-review-fe` team as a reviewer - that would auto assign reviewers to review your PR.
 
+10. Your Pull Request must pass certain checks, i.e. Jenkins CI, and Contributor License Agreement.
     You need to open the Contributor License Agreement page, read it, and confirm it.
 
-10. Wait for our experts to review your code. You may need to answer questions or to address requests for changes.
+11. Wait for our experts to review your code. You may need to answer questions or to address requests for changes.
 
-11. Our Engineers will merge your branch into the release branch by themselves.
+12. Our Engineers will merge your branch into the release branch by themselves.
 
 == After your Pull Request is merged
 
