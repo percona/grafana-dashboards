@@ -62,13 +62,13 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
       return (
         <div
           className={styles.label}
-          key={`${group}:${item.value || ''}`}
+          key={`${group};${item.value || ''}`}
           data-qa={`filter-checkbox-${item.value}`}
         >
           <span className={styles.filterName}>
             <CheckboxField
               // TODO: using '--' because final form think that it is a nested fields
-              name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
+              name={`${group};${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
               label={item.value || 'n/a'}
               disabled={!valueExists}
             />
