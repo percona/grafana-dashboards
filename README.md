@@ -2,38 +2,64 @@
 
 The list of featured dashboards:
 
-- Disk Performance
-- Disk Space
+- Advanced Data Exploration
+- CPU Utilization Details
+- Disk Details
+- HAProxy Instance Summary
+- Home Dashboard
+- Memory Details
 - MongoDB Cluster Summary
-- MongoDB Overview
-- MongoDB ReplSet
-- MongoDB RocksDB
-- MongoDB WiredTiger
-- MongoDB MMAPv1
-- MongoDB InMemory
-- Node Overview
-- MySQL InnoDB Metrics
-- MySQL InnoDB Metrics Advanced
-- MySQL InnoDB Compression
-- MySQL MyISAM/Aria Metrics
-- MySQL Overview
-- MySQL Performance Schema
-- MySQL Query Response Time
-- MySQL Replication
-- MySQL Table Statistics
-- MySQL User Statistics
+- MongoDB InMemory Details
+- MongoDB Instance Summary
+- MongoDB Instances Compare
+- MongoDB Instances Overview
+- MongoDB MMAPv1 Details
+- MongoDB ReplSet Summary
+- MongoDB WiredTiger Details
+- MySQL Amazon Aurora Details
 - MySQL Command Handler Counters Compare
-- PXC/Galera Cluster Overview
-- PXC/Galera Graphs
+- MySQL Group Replication Summary
+- MySQL InnoDB Compression Details
+- MySQL InnoDB Details
+- MySQL Instance Summary
+- MySQL Instances Compare
+- MySQL Instances Overview
+- MySQL MyISAM Aria Details
+- MySQL MyRocks Details
+- MySQL Performance Schema Details
+- MySQL Query Response Time Details
+- MySQL Replication Summary
+- MySQL Table Details
+- MySQL TokuDB Details
+- MySQL User Details
+- MySQL Wait Event Analyses Details
+- NUMA Details
+- Network Details
+- Node Summary
+- Node Temperature Details
+- Nodes Compare
+- Nodes Overview
+- PXC Galera Cluster Summary
+- PXC Galera Node Summary
+- PXC Galera Nodes Compare
+- PostgreSQL Instance Summary
+- PostgreSQL Instances Compare
+- PostgreSQL Instances Overview
+- Processes Details
+- Prometheus Exporter Status
+- Prometheus Exporters Overview
+- ProxySQL Instance Summary
 - VictoriaMetrics
-- ProxySQL Overview
-- Summary Dashboard
-- System Overview
-- Trends Dashboard
+- VictoriaMetrics Agents Overview
 
 These dashboards are part of [Percona Monitoring and Management](https://www.percona.com/doc/percona-monitoring-and-management/2.x/index.html).
 
 See a live demonstration at <https://pmmdemo.percona.com>.
+
+Dashboards can be converted to be used on a dedicated prometheus instance.
+
+Example:
+    misc/convert-dash-from-PMM.py dashboards/Disk_Details.json
 
 We welcome contributions to this repository! Detailed information in [CONTRIBUTING.md](CONTRIBUTING.md)
 
