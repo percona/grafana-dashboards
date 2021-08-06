@@ -1,21 +1,17 @@
-Welcom to the repository with grafana dashboards for PMM!
+Welcome to the repository with grafana dashboards for PMM!
 
 We encourage contributions and are always looking for new members that are as dedicated to serving the community as we are.
 
-You can also reach us on our [Forums](https://forums.percona.com) and [Discord](https://discord.gg/mQEyGPkNbR).
+You can also reach us on our [Forums](https://forums.percona.com) and [Discord](http://per.co.na/discord).
 
 
 == Prerequisites
 
 Before submitting code or documentation contributions, you should first complete the following prerequisites.
 
-=== 1. Sign the CLA
+=== Sign the CLA
 
 Before you can contribute, we kindly ask you to sign our [Contributor License Agreement](https://cla-assistant.percona.com/percona/grafana-dashboards) (CLA). You can do this using your GitHub account and one click.
-
-=== 2. Code of Conduct
-
-Please make sure to read and agree to our [Code of Conduct](https://github.com/percona/community/blob/main/content/contribute/coc.md).
 
 == Submitting a Bug
 
@@ -76,13 +72,17 @@ npm run dev
 
 == Submitting a Pull Request
 
-1.  Find the task in [JIRA](https://jira.percona.com/issues/?jql=project+%3D+PMM+AND+component+%3D+%22Grafana+Dashboards%22) or create a new task. Use a component filter Grafana Dashboards.
+1.  Find the task in [JIRA](https://jira.percona.com/issues/?jql=project+%3D+PMM+AND+component+%3D+%22Grafana+Dashboards%22) or issue here in github. If no a similar task is found, please create a new task. Use a component filter Grafana Dashboards.
 
 2.  You need to make a fork of our repository in your GitHub account.
 
 3.  Make a clone of your repository on your computer.
 
-4.  Create a new branch for your task. Name it using the following pattern: [JIRA_ISSUE_ID]-[username]-[short_title]. For example: PMM-5053-dbazhenov-tooltip .
+4.  Create a new branch for your task. We recommend as a best practice to mention an issue number or just short desc in a branch name.
+
+    Example:
+
+        PMM-5053-add-missed-tooltips
 
 5.  Make changes to the code in your branch.
 
@@ -122,4 +122,4 @@ npm run dev
 Once your pull request is merged, you are an official Percona Community Contributor. Welcome to the community!
 
 
-We're looking forward to your contributions and hope to hear from you soon on our [Forums](https://forums.percona.com) and [Discord](https://discord.gg/mQEyGPkNbR).
+We're looking forward to your contributions and hope to hear from you soon on our [Forums](https://forums.percona.com) and [Discord](http://per.co.na/discord).
