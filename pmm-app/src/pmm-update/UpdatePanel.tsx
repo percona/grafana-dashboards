@@ -12,6 +12,7 @@ import { SettingsService } from 'shared/core';
 import * as styles from './UpdatePanel.styles';
 
 export const UpdatePanel: FC<{}> = () => {
+  const isOnline = navigator.onLine;
   const [forceUpdate, setForceUpdate] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -81,7 +82,7 @@ export const UpdatePanel: FC<{}> = () => {
     <>
       <div className={styles.panel}>
         <CurrentVersion installedVersionDetails={installedVersionDetails} />
-        {isUpdateAvailable && !isDefaultView && !updatesDisabled && !hasNoAccess && !isLoading ? (
+        {isUpdateAvailable && !isDefaultView && !updatesDisabled && !hasNoAccess && !isLoading && isOnline ? (
           <AvailableUpdate nextVersionDetails={nextVersionDetails} />
         ) : null}
         {isLoading ? (
@@ -90,7 +91,7 @@ export const UpdatePanel: FC<{}> = () => {
           </div>
         ) : (
           <>
-            {(isUpdateAvailable || forceUpdate) && !updatesDisabled && !hasNoAccess ? (
+            {(isUpdateAvailable || forceUpdate) && !updatesDisabled && !hasNoAccess && isOnline ? (
               <div className={styles.middleSectionWrapper}>
                 <Button onClick={handleUpdate} icon={'fa fa-download' as any} variant="secondary">
                   Upgrade to
@@ -102,13 +103,13 @@ export const UpdatePanel: FC<{}> = () => {
               <InfoBox
                 upToDate={!isDefaultView && !forceUpdate}
                 hasNoAccess={hasNoAccess}
-                updatesDisabled={updatesDisabled}
+                updatesDisabled={updatesDisabled || !isOnline}
               />
             )}
           </>
         )}
         <LastCheck
-          disabled={isLoading || updatesDisabled}
+          disabled={isLoading || updatesDisabled || !isOnline}
           onCheckForUpdates={handleCheckForUpdates}
           lastCheckDate={lastCheckDate}
         />
