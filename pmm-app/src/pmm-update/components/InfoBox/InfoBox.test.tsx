@@ -56,4 +56,13 @@ describe('InfoBox::', () => {
 
     wrapper.unmount();
   });
+
+  it('should show not online messages', () => {
+    const wrapper = shallow(<InfoBox isOnline={false} />);
+
+    expect(wrapper.find('section > p').length).toEqual(1);
+    expect(wrapper.text()).toEqual(Messages.notOnline);
+
+    wrapper.unmount();
+  });
 });

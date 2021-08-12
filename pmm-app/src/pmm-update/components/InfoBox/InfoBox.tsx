@@ -9,6 +9,7 @@ export const InfoBox: FC<InfoBoxProps> = ({
   upToDate = false,
   hasNoAccess,
   updatesDisabled,
+  isOnline = true,
 }) => {
   const styles = useStyles(getStyles);
 
@@ -16,6 +17,8 @@ export const InfoBox: FC<InfoBoxProps> = ({
     <section data-qa="updates-info" className={styles.infoBox}>
       {hasNoAccess ? (
         <p>{Messages.noAccess}</p>
+      ) : !isOnline ? (
+        <p>{Messages.notOnline}</p>
       ) : updatesDisabled ? (
         <p>
           {Messages.updatesDisabled}

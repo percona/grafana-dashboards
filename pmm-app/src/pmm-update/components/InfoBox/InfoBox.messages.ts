@@ -5,4 +5,5 @@ export const Messages = {
   noAccess: 'Insufficient access permissions',
   updatesDisabled: 'Updates are disabled. You can enable them in ',
   pmmSettings: 'PMM Settings.',
+  notOnline: 'PMM cannot check for updates',
 };

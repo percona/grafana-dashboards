@@ -103,7 +103,8 @@ export const UpdatePanel: FC<{}> = () => {
               <InfoBox
                 upToDate={!isDefaultView && !forceUpdate}
                 hasNoAccess={hasNoAccess}
-                updatesDisabled={updatesDisabled || !isOnline}
+                updatesDisabled={updatesDisabled}
+                isOnline={isOnline}
               />
             )}
           </>
