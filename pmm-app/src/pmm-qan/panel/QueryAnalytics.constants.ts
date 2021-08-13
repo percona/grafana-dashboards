@@ -2,8 +2,6 @@ import { get } from 'lodash';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Databases } from 'shared/core';
 
-jest.mock('shared/components/helpers/notification-manager');
-
 enum PageSizes {
   low = '25',
   medium = '50',
