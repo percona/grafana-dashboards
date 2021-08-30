@@ -38,4 +38,31 @@ describe('InfoBox::', () => {
 
     wrapper.unmount();
   });
+
+  it('should show an insufficient access message', () => {
+    const wrapper = shallow(<InfoBox hasNoAccess />);
+
+    expect(wrapper.find('section > p').length).toEqual(1);
+    expect(wrapper.text()).toEqual(Messages.noAccess);
+
+    wrapper.unmount();
+  });
+
+  it('should show updates disabled messages', () => {
+    const wrapper = shallow(<InfoBox updatesDisabled />);
+
+    expect(wrapper.find('section > p').length).toEqual(1);
+    expect(wrapper.text()).toEqual(`${Messages.updatesDisabled}${Messages.pmmSettings}`);
+
+    wrapper.unmount();
+  });
+
+  it('should show not online messages', () => {
+    const wrapper = shallow(<InfoBox isOnline={false} />);
+
+    expect(wrapper.find('section > p').length).toEqual(1);
+    expect(wrapper.text()).toEqual(Messages.notOnline);
+
+    wrapper.unmount();
+  });
 });
