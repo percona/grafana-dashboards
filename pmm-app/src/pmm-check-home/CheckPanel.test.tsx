@@ -9,15 +9,15 @@ jest.mock('shared/components/helpers/notification-manager');
 
 jest.mock('pmm-check-home/CheckPanel.service');
 
-const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
-  <MemoryRouter>
-    <Route>
-      <CheckPanel {...props} />
-    </Route>
-  </MemoryRouter>
-);
-
 xdescribe('CheckPanel::', () => {
+  const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
+    <MemoryRouter>
+      <Route>
+        <CheckPanel {...props} />
+      </Route>
+    </MemoryRouter>
+  );
+
   CheckPanel.prototype.componentDidMount = jest.fn();
 
   it('should accept a title parameter and display it as a table caption', async () => {
