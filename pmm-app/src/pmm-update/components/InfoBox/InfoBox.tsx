@@ -5,6 +5,16 @@ import { Messages } from './InfoBox.messages';
 import { getStyles } from './InfoBox.styles';
 import { PMM_ADVANCED_SETTINGS_URL } from './InfoBox.constants';
 
+const UpdateInfo: FC = ({ children }) => {
+  const styles = useStyles(getStyles);
+
+  return (
+    <section data-qa="updates-info" className={styles.infoBox}>
+      {children}
+    </section>
+  );
+};
+
 export const InfoBox: FC<InfoBoxProps> = ({
   upToDate = false,
   hasNoAccess,
@@ -13,27 +23,47 @@ export const InfoBox: FC<InfoBoxProps> = ({
 }) => {
   const styles = useStyles(getStyles);
 
-  return (
-    <section data-qa="updates-info" className={styles.infoBox}>
-      {hasNoAccess ? (
+  if (hasNoAccess) {
+    return (
+      <UpdateInfo>
         <p>{Messages.noAccess}</p>
-      ) : !isOnline ? (
+      </UpdateInfo>
+    );
+  }
+
+  if (!isOnline) {
+    return (
+      <UpdateInfo>
         <p>{Messages.notOnline}</p>
-      ) : updatesDisabled ? (
+      </UpdateInfo>
+    );
+  }
+
+  if (updatesDisabled) {
+    return (
+      <UpdateInfo>
         <p>
           {Messages.updatesDisabled}
           <a className={styles.link} href={PMM_ADVANCED_SETTINGS_URL}>
             {Messages.pmmSettings}
           </a>
         </p>
-      ) : upToDate ? (
+      </UpdateInfo>
+    );
+  }
+
+  if (upToDate) {
+    return (
+      <UpdateInfo>
         <p>{Messages.upToDate}</p>
-      ) : (
-        <>
-          <p>{Messages.noUpdates}</p>
-          <p>{Messages.updatesNotice}</p>
-        </>
-      )}
-    </section>
+      </UpdateInfo>
+    );
+  }
+
+  return (
+    <UpdateInfo>
+      <p>{Messages.noUpdates}</p>
+      <p>{Messages.updatesNotice}</p>
+    </UpdateInfo>
   );
 };

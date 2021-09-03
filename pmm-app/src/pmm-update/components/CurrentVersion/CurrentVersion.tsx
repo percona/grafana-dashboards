@@ -20,9 +20,7 @@ export const CurrentVersion: FC<CurrentVersionProps> = ({ installedVersionDetail
           </span>
           {' '}
           <span data-qa="update-installed-release-date" className={styles.releaseDate}>
-            (
-            {installedVersionDate}
-            )
+            {!!installedVersionDate && `(${installedVersionDate})`}
           </span>
         </span>
       </p>
