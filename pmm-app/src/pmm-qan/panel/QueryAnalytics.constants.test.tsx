@@ -1,5 +1,7 @@
 import { METRIC_CATALOGUE } from './QueryAnalytics.constants';
 
+jest.mock('shared/components/helpers/notification-manager');
+
 const metrics = {
   num_queries: {
     sum: 100,
