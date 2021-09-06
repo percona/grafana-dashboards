@@ -10,7 +10,7 @@ export const getStyles = ({ colors, spacing }: GrafanaTheme) => ({
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    border: 2px solid #292929;
+    border: 1px solid #292929;
     text-align: center;
     padding: ${spacing.xs};
   `,

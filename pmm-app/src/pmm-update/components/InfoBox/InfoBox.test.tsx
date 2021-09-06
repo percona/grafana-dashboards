@@ -1,12 +1,12 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { InfoBox } from './InfoBox';
 import { Messages } from './InfoBox.messages';
 
 describe('InfoBox::', () => {
   it('should show that there are no updates by default', () => {
-    const wrapper = shallow(<InfoBox />);
+    const wrapper = mount(<InfoBox />);
 
     expect(wrapper.find('section > p').length).toEqual(2);
     expect(
@@ -26,7 +26,7 @@ describe('InfoBox::', () => {
   });
 
   it('should show a different message if upToDate is true', () => {
-    const wrapper = shallow(<InfoBox upToDate />);
+    const wrapper = mount(<InfoBox upToDate />);
 
     expect(wrapper.find('section > p').length).toEqual(1);
     expect(
@@ -40,7 +40,7 @@ describe('InfoBox::', () => {
   });
 
   it('should show an insufficient access message', () => {
-    const wrapper = shallow(<InfoBox hasNoAccess />);
+    const wrapper = mount(<InfoBox hasNoAccess />);
 
     expect(wrapper.find('section > p').length).toEqual(1);
     expect(wrapper.text()).toEqual(Messages.noAccess);
@@ -49,7 +49,7 @@ describe('InfoBox::', () => {
   });
 
   it('should show updates disabled messages', () => {
-    const wrapper = shallow(<InfoBox updatesDisabled />);
+    const wrapper = mount(<InfoBox updatesDisabled />);
 
     expect(wrapper.find('section > p').length).toEqual(1);
     expect(wrapper.text()).toEqual(`${Messages.updatesDisabled}${Messages.pmmSettings}`);
@@ -58,7 +58,7 @@ describe('InfoBox::', () => {
   });
 
   it('should show not online messages', () => {
-    const wrapper = shallow(<InfoBox isOnline={false} />);
+    const wrapper = mount(<InfoBox isOnline={false} />);
 
     expect(wrapper.find('section > p').length).toEqual(1);
     expect(wrapper.text()).toEqual(Messages.notOnline);
