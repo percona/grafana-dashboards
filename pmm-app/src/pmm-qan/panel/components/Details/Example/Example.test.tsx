@@ -5,6 +5,7 @@ import { mount } from 'enzyme';
 import Example from './Example';
 import { DatabasesType } from '../Details.types';
 
+jest.mock('shared/components/helpers/notification-manager');
 jest.mock('react-highlight.js', () => ({ children }) => <div className="sql">{children}</div>);
 jest.mock('react-json-view', () => ({ src = {} }) => <div className="json" data-src={JSON.stringify(src)} />);
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { mount, shallow } from 'enzyme';
 import { Button, Spinner } from '@grafana/ui';
 
@@ -7,6 +8,7 @@ import { usePerformUpdate, useVersionDetails } from 'pmm-update/hooks';
 import { UpdatePanel } from 'pmm-update/UpdatePanel';
 
 jest.mock('shared/components/helpers/notification-manager');
+jest.mock('shared/core/Settings.service');
 
 // NOTE (nicolalamacchia): these mocks are here because some test cases alter them
 jest.mock('./hooks/useVersionDetails', () => ({
@@ -55,8 +57,14 @@ describe('UpdatePanel::', () => {
     mockedUseVersionDetails.mockClear();
   });
 
-  it('shows a box telling that no upgrades are available by default', () => {
-    const wrapper = shallow(<UpdatePanel />);
+  it('shows a box telling that no updates are available by default', async () => {
+    let wrapper;
+
+    await act(async () => {
+      wrapper = await mount(<UpdatePanel />);
+    });
+
+    wrapper.update();
 
     expect(wrapper.find(InfoBox).length).toEqual(1);
     expect(wrapper.find(InfoBox).props()).toHaveProperty('upToDate', false);
@@ -64,7 +72,7 @@ describe('UpdatePanel::', () => {
     wrapper.unmount();
   });
 
-  it('should return the correct values if the upgrade initialization was successful', () => {
+  it('should return the correct values if the update initialization was successful', () => {
     const wrapper = shallow(<UpdatePanel />);
 
     expect(mockedUseVersionDetails).toBeCalledTimes(1);
@@ -83,7 +91,7 @@ describe('UpdatePanel::', () => {
     wrapper.unmount();
   });
 
-  it('should launch the upgrade if the upgrade button is clicked', () => {
+  it('should launch the update if the update button is clicked', async () => {
     mockedUseVersionDetails.mockImplementation(() => [
       {
         installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: true,
@@ -94,16 +102,21 @@ describe('UpdatePanel::', () => {
       fakeGetCurrentVersionDetails,
     ]);
 
-    const wrapper = shallow(<UpdatePanel />);
+    let wrapper;
 
-    wrapper?.find(Button).simulate('click');
+    await act(async () => {
+      wrapper = await mount(<UpdatePanel />);
+    });
+
+    wrapper.update();
+    wrapper.find('button').at(0).simulate('click');
 
     expect(fakeLaunchUpdate).toBeCalledTimes(1);
 
     wrapper?.unmount();
   });
 
-  it('should show InfoBox with the upToDate prop if !isUpdateAvailable && !isDefaultView', () => {
+  it('should show InfoBox with the upToDate prop if !isUpdateAvailable && !isDefaultView', async () => {
     mockedUseVersionDetails.mockImplementation(() => [
       {
         installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable: false,
@@ -114,7 +127,13 @@ describe('UpdatePanel::', () => {
       fakeGetCurrentVersionDetails,
     ]);
 
-    const wrapper = shallow(<UpdatePanel />);
+    let wrapper;
+
+    await act(async () => {
+      wrapper = await mount(<UpdatePanel />);
+    });
+
+    wrapper.update();
 
     expect(wrapper.find(InfoBox).length).toEqual(1);
     expect(wrapper.find(InfoBox).props()).toHaveProperty('upToDate');
