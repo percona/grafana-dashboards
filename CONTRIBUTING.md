@@ -1,19 +1,18 @@
-Welcome to the repository with grafana dashboards for PMM!
+Welcome to the repository hosting grafana dashboards for PMM!
 
 We encourage contributions and are always looking for new members that are as dedicated to serving the community as we are.
 
 You can also reach us on our [Forums](https://forums.percona.com) and [Discord](http://per.co.na/discord).
 
-
-== Prerequisites
+## Prerequisites
 
 Before submitting code or documentation contributions, you should first complete the following prerequisites.
 
-=== Sign the CLA
+### Sign the CLA
 
 Before you can contribute, we kindly ask you to sign our [Contributor License Agreement](https://cla-assistant.percona.com/percona/grafana-dashboards) (CLA). You can do this using your GitHub account and one click.
 
-== Submitting a Bug
+## Submitting a Bug
 
 If you find a bug in Percona MongoDB Exporter or one of the related projects, you should submit a report to that project's [JIRA](https://jira.percona.com) issue tracker.
 
@@ -29,12 +28,12 @@ An excellent resource is [Elika Etemad's article on filing good bug reports.](ht
 
 As a general rule of thumb, please try to create bug reports that are:
 
-- *Reproducible.* Include steps to reproduce the problem.
-- *Specific.* Include as much detail as possible: which version, what environment, etc.
-- *Unique.* Do not duplicate existing tickets.
-- *Scoped to a Single Bug.* One bug per report.
+- _Reproducible._ Include steps to reproduce the problem.
+- _Specific._ Include as much detail as possible: which version, what environment, etc.
+- _Unique._ Do not duplicate existing tickets.
+- _Scoped to a Single Bug._ One bug per report.
 
-== Setup your local development environment
+## Setup your local development environment
 
 The easiest way to setup a development environment is to use [Docker Compose](https://docs.docker.com/compose).
 That environment bundles a number of tools to help you populate the panels with sample data.
@@ -54,13 +53,18 @@ services:
     container_name: pmm-server
     image: percona/pmm-server:2
     environment:
-      - DISABLE_TELEMETRY=1
+      - ENABLE_DBAAS=1
+      - ENABLE_BACKUP_MANAGEMENT=1
+      - ENABLE_ALERTING=1
     volumes:
       - ./dist:/var/lib/grafana/plugins/pmm-app/dist
     ports:
       - 80:80
     restart: always
 ```
+
+Please note, that we map the `./pmm-app/dist` folder as a subfolder of `/var/lib/grafana/plugins` so that front-end artifacts,
+i.e. panels and dashboards, can be picked up by grafana server running in the docker container.
 
 Then to run it:
 
@@ -70,7 +74,7 @@ docker-compose -f ./docker-compose.local.yml up -d
 npm run dev
 ```
 
-== Submitting a Pull Request
+## Submitting a Pull Request
 
 1.  Find the task in [JIRA](https://jira.percona.com/issues/?jql=project+%3D+PMM+AND+component+%3D+%22Grafana+Dashboards%22) or issue here in github. If no a similar task is found, please create a new task. Use a component filter Grafana Dashboards.
 
@@ -99,14 +103,13 @@ npm run dev
 
         git push origin PMM-5053-dbazhenov-tooltip
 
-8. Make a Pull Request from your branch to the right branch in percona/grafana-dashboards.
+8.  Make a Pull Request from your branch to the right branch in percona/grafana-dashboards.
 
     Example:
 
-        from dbazhenov:PMM-5053-dbazhenov-tooltip to percona:PMM-2.0
+        from dbazhenov:PMM-5053-dbazhenov-tooltip to percona:main
 
-
-=== Code Reviews
+### Code Reviews
 
 9. After submitting your PR please add `pmm-review-fe` team as a reviewer - that would auto assign reviewers to review your PR.
 
@@ -117,9 +120,8 @@ npm run dev
 
 12. Our Engineers will merge your branch into the release branch by themselves.
 
-== After your Pull Request is merged
+## After your Pull Request is merged
 
 Once your pull request is merged, you are an official Percona Community Contributor. Welcome to the community!
-
 
 We're looking forward to your contributions and hope to hear from you soon on our [Forums](https://forums.percona.com) and [Discord](http://per.co.na/discord).
