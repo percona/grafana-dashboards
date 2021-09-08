@@ -1,15 +1,15 @@
+import React from 'react';
 import { Divider } from 'antd';
 import Tooltip from 'antd/es/tooltip';
-import React from 'react';
 import { cx } from 'emotion';
+import { useTheme } from '@grafana/ui';
 import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Latency, Sparkline, TotalPercentage } from 'shared/components/Elements/Charts';
-import { useTheme } from '@grafana/ui';
 import { COLUMN_WIDTH, FIXED_COLUMN_WIDTH } from '../../Overview.constants';
 import { ManageColumns } from '../../../ManageColumns/ManageColumns';
-import './MetricColumns.scss';
 import { getStyles } from './MetricColumn.styles';
+import './MetricColumns.scss';
 
 export const TimeMetric = ({ value, percentage, cnt }) => {
   const theme = useTheme();
