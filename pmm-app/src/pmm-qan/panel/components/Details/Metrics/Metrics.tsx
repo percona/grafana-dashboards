@@ -9,6 +9,7 @@ import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip'
 import { MetricsTabs } from './Metrics.constants';
 import { MetricsProps } from './Metrics.types';
 import { getStyles } from './Metrics.styles';
+import { TopQuery } from '../TopQuery/TopQuery';
 
 const Metrics: FC<MetricsProps> = ({
   databaseType, totals, metrics, loading,
@@ -18,6 +19,7 @@ const Metrics: FC<MetricsProps> = ({
 
   const [isDistributionPanelOpen, setDistributionPanelVisibility] = useState(true);
   const [isMetricsPanelOpen, setMetricsPanelVisibility] = useState(true);
+  const [isTopQueryOpen, setTopQueryVisibility] = useState(true);
 
   const mainColumn = (item) => (
     <span className={styles.metricColumn}>
@@ -115,6 +117,21 @@ const Metrics: FC<MetricsProps> = ({
           onToggle={() => setDistributionPanelVisibility(!isDistributionPanelOpen)}
         >
           <TimeDistribution data={metrics} />
+        </Collapse>
+      ) : null}
+      {/* TODO: only add this if top query exists */}
+      {databaseType === Databases.postgresql ? (
+        <Collapse
+          collapsible
+          label={MetricsTabs.topQuery}
+          isOpen={isTopQueryOpen}
+          onToggle={() => setTopQueryVisibility(!isTopQueryOpen)}
+        >
+          <TopQuery
+            databaseType={databaseType}
+            query=""
+            queryId=""
+          />
         </Collapse>
       ) : null}
       <Collapse
