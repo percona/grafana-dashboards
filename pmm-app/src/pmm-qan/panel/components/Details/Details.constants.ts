@@ -3,4 +3,5 @@ export const TabKeys = {
   examples: 'examples',
   explain: 'explain',
   tables: 'tables',
+  plan: 'plan',
 };
