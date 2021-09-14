@@ -7,7 +7,7 @@ import os
 import shutil
 import sys
 
-GRAFANA_PLUGINS_DR = '/var/lib/grafana/plugins/'
+GRAFANA_PLUGINS_DR = '/srv/grafana/plugins/'
 
 
 def rename_panels():
