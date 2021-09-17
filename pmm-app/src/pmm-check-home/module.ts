@@ -1,3 +1,5 @@
+import './global.css';
+
 import { PanelPlugin } from '@grafana/data';
 import { CheckPanelOptions } from 'pmm-check-home/types';
 import { DEFAULTS } from './CheckPanel.constants';
