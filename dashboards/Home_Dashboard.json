@@ -1012,6 +1012,16 @@
                     "targetBlank": true,
                     "title": "PostgreSQL Services Overview",
                     "url": "/graph/d/postgresql-instance-overview/postgresql-instances-overview?$__url_time_range"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "ProxySQL Instance Summary",
+                    "url": "/graph/d/proxysql-instance-summary/proxysql-instance-summary?$__url_time_range"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "HAProxy Instance Summary",
+                    "url": "/graph/d/haproxy-instance-summary/haproxy-instance-summary?$__url_time_range"
                 }
             ],
             "mappingType": 1,
@@ -1050,8 +1060,11 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum by () (max_over_time(mysql_global_status_threads_connected{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]) or \nmax_over_time(mongodb_connections{node_name=~\"$node_name\",state=\"current\",environment=~\"$environment\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval])))",
+                    "exemplar": true,
+                    "expr": "sum by () (sum by (node_name)(mysql_global_status_threads_connected{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]),\nsum by (node_name)(mongodb_connections{node_name=~\"$node_name\",state=\"current\",environment=~\"$environment\"}[$interval]),\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval])),\nsum by (node_name) (proxysql_connection_pool_conn_used{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]),\nsum by (node_name) (increase(haproxy_frontend_connections_total{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]))\n)",
+                    "hide": false,
                     "interval": "$interval",
+                    "legendFormat": "",
                     "refId": "C"
                 }
             ],
@@ -1117,6 +1130,16 @@
                     "targetBlank": true,
                     "title": "PostgreSQL Services Overview",
                     "url": "/graph/d/postgresql-instance-overview/postgresql-instances-overview?$__url_time_range"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "ProxySQL Instance Summary",
+                    "url": "/graph/d/proxysql-instance-summary/proxysql-instance-summary$__url_time_range"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "HAProxy Instance Summary",
+                    "url": "/graph/d/haproxy-instance-summary/haproxy-instance-summary?$__url_time_range"
                 }
             ],
             "mappingType": 1,
@@ -1158,8 +1181,10 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum by () (\n(rate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or \nirate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])) or \n(rate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m]) or \nirate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m])) or\n((rate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])) or\n(irate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])))\n)",
+                    "exemplar": true,
+                    "expr": "sum by () (\n(rate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or \nirate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])), \n(rate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m]) or \nirate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m])),\n((rate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])) or\n(irate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]))),\n(rate(proxysql_connection_pool_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or\nirate(proxysql_connection_pool_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])),\n(rate(haproxy_backend_sessions_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or irate(haproxy_backend_sessions_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])))",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -1545,8 +1570,10 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "min(mysql_global_status_uptime{node_name=~\"$node_name\",environment=~\"$environment\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$node_name\",environment=~\"$environment\"} or \n(pg_postmaster_uptime_seconds{node_name=~\"$node_name\",environment=~\"$environment\"}))",
+                    "exemplar": true,
+                    "expr": "min(mysql_global_status_uptime{node_name=~\"$node_name\",environment=~\"$environment\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$node_name\",environment=~\"$environment\"} or \npg_postmaster_uptime_seconds{node_name=~\"$node_name\",environment=~\"$environment\"} or proxysql_mysql_status_proxysql_uptime{node_name=~\"$node_name\",environment=~\"$environment\"} or\n(time() - haproxy_process_start_time_seconds{node_name=~\"$node_name\",environment=~\"$environment\"}))",
                     "format": "time_series",
+                    "hide": false,
                     "instant": true,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2111,7 +2138,7 @@
                 "rgba(50, 172, 45, 0.97)"
             ],
             "datasource": null,
-            "decimals": null,
+            "decimals": 0,
             "editable": true,
             "error": false,
             "fieldConfig": {
@@ -2150,6 +2177,16 @@
                     "targetBlank": true,
                     "title": "PostgreSQL Overview - $node_name",
                     "url": "/graph/d/postgresql-instance-summary/postgresql-instance-summary?$__url_time_range&var-node_name=$node_name"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "ProxySQL Instance Summary - $node_name",
+                    "url": "/graph/d/proxysql-instance-summary/proxysql-instance-summary?$__url_time_range&var-node_name=$node_name"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "HAProxy Instance Summary - $node_name",
+                    "url": "/graph/d/haproxy-instance-summary/haproxy-instance-summary?$__url_time_range&var-node_name=$node_name"
                 }
             ],
             "mappingType": 1,
@@ -2186,8 +2223,10 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum by()(max_over_time(mysql_global_status_threads_connected{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]) or \nlabel_replace(mysql_global_status_threads_connected{node_name=~\"$node_name\",node_type=\"remote\",environment=~\"$environment\"},\"node_name\",\"pmm-server\",\"\",\"\") or\nmax_over_time(mongodb_connections{node_name=~\"$node_name\",state=\"current\",environment=~\"$environment\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval])))",
+                    "exemplar": true,
+                    "expr": "sum by()((max_over_time(mysql_global_status_threads_connected{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]) or \nlabel_replace(mysql_global_status_threads_connected{node_name=~\"$node_name\",node_type=\"remote\",environment=~\"$environment\"},\"node_name\",\"pmm-server\",\"\",\"\")),\nmax_over_time(mongodb_connections{node_name=~\"$node_name\",state=\"current\",environment=~\"$environment\"}[$interval]),\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval])),\nsum by (node_name) (proxysql_connection_pool_conn_used{node_name=~\"$node_name\",environment=~\"$environment\"}), increase(haproxy_frontend_connections_total{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]))",
                     "interval": "$interval",
+                    "legendFormat": "",
                     "refId": "B"
                 }
             ],
@@ -2253,6 +2292,16 @@
                     "targetBlank": true,
                     "title": "PostgreSQL Overview - $node_name",
                     "url": "/graph/d/postgresql-instance-summary/postgresql-instance-summary?$__url_time_range&var-node_name=$node_name"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "ProxySQL Instance Summary - $node_name",
+                    "url": "/graph/d/proxysql-instance-summary/proxysql-instance-summary$__url_time_range&var-node_name=$node_name"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "HAProxy Instance Summary - $node_name",
+                    "url": "/graph/d/haproxy-instance-summary/haproxy-instance-summary?$__url_time_range&var-node_name=$node_name"
                 }
             ],
             "mappingType": 1,
@@ -2292,7 +2341,8 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum by (node_name) (\n(rate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or \nirate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])) or \n(rate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m]) or \nirate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m])) or\n((rate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])) or\n(irate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])))\n)",
+                    "exemplar": true,
+                    "expr": "sum by (node_name) (\n(rate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or \nirate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])),\n(rate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m]) or \nirate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m])),\n((rate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])) or\n(irate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]))),\n(rate(proxysql_connection_pool_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or\nirate(proxysql_connection_pool_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])),\nrate(haproxy_backend_sessions_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or irate(haproxy_backend_sessions_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2691,8 +2741,10 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "min by (node_name) (mysql_global_status_uptime{node_name=~\"$node_name\",environment=~\"$environment\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$node_name\",environment=~\"$environment\"} or \n(pg_postmaster_uptime_seconds{node_name=~\"$node_name\",environment=~\"$environment\"}))",
+                    "exemplar": true,
+                    "expr": "min by (node_name) (mysql_global_status_uptime{node_name=~\"$node_name\",environment=~\"$environment\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$node_name\",environment=~\"$environment\"} or \npg_postmaster_uptime_seconds{node_name=~\"$node_name\",environment=~\"$environment\"} or proxysql_mysql_status_proxysql_uptime{node_name=~\"$node_name\",environment=~\"$environment\"} or\n(time() - haproxy_process_start_time_seconds{node_name=~\"$node_name\",environment=~\"$environment\"}))",
                     "format": "time_series",
+                    "hide": false,
                     "instant": true,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2783,6 +2835,7 @@
                     }
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
+                "queryValue": "",
                 "refresh": 2,
                 "skipUrlSync": false,
                 "type": "interval"
