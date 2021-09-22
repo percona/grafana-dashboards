@@ -9,7 +9,7 @@ const UpdateInfo: FC = ({ children }) => {
   const styles = useStyles(getStyles);
 
   return (
-    <section data-qa="updates-info" className={styles.infoBox}>
+    <section data-testid="updates-info" className={styles.infoBox}>
       {children}
     </section>
   );

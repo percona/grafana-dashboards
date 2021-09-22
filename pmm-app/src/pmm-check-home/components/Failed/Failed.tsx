@@ -18,7 +18,7 @@ export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled, hasN
 
   if (hasNoAccess) {
     return (
-      <div className={styles.Empty} data-qa="unauthorized">
+      <div className={styles.Empty} data-testid="unauthorized">
         Insufficient access permissions.
       </div>
     );
@@ -26,7 +26,7 @@ export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled, hasN
 
   if (!isSttEnabled) {
     return (
-      <div className={styles.Empty} data-qa="db-check-panel-settings-link">
+      <div className={styles.Empty} data-testid="db-check-panel-settings-link">
         Security Threat Tool is disabled.
         <br />
         {'Check '}
@@ -39,7 +39,7 @@ export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled, hasN
 
   if (!sum) {
     return (
-      <div data-qa="db-check-panel-zero-checks">
+      <div data-testid="db-check-panel-zero-checks">
         <span className={cx(styles.FailedDiv, styles.Green)}>{sum}</span>
       </div>
     );
@@ -48,7 +48,7 @@ export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled, hasN
   const [critical, major, trivial] = failed;
 
   return (
-    <div data-qa="db-check-panel-has-checks">
+    <div data-testid="db-check-panel-has-checks">
       <Tooltip placement="top" theme="info" content={<TooltipText sum={sum} data={failed} />}>
         <a href={PMM_DATABASE_CHECKS_PANEL_URL} className={styles.FailedDiv}>
           <span className={styles.Critical}>{critical}</span>

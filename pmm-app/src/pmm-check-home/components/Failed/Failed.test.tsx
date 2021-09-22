@@ -32,7 +32,7 @@ describe('Failed::', () => {
   it('should render a message when the user only has reader access', () => {
     const root = shallow(<Failed failed={[1, 0, 1]} isSttEnabled hasNoAccess />);
 
-    expect(root.find('[data-qa="unauthorized"]').text()).toEqual('Insufficient access permissions.');
+    expect(root.find('[data-testid="unauthorized"]').text()).toEqual('Insufficient access permissions.');
     root.unmount();
   });
 });

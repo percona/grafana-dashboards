@@ -24,7 +24,7 @@ export const InputFieldAdapter = ({
           className={cx(className, { invalid: meta.touched && meta.error })}
           title={meta.touched ? meta.error : ''}
         />
-        <div data-qa="input-field-error-message" className={styles.errorMessage}>
+        <div data-testid="input-field-error-message" className={styles.errorMessage}>
           {meta.touched && meta.error}
         </div>
       </>
@@ -48,7 +48,7 @@ export const TextAreaAdapter = ({
           title={meta.touched ? meta.error : ''}
           className={cx(className, { invalid: meta.touched && meta.error })}
         />
-        <div data-qa="textarea-field-error-message" className={styles.errorMessage}>
+        <div data-testid="textarea-field-error-message" className={styles.errorMessage}>
           {meta.touched && meta.error}
         </div>
       </>
@@ -66,7 +66,7 @@ export const CheckboxFieldAdapter = ({
     <Field>
       <div className={cx(className, { invalid: meta.touched && meta.error })}>
         <Checkbox {...input} {...props} />
-        <div data-qa="checkbox-field-error-message" className={styles.errorMessage}>
+        <div data-testid="checkbox-field-error-message" className={styles.errorMessage}>
           {meta.touched && meta.error}
         </div>
       </div>
@@ -80,7 +80,7 @@ export const SelectFieldAdapter = ({
   options,
   label,
   meta,
-  dataQa,
+  dataTestId,
   noOptionsMessage,
   ...props
 }) => {
@@ -89,7 +89,7 @@ export const SelectFieldAdapter = ({
 
   return (
     <Field label={label}>
-      <div data-qa={dataQa}>
+      <div data-testid={dataTestId}>
         <Select
           {...input}
           {...props}
@@ -98,7 +98,7 @@ export const SelectFieldAdapter = ({
           invalid={meta.touched && meta.error}
           noOptionsMessage={noOptionsMessage}
         />
-        <div data-qa="select-field-error-message" className={styles.errorMessage}>
+        <div data-testid="select-field-error-message" className={styles.errorMessage}>
           {meta.touched && meta.error}
         </div>
       </div>
@@ -113,7 +113,7 @@ export const RadioButtonGroupAdapter = ({
   selected,
   label,
   meta,
-  dataQa,
+  dataTestId,
   ...props
 }) => {
   const theme = useTheme();
@@ -128,9 +128,9 @@ export const RadioButtonGroupAdapter = ({
           options={options}
           disabledOptions={disabledOptions}
           value={input.value || selected}
-          dataQa={dataQa}
+          dataTestId={dataTestId}
         />
-        <div data-qa="radio-field-error-message" className={styles.errorMessage}>
+        <div data-testid="radio-field-error-message" className={styles.errorMessage}>
           {meta.touched && meta.error}
         </div>
       </>
