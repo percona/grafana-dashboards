@@ -71,7 +71,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     } = this.state;
 
     return (
-      <div className={styles.panel} data-qa="db-check-panel-home">
+      <div className={styles.panel} data-testid="db-check-panel-home">
         {isLoading && <Spinner />}
         {!isLoading && <Failed failed={failedChecks} isSttEnabled={isSttEnabled} hasNoAccess={hasNoAccess} />}
       </div>

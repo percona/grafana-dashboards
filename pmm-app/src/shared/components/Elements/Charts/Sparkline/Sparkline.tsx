@@ -208,7 +208,7 @@ export const Sparkline = ({
         data-for={`sparkline-tooltip-${id}`}
       />
       <ReactTooltip
-        data-qa="sparkline-tooltip"
+        data-testid="sparkline-tooltip"
         className="sparkline-tooltip"
         place="bottom"
         backgroundColor="#3274d9"

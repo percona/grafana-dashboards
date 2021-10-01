@@ -97,12 +97,12 @@ export const Table: FC<TableProps> = ({
           width: 40,
           sortable: false,
           HeaderAccessor: () => (
-            <div data-qa="row-number-header" className={styles.rowNumberCell}>
+            <div data-testid="row-number-header" className={styles.rowNumberCell}>
               #
             </div>
           ),
           Cell: ({ row }: { row: any }) => (
-            <div data-qa="row-number-cell" className={styles.rowNumberCell}>
+            <div data-testid="row-number-cell" className={styles.rowNumberCell}>
               {rowNumber ? rowNumber(row.index) : row.index}
             </div>
           ),
@@ -152,7 +152,7 @@ export const Table: FC<TableProps> = ({
             <div className={styles.headerContent}>
               <div className="header-wrapper">{column.render('Header')}</div>
               {column.sortable ? (
-                <a className={styles.sortBy} {...column.getSortByToggleProps()} data-qa="sort-by-control">
+                <a className={styles.sortBy} {...column.getSortByToggleProps()} data-testid="sort-by-control">
                   <span className={`sort-by ${sorted}`} />
                 </a>
               ) : null}
@@ -204,7 +204,7 @@ export const Table: FC<TableProps> = ({
       <div className={cx(styles.table, { [styles.tableDisabled]: disabled })}>
         <div className={styles.tableWrap(scroll)}>
           {loading ? (
-            <div data-qa="table-loading" className={styles.empty(scroll.y)}>
+            <div data-testid="table-loading" className={styles.empty(scroll.y)}>
               <Spinner />
             </div>
           ) : null}
@@ -219,7 +219,7 @@ export const Table: FC<TableProps> = ({
                   {headerGroups.map(RenderHeader)}
                   {!!rows.length && rows.map(RenderRow)}
                   {!rows.length && (
-                    <div data-qa="table-no-data" className={styles.empty(scroll.y)}>
+                    <div data-testid="table-no-data" className={styles.empty(scroll.y)}>
                       {noData || <h1>No data</h1>}
                     </div>
                   )}
