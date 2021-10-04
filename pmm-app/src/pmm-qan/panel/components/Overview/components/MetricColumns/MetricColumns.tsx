@@ -107,10 +107,10 @@ export const metricColumnRender = ({
       .map(({ header, value }) => ({ header, value: humanize.transform(value) }));
 
     const MetricsList = ({ data }) => (
-      <div className={styles.metricsWrapper} data-qa="metrics-list">
+      <div className={styles.metricsWrapper} data-testid="metrics-list">
         {data.map((metricItem, metricIndex, list) => (
           // eslint-disable-next-line react/jsx-key
-          <div className={styles.singleMetricWrapper} data-qa={metricItem.key || ''}>
+          <div className={styles.singleMetricWrapper} data-testid={metricItem.key || ''}>
             <span className={styles.metricName}>{`${metricItem.header} : ${metricItem.value}`}</span>
             {list.length === metricIndex + 1 ? null : <Divider className={styles.metricsListDivider} />}
           </div>
