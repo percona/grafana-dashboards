@@ -9,10 +9,10 @@ export const LastCheck: FC<LastCheckProps> = ({ lastCheckDate, onCheckForUpdates
     <p>
       Last check:
       {' '}
-      <span data-qa="update-last-check">{lastCheckDate}</span>
+      <span data-testid="update-last-check">{lastCheckDate}</span>
     </p>
     <Button
-      data-qa="update-last-check-button"
+      data-testid="update-last-check-button"
       variant="link"
       size="sm"
       onClick={onCheckForUpdates}

@@ -20,9 +20,9 @@ export const AvailableUpdate: FC<AvailableUpdateProps> = ({ nextVersionDetails }
         :&nbsp;
       </p>
       <p className={styles.availableUpdateVersion}>
-        <span data-qa="update-latest-version">{showFullVersion ? nextFullVersion : nextVersion}</span>
+        <span data-testid="update-latest-version">{showFullVersion ? nextFullVersion : nextVersion}</span>
         {' '}
-        <span data-qa="update-latest-release-date" className={styles.releaseDate}>
+        <span data-testid="update-latest-release-date" className={styles.releaseDate}>
           (
           {nextVersionDate}
           )

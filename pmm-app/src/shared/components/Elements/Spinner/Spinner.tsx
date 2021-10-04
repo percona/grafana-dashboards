@@ -8,5 +8,5 @@ const spinnerStyle = css`
 `;
 
 Spin.setDefaultIndicator(
-  <Spinner className={spinnerStyle} data-qa="loading-spinner" />,
+  <Spinner className={spinnerStyle} data-testid="loading-spinner" />,
 );

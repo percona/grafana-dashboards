@@ -63,7 +63,7 @@ export const ProgressModal: FC<ProgressModalProps> = ({
             <div className={styles.outputHeader}>
               <Icon
                 className={styles.outputVisibilityToggle}
-                data-qa="modal-chevron-icon"
+                data-testid="modal-chevron-icon"
                 name={chevronIcon as any}
                 onClick={handleToggleShowOutput}
               />
@@ -79,7 +79,7 @@ export const ProgressModal: FC<ProgressModalProps> = ({
             </div>
             {isOutputShown && (
               <div className={styles.output}>
-                <pre data-qa="modal-output-pre" ref={outputRef}>
+                <pre data-testid="modal-output-pre" ref={outputRef}>
                   {output}
                 </pre>
               </div>
@@ -88,7 +88,7 @@ export const ProgressModal: FC<ProgressModalProps> = ({
         ) : (
           <>
             <div className={styles.successNote}>
-              <h6 data-qa="modal-update-success-text">
+              <h6 data-testid="modal-update-success-text">
                 {Messages.updateSuccessNotice}
                 {' '}
                 {version}
@@ -96,7 +96,7 @@ export const ProgressModal: FC<ProgressModalProps> = ({
             </div>
             <Button
               className={styles.closeModal}
-              data-qa="modal-close"
+              data-testid="modal-close"
               variant="primary"
               onClick={reloadAfterUpdate}
             >
