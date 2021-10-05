@@ -63,7 +63,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
         <div
           className={styles.label}
           key={`${group};${item.value || ''}`}
-          data-qa={`filter-checkbox-${item.value}`}
+          data-testid={`filter-checkbox-${item.value}`}
         >
           <span className={styles.filterName}>
             <CheckboxField
@@ -99,14 +99,14 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   return filteredList.length ? (
     <div>
       <p className={styles.filterHeaderWrapper}>
-        <span className={styles.filterHeader} data-qa="checkbox-group-header">
+        <span className={styles.filterHeader} data-testid="checkbox-group-header">
           {name}
         </span>
         {filteredData.filter(searchFilter).length > TOP_LIMIT ? (
           <span
             onClick={() => setShowTop(!showTop)}
             className={styles.showModeSwitcher}
-            data-qa="show-top-switcher"
+            data-testid="show-top-switcher"
           >
             {showTop ? `Show all (${filteredData.filter(searchFilter).length})` : `Show top ${TOP_LIMIT}`}
           </span>

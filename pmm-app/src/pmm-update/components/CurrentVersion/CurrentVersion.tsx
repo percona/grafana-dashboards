@@ -15,11 +15,11 @@ export const CurrentVersion: FC<CurrentVersionProps> = ({ installedVersionDetail
         Current version:
         {' '}
         <span>
-          <span data-qa="update-installed-version">
+          <span data-testid="update-installed-version">
             {showFullVersion ? installedFullVersion : installedVersion}
           </span>
           {' '}
-          <span data-qa="update-installed-release-date" className={styles.releaseDate}>
+          <span data-testid="update-installed-release-date" className={styles.releaseDate}>
             {!!installedVersionDate && `(${installedVersionDate})`}
           </span>
         </span>

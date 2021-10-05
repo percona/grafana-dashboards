@@ -93,7 +93,7 @@ export const DetailsSection: FC = () => {
 
   return (
     <Scrollbar className={styles.scrollArea}>
-      <div className={cx(styles.detailsGrid, 'query-analytics-details')} data-qa="query-analytics-details">
+      <div className={cx(styles.detailsGrid, 'query-analytics-details')} data-testid="query-analytics-details">
         <div className="details-tabs">
           <TabsBar>
             {tabs
