@@ -7,7 +7,7 @@ import { Messages } from 'pmm-qan/panel/QueryAnalytics.messages';
 import { getStyles } from './Search.styles';
 import { SearchProps } from './Search.types';
 
-export const Search: FC<SearchProps> = ({ dataQa, initialValue, handleSearch }) => {
+export const Search: FC<SearchProps> = ({ dataTestId, initialValue, handleSearch }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
   const {
@@ -19,7 +19,7 @@ export const Search: FC<SearchProps> = ({ dataQa, initialValue, handleSearch }) 
       onSubmit={handleSearch}
       initialValues={{ search: initialValue }}
       render={({ handleSubmit }) => (
-        <form onSubmit={handleSubmit} className={styles.searchWrapper} data-qa={dataQa}>
+        <form onSubmit={handleSubmit} className={styles.searchWrapper} data-testid={dataTestId}>
           <Field
             name="search"
             render={({ input }) => (
