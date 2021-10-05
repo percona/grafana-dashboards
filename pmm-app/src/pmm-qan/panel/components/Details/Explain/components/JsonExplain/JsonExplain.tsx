@@ -11,14 +11,14 @@ export const JsonExplain = ({ examples, databaseType }) => {
   return (
     <Overlay isPending={jsonExplain.loading}>
       <Scrollbar>
-        {jsonExplain.error ? <pre data-qa="json-explain-error">{jsonExplain.error}</pre> : null}
+        {jsonExplain.error ? <pre data-testid="json-explain-error">{jsonExplain.error}</pre> : null}
         {!jsonExplain.error && jsonExplain.value ? (
-          <div data-qa="json-explain-value">
+          <div data-testid="json-explain-value">
             <ReactJSON json={JSON.parse(jsonExplain.value)} />
           </div>
         ) : null}
         {!jsonExplain.error && !jsonExplain.value ? (
-          <pre data-qa="json-explain-no-data">{Messages.noJsonExplain}</pre>
+          <pre data-testid="json-explain-no-data">{Messages.noJsonExplain}</pre>
         ) : null}
       </Scrollbar>
     </Overlay>

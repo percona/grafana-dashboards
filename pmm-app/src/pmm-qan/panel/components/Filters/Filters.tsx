@@ -46,7 +46,7 @@ export const Filters: FC = () => {
       size="sm"
       key="qan-filters-show-selected"
       onClick={() => showSetAll(!showAll)}
-      data-qa="qan-filters-show-selected"
+      data-testid="qan-filters-show-selected"
       disabled={!selectedCheckboxes || loading}
       className={styles.resetButton}
     >
@@ -59,7 +59,7 @@ export const Filters: FC = () => {
       variant="link"
       size="sm"
       key="qan-filters-reset-all"
-      data-qa="qan-filters-reset-all"
+      data-testid="qan-filters-reset-all"
       disabled={!selectedCheckboxes || loading}
       className={styles.resetButton}
       type="reset"
@@ -81,7 +81,7 @@ export const Filters: FC = () => {
       <Input
         suffix={<Filter className={styles.icon} />}
         placeholder="Filter by..."
-        data-qa="filters-search-field"
+        data-testid="filters-search-field"
         onChange={(e: React.FormEvent<HTMLInputElement>) => {
           const element = e.target as HTMLInputElement;
 

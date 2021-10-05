@@ -129,10 +129,10 @@ export const Overview: FC = () => {
               total={total}
               onShowSizeChange={changePageSize}
               onChange={changePageNumber}
-              data-qa="qan-pagination"
+              data-testid="qan-pagination"
               disabled={loadingDetails}
             />
-            <span className={styles.showTotal} data-qa="qan-total-items">
+            <span className={styles.showTotal} data-testid="qan-total-items">
               {showTotal}
             </span>
           </div>

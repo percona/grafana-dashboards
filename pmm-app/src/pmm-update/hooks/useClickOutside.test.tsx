@@ -22,14 +22,14 @@ describe('useClickOutside', () => {
 
     const ref = createRef<HTMLDivElement>();
 
-    mount(<div data-qa="referred" ref={ref} />, { attachTo: parent });
+    mount(<div data-testid="referred" ref={ref} />, { attachTo: parent });
 
     await act(async () => {
       wrapper = mount(<HookWrapper hook={() => useClickOutside(ref, mockedHandler)} />);
     });
     wrapper?.update();
 
-    const referredElement = parent.querySelector('[data-qa="referred"]');
+    const referredElement = parent.querySelector('[data-testid="referred"]');
 
     const mouseClick = new MouseEvent('click', { bubbles: true });
 
