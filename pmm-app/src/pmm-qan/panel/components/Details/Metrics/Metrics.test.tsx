@@ -2654,6 +2654,11 @@ const metrics = [
   },
 ];
 
+const textMetrics = {
+  top_query: 'SELECT * from pg',
+  top_queryid: '23728328',
+};
+
 describe('useFilters::', () => {
   beforeEach(() => {
     console.error = jest.fn();
@@ -2669,6 +2674,7 @@ describe('useFilters::', () => {
         databaseType={Databases.postgresql}
         totals={false}
         metrics={metrics}
+        textMetrics={textMetrics}
         loading={false}
       />,
     );

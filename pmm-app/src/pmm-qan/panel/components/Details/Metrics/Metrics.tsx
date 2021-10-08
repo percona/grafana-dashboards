@@ -12,7 +12,7 @@ import { getStyles } from './Metrics.styles';
 import { TopQuery } from '../TopQuery/TopQuery';
 
 const Metrics: FC<MetricsProps> = ({
-  databaseType, totals, metrics, loading,
+  databaseType, totals, metrics, textMetrics = {}, loading,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -20,6 +20,7 @@ const Metrics: FC<MetricsProps> = ({
   const [isDistributionPanelOpen, setDistributionPanelVisibility] = useState(true);
   const [isMetricsPanelOpen, setMetricsPanelVisibility] = useState(true);
   const [isTopQueryOpen, setTopQueryVisibility] = useState(true);
+  const { top_query: topQuery, top_queryid: topQueryId } = textMetrics;
 
   const mainColumn = (item) => (
     <span className={styles.metricColumn}>
@@ -119,8 +120,7 @@ const Metrics: FC<MetricsProps> = ({
           <TimeDistribution data={metrics} />
         </Collapse>
       ) : null}
-      {/* TODO: only add this if top query exists */}
-      {databaseType === Databases.postgresql ? (
+      {databaseType === Databases.postgresql && topQuery && topQueryId ? (
         <Collapse
           collapsible
           label={MetricsTabs.topQuery}
@@ -129,8 +129,8 @@ const Metrics: FC<MetricsProps> = ({
         >
           <TopQuery
             databaseType={databaseType}
-            query=""
-            queryId=""
+            query={topQuery}
+            queryId={topQueryId}
           />
         </Collapse>
       ) : null}
