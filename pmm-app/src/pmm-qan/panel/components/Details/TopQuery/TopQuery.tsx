@@ -24,7 +24,7 @@ export const TopQuery: FC<TopQueryProps> = ({
   }, [contextActions, queryId, databaseType]);
 
   return (
-    <div data-qa="top-query" className={styles.wrapper}>
+    <div data-testid="top-query" className={styles.wrapper}>
       <div className={styles.query} onClick={selectQuery}>
         {query}
       </div>

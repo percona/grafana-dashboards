@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { dataQa } from '@percona/platform-core';
+import { dataTestId } from '@percona/platform-core';
 import { Databases } from 'shared/core';
 import Metrics from './Metrics';
 
@@ -2679,7 +2679,7 @@ describe('useFilters::', () => {
       />,
     );
 
-    expect(wrapper.find(dataQa('top-query')).length).toEqual(1);
+    expect(wrapper.find(dataTestId('top-query')).length).toEqual(1);
   });
 
   it('should not render top query when database is not postgres', () => {
@@ -2692,6 +2692,6 @@ describe('useFilters::', () => {
       />,
     );
 
-    expect(wrapper.find(dataQa('top-query')).length).toEqual(0);
+    expect(wrapper.find(dataTestId('top-query')).length).toEqual(0);
   });
 });
