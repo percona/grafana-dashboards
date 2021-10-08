@@ -16,10 +16,10 @@ export const ClassicExplain = ({ examples, databaseType }) => {
     <Overlay isPending={classicExplain.loading}>
       <ReplacedQueryMessage originalQuery={explain?.explained_query} isVisible={explain?.is_dml} />
       <Scrollbar>
-        {classicExplain.error ? <pre data-qa="classic-explain-error">{classicExplain.error}</pre> : null}
+        {classicExplain.error ? <pre data-testid="classic-explain-error">{classicExplain.error}</pre> : null}
         {!classicExplain.error
         && processedExplain.rows.length ? (
-          <div data-qa="classic-explain-value">
+          <div data-testid="classic-explain-value">
             <Table
               columns={processedExplain.columns}
               data={processedExplain.rows}
@@ -28,7 +28,7 @@ export const ClassicExplain = ({ examples, databaseType }) => {
           </div>
           ) : null}
         {!classicExplain.error && !processedExplain.rows.length ? (
-          <pre data-qa="classic-explain-no-data">{Messages.noClassicExplain}</pre>
+          <pre data-testid="classic-explain-no-data">{Messages.noClassicExplain}</pre>
         ) : null}
       </Scrollbar>
     </Overlay>

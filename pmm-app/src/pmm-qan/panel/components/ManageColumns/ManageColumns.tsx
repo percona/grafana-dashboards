@@ -121,7 +121,7 @@ export const ManageColumns = (props) => {
         className={`${onlyAdd ? 'add' : 'manage'}-columns-selector`}
         dropdownClassName={`${onlyAdd ? 'add' : 'manage'}-columns-selector-dropdown`}
         dropdownRender={dropdownRender}
-        data-qa="manage-columns-selector"
+        data-testid="manage-columns-selector"
         {...extraSelectProps}
       >
         {availableColumns.map((item) => (

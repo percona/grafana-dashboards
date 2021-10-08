@@ -12,7 +12,7 @@ export interface RadioButtonGroupProps {
   disabledOptions?: string[];
   value?: string;
   className?: string;
-  dataQa?: string;
+  dataTestId?: string;
   onChange: (value: string) => void;
 }
 
@@ -23,7 +23,7 @@ export const RadioButtonGroup: FC<RadioButtonGroupProps> = ({
   disabledOptions = [],
   value,
   className,
-  dataQa,
+  dataTestId,
   onChange,
 }) => {
   const theme = useTheme();
@@ -33,7 +33,7 @@ export const RadioButtonGroup: FC<RadioButtonGroupProps> = ({
   ), [selected, value]);
 
   return (
-    <div className={cx(styles.radioButtonGroup, className)} data-qa={dataQa}>
+    <div className={cx(styles.radioButtonGroup, className)} data-testid={dataTestId}>
       {options.map(({ key, value }) => (
         <RadioButton
           key={key}
