@@ -92,4 +92,8 @@ export const FILTERS_GROUPS = [
     name: 'Availability Zone',
     dataKey: 'az',
   },
+  {
+    name: 'Command Type',
+    dataKey: 'cmd_type',
+  },
 ];
