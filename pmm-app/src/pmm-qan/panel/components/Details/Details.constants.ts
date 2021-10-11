@@ -5,3 +5,5 @@ export const TabKeys = {
   tables: 'tables',
   plan: 'plan',
 };
+
+export const OVERLAY_LOADER_SIZE = 35;

@@ -19,48 +19,6 @@ import { Messages } from './Details.messages';
 import { getStyles } from './Details.styles';
 import { Plan } from './Plan/Plan';
 
-const planQuery = `
-SELECT
-  "agents"."agent_id",
-  "agents"."agent_type",
-  "agents"."runs_on_node_id",
-  "agents"."service_id",
-  "agents"."node_id",
-  "agents"."pmm_agent_id",
-  "agents"."custom_labels",
-  "agents"."created_at",
-  "agents"."updated_at",
-  "agents"."disabled",
-  "agents"."status",
-  "agents"."listen_port",
-  "agents"."version",
-  "agents"."username",
-  "agents"."password",
-  "agents"."tls",
-  "agents"."tls_skip_verify",
-  "agents"."aws_access_key",
-  "agents"."aws_secret_key",
-  "agents"."azure_options",
-  "agents"."table_count",
-  "agents"."table_count_tablestats_group_limit",
-  "agents"."query_examples_disabled",
-  "agents"."max_query_log_size",
-  "agents"."metrics_path",
-  "agents"."metrics_scheme",
-  "agents"."rds_basic_metrics_disabled",
-  "agents"."rds_enhanced_metrics_disabled",
-  "agents"."push_metrics",
-  "agents"."disabled_collectors",
-  "agents"."mysql_options",
-  "agents"."mongo_db_tls_options"
-FROM
-  "agents"
-WHERE
-  agent_id IN ($1)
-ORDER BY
-  agent_id`;
-const planId = '8226346089399504855';
-
 export const DetailsSection: FC = () => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -78,7 +36,6 @@ export const DetailsSection: FC = () => {
   const showTablesTab = databaseType !== Databases.mongodb && groupBy === 'queryid' && !totals;
   const showExplainTab = databaseType !== Databases.postgresql && groupBy === 'queryid' && !totals;
   const showExamplesTab = groupBy === 'queryid' && !totals;
-  // TODO: and query has plan?
   const showPlanTab = databaseType === Databases.postgresql && groupBy === 'queryid' && !totals;
 
   useEffect(() => {
@@ -138,7 +95,7 @@ export const DetailsSection: FC = () => {
       label: Messages.tabs.plan.tab,
       key: TabKeys.plan,
       show: showPlanTab,
-      component: <Plan planQuery={planQuery} planId={planId} />,
+      component: <Plan />,
     },
   ];
 
