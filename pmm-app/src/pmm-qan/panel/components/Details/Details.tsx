@@ -30,7 +30,7 @@ export const DetailsSection: FC = () => {
   } = useContext(QueryAnalyticsProvider);
 
   const [loading, examples, databaseType] = useDetails();
-  const [metrics, metricsLoading] = useMetricsDetails();
+  const [metrics, textMetrics, metricsLoading] = useMetricsDetails();
 
   const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
   const showTablesTab = databaseType !== Databases.mongodb && groupBy === 'queryid' && !totals;
@@ -68,7 +68,13 @@ export const DetailsSection: FC = () => {
       key: TabKeys.details,
       show: true,
       component: (
-        <Metrics databaseType={databaseType} totals={totals} metrics={metrics} loading={metricsLoading} />
+        <Metrics
+          databaseType={databaseType}
+          totals={totals}
+          metrics={metrics}
+          textMetrics={textMetrics}
+          loading={metricsLoading}
+        />
       ),
     },
     {
