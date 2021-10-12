@@ -12,14 +12,14 @@ const testProps: RadioButtonGroupProps = {
   selected: options[1].key,
   name: 'test-radio-group',
   options,
-  dataQa: 'radio-button-group',
+  dataTestId: 'radio-button-group',
   onChange: jest.fn(),
 };
 
 describe('RadioButtonGroup::', () => {
   it('Renders correctly with selected option', () => {
     const root = mount(<RadioButtonGroup {...testProps} />);
-    const wrapper = root.find('[data-qa="radio-button-group"]');
+    const wrapper = root.find('[data-testid="radio-button-group"]');
 
     expect(wrapper.children().length).toBe(2);
     expect(wrapper.childAt(0).prop('id')).toEqual(options[0].key);
@@ -29,7 +29,7 @@ describe('RadioButtonGroup::', () => {
   });
   it('Renders correctly with disabled options', () => {
     const root = mount(<RadioButtonGroup {...testProps} disabledOptions={['option1']} />);
-    const wrapper = root.find('[data-qa="radio-button-group"]');
+    const wrapper = root.find('[data-testid="radio-button-group"]');
 
     expect(wrapper.childAt(0).find('label').prop('className')).toContain('disabled');
   });

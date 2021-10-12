@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { dataQa } from '@percona/platform-core';
+import { dataTestId } from '@percona/platform-core';
 import { VisualExplain } from './VisualExplain';
 import { useExplains } from '../../Explain.hooks';
 
@@ -23,8 +23,8 @@ describe('VisualExplain::', () => {
     ]);
     const root = mount(<VisualExplain databaseType="mysql" examples={[]} />);
 
-    expect(root.find(dataQa('visual-explain-error')).length).toBe(0);
-    expect(root.find(dataQa('visual-explain-no-data')).length).toBe(1);
+    expect(root.find(dataTestId('visual-explain-error')).length).toBe(0);
+    expect(root.find(dataTestId('visual-explain-no-data')).length).toBe(1);
   });
 
   it('should render explains correct for error state', () => {
@@ -40,8 +40,8 @@ describe('VisualExplain::', () => {
     ]);
     const root = mount(<VisualExplain databaseType="mysql" examples={[]} />);
 
-    expect(root.find(dataQa('visual-explain-error')).length).toBe(1);
-    expect(root.find(dataQa('visual-explain-no-data')).length).toBe(0);
+    expect(root.find(dataTestId('visual-explain-error')).length).toBe(1);
+    expect(root.find(dataTestId('visual-explain-no-data')).length).toBe(0);
   });
 
   it('should render explains correct for success state', () => {
@@ -57,7 +57,7 @@ describe('VisualExplain::', () => {
     ]);
     const root = mount(<VisualExplain databaseType="mysql" examples={[]} />);
 
-    expect(root.find(dataQa('visual-explain-error')).length).toBe(0);
-    expect(root.find(dataQa('visual-explain-no-data')).length).toBe(0);
+    expect(root.find(dataTestId('visual-explain-error')).length).toBe(0);
+    expect(root.find(dataTestId('visual-explain-no-data')).length).toBe(0);
   });
 });

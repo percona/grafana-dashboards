@@ -21,7 +21,7 @@ export const QueryTooltip = ({
     <Tooltip
       placement="left"
       mouseEnterDelay={0}
-      data-qa="query-tooltip"
+      data-testid="query-tooltip"
       overlayClassName={styles.queryTooltip(float)}
       title={() => (
         <div className={styles.queryTooltipDataWrapper}>

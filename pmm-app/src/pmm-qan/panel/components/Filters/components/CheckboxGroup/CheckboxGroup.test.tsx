@@ -67,10 +67,10 @@ describe('CheckboxGroup ::', () => {
       />,
     );
 
-    expect(root.find('[data-qa="filter-checkbox-postgresql"]').length).toEqual(1);
-    expect(root.find('[data-qa="filter-checkbox-mysql"]').length).toEqual(1);
-    expect(root.find('[data-qa="checkbox-group-header"]').length).toEqual(1);
-    expect(root.find('[data-qa="show-top-switcher"]').length).toEqual(0);
+    expect(root.find('[data-testid="filter-checkbox-postgresql"]').length).toEqual(1);
+    expect(root.find('[data-testid="filter-checkbox-mysql"]').length).toEqual(1);
+    expect(root.find('[data-testid="checkbox-group-header"]').length).toEqual(1);
+    expect(root.find('[data-testid="show-top-switcher"]').length).toEqual(0);
   });
 
   it('should render correct with partially matching filter', async () => {
@@ -92,10 +92,10 @@ describe('CheckboxGroup ::', () => {
       />,
     );
 
-    expect(root.find('[data-qa="filter-checkbox-postgresql"]').length).toEqual(1);
-    expect(root.find('[data-qa="filter-checkbox-mysql"]').length).toEqual(0);
-    expect(root.find('[data-qa="checkbox-group-header"]').length).toEqual(1);
-    expect(root.find('[data-qa="show-top-switcher"]').length).toEqual(0);
+    expect(root.find('[data-testid="filter-checkbox-postgresql"]').length).toEqual(1);
+    expect(root.find('[data-testid="filter-checkbox-mysql"]').length).toEqual(0);
+    expect(root.find('[data-testid="checkbox-group-header"]').length).toEqual(1);
+    expect(root.find('[data-testid="show-top-switcher"]').length).toEqual(0);
   });
 
   it('should render empty component with not matching filter', async () => {
@@ -117,10 +117,10 @@ describe('CheckboxGroup ::', () => {
       />,
     );
 
-    expect(root.find('[data-qa="filter-checkbox-postgresql"]').length).toEqual(0);
-    expect(root.find('[data-qa="filter-checkbox-mysql"]').length).toEqual(0);
-    expect(root.find('[data-qa="checkbox-group-header"]').length).toEqual(0);
-    expect(root.find('[data-qa="show-top-switcher"]').length).toEqual(0);
+    expect(root.find('[data-testid="filter-checkbox-postgresql"]').length).toEqual(0);
+    expect(root.find('[data-testid="filter-checkbox-mysql"]').length).toEqual(0);
+    expect(root.find('[data-testid="checkbox-group-header"]').length).toEqual(0);
+    expect(root.find('[data-testid="show-top-switcher"]').length).toEqual(0);
   });
 
   it('should render only checked with showAll set to false', async () => {
@@ -142,10 +142,10 @@ describe('CheckboxGroup ::', () => {
       />,
     );
 
-    expect(root.find('[data-qa="filter-checkbox-postgresql"]').length).toEqual(0);
-    expect(root.find('[data-qa="filter-checkbox-mysql"]').length).toEqual(1);
-    expect(root.find('[data-qa="checkbox-group-header"]').length).toEqual(1);
-    expect(root.find('[data-qa="show-top-switcher"]').length).toEqual(0);
+    expect(root.find('[data-testid="filter-checkbox-postgresql"]').length).toEqual(0);
+    expect(root.find('[data-testid="filter-checkbox-mysql"]').length).toEqual(1);
+    expect(root.find('[data-testid="checkbox-group-header"]').length).toEqual(1);
+    expect(root.find('[data-testid="show-top-switcher"]').length).toEqual(0);
   });
 
   it('should render top 5 switcher correct', async () => {
@@ -167,15 +167,15 @@ describe('CheckboxGroup ::', () => {
       />,
     );
 
-    const showTopSwitcher = root.find('[data-qa="show-top-switcher"]');
+    const showTopSwitcher = root.find('[data-testid="show-top-switcher"]');
 
     expect(showTopSwitcher.length).toEqual(1);
-    expect(root.find('[data-qa^="filter-checkbox"]').length).toEqual(5);
+    expect(root.find('[data-testid^="filter-checkbox"]').length).toEqual(5);
 
     expect(showTopSwitcher.text()).toBe(`Show all (${ITEMS_LIST.length})`);
     showTopSwitcher.simulate('click');
     expect(showTopSwitcher.text()).toBe('Show top 5');
 
-    expect(root.find('[data-qa^="filter-checkbox"]').length).toEqual(ITEMS_LIST.length);
+    expect(root.find('[data-testid^="filter-checkbox"]').length).toEqual(ITEMS_LIST.length);
   });
 });

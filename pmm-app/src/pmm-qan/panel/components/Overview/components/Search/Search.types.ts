@@ -1,5 +1,5 @@
 export interface SearchProps {
-  dataQa?: string;
+  dataTestId?: string;
   initialValue?: string;
   handleSearch: (values: SearchValues) => void;
 }

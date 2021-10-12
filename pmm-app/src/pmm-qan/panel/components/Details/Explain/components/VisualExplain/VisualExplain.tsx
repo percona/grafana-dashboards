@@ -8,14 +8,14 @@ export const VisualExplain = ({ examples, databaseType }) => {
 
   return (
     <Overlay isPending={false}>
-      {visualExplain.error ? <pre data-qa="visual-explain-error">{visualExplain.error}</pre> : null}
+      {visualExplain.error ? <pre data-testid="visual-explain-error">{visualExplain.error}</pre> : null}
       {!visualExplain.error && visualExplain.value ? (
-        <div data-qa="visual-explain-value">
+        <div data-testid="visual-explain-value">
           <pre>{visualExplain.value}</pre>
         </div>
       ) : null}
       {!visualExplain.error && !visualExplain.value ? (
-        <pre data-qa="visual-explain-no-data">{Messages.noVisualExplain}</pre>
+        <pre data-testid="visual-explain-no-data">{Messages.noVisualExplain}</pre>
       ) : null}
     </Overlay>
   );
