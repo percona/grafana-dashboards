@@ -93,6 +93,10 @@ export const FILTERS_GROUPS = [
     dataKey: 'az',
   },
   {
+    name: 'Application Name',
+    dataKey: 'application_name',
+  },
+  {
     name: 'Command Type',
     dataKey: 'cmd_type',
   },
