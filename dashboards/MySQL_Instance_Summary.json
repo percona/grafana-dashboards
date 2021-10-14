@@ -4729,7 +4729,7 @@
                     "targets": [
                         {
                             "exemplar": true,
-                            "expr": "avg by () (container_memory_usage_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"} * 100 / container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or  \navg by () (((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) * 100 or (100 - azure_memory_percent_average{node_name=~\"$node_name\"}))",
+                            "expr": "clamp_max(avg by () (container_memory_usage_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"} * 100 / container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}),100) or  \navg by () (((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) * 100 or (100 - azure_memory_percent_average{node_name=~\"$node_name\"}))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
