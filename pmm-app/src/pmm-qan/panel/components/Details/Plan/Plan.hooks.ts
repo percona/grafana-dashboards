@@ -5,11 +5,7 @@ import { PlanService } from './Plan.service';
 import { QueryPlan } from './Plan.types';
 
 export const usePlan = (): [QueryPlan | undefined, boolean] => {
-  const {
-    panelState: {
-      queryId, groupBy, from, to, labels, totals,
-    },
-  } = useContext(QueryAnalyticsProvider);
+  const { panelState: { queryId } } = useContext(QueryAnalyticsProvider);
   const [plan, setPlan] = useState<QueryPlan | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -17,14 +13,7 @@ export const usePlan = (): [QueryPlan | undefined, boolean] => {
     const getPlan = async () => {
       try {
         setLoading(true);
-        const result = await PlanService.getPlan({
-          filterBy: queryId,
-          groupBy,
-          from,
-          to,
-          labels,
-          totals,
-        });
+        const result = await PlanService.getPlan(queryId);
 
         setPlan(result);
       } catch (e) {
@@ -35,7 +24,7 @@ export const usePlan = (): [QueryPlan | undefined, boolean] => {
     };
 
     getPlan();
-  }, [queryId, groupBy, from, to, labels, totals]);
+  }, [queryId]);
 
   return [plan, loading];
 };

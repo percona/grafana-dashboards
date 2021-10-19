@@ -1,23 +1,16 @@
 import { apiRequestQAN } from 'shared/components/helpers/api';
-import { getLabelQueryParams } from 'pmm-qan/panel/QueryAnalytics.tools';
 import { QueryPlan, QueryPlanRequest, QueryPlanResponse } from './Plan.types';
 
 export const PlanService = {
-  async getPlan({
-    filterBy, groupBy, labels = [], from, to, totals,
-  }): Promise<QueryPlan> {
+  async getPlan(queryId?: string): Promise<QueryPlan | undefined> {
     const body = {
-      filter_by: filterBy || '',
-      group_by: groupBy,
-      labels: getLabelQueryParams(labels),
-      period_start_from: from,
-      period_start_to: to,
-      totals,
+      queryid: queryId,
     };
 
     return apiRequestQAN
       .post<QueryPlanResponse, QueryPlanRequest>('/ObjectDetails/GetQueryPlan', body)
-      .then((res) => res.query_plans.filter((plan) => plan.planid && plan.query_plan)
-        .map(({ planid, query_plan }) => ({ id: planid, plan: query_plan }))[0]);
+      .then(({ planid, query_plan }) => (
+        planid && query_plan ? { id: planid, plan: query_plan } : undefined
+      ));
   },
 };
