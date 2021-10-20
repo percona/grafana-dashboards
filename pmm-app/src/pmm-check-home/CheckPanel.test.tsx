@@ -1,5 +1,4 @@
-import React, { FC } from 'react';
-import { MemoryRouter, Route } from 'react-router-dom';
+import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { activeCheckStub } from 'pmm-check-home/__mocks__/stubs';
 import { CheckPanel, CheckPanelProps, CheckPanelState } from './CheckPanel';
@@ -10,14 +9,6 @@ jest.mock('shared/components/helpers/notification-manager');
 jest.mock('pmm-check-home/CheckPanel.service');
 
 xdescribe('CheckPanel::', () => {
-  const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
-    <MemoryRouter>
-      <Route>
-        <CheckPanel {...props} />
-      </Route>
-    </MemoryRouter>
-  );
-
   CheckPanel.prototype.componentDidMount = jest.fn();
 
   it('should accept a title parameter and display it as a table caption', async () => {
@@ -29,7 +20,7 @@ xdescribe('CheckPanel::', () => {
       },
     } as CheckPanelProps;
 
-    const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
+    const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanel {...props} />);
 
     const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
 
