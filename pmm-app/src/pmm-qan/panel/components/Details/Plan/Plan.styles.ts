@@ -1,9 +1,7 @@
 import { css } from 'emotion';
-
-import { stylesFactory } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
 
-export const getStyles = stylesFactory(({ spacing }: GrafanaTheme) => ({
+export const getStyles = ({ spacing }: GrafanaTheme) => ({
   planWrapper: css`
     position: relative;
   `,
@@ -12,4 +10,4 @@ export const getStyles = stylesFactory(({ spacing }: GrafanaTheme) => ({
     top: ${spacing.sm};
     right: ${spacing.sm};
   `,
-}));
+});
