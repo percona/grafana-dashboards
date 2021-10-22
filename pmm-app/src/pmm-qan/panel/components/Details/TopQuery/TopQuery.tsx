@@ -14,6 +14,7 @@ export const TopQuery: FC<TopQueryProps> = ({
   const styles = useStyles(getStyles);
   const { contextActions } = useContext(QueryAnalyticsProvider);
   const selectQuery = useCallback(() => {
+    contextActions.setDimensionSearchText({ search: queryId });
     contextActions.selectQuery(
       {
         queryId,

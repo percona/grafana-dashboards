@@ -22,12 +22,14 @@ describe('TopQuery::', () => {
 
   it('should select query on click', () => {
     const selectQuery = jest.fn();
+    const setDimensionSearchText = jest.fn();
     const { getByText } = render(
       <QueryAnalyticsProvider.Provider
         value={{
           panelState: {} as any,
           contextActions: {
             selectQuery,
+            setDimensionSearchText,
           },
         }}
       >
@@ -43,5 +45,6 @@ describe('TopQuery::', () => {
     fireEvent.click(getByText('test'));
 
     expect(selectQuery).toHaveBeenCalledTimes(1);
+    expect(setDimensionSearchText).toHaveBeenCalledTimes(1);
   });
 });
