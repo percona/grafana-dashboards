@@ -13,6 +13,7 @@ export const Messages = {
       sections: {
         timeDistribution: 'Query time distribution',
         metrics: 'Metrics',
+        histogram: 'Histogram',
       },
     },
     examples: {

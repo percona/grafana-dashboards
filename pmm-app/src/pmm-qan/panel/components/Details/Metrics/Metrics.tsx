@@ -1,23 +1,32 @@
-import React, { FC, useState } from 'react';
+import React, {
+  FC, useState, useRef, useEffect,
+} from 'react';
 import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements/Charts';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
-import { Collapse, useTheme } from '@grafana/ui';
+import { BarChart, Collapse, useTheme } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table';
 import { Databases } from 'shared/core';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
-import { MetricsTabs } from './Metrics.constants';
+import {
+  HISTOGRAM_HEIGHT, HISTOGRAM_MARGIN, HISTOGRAM_OPTIONS, MetricsTabs,
+} from './Metrics.constants';
 import { MetricsProps } from './Metrics.types';
 import { getStyles } from './Metrics.styles';
+import { useHistogram } from './hooks/useHistogram';
 
 const Metrics: FC<MetricsProps> = ({
   databaseType, totals, metrics, loading,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
+  const [histogramData, histogramLoading] = useHistogram(theme);
 
   const [isDistributionPanelOpen, setDistributionPanelVisibility] = useState(true);
   const [isMetricsPanelOpen, setMetricsPanelVisibility] = useState(true);
+  const [isHistogramOpen, setHistogramOpen] = useState(true);
+  const [histogramWidth, setHistogramWidth] = useState(0);
+  const histogramRef = useRef<HTMLDivElement>(null);
 
   const mainColumn = (item) => (
     <span className={styles.metricColumn}>
@@ -105,8 +114,14 @@ const Metrics: FC<MetricsProps> = ({
     },
   ];
 
+  useEffect(() => {
+    if (histogramRef.current) {
+      setHistogramWidth(histogramRef.current.offsetWidth - HISTOGRAM_MARGIN);
+    }
+  }, [histogramRef.current]);
+
   return (
-    <Overlay isPending={loading} className="metrics-wrapper" size={35}>
+    <Overlay isPending={loading || histogramLoading} className="metrics-wrapper" size={35}>
       {databaseType !== Databases.mongodb ? (
         <Collapse
           collapsible
@@ -125,6 +140,23 @@ const Metrics: FC<MetricsProps> = ({
       >
         <Table columns={columns} data={metrics} loading={loading} noData={null} />
       </Collapse>
+      {databaseType === Databases.postgresql && histogramData.length > 0 && (
+        <div ref={histogramRef} className={styles.histogramWrapper}>
+          <Collapse
+            collapsible
+            label={MetricsTabs.histogram}
+            isOpen={isHistogramOpen}
+            onToggle={() => setHistogramOpen(!isHistogramOpen)}
+          >
+            <BarChart
+              data={histogramData}
+              width={histogramWidth}
+              height={HISTOGRAM_HEIGHT}
+              {...HISTOGRAM_OPTIONS}
+            />
+          </Collapse>
+        </div>
+      )}
     </Overlay>
   );
 };

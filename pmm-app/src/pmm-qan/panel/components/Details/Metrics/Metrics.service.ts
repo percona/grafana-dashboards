@@ -17,6 +17,20 @@ export const getMetrics = async ({
   return apiRequestQAN.post<any, any>('/ObjectDetails/GetMetrics', body);
 };
 
+export const getHistogram = async ({
+  queryId, labels = [], from, to,
+}) => {
+  const body = {
+    queryid: queryId,
+    labels: getLabelQueryParams(labels),
+    period_start_from: from,
+    period_start_to: to,
+  };
+
+  return apiRequestQAN.post<any, any>('/ObjectDetails/GetHistogram', body);
+};
+
 export default {
   getMetrics,
+  getHistogram,
 };

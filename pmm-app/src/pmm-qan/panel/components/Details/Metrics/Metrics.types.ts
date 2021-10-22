@@ -6,3 +6,12 @@ export interface MetricsProps {
   totals: boolean;
   loading: boolean;
 }
+
+export interface HistogramResponse {
+  histogram_items: HistogramAPI[];
+}
+
+export interface HistogramAPI {
+  range: string;
+  frequency?: number;
+}
