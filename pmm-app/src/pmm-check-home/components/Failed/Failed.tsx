@@ -1,5 +1,4 @@
 import React, { FC, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { Tooltip } from '@grafana/ui';
 import { cx } from 'emotion';
 import { FailedChecks } from 'pmm-check-home/types';
@@ -30,9 +29,7 @@ export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled, hasN
         Security Threat Tool is disabled.
         <br />
         {'Check '}
-        <Link className={styles.Link} to={PMM_SETTINGS_URL}>
-          PMM Settings.
-        </Link>
+        <a className={styles.Link} href={PMM_SETTINGS_URL}>PMM Settings.</a>
       </div>
     );
   }
