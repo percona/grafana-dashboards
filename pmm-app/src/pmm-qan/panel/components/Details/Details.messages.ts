@@ -30,5 +30,8 @@ export const Messages = {
         status: 'Status',
       },
     },
+    plan: {
+      tab: 'Plan',
+    },
   },
 };

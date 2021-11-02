@@ -29,11 +29,11 @@ export class ApiRequest {
     body: B,
     disableNotifications = false,
     cancelToken?: CancelToken,
-  ): Promise<void | T> {
+  ): Promise<T> {
     return this.axiosInstance
       .post<T>(path, body, { cancelToken })
       .then((response): T => response.data)
-      .catch((e): void => {
+      .catch((e) => {
         if (!disableNotifications && !axios.isCancel(e)) {
           showErrorNotification({ message: e.response.data?.message ?? 'Unknown error' });
         }
