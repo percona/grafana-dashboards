@@ -17,6 +17,7 @@ import { TabKeys } from './Details.constants';
 import { useMetricsDetails } from './Metrics/hooks/useMetricDetails';
 import { Messages } from './Details.messages';
 import { getStyles } from './Details.styles';
+import { Plan } from './Plan/Plan';
 
 export const DetailsSection: FC = () => {
   const theme = useTheme();
@@ -35,6 +36,7 @@ export const DetailsSection: FC = () => {
   const showTablesTab = databaseType !== Databases.mongodb && groupBy === 'queryid' && !totals;
   const showExplainTab = databaseType !== Databases.postgresql && groupBy === 'queryid' && !totals;
   const showExamplesTab = groupBy === 'queryid' && !totals;
+  const showPlanTab = databaseType === Databases.postgresql && groupBy === 'queryid' && !totals;
 
   useEffect(() => {
     if (openDetailsTab === TabKeys.examples && !showExamplesTab) {
@@ -94,6 +96,12 @@ export const DetailsSection: FC = () => {
       key: TabKeys.tables,
       show: showTablesTab,
       component: <TableCreateContainer databaseType={databaseType} examples={examples} database={database} />,
+    },
+    {
+      label: Messages.tabs.plan.tab,
+      key: TabKeys.plan,
+      show: showPlanTab,
+      component: <Plan />,
     },
   ];
 
