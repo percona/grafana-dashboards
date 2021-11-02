@@ -1,8 +1,7 @@
 import { css } from 'emotion';
-import { stylesFactory } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
 
-export const getStyles = stylesFactory(({ spacing, border }: GrafanaTheme) => ({
+export const getStyles = ({ spacing, border }: GrafanaTheme) => ({
   queryTooltip: (float: string) => css`
     max-width: 100%;
     background: #141619;
@@ -35,4 +34,4 @@ export const getStyles = stylesFactory(({ spacing, border }: GrafanaTheme) => ({
   queryId: css`
     margin: ${spacing.md};
   `,
-}));
+});
