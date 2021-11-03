@@ -48,5 +48,8 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     perQueryStats: css`
       margin-right: 10px;
     `,
+    histogramWrapper: css`
+      width: 100%;
+    `,
   };
 });
