@@ -5,7 +5,7 @@ import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import MetricsService from '../Metrics.service';
 import { histogramToDataFrame } from '../Metrics.utils';
 
-export const useHistogram = (theme: GrafanaTheme): [DataFrame[], boolean] => {
+export const useHistogram = (theme: GrafanaTheme, isHistogramAvailable: boolean): [DataFrame[], boolean] => {
   const {
     panelState: {
       queryId, from, to, labels,
@@ -33,7 +33,9 @@ export const useHistogram = (theme: GrafanaTheme): [DataFrame[], boolean] => {
       }
     };
 
-    getHistogram();
+    if (isHistogramAvailable) {
+      getHistogram();
+    }
   }, [queryId, from, to, labels]);
 
   return [data, loading];

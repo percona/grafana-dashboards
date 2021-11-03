@@ -21,15 +21,16 @@ const Metrics: FC<MetricsProps> = ({
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
-  const [histogramData, histogramLoading] = useHistogram(theme);
-
+  const isHistogramAvailable = databaseType === Databases.postgresql && !totals;
+  const [histogramData, histogramLoading] = useHistogram(theme, isHistogramAvailable);
   const [isDistributionPanelOpen, setDistributionPanelVisibility] = useState(true);
   const [isMetricsPanelOpen, setMetricsPanelVisibility] = useState(true);
   const [isHistogramOpen, setHistogramOpen] = useState(true);
   const [histogramWidth, setHistogramWidth] = useState(0);
-  const histogramRef = useRef<HTMLDivElement>(null);
   const [isTopQueryOpen, setTopQueryVisibility] = useState(true);
+  const histogramRef = useRef<HTMLDivElement>(null);
   const { top_query: topQuery, top_queryid: topQueryId } = textMetrics;
+  const showHistogram = isHistogramAvailable && histogramData.length > 0;
 
   const mainColumn = (item) => (
     <span className={styles.metricColumn}>
@@ -157,7 +158,7 @@ const Metrics: FC<MetricsProps> = ({
       >
         <Table columns={columns} data={metrics} loading={loading} noData={null} />
       </Collapse>
-      {databaseType === Databases.postgresql && histogramData.length > 0 && (
+      {showHistogram && (
         <div ref={histogramRef} className={styles.histogramWrapper}>
           <Collapse
             collapsible

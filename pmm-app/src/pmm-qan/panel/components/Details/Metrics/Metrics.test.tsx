@@ -6,6 +6,7 @@ import Metrics from './Metrics';
 
 jest.mock('shared/components/helpers/notification-manager');
 jest.mock('antd/es/tooltip', () => <div className="tooltip" />);
+jest.mock('./hooks/useHistogram');
 
 const originalConsoleError = console.error;
 
