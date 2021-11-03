@@ -14,6 +14,7 @@ export const Messages = {
         timeDistribution: 'Query time distribution',
         metrics: 'Metrics',
         histogram: 'Histogram',
+        topQuery: 'Top Query',
       },
     },
     examples: {
@@ -29,6 +30,9 @@ export const Messages = {
         indexes: 'Indexes',
         status: 'Status',
       },
+    },
+    plan: {
+      tab: 'Plan',
     },
   },
 };

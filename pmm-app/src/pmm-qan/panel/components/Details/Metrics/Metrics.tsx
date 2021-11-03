@@ -14,9 +14,10 @@ import {
 import { MetricsProps } from './Metrics.types';
 import { getStyles } from './Metrics.styles';
 import { useHistogram } from './hooks/useHistogram';
+import { TopQuery } from '../TopQuery/TopQuery';
 
 const Metrics: FC<MetricsProps> = ({
-  databaseType, totals, metrics, loading,
+  databaseType, totals, metrics, textMetrics = {}, loading,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -27,6 +28,8 @@ const Metrics: FC<MetricsProps> = ({
   const [isHistogramOpen, setHistogramOpen] = useState(true);
   const [histogramWidth, setHistogramWidth] = useState(0);
   const histogramRef = useRef<HTMLDivElement>(null);
+  const [isTopQueryOpen, setTopQueryVisibility] = useState(true);
+  const { top_query: topQuery, top_queryid: topQueryId } = textMetrics;
 
   const mainColumn = (item) => (
     <span className={styles.metricColumn}>
@@ -130,6 +133,20 @@ const Metrics: FC<MetricsProps> = ({
           onToggle={() => setDistributionPanelVisibility(!isDistributionPanelOpen)}
         >
           <TimeDistribution data={metrics} />
+        </Collapse>
+      ) : null}
+      {databaseType === Databases.postgresql && topQuery && topQueryId ? (
+        <Collapse
+          collapsible
+          label={MetricsTabs.topQuery}
+          isOpen={isTopQueryOpen}
+          onToggle={() => setTopQueryVisibility(!isTopQueryOpen)}
+        >
+          <TopQuery
+            databaseType={databaseType}
+            query={topQuery}
+            queryId={topQueryId}
+          />
         </Collapse>
       ) : null}
       <Collapse

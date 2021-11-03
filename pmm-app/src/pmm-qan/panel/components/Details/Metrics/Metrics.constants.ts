@@ -11,6 +11,7 @@ export const MetricsTabs = {
   distribution: Messages.tabs.details.sections.timeDistribution,
   metrics: Messages.tabs.details.sections.metrics,
   histogram: Messages.tabs.details.sections.histogram,
+  topQuery: Messages.tabs.details.sections.topQuery,
 };
 
 export const HISTOGRAM_OPTIONS: BarChartOptions = {
