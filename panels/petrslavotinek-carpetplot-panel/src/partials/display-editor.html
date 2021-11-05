@@ -1,0 +1,119 @@
+<div class="editor-row carpetplot-editor">
+  <div class="section gf-form-group">
+    <h5 class="section-heading">Colors</h5>
+    <div class="gf-form">
+      <label class="gf-form-label width-7">Mode</label>
+      <div class="gf-form-select-wrapper width-8">
+        <select class="input-small gf-form-input" ng-model="ctrl.panel.color.mode" ng-options="m.value as m.name for m in ctrl.colorModeOptions"
+          ng-change="ctrl.render()"></select>
+      </div>
+    </div>
+
+    <div class="gf-form">
+      <svg id="heatmap-color-legend" width="17em" height="2em"></svg>
+    </div>
+
+    <div ng-show="ctrl.panel.color.mode === 'SPECTRUM'">
+      <div class="gf-form">
+        <label class="gf-form-label width-7">Scheme</label>
+        <div class="gf-form-select-wrapper width-8">
+          <select class="input-small gf-form-input" ng-model="ctrl.panel.color.colorScheme" ng-options="s.value as s.name for s in ctrl.colorSchemes"
+            ng-change="ctrl.render()"></select>
+        </div>
+      </div>
+      <div class="gf-form">
+        <label class="gf-form-label width-7">Min</label>
+        <input type="number" class="gf-form-input width-5" placeholder="auto" data-placement="right" bs-tooltip="'Min value for color scale.'"
+          ng-model="ctrl.panel.scale.min" ng-change="ctrl.render()" ng-model-onblur>
+      </div>
+      <div class="gf-form">
+        <label class="gf-form-label width-7">Max</label>
+        <input type="number" class="gf-form-input width-5" placeholder="auto" data-placement="right" bs-tooltip="'Max value for color scale.'"
+          ng-model="ctrl.panel.scale.max" ng-change="ctrl.render()" ng-model-onblur>
+      </div>
+      <gf-form-switch class="gf-form" label-class="width-7" label="Invert" checked="ctrl.panel.color.invert" on-change="ctrl.render()">
+      </gf-form-switch>
+    </div>
+
+    <div ng-show="ctrl.panel.color.mode === 'CUSTOM'">
+      <div class="gf-form">
+        <label class="gf-form-label width-7">Space</label>
+        <div class="gf-form-select-wrapper width-8">
+          <select class="input-small gf-form-input" ng-model="ctrl.panel.color.colorSpace" ng-options="s.value as s.name for s in ctrl.colorSpaceOptions"
+            ng-change="ctrl.render()"></select>
+        </div>
+      </div>
+      <div class="gf-form" ng-repeat="customColor in ctrl.panel.color.customColors">
+        <label class="gf-form-label width-7">Color {{$index + 1}}</label>
+        <span class="gf-form-label">
+          <color-picker color="customColor.color" onChange="ctrl.onCustomColorChange(customColor)"></color-picker>
+        </span>
+        <input type="number" class="gf-form-input width-5" placeholder="auto" data-placement="right" bs-tooltip="'Breakpoint'" ng-model="customColor.breakpoint"
+          ng-change="ctrl.render()" ng-model-onblur>
+        <span class="gf-form-label cp-btn" ng-click="ctrl.moveCustomColorUp($index)">
+          <i class="fa fa-caret-up"></i>
+        </span>
+        <span class="gf-form-label cp-btn" ng-click="ctrl.moveCustomColorDown($index)">
+          <i class="fa fa-caret-down"></i>
+        </span>
+        <span class="gf-form-label cp-btn" ng-click="ctrl.removeCustomColor($index)" ng-show="ctrl.panel.color.customColors.length > 2">
+          <i class="fa fa-trash-o"></i>
+        </span>
+      </div>
+      <div class="gf-form">
+        <label class="gf-form-label width-7">Color {{ctrl.panel.color.customColors.length + 1}}</label>
+        <span class="gf-form-label cp-btn" ng-click="ctrl.addCustomColor()">
+          <i class="fa fa-plus"></i>
+        </span>
+      </div>
+    </div>
+
+    <div class="gf-form">
+      <label class="gf-form-label width-7">Null Color</label>
+      <span class="gf-form-label">
+        <color-picker color="ctrl.panel.color.nullColor" onChange="ctrl.onNullColorChange"></color-picker>
+      </span>
+    </div>
+  </div>
+
+  <div class="section gf-form-group">
+    <h5 class="section-heading">Data</h5>
+    <div class="gf-form">
+      <label class="gf-form-label width-7">Aggregate</label>
+      <div class="gf-form-select-wrapper width-8">
+        <select class="input-small gf-form-input" ng-model="ctrl.panel.aggregate" ng-options="s.value as s.name for s in ctrl.aggregateOptions"
+          ng-change="ctrl.render()"></select>
+      </div>
+    </div>
+    <div class="gf-form">
+      <label class="gf-form-label width-7">Fragment</label>
+      <div class="gf-form-select-wrapper width-8">
+        <select class="input-small gf-form-input" ng-model="ctrl.panel.fragment" ng-options="s.value as s.name for s in ctrl.fragmentOptions"
+          ng-change="ctrl.render()"></select>
+      </div>
+    </div>
+    <div class="gf-form">
+      <label class="gf-form-label width-7">Decimals</label>
+      <input type="number" class="gf-form-input width-5" placeholder="auto" data-placement="right" bs-tooltip="'Max decimal precision for tooltip and legend.'"
+        ng-model="ctrl.panel.data.decimals" ng-change="ctrl.render()" ng-model-onblur>
+    </div>
+    <div class="gf-form">
+      <label class="gf-form-label width-7">Unit</label>
+      <div class="gf-form-dropdown-typeahead width-12" ng-model="ctrl.panel.data.unitFormat" dropdown-typeahead2="editor.unitFormats"
+        dropdown-typeahead-on-select="editor.setUnitFormat($subItem)">
+      </div>
+    </div>
+  </div>
+
+  <div class="section gf-form-group">
+    <h5 class="section-heading">Tooltip</h5>
+    <gf-form-switch class="gf-form" label-class="width-7" label="Show" checked="ctrl.panel.tooltip.show" on-change="ctrl.render()">
+    </gf-form-switch>
+  </div>
+
+  <div class="section gf-form-group">
+    <h5 class="section-heading">Legend</h5>
+    <gf-form-switch class="gf-form" label-class="width-7" label="Show" checked="ctrl.panel.legend.show" on-change="ctrl.render()">
+    </gf-form-switch>
+  </div>
+</div>

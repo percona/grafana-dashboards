@@ -1,0 +1,1442 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "$$hashKey": "object:69",
+        "builtIn": 1,
+        "datasource": "clickhouse",
+        "enable": true,
+        "hide": false,
+        "iconColor": "#F2495C",
+        "limit": 100,
+        "name": "Annotations & Alerts",
+        "query": "SELECT \n       toUInt64(event_time)*1000 AS time,\n       if(rand() % 2 = 1, '[begin] description', '[end] description') AS text,\n       arrayStringConcat(['test1', 'test2', service_name],',') AS tags\nFROM default.test_grafana\nWHERE\n  rand() % 100 IN (1,2) AND\n  toUInt64(event_time) >= $from AND toUInt64(event_time) < $to\n",
+        "rawQuery": "SELECT \n       toUInt64(event_time)*1000 AS time,\n       if(rand() % 2 = 1, '[begin] description', '[end] description') AS text,\n       arrayStringConcat(['test1', 'test2', service_name],',') AS tags\nFROM default.test_grafana\nWHERE\n  rand() % 100 IN (1,2) AND\n  toUInt64(event_time) >= 1597272789 AND toUInt64(event_time) < 1597294389",
+        "showIn": 0,
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "iteration": 1597294263150,
+  "links": [],
+  "panels": [
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 2,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "7.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "default",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "",
+          "intervalFactor": 1,
+          "query": "$columns(service_name,\r\n    count() c\r\n)\r\nFROM $table  WHERE [service_name, ' test array'] IN (${array_var}) AND $timeFilter\r\n",
+          "rawQuery": "SELECT t, groupArray((service_name, c)) AS groupArr FROM ( SELECT (intDiv(toUInt32(event_time), 20) * 20) * 1000 AS t, service_name, count() c FROM default.test_grafana WHERE event_time >= toDateTime(1593992068) AND     [service_name     ,     ' test array'] IN (['mysql',' test array'],['postgresql',' test array'])     AND event_time >= toDateTime(1593992068)     AND service_name LIKE '%sql%' GROUP BY t, service_name ORDER BY t, service_name) GROUP BY t ORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "table": "test_grafana",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Array template variable",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:37",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:38",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 3,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "7.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "default",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "",
+          "intervalFactor": 1,
+          "query": "$columns(service_name,\r\n    count() c\r\n)\r\nFROM remote('${remote_host}',default.test_grafana)  WHERE [service_name, ' test array'] IN (${array_var}) AND $timeFilter",
+          "rawQuery": "SELECT t, groupArray((service_name, c)) AS groupArr FROM ( SELECT (intDiv(toUInt32(event_time), 20) * 20) * 1000 AS t, service_name, count() c FROM remote('localhost:9000',default.test_grafana) WHERE event_time >= toDateTime(1593992191) AND     [service_name     ,     ' test array'] IN (['mysql',' test array'],['postgresql',' test array'])     AND event_time >= toDateTime(1593992191) GROUP BY t, service_name ORDER BY t, service_name) GROUP BY t ORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "table": "test_grafana",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "remote and array",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:357",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:358",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 4,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "7.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "default",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "",
+          "intervalFactor": 1,
+          "query": "$columns(service_name,\r\n    count() c\r\n)\r\nFROM cluster('${cluster_name}',default.test_grafana)  WHERE [service_name, ' test array'] IN (${array_var}) AND $timeFilter\r\n",
+          "rawQuery": "SELECT t, groupArray((service_name, c)) AS groupArr FROM ( SELECT (intDiv(toUInt32(event_time), 20) * 20) * 1000 AS t, service_name, count() c FROM cluster('test_shard_localhost',default.test_grafana)  WHERE event_time >= toDateTime(1593725203) AND [service_name, ' test array'] IN (['postgresql', ' test array'],['mysql', ' test array']) AND event_time >= toDateTime(1593725203) GROUP BY t, service_name ORDER BY t, service_name) GROUP BY t ORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "table": "test_grafana",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "cluster and array",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 5,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "7.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeat": "repeated_service",
+      "scopedVars": {
+        "repeated_service": {
+          "selected": true,
+          "text": "mysql",
+          "value": "mysql"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "default",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "",
+          "intervalFactor": 1,
+          "query": "$columns(service_name,\r\n    count() c\r\n)\r\nFROM $table  WHERE service_name IN (${repeated_service}) AND $timeFilter",
+          "rawQuery": "SELECT t, groupArray((service_name, c)) AS groupArr FROM ( SELECT (intDiv(toUInt32(event_time), 20) * 20) * 1000 AS t, service_name, count() c FROM default.test_grafana WHERE event_time >= toDateTime(1593992104) AND     service_name IN ('mysql')     AND event_time >= toDateTime(1593992104)     AND service_name LIKE '%sql%' GROUP BY t, service_name ORDER BY t, service_name) GROUP BY t ORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "table": "test_grafana",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Repeated ${repeated_service}",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:277",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:278",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 19,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "7.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeat": null,
+      "repeatIteration": 1597294263150,
+      "repeatPanelId": 5,
+      "scopedVars": {
+        "repeated_service": {
+          "selected": true,
+          "text": "postgresql",
+          "value": "postgresql"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "default",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "",
+          "intervalFactor": 1,
+          "query": "$columns(service_name,\r\n    count() c\r\n)\r\nFROM $table  WHERE service_name IN (${repeated_service}) AND $timeFilter",
+          "rawQuery": "SELECT t, groupArray((service_name, c)) AS groupArr FROM ( SELECT (intDiv(toUInt32(event_time), 20) * 20) * 1000 AS t, service_name, count() c FROM default.test_grafana WHERE event_time >= toDateTime(1593992104) AND     service_name IN ('mysql')     AND event_time >= toDateTime(1593992104)     AND service_name LIKE '%sql%' GROUP BY t, service_name ORDER BY t, service_name) GROUP BY t ORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "table": "test_grafana",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Repeated ${repeated_service}",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:277",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:278",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 18
+      },
+      "hiddenSeries": false,
+      "id": 7,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "7.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "default",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "",
+          "intervalFactor": 1,
+          "query": "SELECT\r\n    $timeSeries AS t,\r\n    service_name,\r\n    _table,\r\n    count() c\r\nFROM merge('default','^test_grafana$')\r\nWHERE service_name IN (${repeated_service}) AND $timeFilter\r\nGROUP BY t, service_name, _table\r\nORDER BY t\r\n",
+          "rawQuery": "SELECT     (intDiv(toUInt32(event_time), 20) * 20) * 1000 AS t,     service_name,     _table,     count() c FROM merge('default','^test_grafana$') WHERE     service_name IN (['mysql','postgresql'])     AND event_time >= toDateTime(1593991951) GROUP BY     t,     service_name,     _table ORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "table": "test_grafana",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "merge() table function",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:37",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:38",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse",
+      "description": "see https://github.com/Vertamedia/clickhouse-grafana/issues/127",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 18
+      },
+      "hiddenSeries": false,
+      "id": 10,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "7.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "default",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "",
+          "intervalFactor": 1,
+          "query": "SELECT * FROM (\r\n  SELECT\r\n      $timeSeries as t,\r\n      count() as c\r\n  FROM $table\r\n  WHERE $timeFilter\r\n  GROUP BY t\r\n)\r\nORDER BY t",
+          "rawQuery": "SELECT * FROM (     SELECT         (intDiv(toUInt32(event_time), 20) * 20) * 1000 as t,         count() as c     FROM default.test_grafana     WHERE         event_time >= toDateTime(1594103238)         AND service_name LIKE '%sql%'     GROUP BY t ) ORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "table": "test_grafana",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "subquery example",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:91",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:92",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse",
+      "description": "see https://github.com/Vertamedia/clickhouse-grafana/issues/252",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 18
+      },
+      "hiddenSeries": false,
+      "id": 12,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "7.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "default",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "",
+          "intervalFactor": 1,
+          "query": "SELECT * FROM (\r\n  SELECT\r\n      $timeSeries as t,\r\n      count() as c\r\n  FROM $table\r\n  WHERE service_name IN ($repeated_service) AND $timeFilter\r\n  GROUP BY t\r\n)\r\nORDER BY t",
+          "rawQuery": "SELECT * FROM (     SELECT         (intDiv(toUInt32(event_time), 20) * 20) * 1000 as t,         count() as c     FROM default.test_grafana     WHERE         service_name IN ('mysql','postgresql')         AND event_time >= toDateTime(1595669272)         AND service_name LIKE '%sql%'     GROUP BY t ) ORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "table": "test_grafana",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "multi-value variable",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:91",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:92",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse",
+      "description": "see https://github.com/Vertamedia/clickhouse-grafana/issues/265",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 27
+      },
+      "hiddenSeries": false,
+      "id": 16,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "7.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "default",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "",
+          "intervalFactor": 1,
+          "query": "/* test comment1 */\r\n-- test comment2\r\n/* \r\n  test multiline comment3\r\n*/  \r\n$rate(countIf(service_name='mysql' AND from_user='bob') AS mysql_bob, countIf(service_name='postgres') AS postgres) \r\nFROM $table\r\nWHERE from_user='bob'\r\n\r\n/* comment4 */\r\n-- comment 5",
+          "rawQuery": " /* test comment1 */\n-- test comment2\r\n/* \r\n  test multiline comment3\r\n*/\n\nSELECT t, mysql_bob/runningDifference(t/1000) mysql_bobRate, postgres/runningDifference(t/1000) postgresRate FROM ( SELECT (intDiv(toUInt32(event_time), 20) * 20) * 1000 AS t, countIf(service_name = 'mysql' AND from_user = 'bob') AS mysql_bob, countIf(service_name = 'postgres') AS postgres FROM default.test_grafana\n\nWHERE event_time >= toDateTime(1597214196) AND\n    from_user = 'bob'/* comment4 */\n-- comment 5\n\n    AND service_name LIKE '%sql%' GROUP BY t ORDER BY t)",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": false,
+          "table": "test_grafana",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "turn off skip_comments example",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:91",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:92",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse",
+      "description": "see https://github.com/Vertamedia/clickhouse-grafana/issues/256",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 27
+      },
+      "hiddenSeries": false,
+      "id": 14,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "7.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "default",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "",
+          "intervalFactor": 1,
+          "query": "$rate(\r\n countIf(service_name='mysql' AND from_user='bob') AS mysql_bob, countIf(service_name='postgres') AS postgres\r\n) \r\nFROM $table\r\nWHERE from_user IN ('bob','alice')",
+          "rawQuery": "SELECT t, mysql_bob/runningDifference(t/1000) mysql_bobRate, postgres/runningDifference(t/1000) postgresRate FROM ( SELECT (intDiv(toUInt32(event_time), 20) * 20) * 1000 AS t, countIf(service_name = 'mysql' AND from_user = 'bob') AS mysql_bob, countIf(service_name = 'postgres') AS postgres FROM default.test_grafana\n\nWHERE event_time >= toDateTime(1597272895) AND\n    from_user IN ('bob','alice')\n    AND service_name LIKE '%sql%' GROUP BY t ORDER BY t)",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "test_grafana",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "$rate + from in field name example",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:91",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:92",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse",
+      "description": "see https://github.com/Vertamedia/clickhouse-grafana/issues/276",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 36
+      },
+      "hiddenSeries": false,
+      "id": 18,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pluginVersion": "7.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "default",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "",
+          "intervalFactor": 1,
+          "query": "$rateColumns(\n    'User.' || toString(from_user) || ', Serv.' || toString(service_name) as key,\n    sum(count) as value\n) FROM\n(\n    SELECT\n        toStartOfMinute(event_time) AS event_time,\n        service_name,\n        from_user,\n        count() as count\n    FROM $table\n\n    WHERE\n        $timeFilter\n    GROUP BY\n        event_time,\n        from_user,\n        service_name\n)",
+          "rawQuery": "SELECT t, arrayMap(a -> (a.1, a.2/runningDifference( t/1000 )), groupArr) FROM (SELECT t, groupArray((key, value)) AS groupArr FROM ( SELECT (intDiv(toUInt32(event_time), 20) * 20) * 1000 AS t, 'User.' || toString(from_user) || ', Serv.' || toString(service_name) as key, sum(count) as value FROM\n(\n    SELECT\n        toStartOfMinute(event_time) AS event_time,\n        service_name,\n        from_user,\n        count() as count\n    FROM default.test_grafana\n\n    WHERE event_time >= toDateTime(1597272789) AND\n        event_time >= toDateTime(1597272789)\n        AND service_name LIKE '%sql%'\n    GROUP BY\n        event_time,\n        from_user,\n        service_name\n) GROUP BY t, key ORDER BY t, key) GROUP BY t ORDER BY t)",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "test_grafana",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "$rateColumns + subquery",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:91",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:92",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "clickhouse",
+        "definition": "SELECT DISTINCT [service_name, ' test array'] FROM default.test_grafana",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "array_var",
+        "options": [],
+        "query": "SELECT DISTINCT [service_name, ' test array'] FROM default.test_grafana",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "localhost:9000",
+          "value": "localhost:9000"
+        },
+        "datasource": "clickhouse",
+        "definition": "SELECT DISTINCT concat(host_name, ':', toString(port)) AS remote_host FROM system.clusters",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "remote_host",
+        "options": [
+          {
+            "selected": false,
+            "text": "127.0.0.1:9000",
+            "value": "127.0.0.1:9000"
+          },
+          {
+            "selected": false,
+            "text": "127.0.0.2:9000",
+            "value": "127.0.0.2:9000"
+          },
+          {
+            "selected": true,
+            "text": "localhost:9000",
+            "value": "localhost:9000"
+          },
+          {
+            "selected": false,
+            "text": "localhost:9440",
+            "value": "localhost:9440"
+          },
+          {
+            "selected": false,
+            "text": "localhost:1",
+            "value": "localhost:1"
+          }
+        ],
+        "query": "SELECT DISTINCT concat(host_name, ':', toString(port)) AS remote_host FROM system.clusters",
+        "refresh": 0,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "test_shard_localhost",
+          "value": "test_shard_localhost"
+        },
+        "datasource": "clickhouse",
+        "definition": "SELECT DISTINCT cluster FROM system.clusters",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "cluster_name",
+        "options": [
+          {
+            "selected": false,
+            "text": "localhost_cluster",
+            "value": "localhost_cluster"
+          },
+          {
+            "selected": false,
+            "text": "test_cluster_two_shards",
+            "value": "test_cluster_two_shards"
+          },
+          {
+            "selected": false,
+            "text": "test_cluster_two_shards_localhost",
+            "value": "test_cluster_two_shards_localhost"
+          },
+          {
+            "selected": true,
+            "text": "test_shard_localhost",
+            "value": "test_shard_localhost"
+          },
+          {
+            "selected": false,
+            "text": "test_shard_localhost_secure",
+            "value": "test_shard_localhost_secure"
+          },
+          {
+            "selected": false,
+            "text": "test_unavailable_shard",
+            "value": "test_unavailable_shard"
+          }
+        ],
+        "query": "SELECT DISTINCT cluster FROM system.clusters",
+        "refresh": 0,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "mysql + postgresql",
+          "value": [
+            "mysql",
+            "postgresql"
+          ]
+        },
+        "datasource": "clickhouse",
+        "definition": "SELECT DISTINCT service_name FROM default.test_grafana",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "repeated_service",
+        "options": [],
+        "query": "SELECT DISTINCT service_name FROM default.test_grafana",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "datasource": "clickhouse",
+        "filters": [
+          {
+            "condition": "",
+            "key": "default.test_grafana.service_name",
+            "operator": "=~",
+            "value": "%sql%"
+          }
+        ],
+        "hide": 0,
+        "label": null,
+        "name": "adhoc",
+        "skipUrlSync": false,
+        "type": "adhoc"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "clickhouse dashboard",
+  "uid": "DnOcQSGGz",
+  "version": 3
+}

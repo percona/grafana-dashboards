@@ -1,0 +1,81 @@
+version: "3"
+    
+services:
+  clickhouse-ontime:
+    image: yandex/clickhouse-server:latest
+    volumes:
+      - ./docker/clickhouse/load_ontime.sh:/docker-entrypoint-initdb.d/load_ontime.sh
+      - /var/lib/clickhouse/
+      - /var/log/clickhouse-server/
+  clickhouse:
+    # image: yandex/clickhouse-server:latest
+    image: yandex/clickhouse-server:19.16
+    ports:
+      - 8123:8123
+      - 9000:9000
+    volumes:
+      - ./docker/clickhouse/init_schema.sql:/docker-entrypoint-initdb.d/init_schema.sql
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=grafana
+    ports:
+      - 5432:5432
+    volumes:
+      - ./docker/postgres/init_schema.sql:/docker-entrypoint-initdb.d/init_schema.sql
+
+  grafana:
+    image: grafana/grafana:latest
+#    image: grafana/grafana:dev
+#    image: grafana/grafana:6.7.4
+#    image: grafana/grafana:6.6.2
+    volumes:
+      - ./:/var/lib/grafana/plugins/vertamedia-clickhouse/
+      - ./docker/grafana/grafana-clickhouse-datasource.yaml:/etc/grafana/provisioning/datasources/grafana-clickhouse-datasource.yaml
+      - ./docker/grafana/grafana-clickhouse-ontime-datasource.yaml:/etc/grafana/provisioning/datasources/grafana-clickhouse-ontime-datasource.yaml
+      - ./docker/grafana/grafana-postgres-datasource.yaml:/etc/grafana/provisioning/datasources/grafana-postgres-datasource.yaml
+      - ./docker/grafana/grafana-dashboards.yaml:/etc/grafana/provisioning/dashboards/grafana-dashboards.yaml
+      - ./docker/grafana/dashboards/:/var/lib/grafana/dashboards/
+
+    # @TODO need sign instructions in https://grafana.com/docs/grafana/latest/developers/plugins/sign-a-plugin/
+    environment:
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=vertamedia-clickhouse-datasource
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
+    ports:
+      - 3000:3000
+    depends_on:
+      - clickhouse
+
+  frontend_builder:
+    image: node:lts
+    working_dir: /grafana-clickhouse
+    volumes:
+    - ./:/grafana-clickhouse
+    # for speedup npm install
+    - /grafana-clickhouse/node_modules
+    command: |
+      bash -xec "
+        npm install --production=false && \
+        npm run build:prod && \
+        npm run test:docker
+      "
+
+  backend_builder:
+    image: golang:1.14
+    working_dir: /go/src/grafana-clickhouse
+    environment:
+      GOCACHE: "/go-cache"
+    volumes:
+      - ./:/go/src/grafana-clickhouse
+      - ./.cache:/go/pkg/mod
+      - ./.cache:/go-cache
+    command: |
+      bash -xec "
+        GOOS=linux GOARCH=amd64 go build -o ./dist/vertamedia-clickhouse-plugin_linux_amd64 . && \
+        GOOS=windows GOARCH=amd64 go build -o ./dist/vertamedia-clickhouse-plugin_windows_amd64.exe . && \
+        GOOS=darwin GOARCH=amd64 go build -o ./dist/vertamedia-clickhouse-plugin_darwin_amd64 . && \
+        chmod +x ./dist/vertamedia-clickhouse-plugin*
+      "
+
+

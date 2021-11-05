@@ -1,0 +1,59 @@
+<div class="edit-tab-content">
+	<h5>Value Mappings <tip>Map values to texts</tip></h5>
+	<div class="editor-row" ng-repeat="valueMap in ctrl.panel.valueMaps">
+
+		<div class="section gf-form-group">
+			<div class="gf-form">
+				<label class="gf-form-label">
+					<i class="fa fa-trash pointer" ng-click="ctrl.removeValueMapping(valueMap)"></i>
+				</label>
+			</div>
+		</div>
+
+		<div class="section gf-form-group">
+			<h5 class="section-heading">General</h5>
+			<div class="gf-form">
+				<label class="gf-form-label width-6">Alias<tip>Alias of a series or a regular expression</tip></label>
+				<input type="text" ng-model="valueMap.alias" ng-blur="ctrl.render()" class="gf-form-input width-15">
+			</div>
+			<div class="gf-form">
+				<label class="gf-form-label width-6">Type</label>
+				<select class="gf-form-input" ng-model="valueMap.type"
+				  ng-options="f.value as f.name for f in ctrl.panel.mappingTypes" ng-change="ctrl.render()"></select>
+			</div>
+		</div>
+
+		<!-- Metrics that comprise the composite-->
+		<div class="section gf-form-group">
+			<h5 class="section-heading">Mappings<tip>Value or Range mappings</tip></h5>
+			<div class="gf-form" ng-repeat="mapping in valueMap.valueToText" ng-if="valueMap.type==1">
+				<label class="gf-form-label">
+					<i class="fa fa-trash pointer" ng-click="ctrl.removeEntryFromValueMapping(valueMap, mapping)"></i>
+				</label>
+				<label class="gf-form-label width-6">Value</label>
+				<input type="text" ng-model="mapping.value" ng-blur="ctrl.render()" class="gf-form-input width-10">
+				<label class="gf-form-label width-6">Text</label>
+				<input type="text" ng-model="mapping.text" ng-blur="ctrl.render()" class="gf-form-input width-10">
+			</div>
+			<div class="gf-form" ng-repeat="mapping in valueMap.rangeToText" ng-if="valueMap.type==2">
+				<label class="gf-form-label">
+					<i class="fa fa-trash pointer" ng-click="ctrl.removeEntryFromValueMapping(valueMap, mapping)"></i>
+				</label>
+				<label class="gf-form-label width-6">From</label>
+				<input type="text" ng-model="mapping.from" ng-blur="ctrl.render()" class="gf-form-input width-10">
+				<label class="gf-form-label width-6">To</label>
+				<input type="text" ng-model="mapping.to" ng-blur="ctrl.render()" class="gf-form-input width-10">
+				<label class="gf-form-label width-6">Text</label>
+				<input type="text" ng-model="mapping.text" ng-blur="ctrl.render()" class="gf-form-input width-10">
+			</div>
+			<div class="gf-form">
+				<button class="btn btn-inverse" ng-click="ctrl.addEntryToValueMapping(valueMap)">
+					<i class="fa fa-plus"></i>&nbsp;Add Mapping Entry
+				</button>
+			</div>
+		</div>
+	</div>
+	<button class="btn btn-inverse" ng-click="ctrl.addValueMapping()">
+		<i class="fa fa-plus"></i>&nbsp;Add Mapping
+	</button>
+</div>

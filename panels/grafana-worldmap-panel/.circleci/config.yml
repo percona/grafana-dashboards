@@ -1,0 +1,147 @@
+version: 2.1
+
+parameters:
+  ssh-fingerprint:
+    type: string
+    default: ${GITHUB_SSH_FINGERPRINT}
+
+aliases:
+  # Workflow filters
+  - &filter-only-master
+    branches:
+      only: master
+  - &filter-only-release
+    branches:
+      only: /^v[1-9]*[0-9]+\.[1-9]*[0-9]+\.x$/
+
+workflows:
+  plugin_workflow:
+    jobs:
+      - build
+      - report:
+          requires:
+            - build
+      - approve_release:
+          type: approval
+          requires:
+            - report
+          filters: *filter-only-release
+      - publish_github_release:
+          requires:
+            - approve_release
+          filters: *filter-only-release
+
+executors:
+  default_exec: # declares a reusable executor
+    docker:
+      - image: srclosson/grafana-plugin-ci-alpine:latest
+  e2e_exec:
+    docker:
+      - image: srclosson/grafana-plugin-ci-e2e:latest
+
+jobs:
+  build:
+    executor: default_exec
+    steps:
+      - checkout
+      - restore_cache:
+          name: restore node_modules
+          keys:
+          - build-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install dependencies
+          command: |
+            mkdir ci
+            [ -f ~/project/node_modules/.bin/grafana-toolkit ] || yarn install --frozen-lockfile
+      - save_cache:
+          name: save node_modules
+          paths:
+            - ~/project/node_modules
+          key: build-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
+      - save_cache:
+          name: save cypress cache
+          paths:
+            - ~/.cache/Cypress
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
+      - run:
+          name: Build and test panel 
+          command: |
+            sed -e "s/%VERSION%/$(cat package.json | jq .version | tr -d '\"')/" -e "s/%TODAY%/$(date)/" ./src/plugin.json.tmpl > ./src/plugin.json
+            yarn build 
+      - run:
+          name: Move results to ci folder
+          command: |
+            ./node_modules/.bin/grafana-toolkit plugin:ci-build --finish
+      - run:
+          name: Package distribution
+          command: |
+            ./node_modules/.bin/grafana-toolkit plugin:ci-package
+      - persist_to_workspace:
+          root: .
+          paths:
+          - ci/jobs/package
+          - ci/packages
+          - ci/dist
+          - ci/grafana-test-env
+      - store_artifacts:
+          path: ci
+
+  report:
+    executor: default_exec
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          name: restore node_modules
+          keys:
+            - build-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
+      - run:
+          name: Toolkit report
+          command: |
+            ./node_modules/.bin/grafana-toolkit plugin:ci-report
+      - store_artifacts:
+          path: ci
+
+  publish_github_release:
+    executor: default_exec
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "${GITHUB_SSH_FINGERPRINT}"
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          name: restore node_modules
+          keys:
+          - build-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
+      - run:
+          name: "Publish Release on GitHub"
+          command: |
+            wget "https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz"
+            tar zxvf "./ghr_v0.13.0_linux_amd64.tar.gz" -C /usr/local
+            /bin/rm -rf "./ghr_v0.13.0_linux_amd64.tar.gz"
+            DATASOURCE_NAME=grafana-worldmap-panel
+            RELEASE_NOTES=`awk 'BEGIN {FS="##"; RS=""} FNR==4 {print; exit}' CHANGELOG.md`
+            VERSION=`cat ci/dist/plugin.json|jq '.info.version'| sed s/\"//g`
+            git config user.email "eng@grafana.com"
+            git config user.name "CircleCI Automation"
+            git checkout -b release-${VERSION}
+            [ -z dist ] && mkdir -pv dist
+            cp -r ci/dist/grafana-worldmap-panel/* dist
+            git add --force dist
+            git commit -m "automated release $VERSION [skip ci]"
+            git push -f origin release-${VERSION}
+            git tag -f v${VERSION}
+            git push -f origin v${VERSION}
+            /usr/local/ghr_v0.13.0_linux_amd64/ghr \
+              -t ${GITHUB_TOKEN} \
+              -u ${CIRCLE_PROJECT_USERNAME} \
+              -r ${CIRCLE_PROJECT_REPONAME} \
+              -c ${CIRCLE_SHA1} \
+              -n "${DATASOURCE_NAME} v${VERSION}" \
+              -b "${RELEASE_NOTES}" \
+              -delete \
+              v${VERSION} \
+              ci/packages

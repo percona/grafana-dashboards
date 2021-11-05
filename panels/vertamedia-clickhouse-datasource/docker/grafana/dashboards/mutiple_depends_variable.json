@@ -1,0 +1,245 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "$$hashKey": "object:127",
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "iteration": 1594386888555,
+  "links": [],
+  "panels": [
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse",
+      "description": "see  https://github.com/Vertamedia/clickhouse-grafana/issues/232",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 2,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "default",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "",
+          "intervalFactor": 1,
+          "query": "SELECT\n    $timeSeries as t,\n    sum(too_big_value) AS v\nFROM $table\nWHERE $timeFilter AND service_name IN (${service_name})\nGROUP BY t\nORDER BY t",
+          "rawQuery": "SELECT     (intDiv(toUInt32(event_time), 15) * 15) * 1000 as t,     sum(too_big_value) AS v FROM default.test_depends_on_variable WHERE event_time >= toDateTime(1594365380) AND service_name IN (['service990','service980','service390','service380','service790','service780','service190','service180','service590','service580']) GROUP BY t ORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "table": "test_depends_on_variable",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Multiple depended variables",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:258",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:259",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "schemaVersion": 22,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "tags": [],
+          "text": "bulk0",
+          "value": "bulk0"
+        },
+        "datasource": "clickhouse",
+        "definition": "SELECT DISTINCT bulk_id FROM default.test_depends_on_variable",
+        "hide": 0,
+        "includeAll": false,
+        "index": -1,
+        "label": null,
+        "multi": false,
+        "name": "bulk_id",
+        "options": [],
+        "query": "SELECT DISTINCT bulk_id FROM default.test_depends_on_variable",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "tags": [],
+          "text": "city390 + city380",
+          "value": [
+            "city390",
+            "city380"
+          ]
+        },
+        "datasource": "clickhouse",
+        "definition": "SELECT DISTINCT city FROM default.test_depends_on_variable WHERE bulk_id IN ('$bulk_id')",
+        "hide": 0,
+        "includeAll": true,
+        "index": -1,
+        "label": null,
+        "multi": true,
+        "name": "city",
+        "options": [],
+        "query": "SELECT DISTINCT city FROM default.test_depends_on_variable WHERE bulk_id IN ('$bulk_id')",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "clickhouse",
+        "definition": "SELECT DISTINCT service_name FROM default.test_depends_on_variable WHERE bulk_id IN ('$bulk_id') AND city IN ($city)",
+        "hide": 0,
+        "includeAll": true,
+        "index": -1,
+        "label": null,
+        "multi": true,
+        "name": "service_name",
+        "options": [],
+        "query": "SELECT DISTINCT service_name FROM default.test_depends_on_variable WHERE bulk_id IN ('$bulk_id') AND city IN ($city)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "mutiple depends variable",
+  "uid": "U6fuZeGMk",
+  "variables": {
+    "list": []
+  },
+  "version": 1
+}

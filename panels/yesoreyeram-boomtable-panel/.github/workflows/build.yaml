@@ -1,0 +1,44 @@
+name: Build & Publish
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - run: |
+        echo "Grafana Boom Table plugin - Install dependencies";
+        yarn install --frozen-lockfile;
+      name: Install
+    - run: |
+        echo "Grafana Boom Table plugin - Test";
+        yarn test;
+      name: Test
+    - run: |
+        echo "Grafana Boom Table plugin - Build";
+        yarn build;
+      name: Build
+    - run: |
+        echo "Grafana Boom Table plugin - Deploy";
+        echo $(date) > dist/LAST_UPDATED;
+        git config --global user.email "actions@github.com";
+        git config --global user.name "Github Actions";
+        git add --force dist/
+        git commit -m "Build by Github Actions"
+        git push
+        git status
+      name: Deploy

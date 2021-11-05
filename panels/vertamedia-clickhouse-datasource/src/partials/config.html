@@ -1,0 +1,58 @@
+<datasource-http-settings current="ctrl.current" suggest-url="http://localhost:8123">
+</datasource-http-settings>
+
+<div class="gf-form-group">
+    <div class="gf-form-inline">
+        <gf-form-switch class="gf-form max-width-30"
+                        ng-model='ctrl.current.jsonData.useYandexCloudAuthorization'
+                        label="Use Yandex.Cloud authorization headers" tooltip="Use authorization headers for managed Yandex.Cloud ClickHouse database"
+                        checked="ctrl.current.jsonData.useYandexCloudAuthorization" label-class="width-25" switch-class="max-width-5">
+        </gf-form-switch>
+    </div>
+    
+    <div ng-if="ctrl.current.jsonData.useYandexCloudAuthorization">
+        <div class="gf-form-inline">
+            <div class="gf-form max-width-30">
+                <span class="gf-form-label width-10">X-ClickHouse-User</span>
+                <input type="text" class="gf-form-input max-width-20" ng-model='ctrl.current.jsonData.xHeaderUser' placeholder="DB user name"></input>
+            </div>
+        </div>
+
+        <div class="gf-form-inline">
+            <div class="gf-form max-width-30">
+                <span class="gf-form-label width-10">X-ClickHouse-Key</span>
+                <input type="password" class="gf-form-input max-width-20" ng-model='ctrl.current.jsonData.xHeaderKey' placeholder="DB user password"></input>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <h3 class="page-heading">Additional</h3>
+
+    <div class="gf-form-inline">
+        <gf-form-switch class="gf-form max-width-30"
+                        ng-model='ctrl.current.jsonData.addCorsHeader'
+                        label="Add CORS flag to requests" tooltip="Whether 'add_http_cors_header=1' parameter should be attached to requests. Remember that read-only users cannot override this setting."
+                        checked="ctrl.current.jsonData.addCorsHeader" label-class="width-25" switch-class="max-width-5">
+        </gf-form-switch>
+
+    </div>
+
+    <div class="gf-form-inline">
+        <gf-form-switch class="gf-form max-width-30"
+                        ng-model='ctrl.current.jsonData.usePOST'
+                        label="Use POST method to send queries" tooltip="Remember that it's possible to change data via POST requests. Better to avoid using POST method if you connecting not as Read-Only user."
+                        checked="ctrl.current.jsonData.usePOST" label-class="width-25" switch-class="max-width-5">
+        </gf-form-switch>
+    </div>
+
+    <div class="gf-form-inline">
+        <div class="gf-form max-width-30">
+            <span class="gf-form-label width-10">Default database</span>
+            <input type="text" class="gf-form-input max-width-20" ng-model='ctrl.current.jsonData.defaultDatabase' placeholder="default"></input>
+            <info-popover mode="right-absolute">
+                If you set default database for this datasource, it will be prefilled in the query builder, and used to make ad-hoc filters more convenient.
+            </info-popover>
+        </div>
+    </div>

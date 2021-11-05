@@ -1,0 +1,188 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "reproduce reproduce https://github.com/Vertamedia/clickhouse-grafana/issues/117",
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 3,
+  "links": [],
+  "panels": [
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse-ontime",
+      "description": "reproduce https://github.com/Vertamedia/clickhouse-grafana/issues/117",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "decimals": 5,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 2,
+      "interval": "1d",
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "",
+          "url": "https://github.com/Vertamedia/clickhouse-grafana/issues/117"
+        }
+      ],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "7.0.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "datasets",
+          "dateColDataType": "FlightDate",
+          "dateLoading": false,
+          "dateTimeColDataType": "toDateTime(FlightDate)",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": false,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "1d",
+          "intervalFactor": 1,
+          "query": "SELECT\r\n    $timeSeries t, \r\n    sum(Cancelled)/count(*) cancelled_flights, \r\n    sum(DepDel15)/count(*) delayed_15min_or_more\r\nFROM $table\r\nWHERE $timeFilter\r\nGROUP BY t\r\nORDER BY t",
+          "rawQuery": "SELECT     (intDiv(toUInt32(toDateTime(FlightDate)), 86400) * 86400) * 1000 t,      sum(Cancelled)/count(*) cancelled_flights,      sum(DepDel15)/count(*) delayed_15min_or_more FROM datasets.ontime WHERE FlightDate BETWEEN toDate(1470009599) AND toDate(1471651201) AND toDateTime(FlightDate) BETWEEN toDateTime(1470009599) AND toDateTime(1471651201) GROUP BY t ORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "table": "ontime",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Date instead of DateTime",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:213",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:214",
+          "decimals": 5,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 25,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "2016-08-01T00:00:00.000Z",
+    "to": "2016-08-20T00:00:00.000Z"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "utc",
+  "title": "Date instead of DateTime",
+  "uid": "O3Bya1MGz",
+  "version": 7
+}
