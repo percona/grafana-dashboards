@@ -189,3 +189,50 @@ describe("clickhouse sql series:", () => {
 
 
 });
+
+// check https://github.com/Vertamedia/clickhouse-grafana/issues/281
+describe("When meta and data keys do not have the same index", () => {
+    const response = {
+        "meta": [
+            {
+                "name": "c",
+                "type": "String",
+            },
+            {
+                "name": "a",
+                "type": "String",
+            },
+            {
+                "name": "b",
+                "type": "String",
+            },
+        ],
+
+        "data": [
+            {
+                "b": "b_value",
+                "c": "c_value",
+                "a": "a_value",
+            },
+        ],
+    };
+
+    // @ts-ignore
+    const responseParser = new ResponseParser(this.$q);
+    const data = responseParser.parse("SELECT 'a_value' AS a, 'b_value' AS b, 'c_value' AS c", response);
+
+    it('should return key-value pairs', function () {
+        expect(data[0]).toStrictEqual({"a": "a_value", "b": "b_value", "c": "c_value"});
+    });
+
+    let sqlTable = new SqlSeries({
+        series: response.data,
+        meta: response.meta,
+    });
+    let table = sqlTable.toTable();
+    expect(table[0].type).toBe("table");
+    expect(table[0].columns).toStrictEqual([
+        {"text": "c", "type": "string"},{"text": "a", "type": "string"},{"text": "b", "type": "string"}
+    ]);
+    expect(table[0].rows).toStrictEqual([["c_value","a_value","b_value"]]);
+});

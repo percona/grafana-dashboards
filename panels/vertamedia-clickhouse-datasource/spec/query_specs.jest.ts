@@ -161,3 +161,64 @@ describe("comments and $rate and from in field name", () => {
         expect(SqlQuery.applyMacros(query, scanner.toAST() )).toBe(expQuery);
     });
 });
+
+/* fix https://github.com/Vertamedia/clickhouse-grafana/issues/319 */
+describe("columns + union all + with", () => {
+    const query = "$columns(\n" +
+        "  service_name,   \n" +
+        "  sum(agg_value) as value\n" +
+        ")\n" +
+        "FROM (\n" +
+        "\n" +
+        " SELECT\n" +
+        "    $timeSeries as t,\n" +
+        "    service_name,\n" +
+        "    sum(too_big_value) as agg_value\n" +
+        " FROM $table\n" +
+        " WHERE $timeFilter\n" +
+        " GROUP BY t,service_name\n" +
+        " \n" +
+        " UNION ALL\n" +
+        " \n" +
+        " WITH (SELECT sum(too_big_value) FROM $table) AS total_value\n" +
+        " SELECT\n" +
+        "    $timeSeries as t,\n" +
+        "    service_name,\n" +
+        "    sum(too_big_value) / total_value as agg_value\n" +
+        " FROM $table\n" +
+        " WHERE $timeFilter\n" +
+        " GROUP BY t,service_name\n" +
+        ")";
+    const expQuery = "SELECT t, groupArray((service_name, value)) AS groupArr FROM ( SELECT $timeSeries AS t, service_name, sum(agg_value) as value FROM (\n" +
+        "\n" +
+        " SELECT\n" +
+        "    $timeSeries as t,\n" +
+        "    service_name,\n" +
+        "    sum(too_big_value) as agg_value\n" +
+        " FROM $table\n" +
+        " WHERE $timeFilter AND $timeFilter\n" +
+        " GROUP BY t,service_name\n" +
+        " \n" +
+        " UNION ALL\n" +
+        " \n" +
+        " WITH (SELECT sum(too_big_value) FROM $table) AS total_value\n" +
+        " SELECT\n" +
+        "    $timeSeries as t,\n" +
+        "    service_name,\n" +
+        "    sum(too_big_value) / total_value as agg_value\n" +
+        " FROM $table\n" +
+        " WHERE $timeFilter\n" +
+        " GROUP BY t,service_name\n" +
+        ") GROUP BY t, service_name ORDER BY t, service_name) GROUP BY t ORDER BY t";
+    const scanner = new Scanner(query);
+    let templateSrv: any;
+    const options = {
+        rangeRaw: {
+            from: "now-10m",
+            to: "now"
+        }
+    };
+    it("gets replaced with right FROM query", () => {
+        expect(SqlQuery.applyMacros(query, scanner.toAST() )).toBe(expQuery);
+    });
+});

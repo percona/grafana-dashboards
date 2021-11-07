@@ -33,7 +33,7 @@ export default class SqlQuery {
 
     replace(options, adhocFilters) {
         let query = this.templateSrv.replace(
-                SqlQuery.conditionalTest(this.target.query.trim(), this.templateSrv), options.scopedVars, SqlQuery.interpolateQueryExpr
+            SqlQuery.conditionalTest(this.target.query.trim(), this.templateSrv), options.scopedVars, SqlQuery.interpolateQueryExpr
             ),
             scanner = new Scanner(query),
             dateTimeType = this.target.dateTimeType
@@ -68,7 +68,7 @@ export default class SqlQuery {
                     }
                     /* Expect fully qualified column name at this point */
                     if (parts.length < 3) {
-                        console.warn("adhoc filters: filter " + af.key + "` has wrong format");
+                        console.warn("adhoc filters: filter `" + af.key + "` has wrong format");
                         return;
                     }
                     if (target[0] !== parts[0] || target[1] !== parts[1]) {
@@ -76,14 +76,17 @@ export default class SqlQuery {
                     }
                     let operator = SqlQuery.clickhouseOperator(af.operator);
                     // tslint:disable-next-line:max-line-length
-                    let cond = parts[2] + " " + operator + " " + ((af.value.indexOf("'") > -1 || af.value.indexOf(", ") > -1 || af.value.match(/^\s*\d+\s*$/)) ? af.value : "'" + af.value + "'");
+                    let cond = parts[2] + " " + operator + " " + ((typeof (af.value) === "number" || af.value.indexOf("'") > -1 || af.value.indexOf(", ") > -1 || af.value.match(/^\s*\d+\s*$/)) ? af.value : "'" + af.value + "'");
                     adhocCondition.push(cond);
                     if (ast.where.length > 0) {
                         // OR is not implemented
                         // @see https://github.com/grafana/grafana/issues/10918
                         cond = "AND " + cond;
                     }
-                    ast.where.push(cond);
+                    // push condition only when $adhoc not exists
+                    if (query.indexOf('$adhoc') === -1) {
+                        ast.where.push(cond);
+                    }
                 });
                 query = scanner.Print(topQueryAST);
             }
@@ -102,9 +105,9 @@ export default class SqlQuery {
             query = scanner.removeComments(query);
         }
         query = SqlQuery.unescape(query);
-        let timeFilter = SqlQuery.getDateTimeFilter(this.options.rangeRaw.to === 'now', dateTimeType);
+        let timeFilter = SqlQuery.getDateTimeFilter(dateTimeType);
         if (typeof this.target.dateColDataType === "string" && this.target.dateColDataType.length > 0) {
-            timeFilter = SqlQuery.getDateFilter(this.options.rangeRaw.to === 'now') + ' AND ' + timeFilter;
+            timeFilter = SqlQuery.getDateFilter() + ' AND ' + timeFilter;
         }
 
         let table = SqlQuery.escapeIdentifier(this.target.table);
@@ -117,15 +120,15 @@ export default class SqlQuery {
             to = SqlQuery.convertTimestamp(SqlQuery.round(this.options.range.to, myround));
 
         this.target.rawQuery = query
-                .replace(/\$timeSeries/g, SqlQuery.getTimeSeries(dateTimeType))
-                .replace(/\$timeFilter/g, timeFilter)
-                .replace(/\$table/g, table)
-                .replace(/\$from/g, from)
-                .replace(/\$to/g, to)
-                .replace(/\$dateCol/g, SqlQuery.escapeIdentifier(this.target.dateColDataType))
-                .replace(/\$dateTimeCol/g, SqlQuery.escapeIdentifier(this.target.dateTimeColDataType))
-                .replace(/\$interval/g, interval)
-                .replace(/\$adhoc/g, renderedAdHocCondition);
+            .replace(/\$timeSeries\b/g, SqlQuery.getTimeSeries(dateTimeType))
+            .replace(/\$timeFilter\b/g, timeFilter)
+            .replace(/\$table\b/g, table)
+            .replace(/\$from\b/g, from)
+            .replace(/\$to\b/g, to)
+            .replace(/\$dateCol\b/g, SqlQuery.escapeIdentifier(this.target.dateColDataType))
+            .replace(/\$dateTimeCol\b/g, SqlQuery.escapeIdentifier(this.target.dateTimeColDataType))
+            .replace(/\$interval\b/g, interval)
+            .replace(/\$adhoc\b/g, renderedAdHocCondition);
 
         const round = this.target.round === "$step"
             ? interval
@@ -136,7 +139,7 @@ export default class SqlQuery {
     }
 
     static escapeIdentifier(identifier: string): string {
-        if ( /^[a-zA-Z][0-9a-zA-Z_]+$/.test(identifier) || /\(.*\)/.test(identifier) || /[\/\*\+\-]/.test(identifier)) {
+        if (/^[a-zA-Z][0-9a-zA-Z_]+$/.test(identifier) || /\(.*\)/.test(identifier) || /[\/\*\+\-]/.test(identifier)) {
             return identifier;
         } else {
             return '"' + identifier.replace(/"/g, '\\"') + '"';
@@ -158,21 +161,22 @@ export default class SqlQuery {
             .replace(
                 /\$timeFilterByColumn\(([\w_]+)\)/g,
                 (match: string, columnName: string) => (
-                    `${columnName} ${SqlQuery.getFilterSqlForDateTime(range.raw.to === 'now', dateTimeType)}`
+                    `${SqlQuery.getFilterSqlForDateTime(columnName, dateTimeType)}`
                 )
             )
             .replace(/\$from/g, from.toString())
             .replace(/\$to/g, to.toString());
     }
 
-    static getFilterSqlForDateTime(isToNow: boolean, dateTimeType: string) {
+    static getFilterSqlForDateTime(columnName: string, dateTimeType: string) {
         const convertFn = this.getConvertFn(dateTimeType);
 
-        if (isToNow) {
-            return `>= ${convertFn('$from')}`;
+        /* @TODO remove IF when resolve https://github.com/ClickHouse/ClickHouse/issues/16655 */
+        if (dateTimeType === "DATETIME64") {
+            return `${convertFn(columnName)} >= ${convertFn('$from')} AND ${convertFn(columnName)} <= ${convertFn('$to')}`;
         }
 
-        return `BETWEEN ${convertFn('$from')} AND ${convertFn('$to')}`;
+        return `${columnName} >= ${convertFn('$from')} AND ${columnName} <= ${convertFn('$to')}`;
     }
 
     static getConvertFn(dateTimeType: string) {
@@ -181,6 +185,9 @@ export default class SqlQuery {
                 return 'toDateTime(' + t + ')';
             }
 
+            if (dateTimeType === 'DATETIME64') {
+                return 'toDateTime64(' + t + ', 3)';
+            }
             return t;
         };
     }
@@ -298,7 +305,7 @@ export default class SqlQuery {
         }
 
         query = SqlQuery._columns(args[0], args[1], "", fromQuery);
-        return beforeMacrosQuery+'SELECT t' +
+        return beforeMacrosQuery + 'SELECT t' +
             ', arrayMap(a -> (a.1, a.2/runningDifference( t/1000 )), groupArr)' +
             ' FROM (' +
             query +
@@ -306,7 +313,7 @@ export default class SqlQuery {
     }
 
     static _fromIndex(query, macro: string): number {
-        let fromRe = new RegExp("\\"+macro+"\\([\\w\\s\\S]+\\)(\\s+FROM\\s+)", 'gim');
+        let fromRe = new RegExp("\\" + macro + "\\([\\w\\s\\S]+?\\)(\\s+FROM\\s+)", 'gim');
         let matches = fromRe.exec(query);
         if (matches === null || matches.length === 0) {
             throw {message: 'Could not find FROM-statement at: ' + query};
@@ -343,7 +350,7 @@ export default class SqlQuery {
         });
 
         fromQuery = SqlQuery._applyTimeFilter(fromQuery);
-        return beforeMacrosQuery+'SELECT ' +
+        return beforeMacrosQuery + 'SELECT ' +
             't,' +
             ' ' + cols.join(', ') +
             ' FROM (' +
@@ -456,28 +463,33 @@ export default class SqlQuery {
         if (dateTimeType === 'DATETIME') {
             return '(intDiv(toUInt32($dateTimeCol), $interval) * $interval) * 1000';
         }
+        if (dateTimeType === 'DATETIME64') {
+            return '(intDiv(toFloat64($dateTimeCol) * 1000, ($interval * 1000)) * ($interval * 1000))';
+        }
         return '(intDiv($dateTimeCol, $interval) * $interval) * 1000';
     }
 
-    static getDateFilter(isToNow: boolean) {
-        if (isToNow) {
-            return '$dateCol >= toDate($from)';
-        }
-        return '$dateCol BETWEEN toDate($from) AND toDate($to)';
+    static getDateFilter() {
+        return '$dateCol >= toDate($from) AND $dateCol <= toDate($to)';
     }
 
-    static getDateTimeFilter(isToNow: boolean, dateTimeType: string) {
+    static getDateTimeFilter(dateTimeType: string) {
         let convertFn = function (t: string): string {
             if (dateTimeType === 'DATETIME') {
                 return 'toDateTime(' + t + ')';
             }
+            if (dateTimeType === 'DATETIME64') {
+                return 'toDateTime64(' + t + ', 3)';
+            }
             return t;
         };
 
-        if (isToNow) {
-            return '$dateTimeCol >= ' + convertFn('$from');
+        /* @TODO remove IF statement after resolve https://github.com/ClickHouse/ClickHouse/issues/16655 */
+        if (dateTimeType === 'DATETIME64') {
+            return convertFn('$dateTimeCol') + ' >= ' + convertFn('$from') + ' AND ' +
+                   convertFn('$dateTimeCol') + ' <= ' + convertFn('$to');
         }
-        return '$dateTimeCol BETWEEN ' + convertFn('$from') + ' AND ' + convertFn('$to');
+        return '$dateTimeCol >= ' + convertFn('$from') + ' AND $dateTimeCol <= ' + convertFn('$to');
     }
 
     // date is a moment object

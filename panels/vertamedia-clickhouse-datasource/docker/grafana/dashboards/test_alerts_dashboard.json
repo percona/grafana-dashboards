@@ -15,6 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
+  "iteration": 1619172389170,
   "links": [],
   "panels": [
     {
@@ -24,7 +25,160 @@
           {
             "evaluator": {
               "params": [
-                20
+                0
+              ],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "A",
+                "120m",
+                "now-115m"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "avg"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "for": "1m",
+        "frequency": "1m",
+        "handler": 1,
+        "name": "no data, avg > 0",
+        "noDataState": "no_data",
+        "notifications": []
+      },
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "clickhouse",
+      "description": "fix https://github.com/Vertamedia/clickhouse-grafana/issues/335 and fix https://github.com/Vertamedia/clickhouse-grafana/issues/334\n",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 6,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "database": "default",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "EventTime",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "interval": "",
+          "intervalFactor": 1,
+          "query": "SELECT\n    $timeSeries as t,\n    Name,\n    sum(Value) v\nFROM $table\n\nWHERE $timeFilter AND Name in ($template_variable)\n\nGROUP BY t, Name\n\nORDER BY t, Name\n",
+          "queryType": "randomWalk",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(EventTime), 20) * 20) * 1000 as t,\n    Name,\n    sum(Value) v\nFROM default.test_alerts\n\nWHERE EventTime >= toDateTime(1619144381) AND EventTime <= toDateTime(1619165981) AND Name in ('test1','test2')\n\nGROUP BY t, Name\n\nORDER BY t, Name",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "test_alerts",
+          "tableLoading": false
+        }
+      ],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 0,
+          "visible": true
+        }
+      ],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "nodata -> pending -> alert -> no-data corner case",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "alert": {
+        "alertRuleTags": {},
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                100
               ],
               "type": "gt"
             },
@@ -40,41 +194,41 @@
             },
             "reducer": {
               "params": [],
-              "type": "avg"
+              "type": "min"
             },
             "type": "query"
           }
         ],
         "executionErrorState": "alerting",
-        "for": "5m",
+        "for": "1m",
         "frequency": "1m",
         "handler": 1,
-        "name": "Panel Title alert",
+        "name": "min>100, string+float",
         "noDataState": "no_data",
         "notifications": []
       },
       "aliasColors": {},
-      "bars": false,
+      "bars": true,
       "dashLength": 10,
       "dashes": false,
       "datasource": "clickhouse",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "links": []
         },
         "overrides": []
       },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 0,
+        "h": 8,
+        "w": 8,
+        "x": 8,
         "y": 0
       },
       "hiddenSeries": false,
-      "id": 2,
-      "interval": "5m",
+      "id": 3,
+      "interval": "1m",
       "legend": {
         "avg": false,
         "current": false,
@@ -84,19 +238,20 @@
         "total": false,
         "values": false
       },
-      "lines": true,
+      "lines": false,
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.5.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": false,
+      "stack": true,
       "steppedLine": false,
       "targets": [
         {
@@ -111,10 +266,11 @@
           "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
           "interval": "",
           "intervalFactor": 1,
-          "query": "$columns(Name, sum(Value) c) FROM $table",
-          "rawQuery": "SELECT t, groupArray((Name, c)) AS groupArr FROM ( SELECT (intDiv(toUInt32(EventTime), 300) * 300) * 1000 AS t, Name, sum(Value) c FROM default.test_alerts WHERE EventDate >= toDate(1594707193) AND EventTime >= toDateTime(1594707193) GROUP BY t, Name ORDER BY t, Name) GROUP BY t ORDER BY t",
+          "query": "SELECT \n $timeSeries AS t,\n Name,\n sum(Value) c\nFROM $table\nWHERE $timeFilter\nGROUP BY t, Name\nORDER BY t",
+          "rawQuery": "SELECT \n (intDiv(toUInt32(EventTime), 60) * 60) * 1000 AS t,\n Name,\n sum(Value) c\nFROM default.test_alerts\nWHERE EventDate >= toDate(1619161589) AND EventDate <= toDate(1619172389) AND EventTime >= toDateTime(1619161589) AND EventTime <= toDateTime(1619172389)\nGROUP BY t, Name\nORDER BY t",
           "refId": "A",
           "round": "0s",
+          "skip_comments": true,
           "table": "test_alerts",
           "tableLoading": false
         }
@@ -125,13 +281,14 @@
           "fill": true,
           "line": true,
           "op": "gt",
-          "value": 20
+          "value": 100,
+          "visible": true
         }
       ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Test Alerts $columns Array(Tuple parsing",
+      "title": "Test Alerts string + float parsing, ok->pending->alert->ok",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -177,7 +334,7 @@
           {
             "evaluator": {
               "params": [
-                20
+                100
               ],
               "type": "gt"
             },
@@ -193,41 +350,41 @@
             },
             "reducer": {
               "params": [],
-              "type": "avg"
+              "type": "min"
             },
             "type": "query"
           }
         ],
         "executionErrorState": "alerting",
-        "for": "5m",
+        "for": "1m",
         "frequency": "1m",
         "handler": 1,
-        "name": "Test Alerts string + float parsing alert",
+        "name": "min>100, macros",
         "noDataState": "no_data",
         "notifications": []
       },
       "aliasColors": {},
-      "bars": false,
+      "bars": true,
       "dashLength": 10,
       "dashes": false,
       "datasource": "clickhouse",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "links": []
         },
         "overrides": []
       },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
+        "h": 8,
+        "w": 8,
+        "x": 16,
         "y": 0
       },
       "hiddenSeries": false,
-      "id": 3,
-      "interval": "5m",
+      "id": 2,
+      "interval": "1m",
       "legend": {
         "avg": false,
         "current": false,
@@ -237,19 +394,20 @@
         "total": false,
         "values": false
       },
-      "lines": true,
+      "lines": false,
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.5.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": false,
+      "stack": true,
       "steppedLine": false,
       "targets": [
         {
@@ -264,10 +422,11 @@
           "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
           "interval": "",
           "intervalFactor": 1,
-          "query": "SELECT \n $timeSeries AS t,\n Name,\n sum(Value) c\nFROM $table\nWHERE $timeFilter\nGROUP BY t, Name\nORDER BY t",
-          "rawQuery": "SELECT   (intDiv(toUInt32(EventTime), 300) * 300) * 1000 AS t,  Name,  sum(Value) c FROM default.test_alerts WHERE EventDate >= toDate(1594707234) AND EventTime >= toDateTime(1594707234) GROUP BY t, Name ORDER BY t",
+          "query": "$columns(Name, sum(Value) c) FROM $table",
+          "rawQuery": "SELECT t, groupArray((Name, c)) AS groupArr FROM ( SELECT (intDiv(toUInt32(EventTime), 60) * 60) * 1000 AS t, Name, sum(Value) c FROM default.test_alerts WHERE EventDate >= toDate(1617684950) AND EventDate <= toDate(1617686750) AND EventTime >= toDateTime(1617684950) AND EventTime <= toDateTime(1617686750) GROUP BY t, Name ORDER BY t, Name) GROUP BY t ORDER BY t",
           "refId": "A",
           "round": "0s",
+          "skip_comments": true,
           "table": "test_alerts",
           "tableLoading": false
         }
@@ -278,13 +437,14 @@
           "fill": true,
           "line": true,
           "op": "gt",
-          "value": 20
+          "value": 100,
+          "visible": true
         }
       ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Test Alerts string + float parsing",
+      "title": "Test Alerts $columns Array(Tuple parsing, ok->pending->alert->ok",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -340,22 +500,22 @@
             "query": {
               "params": [
                 "A",
-                "1h",
-                "now-30m"
+                "5m",
+                "now"
               ]
             },
             "reducer": {
               "params": [],
-              "type": "min"
+              "type": "max"
             },
             "type": "query"
           }
         ],
         "executionErrorState": "alerting",
-        "for": "5m",
+        "for": "1m",
         "frequency": "1m",
         "handler": 1,
-        "name": "Test Alerts timestamp + float parsing alert",
+        "name": "max < 1000",
         "noDataState": "no_data",
         "notifications": []
       },
@@ -366,21 +526,21 @@
       "datasource": "clickhouse",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "links": []
         },
         "overrides": []
       },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
-        "w": 12,
+        "h": 8,
+        "w": 8,
         "x": 0,
-        "y": 9
+        "y": 8
       },
       "hiddenSeries": false,
       "id": 4,
-      "interval": "5m",
+      "interval": "1m",
       "legend": {
         "avg": false,
         "current": false,
@@ -394,9 +554,10 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.5.4",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -417,10 +578,11 @@
           "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
           "interval": "",
           "intervalFactor": 1,
-          "query": "SELECT \n $timeSeries AS t,\n sum(Value) c\nFROM $table\nWHERE $timeFilter\nGROUP BY t\nORDER BY t",
-          "rawQuery": "SELECT   (intDiv(toUInt32(EventTime), 300) * 300) * 1000 AS t,  sum(Value) c FROM default.test_alerts WHERE EventDate >= toDate(1594708432) AND EventTime >= toDateTime(1594708432) GROUP BY t ORDER BY t",
+          "query": "/* wtf */ SELECT \n $timeSeries AS t,\n sum(Value*10.01) c\nFROM $table\nWHERE $timeFilter\nGROUP BY t\nORDER BY t",
+          "rawQuery": "/* wtf */ SELECT \n (intDiv(toUInt32(EventTime), 60) * 60) * 1000 AS t,\n sum(Value*10.01) c\nFROM default.test_alerts\nWHERE EventDate >= toDate(1618661917) AND EventDate <= toDate(1618663717) AND EventTime >= toDateTime(1618661917) AND EventTime <= toDateTime(1618663717)\nGROUP BY t\nORDER BY t",
           "refId": "A",
           "round": "0s",
+          "skip_comments": false,
           "table": "test_alerts",
           "tableLoading": false
         }
@@ -431,13 +593,14 @@
           "fill": true,
           "line": true,
           "op": "lt",
-          "value": 1000
+          "value": 1000,
+          "visible": true
         }
       ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Test Alerts timestamp + float parsing",
+      "title": "Test Alerts timestamp + float parsing, pending->alert->ok",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -477,12 +640,45 @@
       }
     }
   ],
-  "refresh": "5s",
-  "schemaVersion": 25,
+  "refresh": "1m",
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "clickhouse",
+        "definition": "SELECT DISTINCT Name FROM default.test_alerts",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "template_variable",
+        "options": [],
+        "query": "SELECT DISTINCT Name FROM default.test_alerts",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
     "from": "now-3h",

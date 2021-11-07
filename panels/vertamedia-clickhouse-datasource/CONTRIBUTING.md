@@ -7,6 +7,7 @@ There are following scripts defined in package.json:
 - `build:watch` - automatically rebuild frontend TypeScript+HTML part of codebase on change (handy while developing)
 - `test` - runs frontend test suite using Jest
 - `test:watch` - runs frontend test suite using Jest in watch mode. Automatically reruns tests on source change.
+- `sign` - runs grafana plugin sign in `dist` directory
 
 Each script can be run using NPM or Yarn package managers:
 
@@ -54,7 +55,7 @@ To develop without build inside a docker, the development process for frontend p
 
 #### Backend Builder
 
-The backend builder is the docker container used to compile the golang source code into the `vertamedia-clickhouse-plugin_linux_amd64` binary in the `dist` dir. This will affect the grafana service used for running queries for alerting. The entrypoint for the go code is at `plugin.go`.
+The backend builder is the docker container used to compile the golang source code into the `vertamedia-clickhouse-plugin_linux_amd64` binary in the `dist` dir. This will affect the grafana service used for running queries for alerting. The entrypoint for the go code is at `pkg/main.go`.
 
 To develop using docker, the development process for backend part of code looks like:
 1. change source files
@@ -71,7 +72,7 @@ The resulting alerts should look like this
 ![image](https://user-images.githubusercontent.com/5578150/81031711-fd2fad00-8e41-11ea-9b54-5eb4ca1628f1.png)
 
 
-### Howto Make new release
+### How to make a new release
 
 - fork https://github.com/Vertamedia/clickhouse-grafana and make git clone, if necessary
 - look at https://github.com/Vertamedia/clickhouse-grafana/commits/master and add necessary items to [CHANGELOG.md](CHANGELOG.md)
@@ -90,7 +91,7 @@ set -xeuo pipefail
     - `./release.sh patch` - for minor hotfix releases
     - `./release.sh minor` - for minor and backward compatible improvements releases
     - `./release.sh major` - for major or backward incompatible improvements releases
-- this script will run `frontend` and `backend` builders via `docker-compose` and run tests and make git commit + git push if test pass
+- this script will run `frontend_builder`, `backend_builder`, `plugin_signer` via `docker-compose` and run tests and make git commit + git push if test pass
 
 #### Final manual steps
 - after git push to your github fork, please open new pull request between your fork and `master` branch in https://github.com/Vertamedia/clickhouse-grafana

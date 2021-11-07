@@ -27,9 +27,7 @@ CREATE TABLE IF NOT EXISTS default.test_alerts
   PARTITION BY toYYYYMM(EventTime)
   ORDER BY (EventTime, Name);
 
--- INSERT INTO default.test_alerts SELECT concat('test',toString(rand() % 10)) AS Name, toDate(now()) AS EventDate, now() AS EventTime, rand() AS Value FROM numbers(1000);
-
-INSERT INTO default.test_alerts SELECT 'test2' AS Name, toDate( now() - ( 5400  - (60*number) ) ) AS EventDate, toDateTime( now() - ( 5400  - (60*number) ) ) AS EventTime, if(EventTime BETWEEN now() - INTERVAL 3600 SECOND AND now() - INTERVAL 1800 SECOND, rand() % 20, rand() ) AS Value FROM numbers(180);
+INSERT INTO default.test_alerts SELECT if(rand() % 2, 'test2','test1') AS Name, toDate( now() - ( 5400  - (60*number) ) ) AS EventDate, toDateTime( now() - ( 5400  - (60*number) ) ) AS EventTime, if((EventTime BETWEEN now() - INTERVAL 3600 SECOND AND now() + INTERVAL 600 SECOND) OR (EventTime BETWEEN now() + INTERVAL 1200 SECOND AND now() + INTERVAL 1800 SECOND), rand() % 20, rand() ) AS Value FROM numbers(180);
 
 DROP TABLE IF EXISTS default.test_depends_on_variable;
 CREATE TABLE IF NOT EXISTS default.test_depends_on_variable(
@@ -55,3 +53,36 @@ CREATE TABLE IF NOT EXISTS default.test_interval
 
 INSERT INTO default.test_interval(d,x) SELECT toDateTime(now()-(number*10)) AS d, rand() AS x FROM numbers(1000);
 
+
+DROP TABLE IF EXISTS default.test_array_join_nested;
+CREATE TABLE IF NOT EXISTS default.test_array_join_nested(
+    d DateTime,
+    JobName LowCardinality(String),
+    Metrics Nested (
+        Name LowCardinality(String),
+        Value UInt64
+    )
+) ENGINE = MergeTree() ORDER BY (d);
+
+INSERT INTO default.test_array_join_nested(d, JobName, Metrics.Name, Metrics.Value)
+SELECT d, JobName, groupArray(metricname) AS metrics_name_arr, groupArray(metricval) AS metrics_value_arr
+FROM (
+      SELECT
+          if(number%2,'Job2','Job1') AS JobName,
+          toDateTime(now()-(number*10)) AS d,
+          arrayJoin(['metric1', 'metric2']) AS metricname,
+          rand64(cityHash64(arrayJoin(range(5)), number, metricname))%10 metricval
+      FROM numbers(1000)
+      ORDER BY d, metricname
+         )
+GROUP BY d, JobName;
+
+
+DROP TABLE IF EXISTS default.test_datetime64;
+CREATE TABLE IF NOT EXISTS default.test_datetime64
+(
+    d DateTime64(6),
+    x UInt32
+) ENGINE = MergeTree() ORDER BY (d);
+
+INSERT INTO default.test_datetime64(d,x) SELECT toDateTime64(now64(6)-(number*10), 3) AS d, rand() AS x FROM numbers(1000);

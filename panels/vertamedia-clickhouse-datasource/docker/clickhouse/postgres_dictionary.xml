@@ -1,0 +1,43 @@
+﻿<yandex>
+    <dictionary>
+        <name>postgres_dict</name>
+        <structure>
+            <key>
+                <attribute>
+                    <name>service_name</name>
+                    <type>String</type>
+                </attribute>
+            </key>
+            <attribute>
+                <name>service_type</name>
+                <type>String</type>
+                <null_value></null_value>
+            </attribute>
+        </structure>
+
+        <source>
+            <postgresql>
+                <host>postgres</host>
+                <port>5432</port>
+                <user>grafana</user>
+                <password>grafana</password>
+                <database>grafana</database>
+                <table>test_grafana_dict</table>
+                <replica>
+                    <host>postgres</host>
+                </replica>
+                <where>service_name='mysql'</where>
+                <invalidate_query>SELECT now()</invalidate_query>
+            </postgresql>
+        </source>
+
+        <layout>
+            <complex_key_hashed/>
+        </layout>
+
+        <lifetime>
+            <min>10</min>
+            <max>20</max>
+        </lifetime>
+    </dictionary>
+</yandex>

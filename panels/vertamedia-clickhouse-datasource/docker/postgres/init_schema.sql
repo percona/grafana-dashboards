@@ -13,3 +13,9 @@ INSERT INTO test_grafana(event_time, service_name, too_big_value) SELECT to_time
 INSERT INTO test_grafana(event_time, service_name, too_big_value) SELECT to_timestamp(extract(epoch from now()) + ((500+generate_series)*10)) AS event_time, 'postgresql' AS service_name, 1000000000.05 AS too_big_value FROM generate_series(1,1000);
 
 ALTER TABLE test_grafana OWNER TO grafana;
+
+DROP TABLE IF EXISTS test_grafana_dict;
+CREATE TABLE IF NOT EXISTS test_grafana_dict(service_name VARCHAR(100), service_type VARCHAR(100));
+ALTER TABLE test_grafana_dict OWNER TO grafana;
+
+INSERT INTO test_grafana_dict(service_name, service_type) VALUES ('mysql','sql'),('postgresql','sql');

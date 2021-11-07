@@ -32,8 +32,8 @@ export default class SqlSeries {
         let rows = [];
         each(self.series, function (ser) {
             let r = [];
-            each(ser, function (v) {
-                r.push(v);
+            each(columns, function (col) {
+                r.push(ser[col.text]);
             });
             rows.push(r);
         });
@@ -66,7 +66,7 @@ export default class SqlSeries {
                 metricKey = keyColumns.map(name => row[name]).join(', ');
             }
             /* Make sure all series end with a value or nil for current timestamp
-             * to render discontiguous timeseries properly. */
+             * to render discontinuous timeseries properly. */
             if (lastTimeStamp < t) {
                 each(metrics, function (datapoints, seriesName) {
                     if (datapoints[datapoints.length - 1][1] < lastTimeStamp) {
@@ -150,7 +150,7 @@ export default class SqlSeries {
         if (!metrics[key]) {
             metrics[key] = [];
             /* Fill null values for each new series */
-            for (var seriesName in metrics) {
+            for (let seriesName in metrics) {
                 metrics[seriesName].forEach(v => {
                     if (v[1] < timestamp) {
                         metrics[key].push([null, v[1]]);

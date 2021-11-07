@@ -158,6 +158,7 @@ export default function () {
             "$to",
             "$interval",
             "$timeFilter",
+            "$timeFilterByColumn",
             "$timeSeries",
             "$rate",
             "$perSecond",

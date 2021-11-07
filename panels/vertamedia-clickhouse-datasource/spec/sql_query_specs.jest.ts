@@ -13,7 +13,9 @@ describe("Query SELECT with $timeFilterByColumn and range with from and to:", ()
 
     it("gets replaced with BETWEEN filter", () => {
         expect(SqlQuery.replaceTimeFilters(query, range, 'DATETIME'))
-            .toBe('SELECT * FROM table WHERE column_name BETWEEN toDateTime(1545613323) AND toDateTime(1546300799)');
+            .toBe('SELECT * FROM table WHERE column_name >= toDateTime(1545613323) AND column_name <= toDateTime(1546300799)');
+        expect(SqlQuery.replaceTimeFilters(query, range, 'DATETIME64'))
+            .toBe('SELECT * FROM table WHERE toDateTime64(column_name, 3) >= toDateTime64(1545613323, 3) AND toDateTime64(column_name, 3) <= toDateTime64(1546300799, 3)');
     });
 });
 
@@ -29,7 +31,71 @@ describe("Query SELECT with $timeFilterByColumn and range with from", () => {
     };
 
     it("gets replaced with >= filter", () => {
-        expect(SqlQuery.replaceTimeFilters(query, range, 'DATETIME')).toBe('SELECT * FROM table WHERE column_name >= toDateTime(1545613323)');
+        expect(SqlQuery.replaceTimeFilters(query, range, 'DATETIME'))
+            .toBe(
+                'SELECT * FROM table WHERE ' +
+                'column_name >= toDateTime(' + range.from.unix() + ') AND ' +
+                'column_name <= toDateTime(' + range.to.unix() + ')'
+            );
+        expect(SqlQuery.replaceTimeFilters(query, range, 'DATETIME64'))
+            .toBe(
+                'SELECT * FROM table WHERE ' +
+                'toDateTime64(column_name, 3) >= toDateTime64(' + range.from.unix() + ', 3) AND ' +
+                'toDateTime64(column_name, 3) <= toDateTime64(' + range.to.unix() + ', 3)'
+            );
+    });
+});
+
+
+describe("Query SELECT with $timeSeries $timeFilter and DATETIME64", () => {
+    const query = "SELECT $timeSeries as t, sum(x) AS metric\n" +
+        "FROM $table\n" +
+        "WHERE $timeFilter\n" +
+        "GROUP BY t\n" +
+        "ORDER BY t";
+    const expQuery = "SELECT (intDiv(toFloat64(\"d\") * 1000, (15 * 1000)) * (15 * 1000)) as t, sum(x) AS metric\n" +
+        "FROM default.test_datetime64\n" +
+        "WHERE toDateTime64(\"d\", 3) >= toDateTime64(1545613320, 3) AND toDateTime64(\"d\", 3) <= toDateTime64(1546300740, 3)\n" +
+        "GROUP BY t\n" +
+        "ORDER BY t";
+    let templateSrv = new TemplateSrvStub();
+    const adhocFilters = [];
+    let target = {
+        query: query,
+        interval: "15s",
+        intervalFactor: 1,
+        skip_comments: false,
+        table: "test_datetime64",
+        database: "default",
+        dateTimeType: "DATETIME64",
+        dateColDataType: "",
+        dateTimeColDataType: "d",
+        round: "1m",
+        rawQuery: "",
+    };
+    const options = {
+        rangeRaw: {
+            from: moment('2018-12-24 01:02:03Z'),
+            to: moment('2018-12-31 23:59:59Z'),
+        },
+        range: {
+            from: moment('2018-12-24 01:02:03Z'),
+            to: moment('2018-12-31 23:59:59Z'),
+        },
+        scopedVars: {
+            __interval: {
+                text: "15s",
+                value: "15s",
+            },
+            __interval_ms: {
+                text: "15000",
+                value: 15000,
+            },
+        },
+    };
+    let sql_query = new SqlQuery(target, templateSrv, options);
+    it("applyMacros $timeSeries with $timeFilter with DATETIME64", () => {
+        expect(sql_query.replace(options, adhocFilters)).toBe(expQuery);
     });
 });
 
@@ -106,8 +172,8 @@ describe("$rateColumns and subquery + $conditionalTest + SqlQuery.replace + adho
         "        count() as count\n" +
         "    FROM default.test_grafana\n" +
         "\n" +
-        "    WHERE event_date BETWEEN toDate(1545613320) AND toDate(1546300740) AND event_time BETWEEN toDateTime(1545613320) AND toDateTime(1546300740) AND\n" +
-        "        event_date BETWEEN toDate(1545613320) AND toDate(1546300740) AND event_time BETWEEN toDateTime(1545613320) AND toDateTime(1546300740)\n" +
+        "    WHERE event_date >= toDate(1545613320) AND event_date <= toDate(1546300740) AND event_time >= toDateTime(1545613320) AND event_time <= toDateTime(1546300740) AND\n" +
+        "        event_date >= toDate(1545613320) AND event_date <= toDate(1546300740) AND event_time >= toDateTime(1545613320) AND event_time <= toDateTime(1546300740)\n" +
         "        AND toLowerCase(service_name) IN ('mysql','postgresql')\n" +
         "        AND test = 'value'\n" +
         "        AND test2 LIKE '%value%'\n" +
@@ -181,7 +247,7 @@ describe("$rateColumns and subquery + $conditionalTest + SqlQuery.replace + adho
                 value: 20000,
             },
             repeated_service: {
-                value: ['mysql','postgresql'],
+                value: ['mysql', 'postgresql'],
                 multi: true,
                 includeAll: true,
                 options: [
@@ -199,3 +265,183 @@ describe("$rateColumns and subquery + $conditionalTest + SqlQuery.replace + adho
     });
 });
 
+/* check https://github.com/Vertamedia/clickhouse-grafana/issues/282 */
+describe("check replace with $adhoc macros", () => {
+    const query = "SELECT\n" +
+        "    $timeSeries as t,\n" +
+        "    count()\n" +
+        "FROM $table\n" +
+        "WHERE $timeFilter AND $adhoc\n" +
+        "GROUP BY t\n" +
+        "ORDER BY t";
+    const expQuery = "SELECT\n" +
+        "    (intDiv(toUInt32(TimeFlowStart), 15) * 15) * 1000 as t,\n" +
+        "    count()\n" +
+        "FROM default.flows_raw\n\n" +
+        "WHERE\n" +
+        "    TimeFlowStart >= toDate(1545613320) AND TimeFlowStart <= toDate(1546300740) AND TimeFlowStart >= toDateTime(1545613320) AND TimeFlowStart <= toDateTime(1546300740)\n" +
+        "    AND (SrcAS = 1299)\n" +
+        "GROUP BY t\n\n" +
+        "ORDER BY t\n";
+    let templateSrv = new TemplateSrvStub();
+    const adhocFilters = [
+        {
+            key: "default.flows_raw.SrcAS",
+            operator: "=",
+            value: "1299"
+        },
+    ];
+    let target = {
+        query: query,
+        interval: "15s",
+        intervalFactor: 1,
+        skip_comments: false,
+        table: "flows_raw",
+        database: "default",
+        dateTimeType: "DATETIME",
+        dateColDataType: "TimeFlowStart",
+        dateTimeColDataType: "TimeFlowStart",
+        round: "1m",
+        rawQuery: "",
+    };
+    const options = {
+        rangeRaw: {
+            from: moment('2018-12-24 01:02:03Z'),
+            to: moment('2018-12-31 23:59:59Z'),
+        },
+        range: {
+            from: moment('2018-12-24 01:02:03Z'),
+            to: moment('2018-12-31 23:59:59Z'),
+        },
+        scopedVars: {
+            __interval: {
+                text: "15s",
+                value: "15s",
+            },
+            __interval_ms: {
+                text: "15000",
+                value: 15000,
+            },
+        },
+    };
+    let sql_query = new SqlQuery(target, templateSrv, options);
+    it("applyMacros with $adhoc", () => {
+        expect(sql_query.replace(options, adhocFilters)).toBe(expQuery);
+    });
+
+});
+
+/* check https://github.com/Vertamedia/clickhouse-grafana/issues/284 */
+describe("check replace with $columns and concat and ARRAY JOIN", () => {
+    const query = "$columns(\n" +
+        "substring(concat(JobName as JobName,' # ' , Metrics.Name as MetricName), 1, 50) as JobSource,\n" +
+        "sum(Metrics.Value) as Kafka_lag_max)\n" +
+        "FROM $table\n" +
+        "ARRAY JOIN Metrics";
+    const expQuery = "SELECT t, groupArray((JobSource, Kafka_lag_max)) AS groupArr FROM ( SELECT (intDiv(toUInt32(dateTimeColumn), 15) * 15) * 1000 AS t, substring(concat(JobName as JobName, ' # ', Metrics.Name as MetricName), 1, 50) as JobSource, sum(Metrics.Value) as Kafka_lag_max FROM default.test_array_join_nested\n" +
+        "\n" +
+        "ARRAY JOIN Metrics\n" +
+        " \n\n" +
+        "WHERE dateTimeColumn >= toDate(1545613320) AND dateTimeColumn <= toDate(1546300740) AND dateTimeColumn >= toDateTime(1545613320) AND dateTimeColumn <= toDateTime(1546300740) AND JobName LIKE 'Job'\n" +
+        " GROUP BY t, JobSource ORDER BY t, JobSource) GROUP BY t ORDER BY t";
+    let templateSrv = new TemplateSrvStub();
+    const adhocFilters = [
+        {
+            key: "default.test_array_join_nested.JobName",
+            operator: "=~",
+            value: "Job"
+        },
+    ];
+    let target = {
+        query: query,
+        interval: "15s",
+        intervalFactor: 1,
+        skip_comments: false,
+        table: "test_array_join_nested",
+        database: "default",
+        dateTimeType: "DATETIME",
+        dateColDataType: "dateTimeColumn",
+        dateTimeColDataType: "dateTimeColumn",
+        round: "1m",
+        rawQuery: "",
+    };
+    const options = {
+        rangeRaw: {
+            from: moment('2018-12-24 01:02:03Z'),
+            to: moment('2018-12-31 23:59:59Z'),
+        },
+        range: {
+            from: moment('2018-12-24 01:02:03Z'),
+            to: moment('2018-12-31 23:59:59Z'),
+        },
+        scopedVars: {
+            __interval: {
+                text: "15s",
+                value: "15s",
+            },
+            __interval_ms: {
+                text: "15000",
+                value: 15000,
+            },
+        },
+    };
+    let sql_query = new SqlQuery(target, templateSrv, options);
+    it("replace with $columns and ARRAY JOIN", () => {
+        expect(sql_query.replace(options, adhocFilters)).toBe(expQuery);
+    });
+
+});
+
+
+/* check https://github.com/Vertamedia/clickhouse-grafana/issues/294 */
+describe("combine $timeFilterByColumn and $dateTimeCol", () => {
+    const query = "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter AND $timeFilterByColumn($dateTimeCol) AND $timeFilterByColumn(another_column) GROUP BY t";
+    const expQuery = "SELECT (intDiv(toUInt32(tm), 15) * 15) * 1000 as t, count() FROM default.test_table " +
+        "WHERE dt >= toDate(1545613320) AND dt <= toDate(1546300740) AND tm >= toDateTime(1545613320) AND tm <= toDateTime(1546300740) " +
+        "AND tm >= toDateTime(1545613201) AND tm <= toDateTime(1546300859) " +
+        "AND another_column >= toDateTime(1545613201) AND another_column <= toDateTime(1546300859) " +
+        "GROUP BY t";
+
+    let templateSrv = new TemplateSrvStub();
+    const adhocFilters = [];
+    let target = {
+        query: query,
+        interval: "15s",
+        intervalFactor: 1,
+        skip_comments: false,
+        table: "test_table",
+        database: "default",
+        dateTimeType: "DATETIME",
+        dateColDataType: "dt",
+        dateTimeColDataType: "tm",
+        round: "1m",
+        rawQuery: "",
+    };
+
+    const options = {
+        rangeRaw: {
+            from: moment('2018-12-24 01:02:03Z'),
+            to: moment('2018-12-31 23:59:59Z'),
+        },
+        range: {
+            from: moment('2018-12-24 01:02:03Z'),
+            to: moment('2018-12-31 23:59:59Z'),
+            raw: RawTimeRangeStub,
+        },
+        scopedVars: {
+            __interval: {
+                text: "15s",
+                value: "15s",
+            },
+            __interval_ms: {
+                text: "15000",
+                value: 15000,
+            },
+        },
+    };
+    let sql_query = new SqlQuery(target, templateSrv, options);
+    it("replace with $timeFilterByColumn($dateTimeCol)", () => {
+        expect(sql_query.replace(options, adhocFilters)).toBe(expQuery);
+    });
+
+});

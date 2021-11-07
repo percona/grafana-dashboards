@@ -238,7 +238,10 @@ export default class Scanner {
                 } else {
                     break;
                 }
-            } while (this.expectNext());
+            } while ( (joinType.toUpperCase().indexOf('ARRAY JOIN') === -1 && this.expectNext()) || this.next());
+            if (this.token===source) {
+                this.token = "";
+            }
             source = [source];
         }
         let joinAST = {type: joinType, source: source, aliases: [], using: [], on: []};
@@ -248,7 +251,7 @@ export default class Scanner {
             } else if (onJoinTokenOnlyRe.test(this.token)) {
                 break;
             }
-        } while (this.expectNext());
+        } while ( (joinType.toUpperCase().indexOf('ARRAY JOIN') === -1 && this.expectNext()) || this.next());
         const joinExprToken = toLower(this.token);
         let joinConditions = "";
         while (this.next()) {
@@ -593,7 +596,7 @@ function betweenBraces(query) {
     return subQuery;
 }
 
-// see https://clickhouse.yandex/reference_ru.html#SELECT
+// see https://clickhouse.tech/docs/en/sql-reference/statements/select/
 function print(AST, tab = '') {
     let result = '';
     if (isSet(AST, 'root')) {
@@ -646,7 +649,7 @@ function print(AST, tab = '') {
 
     if (isSet(AST, 'join')) {
         AST.join.forEach(function (item) {
-            result += newLine + tab + item.type.toUpperCase() + printItems(item.source, tab) + ' ' + printItems(AST.join.aliases, '', ' ');
+            result += newLine + tab + item.type.toUpperCase() + printItems(item.source, tab) + ' ' + printItems(item.aliases, '', ' ');
             if (item.using.length > 0) {
                 result += ' USING ' + printItems(item.using, '', ' ');
             } else if (item.on.length > 0) {

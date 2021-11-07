@@ -709,4 +709,89 @@ describe("scanner:", () => {
         });
     });
 
+    /* fix https://github.com/Vertamedia/clickhouse-grafana/issues/319 */
+    describe("AST case 19 ($columns + union all + with + sub query)", () => {
+        let query = "$columns(\n" +
+            "  service_name,   \n" +
+            "  sum(agg_value) as value\n" +
+            ")\n" +
+            "FROM (\n" +
+            "\n" +
+            " SELECT\n" +
+            "    $timeSeries as t,\n" +
+            "    service_name,\n" +
+            "    sum(too_big_value) as agg_value\n" +
+            " FROM $table\n" +
+            " WHERE $timeFilter\n" +
+            " GROUP BY t,service_name\n" +
+            " \n" +
+            " UNION ALL\n" +
+            " \n" +
+            " WITH (SELECT sum(too_big_value) FROM $table) AS total_value\n" +
+            " SELECT\n" +
+            "    $timeSeries as t,\n" +
+            "    service_name,\n" +
+            "    sum(too_big_value) / total_value as agg_value\n" +
+            " FROM $table\n" +
+            " WHERE $timeFilter\n" +
+            " GROUP BY t,service_name\n" +
+            ")",
+            scanner = new Scanner(query);
+
+        let expectedAST = {
+            "root": [],
+            "select": [],
+            "$columns": [
+                "service_name",
+                "sum(agg_value) as value"
+            ],
+            "from": {
+                "root": [],
+                "select": [
+                    "$timeSeries as t",
+                    "service_name",
+                    "sum(too_big_value) as agg_value"
+                ],
+                "from": [
+                    "$table"
+                ],
+                "group by": [
+                    "t",
+                    "service_name"
+                ],
+                "union all": [
+                    {
+                        "from": [
+                            "$table"
+                        ],
+                        "group by": [
+                            "t",
+                            "service_name"
+                        ],
+                        "root": [],
+                        "select": [
+                            "$timeSeries as t",
+                            "service_name",
+                            "sum(too_big_value) / total_value as agg_value"
+                        ],
+                        "where": [
+                            "$timeFilter"
+                        ],
+                        "with": [
+                            "(SELECT sum(too_big_value) FROM $table) AS total_value"
+                        ]
+                    }
+                ],
+                "where": [
+                    "$timeFilter"
+                ]
+            },
+        };
+
+        it("expects equality", () => {
+            expect(scanner.toAST()).toEqual(expectedAST);
+        });
+    });
+
+
 });

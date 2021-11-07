@@ -8,9 +8,9 @@ end
 
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.box = "ubuntu/focal64"
   config.vm.box_check_update = false
-  config.vm.synced_folder ".", "/vagrant", type: "nfs"
+  # config.vm.synced_folder ".", "/vagrant", type: "nfs"
 
   if Vagrant.has_plugin?("vagrant-vbguest")
     config.vbguest.auto_update = false
@@ -43,6 +43,18 @@ Vagrant.configure(2) do |config|
     apt-get install --no-install-recommends -y apt-transport-https ca-certificates software-properties-common curl
     apt-get install --no-install-recommends -y htop ethtool mc curl wget jq socat git
 
+    # docker
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8D81803C0EBFCD88
+    add-apt-repository "deb https://download.docker.com/linux/ubuntu focal edge"
+    apt-get install --no-install-recommends -y docker-ce
+
+    # docker compose
+    apt-get install -y --no-install-recommends python3-distutils
+    curl -sL https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+    python3 /tmp/get-pip.py
+
+    pip3 install -U setuptools
+    pip3 install -U docker-compose
 
     # clickhouse
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E0C56BD4
@@ -68,5 +80,8 @@ Vagrant.configure(2) do |config|
     grafana-cli plugins update vertamedia-clickhouse-datasource
     systemctl start grafana-server
     grafana-cli plugins ls
+
+    # github actions local
+    curl https://raw.githubusercontent.com/nektos/act/master/install.sh | bash
   SHELL
 end

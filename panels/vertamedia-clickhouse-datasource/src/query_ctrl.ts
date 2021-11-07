@@ -80,6 +80,7 @@ class SqlQueryCtrl extends QueryCtrl {
 
         this.dateTimeTypeOptions = [
             {text: 'Column:DateTime', value: 'DATETIME'},
+            {text: 'Column:DateTime64', value: 'DATETIME64'},
             {text: 'Column:TimeStamp', value: 'TIMESTAMP'},
         ];
 
@@ -361,7 +362,7 @@ class SqlQueryCtrl extends QueryCtrl {
                     'FROM system.columns ' +
                     'WHERE database = \'' + this.target.database + '\' AND ' +
                     'table = \'' + this.target.table + '\' AND ' +
-                    'type = \'Date\' ' +
+                    'match(type,\'^Date$|^Date\\([^)]+\\)$\') ' +
                     'ORDER BY name ' +
                     'UNION ALL SELECT \' \' AS name';
                 break;
@@ -370,7 +371,15 @@ class SqlQueryCtrl extends QueryCtrl {
                     'FROM system.columns ' +
                     'WHERE database = \'' + this.target.database + '\' AND ' +
                     'table = \'' + this.target.table + '\' AND ' +
-                    'type LIKE \'DateTime%\' ' +
+                    'match(type,\'^DateTime$|^DateTime\\([^)]+\\)$\') ' +
+                    'ORDER BY name';
+                break;
+            case 'DATETIME64':
+                query = 'SELECT name ' +
+                    'FROM system.columns ' +
+                    'WHERE database = \'' + this.target.database + '\' AND ' +
+                    'table = \'' + this.target.table + '\' AND ' +
+                    'type LIKE \'DateTime64%\' ' +
                     'ORDER BY name';
                 break;
             case 'TIMESTAMP':
