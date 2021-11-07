@@ -15,7 +15,7 @@ export const useInitialFilterValues = () => {
 
         if (Array.isArray(values)) {
           values.forEach((value) => {
-            acc[`${key}:${value.replace(/\./gi, '--') || 'na'}`] = true;
+            acc[`${key};${value.replace(/\./gi, '--') || 'na'}`] = true;
           });
         }
 

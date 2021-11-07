@@ -46,7 +46,7 @@ describe('useInitializeUpdate', () => {
 
     wrapper?.update();
 
-    let [authToken, logOffset, updateFailed, initializeUpdate] = wrapper?.find('div').prop('data-hook');
+    let [authToken, logOffset, updateFailed, initializeUpdate] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(authToken).toEqual('');
     expect(logOffset).toEqual(0);
@@ -58,7 +58,7 @@ describe('useInitializeUpdate', () => {
 
     wrapper?.update();
 
-    [authToken, logOffset, updateFailed, initializeUpdate] = wrapper?.find('div').prop('data-hook');
+    [authToken, logOffset, updateFailed, initializeUpdate] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(mockedStartUpdate).toBeCalledTimes(1);
 
@@ -80,7 +80,7 @@ describe('useInitializeUpdate', () => {
 
     wrapper?.update();
 
-    let [authToken, logOffset, updateFailed, initializeUpdate] = wrapper?.find('div').prop('data-hook');
+    let [authToken, logOffset, updateFailed, initializeUpdate] = wrapper?.find('div').prop<any>('data-hook');
 
     await act(async () => {
       initializeUpdate();
@@ -88,7 +88,7 @@ describe('useInitializeUpdate', () => {
 
     wrapper?.update();
 
-    [authToken, logOffset, updateFailed, initializeUpdate] = wrapper?.find('div').prop('data-hook');
+    [authToken, logOffset, updateFailed, initializeUpdate] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(authToken).toEqual('');
     expect(logOffset).toEqual(0);

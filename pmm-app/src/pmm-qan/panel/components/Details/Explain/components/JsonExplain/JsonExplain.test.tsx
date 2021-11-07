@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { dataQa } from '@percona/platform-core';
+import { dataTestId } from '@percona/platform-core';
 import { JsonExplain } from './JsonExplain';
 import { useExplains } from '../../Explain.hooks';
 
@@ -21,8 +21,8 @@ describe('JsonExplain::', () => {
     ]);
     const root = mount(<JsonExplain databaseType="mysql" examples={[]} />);
 
-    expect(root.find(dataQa('json-explain-error')).length).toBe(0);
-    expect(root.find(dataQa('json-explain-no-data')).length).toBe(1);
+    expect(root.find(dataTestId('json-explain-error')).length).toBe(0);
+    expect(root.find(dataTestId('json-explain-no-data')).length).toBe(1);
   });
 
   it('should render explains correct for error state', () => {
@@ -35,8 +35,8 @@ describe('JsonExplain::', () => {
     ]);
     const root = mount(<JsonExplain databaseType="mysql" examples={[]} />);
 
-    expect(root.find(dataQa('json-explain-error')).length).toBe(1);
-    expect(root.find(dataQa('json-explain-no-data')).length).toBe(0);
+    expect(root.find(dataTestId('json-explain-error')).length).toBe(1);
+    expect(root.find(dataTestId('json-explain-no-data')).length).toBe(0);
   });
 
   it('should render explains correct for success state', () => {
@@ -49,7 +49,7 @@ describe('JsonExplain::', () => {
     ]);
     const root = mount(<JsonExplain databaseType="mysql" examples={[]} />);
 
-    expect(root.find(dataQa('json-explain-error')).length).toBe(0);
-    expect(root.find(dataQa('json-explain-no-data')).length).toBe(0);
+    expect(root.find(dataTestId('json-explain-error')).length).toBe(0);
+    expect(root.find(dataTestId('json-explain-no-data')).length).toBe(0);
   });
 });

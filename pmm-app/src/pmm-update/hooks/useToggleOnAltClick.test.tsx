@@ -19,7 +19,7 @@ describe('useToggleOnAltClick', () => {
     });
     wrapper?.update();
 
-    let [toggleValue, handler] = wrapper?.find('div').prop('data-hook');
+    let [toggleValue, handler] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(toggleValue).toEqual(false);
 
@@ -29,7 +29,7 @@ describe('useToggleOnAltClick', () => {
 
     wrapper?.update();
 
-    [toggleValue, handler] = wrapper?.find('div').prop('data-hook');
+    [toggleValue, handler] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(toggleValue).toEqual(true);
 
@@ -44,7 +44,7 @@ describe('useToggleOnAltClick', () => {
     });
     wrapper?.update();
 
-    let [toggleValue, handler] = wrapper?.find('div').prop('data-hook');
+    let [toggleValue, handler] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(toggleValue).toEqual(false);
 
@@ -54,7 +54,7 @@ describe('useToggleOnAltClick', () => {
 
     wrapper?.update();
 
-    [toggleValue, handler] = wrapper?.find('div').prop('data-hook');
+    [toggleValue, handler] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(toggleValue).toEqual(false);
 

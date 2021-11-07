@@ -1,14 +1,39 @@
-# Contributing notes
+Welcome to the repository hosting grafana dashboards for PMM!
 
-We're looking forward to the new contributors.
+We encourage contributions and are always looking for new members that are as dedicated to serving the community as we are.
 
-Our experts must verify all contributions from contributors.
+You can also reach us on our [Forums](https://forums.percona.com) and [Discord](http://per.co.na/discord).
 
-We'd love it if you could contribute a new dashboard or a panel or improve existing ones.
+## Prerequisites
 
-We can help you, more information on the [link](https://www.percona.com/community/contributions/pmm)
+Before submitting code or documentation contributions, you should first complete the following prerequisites.
 
-## Local setup
+### Sign the CLA
+
+Before you can contribute, we kindly ask you to sign our [Contributor License Agreement](https://cla-assistant.percona.com/percona/grafana-dashboards) (CLA). You can do this using your GitHub account and one click.
+
+## Submitting a Bug
+
+If you find a bug in Percona MongoDB Exporter or one of the related projects, you should submit a report to that project's [JIRA](https://jira.percona.com) issue tracker.
+
+Your first step should be [to search](https://jira.percona.com/issues/?jql=project=PMM%20AND%20component=MongoDB_Exporter) the existing set of open tickets for a similar report. If you find that someone else has already reported your problem, then you can upvote that report to increase its visibility.
+
+If there is no existing report, submit a report following these steps:
+
+1. [Sign in to Percona JIRA.](https://jira.percona.com/login.jsp) You will need to create an account if you do not have one.
+2. [Go to the Create Issue screen and select the relevant project.](https://jira.percona.com/secure/CreateIssueDetails!init.jspa?pid=11600&issuetype=1&priority=3&components=11603)
+3. Fill in the fields of Summary, Description, Steps To Reproduce, and Affects Version to the best you can. If the bug corresponds to a crash, attach the stack trace from the logs.
+
+An excellent resource is [Elika Etemad's article on filing good bug reports.](http://fantasai.inkedblade.net/style/talks/filing-good-bugs/).
+
+As a general rule of thumb, please try to create bug reports that are:
+
+- _Reproducible._ Include steps to reproduce the problem.
+- _Specific._ Include as much detail as possible: which version, what environment, etc.
+- _Unique._ Do not duplicate existing tickets.
+- _Scoped to a Single Bug._ One bug per report.
+
+## Setup your local development environment
 
 The easiest way to setup a development environment is to use [Docker Compose](https://docs.docker.com/compose).
 That environment bundles a number of tools to help you populate the panels with sample data.
@@ -28,13 +53,18 @@ services:
     container_name: pmm-server
     image: percona/pmm-server:2
     environment:
-      - DISABLE_TELEMETRY=1
+      - ENABLE_DBAAS=1
+      - ENABLE_BACKUP_MANAGEMENT=1
+      - ENABLE_ALERTING=1
     volumes:
       - ./dist:/var/lib/grafana/plugins/pmm-app/dist
     ports:
       - 80:80
     restart: always
 ```
+
+Please note, that we map the `./pmm-app/dist` folder as a subfolder of `/var/lib/grafana/plugins` so that front-end artifacts,
+i.e. panels and dashboards, can be picked up by grafana server running in the docker container.
 
 Then to run it:
 
@@ -44,44 +74,54 @@ docker-compose -f ./docker-compose.local.yml up -d
 npm run dev
 ```
 
-## Workflow for the contributor
+## Submitting a Pull Request
 
-1.  Find the task in [JIRA](https://jira.percona.com/issues/?jql=project+%3D+PMM+AND+component+%3D+%22Grafana+Dashboards%22) or create a new task. Use a component filter Grafana Dashboards.
+1.  Find the task in [JIRA](https://jira.percona.com/issues/?jql=project+%3D+PMM+AND+component+%3D+%22Grafana+Dashboards%22) or issue here in github. If no a similar task is found, please create a new task. Use a component filter Grafana Dashboards.
 
 2.  You need to make a fork of our repository in your GitHub account.
 
 3.  Make a clone of your repository on your computer.
 
-4.  Switch the repository to the correct branch. Now it's PMM-2.0.
+4.  Create a new branch for your task. We recommend as a best practice to mention an issue number or just short desc in a branch name.
 
-5.  Create a new branch for your task. Name it using the following pattern: [JIRA_ISSUE_ID]-[username]-[short_title]. For example: PMM-5053-dbazhenov-tooltip .
+    Example:
 
-6.  Make changes to the code in your branch.
+        PMM-5053-add-missed-tooltips
 
-7.  Make a commit. It is essential to provide a meaningfull description. Use the following formula: "[JIRA_ISSUE_ID] What is being done."
+5.  Make changes to the code in your branch.
 
-    Example
+6.  Make a commit. It is essential to provide a meaningfull description. Use the following formula: "[JIRA_ISSUE_ID] What is being done."
+
+    Example:
 
         git add .
         git commit -m "PMM-5053 Add a tooltip for Head Block widget for Prometheus Dashboard"
 
-8.  Run the tests with `npm run test` and make sure all the tests pass.
+7.  Push your branch into your repository. Check that your branch only contains code relevant to the issue.
 
-9.  Push your branch into your repository. Check that your branch only contains code relevant to the issue.
+    Example:
 
-    git push origin PMM-5053-dbazhenov-tooltip
+        git push origin PMM-5053-dbazhenov-tooltip
 
-10. Make a Pull Request from your branch to the right branch in percona/grafana-dashboards.
+8.  Make a Pull Request from your branch to the right branch in percona/grafana-dashboards.
 
+    Example:
 
-    Example: from dbazhenov:PMM-5053-dbazhenov-tooltip to percona:PMM-2.0
+        from dbazhenov:PMM-5053-dbazhenov-tooltip to percona:main
 
-11. Your Pull Request must pass certain checks, i.e. Jenkins CI, and Contributor License Agreement.
+### Code Reviews
 
+9. After submitting your PR please add `pmm-review-fe` team as a reviewer - that would auto assign reviewers to review your PR.
+
+10. Your Pull Request must pass certain checks, i.e. Jenkins CI, and Contributor License Agreement.
     You need to open the Contributor License Agreement page, read it, and confirm it.
 
-12. Wait for our experts to review your code. You may need to answer questions or to address requests for changes.
+11. Wait for our experts to review your code. You may need to answer questions or to address requests for changes.
 
-13. Our Engineers will merge your branch into the release branch by themselves.
+12. Our Engineers will merge your branch into the release branch by themselves.
 
-14. Congratulations, you have become a contributor. Thanks for contributing to open source!
+## After your Pull Request is merged
+
+Once your pull request is merged, you are an official Percona Community Contributor. Welcome to the community!
+
+We're looking forward to your contributions and hope to hear from you soon on our [Forums](https://forums.percona.com) and [Discord](http://per.co.na/discord).

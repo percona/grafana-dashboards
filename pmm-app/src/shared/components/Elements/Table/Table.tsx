@@ -48,12 +48,12 @@ export const Table: FC<TableProps> = ({
           {
             id: 'selection',
             Header: ({ getToggleAllRowsSelectedProps }: any) => (
-              <div data-qa="select-all">
+              <div data-testid="select-all">
                 <TableCheckbox {...getToggleAllRowsSelectedProps()} />
               </div>
             ),
             Cell: ({ row }: { row: any }) => (
-              <div data-qa="select-row">
+              <div data-testid="select-row">
                 <TableCheckbox {...row.getToggleRowSelectedProps()} />
               </div>
             ),
@@ -74,12 +74,12 @@ export const Table: FC<TableProps> = ({
     <div className={cx(styles.table, className)}>
       <div className={styles.tableWrap}>
         {loading ? (
-          <div data-qa="table-loading" className={styles.empty}>
+          <div data-testid="table-loading" className={styles.empty}>
             <Spinner />
           </div>
         ) : null}
         {!rows.length && !loading ? (
-          <div data-qa="table-no-data" className={styles.empty}>
+          <div data-testid="table-no-data" className={styles.empty}>
             {noData || <h1>No data</h1>}
           </div>
         ) : null}
@@ -87,7 +87,7 @@ export const Table: FC<TableProps> = ({
           <table {...getTableProps()}>
             <thead>
               {headerGroups.map((headerGroup, i) => (
-                <tr data-qa="table-header" {...headerGroup.getHeaderGroupProps()} key={i}>
+                <tr data-testid="table-header" {...headerGroup.getHeaderGroupProps()} key={i}>
                   {headerGroup.headers.map((column, index) => (
                     <th
                       {...column.getHeaderProps()}
@@ -105,7 +105,7 @@ export const Table: FC<TableProps> = ({
                 prepareRow(row);
 
                 return (
-                  <tr data-qa="table-row" {...row.getRowProps()} key={rowKey ? rowKey(row) : i}>
+                  <tr data-testid="table-row" {...row.getRowProps()} key={rowKey ? rowKey(row) : i}>
                     {row.cells.map((cell, index) => (
                       // eslint-disable-next-line react/jsx-key
                       <td

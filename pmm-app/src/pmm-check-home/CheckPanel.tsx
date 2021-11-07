@@ -1,6 +1,4 @@
-import React, { PureComponent, FC } from 'react';
-import { createBrowserHistory } from 'history';
-import { Router, Route } from 'react-router-dom';
+import React, { PureComponent } from 'react';
 import { PanelProps } from '@grafana/data';
 import { Spinner } from '@grafana/ui';
 import { CheckPanelOptions, Settings, FailedChecks } from 'pmm-check-home/types';
@@ -16,8 +14,6 @@ export interface CheckPanelState {
   isSttEnabled: boolean;
   isLoading: boolean;
 }
-
-const history = createBrowserHistory();
 
 export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> {
   constructor(props: CheckPanelProps) {
@@ -57,7 +53,6 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     }
   }
 
-
   async fetchAlerts() {
     try {
       const failedChecks = await CheckService.getFailedChecks();
@@ -76,18 +71,10 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     } = this.state;
 
     return (
-      <div className={styles.panel} data-qa="db-check-panel-home">
+      <div className={styles.panel} data-testid="db-check-panel-home">
         {isLoading && <Spinner />}
         {!isLoading && <Failed failed={failedChecks} isSttEnabled={isSttEnabled} hasNoAccess={hasNoAccess} />}
       </div>
     );
   }
 }
-
-export const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
-  <Router history={history}>
-    <Route>
-      <CheckPanel {...props} />
-    </Route>
-  </Router>
-);

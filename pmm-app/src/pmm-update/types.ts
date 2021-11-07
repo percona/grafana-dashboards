@@ -12,6 +12,7 @@ export type ISOTimestamp = WeakOpaque<string, 'ISOTimestamp'>;
 
 export interface GetUpdatesBody {
   force: boolean;
+  onlyInstalledVersion?: boolean;
 }
 
 export interface GetUpdateStatusBody {
@@ -69,7 +70,7 @@ export type CurrentOrNextVersionDetails = [
   string,
   boolean,
   boolean,
-  (forceUpdate?: boolean) => void
+  (body?: GetUpdatesBody) => void
 ];
 
 export interface ProgressModalProps {
@@ -99,6 +100,9 @@ export interface ProgressModalHeaderProps {
 
 export interface InfoBoxProps {
   upToDate?: boolean;
+  updatesDisabled?: boolean;
+  hasNoAccess?: boolean;
+  isOnline?: boolean;
 }
 
 export interface AvailableUpdateProps {

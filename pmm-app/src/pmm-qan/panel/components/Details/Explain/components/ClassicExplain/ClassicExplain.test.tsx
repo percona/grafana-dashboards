@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { dataQa } from '@percona/platform-core';
+import { dataTestId } from '@percona/platform-core';
 import { ClassicExplain } from './ClassicExplain';
 import { useExplains } from '../../Explain.hooks';
 
@@ -33,23 +33,23 @@ describe('ClassicExplain::', () => {
     (useExplains as Mock).mockImplementationOnce(() => [undefined, explains[0]]);
     const root = mount(<ClassicExplain databaseType="mysql" examples={[]} />);
 
-    expect(root.find(dataQa('classic-explain-error')).length).toBe(0);
-    expect(root.find(dataQa('classic-explain-no-data')).length).toBe(1);
+    expect(root.find(dataTestId('classic-explain-error')).length).toBe(0);
+    expect(root.find(dataTestId('classic-explain-no-data')).length).toBe(1);
   });
 
   it('should render explains correct for error state', () => {
     (useExplains as Mock).mockImplementationOnce(() => [undefined, explains[1]]);
     const root = mount(<ClassicExplain databaseType="mysql" examples={[]} />);
 
-    expect(root.find(dataQa('classic-explain-error')).length).toBe(1);
-    expect(root.find(dataQa('classic-explain-no-data')).length).toBe(0);
+    expect(root.find(dataTestId('classic-explain-error')).length).toBe(1);
+    expect(root.find(dataTestId('classic-explain-no-data')).length).toBe(0);
   });
 
   it('should render explains correct for success state', () => {
     (useExplains as Mock).mockImplementationOnce(() => [undefined, explains[2]]);
     const root = mount(<ClassicExplain databaseType="mysql" examples={[]} />);
 
-    expect(root.find(dataQa('classic-explain-error')).length).toBe(0);
-    expect(root.find(dataQa('classic-explain-no-data')).length).toBe(1);
+    expect(root.find(dataTestId('classic-explain-error')).length).toBe(0);
+    expect(root.find(dataTestId('classic-explain-no-data')).length).toBe(1);
   });
 });

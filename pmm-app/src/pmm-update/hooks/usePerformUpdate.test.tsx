@@ -53,7 +53,7 @@ describe('usePerformUpdate', () => {
 
     const [output, errorMessage, isUpdated, updateFailed, launchUpdate] = wrapper
       ?.find('div')
-      .prop('data-hook');
+      .prop<any>('data-hook');
 
     expect(output).toEqual('test\n');
     expect(errorMessage).toEqual('');
@@ -80,7 +80,7 @@ describe('usePerformUpdate', () => {
 
     wrapper?.update();
 
-    const [output, errorMessage, isUpdated, updateFailed] = wrapper?.find('div').prop('data-hook');
+    const [output, errorMessage, isUpdated, updateFailed] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(output).toEqual('');
     expect(errorMessage).toEqual('');
@@ -111,7 +111,7 @@ describe('usePerformUpdate', () => {
 
     wrapper?.update();
 
-    const [output, errorMessage, isUpdated, updateFailed] = wrapper?.find('div').prop('data-hook');
+    const [output, errorMessage, isUpdated, updateFailed] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(output).toEqual('test\n');
     expect(errorMessage).toEqual('');
@@ -134,7 +134,7 @@ describe('usePerformUpdate', () => {
 
     wrapper?.update();
 
-    const [output, errorMessage, isUpdated, updateFailed] = wrapper?.find('div').prop('data-hook');
+    const [output, errorMessage, isUpdated, updateFailed] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(output).toEqual('');
     expect(errorMessage).toEqual('Invalid response received');
@@ -185,7 +185,7 @@ describe('usePerformUpdate', () => {
     expect(mockedGetUpdateStatus.mock.calls[1][0].log_offset).toBe(1500);
     expect(mockedGetUpdateStatus.mock.calls[2][0].log_offset).toBe(3000);
 
-    const [output, errorMessage, isUpdated, updateFailed] = wrapper?.find('div').prop('data-hook');
+    const [output, errorMessage, isUpdated, updateFailed] = wrapper?.find('div').prop<any>('data-hook');
 
     expect(output).toEqual('test\ntest\ntest\n');
     expect(errorMessage).toEqual('');

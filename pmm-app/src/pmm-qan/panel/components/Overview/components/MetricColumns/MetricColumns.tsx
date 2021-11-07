@@ -1,15 +1,15 @@
+import React from 'react';
 import { Divider } from 'antd';
 import Tooltip from 'antd/es/tooltip';
-import React from 'react';
 import { cx } from 'emotion';
+import { useTheme } from '@grafana/ui';
 import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Latency, Sparkline, TotalPercentage } from 'shared/components/Elements/Charts';
-import { useTheme } from '@grafana/ui';
 import { COLUMN_WIDTH, FIXED_COLUMN_WIDTH } from '../../Overview.constants';
 import { ManageColumns } from '../../../ManageColumns/ManageColumns';
-import './MetricColumns.scss';
 import { getStyles } from './MetricColumn.styles';
+import './MetricColumns.scss';
 
 export const TimeMetric = ({ value, percentage, cnt }) => {
   const theme = useTheme();
@@ -63,8 +63,8 @@ const getSorting = (orderBy, metricName) => {
 
 export const metricColumnRender = ({
   metricName, metric, totalValues, columnIndex,
-}) => (item, index) => {
-  const { stats } = item.metrics[metricName];
+}) => ({ metrics, sparkline }, index) => {
+  const { stats } = metrics[metricName];
   const isTimeMetric = metricName.endsWith('_time');
   const statPerSec = stats.qps || stats.sum_per_sec;
   const percentFromTotal = (
@@ -107,10 +107,10 @@ export const metricColumnRender = ({
       .map(({ header, value }) => ({ header, value: humanize.transform(value) }));
 
     const MetricsList = ({ data }) => (
-      <div className={styles.metricsWrapper} data-qa="metrics-list">
+      <div className={styles.metricsWrapper} data-testid="metrics-list">
         {data.map((metricItem, metricIndex, list) => (
           // eslint-disable-next-line react/jsx-key
-          <div className={styles.singleMetricWrapper} data-qa={metricItem.key || ''}>
+          <div className={styles.singleMetricWrapper} data-testid={metricItem.key || ''}>
             <span className={styles.metricName}>{`${metricItem.header} : ${metricItem.value}`}</span>
             {list.length === metricIndex + 1 ? null : <Divider className={styles.metricsListDivider} />}
           </div>
@@ -137,7 +137,7 @@ export const metricColumnRender = ({
   };
 
   const polygonChartProps = {
-    data: item.sparkline,
+    data: sparkline,
     metricName,
     color: index === 0 ? 'rgba(223, 159, 85, 0.8)' : undefined,
   };

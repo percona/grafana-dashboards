@@ -43,7 +43,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   };
 
   const itemsList = filteredData
-    .filter((item, index, list) => {
+    .filter((item, _, list) => {
       if (showAll && !item.value && list.length === 1) {
         return false;
       }
@@ -62,13 +62,13 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
       return (
         <div
           className={styles.label}
-          key={`${group}:${item.value || ''}`}
-          data-qa={`filter-checkbox-${item.value}`}
+          key={`${group};${item.value || ''}`}
+          data-testid={`filter-checkbox-${item.value}`}
         >
           <span className={styles.filterName}>
             <CheckboxField
               // TODO: using '--' because final form think that it is a nested fields
-              name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
+              name={`${group};${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
               label={item.value || 'n/a'}
               disabled={!valueExists}
             />
@@ -99,14 +99,14 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   return filteredList.length ? (
     <div>
       <p className={styles.filterHeaderWrapper}>
-        <span className={styles.filterHeader} data-qa="checkbox-group-header">
+        <span className={styles.filterHeader} data-testid="checkbox-group-header">
           {name}
         </span>
         {filteredData.filter(searchFilter).length > TOP_LIMIT ? (
           <span
             onClick={() => setShowTop(!showTop)}
             className={styles.showModeSwitcher}
-            data-qa="show-top-switcher"
+            data-testid="show-top-switcher"
           >
             {showTop ? `Show all (${filteredData.filter(searchFilter).length})` : `Show top ${TOP_LIMIT}`}
           </span>
