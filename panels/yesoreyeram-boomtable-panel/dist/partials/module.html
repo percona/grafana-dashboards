@@ -1,0 +1,40 @@
+<div class="boom-table">
+    <div data-ng-if="ctrl.panel.debug_mode === true" class="debug">
+        <h5 class="text-warning">WARNING: Panel running in debug mode </h5>
+    </div>
+    <div class="table-panel-scroll" style="overflow:auto;">
+        <div data-ng-if="ctrl.panel.debug_mode === true" class="debug">            
+            <table class="table-panel-table">
+                <thead>
+                    <tr>
+                        <th style="padding:4px;text-align:center;width:30%">Metric</th>
+                        <th style="padding:4px;text-align:center;width:10%">Pattern</th>
+                        <th style="padding:4px;text-align:center;width:10%">Value</th>
+                        <th style="padding:4px;text-align:center;width:10%">Row Name</th>
+                        <th style="padding:4px;text-align:center;width:10%">Col Name</th>
+                        <th style="padding:4px;text-align:center;width:10%">Thresholds</th>
+                        <th style="padding:4px;text-align:center;width:10%">BG Color</th>
+                        <th style="padding:4px;text-align:center;width:10%">Text Color</th>
+                    </tr>
+                </thead>
+                <tbody id="boomtable_output_body_debug">
+                </tbody>
+            </table>
+        </div>
+        <table class="table-panel-table" style="font-size:{{ctrl.panel.font_size || '1rem'}};">
+            <thead id="boomtable_output_body_headers" data-ng-if="ctrl.panel.hide_headers !== true">
+                <tr>
+                    <th data-ng-if="ctrl.panel.hide_first_column !== true" style="padding:4px;text-align:{{ctrl.panel.text_alignment_firstcolumn}}" ng-bind="ctrl.panel.default_title_for_rows">
+                    </th>
+                    <th ng-repeat="col in ctrl.outdata.cols_found track by $index" ng-click="ctrl.sortByHeader($index)" style="padding:4px;text-align:{{ctrl.panel.text_alignment_header}}">
+                        <span ng-bind-html="col"></span>
+                        <i class="fa fa-arrow-up sortarrows" data-ng-if="ctrl.panel.sorting_props.col_index === $index && ctrl.panel.sorting_props.direction === 'asc'"></i>
+                        <i class="fa fa-arrow-down sortarrows" data-ng-if="ctrl.panel.sorting_props.col_index === $index && ctrl.panel.sorting_props.direction === 'desc'"></i>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="boomtable_output_body">
+            </tbody>
+        </table>
+    </div>
+</div>

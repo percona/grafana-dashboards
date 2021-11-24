@@ -184,10 +184,6 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
         setContext(newState);
       }
     } else {
-      newState.pageNumber = 1;
-      delete newState.queryId;
-      // @ts-ignore
-      delete newState.querySelected;
       setContext(newState);
     }
 

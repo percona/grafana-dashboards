@@ -1,0 +1,172 @@
+<div class="section gf-form-group">
+	<h5 class="section-heading">Theme</h5>
+	<div class="gf-form">
+		<select class="gf-form-input" ng-model="ctrl.panel.init.theme"
+		  ng-options="f for f in ctrl.panel.themes" ng-change="ctrl.changeTheme()"></select>
+	</div>
+</div>
+
+<div class="gf-form-group">
+	<h5>Size</h5>
+	<div class="gf-form">
+		<editor-checkbox text="Scale to Panel" model="ctrl.panel.maxWidth" class="gf-form-checkbox" ></editor-checkbox>
+	</div>
+</div>
+
+<div class="gf-form-group">
+	<h5>Metric Character Replacement<tip>Additional Characters in metric names to replace</tip></h5>
+	<h6>Default Characters that are replaced with underscore: <code>" , ; = : { }</code></h6>
+	<div class="gf-form-inline" ng-repeat="replacement in ctrl.panel.metricCharacterReplacements">
+		<div class="gf-form">
+			<label class="gf-form-label">Character or regex<tip>Single Character or Regular Expression /foo/g</tip></label>
+		</div>
+		<div class="gf-form width-15">
+			<input type="text" ng-model="replacement.replacementPattern" ng-blur="ctrl.refresh()" class="gf-form-input width-15">
+		</div>
+		<div class="gf-form">
+			<label class="gf-form-label">Replace With<tip>Text used by replacement</tip></label>
+		</div>
+		<div class="gf-form width-5">
+			<input type="text" ng-model="replacement.replaceWithText" ng-blur="ctrl.refresh()" class="gf-form-input width-5">
+		</div>
+		<div class="gf-form">
+			<i class="fa fa-trash pointer" ng-click="ctrl.removeMetricCharacterReplacement(replacement)"></i>
+		</div>
+	</div>
+	<button class="btn btn-inverse" ng-click="ctrl.addMetricCharacterReplacement()">
+		<i class="fa fa-plus"></i>&nbsp;Add Character Replacement
+	</button>
+</div>
+
+<div class="gf-form-group">
+	<h5>Format</h5>
+	<div class="gf-form">
+		<label class="gf-form-label width-10">Unit</label>
+		<div class="gf-form-dropdown-typeahead max-width-15" ng-model="ctrl.panel.format" dropdown-typeahead2="ctrl.unitFormats" dropdown-typeahead-on-select="ctrl.setUnitFormat($subItem)"></div>
+	</div>
+
+<div class="gf-form max-width-11">
+	<label class="gf-form-label width-6">Decimals</label>
+	<input type="number" class="gf-form-input width-5"
+		placeholder="auto" data-placement="right"
+		bs-tooltip="'Override automatic decimal precision for legend and tooltips'"
+		ng-model="ctrl.panel.decimals"
+		ng-change="ctrl.render()"
+		ng-model-onblur>
+</div>
+</div>
+
+
+<div class="gf-form-group">
+	<h5>Legend</h5>
+	<div class="gf-form">
+		<editor-checkbox text="Show Legend" model="ctrl.panel.legend.show" class="gf-form-checkbox" ></editor-checkbox>
+		<div ng-show="ctrl.panel.legend.show">
+			<editor-checkbox text="Min" model="ctrl.panel.legend.min" class="gf-form-checkbox" ></editor-checkbox>
+			<editor-checkbox text="Max" model="ctrl.panel.legend.max" class="gf-form-checkbox" ></editor-checkbox>
+			<editor-checkbox text="Avg" model="ctrl.panel.legend.avg" class="gf-form-checkbox" ></editor-checkbox>
+			<editor-checkbox text="Total" model="ctrl.panel.legend.total" class="gf-form-checkbox" ></editor-checkbox>
+			<editor-checkbox text="Current" model="ctrl.panel.legend.current" class="gf-form-checkbox" ></editor-checkbox>
+		</div>
+	</div>
+</div>
+
+<div class="gf-form-group">
+	<h5>Threshold Options</h5>
+	<div class="gf-form">
+		<label class="gf-form-label width-10">Thresholds
+			<tip>Define threshold values to map the colors</tip>
+		</label>
+		<input
+			type="text" class="input-small gf-form-input width-10"
+			ng-model="ctrl.panel.thresholds" ng-change="ctrl.updateThresholds()"
+			placeholder="0,10" ng-model-onblur />
+	</div>
+	<div class="gf-form">
+		<label class="gf-form-label width-10">Colors</label>
+		<div class="gf-form-inline" ng-repeat="color in ctrl.panel.colors track by $index">
+			<label class="gf-form-label">
+				<a ng-click="ctrl.removeColor($index)"><i class="pointer fa fa-remove">&nbsp;</i></a>
+				<spectrum-picker ng-model="color" ng-change="ctrl.changeColor($index, color)" ng-model-onblur></spectrum-picker>
+			</label>
+		</div>
+		<span class="gf-form-label">
+	        <a  ng-click="ctrl.addColor()">
+	          <i class="fa fa-plus"></i>&nbsp;
+	        </a>
+    	</span>
+		<span class="gf-form-label">
+	        <a  ng-click="ctrl.invertColorOrder()">
+	          Invert
+	        </a>
+    	</span>
+    	<span>
+   			<label class="gf-form-label">
+				<editor-checkbox text="Gradient" model="ctrl.panel.legend.gradient.enabled" class="gf-form-checkbox" ></editor-checkbox>
+				<tip>Only the Max and Min threshold values are considered when using Gradient mode</tip>
+			</label>
+    	</span>
+    </div>
+	<div class="gf-form">
+		<label class="gf-form-label width-10">Value</label>
+		<select ng-options="option for option in ctrl.panel.valueOptions" ng-model="ctrl.panel.valueName" ng-change="ctrl.refresh()"></select>
+	</div>
+</div>
+
+<div class="gf-form-group">
+	<div class="edit-tab-content">
+		<div class="gf-form-group">
+			<h5>Series specific overrides <tip>Regex match example: /server[0-3]/i </tip></h5>
+			<div class="gf-form-inline" ng-repeat="override in ctrl.panel.seriesOverrides" ng-controller="SeriesOverridesDiagramCtrl">
+				<div class="gf-form">
+					<label class="gf-form-label">alias or regex</label>
+				</div>
+				<div class="gf-form width-15">
+					<input type="text" ng-model="override.alias" bs-typeahead="getSeriesNames" ng-blur="ctrl.render()" data-min-length=0 data-items=100 class="gf-form-input width-15">
+				</div>
+				<div class="gf-form" ng-repeat="option in currentOverrides">
+					<label class="gf-form-label">
+						<i class="pointer fa fa-remove" ng-click="removeOverride(option)"></i>
+						<span ng-show="option.propertyName === 'color'">
+							Color: <i class="fa fa-circle" ng-style="{color:option.value}"></i>
+						</span>
+						<span ng-show="option.propertyName === 'thresholds'">
+							Thresholds: <input ng-model="option.value" ng-blur="thresholdsChanged(option)"></input>
+						</span>
+						<span ng-show="option.propertyName === 'unitFormat'">
+							Unit Format:
+						</span>
+						<span ng-show="option.propertyName === 'decimals'">
+							Decimals: <input ng-model="option.value" ng-blur="decimalsChanged(option)"></input>
+						</span>
+						<span ng-show="option.propertyName !== 'color' && option.propertyName !== 'thresholds' && option.propertyName !== 'unitFormat' && option.propertyName !== 'decimals'">
+							{{option.name}}: {{option.value}}
+						</span>
+					</label>
+					<span ng-show="option.propertyName === 'unitFormat'">
+						<div class="gf-form-dropdown-typeahead max-width-15" ng-model="option.value" dropdown-typeahead2="ctrl.unitFormats" dropdown-typeahead-on-select="unitFormatChanged($subItem)"></div>
+					</span>
+				</div>
+
+				<div class="gf-form">
+					<span class="dropdown" dropdown-typeahead="overrideMenu" dropdown-typeahead-on-select="setOverride($item, $subItem)">
+					</span>
+				</div>
+
+				<div class="gf-form gf-form--grow">
+					<div class="gf-form-label gf-form-label--grow"></div>
+				</div>
+
+				<div class="gf-form">
+					<label class="gf-form-label">
+						<i class="fa fa-trash pointer" ng-click="ctrl.removeSeriesOverride(override)"></i>
+					</label>
+				</div>
+			</div>
+		</div>
+
+		<button class="btn btn-inverse" ng-click="ctrl.addSeriesOverride()">
+			<i class="fa fa-plus"></i>&nbsp;Add override
+		</button>
+	</div>
+</div>

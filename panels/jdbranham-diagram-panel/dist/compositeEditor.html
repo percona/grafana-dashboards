@@ -1,0 +1,51 @@
+
+<div class="gf-form-group">
+	<div class="edit-tab-content">
+		<div class="gf-form-group">
+			<h5>Composites <tip>Combines multiple metrics into a new name</tip></h5>
+			<div class="gf-form" ng-repeat="composite in ctrl.panel.composites">
+
+				<div class="gf-form">
+					<label class="gf-form-label">
+						<i class="fa fa-trash pointer" ng-click="ctrl.removeComposite(composite)"></i>
+					</label>
+				</div>
+				<div class="gf-form">
+					<label class="gf-form-label">Composite Name</label>
+				</div>
+				<div class="gf-form width-15">
+					<input type="text" ng-model="composite.name" ng-blur="ctrl.render()" class="gf-form-input width-15">
+				</div>
+				<div>
+					Show lowest metric
+					<input type="checkbox" ng-model="composite.showLowest" ng-blur="ctrl.render()" class="gf-form-input">
+				</div>
+
+				<!-- Metrics that comprise the composite-->
+				<div class="gf-form">
+					<label class="gf-form-label">Metrics<tip>Select Metrics members for composite</tip></label>
+				</div>
+				<div class="gf-form-inline" ng-repeat="metric in composite.metrics">
+					<div class="gf-form">
+						<label class="gf-form-label">
+							<i class="fa fa-trash pointer" ng-click="ctrl.removeMetricFromComposite(composite, metric)"></i>
+						</label>
+					</div>
+					<div class="gf-form">
+						<select ng-options="f for f in ctrl.getSeriesNamesForComposites()" ng-model="metric.seriesName" ng-change="ctrl.refresh()"></select>
+					</div>
+				</div>
+				<div class="gf-form">
+					<label class="gf-form-label">
+						<i class="fa fa-plus pointer" ng-click="ctrl.addMetricToComposite(composite)"></i>
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+
+		<button class="btn btn-inverse" ng-click="ctrl.addComposite()">
+			<i class="fa fa-plus"></i>&nbsp;Add Composite
+		</button>
+	</div>
+</div>
