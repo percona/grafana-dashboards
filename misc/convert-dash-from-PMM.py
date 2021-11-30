@@ -1,6 +1,6 @@
 ##############################################################################################################
 # This script converts a PMM dashboard so it can be used in an external Prometheus + Grafana installation. 
-# It doesn’t need any input from you. It replaces PMM2 labels (node_name, service_name) 
+# It doesn't need any input from you. It replaces PMM2 labels (node_name, service_name) 
 # used in variables with default labels (instance).
 #
 ##############################################################################################################
