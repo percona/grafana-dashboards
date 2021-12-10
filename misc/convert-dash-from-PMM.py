@@ -105,18 +105,23 @@ def check_formulas(dashboard, currentVariableName, newVariableName):
             for list_index, lists in enumerate(dashboard['templating']['list']):
                     if 'query' in lists.keys():
                         expr = dashboard['templating']['list'][list_index]['query']
-                        expr = re.sub('node_type=~\"[a-z,$_|]*\"', '', expr)
+                        # i don't know why but some dashboards have a query element with a query element
+                        # so we need to check that query is a string and not an object
+                        if isinstance(expr, str):
+                            expr = re.sub('node_type=~\"[a-z,$_|]*\"', '', expr)
+                            if expr.find(currentVariableName) != -1:    # check if variable is used in an expression
+                                print (' <<<< %s' % (expr,)) 
+                                dashboard['templating']['list'][list_index]['query'] = expr.replace(currentVariableName, newVariableName)
+                                dashboard['templating']['list'][list_index]['definition'] = expr.replace(currentVariableName, newVariableName)
+                                print (' >>>> %s\n' % (dashboard['templating']['list'][list_index]['query'],))
+
                         name = dashboard['templating']['list'][list_index]['name']
-                        name = re.sub('node_type=~\"[a-z,$_|]*\"', '', name)
-                        if expr.find(currentVariableName) != -1:    # check if variable is used in an expression
-                            print (' <<<< %s' % (expr,)) 
-                            dashboard['templating']['list'][list_index]['query'] = expr.replace(currentVariableName, newVariableName)
-                            dashboard['templating']['list'][list_index]['definition'] = expr.replace(currentVariableName, newVariableName)
-                            print (' >>>> %s\n' % (dashboard['templating']['list'][list_index]['query'],))
-                        if name.find(currentVariableName) != -1:    # check if variable is used in an expression
-                            print (' <<<< %s' % (name,)) 
-                            dashboard['templating']['list'][list_index]['name'] = newVariableName
-                            print (' >>>> %s\n' % (dashboard['templating']['list'][list_index]['name'],))
+                        if isinstance(name, str):
+                            name = re.sub('node_type=~\"[a-z,$_|]*\"', '', name)
+                            if name.find(currentVariableName) != -1:    # check if variable is used in an expression
+                                print (' <<<< %s' % (name,)) 
+                                dashboard['templating']['list'][list_index]['name'] = newVariableName
+                                print (' >>>> %s\n' % (dashboard['templating']['list'][list_index]['name'],))
     return dashboard
 
 
