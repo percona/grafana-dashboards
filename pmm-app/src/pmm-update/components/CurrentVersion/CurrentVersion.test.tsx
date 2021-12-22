@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { CurrentVersion } from './CurrentVersion';
+import { Messages } from './CurrentVersion.messages';
 
 jest.mock('shared/components/helpers/notification-manager');
 
@@ -28,14 +29,14 @@ describe('CurrentVersion::', () => {
 
   it('should show only the short version by default', () => {
     expect(wrapper?.find('section > p > span').text()).toEqual(
-      `${installedVersion} (${installedVersionDate})`,
+      `${installedVersion} (${Messages.built} ${installedVersionDate})`,
     );
   });
 
   it('should show the full version on alt-click', () => {
     wrapper?.find('section > p').simulate('click', { altKey: true });
     expect(wrapper?.find('section > p').text()).toEqual(
-      `Current version: ${installedFullVersion} (${installedVersionDate})`,
+      `Current version: ${installedFullVersion} (${Messages.built} ${installedVersionDate})`,
     );
   });
 });

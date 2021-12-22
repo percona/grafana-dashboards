@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { CurrentVersionProps } from 'pmm-update/types';
 import { useToggleOnAltClick } from 'pmm-update/hooks';
 import * as styles from './CurrentVersion.styles';
+import { Messages } from './CurrentVersion.messages';
 
 export const CurrentVersion: FC<CurrentVersionProps> = ({ installedVersionDetails }) => {
   const [showFullVersion, handleToggleShowFullVersion] = useToggleOnAltClick(false);
@@ -12,7 +13,8 @@ export const CurrentVersion: FC<CurrentVersionProps> = ({ installedVersionDetail
   return (
     <section className={styles.currentVersion}>
       <p onClick={handleToggleShowFullVersion}>
-        Current version:
+        {Messages.currentVersion}
+        :
         {' '}
         <span>
           <span data-testid="update-installed-version">
@@ -20,7 +22,7 @@ export const CurrentVersion: FC<CurrentVersionProps> = ({ installedVersionDetail
           </span>
           {' '}
           <span data-testid="update-installed-release-date" className={styles.releaseDate}>
-            {!!installedVersionDate && `(${installedVersionDate})`}
+            {!!installedVersionDate && `(${Messages.built} ${installedVersionDate})`}
           </span>
         </span>
       </p>

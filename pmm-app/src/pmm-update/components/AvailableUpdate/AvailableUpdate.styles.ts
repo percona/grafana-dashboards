@@ -1,32 +1,37 @@
+import { GrafanaTheme } from '@grafana/data';
 import { css } from 'emotion';
 
-export const availableUpdate = css`
-  align-items: flex-start;
-  display: flex;
-  font-weight: bold;
-  justify-content: flex-start;
-  line-height: 1.2;
-  margin-top: 5px;
-
-  > div {
+export const getStyles = ({ spacing, typography }: GrafanaTheme) => ({
+  availableUpdate: css`
+    align-items: flex-start;
     display: flex;
-  }
+    font-weight: bold;
+    justify-content: flex-start;
+    line-height: ${typography.lineHeight.sm};
+    margin-top: ${spacing.xs};
 
-  a {
-    margin-left: 5px;
-  }
-`;
+    > div {
+      display: flex;
+    }
 
-export const availableUpdateVersion = css`
-  font-size: 14px;
-  margin-bottom: 7px;
-`;
-
-export const whatsNewLink = css`
-  height: 1em;
-  padding: 0;
-`;
-
-export const releaseDate = css`
-  font-size: 12px;
-`;
+    a {
+      margin: 0;
+    }
+  `,
+  whatsNewLink: css`
+    height: 1em;
+    margin-top: ${spacing.xs};
+    padding: 0;
+  `,
+  releaseDate: css`
+    font-size: ${typography.size.sm};
+    font-weight: ${typography.weight.regular};
+  `,
+  latestVersion: css`
+    margin-right: ${spacing.xs};
+  `,
+  infoIcon: css`
+    margin-left: ${spacing.xs};
+    margin-right: ${spacing.sm};
+  `,
+});
