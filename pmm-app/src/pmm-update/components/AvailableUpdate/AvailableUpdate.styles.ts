@@ -5,7 +5,7 @@ export const getStyles = ({ spacing, typography }: GrafanaTheme) => ({
   availableUpdate: css`
     align-items: flex-start;
     display: flex;
-    font-weight: bold;
+    font-weight: ${typography.weight.bold};
     justify-content: flex-start;
     line-height: ${typography.lineHeight.sm};
     margin-top: ${spacing.xs};
