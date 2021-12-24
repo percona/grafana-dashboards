@@ -29,14 +29,14 @@ describe('CurrentVersion::', () => {
 
   it('should show only the short version by default', () => {
     expect(wrapper?.find('section > p > span').text()).toEqual(
-      `${installedVersion} (${Messages.built} ${installedVersionDate})`,
+      `${installedVersion} (${installedVersionDate})`,
     );
   });
 
   it('should show the full version on alt-click', () => {
     wrapper?.find('section > p').simulate('click', { altKey: true });
     expect(wrapper?.find('section > p').text()).toEqual(
-      `Current version: ${installedFullVersion} (${Messages.built} ${installedVersionDate})`,
+      `Current version: ${installedFullVersion} (${installedVersionDate})`,
     );
   });
 });

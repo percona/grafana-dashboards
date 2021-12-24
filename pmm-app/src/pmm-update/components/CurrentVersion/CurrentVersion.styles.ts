@@ -15,5 +15,5 @@ export const getStyles = ({ spacing, typography }: GrafanaTheme) => ({
   `,
   releaseDate: css`
     font-size: ${typography.size.sm};
-  `
+  `,
 });
