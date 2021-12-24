@@ -1,6 +1,5 @@
 export const Messages = {
   availableVersion: 'Available version',
-  published: 'Published on',
-  tooltip: `Date that the package was published on the public repository`,
+  tooltip: `Date that the version was published`,
   whatsNew: "What's new", // eslint-disable-line
 };

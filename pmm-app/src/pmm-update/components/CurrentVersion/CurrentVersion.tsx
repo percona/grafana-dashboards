@@ -24,7 +24,7 @@ export const CurrentVersion: FC<CurrentVersionProps> = ({ installedVersionDetail
           <span data-testid="update-installed-release-date" className={styles.releaseDate}>
             {!!installedVersionDate && (
               <>
-                {`(${Messages.built} ${installedVersionDate})`}
+                ({installedVersionDate})
                 <Tooltip
                   content={Messages.tooltip}
                   data-testid="update-built-date-info"
