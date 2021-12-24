@@ -82,8 +82,13 @@ export const UpdatePanel: FC<{}> = () => {
     <>
       <div className={styles.panel}>
         <CurrentVersion installedVersionDetails={installedVersionDetails} />
-        {isUpdateAvailable && !isDefaultView && !updatesDisabled && !hasNoAccess && !isLoading && isOnline ? (
-          <AvailableUpdate nextVersionDetails={nextVersionDetails} />
+        {true ? (
+          <AvailableUpdate nextVersionDetails={{
+            nextVersion: '2.27.3',
+            nextFullVersion: '2.27.3',
+            nextVersionDate: 'December 22, 2021',
+            newsLink: 'www.google.com',
+          }} />
         ) : null}
         {isLoading ? (
           <div className={styles.middleSectionWrapper}>
@@ -91,7 +96,7 @@ export const UpdatePanel: FC<{}> = () => {
           </div>
         ) : (
           <>
-            {(isUpdateAvailable || forceUpdate) && !updatesDisabled && !hasNoAccess && isOnline ? (
+            {true ? (
               <div className={styles.middleSectionWrapper}>
                 <Button onClick={handleUpdate} icon={'fa fa-download' as any} variant="secondary">
                   Upgrade to

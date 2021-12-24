@@ -1,8 +1,6 @@
 export const Messages = {
   availableVersion: 'Available version',
-  built: 'Built on',
-  tooltip: `Releases may not be available on the build date as we run extensive tests 
-  (according to the change) in each release. There may be a few days delay between the 
-  build and the available dates`,
+  published: 'Published on',
+  tooltip: `Date that the package was published on the public repository`,
   whatsNew: "What's new", // eslint-disable-line
 };

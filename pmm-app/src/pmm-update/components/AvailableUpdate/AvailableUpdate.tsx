@@ -31,16 +31,15 @@ export const AvailableUpdate: FC<AvailableUpdateProps> = ({ nextVersionDetails }
         >
           {showFullVersion ? nextFullVersion : nextVersion}
         </span>
-        {' '}
         <span data-testid="update-latest-release-date" className={styles.releaseDate}>
           (
-          {Messages.built}
+          {Messages.published}
           {' '}
           {nextVersionDate}
           )
           <Tooltip
             content={Messages.tooltip}
-            data-testid="update-built-date-info"
+            data-testid="update-published-date-info"
           >
             <Icon name="info-circle" className={styles.infoIcon} />
           </Tooltip>
