@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { CurrentVersion } from './CurrentVersion';
-import { Messages } from './CurrentVersion.messages';
 
 jest.mock('shared/components/helpers/notification-manager');
 
