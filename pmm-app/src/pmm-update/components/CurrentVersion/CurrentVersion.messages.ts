@@ -1,4 +1,4 @@
 export const Messages = {
   currentVersion: 'Current version',
-  tooltip: 'The date on which the installed version was built',
+  tooltip: 'The date the currently running version was compiled',
 };
