@@ -46,9 +46,9 @@ def fix_datasource(dashboard):
                 if 'mappingTypes' in panel:
                         for mappingTypes_index, mappingTypes in enumerate(dashboard['panels'][panel_index]['mappingTypes']):
                             if 'datasource' in mappingTypes:
-                                 dataSourceName = datasources.get(dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'])
-                                 if  dataSourceName is not None:
-                                     dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] = dataSourceName
+                                dataSourceName = datasources.get(dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'])
+                                if dataSourceName is not None:
+                                    dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] = dataSourceName
 
         if 'templating' in element:
             for panel_index, panel in enumerate(dashboard['templating']['list']):
@@ -96,7 +96,7 @@ def check_formulas(dashboard, currentVariableName, newVariableName):
                     if 'query' in lists.keys():
                         expr = dashboard['templating']['list'][list_index]['query']
                         if expr.find(currentVariableName) != -1:    # check if variable is used in an expression
-                            print (' >>>> %s' % expr )
+                            print (' >>>> %s' % expr)
                             prompt = ' Replace variable %s to %s (Y/N)? [N]: ' % (currentVariableName, newVariableName)
                             user_input = input(prompt).upper()
                             if user_input == 'Y':
@@ -139,7 +139,7 @@ def fix_variables(dashboard):
                         check_formulas(dashboard, currentVariableName, newVariableName)
                         dashboard['templating']['list'][panel_index]['name'] = newVariableName
 
-    return dashboard 
+    return dashboard
 
 
 def main():
