@@ -43,6 +43,7 @@ export class ApiRequest {
       .delete<T>(path)
       .then((response): T => response.data)
       .catch((e) => {
+        showErrorNotification({ message: e.message });
         throw e;
       });
   }
@@ -52,6 +53,7 @@ export class ApiRequest {
       .patch<T>(path, body)
       .then((response): T => response.data)
       .catch((e) => {
+        showErrorNotification({ message: e.message });
         throw e;
       });
   }
