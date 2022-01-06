@@ -10,17 +10,13 @@ export class ApiRequest {
     });
   }
 
-  async get<T, B>(path: string, query?: { params: B; cancelToken?: CancelToken }): Promise<void | T> {
+  async get<T, B>(path: string, query?: { params: B; cancelToken?: CancelToken }): Promise<T> {
     return this.axiosInstance
       .get<T>(path, query)
       .then((response): T => response.data)
-      .catch((e): void => {
+      .catch((e) => {
         showErrorNotification({ message: e.message });
-        if (axios.isCancel(e)) {
-          throw e;
-        } else {
-          showErrorNotification({ message: e.message });
-        }
+        throw e;
       });
   }
 
@@ -42,21 +38,23 @@ export class ApiRequest {
       });
   }
 
-  async delete<T>(path: string): Promise<void | T> {
+  async delete<T>(path: string): Promise<T> {
     return this.axiosInstance
       .delete<T>(path)
       .then((response): T => response.data)
-      .catch((): void => {
-        // Notify.error(e.message);
+      .catch((e) => {
+        showErrorNotification({ message: e.message });
+        throw e;
       });
   }
 
-  async patch<T, B>(path: string, body: B): Promise<void | T> {
+  async patch<T, B>(path: string, body: B): Promise<T> {
     return this.axiosInstance
       .patch<T>(path, body)
       .then((response): T => response.data)
-      .catch((): void => {
-        // Notify.error(e.message);
+      .catch((e) => {
+        showErrorNotification({ message: e.message });
+        throw e;
       });
   }
 }
