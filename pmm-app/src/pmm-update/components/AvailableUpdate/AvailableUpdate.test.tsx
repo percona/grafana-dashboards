@@ -1,6 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { LinkButton } from '@grafana/ui';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { AvailableUpdate } from './AvailableUpdate';
 
@@ -8,7 +7,7 @@ jest.mock('shared/components/helpers/notification-manager');
 
 const nextFullVersion = 'x.y.z-rc.j+1234567890';
 const nextVersion = 'x.y.z';
-const newsLink = '';
+const newsLink = 'https://percona.com';
 const nextVersionDate = '23 Jun';
 
 const nextVersionDetails = {
@@ -16,49 +15,23 @@ const nextVersionDetails = {
 };
 
 describe('AvailableUpdate::', () => {
-  let wrapper: ReturnType<typeof shallow> | undefined;
-
-  beforeEach(() => {
-    wrapper = shallow(<AvailableUpdate nextVersionDetails={nextVersionDetails} />);
-  });
-
-  afterEach(() => {
-    wrapper?.unmount();
-  });
-
   it('should show only the short version by default', () => {
-    expect(wrapper?.find('section > p').length).toEqual(2);
-    expect(wrapper?.find('section > p > span').length).toEqual(2);
-    expect(
-      wrapper
-        ?.find('section > p')
-        .at(1)
-        .text(),
-    ).toEqual(`${nextVersion} (${nextVersionDate})`);
+    render(<AvailableUpdate nextVersionDetails={nextVersionDetails} />);
+
+    expect(screen.getByTestId('update-latest-version').textContent).toEqual(nextVersion);
   });
 
   it('should show the news link if present', () => {
-    expect(wrapper?.find('section > p').find(LinkButton).length).toEqual(0);
+    render(<AvailableUpdate nextVersionDetails={nextVersionDetails} />);
 
-    const nextVersionDetails = {
-      nextVersionDate,
-      nextVersion,
-      nextFullVersion,
-      newsLink: 'https://percona.com',
-    };
-
-    wrapper = shallow(<AvailableUpdate nextVersionDetails={nextVersionDetails} />);
-
-    expect(wrapper?.find('section > p').find(LinkButton).length).toEqual(1);
+    expect(screen.getByTestId('update-news-link')).toBeTruthy();
   });
 
   it('should show the full version on alt-click', () => {
-    wrapper?.find('section').simulate('click', { altKey: true });
-    expect(
-      wrapper
-        ?.find('section > p')
-        .at(1)
-        .text(),
-    ).toEqual(`${nextFullVersion} (${nextVersionDate})`);
+    render(<AvailableUpdate nextVersionDetails={nextVersionDetails} />);
+
+    fireEvent.click(screen.getByTestId('update-latest-section'), { altKey: true });
+
+    expect(screen.getByTestId('update-latest-version').textContent).toEqual(nextFullVersion);
   });
 });
