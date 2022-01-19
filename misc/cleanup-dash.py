@@ -11,7 +11,7 @@ import datetime
 import re
 
 __version__ = '1.0.0'
-refresh_intervals = ['1s','5s','1m','5m','1h','6h','1d']
+refresh_intervals = ['5s','1m','5m','1h','6h','1d']
 year = str(datetime.date.today())[:4]
 
 def set_title(dashboard):
@@ -54,7 +54,7 @@ def set_default_refresh_intervals(dashboard):
     """Set Dashboard refresh intervals."""
     if 'timepicker' not in dashboard.keys():
         return dashboard
-    dashboard['timepicker']['refresh_intervals'] = refresh_intervals 
+    dashboard['timepicker']['refresh_intervals'] = refresh_intervals
     return dashboard
 
 
@@ -432,7 +432,7 @@ def add_annotation(dashboard):
                 "tags": [],
                 "type": "dashboard"
             }
-            dashboard['annotations']['list'].append(add_item) 
+            dashboard['annotations']['list'].append(add_item)
     return dashboard
 
 
