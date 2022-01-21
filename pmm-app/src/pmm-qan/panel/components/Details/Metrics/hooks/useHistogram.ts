@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
-import { DataFrame, GrafanaTheme } from '@grafana/data';
+import { DataFrame, GrafanaTheme2 } from '@grafana/data';
 import { logger } from '@percona/platform-core';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import MetricsService from '../Metrics.service';
 import { histogramToDataFrame } from '../Metrics.utils';
 
-export const useHistogram = (theme: GrafanaTheme, isHistogramAvailable: boolean): [DataFrame[], boolean] => {
+export const useHistogram = (theme: GrafanaTheme2, isHistogramAvailable: boolean): [DataFrame[], boolean] => {
   const {
     panelState: {
       queryId, from, to, labels,

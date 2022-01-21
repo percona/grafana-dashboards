@@ -4,12 +4,12 @@ import React, {
 import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements/Charts';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
-import { BarChart, Collapse, useTheme } from '@grafana/ui';
+import { Collapse, useTheme2 } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table';
 import { Databases } from 'shared/core';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import {
-  HISTOGRAM_HEIGHT, HISTOGRAM_MARGIN, HISTOGRAM_OPTIONS, MetricsTabs,
+  HISTOGRAM_MARGIN, MetricsTabs,
 } from './Metrics.constants';
 import { MetricsProps } from './Metrics.types';
 import { getStyles } from './Metrics.styles';
@@ -19,14 +19,14 @@ import { TopQuery } from '../TopQuery/TopQuery';
 const Metrics: FC<MetricsProps> = ({
   databaseType, totals, metrics, textMetrics = {}, loading,
 }) => {
-  const theme = useTheme();
+  const theme = useTheme2();
   const styles = getStyles(theme);
   const isHistogramAvailable = databaseType === Databases.postgresql && !totals;
   const [histogramData, histogramLoading] = useHistogram(theme, isHistogramAvailable);
   const [isDistributionPanelOpen, setDistributionPanelVisibility] = useState(true);
   const [isMetricsPanelOpen, setMetricsPanelVisibility] = useState(true);
   const [isHistogramOpen, setHistogramOpen] = useState(true);
-  const [histogramWidth, setHistogramWidth] = useState(0);
+  const [_, setHistogramWidth] = useState(0);
   const [isTopQueryOpen, setTopQueryVisibility] = useState(true);
   const histogramRef = useRef<HTMLDivElement>(null);
   const { top_query: topQuery, top_queryid: topQueryId } = textMetrics;
@@ -166,12 +166,12 @@ const Metrics: FC<MetricsProps> = ({
             isOpen={isHistogramOpen}
             onToggle={() => setHistogramOpen(!isHistogramOpen)}
           >
-            <BarChart
+            {/* <BarChart
               data={histogramData}
               width={histogramWidth}
               height={HISTOGRAM_HEIGHT}
               {...HISTOGRAM_OPTIONS}
-            />
+            /> */}
           </Collapse>
         </div>
       )}

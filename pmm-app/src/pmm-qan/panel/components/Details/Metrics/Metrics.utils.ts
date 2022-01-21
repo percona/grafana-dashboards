@@ -1,12 +1,12 @@
 import {
-  applyFieldOverrides, DataFrame, FieldType, GrafanaTheme, toDataFrame,
+  applyFieldOverrides, DataFrame, FieldType, GrafanaTheme2, toDataFrame,
 } from '@grafana/data';
 import { HistogramResponse } from './Metrics.types';
 
 export const histogramToDataFrame = ({
   histogram_items = [],
 }: HistogramResponse,
-theme: GrafanaTheme): DataFrame[] => {
+theme: GrafanaTheme2): DataFrame[] => {
   const ranges = histogram_items.map(({ range }) => formatRange(range));
   const frequencies = histogram_items.map(({ frequency }) => frequency || 0);
   const fields = {
