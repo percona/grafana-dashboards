@@ -5,7 +5,7 @@ import { GrafanaTheme2 } from '@grafana/data';
 import { getPmmTheme } from 'shared/components/helpers/getPmmTheme';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme2) => {
-  const parameters = getPmmTheme(theme);
+  const parameters = getPmmTheme(theme.v1);
 
   return {
     metricColumn: css`

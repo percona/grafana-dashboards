@@ -1,12 +1,8 @@
 import { css } from '@emotion/css';
-import { selectThemeVariant } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
 
 export const getStyles = (theme: GrafanaTheme) => {
-  const metricTextColor = selectThemeVariant(
-    { light: '#202226', dark: 'rgba(32, 215, 255, 0.8)' },
-    theme.type,
-  );
+  const metricTextColor = theme.isLight ? '#202226' : 'rgba(32, 215, 255, 0.8)';
 
   return {
     query: css`
