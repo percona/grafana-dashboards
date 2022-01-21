@@ -1,4 +1,4 @@
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { stylesFactory } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
 import { getPmmTheme } from 'shared/components/helpers/getPmmTheme';

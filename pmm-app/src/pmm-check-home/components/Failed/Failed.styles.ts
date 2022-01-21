@@ -1,4 +1,4 @@
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 
 /**
  * TODO(atymchuk): refactor to use themes

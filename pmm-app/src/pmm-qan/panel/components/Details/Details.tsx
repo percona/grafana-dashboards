@@ -5,7 +5,7 @@ import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import {
   Button, Tab, TabContent, TabsBar, useTheme,
 } from '@grafana/ui';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { Databases } from 'shared/core';
 import Explain from './Explain/Explain';

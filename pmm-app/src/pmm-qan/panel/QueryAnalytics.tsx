@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import SplitPane from 'react-split-pane';
 import { useTheme } from '@grafana/ui';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
   Details, Filters, ManageColumns, Overview,

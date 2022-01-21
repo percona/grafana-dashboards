@@ -4,7 +4,7 @@ import React, {
 import {
   Divider, Icon, Select, Tooltip,
 } from 'antd';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import { useTheme } from '@grafana/ui';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';

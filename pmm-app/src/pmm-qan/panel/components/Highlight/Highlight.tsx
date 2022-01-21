@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactHighlight from 'react-highlight.js';
 import { useTheme } from '@grafana/ui';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import { getStyles } from './Highlight.styles';
 
 export const Highlight = (props) => {

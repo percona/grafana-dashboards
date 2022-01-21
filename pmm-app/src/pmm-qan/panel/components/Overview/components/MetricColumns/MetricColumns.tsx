@@ -1,7 +1,7 @@
 import React from 'react';
 import { Divider } from 'antd';
 import Tooltip from 'antd/es/tooltip';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import { useTheme } from '@grafana/ui';
 import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
 import { humanize } from 'shared/components/helpers/Humanization';

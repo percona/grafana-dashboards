@@ -12,7 +12,7 @@ import {
   useTable,
 } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import useWindowSize from 'shared/components/hooks/WindowSize.hooks';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { getStyles } from './Table.styles';

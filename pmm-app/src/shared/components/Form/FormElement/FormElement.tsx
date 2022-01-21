@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd';
 import React from 'react';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 
 const style = {
   verticalFieldLabelRow: css`
