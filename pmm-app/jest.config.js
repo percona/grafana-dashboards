@@ -13,10 +13,6 @@ module.exports = {
   snapshotSerializers: ['enzyme-to-json/serializer'],
   verbose: true,
   collectCoverage: true,
-  // TODO remove after fixing tests
-  testMatch: [
-    '<rootDir>/src/**/*.{test}.{js,ts}',
-  ],
   collectCoverageFrom: [
     '**/*.{ts,tsx}',
     '!**/node_modules/**',
