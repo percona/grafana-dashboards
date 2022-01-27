@@ -159,7 +159,7 @@ const Metrics: FC<MetricsProps> = ({
         <Table columns={columns} data={metrics} loading={loading} noData={null} />
       </Collapse>
       {showHistogram && (
-        <div ref={histogramRef} className={styles.histogramWrapper}>
+        <div ref={histogramRef} data-testid="histogram-collapse-container" className={styles.histogramWrapper}>
           <Collapse
             collapsible
             label={MetricsTabs.histogram}
