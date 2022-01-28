@@ -5,7 +5,6 @@ import {
   ClipboardButton, Icon, Button, Modal,
 } from '@grafana/ui';
 
-
 import { ProgressModalHeader } from 'pmm-update/components';
 import { useClickOutside } from 'pmm-update/hooks';
 import { ProgressModalProps } from 'pmm-update/types';

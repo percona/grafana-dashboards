@@ -41,7 +41,6 @@ describe('TopQuery::', () => {
       </QueryAnalyticsProvider.Provider>,
     );
 
-
     fireEvent.click(getByText('test'));
 
     expect(selectQuery).toHaveBeenCalledTimes(1);

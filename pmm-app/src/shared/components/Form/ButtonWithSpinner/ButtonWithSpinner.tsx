@@ -4,7 +4,6 @@ import { Button, Spinner } from '@grafana/ui';
 import { ButtonProps } from '@grafana/ui/components/Button';
 import * as styles from './ButtonWithSpinner.styles';
 
-
 interface ButtonWithSpinnerProps extends ButtonProps {
   isLoading?: boolean;
 }
