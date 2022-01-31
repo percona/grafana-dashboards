@@ -70,6 +70,7 @@ export const DetailsSection: FC = () => {
       component: (
         <Metrics
           databaseType={databaseType}
+          groupBy={groupBy}
           totals={totals}
           metrics={metrics}
           textMetrics={textMetrics}

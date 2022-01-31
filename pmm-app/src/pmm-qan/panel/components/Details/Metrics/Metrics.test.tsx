@@ -3,10 +3,17 @@ import { mount } from 'enzyme';
 import { dataTestId } from '@percona/platform-core';
 import { Databases } from 'shared/core';
 import Metrics from './Metrics';
+import { histogramToDataFrame } from './Metrics.utils';
 
 jest.mock('shared/components/helpers/notification-manager');
 jest.mock('antd/es/tooltip', () => <div className="tooltip" />);
 jest.mock('./hooks/useHistogram');
+
+jest.mock('./hooks/useHistogram', () => ({
+  useHistogram: jest.fn(({ theme }) => (
+    [histogramToDataFrame({ histogram_items: [{ frequency: 6175, range: '(0-3)' }] }, theme), true]
+  )),
+}));
 
 const originalConsoleError = console.error;
 
@@ -2674,6 +2681,7 @@ describe('useFilters::', () => {
       <Metrics
         databaseType={Databases.postgresql}
         totals={false}
+        groupBy="queryid"
         metrics={metrics}
         textMetrics={textMetrics}
         loading={false}
@@ -2687,6 +2695,7 @@ describe('useFilters::', () => {
     const wrapper = mount(
       <Metrics
         databaseType={Databases.mysql}
+        groupBy="queryid"
         totals
         metrics={metrics}
         loading={false}
@@ -2694,5 +2703,19 @@ describe('useFilters::', () => {
     );
 
     expect(wrapper.find(dataTestId('top-query')).length).toEqual(0);
+  });
+  it('should not render Histogram when groupBy not equal "queryId" ', async () => {
+    const wrapper = mount(
+      <Metrics
+        databaseType={Databases.postgresql}
+        groupBy="username"
+        totals={false}
+        metrics={metrics}
+        textMetrics={textMetrics}
+        loading={false}
+      />,
+    );
+
+    expect(wrapper.find(dataTestId('histogram-collapse-container')).length).toEqual(0);
   });
 });
