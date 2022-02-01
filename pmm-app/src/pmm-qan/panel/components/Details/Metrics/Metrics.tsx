@@ -1,5 +1,5 @@
 import React, {
-  FC, useState,
+  FC, useState, useRef,
 } from 'react';
 import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements/Charts';
 import { humanize } from 'shared/components/helpers/Humanization';
@@ -11,17 +11,23 @@ import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip'
 import { MetricsTabs } from './Metrics.constants';
 import { MetricsProps } from './Metrics.types';
 import { getStyles } from './Metrics.styles';
+import { useHistogram } from './hooks/useHistogram';
 import { TopQuery } from '../TopQuery/TopQuery';
 
 const Metrics: FC<MetricsProps> = ({
-  databaseType, totals, metrics, textMetrics = {}, loading,
+  databaseType, totals, metrics, textMetrics = {}, loading, groupBy,
 }) => {
   const theme = useTheme2();
   const styles = getStyles(theme);
+  const isHistogramAvailable = databaseType === Databases.postgresql && !totals && groupBy === 'queryid';
+  const [histogramData, histogramLoading] = useHistogram(theme, isHistogramAvailable);
   const [isDistributionPanelOpen, setDistributionPanelVisibility] = useState(true);
   const [isMetricsPanelOpen, setMetricsPanelVisibility] = useState(true);
+  const [isHistogramOpen, setHistogramOpen] = useState(true);
   const [isTopQueryOpen, setTopQueryVisibility] = useState(true);
+  const histogramRef = useRef<HTMLDivElement>(null);
   const { top_query: topQuery, top_queryid: topQueryId } = textMetrics;
+  const showHistogram = isHistogramAvailable && histogramData.length > 0;
 
   const mainColumn = (item) => (
     <span className={styles.metricColumn}>
@@ -110,7 +116,7 @@ const Metrics: FC<MetricsProps> = ({
   ];
 
   return (
-    <Overlay isPending={loading} className="metrics-wrapper" size={35}>
+    <Overlay isPending={loading || histogramLoading} className="metrics-wrapper" size={35}>
       {databaseType !== Databases.mongodb ? (
         <Collapse
           collapsible
@@ -143,17 +149,23 @@ const Metrics: FC<MetricsProps> = ({
       >
         <Table columns={columns} data={metrics} loading={loading} noData={null} />
       </Collapse>
-      {/* {showHistogram && (
-        <div ref={histogramRef} className={styles.histogramWrapper}>
+      {showHistogram && (
+        <div ref={histogramRef} data-testid="histogram-collapse-container" className={styles.histogramWrapper}>
           <Collapse
             collapsible
             label={MetricsTabs.histogram}
             isOpen={isHistogramOpen}
             onToggle={() => setHistogramOpen(!isHistogramOpen)}
           >
+            {/* <BarChart
+              data={histogramData}
+              width={histogramWidth}
+              height={HISTOGRAM_HEIGHT}
+              {...HISTOGRAM_OPTIONS}
+            /> */}
           </Collapse>
         </div>
-      )} */}
+      )}
     </Overlay>
   );
 };
