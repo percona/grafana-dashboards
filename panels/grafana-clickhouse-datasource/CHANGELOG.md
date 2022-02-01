@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.10
+
+Fix - Set format when using the new Run Query button.
+
 ## 0.9.9
 
 Feature - Query Builder.
