@@ -7,7 +7,7 @@ This plugin is currently in Beta development and subject to change.
     
 ## Install the plugin
 
-1. Navigate to [ClickHouse](https://grafana.com/grafana/plugins/clickhouse-datasource/) plugin homepage.
+1. Navigate to [ClickHouse](https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/) plugin homepage.
 2. From the left-hand menu, click the **Install plugin** button.
 
    The **Installation** tab is displayed.
@@ -54,7 +54,7 @@ Time series visualization options are selectable after adding a `datetime` field
 
 #### Multi-line time series
 
-To create multi-line time series, the query must return at least 3 fields.
+To create multi-line time series, the query must return at least 3 fields in the following order:
 - field 1:  `datetime` field with an alias of `time`
 - field 2:  value to group by
 - field 3+: the metric values
@@ -96,13 +96,12 @@ FROM test_data
 WHERE $__timeFilter(date_time)
 ```
 
-| Macro example | Description |
-| -- | --|
-| *$__timeFilter(dataRow)* | Will be replaced by a time range filter using the specified name. |
-| *$__fromTime* | Replaced by the start of time range in ms wrapped by toDateTime function. Example: toDateTime(intDiv(1415792726371,1000)) |
-| *$__toTime* | Replaced by the end of time range in ms wrapped by toDateTime function. Example: toDateTime(intDiv(1415792726371,1000)) |
-| *$__table* | Will be replaced by the table in use. |
-| *$__column* | Will be replaced by the column in use. |
+| Macro                          | Description                                                                                                                      | Output example                                          |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| *$__timeFilter(columnName)*    | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in seconds      | `time >= '1480001790' AND time <= '1482576232' )`       |
+| *$__timeFilter_ms(columnName)* | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in milliseconds | `time >= '1480001790671' AND time <= '1482576232479' )` |
+| *$__fromTime*                  | Replaced by the starting time of the range of the panel casted to DateTime                                                       | `toDateTime(intDiv(1415792726371,1000))`                |
+| *$__toTime*                    | Replaced by the ending time of the range of the panel casted to DateTime                                                         | `toDateTime(intDiv(1415792726371,1000))`                |
 
 The plugin also supports notation using braces {}. Use this notation when queries are needed inside parameters.
 
