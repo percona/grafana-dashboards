@@ -4,7 +4,7 @@ import React, {
 import SplitPane from 'react-split-pane';
 import { cx } from 'emotion';
 import { Button, useTheme } from '@grafana/ui';
-import { showSuccessNotification } from 'shared/components/helpers';
+import { showSuccessNotification, showWarningNotification } from 'shared/components/helpers';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
   Details, Filters, ManageColumns, Overview,
@@ -30,8 +30,19 @@ const QueryAnalyticsPanel: FC = () => {
   const copyLinkToClipboard = useCallback(() => {
     const link = buildShareLink(toUnixTimestamp(from), toUnixTimestamp(to));
 
-    navigator.clipboard.writeText(link);
-    showSuccessNotification({ message: Messages.copiedToClipboard });
+    if (navigator && navigator.clipboard) {
+      navigator.clipboard.writeText(link);
+      showSuccessNotification({ message: Messages.copiedToClipboard });
+    } else {
+      const message = (
+        <div>
+          {Messages.clipboardNotAvailable}
+          <span className={styles.link}>{link}</span>
+        </div>
+      );
+
+      showWarningNotification({ message });
+    }
   }, [from, to]);
 
   useEffect(() => {

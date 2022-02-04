@@ -53,5 +53,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       height: 100%;
       position: relative;
     `,
+    link: css`
+      display: block;
+      margin-top: ${theme.spacing.sm};
+      text-decoration: underline;
+    `,
   };
 });
