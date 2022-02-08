@@ -4,7 +4,7 @@ import React, {
 import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements/Charts';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
-import { Collapse, useTheme2 } from '@grafana/ui';
+import { Collapse, useStyles2 } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table';
 import { Databases } from 'shared/core';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
@@ -18,10 +18,9 @@ import { BarChart } from '../../BarChart/BarChart';
 const Metrics: FC<MetricsProps> = ({
   databaseType, totals, metrics, textMetrics = {}, loading, groupBy,
 }) => {
-  const theme = useTheme2();
-  const styles = getStyles(theme);
+  const styles = useStyles2(getStyles);
   const isHistogramAvailable = databaseType === Databases.postgresql && !totals && groupBy === 'queryid';
-  const [histogramData, histogramLoading] = useHistogram(theme, isHistogramAvailable);
+  const [histogramData, histogramLoading] = useHistogram(isHistogramAvailable);
   const [isDistributionPanelOpen, setDistributionPanelVisibility] = useState(true);
   const [isMetricsPanelOpen, setMetricsPanelVisibility] = useState(true);
   const [isHistogramOpen, setHistogramOpen] = useState(true);

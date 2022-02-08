@@ -17,7 +17,7 @@ export const getDefaultOptions = ({
     animation: false as const,
     plugins: {
       datalabels: {
-        color: theme.colors.text,
+        color: theme.v1.colors.text,
         anchor: 'end' as const,
         align: 'end' as const,
         formatter(_value, context) {
@@ -38,10 +38,10 @@ export const getDefaultOptions = ({
             return context.formattedValue || '';
           },
           labelTextColor() {
-            return theme.colors.text;
+            return theme.v1.colors.text;
           },
         },
-        backgroundColor: theme.colors.bg2,
+        backgroundColor: theme.v1.colors.bg2,
         displayColors: false,
       },
       tooltips: {

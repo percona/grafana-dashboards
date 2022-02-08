@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
-import { GrafanaTheme2 } from '@grafana/data';
 import { logger } from '@percona/platform-core';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { ChartData } from 'chart.js';
+import { useTheme2 } from '@grafana/ui';
 import MetricsService from '../Metrics.service';
 import { getChartDataFromHistogramItems } from '../Metrics.utils';
 
-export const useHistogram = (theme: GrafanaTheme2, isHistogramAvailable: boolean): [ChartData<'bar'> | undefined, boolean] => {
+export const useHistogram = (isHistogramAvailable: boolean): [ChartData<'bar'> | undefined, boolean] => {
+  const theme = useTheme2();
   const {
     panelState: {
       queryId, from, to, labels,

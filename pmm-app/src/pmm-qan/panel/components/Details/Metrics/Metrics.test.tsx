@@ -2667,7 +2667,7 @@ const textMetrics = {
   top_queryid: '23728328',
 };
 
-xdescribe('useFilters::', () => {
+describe('useFilters::', () => {
   beforeEach(() => {
     console.error = jest.fn();
   });
