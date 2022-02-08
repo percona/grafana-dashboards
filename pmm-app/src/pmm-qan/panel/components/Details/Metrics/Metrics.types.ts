@@ -1,4 +1,5 @@
 import { DatabasesType } from '../Details.types';
+import { QueryDimension } from '../../../provider/provider.types';
 
 export interface MetricsProps {
   databaseType: DatabasesType;
@@ -6,6 +7,7 @@ export interface MetricsProps {
   textMetrics?: TextMetrics;
   totals: boolean;
   loading: boolean;
+  groupBy: QueryDimension;
 }
 
 export interface HistogramRequest {

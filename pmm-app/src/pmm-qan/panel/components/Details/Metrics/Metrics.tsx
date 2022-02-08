@@ -17,11 +17,11 @@ import { useHistogram } from './hooks/useHistogram';
 import { TopQuery } from '../TopQuery/TopQuery';
 
 const Metrics: FC<MetricsProps> = ({
-  databaseType, totals, metrics, textMetrics = {}, loading,
+  databaseType, totals, metrics, textMetrics = {}, loading, groupBy,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
-  const isHistogramAvailable = databaseType === Databases.postgresql && !totals;
+  const isHistogramAvailable = databaseType === Databases.postgresql && !totals && groupBy === 'queryid';
   const [histogramData, histogramLoading] = useHistogram(theme, isHistogramAvailable);
   const [isDistributionPanelOpen, setDistributionPanelVisibility] = useState(true);
   const [isMetricsPanelOpen, setMetricsPanelVisibility] = useState(true);
@@ -159,7 +159,7 @@ const Metrics: FC<MetricsProps> = ({
         <Table columns={columns} data={metrics} loading={loading} noData={null} />
       </Collapse>
       {showHistogram && (
-        <div ref={histogramRef} className={styles.histogramWrapper}>
+        <div ref={histogramRef} data-testid="histogram-collapse-container" className={styles.histogramWrapper}>
           <Collapse
             collapsible
             label={MetricsTabs.histogram}
