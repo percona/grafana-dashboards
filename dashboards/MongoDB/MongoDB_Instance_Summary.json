@@ -2692,7 +2692,7 @@
                     "targets": [
                         {
                             "exemplar": true,
-                            "expr": "avg by () (container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or \navg by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
+                            "expr": "max by () (container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or \nmax by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -2876,7 +2876,7 @@
                     "targets": [
                         {
                             "exemplar": true,
-                            "expr": "avg by () (container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}+container_spec_memory_swap_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or\navg by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"})",
+                            "expr": "max by () (container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}+container_spec_memory_swap_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or\nmax by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -3067,7 +3067,7 @@
                     "targets": [
                         {
                             "exemplar": true,
-                            "expr": "(100 - avg(container_fs_usage_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) * 100 / avg(container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"})) or\navg by () (min(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100 or \n(100 - azure_storage_percent_average{node_name=~\"$node_name\"}))",
+                            "expr": "\avg by () (min(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100 or \n(100 - azure_storage_percent_average{node_name=~\"$node_name\"}))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
