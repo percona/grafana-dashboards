@@ -1,33 +1,30 @@
-import {
-  applyFieldOverrides, DataFrame, FieldType, GrafanaTheme2, toDataFrame,
-} from '@grafana/data';
-import { HistogramResponse } from './Metrics.types';
+import { ChartData } from 'chart.js';
+import { GrafanaTheme2 } from '@grafana/data';
+import { HistogramAPI } from './Metrics.types';
 
-export const histogramToDataFrame = ({
-  histogram_items = [],
-}: HistogramResponse,
-theme: GrafanaTheme2): DataFrame[] => {
+export const getChartDataFromHistogramItems = (histogram_items: HistogramAPI[], theme: GrafanaTheme2): ChartData<'bar'>| undefined => {
+  const total = histogram_items ? histogram_items.reduce(
+    (previousValue, currentValue) => (
+      currentValue.frequency ? previousValue + currentValue.frequency : previousValue
+    ), 0,
+  ) : null;
+
   const ranges = histogram_items.map(({ range }) => formatRange(range));
   const frequencies = histogram_items.map(({ frequency }) => frequency || 0);
-  const fields = {
-    fields: [
-      { name: 'x', type: FieldType.string, values: ranges },
-      { name: '', type: FieldType.number, values: frequencies },
-    ],
-  };
-  const frame = toDataFrame(fields);
-  const data = applyFieldOverrides({
-    data: [frame],
-    fieldConfig: {
-      overrides: [],
-      defaults: {},
-    },
-    theme,
-    replaceVariables: (value: string) => value,
-  });
-  const hasData = frequencies.filter((f) => f !== 0).length > 0;
+  const dataInPersent = total !== null
+    ? histogram_items.map(({ frequency }) => Math.round((frequency || 0 / total) * 10000) / 100)
+    : histogram_items.map(() => undefined);
 
-  return hasData ? data : [];
+  const dataSet = {
+    data: frequencies,
+    backgroundColor: theme.v1.colors.bg3,
+    dataInPersent,
+  };
+
+  return histogram_items.length > 0 ? {
+    labels: ranges,
+    datasets: [dataSet],
+  } : undefined;
 };
 
 export const formatRange = (range: string) => {

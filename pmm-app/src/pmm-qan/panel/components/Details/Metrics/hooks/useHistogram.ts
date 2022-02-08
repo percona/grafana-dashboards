@@ -1,17 +1,18 @@
 import { useContext, useEffect, useState } from 'react';
-import { DataFrame, GrafanaTheme2 } from '@grafana/data';
+import { GrafanaTheme2 } from '@grafana/data';
 import { logger } from '@percona/platform-core';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
+import { ChartData } from 'chart.js';
 import MetricsService from '../Metrics.service';
-import { histogramToDataFrame } from '../Metrics.utils';
+import { getChartDataFromHistogramItems } from '../Metrics.utils';
 
-export const useHistogram = (theme: GrafanaTheme2, isHistogramAvailable: boolean): [DataFrame[], boolean] => {
+export const useHistogram = (theme: GrafanaTheme2, isHistogramAvailable: boolean): [ChartData<'bar'> | undefined, boolean] => {
   const {
     panelState: {
       queryId, from, to, labels,
     },
   } = useContext(QueryAnalyticsProvider);
-  const [data, setData] = useState<DataFrame[]>([]);
+  const [data, setData] = useState<ChartData<'bar'>|undefined>();
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -25,7 +26,7 @@ export const useHistogram = (theme: GrafanaTheme2, isHistogramAvailable: boolean
           to,
         });
 
-        setData(histogramToDataFrame(result, theme));
+        setData(getChartDataFromHistogramItems(result.histogram_items, theme));
         setLoading(false);
       } catch (e) {
         setLoading(false);
