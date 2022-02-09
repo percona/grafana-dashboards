@@ -73,7 +73,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-${{ matrix.node-version }}-yarn-
 
+      - name: Reconfigure git to use HTTP authentication
+        run: >
+          git config --global url."https://github.com/".insteadOf ssh://git@github.com/
+
       - run: make prepare_release
+
       - run: make generate_coverage
 
   workflow_success:
