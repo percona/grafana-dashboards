@@ -14,6 +14,14 @@ export const getDefaultOptions = ({
     legend: {
       display: showLegend,
     },
+    scales: {
+      x: {
+        grace: indexAxis === 'y' ? '1%' : 0,
+      },
+      y: {
+        grace: indexAxis === 'x' ? '1%' : 0,
+      },
+    },
     animation: false as const,
     plugins: {
       datalabels: {
