@@ -7,7 +7,6 @@ import { getChartDataFromHistogramItems } from './Metrics.utils';
 
 jest.mock('shared/components/helpers/notification-manager');
 jest.mock('antd/es/tooltip', () => <div className="tooltip" />);
-jest.mock('./hooks/useHistogram');
 
 jest.mock('./hooks/useHistogram', () => ({
   useHistogram: jest.fn(({ theme }) => (

@@ -21,9 +21,13 @@ export const getDefaultOptions = ({
         anchor: 'end' as const,
         align: 'end' as const,
         formatter(_value, context) {
-          const data = context.dataset.dataInPersent[context.dataIndex];
+          if (context.dataset.dataInPersent) {
+            const data = context.dataset.dataInPersent[context.dataIndex];
 
-          return data ? `${data}%` : '';
+            return data ? `${data.toFixed(2)}%` : '';
+          }
+
+          return '';
         },
       },
       tooltip: {
