@@ -32,6 +32,7 @@ export const QueryEditor = (props) => {
     onChange({
       queryType: newQuery,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedVariable, type]);
 
   return (

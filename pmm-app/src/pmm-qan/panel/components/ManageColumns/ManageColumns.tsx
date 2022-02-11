@@ -49,10 +49,12 @@ export const ManageColumns = (props) => {
         });
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentMetric, onlyAdd],
   );
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const removeColumn = useCallback(() => contextActions.removeColumn(currentMetric), [currentMetric]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const swapWithMain = useCallback(() => contextActions.swapMainColumn(currentMetric), [currentMetric]);
 
   const Placeholder = () => (!onlyAdd ? (

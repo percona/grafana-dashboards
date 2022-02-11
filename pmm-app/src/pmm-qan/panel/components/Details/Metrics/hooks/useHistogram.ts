@@ -38,6 +38,7 @@ export const useHistogram = (isHistogramAvailable: boolean): [ChartData<'bar'> |
     if (isHistogramAvailable) {
       getHistogram();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryId, from, to, labels]);
 
   return [data, loading];

@@ -92,6 +92,7 @@ export const Filters: FC = () => {
         className={styles.filtersField}
       />
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

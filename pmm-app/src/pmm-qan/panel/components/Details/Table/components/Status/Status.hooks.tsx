@@ -30,10 +30,12 @@ export const useTableStatus = (databaseType, example, tableName, database): [Sta
 
     setStatus(result);
     setData(processTableData(result.value));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [databaseType]);
 
   useEffect(() => {
     getStatuses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [databaseType]);
 
   return [data, status];

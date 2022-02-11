@@ -13,6 +13,7 @@ export const useFiltersContainerHeight = (initialValue: number, ref: RefObject<H
       : FILTERS_BODY_HEIGHT;
 
     setHeight(Math.max(filtersHeight, FILTERS_BODY_HEIGHT));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [winHeight]);
 
   return height;

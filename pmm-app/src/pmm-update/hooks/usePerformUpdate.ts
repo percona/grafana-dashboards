@@ -68,6 +68,7 @@ export const usePerformUpdate = (): UpdateStatus => {
       // @ts-ignore
       clearTimeout(timeoutId);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authToken, initialLogOffset]);
 
   useEffect(() => {

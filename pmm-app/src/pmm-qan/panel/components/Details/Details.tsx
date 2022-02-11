@@ -59,7 +59,7 @@ export const DetailsSection: FC = () => {
 
     changeActiveTab(TabKeys[openDetailsTab]);
   }, [queryId, openDetailsTab, showTablesTab, showExplainTab, showExamplesTab]);
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => setLoadingDetails(loading || metricsLoading), [loading, metricsLoading]);
 
   const tabs = [

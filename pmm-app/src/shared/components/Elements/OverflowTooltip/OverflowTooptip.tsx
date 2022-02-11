@@ -8,6 +8,7 @@ export const OverflowTooltip = ({ children, ...props }) => {
     if (ref.current && ref.current.clientWidth < ref.current.scrollWidth) {
       setTitle(children);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref]);
 
   return (

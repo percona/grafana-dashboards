@@ -68,6 +68,7 @@ export const Table: FC<TableProps> = ({
     if (onRowSelection) {
       onRowSelection(selectedFlatRows);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFlatRows]);
 
   return (

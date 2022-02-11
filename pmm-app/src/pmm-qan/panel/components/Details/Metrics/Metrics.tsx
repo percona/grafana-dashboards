@@ -119,6 +119,7 @@ const Metrics: FC<MetricsProps> = ({
     if (histogramRef.current) {
       setHistogramWidth(histogramRef.current.offsetWidth - HISTOGRAM_MARGIN);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [histogramRef.current]);
 
   return (
