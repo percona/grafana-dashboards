@@ -3,15 +3,14 @@ import { mount } from 'enzyme';
 import { dataTestId } from '@percona/platform-core';
 import { Databases } from 'shared/core';
 import Metrics from './Metrics';
-import { histogramToDataFrame } from './Metrics.utils';
+import { getChartDataFromHistogramItems } from './Metrics.utils';
 
 jest.mock('shared/components/helpers/notification-manager');
 jest.mock('antd/es/tooltip', () => <div className="tooltip" />);
-jest.mock('./hooks/useHistogram');
 
 jest.mock('./hooks/useHistogram', () => ({
   useHistogram: jest.fn(({ theme }) => (
-    [histogramToDataFrame({ histogram_items: [{ frequency: 6175, range: '(0-3)' }] }, theme), true]
+    [getChartDataFromHistogramItems([{ frequency: 6175, range: '(0-3)' }], theme), true]
   )),
 }));
 
