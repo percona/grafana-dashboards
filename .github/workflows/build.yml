@@ -8,19 +8,23 @@ jobs:
 
     steps:
       - uses: percona-platform/checkout@v2
-
       - name: Build grafana-dashboards
         uses: percona-platform/setup-node@v2
         with:
-          node-version: "14"
-          cache: "npm"
+          node-version: 14
 
-      - name: Reconfigure git to use HTTP authentication
-        run: >
-          git config --global url."https://github.com/".insteadOf ssh://git@github.com/
+      - name: Enable node_modules cache
+        uses: percona-platform/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-yarn-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-yarn-
 
       - run: make prepare_release
-
       - run: make build_package
 
       - name: Upload the build artefacts
@@ -34,14 +38,16 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [14.x]
+
     steps:
       - uses: percona-platform/checkout@v2
-
-      - name: Setup NodeJS
+      - name: Generate and upload code coverage
         uses: percona-platform/setup-node@v2
         with:
-          node-version: "14"
-          cache: "npm"
+          node-version: ${{ matrix.node-version }}
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_GRAFANA_DASHBOARDS_TOKEN }}
 
@@ -51,12 +57,18 @@ jobs:
           name: build-dist
           path: pmm-app/dist/
 
-      - name: Reconfigure git to use HTTP authentication
-        run: >
-          git config --global url."https://github.com/".insteadOf ssh://git@github.com/
+      - name: Enable node_modules cache
+        uses: percona-platform/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-yarn-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-yarn-
 
       - run: make prepare_release
-
       - run: make generate_coverage
 
   workflow_success:
