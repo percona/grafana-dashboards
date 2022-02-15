@@ -1,9 +1,10 @@
 import React, {
-  FC, useContext, useEffect, useRef, useState,
+  FC, useCallback, useContext, useEffect, useRef, useState,
 } from 'react';
 import SplitPane from 'react-split-pane';
-import { useTheme } from '@grafana/ui';
+import { Button, useTheme } from '@grafana/ui';
 import { cx } from '@emotion/css';
+import { showSuccessNotification, showWarningNotification } from 'shared/components/helpers';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
   Details, Filters, ManageColumns, Overview,
@@ -12,19 +13,37 @@ import 'shared/styles.scss';
 import 'shared/style.less';
 import './qan.scss';
 import { getStyles } from './QueryAnalytics.styles';
+import { Messages } from './QueryAnalytics.messages';
+import { buildShareLink, toUnixTimestamp } from './QueryAnalytics.tools';
 
 const QueryAnalyticsPanel: FC = () => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
   const {
-    panelState: { querySelected },
+    panelState: { querySelected, from, to },
   } = useContext(QueryAnalyticsProvider);
-  // TODO: replace with something more elegant & fast
   const queryAnalyticsWrapper = useRef<HTMLDivElement>(null);
   const size = queryAnalyticsWrapper.current?.clientWidth;
 
   const [, setReload] = useState<object>({});
+  const copyLinkToClipboard = useCallback(() => {
+    const link = buildShareLink(toUnixTimestamp(from), toUnixTimestamp(to));
+
+    if (navigator && navigator.clipboard) {
+      navigator.clipboard.writeText(link);
+      showSuccessNotification({ message: Messages.copiedToClipboard });
+    } else {
+      const message = (
+        <div>
+          {Messages.clipboardNotAvailable}
+          <span className={styles.link}>{link}</span>
+        </div>
+      );
+
+      showWarningNotification({ message });
+    }
+  }, [from, to]);
 
   useEffect(() => {
     setReload({});
@@ -38,6 +57,15 @@ const QueryAnalyticsPanel: FC = () => {
       <div className="query-analytics-data">
         <div className={styles.getContainerWrapper(size)}>
           <div className={cx(styles.overviewHeader, 'manage-columns')}>
+            <Button
+              onClick={copyLinkToClipboard}
+              variant="secondary"
+              icon="copy"
+              title={Messages.copyLinkTooltip}
+              data-testid="copy-link-button"
+            >
+              {Messages.copyLink}
+            </Button>
             <ManageColumns onlyAdd />
           </div>
           <div className={styles.splitterWrapper}>
