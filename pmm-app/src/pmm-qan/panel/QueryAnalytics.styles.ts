@@ -12,6 +12,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       justify-content: flex-end;
       padding: 13px 2px 5px 0px;
       height: 50px;
+
+      button {
+        margin-right: ${theme.spacing.sm} !important;
+      }
     `,
     overviewFooter: css`
       display: flex;
@@ -48,6 +52,11 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       width: ${(size || 1500) - 260}px;
       height: 100%;
       position: relative;
+    `,
+    link: css`
+      display: block;
+      margin-top: ${theme.spacing.sm};
+      text-decoration: underline;
     `,
   };
 });
