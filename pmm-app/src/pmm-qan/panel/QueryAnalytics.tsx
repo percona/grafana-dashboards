@@ -43,7 +43,7 @@ const QueryAnalyticsPanel: FC = () => {
 
       showWarningNotification({ message });
     }
-  }, [from, to]);
+  }, [from, to, styles]);
 
   useEffect(() => {
     setReload({});
