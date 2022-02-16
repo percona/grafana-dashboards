@@ -4403,7 +4403,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 0,
-                        "y": 155
+                        "y": 68
                     },
                     "height": "125px",
                     "id": 321,
@@ -4456,14 +4456,6 @@
                             "metric": "",
                             "refId": "A",
                             "step": 300
-                        },
-                        {
-                            "exemplar": true,
-                            "expr": "time() - min(container_start_time_seconds{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"})",
-                            "hide": true,
-                            "interval": "",
-                            "legendFormat": "",
-                            "refId": "B"
                         }
                     ],
                     "thresholds": "300,3600",
@@ -4501,7 +4493,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 3,
-                        "y": 155
+                        "y": 68
                     },
                     "id": 323,
                     "interval": null,
@@ -4545,8 +4537,7 @@
                             "exemplar": true,
                             "expr": "avg by () (container_cpu_load_average_10s{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or\navg by () (avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m]))",
                             "format": "time_series",
-                            "hide": false,
-                            "interval": "10s",
+                            "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "",
                             "refId": "A"
@@ -4595,7 +4586,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 6,
-                        "y": 155
+                        "y": 68
                     },
                     "height": "125px",
                     "id": 327,
@@ -4636,11 +4627,9 @@
                     "targets": [
                         {
                             "exemplar": true,
-                            "expr": "avg by () (container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or \navg by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
+                            "expr": "max by () (container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or \nmax by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
                             "format": "time_series",
-                            "hide": false,
                             "interval": "5m",
-                            "instant": true,
                             "intervalFactor": 1,
                             "legendFormat": "",
                             "refId": "A",
@@ -4688,7 +4677,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 9,
-                        "y": 155
+                        "y": 68
                     },
                     "id": 329,
                     "interval": null,
@@ -4732,7 +4721,6 @@
                             "exemplar": true,
                             "expr": "clamp_max(avg by () (container_memory_usage_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"} * 100 / container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}),100) or  \navg by () (((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) * 100 or (100 - azure_memory_percent_average{node_name=~\"$node_name\"}))",
                             "format": "time_series",
-                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "",
@@ -4782,7 +4770,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 12,
-                        "y": 155
+                        "y": 68
                     },
                     "height": "125px",
                     "id": 331,
@@ -4823,7 +4811,7 @@
                     "targets": [
                         {
                             "exemplar": true,
-                            "expr": "avg by () (container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}+container_spec_memory_swap_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or\navg by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"})",
+                            "expr": "max by () (container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}+container_spec_memory_swap_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or\nmax by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -4875,7 +4863,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 15,
-                        "y": 155
+                        "y": 68
                     },
                     "height": "125px",
                     "id": 333,
@@ -4972,7 +4960,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 18,
-                        "y": 155
+                        "y": 68
                     },
                     "id": 335,
                     "interval": null,
@@ -5014,9 +5002,8 @@
                     "targets": [
                         {
                             "exemplar": true,
-                            "expr": "(100 - avg(container_fs_usage_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) * 100 / avg(container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"})) or\navg by () (min(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100 or \n(100 - azure_storage_percent_average{node_name=~\"$node_name\"}))",
+                            "expr": "avg by () (min(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100 or \n(100 - azure_storage_percent_average{node_name=~\"$node_name\"}))",
                             "format": "time_series",
-                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "",
@@ -5037,6 +5024,7 @@
                     "valueName": "current"
                 },
                 {
+                    "cacheTimeout": null,
                     "datasource": null,
                     "fieldConfig": {
                         "defaults": {},
@@ -5046,9 +5034,9 @@
                         "h": 2,
                         "w": 3,
                         "x": 21,
-                        "y": 155
+                        "y": 68
                     },
-                    "id": 1001,
+                    "id": 1012,
                     "links": [],
                     "options": {
                         "content": "<h5 style='color:#e68a00;font-weight:bold;text-align:center'><a href=\"/graph/d/node-instance-summary/node-summary?var-node_name=$node_name\" target=\"_blank\">$crop_host...</a></h5>",
@@ -5092,7 +5080,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 157
+                        "y": 70
                     },
                     "height": "",
                     "hiddenSeries": false,
@@ -5139,23 +5127,6 @@
                     "steppedLine": true,
                     "targets": [
                         {
-                            "exemplar": true,
-                            "expr": "clamp_max(avg(rate(container_cpu_system_seconds_total{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[$interval])) or \n((avg by () ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"system\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"system\"}[5m]),1)) ))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"system\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"system\"}[5m]))),100)",
-                            "hide": false,
-                            "interval": "$interval",
-                            "legendFormat": "system",
-                            "refId": "A"
-                        },
-                        {
-                            "exemplar": true,
-                            "expr": "clamp_max(avg(rate(container_cpu_user_seconds_total{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[$interval])) or \n((avg by () ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"user\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"user\"}[5m]),1)) ))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"user\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"user\"}[5m]))),100)",
-                            "hide": false,
-                            "interval": "$interval",
-                            "legendFormat": "user",
-                            "refId": "D"
-                        },
-                        {
-                            "exemplar": true,
                             "expr": "avg by (node_name,mode) (clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[5m]))),100))",
                             "format": "time_series",
                             "hide": true,
@@ -5172,6 +5143,22 @@
                             "intervalFactor": 1,
                             "legendFormat": "Max Core Utilization",
                             "refId": "C"
+                        },
+                        {
+                            "exemplar": true,
+                            "expr": "clamp_max(avg(rate(container_cpu_system_seconds_total{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[$interval])) or \n((avg by () ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"system\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"system\"}[5m]),1)) ))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"system\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"system\"}[5m]))),100)",
+                            "hide": false,
+                            "interval": "$interval",
+                            "legendFormat": "system",
+                            "refId": "A"
+                        },
+                        {
+                            "exemplar": true,
+                            "expr": "clamp_max(avg(rate(container_cpu_user_seconds_total{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[$interval])) or \n((avg by () ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"user\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"user\"}[5m]),1)) ))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"user\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"user\"}[5m]))),100)",
+                            "hide": false,
+                            "interval": "$interval",
+                            "legendFormat": "user",
+                            "refId": "D"
                         }
                     ],
                     "thresholds": [],
@@ -5248,7 +5235,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 157
+                        "y": 70
                     },
                     "hiddenSeries": false,
                     "id": 339,
@@ -5315,6 +5302,7 @@
                             "exemplar": true,
                             "expr": "clamp_max(sum(rate(container_cpu_usage_seconds_total{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[$interval]) or rate(container_cpu_usage_seconds_total{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[5m])) or\nmax by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
                             "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Max CPU Core Utilization",
@@ -5345,7 +5333,7 @@
                     },
                     "yaxes": [
                         {
-                            "decimals": 2,
+                            "decimals": 0,
                             "format": "short",
                             "label": "",
                             "logBase": 1,
@@ -5356,6 +5344,7 @@
                         {
                             "decimals": 2,
                             "format": "percentunit",
+                            "label": "",
                             "logBase": 1,
                             "max": "1",
                             "min": 0,
@@ -5394,7 +5383,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 165
+                        "y": 78
                     },
                     "hiddenSeries": false,
                     "id": 341,
@@ -5571,7 +5560,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 165
+                        "y": 78
                     },
                     "hiddenSeries": false,
                     "id": 343,
@@ -5612,20 +5601,34 @@
                     "steppedLine": true,
                     "targets": [
                         {
+                            "calculatedInterval": "2s",
+                            "datasourceErrors": {},
+                            "errors": {},
                             "exemplar": true,
-                            "expr": "sum(rate(container_network_receive_bytes_total{pod=~\"$pod\",id=~\"/kubepods/.*\"}[$interval]) or \nirate(container_network_receive_bytes_total{pod=~\"$pod\",id=~\"/kubepods/.*\"}[5m])) or\nsum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m])) ",
-                            "hide": false,
+                            "expr": "sum(rate(container_network_receive_bytes_total{pod=~\"$pod\",id=~\"/kubepods/.*\"}[$interval]) or \nirate(container_network_receive_bytes_total{pod=~\"$pod\",id=~\"/kubepods/.*\"}[5m])) or\nsum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m]))",
+                            "format": "time_series",
                             "interval": "$interval",
+                            "intervalFactor": 1,
                             "legendFormat": "Inbound",
-                            "refId": "C"
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300,
+                            "target": ""
                         },
                         {
+                            "calculatedInterval": "2s",
+                            "datasourceErrors": {},
+                            "errors": {},
                             "exemplar": true,
                             "expr": "sum(rate(container_network_transmit_bytes_total{pod=~\"$pod\",id=~\"/kubepods/.*\"}[$interval]) or \nirate(container_network_transmit_bytes_total{pod=~\"$pod\",id=~\"/kubepods/.*\"}[5m])) or \nsum(rate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[5m]))",
-                            "hide": false,
+                            "format": "time_series",
                             "interval": "$interval",
+                            "intervalFactor": 1,
                             "legendFormat": "Outbound",
-                            "refId": "D"
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300,
+                            "target": ""
                         }
                     ],
                     "thresholds": [],
@@ -5649,7 +5652,6 @@
                     },
                     "yaxes": [
                         {
-                            "decimals": 2,
                             "format": "Bps",
                             "label": "Outbound (-) / Inbound (+)",
                             "logBase": 1,
