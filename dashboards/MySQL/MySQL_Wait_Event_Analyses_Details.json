@@ -2155,7 +2155,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
+                            "expr": "max by () (container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -2247,7 +2247,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "avg by (node_name) (((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) * 100 or (100 - azure_memory_percent_average{node_name=~\"$node_name\"}))",
+                            "expr": "max by () (container_spec_memory_limit_bytes{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or avg by (node_name) (((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) * 100 or (100 - azure_memory_percent_average{node_name=~\"$node_name\"}))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3593,6 +3593,33 @@
                 "regex": "",
                 "skipUrlSync": false,
                 "sort": 5,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": null,
+                "definition": "label_values(up{service_name=~\"$service_name\"},service_name)",
+                "description": null,
+                "error": null,
+                "hide": 2,
+                "includeAll": false,
+                "label": null,
+                "multi": false,
+                "name": "pod",
+                "options": [],
+                "query": {
+                    "query": "label_values(up{service_name=~\"$service_name\"},service_name)",
+                    "refId": "StandardVariableQuery"
+                },
+                "refresh": 2,
+                "regex": "/default-(.*-.*)/",
+                "skipUrlSync": false,
+                "sort": 0,
                 "tagValuesQuery": "",
                 "tags": [],
                 "tagsQuery": "",
