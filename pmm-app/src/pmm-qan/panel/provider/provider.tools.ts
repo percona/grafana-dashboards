@@ -1,7 +1,12 @@
 import { getLocationSrv } from '@grafana/runtime';
 import { ParseQueryParamDate } from 'shared/components/helpers/time-parameters-parser';
 import {
-  ALL_VARIABLE_TEXT, AUTO_VARIABLE_TEXT, DEFAULT_COLUMNS, DEFAULT_PAGE_SIZE, FILTERS_NAMES,
+  ALL_VARIABLE_TEXT,
+  AUTO_VARIABLE_TEXT,
+  DEFAULT_COLUMNS,
+  DEFAULT_PAGE_NUMBER,
+  DEFAULT_PAGE_SIZE,
+  FILTERS_NAMES,
 } from '../QueryAnalytics.constants';
 
 const setFilters = (query) => FILTERS_NAMES.reduce((acc, filterName) => {
@@ -37,7 +42,16 @@ interface GrafanaVariables {
 }
 export const refreshGrafanaVariables = (state) => {
   const {
-    labels, columns, groupBy, queryId, orderBy, rawTime, dimensionSearchText, database,
+    labels,
+    columns,
+    groupBy,
+    queryId,
+    orderBy,
+    rawTime,
+    dimensionSearchText,
+    database,
+    pageNumber,
+    pageSize,
   } = state;
 
   const variablesQuery: GrafanaVariables = {};
@@ -95,6 +109,11 @@ export const refreshGrafanaVariables = (state) => {
     variablesQuery.dimensionSearchText = dimensionSearchText;
   }
 
+  if (pageNumber && pageSize) {
+    variablesQuery.page_number = pageNumber;
+    variablesQuery.page_size = pageSize;
+  }
+
   variablesQuery.totals = String(state.totals);
 
   if (state.querySelected) {
@@ -117,8 +136,8 @@ export const parseURL = (query) => ({
     .format('YYYY-MM-DDTHH:mm:ssZ'),
   columns: JSON.parse(query.get('columns')) || DEFAULT_COLUMNS,
   labels: setFilters(query),
-  pageNumber: 1,
-  pageSize: DEFAULT_PAGE_SIZE,
+  pageNumber: query.get('page_number') || DEFAULT_PAGE_NUMBER,
+  pageSize: query.get('page_size') || DEFAULT_PAGE_SIZE,
   orderBy: query.get('order_by') || `-${(JSON.parse(query.get('columns')) || DEFAULT_COLUMNS)[0]}`,
   queryId: query.get('filter_by'),
   database: query.get('selected_query_database'),

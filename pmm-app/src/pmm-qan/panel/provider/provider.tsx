@@ -156,13 +156,12 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     refreshGrafanaVariables(panelState);
   }, [panelState]);
 
-  const [from, setFrom] = useState(timeRange.raw.from);
-  const [to, setTo] = useState(timeRange.raw.to);
+  const getAbsoluteTime = (timeValue) => (timeValue.valueOf ? timeValue.valueOf() : timeValue);
+  const [from, setFrom] = useState(getAbsoluteTime(timeRange.raw.from));
+  const [to, setTo] = useState(getAbsoluteTime(timeRange.raw.to));
   const [previousState, setPreviousState] = useState(panelState);
 
   useEffect(() => {
-    const getAbsoluteTime = (timeValue) => (timeValue.valueOf ? timeValue.valueOf() : timeValue);
-
     const newFrom = getAbsoluteTime(timeRange.raw.from);
     const newTo = getAbsoluteTime(timeRange.raw.to);
 
