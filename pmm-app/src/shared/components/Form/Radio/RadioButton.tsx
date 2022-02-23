@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import { useTheme } from '@grafana/ui';
 import { getStyles } from './RadioButton.styles';
 

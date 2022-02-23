@@ -1,15 +1,11 @@
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 
-import { selectThemeVariant, stylesFactory } from '@grafana/ui';
+import { stylesFactory } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
-  const metricTextColor = selectThemeVariant(
-    { light: '#202226', dark: 'rgba(32, 215, 255, 0.8)' },
-    theme.type,
-  );
-
-  const totalTextColor = selectThemeVariant({ light: 'red', dark: '#8AA4FF' }, theme.type);
+  const metricTextColor = theme.isLight ? '#202226' : 'rgba(32, 215, 255, 0.8)';
+  const totalTextColor = theme.isLight ? 'red' : '#8AA4FF';
 
   return {
     getMainMetric: (isTotal) => css`

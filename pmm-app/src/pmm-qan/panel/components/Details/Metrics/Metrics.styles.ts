@@ -1,11 +1,9 @@
-import { css } from 'emotion';
-
-import { stylesFactory } from '@grafana/ui';
-import { GrafanaTheme } from '@grafana/data';
+import { css } from '@emotion/css';
+import { GrafanaTheme2 } from '@grafana/data';
 import { getPmmTheme } from 'shared/components/helpers/getPmmTheme';
 
-export const getStyles = stylesFactory((theme: GrafanaTheme) => {
-  const parameters = getPmmTheme(theme);
+export const getStyles = (theme: GrafanaTheme2) => {
+  const parameters = getPmmTheme(theme.v1);
 
   return {
     metricColumn: css`
@@ -52,4 +50,4 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       width: 100%;
     `,
   };
-});
+};

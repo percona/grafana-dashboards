@@ -193,6 +193,7 @@ export const Sparkline = ({
 
     // eslint-disable-next-line consistent-return
     return () => document.removeEventListener('sync-graphs', drawHighlighted);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sparklineCanvas]);
 
   const id = uuidv4();

@@ -5,7 +5,6 @@ import {
   ClipboardButton, Icon, Button, Modal,
 } from '@grafana/ui';
 
-
 import { ProgressModalHeader } from 'pmm-update/components';
 import { useClickOutside } from 'pmm-update/hooks';
 import { ProgressModalProps } from 'pmm-update/types';
@@ -26,6 +25,7 @@ export const ProgressModal: FC<ProgressModalProps> = ({
 
   useClickOutside(modalRef, () => {
     if (isUpdated) {
+      // @ts-ignore
       // eslint-disable-next-line no-restricted-globals
       location.reload(true);
     }
@@ -45,6 +45,7 @@ export const ProgressModal: FC<ProgressModalProps> = ({
   };
 
   const reloadAfterUpdate = () => {
+    // @ts-ignore
     // eslint-disable-next-line no-restricted-globals
     location.reload(true);
   };

@@ -2,8 +2,8 @@ import React, {
   FC, useCallback, useContext, useEffect, useRef, useState,
 } from 'react';
 import SplitPane from 'react-split-pane';
-import { cx } from 'emotion';
 import { Button, useTheme } from '@grafana/ui';
+import { cx } from '@emotion/css';
 import { showSuccessNotification, showWarningNotification } from 'shared/components/helpers';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
@@ -43,7 +43,7 @@ const QueryAnalyticsPanel: FC = () => {
 
       showWarningNotification({ message });
     }
-  }, [from, to]);
+  }, [from, to, styles]);
 
   useEffect(() => {
     setReload({});

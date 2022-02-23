@@ -1,5 +1,5 @@
-import { DataFrame } from '@grafana/data';
+import { ChartData } from 'chart.js';
 
-export const useHistogram = (): [DataFrame[], boolean] => ([
-  [], false,
+export const useHistogram = (): [ChartData<'bar'>|undefined, boolean] => ([
+  undefined, false,
 ]);

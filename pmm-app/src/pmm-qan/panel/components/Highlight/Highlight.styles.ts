@@ -1,10 +1,10 @@
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 
-import { selectThemeVariant, stylesFactory } from '@grafana/ui';
+import { stylesFactory } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
-  const mainHighlightColor = selectThemeVariant({ light: theme.colors.text, dark: '#e6e1dc' }, theme.type);
+  const mainHighlightColor = theme.isLight ? theme.colors.text : '#e6e1dc';
 
   return {
     highlightWrapper: css`

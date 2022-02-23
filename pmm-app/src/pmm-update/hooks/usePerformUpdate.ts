@@ -9,7 +9,7 @@ export const usePerformUpdate = (): UpdateStatus => {
   const [errorMessage, setErrorMessage] = useState('');
   const [output, setOutput] = useState('');
   const [updateFinished, setUpdateFinished] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<number>();
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
 
   const [authToken, initialLogOffset, initializationFailed, launchUpdate] = useInitializeUpdate();
 
@@ -47,7 +47,7 @@ export const usePerformUpdate = (): UpdateStatus => {
         newLogOffset = log_offset ?? 0;
         newErrorsCount = 0;
         newIsUpdated = done ?? false;
-      } catch (e) {
+      } catch (e: any) {
         newErrorsCount += 1;
         setErrorMessage(e.message);
       } finally {
@@ -65,8 +65,10 @@ export const usePerformUpdate = (): UpdateStatus => {
 
     // eslint-disable-next-line consistent-return
     return () => {
+      // @ts-ignore
       clearTimeout(timeoutId);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authToken, initialLogOffset]);
 
   useEffect(() => {

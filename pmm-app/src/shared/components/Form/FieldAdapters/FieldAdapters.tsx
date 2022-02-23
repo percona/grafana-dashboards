@@ -1,5 +1,5 @@
 import React from 'react';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import {
   Input, Select, TextArea, useTheme,
 } from '@grafana/ui';
