@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
-import { Highlight } from 'pmm-qan/panel/components/Highlight/Highlight';
+import { Highlight } from 'shared/components/Hightlight/Highlight';
 import { TableProps } from '../Table.types';
 import { useShowCreateTable } from './TableCreate.hooks';
 
