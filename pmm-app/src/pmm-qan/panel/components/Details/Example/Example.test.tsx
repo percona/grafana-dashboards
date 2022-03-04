@@ -1,12 +1,11 @@
 // Just a stub test
 import React from 'react';
 import sqlFormatter from 'sql-formatter';
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import Example from './Example';
 import { DatabasesType } from '../Details.types';
 
 jest.mock('shared/components/helpers/notification-manager');
-jest.mock('react-highlight.js', () => ({ children }) => <div className="sql">{children}</div>);
 jest.mock('react-json-view', () => ({ src = {} }) => <div className="json" data-src={JSON.stringify(src)} />);
 
 describe('Example tab page render test', () => {
@@ -15,9 +14,9 @@ describe('Example tab page render test', () => {
       databaseType: 'mongodb' as DatabasesType,
       examples: [],
     };
-    const component = mount(<Example {...props} />);
+    const { container } = render(<Example {...props} />);
 
-    expect(component.find('pre').text()).toContain('Sorry, no examples found for this query');
+    expect(container.querySelector('pre')?.textContent).toContain('Sorry, no examples found for this query');
   });
 
   it('Component renders classic example for postgresql', () => {
@@ -33,9 +32,10 @@ describe('Example tab page render test', () => {
         },
       ],
     };
-    const component = mount(<Example databaseType={props.databaseType} examples={props.examples} />);
 
-    expect(component.find('.sql').text()).toEqual(sqlFormatter.format(props.examples[0].example));
+    render(<Example databaseType={props.databaseType} examples={props.examples} />);
+
+    expect(screen.getByTestId('highlight-code').textContent).toEqual(sqlFormatter.format(props.examples[0].example));
   });
 
   it('Component renders json example for mongodb', () => {
@@ -53,10 +53,10 @@ describe('Example tab page render test', () => {
         },
       ],
     };
-    const innerExample = '{&quot;ns&quot;:&quot;admin.system.version&quot;,&quot;op&quot;:&quot;command&quot;,&quot;command&quot;:{&quot;collStats&quot;:&quot;system.version&quot;,&quot;scale&quot;:{&quot;$numberInt&quot;:&quot;1&quot;},&quot;lsid&quot;:{&quot;id&quot;:{&quot;$binary&quot;:{&quot;base64&quot;:&quot;7bcIiWGnQ7eH3G+AfVMdEA==&quot;,&quot;subType&quot;:&quot;04&quot;}}},&quot;$clusterTime&quot;:{&quot;clusterTime&quot;:{&quot;$timestamp&quot;:{&quot;t&quot;:1588860655,&quot;i&quot;:1}},&quot;signature&quot;:{&quot;hash&quot;:{&quot;$binary&quot;:{&quot;base64&quot;:&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAA=&quot;,&quot;subType&quot;:&quot;00&quot;}},&quot;keyId&quot;:{&quot;$numberLong&quot;:&quot;0&quot;}}},&quot;$db&quot;:&quot;admin&quot;,&quot;$readPreference&quot;:{&quot;mode&quot;:&quot;primaryPreferred&quot;}}}';
-    const component = mount(<Example {...props} />);
+    const innerExample = '{"ns":"admin.system.version","op":"command","command":{"collStats":"system.version","scale":{"$numberInt":"1"},"lsid":{"id":{"$binary":{"base64":"7bcIiWGnQ7eH3G+AfVMdEA==","subType":"04"}}},"$clusterTime":{"clusterTime":{"$timestamp":{"t":1588860655,"i":1}},"signature":{"hash":{"$binary":{"base64":"AAAAAAAAAAAAAAAAAAAAAAAAAAA=","subType":"00"}},"keyId":{"$numberLong":"0"}}},"$db":"admin","$readPreference":{"mode":"primaryPreferred"}}}';
+    const { container } = render(<Example {...props} />);
 
-    expect(component.find('.json').html()).toContain(innerExample);
+    expect(container.querySelector('.json')?.getAttribute('data-src')).toContain(innerExample);
   });
 
   it('Component renders classic example for mysql', () => {
@@ -73,8 +73,9 @@ describe('Example tab page render test', () => {
         },
       ],
     };
-    const component = mount(<Example databaseType={props.databaseType} examples={props.examples} />);
 
-    expect(component.find('.sql').text()).toEqual(sqlFormatter.format(props.examples[0].example));
+    render(<Example databaseType={props.databaseType} examples={props.examples} />);
+
+    expect(screen.getByTestId('highlight-code').textContent).toEqual(sqlFormatter.format(props.examples[0].example));
   });
 });

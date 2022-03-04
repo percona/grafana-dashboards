@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { Icon, Tooltip, useStyles } from '@grafana/ui';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
+import { Highlight } from 'shared/components/Hightlight/Highlight';
 import { getStyles } from './Plan.styles';
-import { Highlight } from '../../Highlight/Highlight';
 import { Messages } from './Plan.messages';
 import { usePlan } from './Plan.hooks';
 import { OVERLAY_LOADER_SIZE } from '../Details.constants';
