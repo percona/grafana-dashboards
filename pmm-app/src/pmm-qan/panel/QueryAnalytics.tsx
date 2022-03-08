@@ -24,8 +24,6 @@ const QueryAnalyticsPanel: FC = () => {
     panelState: { querySelected, from, to },
   } = useContext(QueryAnalyticsProvider);
   const queryAnalyticsWrapper = useRef<HTMLDivElement>(null);
-  const size = queryAnalyticsWrapper.current?.clientWidth;
-
   const [, setReload] = useState<object>({});
   const copyLinkToClipboard = useCallback(() => {
     const link = buildShareLink(toUnixTimestamp(from), toUnixTimestamp(to));
@@ -55,7 +53,7 @@ const QueryAnalyticsPanel: FC = () => {
         <Filters />
       </div>
       <div className="query-analytics-data">
-        <div className={styles.getContainerWrapper(size)}>
+        <div>
           <div className={cx(styles.overviewHeader, 'manage-columns')}>
             <Button
               onClick={copyLinkToClipboard}
