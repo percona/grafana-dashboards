@@ -2,7 +2,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Overlay } from './Overlay';
 
-
 describe('Overlay::', () => {
   it('Renders children correctly', () => {
     const root = mount(

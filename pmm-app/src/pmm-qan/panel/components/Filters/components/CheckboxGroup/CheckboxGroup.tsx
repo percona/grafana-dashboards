@@ -86,6 +86,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
         </div>
       );
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [group, rawTime],
   );
 

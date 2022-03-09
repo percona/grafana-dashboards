@@ -24,6 +24,7 @@ const useQueryParams: ParameterHook = (key, defaultValue) => {
     } else {
       setParameter(value);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
 
   return [value, setParameter];

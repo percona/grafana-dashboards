@@ -40,6 +40,7 @@ export const useMetricsDetails = (): [any[], TextMetrics, boolean] => {
     };
 
     getMetrics();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryId, groupBy, from, to, labels, totals]);
 
   return [metrics, textMetrics, loading];

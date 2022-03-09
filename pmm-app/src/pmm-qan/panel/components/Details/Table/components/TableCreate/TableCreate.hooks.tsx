@@ -22,10 +22,12 @@ export const useShowCreateTable = (databaseType, example, tableName, database) =
     const result = await getActionResult(id);
 
     setShowCreateTable(result);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [databaseType]);
 
   useEffect(() => {
     getDatabase();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [databaseType]);
 
   return [showCreateTable];

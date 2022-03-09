@@ -6,7 +6,7 @@ import { Messages } from './QueryEditor.messages';
 import { DATASOURCES } from './QueryEditor.constants';
 
 export const QueryEditor = (props) => {
-  const { query: { queryType } } = props;
+  const { query: { queryType }, onChange } = props;
 
   const variablesOptions = getTemplateSrv()
     .getVariables()
@@ -29,11 +29,11 @@ export const QueryEditor = (props) => {
       newQuery.type = type?.value;
     }
 
-    props.onChange({
+    onChange({
       queryType: newQuery,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedVariable, type]);
-
 
   return (
     <>

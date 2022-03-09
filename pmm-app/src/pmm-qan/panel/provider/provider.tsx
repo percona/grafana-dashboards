@@ -33,6 +33,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
       totals,
     }),
     addColumn: (value) => (state) => {
+      // @ts-ignore
       const columns = [...state.columns];
 
       columns.push(value);
@@ -150,6 +151,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
         to: timeRange.raw.to,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRange.raw.from, timeRange.raw.to]);
 
   useEffect(() => {
@@ -193,6 +195,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     setPreviousState(newState);
     setFrom(newFrom);
     setTo(newTo);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRange, from, to]);
 
   const wrapAction = (key) => (...value) => setContext(actions[key](...value));

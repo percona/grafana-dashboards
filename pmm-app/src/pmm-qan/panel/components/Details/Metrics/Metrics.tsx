@@ -4,33 +4,30 @@ import React, {
 import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements/Charts';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
-import { BarChart, Collapse, useTheme } from '@grafana/ui';
+import { Collapse, useStyles2 } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table';
 import { Databases } from 'shared/core';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
-import {
-  HISTOGRAM_HEIGHT, HISTOGRAM_MARGIN, HISTOGRAM_OPTIONS, MetricsTabs,
-} from './Metrics.constants';
+import { HISTOGRAM_HEIGHT, HISTOGRAM_MARGIN, MetricsTabs } from './Metrics.constants';
 import { MetricsProps } from './Metrics.types';
 import { getStyles } from './Metrics.styles';
 import { useHistogram } from './hooks/useHistogram';
 import { TopQuery } from '../TopQuery/TopQuery';
+import { BarChart } from '../../BarChart/BarChart';
 
 const Metrics: FC<MetricsProps> = ({
   databaseType, totals, metrics, textMetrics = {}, loading, groupBy,
 }) => {
-  const theme = useTheme();
-  const styles = getStyles(theme);
+  const styles = useStyles2(getStyles);
   const isHistogramAvailable = databaseType === Databases.postgresql && !totals && groupBy === 'queryid';
-  const [histogramData, histogramLoading] = useHistogram(theme, isHistogramAvailable);
+  const [histogramData, histogramLoading] = useHistogram(isHistogramAvailable);
   const [isDistributionPanelOpen, setDistributionPanelVisibility] = useState(true);
   const [isMetricsPanelOpen, setMetricsPanelVisibility] = useState(true);
   const [isHistogramOpen, setHistogramOpen] = useState(true);
-  const [histogramWidth, setHistogramWidth] = useState(0);
   const [isTopQueryOpen, setTopQueryVisibility] = useState(true);
+  const [histogramWidth, setHistogramWidth] = useState(0);
   const histogramRef = useRef<HTMLDivElement>(null);
   const { top_query: topQuery, top_queryid: topQueryId } = textMetrics;
-  const showHistogram = isHistogramAvailable && histogramData.length > 0;
 
   const mainColumn = (item) => (
     <span className={styles.metricColumn}>
@@ -122,6 +119,7 @@ const Metrics: FC<MetricsProps> = ({
     if (histogramRef.current) {
       setHistogramWidth(histogramRef.current.offsetWidth - HISTOGRAM_MARGIN);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [histogramRef.current]);
 
   return (
@@ -158,7 +156,7 @@ const Metrics: FC<MetricsProps> = ({
       >
         <Table columns={columns} data={metrics} loading={loading} noData={null} />
       </Collapse>
-      {showHistogram && (
+      {isHistogramAvailable && histogramData && (
         <div ref={histogramRef} data-testid="histogram-collapse-container" className={styles.histogramWrapper}>
           <Collapse
             collapsible
@@ -167,10 +165,10 @@ const Metrics: FC<MetricsProps> = ({
             onToggle={() => setHistogramOpen(!isHistogramOpen)}
           >
             <BarChart
-              data={histogramData}
               width={histogramWidth}
               height={HISTOGRAM_HEIGHT}
-              {...HISTOGRAM_OPTIONS}
+              data={histogramData}
+              orientation="horizontal"
             />
           </Collapse>
         </div>

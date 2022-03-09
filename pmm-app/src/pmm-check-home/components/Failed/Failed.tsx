@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { Tooltip } from '@grafana/ui';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import { FailedChecks } from 'pmm-check-home/types';
 import { PMM_SETTINGS_URL, PMM_DATABASE_CHECKS_PANEL_URL } from 'pmm-check-home/CheckPanel.constants';
 import { TooltipText } from './TooltipText';

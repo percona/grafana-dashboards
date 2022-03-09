@@ -1,15 +1,15 @@
 # Grafana Polystat Panel
 
-[![David Dependency Status](https://david-dm.org/grafana/grafana-polystat-panel.svg)](https://david-dm.org/grafana/grafana-polystat-panel)
-[![David Dev Dependency Status](https://david-dm.org/grafana/grafana-polystat-panel/dev-status.svg)](https://david-dm.org/grafana/grafana-polystat-panel/?type=dev)
+[![Marketplace](https://img.shields.io/badge/dynamic/json?logo=grafana&color=F47A20&label=marketplace&prefix=v&query=%24.items%5B%3F%28%40.slug%20%3D%3D%20%22grafana-polystat-panel%22%29%5D.version&url=https%3A%2F%2Fgrafana.com%2Fapi%2Fplugins)](https://grafana.com/grafana/plugins/grafana-polystat-panel)
+[![Downloads](https://img.shields.io/badge/dynamic/json?logo=grafana&color=F47A20&label=downloads&query=%24.items%5B%3F%28%40.slug%20%3D%3D%20%22grafana-polystat-panel%22%29%5D.downloads&url=https%3A%2F%2Fgrafana.com%2Fapi%2Fplugins)](https://grafana.com/grafana/plugins/grafana-polystat-panel)
+[![License](https://img.shields.io/github/license/grafana/grafana-polystat-panel)](LICENSE)
 [![Known Vulnerabilities](https://snyk.io/test/github/grafana/grafana-polystat-panel/badge.svg)](https://snyk.io/test/github/grafana/grafana-polystat-panel)
-
 [![Maintainability](https://api.codeclimate.com/v1/badges/5c5cd1076777c637b931/maintainability)](https://codeclimate.com/github/grafana/grafana-polystat-panel/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/5c5cd1076777c637b931/test_coverage)](https://codeclimate.com/github/grafana/grafana-polystat-panel/test_coverage)
-This panel plugin provides a [D3-based](http://www.d3js.org) multistat panel for [Grafana](https://grafana.com/) 6.x.
+
+This panel plugin provides a [D3-based](http://www.d3js.org) multistat panel for [Grafana](https://grafana.com/) 7.3+.
 
 A hexagon is created for each metric received, with the ability to group metrics into a composite metric, and display the triggered state of the composite.
-
 
 ## Screenshots
 
@@ -77,6 +77,23 @@ Show triggered
 
 ![Show all example](https://raw.githubusercontent.com/grafana/grafana-polystat-panel/master/src/img/screenshots/polystat-options-show-all-example.png)
 
+### Global Aliasing
+
+This field allows you to specify a regular expression to pick a portion of matching metric names to be rendered instead of the full name.
+
+If you have these 3 Queries, returning a series:
+Foo-A, values 1,2,3
+Bar-B, values 4,5,6
+Misc, values 7,8,9
+
+![Before Aliasing](https://raw.githubusercontent.com/grafana/grafana-polystat-panel/master/src/img/screenshots/regex-alias-before.png)
+
+Adding the regular expression: `/(Foo|Bar)/`, will display:
+
+![After Aliasing](https://raw.githubusercontent.com/grafana/grafana-polystat-panel/master/src/img/screenshots/regex-alias-after.png)
+
+Specify a regular expression to pick a portion of matching metric names.
+
 ### Actions
 
 #### Click Through
@@ -119,6 +136,79 @@ Animate hexagon to display metrics if there are composites
 
 Speed of animation in milliseconds
 
+## Thresholds
+
+This plugin supports "ranged" states.
+
+Thresholds are expected to be sorted by ascending value, where
+
+```TEXT
+T0 = lowest decimal value, any state
+TN = highest decimal value, any state
+```
+
+Initial state is set to "ok"
+
+A comparison is made using "greater than or equal to" against the value
+  `If value >= thresholdValue state = X`
+
+Comparisons are made in reverse order, using the range between the Nth (inclusive) threshold and N+1 (exclusive)
+
+```TEXT
+  InclusiveValue = T(n).value
+  ExclusiveValue = T(n+1).value
+```
+
+When there is no n+1 threshold, the highest value threshold T(n), a simple inclusive >= comparison is made
+
+Example 1: (typical linear)
+
+```TEXT
+    T0 - 5, ok
+    T1 - 10, warning
+    T2 - 20, critical
+```
+
+```TEXT
+  Value >= 20 (Value >= T2)
+  10 <= Value < 20  (T1 <= Value < T2)
+  5 <= Value < 10   (T0 <= Value < T1)
+```
+
+Example 2: (reverse linear)
+
+```TEXT
+    T0 - 50, critical
+    T1 - 90, warning
+    T2 - 100, ok
+```
+
+```TEXT
+  Value >= 100
+  90 <= value < 100
+  50 <= value < 90
+```
+
+Example 3: (bounded)
+
+```TEXT
+    T0 - 50, critical
+    T1 - 60, warning
+    T2 - 70, ok
+    T3 - 80, warning
+    T4 - 90, critical
+```
+
+```TEXT
+    Value >= 90
+    80 <= Value < 90
+    70 <= Value < 80
+    60 <= Value < 70
+    50 <= Value < 60
+```
+
+The "worst" state is returned after checking every threshold range
+
 ## Time Range
 
 ### Additional Screenshots
@@ -148,7 +238,7 @@ Template variables are available in the clickThroughUrl setting, specified by us
 They can also be passed to another dashboard by appending var-VARNAME=value to the url
 
 ```URL
-/dasboard/xyz?var-VARNAME=${VARNAME}
+/dashboard/xyz?var-VARNAME=${VARNAME}
 ```
 
 #### Using Polystat Variables
@@ -211,7 +301,7 @@ Then browse to <http://localhost:3000>
 
 ## External Dependencies
 
-* Grafana 5.x/6.x
+* Grafana 7.3+
 
 ## Enable Grafana TestData
 
@@ -222,3 +312,14 @@ Then browse to <http://localhost:3000>
 This panel is based on this D3 example:
 
 * <https://www.visualcinnamon.com/2013/07/self-organizing-maps-creating-hexagonal.html>
+
+Many thanks to contributors:
+
+* Mathieu Rollet (matletix)
+* Mattias Jiderhamn (mjiderhamn)
+* AnushaBoggarapu
+* KamalakarGoretta
+* Rene Hennig (renehennig)
+* Hamza Ziyani (HZiyani)
+
+and many others!

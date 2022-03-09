@@ -1,17 +1,11 @@
-import { selectThemeVariant, stylesFactory } from '@grafana/ui';
+import { stylesFactory } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const { colors, palette }: any = theme;
-  const textColor = selectThemeVariant(
-    { light: colors.text, dark: palette.gray4 },
-    theme.type,
-  );
-  const textColorHover = selectThemeVariant(
-    { light: palette.dark1, dark: palette.white },
-    theme.type,
-  );
+  const textColor = theme.isLight ? colors.text : palette.gray4;
+  const textColorHover = theme.isLight ? palette.dark1 : palette.white;
 
   return {
     radioButtonInput: css`

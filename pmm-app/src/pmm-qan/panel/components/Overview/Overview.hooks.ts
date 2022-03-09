@@ -47,6 +47,7 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
     };
 
     updateInstances().then(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [columns, pageNumber, pageSize, groupBy, labels, orderBy, from, to, dimensionSearchText]);
 
   return [data, loading];

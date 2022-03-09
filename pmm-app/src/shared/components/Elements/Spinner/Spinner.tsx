@@ -1,6 +1,6 @@
 import React from 'react';
 import { Spin } from 'antd';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { Spinner } from '@grafana/ui';
 
 const spinnerStyle = css`

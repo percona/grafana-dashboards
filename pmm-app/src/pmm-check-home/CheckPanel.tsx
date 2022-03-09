@@ -43,7 +43,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       } else {
         this.setState({ isLoading: false });
       }
-    } catch (err) {
+    } catch (err: any) {
       this.setState({ isLoading: false });
       if (err.response?.status === 401) {
         this.setState({ hasNoAccess: true });

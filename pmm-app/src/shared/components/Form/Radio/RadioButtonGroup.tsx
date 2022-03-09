@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { SelectableValue } from '@grafana/data';
 import { useTheme } from '@grafana/ui';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import { RadioButton } from './RadioButton';
 import { getStyles } from './RadioButtonGroup.styles';
 

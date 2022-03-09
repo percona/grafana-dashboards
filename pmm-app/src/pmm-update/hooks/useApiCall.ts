@@ -29,7 +29,7 @@ export const useApiCall = <R, A>(
         await apiCall(apiFnArgsRetry, false);
       } else {
         console.error(e);
-        setErrorMessage(e);
+        setErrorMessage(e as any);
       }
     } finally {
       setIsLoading(false);
@@ -38,6 +38,7 @@ export const useApiCall = <R, A>(
 
   useEffect(() => {
     apiCall(apiFnArgs);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return [data, errorMessage, isLoading, apiCall];
