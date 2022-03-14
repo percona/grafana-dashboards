@@ -48,11 +48,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     tableWrapper: css`
       min-height: 1000px;
     `,
-    getContainerWrapper: (size) => css`
-      width: ${(size || 1500) - 260}px;
-      height: 100%;
-      position: relative;
-    `,
     link: css`
       display: block;
       margin-top: ${theme.spacing.sm};
