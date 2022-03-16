@@ -1,13 +1,15 @@
+import { useStyles2 } from '@grafana/ui';
 import React, { FC } from 'react';
-import { FailedChecks } from 'pmm-check-home/types';
-import * as styles from './Failed.styles';
+import { getStyles } from './Failed.styles';
 
 interface TooltipTextProps {
   sum: number;
-  data: FailedChecks;
+  data: [number, number, number];
 }
 
 export const TooltipText: FC<TooltipTextProps> = ({ sum, data }) => {
+  const styles = useStyles2(getStyles);
+
   if (!sum) {
     return null;
   }
