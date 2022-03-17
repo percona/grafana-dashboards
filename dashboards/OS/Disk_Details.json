@@ -1,2452 +1,2341 @@
 {
-    "annotations": {
-        "list": [
-            {
-                "builtIn": 1,
-                "datasource": "-- Grafana --",
-                "enable": true,
-                "hide": false,
-                "iconColor": "#e0752d",
-                "limit": 100,
-                "matchAny": true,
-                "name": "PMM Annotations",
-                "showIn": 0,
-                "tags": [
-                    "pmm_annotation",
-                    "$node_name"
-                ],
-                "type": "tags"
-            },
-            {
-                "builtIn": 1,
-                "datasource": "-- Grafana --",
-                "enable": true,
-                "hide": true,
-                "iconColor": "#6ed0e0",
-                "limit": 100,
-                "name": "Annotations & Alerts",
-                "showIn": 0,
-                "tags": [],
-                "type": "dashboard"
-            }
-        ]
-    },
-    "editable": false,
-    "gnetId": null,
-    "graphTooltip": 1,
-    "id": null,
-    "iteration": 1581430762332,
-    "links": [
-        {
-            "icon": "doc",
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "Home"
-            ],
-            "targetBlank": false,
-            "title": "Home",
-            "type": "link",
-            "url": "/graph/d/pmm-home/home-dashboard"
-        },
-        {
-            "icon": "dashboard",
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "Query Analytics"
-            ],
-            "targetBlank": false,
-            "title": "Query Analytics",
-            "type": "link",
-            "url": "/graph/d/pmm-qan/pmm-query-analytics"
-        },
-        {
-            "icon": "bolt",
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "Compare"
-            ],
-            "targetBlank": false,
-            "title": "Compare",
-            "type": "link",
-            "url": "/graph/d/node-instance-compare/nodes-compare"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "OS"
-            ],
-            "targetBlank": false,
-            "title": "OS",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": false,
-            "keepTime": true,
-            "tags": [
-                "Services"
-            ],
-            "targetBlank": false,
-            "title": "Services",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": false,
-            "keepTime": true,
-            "tags": [
-                "PMM"
-            ],
-            "targetBlank": false,
-            "title": "PMM",
-            "type": "dashboards"
-        }
-    ],
-    "panels": [
-        {
-            "breadcrumbItemsMaxAmount": 6,
-            "datasource": null,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {}
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 2,
-                "w": 24,
-                "x": 0,
-                "y": 0
-            },
-            "hideTextInRootDashboard": false,
-            "id": 999,
-            "isRootDashboard": false,
-            "links": [],
-            "targets": [
-                {
-                    "expr": "",
-                    "format": "time_series",
-                    "intervalFactor": 1,
-                    "refId": "A"
-                }
-            ],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": " ",
-            "transparent": true,
-            "type": "digiapulssi-breadcrumb-panel"
-        },
-        {
-            "collapsed": false,
-            "datasource": null,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 2
-            },
-            "id": 1015,
-            "panels": [],
-            "title": "Disk Space",
-            "type": "row"
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "decimals": 2,
-            "description": "Shows the percentage of disk space utilization for every mountpoint defined on the system. Having some of the mountpoints close to 100% space utilization is not good because of the risk to have a \u201cdisk full\u201d error that can block one of the services or even cause a crash of the entire system.\n\nIn case when the mountpoint is close to 100% consider to remove unused files or to expand the space allocated to the mountpoint.",
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 2,
-            "fillGradient": 0,
-            "gridPos": {
-                "h": 8,
-                "w": 24,
-                "x": 0,
-                "y": 3
-            },
-            "hiddenSeries": false,
-            "id": 1018,
-            "interval": "",
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "rightSide": true,
-                "show": true,
-                "sideWidth": null,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "nullPointMode": "null",
-            "options": {
-                "alertThreshold": true
-            },
-            "percentage": false,
-            "pluginVersion": "7.3.7",
-            "pointradius": 2,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "avg by (node_name,mountpoint) (1 - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) / \n(max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or\nmax_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])))",
-                    "interval": "$interval",
-                    "legendFormat": "{{mountpoint}}",
-                    "refId": "A"
-                },
-                {
-                    "expr": "avg by (node_name) (azure_storage_percent_average{node_name=~\"$node_name\"}/100)",
-                    "interval": "$interval",
-                    "legendFormat": "Azure Storage",
-                    "refId": "B"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Mountpoint Usage",
-            "tooltip": {
-                "shared": true,
-                "sort": 5,
-                "value_type": "individual"
-            },
-            "transformations": [],
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "$$hashKey": "object:166",
-                    "decimals": 2,
-                    "format": "percentunit",
-                    "label": null,
-                    "logBase": 1,
-                    "max": "1",
-                    "min": "0",
-                    "show": true
-                },
-                {
-                    "$$hashKey": "object:167",
-                    "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": false
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "decimals": 2,
-            "description": "Shows information about the disk space usage of the specified mountpoint.\n\n**Used** is the amount of space used.\n\n**Free** is the amount of space not in use.\n\n**Used+Free** is the total disk space allocated to the mountpoint.\n\nHaving *Free* close to 0 B is not good because of the risk to have a \u201cdisk full\u201d error that can block one of the services or even cause a crash of the entire system.\n\nIn case Free is close to 0 B consider to remove unused files or to expand the space allocated to the mountpoint.",
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 6,
-            "fillGradient": 0,
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 0,
-                "y": 11
-            },
-            "hiddenSeries": false,
-            "id": 1023,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "maxPerRow": 2,
-            "nullPointMode": "null",
-            "options": {
-                "alertThreshold": true
-            },
-            "percentage": false,
-            "pluginVersion": "7.3.7",
-            "pointradius": 2,
-            "points": false,
-            "renderer": "flot",
-            "repeat": "mountpoint",
-            "repeatDirection": "h",
-            "seriesOverrides": [
-                {
-                    "$$hashKey": "object:215",
-                    "alias": "/Used/",
-                    "color": "#FFB357"
-                },
-                {
-                    "$$hashKey": "object:216",
-                    "alias": "/Free/",
-                    "color": "#FA6400"
-                },
-                {
-                    "$$hashKey": "object:217",
-                    "alias": "Usage",
-                    "fill": 0,
-                    "legend": false,
-                    "yaxis": 2
-                }
-            ],
-            "spaceLength": 10,
-            "stack": true,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "avg by (node_name,mountpoint) ((max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])))",
-                    "hide": false,
-                    "interval": "$interval",
-                    "legendFormat": "Used (device {{ device }}, {{ fstype }})",
-                    "refId": "A"
-                },
-                {
-                    "expr": "avg by (node_name,mountpoint) (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m]) or (storage_limit_bytes_average{node_name=~\"$node_name\"} - azure_storage_used_bytes_average{node_name=~\"$node_name\"}))",
-                    "hide": false,
-                    "interval": "$interval",
-                    "legendFormat": "Free (device {{ device }}, {{ fstype }})",
-                    "refId": "B"
-                },
-                {
-                    "expr": "avg by (node_name,mountpoint) (1 - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) / (max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) \nor max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) or azure_storage_percent_average{node_name=~\"$node_name\"}/100)",
-                    "hide": false,
-                    "interval": "$interval",
-                    "legendFormat": "Usage",
-                    "refId": "C"
-                },
-                {
-                    "expr": "avg by (node_name) (node_filesystem_size_bytes{node_name=~\"$node_name\"} - azure_storage_used_bytes_average{node_name=~\"$node_name\"})",
-                    "interval": "$interval",
-                    "legendFormat": "Free (Azure Storage)",
-                    "refId": "D"
-                },
-                {
-                    "expr": "avg by (node_name) (azure_storage_used_bytes_average{node_name=~\"$node_name\"})",
-                    "interval": "$interval",
-                    "legendFormat": "Used (Azure Storage)",
-                    "refId": "E"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Mountpoint $mountpoint",
-            "tooltip": {
-                "shared": true,
-                "sort": 5,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "decimals": 2,
-                    "format": "bytes",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": "0",
-                    "show": true
-                },
-                {
-                    "decimals": 2,
-                    "format": "percentunit",
-                    "label": null,
-                    "logBase": 1,
-                    "max": "1",
-                    "min": "0",
-                    "show": false
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "collapsed": false,
-            "datasource": null,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 19
-            },
-            "id": 1001,
-            "panels": [],
-            "title": "Total Performance",
-            "type": "row"
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "decimals": 2,
-            "description": "Shows average latency for Reads and Writes IO Devices.  Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems.  Higher than normal latency also can indicate internal storage problems.",
-            "editable": true,
-            "error": false,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 2,
-            "fillGradient": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 0,
-                "y": 20
-            },
-            "hiddenSeries": false,
-            "id": 11,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": true,
-                "hideZero": true,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": false,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "options": {
-                "alertThreshold": true
-            },
-            "percentage": false,
-            "pluginVersion": "7.3.7",
-            "pointradius": 1,
-            "points": true,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum(\n(rate(node_disk_read_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / \nrate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or \n(irate(node_disk_read_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / \nirate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0 or\navg_over_time(aws_rds_read_latency_average{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(aws_rds_read_latency_average{node_name=\"$node_name\"}[5m])/1000 or\navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=\"$node_name\"}[5m])/1000 or vector(0)\n)",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Read",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum(\n(rate(node_disk_write_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / \nrate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or \n(irate(node_disk_write_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / \nirate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0 or \n(avg_over_time(aws_rds_write_latency_average{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(aws_rds_write_latency_average{node_name=\"$node_name\"}[5m])/1000) or\n(avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=\"$node_name\"}[5m])/1000)\n)",
-                    "format": "time_series",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Write",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300,
-                    "target": ""
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Disk Latency",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 5,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "decimals": 2,
-                    "format": "s",
-                    "label": "",
-                    "logBase": 2,
-                    "max": null,
-                    "min": null,
-                    "show": true
-                },
-                {
-                    "format": "s",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": false
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "decimals": 2,
-            "description": "Shows amount of physical IOs (reads and writes) different devices are serving. Spikes in number of IOs served often corresponds to performance problems due to IO subsystem overload.",
-            "editable": true,
-            "error": false,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 2,
-            "fillGradient": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 12,
-                "y": 20
-            },
-            "hiddenSeries": false,
-            "id": 15,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": false,
-                "hideZero": true,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "options": {
-                "alertThreshold": true
-            },
-            "percentage": false,
-            "pluginVersion": "7.3.7",
-            "pointradius": 1,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "avg by (node_name) (sum(\n(rate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) or \nirate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) or\n(max_over_time(rdsosmetrics_diskIO_readIOsPS{node_name=\"$node_name\"}[$interval]) or\nmax_over_time(rdsosmetrics_diskIO_readIOsPS{node_name=\"$node_name\"}[5m])) \n))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Read",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "avg by (node_name) (sum(\n(rate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) or \nirate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) or\n(max_over_time(rdsosmetrics_diskIO_writeIOsPS{node_name=\"$node_name\"}[$interval]) or\nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{node_name=\"$node_name\"}[5m]) \n))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Write",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300,
-                    "target": ""
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Disk Operations",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 5,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "iops",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": false
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "decimals": 2,
-            "description": "Shows volume of reads and writes the storage is handling. This can be better measure of IO capacity usage for network attached and SSD storage as it is often bandwidth limited.  Amount of data being written to the disk can be used to estimate Flash storage life time.",
-            "editable": true,
-            "error": false,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 2,
-            "fillGradient": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 0,
-                "y": 28
-            },
-            "hiddenSeries": false,
-            "id": 16,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": false,
-                "hideZero": true,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "options": {
-                "alertThreshold": true
-            },
-            "percentage": false,
-            "pluginVersion": "7.3.7",
-            "pointradius": 1,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum(rate(node_disk_written_bytes_total{node_name=~\"$node_name\",device=~\"$device\"}[$interval]) or \nirate(node_disk_written_bytes_total{node_name=~\"$node_name\",device=~\"$device\"}[5m]) or\nrate(node_disk_written_bytes_total{node_name=~\"$node_name\",node_type=\"remote_rds\"}[$interval]) or \nirate(node_disk_written_bytes_total{node_name=~\"$node_name\",node_type=\"remote_rds\"}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Write",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "expr": "sum(rate(node_disk_read_bytes_total{node_name=~\"$node_name\",device=~\"$device\"}[$interval]) or \nirate(node_disk_read_bytes_total{node_name=~\"$node_name\",device=~\"$device\"}[5m]) or\nrate(node_disk_read_bytes_total{node_name=~\"$node_name\",node_type=\"remote_rds\"}[$interval]) or \nirate(node_disk_read_bytes_total{node_name=~\"$node_name\",node_type=\"remote_rds\"}[5m]))",
-                    "interval": "$interval",
-                    "legendFormat": "Read",
-                    "refId": "C"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Disk Bandwidth",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 5,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "decimals": 2,
-                    "format": "Bps",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "decimals": 2,
-            "description": "Shows how much disk was loaded for reads or writes as average number of outstanding requests at different period of time.  High disk load is a good measure of actual storage utilization. Different storage types handle load differently - some will show latency increases on low loads others can handle higher load with no problems.",
-            "editable": true,
-            "error": false,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 2,
-            "fillGradient": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 12,
-                "y": 28
-            },
-            "hiddenSeries": false,
-            "id": 14,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": false,
-                "hideZero": true,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": false,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "options": {
-                "alertThreshold": true
-            },
-            "percentage": false,
-            "pluginVersion": "7.3.7",
-            "pointradius": 1,
-            "points": true,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum(\nrate(node_disk_write_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or \nirate(node_disk_write_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{node_name=~\"$node_name\"}[5m])\n)",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Write",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "expr": "sum(rate(node_disk_read_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or \nirate(node_disk_read_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_readIOsPS{node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(rdsosmetrics_diskIO_readIOsPS{node_name=~\"$node_name\"}[5m]))",
-                    "interval": "$interval",
-                    "legendFormat": "Read",
-                    "refId": "C"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Disk Load",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 5,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "short",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "decimals": 2,
-            "description": "Shows disk Utilization as a percentage of the time when there was at least one IO request in flight. It is designed to match utilization available in iostat tool. The graph augments the IO latency and Disk Load Graphs, allowing to determine if the disk load was evenly distributed in time or consuming the IO momentarily. Higher utilization increases the likeliness of IO queuing. Always consider this metric along with response time and IO queue depth.",
-            "editable": true,
-            "error": false,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 2,
-            "fillGradient": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 0,
-                "y": 36
-            },
-            "hiddenSeries": false,
-            "id": 17,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": false,
-                "hideZero": true,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "options": {
-                "alertThreshold": true
-            },
-            "percentage": false,
-            "pluginVersion": "7.3.7",
-            "pointradius": 1,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "sum by (node_name) (rate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or irate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\n(max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$node_name\"}[5m]))/100)",
-                    "interval": "$interval",
-                    "legendFormat": "{{ node_name }}",
-                    "refId": "B"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Disk IO Utilization",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 5,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "decimals": 2,
-                    "format": "percentunit",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "decimals": 2,
-            "description": "Shows how effectively Operating System is able to merge logical IO requests into physical requests.  This is a good measure of the IO locality which can be used for workload characterization.",
-            "editable": true,
-            "error": false,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 2,
-            "fillGradient": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 12,
-                "y": 36
-            },
-            "hiddenSeries": false,
-            "id": 18,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": true,
-                "hideZero": true,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": false,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "options": {
-                "alertThreshold": true
-            },
-            "percentage": false,
-            "pluginVersion": "7.3.7",
-            "pointradius": 1,
-            "points": true,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "avg(\n(1 + rate(node_disk_reads_merged_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / rate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or (1 + irate(node_disk_reads_merged_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / irate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0\n)",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Read Ratio",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "avg(\n(1 + rate(node_disk_writes_merged_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / rate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or (1 + irate(node_disk_writes_merged_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / irate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0\n)",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Write Ratio",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300,
-                    "target": ""
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Avg Disks Operations Merge Ratio",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 5,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "short",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {
-                "Read IO size: sdb": "#2F575E",
-                "Read: sdb": "#3F6833"
-            },
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "decimals": 2,
-            "description": "Shows average size of a single disk operation.",
-            "editable": true,
-            "error": false,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 2,
-            "fillGradient": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 0,
-                "y": 44
-            },
-            "hiddenSeries": false,
-            "id": 20,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": true,
-                "hideZero": true,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": false,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "options": {
-                "alertThreshold": true
-            },
-            "percentage": false,
-            "pluginVersion": "7.3.7",
-            "pointradius": 1,
-            "points": true,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum(\n(rate(node_disk_read_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[$interval]) / \nrate(node_disk_reads_completed_total{node_name=\"$node_name\", device=~\"$device\"}[$interval])) > 0 or \n(irate(node_disk_read_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[5m]) / \nirate(node_disk_reads_completed_total{node_name=\"$node_name\", device=~\"$device\"}[5m])) > 0\n) ",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Read size",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum(\n(rate(node_disk_written_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[$interval]) / \nrate(node_disk_writes_completed_total{node_name=\"$node_name\", device=~\"$device\"}[$interval])) > 0 or \n(irate(node_disk_written_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[5m]) / \nirate(node_disk_writes_completed_total{node_name=\"$node_name\", device=~\"$device\"}[5m])) > 0\n) ",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Write size",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300,
-                    "target": ""
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Disk IO Size",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 5,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "decimals": 2,
-                    "format": "bytes",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "collapsed": true,
-            "datasource": null,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 52
-            },
-            "id": 1003,
-            "panels": [
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": null,
-                    "decimals": 2,
-                    "description": "Shows average latency for Reads and Writes IO Devices.  Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems.  Higher than normal latency also can indicate internal storage problems.",
-                    "editable": true,
-                    "error": false,
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {},
-                            "links": []
-                        },
-                        "overrides": []
-                    },
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 0,
-                        "y": 53
-                    },
-                    "hiddenSeries": false,
-                    "id": 1004,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": true,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": false,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "options": {
-                        "alertThreshold": true
-                    },
-                    "percentage": false,
-                    "pluginVersion": "7.3.7",
-                    "pointradius": 1,
-                    "points": true,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (node_name,device) ((rate(node_disk_read_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / \nrate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or \n(irate(node_disk_read_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / \nirate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0 or\navg_over_time(aws_rds_read_latency_average{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(aws_rds_read_latency_average{node_name=\"$node_name\"}[5m])/1000 or\navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=\"$node_name\"}[5m])/1000)",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Read: {{device}}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300,
-                            "target": ""
-                        },
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (node_name,device) ((rate(node_disk_write_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / \nrate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or \n(irate(node_disk_write_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / \nirate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0 or \n(avg_over_time(aws_rds_write_latency_average{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(aws_rds_write_latency_average{node_name=\"$node_name\"}[5m])/1000) or\n(avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=\"$node_name\"}[5m])/1000))",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Write: {{device}}",
-                            "metric": "",
-                            "refId": "B",
-                            "step": 300,
-                            "target": ""
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$device - Disk Latency",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 5,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "s",
-                            "label": "",
-                            "logBase": 2,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        },
-                        {
-                            "format": "s",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": null,
-                    "decimals": 2,
-                    "description": "Shows amount of physical IOs (reads and writes) different devices are serving. Spikes in number of IOs served often corresponds to performance problems due to IO subsystem overload.",
-                    "editable": true,
-                    "error": false,
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {},
-                            "links": []
-                        },
-                        "overrides": []
-                    },
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 12,
-                        "y": 53
-                    },
-                    "hiddenSeries": false,
-                    "id": 1005,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "options": {
-                        "alertThreshold": true
-                    },
-                    "percentage": false,
-                    "pluginVersion": "7.3.7",
-                    "pointradius": 1,
-                    "points": false,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (node_name,device) ((rate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) or \nirate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) or\n(max_over_time(rdsosmetrics_diskIO_readIOsPS{device=~\"$device\",node_name=\"$node_name\"}[$interval]) or\nmax_over_time(rdsosmetrics_diskIO_readIOsPS{device=~\"$device\",node_name=\"$node_name\"}[5m]))) ",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Read: {{ device }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300,
-                            "target": ""
-                        },
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (node_name,device) ((rate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) or \nirate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) or\n(max_over_time(rdsosmetrics_diskIO_writeIOsPS{device=~\"$device\",node_name=\"$node_name\"}[$interval]) or\nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{device=~\"$device\",node_name=\"$node_name\"}[5m]))) ",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Write: {{ device }}",
-                            "metric": "",
-                            "refId": "B",
-                            "step": 300,
-                            "target": ""
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$device - Disk Operations",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 5,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "iops",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": null,
-                    "decimals": 2,
-                    "description": "Shows volume of reads and writes the storage is handling. This can be better measure of IO capacity usage for network attached and SSD storage as it is often bandwidth limited.  Amount of data being written to the disk can be used to estimate Flash storage life time.",
-                    "editable": true,
-                    "error": false,
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {},
-                            "links": []
-                        },
-                        "overrides": []
-                    },
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 0,
-                        "y": 61
-                    },
-                    "hiddenSeries": false,
-                    "id": 1006,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "options": {
-                        "alertThreshold": true
-                    },
-                    "percentage": false,
-                    "pluginVersion": "7.3.7",
-                    "pointradius": 1,
-                    "points": false,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (node_name,device) ((rate(node_disk_read_bytes_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) or \nirate(node_disk_read_bytes_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) or\n(rate(rdsosmetrics_diskIO_readThroughput{device=~\"$device\",node_name=\"$node_name\"}[$interval]) or\nirate(rdsosmetrics_diskIO_readThroughput{device=~\"$device\",node_name=\"$node_name\"}[5m])))",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Read: {{ device }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300,
-                            "target": ""
-                        },
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (node_name,device) (rate(node_disk_written_bytes_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) or \nirate(node_disk_written_bytes_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) or\n(rate(rdsosmetrics_diskIO_writeThroughput{device=~\"$device\",node_name=\"$node_name\"}[$interval]) or\nirate(rdsosmetrics_diskIO_writeThroughput{device=~\"$device\",node_name=\"$node_name\"}[5m])))",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Write: {{ device }}",
-                            "metric": "",
-                            "refId": "B",
-                            "step": 300,
-                            "target": ""
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$device - Disk Bandwidth",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 5,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "Bps",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": null,
-                    "decimals": 2,
-                    "description": "Shows how much disk was loaded for reads or writes as average number of outstanding requests at different period of time.  High disk load is a good measure of actual storage utilization. Different storage types handle load differently - some will show latency increases on low loads others can handle higher load with no problems.",
-                    "editable": true,
-                    "error": false,
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {},
-                            "links": []
-                        },
-                        "overrides": []
-                    },
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 12,
-                        "y": 61
-                    },
-                    "hiddenSeries": false,
-                    "id": 1007,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": false,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "options": {
-                        "alertThreshold": true
-                    },
-                    "percentage": false,
-                    "pluginVersion": "7.3.7",
-                    "pointradius": 1,
-                    "points": true,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (node_name,device) (rate(node_disk_read_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or \nirate(node_disk_read_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_readIOsPS{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(rdsosmetrics_diskIO_readIOsPS{device=~\"$device\",node_name=~\"$node_name\"}[5m]))",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Read: {{ device }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300,
-                            "target": ""
-                        },
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (node_name,device) (rate(node_disk_write_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or \nirate(node_disk_write_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{device=~\"$device\",node_name=~\"$node_name\"}[5m]))",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Write: {{ device }}",
-                            "metric": "",
-                            "refId": "B",
-                            "step": 300,
-                            "target": ""
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$device - Disk Load",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 5,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": null,
-                    "decimals": 2,
-                    "description": "Shows disk Utilization as a percentage of the time when there was at least one IO request in flight. It is designed to match utilization available in iostat tool. The graph augments the IO latency and Disk Load Graphs, allowing to determine if the disk load was evenly distributed in time or consuming the IO momentarily. Higher utilization increases the likeliness of IO queuing. Always consider this metric along with response time and IO queue depth.",
-                    "editable": true,
-                    "error": false,
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {},
-                            "links": []
-                        },
-                        "overrides": []
-                    },
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 0,
-                        "y": 69
-                    },
-                    "hiddenSeries": false,
-                    "id": 1008,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "options": {
-                        "alertThreshold": true
-                    },
-                    "percentage": false,
-                    "pluginVersion": "7.3.7",
-                    "pointradius": 1,
-                    "points": false,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (node_name,device) (rate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or irate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\n(max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$node_name\"}[5m]))/100)",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{ device }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300,
-                            "target": ""
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$device - Disk IO Utilization",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 5,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "percentunit",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": null,
-                    "decimals": 2,
-                    "description": "Shows how effectively Operating System is able to merge logical IO requests into physical requests.  This is a good measure of the IO locality which can be used for workload characterization.",
-                    "editable": true,
-                    "error": false,
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {},
-                            "links": []
-                        },
-                        "overrides": []
-                    },
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 12,
-                        "y": 69
-                    },
-                    "hiddenSeries": false,
-                    "id": 1009,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": true,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": false,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "options": {
-                        "alertThreshold": true
-                    },
-                    "percentage": false,
-                    "pluginVersion": "7.3.7",
-                    "pointradius": 1,
-                    "points": true,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (node_name,device) (\n(1 + rate(node_disk_reads_merged_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / rate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or (1 + irate(node_disk_reads_merged_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / irate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0 \n)",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Read Ratio: {{ device }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300,
-                            "target": ""
-                        },
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (node_name,device) (\n(1 + rate(node_disk_writes_merged_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / rate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or (1 + irate(node_disk_writes_merged_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / irate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0\n)",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Write Ratio: {{ device }}",
-                            "metric": "",
-                            "refId": "B",
-                            "step": 300,
-                            "target": ""
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$device - Disk Operations Merge Ratio",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 5,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {
-                        "Read IO size: sdb": "#2F575E",
-                        "Read: sdb": "#3F6833"
-                    },
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": null,
-                    "decimals": 2,
-                    "description": "Shows average size of a single disk operation.",
-                    "editable": true,
-                    "error": false,
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {},
-                            "links": []
-                        },
-                        "overrides": []
-                    },
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 0,
-                        "y": 77
-                    },
-                    "hiddenSeries": false,
-                    "id": 1010,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": true,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": false,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "options": {
-                        "alertThreshold": true
-                    },
-                    "percentage": false,
-                    "pluginVersion": "7.3.7",
-                    "pointradius": 1,
-                    "points": true,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (node_name,device) (\n(rate(node_disk_read_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[$interval]) / rate(node_disk_reads_completed_total{node_name=\"$node_name\", device=~\"$device\"}[$interval])) > 0 or (irate(node_disk_read_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[5m]) / irate(node_disk_reads_completed_total{node_name=\"$node_name\", device=~\"$device\"}[5m])) > 0\n) ",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Read size: {{ device }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300,
-                            "target": ""
-                        },
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (node_name,device) (\n(rate(node_disk_written_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[$interval]) / rate(node_disk_writes_completed_total{node_name=\"$node_name\", device=~\"$device\"}[$interval])) > 0 or (irate(node_disk_written_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[5m]) / irate(node_disk_writes_completed_total{node_name=\"$node_name\", device=~\"$device\"}[5m])) > 0\n) ",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Write size: {{ device }}",
-                            "metric": "",
-                            "refId": "B",
-                            "step": 300,
-                            "target": ""
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$device - Disk IO Size",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 5,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "bytes",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                }
-            ],
-            "repeat": "device",
-            "title": "Device $device",
-            "type": "row"
-        }
-    ],
-    "refresh": "1m",
-    "schemaVersion": 26,
-    "style": "dark",
-    "tags": [
-        "OS",
-        "Percona"
-    ],
-    "templating": {
-        "list": [
-            {
-                "allFormat": "glob",
-                "auto": true,
-                "auto_count": 200,
-                "auto_min": "1s",
-                "current": {},
-                "datasource": "Metrics",
-                "error": null,
-                "hide": 0,
-                "includeAll": false,
-                "label": "Interval",
-                "multi": false,
-                "multiFormat": "glob",
-                "name": "interval",
-                "options": [
-                    {
-                        "selected": true,
-                        "text": "auto",
-                        "value": "$__auto_interval_interval"
-                    },
-                    {
-                        "selected": false,
-                        "text": "1s",
-                        "value": "1s"
-                    },
-                    {
-                        "selected": false,
-                        "text": "5s",
-                        "value": "5s"
-                    },
-                    {
-                        "selected": false,
-                        "text": "1m",
-                        "value": "1m"
-                    },
-                    {
-                        "selected": false,
-                        "text": "5m",
-                        "value": "5m"
-                    },
-                    {
-                        "selected": false,
-                        "text": "1h",
-                        "value": "1h"
-                    },
-                    {
-                        "selected": false,
-                        "text": "6h",
-                        "value": "6h"
-                    },
-                    {
-                        "selected": false,
-                        "text": "1d",
-                        "value": "1d"
-                    }
-                ],
-                "query": "1s,5s,1m,5m,1h,6h,1d",
-                "refresh": 2,
-                "skipUrlSync": false,
-                "type": "interval"
-            },
-            {
-                "allFormat": "glob",
-                "allValue": null,
-                "current": {},
-                "datasource": "Metrics",
-                "definition": "label_values({__name__=~\"node_disk_reads_completed_total|aws_rds_disk_queue_depth_average|rdsosmetrics_diskIO_readLatency|azure_storage_percent_average\"}, node_name)",
-                "error": null,
-                "hide": 0,
-                "includeAll": false,
-                "label": "Node Name",
-                "multi": false,
-                "multiFormat": "regex values",
-                "name": "node_name",
-                "options": [],
-                "query": "label_values({__name__=~\"node_disk_reads_completed_total|aws_rds_disk_queue_depth_average|rdsosmetrics_diskIO_readLatency|azure_storage_percent_average\"}, node_name)",
-                "refresh": 2,
-                "refresh_on_load": false,
-                "regex": "",
-                "skipUrlSync": false,
-                "sort": 5,
-                "tagValuesQuery": "instance",
-                "tags": [],
-                "tagsQuery": "up",
-                "type": "query",
-                "useTags": false
-            },
-            {
-                "allFormat": "glob",
-                "allValue": null,
-                "current": {},
-                "datasource": "Metrics",
-                "definition": "label_values({__name__=~\"node_disk_reads_completed_total|rdsosmetrics_diskIO_util\",node_name=~\"$node_name\", device!~\"dm-.+\"}, device)",
-                "error": null,
-                "hide": 0,
-                "includeAll": true,
-                "label": "Device",
-                "multi": true,
-                "multiFormat": "regex values",
-                "name": "device",
-                "options": [],
-                "query": "label_values({__name__=~\"node_disk_reads_completed_total|rdsosmetrics_diskIO_util\",node_name=~\"$node_name\", device!~\"dm-.+\"}, device)",
-                "refresh": 2,
-                "refresh_on_load": false,
-                "regex": "",
-                "skipUrlSync": false,
-                "sort": 5,
-                "tagValuesQuery": "instance",
-                "tags": [],
-                "tagsQuery": "up",
-                "type": "query",
-                "useTags": false
-            },
-            {
-                "allValue": null,
-                "current": {},
-                "datasource": "Metrics",
-                "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
-                "error": null,
-                "hide": 2,
-                "includeAll": true,
-                "label": "Username",
-                "multi": true,
-                "name": "username",
-                "options": [],
-                "query": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
-                "refresh": 1,
-                "regex": "",
-                "skipUrlSync": false,
-                "sort": 5,
-                "tagValuesQuery": "",
-                "tags": [],
-                "tagsQuery": "",
-                "type": "query",
-                "useTags": false
-            },
-            {
-                "allValue": null,
-                "current": {},
-                "datasource": "Metrics",
-                "definition": "label_values(node_filesystem_avail_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}, mountpoint)",
-                "error": null,
-                "hide": 2,
-                "includeAll": true,
-                "label": "Mountpoint",
-                "multi": true,
-                "name": "mountpoint",
-                "options": [],
-                "query": "label_values(node_filesystem_avail_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}, mountpoint)",
-                "refresh": 2,
-                "regex": "",
-                "skipUrlSync": false,
-                "sort": 5,
-                "tagValuesQuery": "",
-                "tags": [],
-                "tagsQuery": "",
-                "type": "query",
-                "useTags": false
-            }
-        ]
-    },
-    "time": {
-        "from": "now-12h",
-        "to": "now"
-    },
-    "timepicker": {
-        "collapse": false,
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
         "enable": true,
-        "hidden": false,
-        "notice": false,
-        "now": true,
-        "refresh_intervals": [
-            "5s",
-            "10s",
-            "30s",
-            "1m",
-            "5m",
-            "15m",
-            "30m",
-            "1h",
-            "2h",
-            "1d"
+        "hide": false,
+        "iconColor": "#e0752d",
+        "limit": 100,
+        "matchAny": true,
+        "name": "PMM Annotations",
+        "showIn": 0,
+        "tags": [
+          "pmm_annotation",
+          "$node_name"
         ],
-        "status": "Stable",
-        "time_options": [
-            "5m",
-            "15m",
-            "1h",
-            "6h",
-            "12h",
-            "24h",
-            "2d",
-            "7d",
-            "30d"
-        ],
-        "type": "timepicker"
+        "target": {
+          "limit": 100,
+          "matchAny": true,
+          "tags": [
+            "pmm_annotation",
+            "$node_name"
+          ],
+          "type": "tags"
+        },
+        "type": "tags"
+      },
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "#6ed0e0",
+        "limit": 100,
+        "name": "Annotations & Alerts",
+        "showIn": 0,
+        "tags": [],
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": 46,
+  "iteration": 1647502583643,
+  "links": [
+    {
+      "icon": "doc",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "Home"
+      ],
+      "targetBlank": false,
+      "title": "Home",
+      "type": "link",
+      "url": "/graph/d/pmm-home/home-dashboard"
     },
-    "timezone": "",
-    "title": "Disk Details",
-    "uid": "node-disk",
-    "version": 1
+    {
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "Query Analytics"
+      ],
+      "targetBlank": false,
+      "title": "Query Analytics",
+      "type": "link",
+      "url": "/graph/d/pmm-qan/pmm-query-analytics"
+    },
+    {
+      "icon": "bolt",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "Compare"
+      ],
+      "targetBlank": false,
+      "title": "Compare",
+      "type": "link",
+      "url": "/graph/d/node-instance-compare/nodes-compare"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OS"
+      ],
+      "targetBlank": false,
+      "title": "OS",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [
+        "Services"
+      ],
+      "targetBlank": false,
+      "title": "Services",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [
+        "PMM"
+      ],
+      "targetBlank": false,
+      "title": "PMM",
+      "type": "dashboards"
+    }
+  ],
+  "liveNow": false,
+  "panels": [
+    {
+      "breadcrumbItemsMaxAmount": 6,
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "hideTextInRootDashboard": false,
+      "id": 999,
+      "isRootDashboard": false,
+      "links": [],
+      "targets": [
+        {
+          "expr": "",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "refId": "A"
+        }
+      ],
+      "title": " ",
+      "transparent": true,
+      "type": "digiapulssi-breadcrumb-panel"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 1015,
+      "panels": [],
+      "title": "Disk Space",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Shows the percentage of disk space utilization for every mountpoint defined on the system. Having some of the mountpoints close to 100% space utilization is not good because of the risk to have a “disk full” error that can block one of the services or even cause a crash of the entire system.\n\nIn case when the mountpoint is close to 100% consider to remove unused files or to expand the space allocated to the mountpoint.",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "hiddenSeries": false,
+      "id": 1018,
+      "interval": "",
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.3.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg by (node_name,mountpoint) (1 - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) / \n(max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or\nmax_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])))",
+          "interval": "$interval",
+          "legendFormat": "{{mountpoint}}",
+          "refId": "A"
+        },
+        {
+          "expr": "avg by (node_name) (azure_storage_percent_average{node_name=~\"$node_name\"}/100)",
+          "interval": "$interval",
+          "legendFormat": "Azure Storage",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Mountpoint Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 5,
+        "value_type": "individual"
+      },
+      "transformations": [],
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:166",
+          "decimals": 2,
+          "format": "percentunit",
+          "logBase": 1,
+          "max": "1",
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:167",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Shows information about the disk space usage of the specified mountpoint.\n\n**Used** is the amount of space used.\n\n**Free** is the amount of space not in use.\n\n**Used+Free** is the total disk space allocated to the mountpoint.\n\nHaving *Free* close to 0 B is not good because of the risk to have a “disk full” error that can block one of the services or even cause a crash of the entire system.\n\nIn case Free is close to 0 B consider to remove unused files or to expand the space allocated to the mountpoint.",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 6,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 11
+      },
+      "hiddenSeries": false,
+      "id": 1023,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "maxPerRow": 2,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.3.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeat": "mountpoint",
+      "repeatDirection": "h",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:215",
+          "alias": "/Used/",
+          "color": "#FFB357"
+        },
+        {
+          "$$hashKey": "object:216",
+          "alias": "/Free/",
+          "color": "#FA6400"
+        },
+        {
+          "$$hashKey": "object:217",
+          "alias": "Usage",
+          "fill": 0,
+          "legend": false,
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg by (node_name,mountpoint) ((max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])))",
+          "hide": false,
+          "interval": "$interval",
+          "legendFormat": "Used (device {{ device }}, {{ fstype }})",
+          "refId": "A"
+        },
+        {
+          "expr": "avg by (node_name,mountpoint) (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m]) or (storage_limit_bytes_average{node_name=~\"$node_name\"} - azure_storage_used_bytes_average{node_name=~\"$node_name\"}))",
+          "hide": false,
+          "interval": "$interval",
+          "legendFormat": "Free (device {{ device }}, {{ fstype }})",
+          "refId": "B"
+        },
+        {
+          "expr": "avg by (node_name,mountpoint) (1 - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) / (max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) \nor max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) or azure_storage_percent_average{node_name=~\"$node_name\"}/100)",
+          "hide": false,
+          "interval": "$interval",
+          "legendFormat": "Usage",
+          "refId": "C"
+        },
+        {
+          "expr": "avg by (node_name) (node_filesystem_size_bytes{node_name=~\"$node_name\"} - azure_storage_used_bytes_average{node_name=~\"$node_name\"})",
+          "interval": "$interval",
+          "legendFormat": "Free (Azure Storage)",
+          "refId": "D"
+        },
+        {
+          "expr": "avg by (node_name) (azure_storage_used_bytes_average{node_name=~\"$node_name\"})",
+          "interval": "$interval",
+          "legendFormat": "Used (Azure Storage)",
+          "refId": "E"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Mountpoint $mountpoint",
+      "tooltip": {
+        "shared": true,
+        "sort": 5,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "bytes",
+          "logBase": 1,
+          "min": "0",
+          "show": true
+        },
+        {
+          "decimals": 2,
+          "format": "percentunit",
+          "logBase": 1,
+          "max": "1",
+          "min": "0",
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 1001,
+      "panels": [],
+      "title": "Total Performance",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Shows average latency for Reads and Writes IO Devices.  Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems.  Higher than normal latency also can indicate internal storage problems.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 28
+      },
+      "hiddenSeries": false,
+      "id": 11,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.3.5",
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "sum(\n(rate(node_disk_read_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / \nrate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or \n(irate(node_disk_read_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / \nirate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0 or\navg_over_time(aws_rds_read_latency_average{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(aws_rds_read_latency_average{node_name=\"$node_name\"}[5m])/1000 or\navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=\"$node_name\"}[5m])/1000 or vector(0)\n)",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Read",
+          "metric": "",
+          "refId": "A",
+          "step": 300,
+          "target": ""
+        },
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "sum(\n(rate(node_disk_write_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / \nrate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or \n(irate(node_disk_write_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / \nirate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0 or \n(avg_over_time(aws_rds_write_latency_average{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(aws_rds_write_latency_average{node_name=\"$node_name\"}[5m])/1000) or\n(avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=\"$node_name\"}[5m])/1000)\n)",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Write",
+          "metric": "",
+          "refId": "B",
+          "step": 300,
+          "target": ""
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Disk Latency",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "s",
+          "label": "",
+          "logBase": 2,
+          "show": true
+        },
+        {
+          "format": "s",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Shows amount of physical IOs (reads and writes) different devices are serving. Spikes in number of IOs served often corresponds to performance problems due to IO subsystem overload.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 28
+      },
+      "hiddenSeries": false,
+      "id": 15,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.3.5",
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "avg by (node_name) (sum(\n(rate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) or \nirate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) or\n(max_over_time(rdsosmetrics_diskIO_readIOsPS{node_name=\"$node_name\"}[$interval]) or\nmax_over_time(rdsosmetrics_diskIO_readIOsPS{node_name=\"$node_name\"}[5m])) \n))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Read",
+          "metric": "",
+          "refId": "A",
+          "step": 300,
+          "target": ""
+        },
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "avg by (node_name) (sum(\n(rate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) or \nirate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) or\n(max_over_time(rdsosmetrics_diskIO_writeIOsPS{node_name=\"$node_name\"}[$interval]) or\nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{node_name=\"$node_name\"}[5m]) \n))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Write",
+          "metric": "",
+          "refId": "B",
+          "step": 300,
+          "target": ""
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Disk Operations",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "iops",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Shows volume of reads and writes the storage is handling. This can be better measure of IO capacity usage for network attached and SSD storage as it is often bandwidth limited.  Amount of data being written to the disk can be used to estimate Flash storage life time.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 36
+      },
+      "hiddenSeries": false,
+      "id": 16,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.3.5",
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "sum(rate(node_disk_written_bytes_total{node_name=~\"$node_name\",device=~\"$device\"}[$interval]) or \nirate(node_disk_written_bytes_total{node_name=~\"$node_name\",device=~\"$device\"}[5m]) or\nrate(node_disk_written_bytes_total{node_name=~\"$node_name\",node_type=\"remote_rds\"}[$interval]) or \nirate(node_disk_written_bytes_total{node_name=~\"$node_name\",node_type=\"remote_rds\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Write",
+          "metric": "",
+          "refId": "B",
+          "step": 300,
+          "target": ""
+        },
+        {
+          "expr": "sum(rate(node_disk_read_bytes_total{node_name=~\"$node_name\",device=~\"$device\"}[$interval]) or \nirate(node_disk_read_bytes_total{node_name=~\"$node_name\",device=~\"$device\"}[5m]) or\nrate(node_disk_read_bytes_total{node_name=~\"$node_name\",node_type=\"remote_rds\"}[$interval]) or \nirate(node_disk_read_bytes_total{node_name=~\"$node_name\",node_type=\"remote_rds\"}[5m]))",
+          "interval": "$interval",
+          "legendFormat": "Read",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Disk Bandwidth",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "Bps",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Shows how much disk was loaded for reads or writes as average number of outstanding requests at different period of time.  High disk load is a good measure of actual storage utilization. Different storage types handle load differently - some will show latency increases on low loads others can handle higher load with no problems.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 36
+      },
+      "hiddenSeries": false,
+      "id": 14,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.3.5",
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "sum(\nrate(node_disk_write_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or \nirate(node_disk_write_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{node_name=~\"$node_name\"}[5m])\n)",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Write",
+          "metric": "",
+          "refId": "B",
+          "step": 300,
+          "target": ""
+        },
+        {
+          "expr": "sum(rate(node_disk_read_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or \nirate(node_disk_read_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_readIOsPS{node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(rdsosmetrics_diskIO_readIOsPS{node_name=~\"$node_name\"}[5m]))",
+          "interval": "$interval",
+          "legendFormat": "Read",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Disk Load",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Shows disk Utilization as a percentage of the time when there was at least one IO request in flight. It is designed to match utilization available in iostat tool. The graph augments the IO latency and Disk Load Graphs, allowing to determine if the disk load was evenly distributed in time or consuming the IO momentarily. Higher utilization increases the likeliness of IO queuing. Always consider this metric along with response time and IO queue depth.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 44
+      },
+      "hiddenSeries": false,
+      "id": 17,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.3.5",
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum by (node_name) (rate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or irate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\n(max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$node_name\"}[5m]))/100)",
+          "interval": "$interval",
+          "legendFormat": "{{ node_name }}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Disk IO Utilization",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "percentunit",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Shows how effectively Operating System is able to merge logical IO requests into physical requests.  This is a good measure of the IO locality which can be used for workload characterization.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 44
+      },
+      "hiddenSeries": false,
+      "id": 18,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.3.5",
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "avg(\n(1 + rate(node_disk_reads_merged_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / rate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or (1 + irate(node_disk_reads_merged_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / irate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0\n)",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Read Ratio",
+          "metric": "",
+          "refId": "A",
+          "step": 300,
+          "target": ""
+        },
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "avg(\n(1 + rate(node_disk_writes_merged_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / rate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or (1 + irate(node_disk_writes_merged_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / irate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0\n)",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Write Ratio",
+          "metric": "",
+          "refId": "B",
+          "step": 300,
+          "target": ""
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Avg Disks Operations Merge Ratio",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {
+        "Read IO size: sdb": "#2F575E",
+        "Read: sdb": "#3F6833"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Shows average size of a single disk operation.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 52
+      },
+      "hiddenSeries": false,
+      "id": 20,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.3.5",
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "sum(\n(rate(node_disk_read_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[$interval]) / \nrate(node_disk_reads_completed_total{node_name=\"$node_name\", device=~\"$device\"}[$interval])) > 0 or \n(irate(node_disk_read_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[5m]) / \nirate(node_disk_reads_completed_total{node_name=\"$node_name\", device=~\"$device\"}[5m])) > 0\n) ",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Read size",
+          "metric": "",
+          "refId": "A",
+          "step": 300,
+          "target": ""
+        },
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "errors": {},
+          "expr": "sum(\n(rate(node_disk_written_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[$interval]) / \nrate(node_disk_writes_completed_total{node_name=\"$node_name\", device=~\"$device\"}[$interval])) > 0 or \n(irate(node_disk_written_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[5m]) / \nirate(node_disk_writes_completed_total{node_name=\"$node_name\", device=~\"$device\"}[5m])) > 0\n) ",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Write size",
+          "metric": "",
+          "refId": "B",
+          "step": 300,
+          "target": ""
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Disk IO Size",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "bytes",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 60
+      },
+      "id": 1003,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "decimals": 2,
+          "description": "Shows average latency for Reads and Writes IO Devices.  Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems.  Higher than normal latency also can indicate internal storage problems.",
+          "editable": true,
+          "error": false,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 53
+          },
+          "hiddenSeries": false,
+          "id": 1004,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": false,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.3.7",
+          "pointradius": 1,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name,device) ((rate(node_disk_read_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / \nrate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or \n(irate(node_disk_read_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / \nirate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0 or\navg_over_time(aws_rds_read_latency_average{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(aws_rds_read_latency_average{node_name=\"$node_name\"}[5m])/1000 or\navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=\"$node_name\"}[5m])/1000)",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Read: {{device}}",
+              "metric": "",
+              "refId": "A",
+              "step": 300,
+              "target": ""
+            },
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name,device) ((rate(node_disk_write_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / \nrate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or \n(irate(node_disk_write_time_seconds_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / \nirate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0 or \n(avg_over_time(aws_rds_write_latency_average{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(aws_rds_write_latency_average{node_name=\"$node_name\"}[5m])/1000) or\n(avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=\"$node_name\"}[$interval])/1000 or \navg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=\"$node_name\"}[5m])/1000))",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Write: {{device}}",
+              "metric": "",
+              "refId": "B",
+              "step": 300,
+              "target": ""
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "$device - Disk Latency",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 5,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 2,
+              "format": "s",
+              "label": "",
+              "logBase": 2,
+              "show": true
+            },
+            {
+              "format": "s",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "decimals": 2,
+          "description": "Shows amount of physical IOs (reads and writes) different devices are serving. Spikes in number of IOs served often corresponds to performance problems due to IO subsystem overload.",
+          "editable": true,
+          "error": false,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 53
+          },
+          "hiddenSeries": false,
+          "id": 1005,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.3.7",
+          "pointradius": 1,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name,device) ((rate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) or \nirate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) or\n(max_over_time(rdsosmetrics_diskIO_readIOsPS{device=~\"$device\",node_name=\"$node_name\"}[$interval]) or\nmax_over_time(rdsosmetrics_diskIO_readIOsPS{device=~\"$device\",node_name=\"$node_name\"}[5m]))) ",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Read: {{ device }}",
+              "metric": "",
+              "refId": "A",
+              "step": 300,
+              "target": ""
+            },
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name,device) ((rate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) or \nirate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) or\n(max_over_time(rdsosmetrics_diskIO_writeIOsPS{device=~\"$device\",node_name=\"$node_name\"}[$interval]) or\nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{device=~\"$device\",node_name=\"$node_name\"}[5m]))) ",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Write: {{ device }}",
+              "metric": "",
+              "refId": "B",
+              "step": 300,
+              "target": ""
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "$device - Disk Operations",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 5,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "iops",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "decimals": 2,
+          "description": "Shows volume of reads and writes the storage is handling. This can be better measure of IO capacity usage for network attached and SSD storage as it is often bandwidth limited.  Amount of data being written to the disk can be used to estimate Flash storage life time.",
+          "editable": true,
+          "error": false,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 61
+          },
+          "hiddenSeries": false,
+          "id": 1006,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.3.7",
+          "pointradius": 1,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name,device) ((rate(node_disk_read_bytes_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) or \nirate(node_disk_read_bytes_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) or\n(rate(rdsosmetrics_diskIO_readThroughput{device=~\"$device\",node_name=\"$node_name\"}[$interval]) or\nirate(rdsosmetrics_diskIO_readThroughput{device=~\"$device\",node_name=\"$node_name\"}[5m])))",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Read: {{ device }}",
+              "metric": "",
+              "refId": "A",
+              "step": 300,
+              "target": ""
+            },
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name,device) (rate(node_disk_written_bytes_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) or \nirate(node_disk_written_bytes_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) or\n(rate(rdsosmetrics_diskIO_writeThroughput{device=~\"$device\",node_name=\"$node_name\"}[$interval]) or\nirate(rdsosmetrics_diskIO_writeThroughput{device=~\"$device\",node_name=\"$node_name\"}[5m])))",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Write: {{ device }}",
+              "metric": "",
+              "refId": "B",
+              "step": 300,
+              "target": ""
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "$device - Disk Bandwidth",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 5,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 2,
+              "format": "Bps",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "decimals": 2,
+          "description": "Shows how much disk was loaded for reads or writes as average number of outstanding requests at different period of time.  High disk load is a good measure of actual storage utilization. Different storage types handle load differently - some will show latency increases on low loads others can handle higher load with no problems.",
+          "editable": true,
+          "error": false,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 61
+          },
+          "hiddenSeries": false,
+          "id": 1007,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": false,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.3.7",
+          "pointradius": 1,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name,device) (rate(node_disk_read_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or \nirate(node_disk_read_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_readIOsPS{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(rdsosmetrics_diskIO_readIOsPS{device=~\"$device\",node_name=~\"$node_name\"}[5m]))",
+              "hide": false,
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Read: {{ device }}",
+              "metric": "",
+              "refId": "A",
+              "step": 300,
+              "target": ""
+            },
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name,device) (rate(node_disk_write_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or \nirate(node_disk_write_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{device=~\"$device\",node_name=~\"$node_name\"}[5m]))",
+              "hide": false,
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Write: {{ device }}",
+              "metric": "",
+              "refId": "B",
+              "step": 300,
+              "target": ""
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "$device - Disk Load",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 5,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "decimals": 2,
+          "description": "Shows disk Utilization as a percentage of the time when there was at least one IO request in flight. It is designed to match utilization available in iostat tool. The graph augments the IO latency and Disk Load Graphs, allowing to determine if the disk load was evenly distributed in time or consuming the IO momentarily. Higher utilization increases the likeliness of IO queuing. Always consider this metric along with response time and IO queue depth.",
+          "editable": true,
+          "error": false,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 69
+          },
+          "hiddenSeries": false,
+          "id": 1008,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.3.7",
+          "pointradius": 1,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name,device) (rate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or irate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\n(max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$node_name\"}[5m]))/100)",
+              "format": "time_series",
+              "hide": false,
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "{{ device }}",
+              "metric": "",
+              "refId": "A",
+              "step": 300,
+              "target": ""
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "$device - Disk IO Utilization",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 5,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "percentunit",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "decimals": 2,
+          "description": "Shows how effectively Operating System is able to merge logical IO requests into physical requests.  This is a good measure of the IO locality which can be used for workload characterization.",
+          "editable": true,
+          "error": false,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 69
+          },
+          "hiddenSeries": false,
+          "id": 1009,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": false,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.3.7",
+          "pointradius": 1,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name,device) (\n(1 + rate(node_disk_reads_merged_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / rate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or (1 + irate(node_disk_reads_merged_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / irate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0 \n)",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Read Ratio: {{ device }}",
+              "metric": "",
+              "refId": "A",
+              "step": 300,
+              "target": ""
+            },
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name,device) (\n(1 + rate(node_disk_writes_merged_total{device=~\"$device\", node_name=\"$node_name\"}[$interval]) / rate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[$interval])) > 0 or (1 + irate(node_disk_writes_merged_total{device=~\"$device\", node_name=\"$node_name\"}[5m]) / irate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$node_name\"}[5m])) > 0\n)",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Write Ratio: {{ device }}",
+              "metric": "",
+              "refId": "B",
+              "step": 300,
+              "target": ""
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "$device - Disk Operations Merge Ratio",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 5,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {
+            "Read IO size: sdb": "#2F575E",
+            "Read: sdb": "#3F6833"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "decimals": 2,
+          "description": "Shows average size of a single disk operation.",
+          "editable": true,
+          "error": false,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 77
+          },
+          "hiddenSeries": false,
+          "id": 1010,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": false,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.3.7",
+          "pointradius": 1,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name,device) (\n(rate(node_disk_read_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[$interval]) / rate(node_disk_reads_completed_total{node_name=\"$node_name\", device=~\"$device\"}[$interval])) > 0 or (irate(node_disk_read_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[5m]) / irate(node_disk_reads_completed_total{node_name=\"$node_name\", device=~\"$device\"}[5m])) > 0\n) ",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Read size: {{ device }}",
+              "metric": "",
+              "refId": "A",
+              "step": 300,
+              "target": ""
+            },
+            {
+              "calculatedInterval": "2m",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name,device) (\n(rate(node_disk_written_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[$interval]) / rate(node_disk_writes_completed_total{node_name=\"$node_name\", device=~\"$device\"}[$interval])) > 0 or (irate(node_disk_written_bytes_total{node_name=\"$node_name\", device=~\"$device\"}[5m]) / irate(node_disk_writes_completed_total{node_name=\"$node_name\", device=~\"$device\"}[5m])) > 0\n) ",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Write size: {{ device }}",
+              "metric": "",
+              "refId": "B",
+              "step": 300,
+              "target": ""
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "$device - Disk IO Size",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 5,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 2,
+              "format": "bytes",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        }
+      ],
+      "repeat": "device",
+      "title": "Device $device",
+      "type": "row"
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 34,
+  "style": "dark",
+  "tags": [
+    "OS",
+    "Percona"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allFormat": "glob",
+        "auto": true,
+        "auto_count": 200,
+        "auto_min": "1s",
+        "current": {
+          "selected": false,
+          "text": "auto",
+          "value": "$__auto_interval_interval"
+        },
+        "datasource": "Metrics",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Interval",
+        "multi": false,
+        "multiFormat": "glob",
+        "name": "interval",
+        "options": [
+          {
+            "selected": true,
+            "text": "auto",
+            "value": "$__auto_interval_interval"
+          },
+          {
+            "selected": false,
+            "text": "1s",
+            "value": "1s"
+          },
+          {
+            "selected": false,
+            "text": "5s",
+            "value": "5s"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          }
+        ],
+        "query": "1s,5s,1m,5m,1h,6h,1d",
+        "refresh": 2,
+        "skipUrlSync": false,
+        "type": "interval"
+      },
+      {
+        "allFormat": "glob",
+        "current": {
+          "selected": false,
+          "text": "pmm-server",
+          "value": "pmm-server"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
+        "definition": "label_values({__name__=~\"node_disk_reads_completed_total|aws_rds_disk_queue_depth_average|rdsosmetrics_diskIO_readLatency|azure_storage_percent_average\"}, node_name)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Node Name",
+        "multi": false,
+        "multiFormat": "regex values",
+        "name": "node_name",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"node_disk_reads_completed_total|aws_rds_disk_queue_depth_average|rdsosmetrics_diskIO_readLatency|azure_storage_percent_average\"}, node_name)",
+          "refId": "Metrics-node_name-Variable-Query"
+        },
+        "refresh": 2,
+        "refresh_on_load": false,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allFormat": "glob",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
+        "definition": "label_values({__name__=~\"node_disk_reads_completed_total|rdsosmetrics_diskIO_util\",node_name=~\"$node_name\", device!~\"dm-.+\"}, device)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Device",
+        "multi": true,
+        "multiFormat": "regex values",
+        "name": "device",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"node_disk_reads_completed_total|rdsosmetrics_diskIO_util\",node_name=~\"$node_name\", device!~\"dm-.+\"}, device)",
+          "refId": "Metrics-device-Variable-Query"
+        },
+        "refresh": 2,
+        "refresh_on_load": false,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
+        "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Username",
+        "multi": true,
+        "name": "username",
+        "options": [],
+        "query": {
+          "query": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+          "refId": "Metrics-username-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
+        "definition": "label_values(node_filesystem_avail_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}, mountpoint)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Mountpoint",
+        "multi": true,
+        "name": "mountpoint",
+        "options": [],
+        "query": {
+          "query": "label_values(node_filesystem_avail_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}, mountpoint)",
+          "refId": "Metrics-mountpoint-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  },
+  "timepicker": {
+    "collapse": false,
+    "enable": true,
+    "hidden": false,
+    "notice": false,
+    "now": true,
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "status": "Stable",
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ],
+    "type": "timepicker"
+  },
+  "timezone": "",
+  "title": "Disk Details",
+  "uid": "node-disk",
+  "version": 2,
+  "weekStart": ""
 }

@@ -8,16 +8,23 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "description": "Detailed view on Environments",
   "editable": false,
+  "fiscalYearStartMonth": 0,
   "gnetId": 14372,
   "graphTooltip": 1,
-  "id": 62,
-  "iteration": 1640265232598,
+  "id": 59,
+  "iteration": 1647514213614,
   "links": [
     {
       "icon": "doc",
@@ -66,13 +73,13 @@
       "type": "dashboards"
     }
   ],
+  "liveNow": false,
   "panels": [
     {
       "breadcrumbItemsMaxAmount": 6,
-      "datasource": "Metrics",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PA58DA793C7250F1B"
       },
       "gridPos": {
         "h": 2,
@@ -92,15 +99,12 @@
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": " ",
       "transparent": true,
       "type": "digiapulssi-breadcrumb-panel"
     },
     {
       "collapsed": true,
-      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -110,7 +114,6 @@
       "id": 1913,
       "panels": [
         {
-          "datasource": null,
           "fieldConfig": {
             "defaults": {},
             "overrides": []
@@ -127,8 +130,6 @@
             "mode": "markdown"
           },
           "pluginVersion": "7.5.11",
-          "timeFrom": null,
-          "timeShift": null,
           "title": "Experimental Dashboard",
           "type": "text"
         }
@@ -138,7 +139,10 @@
     },
     {
       "collapsed": false,
-      "datasource": "Metrics",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PA58DA793C7250F1B"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -148,19 +152,10 @@
       "id": 1803,
       "panels": [],
       "repeat": "environment",
-      "scopedVars": {
-        "environment": {
-          "isNone": true,
-          "selected": true,
-          "text": "None",
-          "value": ""
-        }
-      },
       "title": "Environment - $environment ",
       "type": "row"
     },
     {
-      "datasource": "Metrics",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -545,20 +540,19 @@
           "fields": "",
           "values": false
         },
-        "text": {},
+        "text": {
+          "valueSize": 25
+        },
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.11",
-      "scopedVars": {
-        "environment": {
-          "isNone": true,
-          "selected": true,
-          "text": "None",
-          "value": ""
-        }
-      },
+      "pluginVersion": "8.3.5",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": false,
           "expr": "count(count by (node_name) (up{node_name=~\"$node_name\",environment=~\"$environment\"})) or vector(0)",
           "instant": true,
           "interval": "$interval",
@@ -566,6 +560,11 @@
           "refId": "M"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": false,
           "expr": "count(count by (id_service) (label_replace(up{node_name=~\"$node_name\",job=~\"mysql.*|mongodb.*|postgres.*|proxysql.*|external.*|haproxy.*\",environment=~\"$environment\"}, \"id_service\", \"$2\", \"job\", \"(.*)_exporter_agent_id_(.*)_(.*)\"))) or vector(0)",
           "instant": true,
           "interval": "$interval",
@@ -573,6 +572,11 @@
           "refId": "N"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": false,
           "expr": "avg(((clamp_max(avg by (node_name) (sum by (node_name,cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100 or\nsum by (node_name) (avg_over_time(node_cpu_average{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"total\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"total\"}[5m]))) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|external\",job=~\".*_hr-.*|^external-exporter.*\"})) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"}))",
           "hide": false,
           "instant": true,
@@ -581,6 +585,11 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": false,
           "expr": "avg((((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} or\n(rdsosmetrics_memory_free{node_name=~\"$node_name\"} + rdsosmetrics_memory_buffers{node_name=~\"$node_name\"} + rdsosmetrics_memory_cached{node_name=~\"$node_name\"})/ rdsosmetrics_memory_total{node_name=~\"$node_name\"}) * 100) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"}))",
           "hide": false,
           "instant": true,
@@ -589,6 +598,10 @@
           "refId": "C"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
           "expr": "avg(((rate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[$interval]) or irate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[5m]) or sum by (node_name) (max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[5m]))) * 1024) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"}))",
           "hide": false,
           "instant": false,
@@ -597,6 +610,10 @@
           "refId": "D"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
           "expr": "avg(((rate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[$interval]) or irate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[5m]) or\nsum by (node_name) (max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[5m]))) * 1024)  * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"}))",
           "hide": false,
           "instant": false,
@@ -605,6 +622,10 @@
           "refId": "E"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
           "expr": "avg(((sum by (node_name) (rate(node_network_receive_bytes_total{node_name=~\"$node_name\", device!=\"lo\"}[$interval]) or\nirate(node_network_receive_bytes_total{node_name=~\"$node_name\", device!=\"lo\"}[5m])) or \nsum by (node_name) (max_over_time(rdsosmetrics_network_rx{node_name=~\"$node_name\"}[$interval])) or \nsum by (node_name) (max_over_time(rdsosmetrics_network_rx{node_name=~\"$node_name\"}[5m]))) + \n(sum by (node_name) (rate(node_network_transmit_bytes_total{node_name=~\"$node_name\", device!=\"lo\"}[$interval]) or \nirate(node_network_transmit_bytes_total{node_name=~\"$node_name\", device!=\"lo\"}[5m])) or \nsum by (node_name) (max_over_time(rdsosmetrics_network_tx{node_name=~\"$node_name\"}[$interval])) or \nsum by (node_name) (max_over_time(rdsosmetrics_network_tx{node_name=~\"$node_name\"}[5m]))))  * on(node_name) group_left(environment) avg by (node_name, environment)(up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"}))",
           "hide": false,
           "interval": "$interval",
@@ -612,6 +633,11 @@
           "refId": "F"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": false,
           "expr": "sum((sum by(node_name)(max_over_time(mysql_global_status_threads_connected{node_name=~\"$node_name\"}[$interval]) or \nlabel_replace(mysql_global_status_threads_connected{node_name=~\"$node_name\",node_type=\"remote\"},\"node_name\",\"pmm-server\",\"\",\"\") or\nmax_over_time(mongodb_connections{node_name=~\"$node_name\",state=\"current\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\"}[$interval]))))  * on(node_name) group_left(environment) avg by (node_name, environment)(up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"}))",
           "hide": false,
           "instant": true,
@@ -620,6 +646,11 @@
           "refId": "G"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": false,
           "expr": "sum((sum by (node_name) (\n(rate(mysql_global_status_queries{node_name=~\"$node_name\"}[$interval]) or \nirate(mysql_global_status_queries{node_name=~\"$node_name\"}[5m])) or \n(sum by (node_name) (rate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\"}[$interval])) or \nsum by (node_name) (irate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\"}[5m]))) or\n(sum by (node_name) (rate(pg_stat_database_xact_commit{node_name=~\"$node_name\"}[$interval]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$node_name\"}[$interval])) or\nsum by (node_name) (irate(pg_stat_database_xact_commit{node_name=~\"$node_name\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$node_name\"}[5m])))\n))  * on(node_name) group_left(environment) avg by (node_name, environment)(up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"}))",
           "hide": false,
           "instant": true,
@@ -628,6 +659,11 @@
           "refId": "H"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": false,
           "expr": "sum(((count by (node_name) (node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\"}) or (1-absent(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\"}))) + \nsum by (node_name) (rdsosmetrics_General_numVCPUs{node_name=~\"$node_name\"} or up * 0)) * on(node_name) group_left(environment) avg by (node_name, environment)(up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"}))",
           "hide": false,
           "instant": true,
@@ -636,6 +672,11 @@
           "refId": "I"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": false,
           "expr": "sum((node_memory_MemTotal_bytes{node_name=~\"$node_name\"} or (rdsosmetrics_memory_total{node_name=~\"$node_name\"}*1024)) * on(node_name) group_left(environment) avg by (node_name, environment)(up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"}))",
           "hide": false,
           "instant": true,
@@ -644,6 +685,11 @@
           "refId": "J"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": false,
           "expr": "min((node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\"}))",
           "hide": false,
           "instant": true,
@@ -652,6 +698,11 @@
           "refId": "K"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": false,
           "expr": "min(min by (service_name) (mysql_global_status_uptime{node_name=~\"$node_name\",environment=~\"$environment\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$node_name\",environment=~\"$environment\"} or \n(time() - process_start_time_seconds{node_name=~\"$node_name\",job=~\"postgres_exporter.*\",environment=~\"$environment\"})))",
           "hide": false,
           "instant": true,
@@ -660,8 +711,6 @@
           "refId": "L"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "$environment Environment Overview",
       "type": "stat"
     },
@@ -670,7 +719,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Metrics",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PA58DA793C7250F1B"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -713,18 +765,10 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.11",
+      "pluginVersion": "8.3.5",
       "pointradius": 0.5,
       "points": false,
       "renderer": "flot",
-      "scopedVars": {
-        "environment": {
-          "isNone": true,
-          "selected": true,
-          "text": "None",
-          "value": ""
-        }
-      },
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
@@ -738,9 +782,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "CPU Usage Per Node",
       "tooltip": {
         "shared": true,
@@ -749,33 +791,24 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "format": "percent",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -783,7 +816,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Metrics",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PA58DA793C7250F1B"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -825,18 +861,10 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.11",
+      "pluginVersion": "8.3.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "scopedVars": {
-        "environment": {
-          "isNone": true,
-          "selected": true,
-          "text": "None",
-          "value": ""
-        }
-      },
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
@@ -850,9 +878,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Memory Usage Per Node",
       "tooltip": {
         "shared": true,
@@ -861,9 +887,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -879,16 +903,12 @@
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -896,7 +916,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Metrics",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PA58DA793C7250F1B"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -945,18 +968,10 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.11",
+      "pluginVersion": "8.3.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "scopedVars": {
-        "environment": {
-          "isNone": true,
-          "selected": true,
-          "text": "None",
-          "value": ""
-        }
-      },
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
@@ -970,9 +985,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Disk Space  Usage Per Node",
       "tooltip": {
         "shared": true,
@@ -981,9 +994,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -999,16 +1010,12 @@
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -1016,13 +1023,12 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "-- Mixed --",
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
       "decimals": 2,
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -1052,25 +1058,20 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "7.5.11",
+      "pluginVersion": "8.3.5",
       "pointradius": 1,
       "points": true,
       "renderer": "flot",
-      "scopedVars": {
-        "environment": {
-          "isNone": true,
-          "selected": true,
-          "text": "None",
-          "value": ""
-        }
-      },
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": true,
       "targets": [
         {
-          "datasource": "Metrics",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
           "expr": "sum by(service_name)(max_over_time(mysql_global_status_threads_connected{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]) or \nlabel_replace(mysql_global_status_threads_connected{node_name=~\"$node_name\",node_type=\"remote\",environment=~\"$environment\"},\"node_name\",\"pmm-server\",\"\",\"\") or\nmax_over_time(mongodb_connections{node_name=~\"$node_name\",state=\"current\",environment=~\"$environment\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval])))",
           "interval": "$interval",
           "legendFormat": "{{service_name}}",
@@ -1078,9 +1079,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Used Connections Per Service",
       "tooltip": {
         "shared": true,
@@ -1089,9 +1088,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -1101,7 +1098,6 @@
           "format": "short",
           "label": "",
           "logBase": 1,
-          "max": null,
           "min": "0",
           "show": true
         },
@@ -1109,14 +1105,12 @@
           "format": "percentunit",
           "label": "Error Rate",
           "logBase": 1,
-          "max": null,
           "min": "0",
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -1124,12 +1118,11 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "-- Mixed --",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
       },
+      "description": "",
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -1159,18 +1152,10 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "7.5.11",
+      "pluginVersion": "8.3.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "scopedVars": {
-        "environment": {
-          "isNone": true,
-          "selected": true,
-          "text": "None",
-          "value": ""
-        }
-      },
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
@@ -1178,7 +1163,10 @@
       "targets": [
         {
           "database": "pmm",
-          "datasource": "ClickHouse",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
           "dateColDataType": "",
           "dateLoading": false,
           "dateTimeColDataType": "period_start",
@@ -1199,9 +1187,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Queries Error Rate Per Service",
       "tooltip": {
         "shared": true,
@@ -1210,9 +1196,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -1222,7 +1206,6 @@
           "format": "percentunit",
           "label": "",
           "logBase": 1,
-          "max": null,
           "min": "0",
           "show": true
         },
@@ -1230,14 +1213,12 @@
           "format": "percentunit",
           "label": "Error Rate",
           "logBase": 1,
-          "max": null,
           "min": "0",
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -1245,13 +1226,12 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "-- Mixed --",
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
       "decimals": 2,
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -1281,25 +1261,20 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "7.5.11",
+      "pluginVersion": "8.3.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "scopedVars": {
-        "environment": {
-          "isNone": true,
-          "selected": true,
-          "text": "None",
-          "value": ""
-        }
-      },
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": true,
       "targets": [
         {
-          "datasource": "Metrics",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
           "expr": "sum by (service_name) (\n(rate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or \nirate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])) or \n(rate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m]) or \nirate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m])) or\n((rate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])) or\n(irate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])))\n)",
           "interval": "$interval",
           "legendFormat": "{{service_name}}",
@@ -1307,7 +1282,10 @@
         },
         {
           "database": "pmm",
-          "datasource": "ClickHouse",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
           "dateColDataType": "",
           "dateLoading": false,
           "dateTimeColDataType": "period_start",
@@ -1329,9 +1307,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "QPS Per Service",
       "tooltip": {
         "shared": true,
@@ -1340,9 +1316,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -1352,7 +1326,6 @@
           "format": "ops",
           "label": "",
           "logBase": 1,
-          "max": null,
           "min": "0",
           "show": true
         },
@@ -1360,14 +1333,12 @@
           "format": "percentunit",
           "label": "Error Rate",
           "logBase": 1,
-          "max": null,
           "min": "0",
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -1375,13 +1346,12 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "ClickHouse",
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
       "decimals": 2,
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -1411,18 +1381,10 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "7.5.11",
+      "pluginVersion": "8.3.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "scopedVars": {
-        "environment": {
-          "isNone": true,
-          "selected": true,
-          "text": "None",
-          "value": ""
-        }
-      },
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
@@ -1450,9 +1412,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Query Latency Per Service",
       "tooltip": {
         "shared": true,
@@ -1461,9 +1421,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -1473,7 +1431,6 @@
           "format": "ms",
           "label": "",
           "logBase": 1,
-          "max": null,
           "min": "0",
           "show": true
         },
@@ -1481,19 +1438,20 @@
           "format": "percentunit",
           "label": "Error Rate",
           "logBase": 1,
-          "max": null,
           "min": "0",
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
       "activePatternIndex": 2,
-      "datasource": "Metrics",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PA58DA793C7250F1B"
+      },
       "defaultPattern": {
         "bgColors": "green|orange|red",
         "bgColors_overrides": "0->green|2->red|1->yellow",
@@ -1535,10 +1493,6 @@
       },
       "default_title_for_rows": "Service Name",
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "font_size": "",
       "gridPos": {
         "h": 11,
@@ -2177,14 +2131,6 @@
       ],
       "pluginVersion": "7.1.3",
       "row_col_wrapper": "_",
-      "scopedVars": {
-        "environment": {
-          "isNone": true,
-          "selected": true,
-          "text": "None",
-          "value": ""
-        }
-      },
       "sorting_props": {
         "col_index": 10,
         "direction": "desc"
@@ -2313,15 +2259,13 @@
       ],
       "text_alignment_header": "center",
       "text_alignment_values": "center",
-      "timeFrom": null,
-      "timeShift": null,
       "transformations": [],
       "transparent": true,
       "type": "yesoreyeram-boomtable-panel"
     }
   ],
   "refresh": "1m",
-  "schemaVersion": 27,
+  "schemaVersion": 34,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -2337,8 +2281,6 @@
           "value": "$__auto_interval_interval"
         },
         "datasource": "Metrics",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Interval",
@@ -2400,10 +2342,11 @@
           "text": "None",
           "value": ""
         },
-        "datasource": "Metrics",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
         "definition": "label_values(up, environment)",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Environment",
@@ -2419,23 +2362,22 @@
         "skipUrlSync": false,
         "sort": 5,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
         "allFormat": "glob",
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
         "definition": "label_values(up{environment=~\"$environment\",node_type=~\"generic|remote_rds|container|remote\"}, node_name)",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "Node Name",
@@ -2452,24 +2394,21 @@
         "regex": "",
         "skipUrlSync": false,
         "sort": 5,
-        "tagValuesQuery": "instance",
-        "tags": [],
-        "tagsQuery": "up",
         "type": "query",
         "useTags": false
       },
       {
         "allFormat": "glob",
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up\",node_name=~\"$node_name\"}, service_name)",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "Service Name",
@@ -2486,23 +2425,20 @@
         "regex": "",
         "skipUrlSync": false,
         "sort": 5,
-        "tagValuesQuery": "instance",
-        "tags": [],
-        "tagsQuery": "up",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "Cluster",
@@ -2518,22 +2454,21 @@
         "skipUrlSync": false,
         "sort": 5,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "Replication Set",
@@ -2549,22 +2484,21 @@
         "skipUrlSync": false,
         "sort": 5,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
         "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "Database",
@@ -2580,22 +2514,21 @@
         "skipUrlSync": false,
         "sort": 5,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "Type",
@@ -2611,22 +2544,21 @@
         "skipUrlSync": false,
         "sort": 5,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "Type",
@@ -2642,22 +2574,21 @@
         "skipUrlSync": false,
         "sort": 5,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
         "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "Username",
@@ -2673,22 +2604,21 @@
         "skipUrlSync": false,
         "sort": 5,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "Schema",
@@ -2704,7 +2634,6 @@
         "skipUrlSync": false,
         "sort": 5,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2750,5 +2679,6 @@
   "timezone": "browser",
   "title": "Environment Summary (Designed for PMM)",
   "uid": "envronment-summary",
-  "version": 2
+  "version": 1,
+  "weekStart": ""
 }
