@@ -14,7 +14,7 @@ export const TooltipText: FC<TooltipTextProps> = ({ sum, data }) => {
     return null;
   }
 
-  const [critical, major, trivial] = data;
+  const [critical, warning, notice] = data;
 
   return (
     <div className={styles.TooltipWrapper}>
@@ -30,14 +30,14 @@ export const TooltipText: FC<TooltipTextProps> = ({ sum, data }) => {
           {critical}
         </div>
         <div>
-          Major &ndash;
+          Warning &ndash;
           {' '}
-          {major}
+          {warning}
         </div>
         <div>
-          Trivial &ndash;
+          Notice &ndash;
           {' '}
-          {trivial}
+          {notice}
         </div>
       </div>
     </div>

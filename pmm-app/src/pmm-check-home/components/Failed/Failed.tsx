@@ -15,10 +15,10 @@ interface FailedProps {
 const splitSeverities = (checks: FailedCheckSummary[] = []): [number, number, number] => {
   const result: [number, number, number] = [0, 0, 0];
 
-  checks.forEach(({ criticalCount, majorCount, trivialCount }) => {
+  checks.forEach(({ criticalCount, warningCount, noticeCount }) => {
     result[0] += criticalCount;
-    result[1] += majorCount;
-    result[2] += trivialCount;
+    result[1] += warningCount;
+    result[2] += noticeCount;
   });
 
   return result;

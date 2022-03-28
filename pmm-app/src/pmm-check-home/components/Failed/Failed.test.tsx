@@ -11,14 +11,14 @@ describe('Failed::', () => {
           serviceName: '',
           serviceId: '',
           criticalCount: 1,
-          majorCount: 0,
-          trivialCount: 1,
+          warningCount: 0,
+          noticeCount: 1,
         }, {
           serviceName: '',
           serviceId: '',
           criticalCount: 2,
-          majorCount: 1,
-          trivialCount: 5,
+          warningCount: 1,
+          noticeCount: 5,
         }]}
         isSttEnabled
         hasNoAccess={false}
@@ -40,8 +40,8 @@ describe('Failed::', () => {
           serviceName: '',
           serviceId: '',
           criticalCount: 0,
-          majorCount: 0,
-          trivialCount: 0,
+          warningCount: 0,
+          noticeCount: 0,
         }]}
         isSttEnabled
         hasNoAccess={false}
@@ -59,8 +59,8 @@ describe('Failed::', () => {
           serviceName: '',
           serviceId: '',
           criticalCount: 1,
-          majorCount: 0,
-          trivialCount: 1,
+          warningCount: 0,
+          noticeCount: 1,
         }]}
         isSttEnabled
         hasNoAccess={false}
@@ -78,8 +78,8 @@ describe('Failed::', () => {
           serviceName: '',
           serviceId: '',
           criticalCount: 1,
-          majorCount: 0,
-          trivialCount: 1,
+          warningCount: 0,
+          noticeCount: 1,
         }]}
         isSttEnabled
         hasNoAccess

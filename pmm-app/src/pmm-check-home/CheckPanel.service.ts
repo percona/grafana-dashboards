@@ -24,14 +24,14 @@ export const CheckService = {
       service_name,
       service_id,
       critical_count = 0,
-      major_count = 0,
-      trivial_count = 0,
+      warning_count = 0,
+      notice_count = 0,
     }) => ({
       serviceName: service_name,
       serviceId: service_id,
       criticalCount: critical_count,
-      majorCount: major_count,
-      trivialCount: trivial_count,
+      warningCount: warning_count,
+      noticeCount: notice_count,
     }));
   },
   async getSettings() {
