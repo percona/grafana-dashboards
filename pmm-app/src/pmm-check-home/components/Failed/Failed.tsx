@@ -41,7 +41,7 @@ export const Failed: FC<FailedProps> = ({ failed = [], isSttEnabled, hasNoAccess
   if (!isSttEnabled) {
     return (
       <div className={styles.Empty} data-testid="db-check-panel-settings-link">
-        Advisors is disabled.
+        Advisors Checks feature is disabled.
         <br />
         {'Check '}
         <a className={styles.Link} href={PMM_SETTINGS_URL}>PMM Settings.</a>
