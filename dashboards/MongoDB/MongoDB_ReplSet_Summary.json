@@ -400,10 +400,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
+          "datasource": "Metrics",
           "exemplar": false,
           "expr": "avg by (set) (max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",service_name=~\"$service_name\"}[${__range}]))",
           "format": "time_series",
@@ -499,10 +496,7 @@
       ],
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
+          "datasource": "Metrics",
           "exemplar": false,
           "expr": "avg by (service_name,engine) (mongodb_mongod_storage_engine{service_name=~\"$service_name\"})",
           "format": "table",
@@ -516,10 +510,7 @@
           "step": 300
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
+          "datasource": "Metrics",
           "exemplar": false,
           "expr": "avg by (service_name,mongodb) (mongodb_version_info{service_name=~\"$service_name\"})",
           "format": "table",
@@ -2449,20 +2440,14 @@
           },
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
-              },
+              "datasource": "Metrics",
               "expr": "avg by (service_name) (mongodb_instance_uptime_seconds{service_name=~\"$service_name\"})",
               "interval": "$interval",
               "legendFormat": "{{service_name}} | Uptime",
               "refId": "C"
             },
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
-              },
+              "datasource": "Metrics",
               "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m]) or rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m]))",
               "instant": false,
               "interval": "$interval",
@@ -2470,30 +2455,21 @@
               "refId": "A"
             },
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
-              },
+              "datasource": "Metrics",
               "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / (rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / (irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]) > 0))",
               "interval": "$interval",
               "legendFormat": "{{service_name}} | Latency",
               "refId": "B"
             },
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
-              },
+              "datasource": "Metrics",
               "expr": "avg by (service_name) (max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or \nmax_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[5m]))",
               "interval": "$interval",
               "legendFormat": "{{service_name}} | Connections",
               "refId": "D"
             },
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
-              },
+              "datasource": "Metrics",
               "exemplar": false,
               "expr": "avg by (service_name) (max_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\",state=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\",state=\"total\"}[5m]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\",state=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\",state=\"total\"}[5m]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\",state=\"total\"}[$interval]) or \nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\",state=\"total\"}[5m]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\",state=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\",state=\"total\"}[5m]))",
               "instant": true,
@@ -3922,10 +3898,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_up,cluster)",
         "hide": 0,
         "includeAll": true,
@@ -3952,10 +3925,7 @@
           "text": "r1",
           "value": "r1"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
         "hide": 0,
         "includeAll": false,
@@ -3982,10 +3952,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}, node_name)",
         "hide": 2,
         "includeAll": true,
@@ -4013,10 +3980,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "",
         "hide": 0,
         "includeAll": true,
@@ -4043,10 +4007,7 @@
           "text": "mongodb_inst_rpl1_1",
           "value": "mongodb_inst_rpl1_1"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_up{service_name=~\"$service_name\"}, service_name)",
         "hide": 2,
         "includeAll": false,
@@ -4074,10 +4035,7 @@
           "text": "ip-10-178-2-8",
           "value": "ip-10-178-2-8"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_up{service_name=~\"$service_name\"},node_name)",
         "hide": 2,
         "includeAll": false,
@@ -4105,10 +4063,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 2,
         "includeAll": true,
@@ -4135,10 +4090,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
         "hide": 2,
         "includeAll": true,
@@ -4165,10 +4117,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
         "hide": 2,
         "includeAll": true,
@@ -4195,10 +4144,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
         "hide": 2,
         "includeAll": true,
@@ -4225,10 +4171,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
         "hide": 2,
         "includeAll": true,
@@ -4255,10 +4198,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
         "hide": 2,
         "includeAll": true,
@@ -4285,10 +4225,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
         "hide": 2,
         "includeAll": true,
@@ -4317,10 +4254,7 @@
           "text": "mongodb_cluster",
           "value": "mongodb_cluster"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_mongod_replset_my_state{set=~\"$replset\"},cluster)",
         "hide": 2,
         "includeAll": false,
@@ -4346,10 +4280,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "query_result(mongodb_mongod_replset_my_state{cluster=~\"$cluster\",set=\"$replset\"}==2)",
         "hide": 2,
         "includeAll": true,
