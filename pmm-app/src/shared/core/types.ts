@@ -17,3 +17,10 @@ export interface SettingsAPIResponse {
 export interface SettingsPayload {
   updates_disabled: boolean;
 }
+
+export interface PaginatedPayload {
+  page_totals: {
+    total_items: number;
+    total_pages: number;
+  };
+}
