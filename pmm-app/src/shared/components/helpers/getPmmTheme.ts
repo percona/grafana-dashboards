@@ -1,5 +1,4 @@
-import { selectThemeVariant } from '@grafana/ui';
-
+import { GrafanaTheme } from '@grafana/data';
 
 interface TableTheme {
   backgroundColor: string;
@@ -12,20 +11,12 @@ interface Themes {
   mainTextColor: string;
   table: TableTheme;
 }
-export const getPmmTheme = (theme): Themes => {
-  const mainTextColor = selectThemeVariant(
-    { light: theme.colors.text, dark: 'rgba(255, 255, 255, 0.8)' },
-    theme.type,
-  ) as string;
+export const getPmmTheme = (theme: GrafanaTheme): Themes => {
+  const mainTextColor = theme.isLight ? theme.colors.text : 'rgba(255, 255, 255, 0.8)';
 
-
-  const backgroundColor = selectThemeVariant({ light: '#f7f8fa', dark: '#0b0c0e' }, theme.type) as string;
-  const borderColor = selectThemeVariant(
-    { light: mainTextColor, dark: '#292929' },
-    theme.type,
-  ) as string;
-  const headerBackground = selectThemeVariant({ light: '#dedfe1', dark: '#202226' }, theme.type) as string;
-
+  const backgroundColor = theme.isLight ? '#f7f8fa' : '#0b0c0e';
+  const borderColor = theme.isLight ? mainTextColor : '#292929';
+  const headerBackground = theme.isLight ? '#dedfe1' : '#202226';
 
   return {
     mainTextColor,

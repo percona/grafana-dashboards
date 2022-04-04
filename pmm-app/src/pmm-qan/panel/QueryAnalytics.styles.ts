@@ -1,4 +1,4 @@
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { GrafanaTheme } from '@grafana/data';
 import { stylesFactory } from '@grafana/ui';
 import { getPmmTheme } from 'shared/components/helpers/getPmmTheme';
@@ -12,6 +12,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       justify-content: flex-end;
       padding: 13px 2px 5px 0px;
       height: 50px;
+
+      button {
+        margin-right: ${theme.spacing.sm} !important;
+      }
     `,
     overviewFooter: css`
       display: flex;
@@ -44,10 +48,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     tableWrapper: css`
       min-height: 1000px;
     `,
-    getContainerWrapper: (size) => css`
-      width: ${(size || 1500) - 260}px;
-      height: 100%;
-      position: relative;
+    link: css`
+      display: block;
+      margin-top: ${theme.spacing.sm};
+      text-decoration: underline;
     `,
   };
 });

@@ -33,6 +33,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
       totals,
     }),
     addColumn: (value) => (state) => {
+      // @ts-ignore
       const columns = [...state.columns];
 
       columns.push(value);
@@ -150,19 +151,19 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
         to: timeRange.raw.to,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRange.raw.from, timeRange.raw.to]);
 
   useEffect(() => {
     refreshGrafanaVariables(panelState);
   }, [panelState]);
 
-  const [from, setFrom] = useState(timeRange.raw.from);
-  const [to, setTo] = useState(timeRange.raw.to);
+  const getAbsoluteTime = (timeValue) => (timeValue.valueOf ? timeValue.valueOf() : timeValue);
+  const [from, setFrom] = useState(getAbsoluteTime(timeRange.raw.from));
+  const [to, setTo] = useState(getAbsoluteTime(timeRange.raw.to));
   const [previousState, setPreviousState] = useState(panelState);
 
   useEffect(() => {
-    const getAbsoluteTime = (timeValue) => (timeValue.valueOf ? timeValue.valueOf() : timeValue);
-
     const newFrom = getAbsoluteTime(timeRange.raw.from);
     const newTo = getAbsoluteTime(timeRange.raw.to);
 
@@ -194,6 +195,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     setPreviousState(newState);
     setFrom(newFrom);
     setTo(newTo);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRange, from, to]);
 
   const wrapAction = (key) => (...value) => setContext(actions[key](...value));

@@ -5,7 +5,7 @@ import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import {
   Button, Tab, TabContent, TabsBar, useTheme,
 } from '@grafana/ui';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { Databases } from 'shared/core';
 import Explain from './Explain/Explain';
@@ -59,7 +59,7 @@ export const DetailsSection: FC = () => {
 
     changeActiveTab(TabKeys[openDetailsTab]);
   }, [queryId, openDetailsTab, showTablesTab, showExplainTab, showExamplesTab]);
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => setLoadingDetails(loading || metricsLoading), [loading, metricsLoading]);
 
   const tabs = [

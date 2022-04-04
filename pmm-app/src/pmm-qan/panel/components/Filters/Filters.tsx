@@ -2,7 +2,7 @@ import React, {
   FC, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { Form } from 'react-final-form';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { Filter } from 'shared/components/Elements/Icons';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
@@ -92,6 +92,7 @@ export const Filters: FC = () => {
         className={styles.filtersField}
       />
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

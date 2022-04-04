@@ -31,14 +31,17 @@ export const Overview: FC = () => {
 
   useEffect(() => {
     setHeight((tableWrapperRef.current && tableWrapperRef.current.clientHeight) || 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tableWrapperRef.current && tableWrapperRef.current.clientHeight]);
 
   const changePageNumber = useCallback((page) => {
     contextActions.changePage(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const changePageSize = useCallback((_, size) => {
     contextActions.changePageSize(size);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderShowTotal = useCallback((totalAmount, range) => {
@@ -82,6 +85,7 @@ export const Overview: FC = () => {
 
       contextActions.changeSort(data[0].desc ? data[0].id : `-${data[0].id}`);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [contextActions.changeSort],
   );
 
@@ -113,6 +117,7 @@ export const Overview: FC = () => {
             />
           </div>
         ),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [overviewMetricsList, loading, loadingDetails, height, getRowClassName],
       )}
       {overviewMetricsList.rows.length > 1 ? (

@@ -16,8 +16,8 @@ describe('TooltipText::', () => {
     const root = outer.find('div > div > div');
 
     expect(root.at(0).text()).toEqual('Critical – 1');
-    expect(root.at(1).text()).toEqual('Major – 3');
-    expect(root.at(2).text()).toEqual('Trivial – 1');
+    expect(root.at(1).text()).toEqual('Warning – 3');
+    expect(root.at(2).text()).toEqual('Notice – 1');
 
     root.unmount();
   });

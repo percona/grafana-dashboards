@@ -1,6 +1,6 @@
 import React from 'react';
 import SimpleBar from 'simplebar-react';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import { styles } from './Scrollbar.styles';
 import 'simplebar-react/dist/simplebar.min.css';
 

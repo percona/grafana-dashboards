@@ -43,10 +43,12 @@ export const useIndexes = (databaseType, example, tableName, database): [StatusD
 
     setIndexes(result);
     setData(processTableData(result.value));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [databaseType]);
 
   useEffect(() => {
     getIndexes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [databaseType]);
 
   return [data, indexes];

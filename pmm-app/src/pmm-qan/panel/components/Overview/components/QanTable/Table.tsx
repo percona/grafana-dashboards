@@ -12,7 +12,7 @@ import {
   useTable,
 } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import useWindowSize from 'shared/components/hooks/WindowSize.hooks';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { getStyles } from './Table.styles';
@@ -117,6 +117,7 @@ export const Table: FC<TableProps> = ({
     if (onRowSelection) {
       onRowSelection(selectedFlatRows);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFlatRows]);
 
   const [firstLoad, setFirstLoad] = useState(true);
@@ -129,6 +130,7 @@ export const Table: FC<TableProps> = ({
     }
 
     onSortChange((state as any).sortBy);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [(state as any).sortBy]);
 
   const RenderHeader = ({ headers, getHeaderGroupProps }: HeaderGroup) => (
@@ -196,6 +198,7 @@ export const Table: FC<TableProps> = ({
         </div>
       );
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [prepareRow, rows, rowClassName],
   );
 

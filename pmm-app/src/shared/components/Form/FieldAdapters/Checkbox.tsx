@@ -1,33 +1,33 @@
 import React, { HTMLProps, useCallback } from 'react';
-import { GrafanaTheme } from '@grafana/data';
-import { stylesFactory, useTheme } from '@grafana/ui';
-import { css, cx } from 'emotion';
+import { GrafanaTheme2 } from '@grafana/data';
+import { useStyles2 } from '@grafana/ui';
+import { css, cx } from '@emotion/css';
 
 export interface CheckboxProps extends Omit<HTMLProps<HTMLInputElement>, 'value'> {
   label?: string;
   value?: boolean;
 }
 
-export const getFocusCss = (theme: GrafanaTheme) => css`
+export const getFocusCss = ({ v1: { colors } }: GrafanaTheme2) => css`
   outline: 2px dotted transparent;
   outline-offset: 2px;
-  box-shadow: 0 0 0 2px ${(theme.colors as any).pageBg}, 0 0 0px 4px ${theme.colors.formFocusOutline};
+  box-shadow: 0 0 0 2px ${(colors as any).pageBg}, 0 0 0px 4px ${colors.formFocusOutline};
   transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
 `;
 
-export const getLabelStyles = stylesFactory((theme: GrafanaTheme) => ({
+export const getLabelStyles = ({ v1: { typography, spacing, colors } }: GrafanaTheme2) => ({
   label: css`
-      font-size: ${theme.typography.size.sm};
-      font-weight: ${theme.typography.weight.semibold};
+      font-size: ${typography.size.sm};
+      font-weight: ${typography.weight.semibold};
       line-height: 1.25;
-      margin: ${theme.spacing.formLabelMargin};
-      padding: ${theme.spacing.formLabelPadding};
-      color: ${theme.colors.formLabel};
+      margin: ${spacing.formLabelMargin};
+      padding: ${spacing.formLabelPadding};
+      color: ${colors.formLabel};
       max-width: 480px;
     `,
-}));
+});
 
-export const getCheckboxStyles = stylesFactory((theme: GrafanaTheme) => {
+export const getCheckboxStyles = (theme: GrafanaTheme2) => {
   const labelStyles = getLabelStyles(theme);
   const checkboxSize = '16px';
 
@@ -35,7 +35,7 @@ export const getCheckboxStyles = stylesFactory((theme: GrafanaTheme) => {
     label: cx(
       labelStyles.label,
       css`
-        padding-left: ${theme.spacing.formSpacingBase}px;
+        padding-left: ${theme.v1.spacing.formSpacingBase}px;
       `,
     ),
     wrapper: css`
@@ -55,10 +55,10 @@ export const getCheckboxStyles = stylesFactory((theme: GrafanaTheme) => {
       }
       &:checked + span {
         background: blue;
-        background: ${theme.colors.formCheckboxBgChecked};
+        background: ${theme.colors.primary.main};
         border: none;
         &:hover {
-          background: ${theme.colors.formCheckboxBgCheckedHover};
+          background: ${theme.colors.primary.shade};
         }
         &:after {
           content: '';
@@ -67,7 +67,7 @@ export const getCheckboxStyles = stylesFactory((theme: GrafanaTheme) => {
           top: 1px;
           width: 6px;
           height: 12px;
-          border: solid ${theme.colors.formCheckboxCheckmark};
+          border: solid ${theme.colors.primary.contrastText};
           border-width: 0 3px 3px 0;
           transform: rotate(45deg);
         }
@@ -77,26 +77,25 @@ export const getCheckboxStyles = stylesFactory((theme: GrafanaTheme) => {
       display: inline-block;
       width: ${checkboxSize};
       height: ${checkboxSize};
-      border-radius: ${theme.border.radius.sm};
-      margin-right: ${theme.spacing.formSpacingBase}px;
-      background: ${(theme.colors as any).formCheckboxBg};
-      border: 1px solid ${theme.colors.formInputBorder};
+      border-radius: ${theme.v1.border.radius.sm};
+      margin-right: ${theme.v1.spacing.formSpacingBase}px;
+      background: ${(theme.v1.colors as any).formCheckboxBg};
+      border: 1px solid ${theme.v1.colors.formInputBorder};
       position: absolute;
       top: 1px;
       left: 0;
       &:hover {
         cursor: pointer;
-        border-color: ${theme.colors.formInputBorderHover};
+        border-color: ${theme.v1.colors.formInputBorderHover};
       }
     `,
   };
-});
+};
 
 export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
   ({
     label, value, onChange, disabled, ...inputProps
   }, ref) => {
-    const theme = useTheme();
     const handleOnChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
         if (onChange) {
@@ -105,7 +104,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       },
       [onChange],
     );
-    const styles = getCheckboxStyles(theme);
+    const styles = useStyles2(getCheckboxStyles);
 
     return (
       <label className={styles.wrapper}>

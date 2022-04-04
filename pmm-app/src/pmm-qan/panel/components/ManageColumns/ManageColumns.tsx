@@ -4,7 +4,7 @@ import React, {
 import {
   Divider, Icon, Select, Tooltip,
 } from 'antd';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import { useTheme } from '@grafana/ui';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
@@ -49,10 +49,12 @@ export const ManageColumns = (props) => {
         });
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentMetric, onlyAdd],
   );
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const removeColumn = useCallback(() => contextActions.removeColumn(currentMetric), [currentMetric]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const swapWithMain = useCallback(() => contextActions.swapMainColumn(currentMetric), [currentMetric]);
 
   const Placeholder = () => (!onlyAdd ? (

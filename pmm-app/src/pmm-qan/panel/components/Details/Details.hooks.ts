@@ -37,6 +37,7 @@ export const useDetails = (): [boolean, any, DatabasesType] => {
         setLoading(false);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryId]);
 
   return [loading, examples, databaseType];

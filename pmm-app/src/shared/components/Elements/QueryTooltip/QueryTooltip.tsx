@@ -2,7 +2,7 @@ import { Tooltip } from 'antd';
 import React from 'react';
 import { useStyles } from '@grafana/ui';
 import sqlFormatter from 'sql-formatter';
-import { Highlight } from 'pmm-qan/panel/components/Highlight/Highlight';
+import { Highlight } from 'shared/components/Hightlight/Highlight';
 import { getStyles } from './QueryTooltip.styles';
 
 interface QueryTooltipProps {

@@ -20,6 +20,7 @@ export const Latency = (props) => {
     }
 
     drawChart(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const drawChart = (data) => {

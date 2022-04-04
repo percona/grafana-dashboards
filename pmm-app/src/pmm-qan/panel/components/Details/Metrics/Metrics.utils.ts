@@ -1,33 +1,34 @@
-import {
-  applyFieldOverrides, DataFrame, FieldType, GrafanaTheme, toDataFrame,
-} from '@grafana/data';
-import { HistogramResponse } from './Metrics.types';
+import { ChartData } from 'chart.js';
+import { GrafanaTheme2 } from '@grafana/data';
+import { HistogramAPI } from './Metrics.types';
 
-export const histogramToDataFrame = ({
-  histogram_items = [],
-}: HistogramResponse,
-theme: GrafanaTheme): DataFrame[] => {
-  const ranges = histogram_items.map(({ range }) => formatRange(range));
-  const frequencies = histogram_items.map(({ frequency }) => frequency || 0);
-  const fields = {
-    fields: [
-      { name: 'x', type: FieldType.string, values: ranges },
-      { name: '', type: FieldType.number, values: frequencies },
-    ],
-  };
-  const frame = toDataFrame(fields);
-  const data = applyFieldOverrides({
-    data: [frame],
-    fieldConfig: {
-      overrides: [],
-      defaults: {},
-    },
-    theme,
-    replaceVariables: (value: string) => value,
-  });
-  const hasData = frequencies.filter((f) => f !== 0).length > 0;
+export const getChartDataFromHistogramItems = (histogram_items: HistogramAPI[], theme: GrafanaTheme2): ChartData<'bar'>| undefined => {
+  if (histogram_items && histogram_items.length > 0) {
+    const total = histogram_items.reduce(
+      (previousValue, { frequency }) => (
+        frequency ? previousValue + frequency : previousValue
+      ), 0,
+    );
 
-  return hasData ? data : [];
+    const ranges = histogram_items.map(({ range }) => formatRange(range));
+    const frequencies = histogram_items.map(({ frequency }) => frequency || 0);
+    const dataInPersent = total
+      ? histogram_items.map(({ frequency }) => ((frequency || 0) / total) * 100)
+      : undefined;
+
+    const dataSet = {
+      data: frequencies,
+      backgroundColor: theme?.v1.colors.bg3,
+      dataInPersent,
+    };
+
+    return {
+      labels: ranges,
+      datasets: [dataSet],
+    };
+  }
+
+  return undefined;
 };
 
 export const formatRange = (range: string) => {

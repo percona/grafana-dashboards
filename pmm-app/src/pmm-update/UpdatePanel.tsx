@@ -38,7 +38,7 @@ export const UpdatePanel: FC<{}> = () => {
       const { updatesDisabled } = await SettingsService.getSettings(true);
 
       setUpdatesDisabled(!!updatesDisabled);
-    } catch (e) {
+    } catch (e: any) {
       if (e.response?.status === 401) {
         setHasNoAccess(true);
       }

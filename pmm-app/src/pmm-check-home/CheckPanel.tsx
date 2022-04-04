@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { PanelProps } from '@grafana/data';
 import { Spinner } from '@grafana/ui';
-import { CheckPanelOptions, Settings, FailedChecks } from 'pmm-check-home/types';
+import { CheckPanelOptions, Settings, FailedCheckSummary } from 'pmm-check-home/types';
 import { CheckService } from 'pmm-check-home/CheckPanel.service';
 import { Failed } from 'pmm-check-home/components';
 import * as styles from './CheckPanel.styles';
@@ -9,7 +9,7 @@ import * as styles from './CheckPanel.styles';
 export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
 export interface CheckPanelState {
-  failedChecks?: FailedChecks;
+  failedChecks: FailedCheckSummary[];
   hasNoAccess: boolean;
   isSttEnabled: boolean;
   isLoading: boolean;
@@ -21,7 +21,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     this.fetchAlerts = this.fetchAlerts.bind(this);
     this.getSettings = this.getSettings.bind(this);
     this.state = {
-      failedChecks: undefined,
+      failedChecks: [],
       hasNoAccess: false,
       isSttEnabled: false,
       isLoading: true,
@@ -43,7 +43,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       } else {
         this.setState({ isLoading: false });
       }
-    } catch (err) {
+    } catch (err: any) {
       this.setState({ isLoading: false });
       if (err.response?.status === 401) {
         this.setState({ hasNoAccess: true });
@@ -55,7 +55,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
 
   async fetchAlerts() {
     try {
-      const failedChecks = await CheckService.getFailedChecks();
+      const failedChecks = await CheckService.getAllFailedChecks();
 
       this.setState({ failedChecks });
     } catch (err) {
