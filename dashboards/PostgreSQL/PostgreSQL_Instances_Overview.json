@@ -638,7 +638,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "clamp_max(sum(max_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[5m])) / count(pg_up{service_name=~\"$service_name\"}),1)",
+          "expr": "clamp_max(sum(max_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[5m])) / count (group by (service_name) (pg_up{service_name=~\"$service_name\"})),1)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
