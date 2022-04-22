@@ -175,6 +175,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
         from: newFrom,
         to: newTo,
       },
+      search: query.get('search'),
     };
 
     if (from === newFrom && to === newTo) {

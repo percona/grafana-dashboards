@@ -39,6 +39,7 @@ interface GrafanaVariables {
   details_tab?: string;
   [key: string]: any;
   dimensionSearchText?: string;
+  search?: string;
 }
 export const refreshGrafanaVariables = (state) => {
   const {
@@ -122,6 +123,10 @@ export const refreshGrafanaVariables = (state) => {
 
   if (state.openDetailsTab) {
     variablesQuery.details_tab = state.openDetailsTab;
+  }
+
+  if (state.search) {
+    variablesQuery.search = state.search;
   }
 
   getLocationSrv().update({
