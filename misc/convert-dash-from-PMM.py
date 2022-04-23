@@ -14,7 +14,7 @@
 
 
 
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import sys
 import json
@@ -105,6 +105,8 @@ def check_formulas(dashboard, currentVariableName, newVariableName):
             for list_index, lists in enumerate(dashboard['templating']['list']):
                     if 'query' in lists.keys():
                         expr = dashboard['templating']['list'][list_index]['query']
+                        if isinstance(expr, dict) and ('query' in expr):
+                            expr = expr['query']
                         expr = re.sub('node_type=~\"[a-z,$_|]*\"', '', expr)
                         name = dashboard['templating']['list'][list_index]['name']
                         name = re.sub('node_type=~\"[a-z,$_|]*\"', '', name)
