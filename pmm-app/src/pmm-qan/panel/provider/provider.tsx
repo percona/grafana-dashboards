@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { omit, isEqual } from 'lodash';
 import { parseURL, refreshGrafanaVariables, setLabels } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
@@ -134,6 +134,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
   };
 
   const query = new URLSearchParams(window.location.search);
+  const searchRef = useRef<string| null>(null);
 
   const [panelState, setContext] = useState({
     ...parseURL(query),
@@ -141,7 +142,16 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
       from: timeRange.raw.from,
       to: timeRange.raw.to,
     },
+    search: searchRef.current,
   });
+
+  if (searchRef.current !== query.get('search')) {
+    searchRef.current = query.get('search');
+    setContext({
+      ...panelState,
+      search: searchRef.current,
+    });
+  }
 
   useEffect(() => {
     setContext({
@@ -175,7 +185,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
         from: newFrom,
         to: newTo,
       },
-      search: query.get('search'),
+      search: searchRef.current,
     };
 
     if (from === newFrom && to === newTo) {
