@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1647263392290,
+  "iteration": 1649252399077,
   "links": [
     {
       "icon": "doc",
@@ -120,12 +120,105 @@
       "type": "row"
     },
     {
-      "columns": [],
       "datasource": {
+        "type": "prometheus",
         "uid": "$ds"
       },
       "description": "Agent is restated if a new service is added for monitoring ",
-      "fontSize": "100%",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "decimals": 2,
+          "displayName": "",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Uptime"
+              },
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "custom.align",
+                "value": "right"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "rgba(245, 54, 54, 0.9)",
+                      "value": null
+                    },
+                    {
+                      "color": "rgba(237, 129, 40, 0.89)",
+                      "value": 3600
+                    },
+                    {
+                      "color": "rgba(50, 172, 45, 0.97)",
+                      "value": 86400
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "node_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Node Name"
+              },
+              {
+                "id": "unit",
+                "value": "string"
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 11,
         "w": 8,
@@ -133,70 +226,21 @@
         "y": 1
       },
       "id": 11,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "desc": false
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
       },
-      "styles": [
-        {
-          "$$hashKey": "object:1348",
-          "alias": "Uptime",
-          "align": "auto",
-          "colorMode": "value",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Value",
-          "thresholds": [
-            "3600",
-            "86400"
-          ],
-          "type": "number",
-          "unit": "s"
-        },
-        {
-          "$$hashKey": "object:1349",
-          "alias": "Node Name",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "node_name",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:1350",
-          "alias": "",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "/.*/",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        }
-      ],
+      "pluginVersion": "8.3.5",
       "targets": [
         {
+          "datasource": "Metrics",
+          "exemplar": false,
           "expr": "time() - max_over_time(vm_app_start_timestamp{node_name=~\"$node_name\"}[5m])",
           "format": "table",
           "instant": true,
@@ -206,8 +250,26 @@
         }
       ],
       "title": "Current Uptime",
-      "transform": "table",
-      "type": "table-old"
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "node_name",
+                "Value"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "datasource": {
@@ -237,7 +299,7 @@
       },
       "id": 9,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -293,7 +355,7 @@
       },
       "id": 92,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -357,7 +419,7 @@
       },
       "id": 96,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -441,7 +503,7 @@
         }
       ],
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -1289,7 +1351,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 85
       },
       "id": 81,
       "panels": [],
@@ -1311,7 +1373,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 86
       },
       "hiddenSeries": false,
       "id": 79,
@@ -1402,7 +1464,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 94
       },
       "hiddenSeries": false,
       "id": 69,
@@ -1517,7 +1579,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 102
       },
       "id": 28,
       "panels": [],
@@ -1537,7 +1599,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 63
+        "y": 103
       },
       "hiddenSeries": false,
       "id": 20,
@@ -1625,7 +1687,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 63
+        "y": 103
       },
       "hiddenSeries": false,
       "id": 102,
@@ -1714,7 +1776,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 71
+        "y": 111
       },
       "hiddenSeries": false,
       "id": 46,
@@ -1802,7 +1864,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 71
+        "y": 111
       },
       "hiddenSeries": false,
       "id": 108,
@@ -1889,7 +1951,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 79
+        "y": 119
       },
       "hiddenSeries": false,
       "id": 104,
@@ -1975,7 +2037,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 79
+        "y": 119
       },
       "hiddenSeries": false,
       "id": 31,
@@ -2061,7 +2123,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 87
+        "y": 127
       },
       "hiddenSeries": false,
       "id": 106,
@@ -2147,7 +2209,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 87
+        "y": 127
       },
       "hiddenSeries": false,
       "id": 105,
@@ -2237,7 +2299,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 95
+        "y": 135
       },
       "heatmap": {},
       "hideZeroBuckets": false,
@@ -2284,7 +2346,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 103
+        "y": 183
       },
       "id": 71,
       "panels": [],
@@ -2306,7 +2368,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 104
+        "y": 184
       },
       "hiddenSeries": false,
       "id": 73,
@@ -2400,7 +2462,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 104
+        "y": 184
       },
       "hiddenSeries": false,
       "id": 77,
@@ -2495,7 +2557,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 112
+        "y": 192
       },
       "hiddenSeries": false,
       "id": 78,
@@ -2583,7 +2645,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 112
+        "y": 192
       },
       "hiddenSeries": false,
       "id": 50,
@@ -2664,7 +2726,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 120
+        "y": 200
       },
       "id": 58,
       "panels": [],
@@ -2687,7 +2749,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 121
+        "y": 201
       },
       "hiddenSeries": false,
       "id": 60,
@@ -2775,7 +2837,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 121
+        "y": 201
       },
       "hiddenSeries": false,
       "id": 66,
@@ -2865,7 +2927,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 129
+        "y": 209
       },
       "heatmap": {},
       "hideZeroBuckets": false,
@@ -2920,7 +2982,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 129
+        "y": 209
       },
       "heatmap": {},
       "hideZeroBuckets": false,
@@ -2972,7 +3034,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 137
+        "y": 217
       },
       "hiddenSeries": false,
       "id": 61,
@@ -3061,7 +3123,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 137
+        "y": 217
       },
       "hiddenSeries": false,
       "id": 65,
@@ -3153,7 +3215,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 145
+        "y": 225
       },
       "heatmap": {},
       "hideZeroBuckets": false,
@@ -3201,7 +3263,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 154
+        "y": 279
       },
       "id": 45,
       "panels": [],
@@ -3224,7 +3286,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 155
+        "y": 280
       },
       "hiddenSeries": false,
       "id": 35,
@@ -3322,7 +3384,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 155
+        "y": 280
       },
       "hiddenSeries": false,
       "id": 37,
@@ -3418,7 +3480,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 163
+        "y": 288
       },
       "hiddenSeries": false,
       "id": 41,
@@ -3509,7 +3571,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 163
+        "y": 288
       },
       "hiddenSeries": false,
       "id": 7,
@@ -3685,9 +3747,13 @@
       {
         "allValue": "",
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "Metrics",
         "definition": "label_values(vm_app_version{agent_type=\"vmagent\"}, node_name)",
@@ -3714,8 +3780,12 @@
         "allValue": ".*",
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "uid": "$ds"
@@ -3743,8 +3813,12 @@
         "allValue": "",
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "uid": "$ds"
