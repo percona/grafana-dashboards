@@ -2395,7 +2395,7 @@
               "calculatedInterval": "10m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by () (avg(time() - max(container_start_time_seconds{pod=~\"$pod\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"})) or avg(node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or avg(time() - node_boot_time_seconds{node_name=~\"$node_name\"}))",
+              "expr": "avg by (node_name)  (time() - container_start_time_seconds{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or avg by (node_name) ((node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"}))",
               "format": "time_series",
               "hide": false,
               "interval": "5m",
