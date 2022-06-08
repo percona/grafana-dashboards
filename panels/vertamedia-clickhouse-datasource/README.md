@@ -1,6 +1,9 @@
-# ClickHouse datasource for Grafana 4.6+
+# Altinity Grafana datasource plugin for ClickHouse (grafana Grafana 4.6+ supported)
 
-ClickHouse datasource plugin provides a support for [ClickHouse](https://clickhouse.tech) as a backend database.  
+Altinity ClickHouse datasource plugin provides a support for [ClickHouse](https://clickhouse.tech) as a backend database.
+
+Initially plugin developed by Vertamedia, maintaned by Altinity since 2020.
+
 
 ### Quick start
 
@@ -53,15 +56,15 @@ Page configuration is standard
 
 There is a small feature - ClickHouse treats HTTP Basic Authentication credentials as a database user and will try to run queries using its name.
 
-#### [CHProxy](https://github.com/Vertamedia/chproxy) (optional)
-Using of [CHProxy](https://github.com/Vertamedia/chproxy) will bring additional features:
-* Easily setup `HTTPS` access to ClickHouse as shown [here](https://github.com/Vertamedia/chproxy#authorize-users-by-passwords-via-https)
+#### [CHProxy](https://github.com/ContentSquare/chproxy) (optional)
+Using of [CHProxy](https://github.com/ContentSquare/chproxy) will bring additional features:
+* Easily setup `HTTPS` access to ClickHouse as shown [here](https://github.com/ContentSquare/chproxy#authorize-users-by-passwords-via-https)
 to provide secure access.
-* Limit concurrency and execution time for requests from `Grafana` as shown [here](https://github.com/Vertamedia/chproxy#spread-selects-from-reporting-apps-among-cluster-nodes)
+* Limit concurrency and execution time for requests from `Grafana` as shown [here](https://github.com/ContentSquare/chproxy#spread-selects-from-reporting-apps-among-cluster-nodes)
 to prevent `ClickHouse` overloading from `Grafana`.
 * Protection against request bursts for dashboards with numerous graphs. `CHProxy` allows queueing requests and execute them sequentially.
-To learn more - read about params `max_queue_size` and `max_queue_time` at [CHProxy](https://github.com/Vertamedia/chproxy) page.
-* Response caching for the most frequent queries as shown [here](https://github.com/Vertamedia/chproxy#caching).
+To learn more - read about params `max_queue_size` and `max_queue_time` at [CHProxy](https://github.com/ContentSquare/chproxy) page.
+* Response caching for the most frequent queries as shown [here](https://github.com/ContentSquare/chproxy#caching).
 `Caching` will protect `ClickHouse` from excessive refreshes and will be optimal option for popular dashboards.
 > Hint - if you need to cache requests like `last 24h` where timestamp changes constantly then try to use `Round` option at `Raw Editor`
 
@@ -108,6 +111,7 @@ Plugin supports the following marcos:
   Requires Column:Date and Column:DateTime or Column:TimeStamp to be selected.
 * $timeFilterByColumn($column) - replaced with currently selected "Time Range" for a column passed as `$column` argument. Use it in queries or query variables as `...WHERE $timeFilterColumn($column)...` or `...WHERE $timeFilterColumn(created_at)...`.
 * $timeSeries - replaced with special ClickHouse construction to convert results as time-series data. Use it as "SELECT $timeSeries...". 
+* $naturalTimeSeries - replaced with special ClickHouse construction to convert results as time-series with in a logical/natural breakdown. Use it as "SELECT $naturalTimeSeries...".
 * $unescape - unescapes variable value by removing single quotes. Used for multiple-value string variables: "SELECT $unescape($column) FROM requests WHERE $unescape($column) = 5"
 * $adhoc - replaced with a rendered ad-hoc filter expression, or "1" if no ad-hoc filters exist. Since ad-hoc applies automatically only to outer queries the macros can be used for filtering in inner queries.
 
@@ -115,7 +119,7 @@ A description of macros is available by typing their names in Raw Editor
 
 ### Functions
 
-Functions are just templates of SQL queries, and you can check the final query at [Raw SQL Editor mode](https://github.com/Vertamedia/clickhouse-grafana/blob/master/README.md#raw-sql-editor). 
+Functions are just templates of SQL queries, and you can check the final query at [Raw SQL Editor mode](https://github.com/Altinity/clickhouse-grafana/blob/master/README.md#raw-sql-editor). 
 If you need some additional complexity - just copy raw sql into Raw Editor and make according changes. Remember that macros are still available to use. 
 
 There are some limits in function use because of poor query analysis:
@@ -254,7 +258,7 @@ FROM
     ORDER BY t
 )
 ```
-// see [issue 78](https://github.com/Vertamedia/clickhouse-grafana/issues/78) for the background
+// see [issue 78](https://github.com/Altinity/clickhouse-grafana/issues/78) for the background
 
 ---
 
@@ -297,7 +301,7 @@ FROM
 GROUP BY t
 ORDER BY t
 ```
-// see [issue 80](https://github.com/Vertamedia/clickhouse-grafana/issues/80) for the background
+// see [issue 80](https://github.com/Altinity/clickhouse-grafana/issues/80) for the background
 
 ---
 
@@ -638,8 +642,8 @@ We will appreciate any help from the community which will make working with such
 
 ### Development 
 
-see [CONTRIBUTING.md](https://github.com/Vertamedia/clickhouse-grafana/blob/master/CONTRIBUTING.md) for Development and Pull request Contributing instructions 
+see [CONTRIBUTING.md](https://github.com/Altinity/clickhouse-grafana/blob/master/CONTRIBUTING.md) for Development and Pull request Contributing instructions 
    
 License
 -------
-MIT License, please see [LICENSE](https://github.com/Vertamedia/clickhouse-grafana/blob/master/LICENSE) for details.
+MIT License, please see [LICENSE](https://github.com/Altinity/clickhouse-grafana/blob/master/LICENSE) for details.
