@@ -10,15 +10,29 @@ describe('Failed::', () => {
         failed={[{
           serviceName: '',
           serviceId: '',
-          criticalCount: 1,
-          warningCount: 0,
-          noticeCount: 1,
+          counts: {
+            critical: 1,
+            warning: 0,
+            notice: 1,
+            alert: 0,
+            info: 0,
+            debug: 0,
+            emergency: 0,
+            error: 0,
+          },
         }, {
           serviceName: '',
           serviceId: '',
-          criticalCount: 2,
-          warningCount: 1,
-          noticeCount: 5,
+          counts: {
+            critical: 2,
+            warning: 1,
+            notice: 5,
+            alert: 0,
+            info: 0,
+            debug: 0,
+            emergency: 0,
+            error: 0,
+          },
         }]}
         isSttEnabled
         hasNoAccess={false}
@@ -39,9 +53,16 @@ describe('Failed::', () => {
         failed={[{
           serviceName: '',
           serviceId: '',
-          criticalCount: 0,
-          warningCount: 0,
-          noticeCount: 0,
+          counts: {
+            critical: 0,
+            warning: 0,
+            notice: 0,
+            alert: 0,
+            info: 0,
+            debug: 0,
+            emergency: 0,
+            error: 0,
+          },
         }]}
         isSttEnabled
         hasNoAccess={false}
@@ -58,9 +79,16 @@ describe('Failed::', () => {
         failed={[{
           serviceName: '',
           serviceId: '',
-          criticalCount: 1,
-          warningCount: 0,
-          noticeCount: 1,
+          counts: {
+            critical: 1,
+            warning: 0,
+            notice: 1,
+            alert: 0,
+            info: 0,
+            debug: 0,
+            emergency: 0,
+            error: 0,
+          },
         }]}
         isSttEnabled
         hasNoAccess={false}
@@ -77,9 +105,16 @@ describe('Failed::', () => {
         failed={[{
           serviceName: '',
           serviceId: '',
-          criticalCount: 1,
-          warningCount: 0,
-          noticeCount: 1,
+          counts: {
+            critical: 1,
+            warning: 0,
+            notice: 1,
+            alert: 0,
+            info: 0,
+            debug: 0,
+            emergency: 0,
+            error: 0,
+          },
         }]}
         isSttEnabled
         hasNoAccess
