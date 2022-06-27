@@ -36,10 +36,10 @@ export const getStyles = ({ v1: { palette } }: GrafanaTheme2) => ({
   Critical: css`
     color: ${palette.red};
   `,
-  Major: css`
+  Warning: css`
     color: ${palette.yellow};
   `,
-  Trivial: css`
+  Notice: css`
     color: ${palette.blue80};
   `,
 });

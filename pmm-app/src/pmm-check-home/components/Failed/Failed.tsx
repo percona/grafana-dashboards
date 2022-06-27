@@ -15,10 +15,10 @@ interface FailedProps {
 const splitSeverities = (checks: FailedCheckSummary[] = []): [number, number, number] => {
   const result: [number, number, number] = [0, 0, 0];
 
-  checks.forEach(({ criticalCount, warningCount, noticeCount }) => {
-    result[0] += criticalCount;
-    result[1] += warningCount;
-    result[2] += noticeCount;
+  checks.forEach(({ counts: { critical, warning, notice } }) => {
+    result[0] += critical;
+    result[1] += warning;
+    result[2] += notice;
   });
 
   return result;
@@ -27,8 +27,12 @@ const splitSeverities = (checks: FailedCheckSummary[] = []): [number, number, nu
 export const Failed: FC<FailedProps> = ({ failed = [], isSttEnabled, hasNoAccess }) => {
   const styles = useStyles2(getStyles);
   const totalFailedChecks = splitSeverities(failed);
-  const [critical, major, trivial] = totalFailedChecks;
-  const sum = critical + major + trivial;
+  const [critical, warning, notice] = totalFailedChecks;
+  const sum = failed.map((check) => check.counts).reduce((accSum, curCheck) => {
+    const keySum = Object.keys(curCheck).reduce((acc, curKey) => curCheck[curKey] + acc, 0);
+
+    return accSum + keySum;
+  }, 0);
 
   if (hasNoAccess) {
     return (
@@ -63,9 +67,9 @@ export const Failed: FC<FailedProps> = ({ failed = [], isSttEnabled, hasNoAccess
         <a href={PMM_DATABASE_CHECKS_PANEL_URL} className={styles.FailedDiv}>
           <span className={styles.Critical}>{critical}</span>
           <span> / </span>
-          <span className={styles.Major}>{major}</span>
+          <span className={styles.Warning}>{warning}</span>
           <span> / </span>
-          <span className={styles.Trivial}>{trivial}</span>
+          <span className={styles.Notice}>{notice}</span>
         </a>
       </Tooltip>
     </div>
