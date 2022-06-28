@@ -36,6 +36,9 @@ export const getStyles = ({ v1: { palette } }: GrafanaTheme2) => ({
   Critical: css`
     color: ${palette.red};
   `,
+  Error: css`
+    color: ${palette.orange};
+  `,
   Warning: css`
     color: ${palette.yellow};
   `,

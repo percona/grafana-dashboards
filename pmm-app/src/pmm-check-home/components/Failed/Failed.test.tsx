@@ -11,27 +11,27 @@ describe('Failed::', () => {
           serviceName: '',
           serviceId: '',
           counts: {
+            emergency: 0,
             critical: 1,
-            warning: 0,
-            notice: 1,
             alert: 0,
+            error: 0,
+            warning: 2,
+            notice: 0,
             info: 0,
             debug: 0,
-            emergency: 0,
-            error: 0,
           },
         }, {
           serviceName: '',
           serviceId: '',
           counts: {
+            emergency: 0,
             critical: 2,
-            warning: 1,
-            notice: 5,
             alert: 0,
+            error: 0,
+            warning: 0,
+            notice: 0,
             info: 0,
             debug: 0,
-            emergency: 0,
-            error: 0,
           },
         }]}
         isSttEnabled
@@ -42,8 +42,9 @@ describe('Failed::', () => {
     const spans = root.find('div a > span');
 
     expect(spans.at(0).text()).toEqual('3');
-    expect(spans.at(2).text()).toEqual('1');
-    expect(spans.at(4).text()).toEqual('6');
+    expect(spans.at(2).text()).toEqual('0');
+    expect(spans.at(4).text()).toEqual('2');
+    expect(spans.at(6).text()).toEqual('0');
     root.unmount();
   });
 
