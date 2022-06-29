@@ -7,7 +7,6 @@ import { TooltipText } from './TooltipText';
 import { getStyles } from './Failed.styles';
 import { FailedProps } from './Failed.types';
 
-
 const splitSeverities = (checks: FailedCheckSummary[] = []): FailedChecksCounts => {
   const result: FailedChecksCounts = {
     emergency: 0,
