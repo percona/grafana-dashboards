@@ -26,7 +26,7 @@ export const TooltipText: FC<TooltipTextProps> = ({
         {' '}
         {sum}
       </div>
-      <div className={styles.TooltipBody}>
+      <div className={styles.TooltipBody} data-testid="checks-tooltip-body">
         <div>
           Emergency &ndash;
           {' '}
