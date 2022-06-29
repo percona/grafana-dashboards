@@ -5,12 +5,8 @@ import { FailedChecksCounts, FailedCheckSummary } from 'pmm-check-home/types';
 import { PMM_SETTINGS_URL, PMM_DATABASE_CHECKS_PANEL_URL } from 'pmm-check-home/CheckPanel.constants';
 import { TooltipText } from './TooltipText';
 import { getStyles } from './Failed.styles';
+import { FailedProps } from './Failed.types';
 
-interface FailedProps {
-  failed: FailedCheckSummary[];
-  hasNoAccess: boolean;
-  isSttEnabled: boolean;
-}
 
 const splitSeverities = (checks: FailedCheckSummary[] = []): FailedChecksCounts => {
   const result: FailedChecksCounts = {
