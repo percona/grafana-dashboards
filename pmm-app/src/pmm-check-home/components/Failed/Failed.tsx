@@ -1,24 +1,37 @@
 import React, { FC } from 'react';
 import { Tooltip, useStyles2 } from '@grafana/ui';
 import { cx } from '@emotion/css';
-import { FailedCheckSummary } from 'pmm-check-home/types';
+import { FailedChecksCounts, FailedCheckSummary } from 'pmm-check-home/types';
 import { PMM_SETTINGS_URL, PMM_DATABASE_CHECKS_PANEL_URL } from 'pmm-check-home/CheckPanel.constants';
 import { TooltipText } from './TooltipText';
 import { getStyles } from './Failed.styles';
+import { FailedProps } from './Failed.types';
 
-interface FailedProps {
-  failed: FailedCheckSummary[];
-  hasNoAccess: boolean;
-  isSttEnabled: boolean;
-}
+const splitSeverities = (checks: FailedCheckSummary[] = []): FailedChecksCounts => {
+  const result: FailedChecksCounts = {
+    emergency: 0,
+    critical: 0,
+    alert: 0,
+    error: 0,
+    warning: 0,
+    debug: 0,
+    info: 0,
+    notice: 0,
+  };
 
-const splitSeverities = (checks: FailedCheckSummary[] = []): [number, number, number] => {
-  const result: [number, number, number] = [0, 0, 0];
-
-  checks.forEach(({ criticalCount, warningCount, noticeCount }) => {
-    result[0] += criticalCount;
-    result[1] += warningCount;
-    result[2] += noticeCount;
+  checks.forEach(({
+    counts: {
+      emergency, critical, alert, error, warning, debug, info, notice,
+    },
+  }) => {
+    result.emergency += emergency;
+    result.critical += critical;
+    result.alert += alert;
+    result.error += error;
+    result.warning += warning;
+    result.debug += debug;
+    result.info += info;
+    result.notice += notice;
   });
 
   return result;
@@ -26,9 +39,11 @@ const splitSeverities = (checks: FailedCheckSummary[] = []): [number, number, nu
 
 export const Failed: FC<FailedProps> = ({ failed = [], isSttEnabled, hasNoAccess }) => {
   const styles = useStyles2(getStyles);
-  const totalFailedChecks = splitSeverities(failed);
-  const [critical, major, trivial] = totalFailedChecks;
-  const sum = critical + major + trivial;
+  const counts = splitSeverities(failed);
+  const {
+    emergency, critical, alert, error, warning, debug, info, notice,
+  } = counts;
+  const sum = emergency + critical + alert + error + warning + debug + info + notice;
 
   if (hasNoAccess) {
     return (
@@ -59,13 +74,15 @@ export const Failed: FC<FailedProps> = ({ failed = [], isSttEnabled, hasNoAccess
 
   return (
     <div data-testid="db-check-panel-has-checks">
-      <Tooltip placement="top" theme="info" content={<TooltipText sum={sum} data={totalFailedChecks} />}>
+      <Tooltip placement="top" theme="info" content={<TooltipText counts={counts} />}>
         <a href={PMM_DATABASE_CHECKS_PANEL_URL} className={styles.FailedDiv}>
-          <span className={styles.Critical}>{critical}</span>
+          <span className={styles.Critical}>{emergency + alert + critical}</span>
           <span> / </span>
-          <span className={styles.Major}>{major}</span>
+          <span className={styles.Error}>{error}</span>
           <span> / </span>
-          <span className={styles.Trivial}>{trivial}</span>
+          <span className={styles.Warning}>{warning}</span>
+          <span> / </span>
+          <span className={styles.Notice}>{notice + info + debug}</span>
         </a>
       </Tooltip>
     </div>

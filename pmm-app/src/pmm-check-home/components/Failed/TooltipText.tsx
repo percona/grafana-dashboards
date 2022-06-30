@@ -1,20 +1,23 @@
 import { useStyles2 } from '@grafana/ui';
+import { FailedChecksCounts } from 'pmm-check-home/types';
 import React, { FC } from 'react';
 import { getStyles } from './Failed.styles';
 
 interface TooltipTextProps {
-  sum: number;
-  data: [number, number, number];
+  counts: FailedChecksCounts;
 }
 
-export const TooltipText: FC<TooltipTextProps> = ({ sum, data }) => {
+export const TooltipText: FC<TooltipTextProps> = ({
+  counts: {
+    emergency, critical, alert, error, warning, debug, info, notice,
+  },
+}) => {
   const styles = useStyles2(getStyles);
+  const sum = emergency + critical + alert + error + warning + debug + info + notice;
 
   if (!sum) {
     return null;
   }
-
-  const [critical, warning, notice] = data;
 
   return (
     <div className={styles.TooltipWrapper}>
@@ -23,11 +26,26 @@ export const TooltipText: FC<TooltipTextProps> = ({ sum, data }) => {
         {' '}
         {sum}
       </div>
-      <div className={styles.TooltipBody}>
+      <div className={styles.TooltipBody} data-testid="checks-tooltip-body">
+        <div>
+          Emergency &ndash;
+          {' '}
+          {emergency}
+        </div>
+        <div>
+          Alert &ndash;
+          {' '}
+          {alert}
+        </div>
         <div>
           Critical &ndash;
           {' '}
           {critical}
+        </div>
+        <div>
+          Error &ndash;
+          {' '}
+          {error}
         </div>
         <div>
           Warning &ndash;
@@ -38,6 +56,16 @@ export const TooltipText: FC<TooltipTextProps> = ({ sum, data }) => {
           Notice &ndash;
           {' '}
           {notice}
+        </div>
+        <div>
+          Info &ndash;
+          {' '}
+          {info}
+        </div>
+        <div>
+          Debug &ndash;
+          {' '}
+          {debug}
         </div>
       </div>
     </div>
