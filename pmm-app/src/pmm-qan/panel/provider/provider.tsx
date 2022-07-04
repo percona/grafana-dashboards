@@ -138,10 +138,10 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
   const searchRef = useRef<string| null>(null);
   const [fromTimeMomentValue, setFromTimeMomentValue] = useState(ParseQueryParamDate.transform(
     query.get('from') || 'now-12h', 'from',
-  ).utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
+  ).utc().format('YYYY-MM-DDTHH:mm:ssZ'));
   const [toTimeMomentValue, setToTimeMomentValue] = useState(ParseQueryParamDate.transform(
     query.get('to') || 'now', 'to',
-  ).utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
+  ).utc().format('YYYY-MM-DDTHH:mm:ssZ'));
 
   const [panelState, setContext] = useState({
     ...parseURL(query),
@@ -187,8 +187,13 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     const newTo = getAbsoluteTime(timeRange.raw.to);
 
     if (!((from === newFrom) && (to === newTo))) {
-      setToTimeMomentValue(timeRange.to.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
-      setFromTimeMomentValue(timeRange.from.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
+      if (newTo === 'now') {
+        setToTimeMomentValue(timeRange.to.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
+        setFromTimeMomentValue(timeRange.from.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
+      } else {
+        setToTimeMomentValue(timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'));
+        setFromTimeMomentValue(timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'));
+      }
     }
   }, [timeRange, from, to]);
 
