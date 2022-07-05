@@ -10,15 +10,29 @@ describe('Failed::', () => {
         failed={[{
           serviceName: '',
           serviceId: '',
-          criticalCount: 1,
-          warningCount: 0,
-          noticeCount: 1,
+          counts: {
+            emergency: 0,
+            critical: 1,
+            alert: 0,
+            error: 0,
+            warning: 2,
+            notice: 0,
+            info: 0,
+            debug: 0,
+          },
         }, {
           serviceName: '',
           serviceId: '',
-          criticalCount: 2,
-          warningCount: 1,
-          noticeCount: 5,
+          counts: {
+            emergency: 0,
+            critical: 2,
+            alert: 0,
+            error: 0,
+            warning: 0,
+            notice: 0,
+            info: 0,
+            debug: 0,
+          },
         }]}
         isSttEnabled
         hasNoAccess={false}
@@ -28,8 +42,9 @@ describe('Failed::', () => {
     const spans = root.find('div a > span');
 
     expect(spans.at(0).text()).toEqual('3');
-    expect(spans.at(2).text()).toEqual('1');
-    expect(spans.at(4).text()).toEqual('6');
+    expect(spans.at(2).text()).toEqual('0');
+    expect(spans.at(4).text()).toEqual('2');
+    expect(spans.at(6).text()).toEqual('0');
     root.unmount();
   });
 
@@ -39,9 +54,16 @@ describe('Failed::', () => {
         failed={[{
           serviceName: '',
           serviceId: '',
-          criticalCount: 0,
-          warningCount: 0,
-          noticeCount: 0,
+          counts: {
+            critical: 0,
+            warning: 0,
+            notice: 0,
+            alert: 0,
+            info: 0,
+            debug: 0,
+            emergency: 0,
+            error: 0,
+          },
         }]}
         isSttEnabled
         hasNoAccess={false}
@@ -58,9 +80,16 @@ describe('Failed::', () => {
         failed={[{
           serviceName: '',
           serviceId: '',
-          criticalCount: 1,
-          warningCount: 0,
-          noticeCount: 1,
+          counts: {
+            critical: 1,
+            warning: 0,
+            notice: 1,
+            alert: 0,
+            info: 0,
+            debug: 0,
+            emergency: 0,
+            error: 0,
+          },
         }]}
         isSttEnabled
         hasNoAccess={false}
@@ -77,9 +106,16 @@ describe('Failed::', () => {
         failed={[{
           serviceName: '',
           serviceId: '',
-          criticalCount: 1,
-          warningCount: 0,
-          noticeCount: 1,
+          counts: {
+            critical: 1,
+            warning: 0,
+            notice: 1,
+            alert: 0,
+            info: 0,
+            debug: 0,
+            emergency: 0,
+            error: 0,
+          },
         }]}
         isSttEnabled
         hasNoAccess
