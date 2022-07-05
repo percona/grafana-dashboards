@@ -27,15 +27,15 @@ describe('Time parameters parser::', () => {
     const result2 = ParseQueryParamDate.transform('now/d', 'to');
     const result3 = ParseQueryParamDate.transform('now/d', 'from');
 
-    expect(result1.format('YYYY-MM-DDTHH:mm:ss.000')).toStrictEqual('2020-11-15T00:00:59.000');
-    expect(result2.format('YYYY-MM-DDTHH:mm:ss.000')).toStrictEqual('2020-11-22T23:59:59.000');
-    expect(result3.format('YYYY-MM-DDTHH:mm:ss.000')).toStrictEqual('2020-11-22T00:00:00.000');
+    expect(result1.format('YYYY-MM-DDTHH:mm:ss.000')).toStrictEqual('2020-11-14T23:59:59.000');
+    expect(result2.format('YYYY-MM-DDTHH:mm:ss.000')).toStrictEqual('2020-11-22T23:58:59.000');
+    expect(result3.format('YYYY-MM-DDTHH:mm:ss.000')).toStrictEqual('2020-11-21T23:59:00.000');
   });
 
   it('date is now', () => {
     const result1 = ParseQueryParamDate.transform('now');
 
-    expect(result1.toISOString()).toStrictEqual('2020-11-22T00:00:00.000Z');
+    expect(result1.toISOString()).toStrictEqual('2020-11-21T23:59:00.000Z');
   });
 
   it('date is incorrect', () => {
