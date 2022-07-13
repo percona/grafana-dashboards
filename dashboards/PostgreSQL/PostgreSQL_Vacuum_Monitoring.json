@@ -82,7 +82,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 16,
+      "id": 22,
       "options": {
         "legend": {
           "calcs": [],
@@ -100,25 +100,13 @@
             "uid": "PA58DA793C7250F1B"
           },
           "exemplar": true,
-          "expr": "pg_index_bloat_bloat_size",
+          "expr": "pg_table_bloat_pct_bloat",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
-          "exemplar": true,
-          "expr": "pg_index_bloat_real_size",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "B"
         }
       ],
-      "title": "Index Bloat",
+      "title": "Table bloat percentage",
       "type": "timeseries"
     },
     {
@@ -262,7 +250,7 @@
         "x": 0,
         "y": 8
       },
-      "id": 14,
+      "id": 20,
       "options": {
         "legend": {
           "calcs": [],
@@ -280,13 +268,25 @@
             "uid": "PA58DA793C7250F1B"
           },
           "exemplar": true,
-          "expr": "pg_number_of_rows_modified_dead_rows",
+          "expr": "pg_table_bloat_mb_bloat",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": true,
+          "expr": "pg_table_bloat_table_mb",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
         }
       ],
-      "title": "Number of Rows modified from last Vacuum Run",
+      "title": "Table bloat size",
       "type": "timeseries"
     },
     {
@@ -430,7 +430,7 @@
         "x": 0,
         "y": 16
       },
-      "id": 12,
+      "id": 18,
       "options": {
         "legend": {
           "calcs": [],
@@ -448,13 +448,13 @@
             "uid": "PA58DA793C7250F1B"
           },
           "exemplar": true,
-          "expr": "pg_manual_vacuum_events_number_manual_vacuum",
+          "expr": "pg_table_bloat_est_rows",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "Vacuum Events Manual",
+      "title": "Table size bloat estimated rows",
       "type": "timeseries"
     },
     {
@@ -593,12 +593,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 12,
         "x": 0,
         "y": 24
       },
-      "id": 2,
+      "id": 16,
       "options": {
         "legend": {
           "calcs": [],
@@ -616,13 +616,25 @@
             "uid": "PA58DA793C7250F1B"
           },
           "exemplar": true,
-          "expr": "pg_vacuum_disk_usage_size",
+          "expr": "pg_index_bloat_bloat_size",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": true,
+          "expr": "pg_index_bloat_real_size",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
         }
       ],
-      "title": "Vacuum Disk Usage",
+      "title": "Index Bloat",
       "type": "timeseries"
     },
     {
@@ -720,6 +732,258 @@
       ],
       "title": "Last Auto Vacuum Run",
       "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": true,
+          "expr": "pg_number_of_rows_modified_dead_rows",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Number of Rows modified from last Vacuum Run",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 40
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": true,
+          "expr": "pg_manual_vacuum_events_number_manual_vacuum",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Vacuum Events Manual",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 48
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PA58DA793C7250F1B"
+          },
+          "exemplar": true,
+          "expr": "pg_vacuum_disk_usage_size",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Vacuum Disk Usage",
+      "type": "timeseries"
     }
   ],
   "schemaVersion": 34,
@@ -736,6 +1000,6 @@
   "timezone": "",
   "title": "Postgres Vacuum Monitoring",
   "uid": "rCY-l1e7k",
-  "version": 2,
+  "version": 4,
   "weekStart": ""
 }
