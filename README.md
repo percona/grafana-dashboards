@@ -61,7 +61,8 @@ See a live demonstration at <https://pmmdemo.percona.com>.
 Dashboards can be converted to be used on a dedicated prometheus instance.
 
 Example:
-misc/convert-dash-from-PMM.py dashboards/Disk_Details.json
+
+- misc/convert-dash-from-PMM.py dashboards/Disk_Details.json
 
 ## AWS Setup page
 
