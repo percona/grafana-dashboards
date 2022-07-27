@@ -56,10 +56,18 @@ These dashboards are part of [Percona Monitoring and Management](https://www.per
 
 See a live demonstration at <https://pmmdemo.percona.com>.
 
+## Reusing dashboards outside of PMM
+
 Dashboards can be converted to be used on a dedicated prometheus instance.
 
 Example:
-    misc/convert-dash-from-PMM.py dashboards/Disk_Details.json
+misc/convert-dash-from-PMM.py dashboards/Disk_Details.json
+
+## AWS Setup page
+
+Plase see the relevant [README.md](./setup-page/README.md).
+
+## Contributing
 
 We welcome contributions to this repository! Detailed information in [CONTRIBUTING.md](CONTRIBUTING.md)
 
