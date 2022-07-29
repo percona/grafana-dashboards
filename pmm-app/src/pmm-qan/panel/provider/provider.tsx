@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { omit, isEqual } from 'lodash';
 import { parseURL, refreshGrafanaVariables, setLabels } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
+import { ParseQueryParamDate } from '../../../shared/components/helpers/time-parameters-parser';
 
 const initialState = {} as QueryAnalyticsContext;
 
@@ -135,6 +136,12 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
 
   const query = new URLSearchParams(window.location.search);
   const searchRef = useRef<string| null>(null);
+  const [fromTimeMomentValue, setFromTimeMomentValue] = useState(ParseQueryParamDate.transform(
+    query.get('from') || 'now-12h', 'from',
+  ).utc().format('YYYY-MM-DDTHH:mm:ssZ'));
+  const [toTimeMomentValue, setToTimeMomentValue] = useState(ParseQueryParamDate.transform(
+    query.get('to') || 'now', 'to',
+  ).utc().format('YYYY-MM-DDTHH:mm:ssZ'));
 
   const [panelState, setContext] = useState({
     ...parseURL(query),
@@ -142,6 +149,8 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
       from: timeRange.raw.from,
       to: timeRange.raw.to,
     },
+    from: fromTimeMomentValue,
+    to: toTimeMomentValue,
     search: searchRef.current,
   });
 
@@ -177,10 +186,25 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     const newFrom = getAbsoluteTime(timeRange.raw.from);
     const newTo = getAbsoluteTime(timeRange.raw.to);
 
+    if (!((from === newFrom) && (to === newTo))) {
+      if (newTo === 'now') {
+        setToTimeMomentValue(timeRange.to.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
+        setFromTimeMomentValue(timeRange.from.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
+      } else {
+        setToTimeMomentValue(timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'));
+        setFromTimeMomentValue(timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'));
+      }
+    }
+  }, [timeRange, from, to]);
+
+  useEffect(() => {
+    const newFrom = getAbsoluteTime(timeRange.raw.from);
+    const newTo = getAbsoluteTime(timeRange.raw.to);
+
     const newState = {
       ...panelState,
-      from: timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-      to: timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+      from: fromTimeMomentValue,
+      to: toTimeMomentValue,
       rawTime: {
         from: newFrom,
         to: newTo,
@@ -207,7 +231,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     setFrom(newFrom);
     setTo(newTo);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeRange, from, to]);
+  }, [fromTimeMomentValue, toTimeMomentValue]);
 
   const wrapAction = (key) => (...value) => setContext(actions[key](...value));
 

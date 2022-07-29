@@ -1,5 +1,4 @@
 import { getLocationSrv } from '@grafana/runtime';
-import { ParseQueryParamDate } from 'shared/components/helpers/time-parameters-parser';
 import {
   ALL_VARIABLE_TEXT,
   AUTO_VARIABLE_TEXT,
@@ -135,10 +134,6 @@ export const refreshGrafanaVariables = (state) => {
 };
 
 export const parseURL = (query) => ({
-  from: ParseQueryParamDate.transform(query.get('from') || 'now-12h', 'from'),
-  to: ParseQueryParamDate.transform(query.get('to') || 'now', 'to')
-    .utc()
-    .format('YYYY-MM-DDTHH:mm:ssZ'),
   columns: JSON.parse(query.get('columns')) || DEFAULT_COLUMNS,
   labels: setFilters(query),
   pageNumber: query.get('page_number') || DEFAULT_PAGE_NUMBER,
