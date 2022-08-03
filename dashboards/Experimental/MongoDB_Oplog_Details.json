@@ -50,7 +50,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1659529248737,
+  "iteration": 1659543592787,
   "links": [
     {
       "icon": "doc",
@@ -936,6 +936,19 @@
       }
     },
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 42
+      },
+      "id": 1551,
+      "panels": [],
+      "title": "Oplog Window",
+      "type": "row"
+    },
+    {
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -980,7 +993,7 @@
               }
             ]
           },
-          "unit": "gbytes"
+          "unit": "bytes"
         },
         "overrides": []
       },
@@ -988,7 +1001,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 43
       },
       "id": 1549,
       "options": {
@@ -1005,27 +1018,14 @@
         {
           "datasource": "Metrics",
           "exemplar": true,
-          "expr": "rate(mongodb_oplog_stats_size{service_name=~\"$service_name\"}) / 3600",
-          "interval": "",
+          "expr": "avg by (service_name) (rate(mongodb_oplog_stats_wt_cache_bytes_written_from_cache{rs_state=\"1\"})[$interval])",
+          "interval": "$interval",
           "legendFormat": "{{service_name}}",
           "refId": "A"
         }
       ],
-      "title": "Oplog GB/Hr",
+      "title": "Oplog B/Hr",
       "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 52
-      },
-      "id": 1551,
-      "panels": [],
-      "title": "Oplog Window",
-      "type": "row"
     },
     {
       "description": "",
@@ -1105,7 +1105,7 @@
           "exemplar": true,
           "expr": "avg by (node_name,service_name) ((mongodb_mongod_replset_oplog_head_timestamp - mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"}) / 3600)",
           "interval": "",
-          "legendFormat": "{{node_name}}",
+          "legendFormat": "{{service_name}}",
           "refId": "A"
         }
       ],
@@ -1116,7 +1116,10 @@
   "refresh": "1m",
   "schemaVersion": 34,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "Percona",
+    "MongoDB_HA"
+  ],
   "templating": {
     "list": [
       {
@@ -1179,6 +1182,7 @@
           }
         ],
         "query": "1s,5s,1m,5m,1h,6h,1d",
+        "queryValue": "",
         "refresh": 2,
         "skipUrlSync": false,
         "type": "interval"
@@ -1221,10 +1225,10 @@
         "current": {
           "selected": true,
           "text": [
-            "test3"
+            ""
           ],
           "value": [
-            "test3"
+            ""
           ]
         },
         "datasource": "Metrics",
@@ -1251,8 +1255,8 @@
         "allFormat": "glob",
         "current": {
           "selected": false,
-          "text": "rs1",
-          "value": "rs1"
+          "text": "",
+          "value": ""
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
@@ -1278,8 +1282,8 @@
         "allFormat": "glob",
         "current": {
           "selected": false,
-          "text": "abystrov-HP-ProBook",
-          "value": "abystrov-HP-ProBook"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\"}, node_name)",
@@ -1305,9 +1309,9 @@
       {
         "allFormat": "glob",
         "current": {
-          "selected": true,
-          "text": "Sec24",
-          "value": "Sec24"
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}, service_name)",
@@ -1333,8 +1337,8 @@
       {
         "current": {
           "selected": false,
-          "text": "Sec24",
-          "value": "Sec24"
+          "text": "",
+          "value": ""
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{service_name=~\"$service_name\"}, service_name)",
@@ -1361,8 +1365,8 @@
         "allFormat": "glob",
         "current": {
           "selected": false,
-          "text": "abystrov-HP-P",
-          "value": "abystrov-HP-P"
+          "text": "",
+          "value": ""
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{service_name=~\"$service_name\"},node_name)",
@@ -1415,8 +1419,8 @@
       {
         "current": {
           "selected": false,
-          "text": "admin",
-          "value": "admin"
+          "text": "",
+          "value": ""
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_top_commands_count{cluster=~\"$cluster\"}, database)",
@@ -1552,8 +1556,8 @@
         "allValue": ".*",
         "current": {
           "selected": false,
-          "text": "test1",
-          "value": "test1"
+          "text": "",
+          "value": ""
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_mongod_replset_my_state{set=~\"$replset\"},cluster)",

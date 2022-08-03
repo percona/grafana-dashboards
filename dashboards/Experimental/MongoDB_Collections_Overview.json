@@ -15,15 +15,120 @@
           "type": "dashboard"
         },
         "type": "dashboard"
+      },
+      {
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "iconColor": "orange",
+        "name": "PMM Annotations",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [
+            "pmm_annotation"
+          ],
+          "type": "tags"
+        }
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
+  "graphTooltip": 1,
   "id": null,
-  "iteration": 1654279112137,
-  "links": [],
+  "iteration": 1659441366721,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "doc",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Home",
+      "tooltip": "",
+      "type": "link",
+      "url": "/graph/d/pmm-home/home-dashboard"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Query Analytics",
+      "tooltip": "",
+      "type": "link",
+      "url": "/graph/d/pmm-qan/pmm-query-analytics"
+    },
+    {
+      "asDropdown": false,
+      "icon": "bolt",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Compare",
+      "tooltip": "",
+      "type": "link",
+      "url": "/graph/d/mongodb-instance-compare/mongodb-instances-compare"
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MongoDB"
+      ],
+      "targetBlank": false,
+      "title": "MongoDB",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MongoDB_HA"
+      ],
+      "targetBlank": false,
+      "title": "HA",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [
+        "Services"
+      ],
+      "targetBlank": false,
+      "title": "Services",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "PMM",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
   "liveNow": false,
   "panels": [
     {
@@ -33,6 +138,487 @@
         "w": 24,
         "x": 0,
         "y": 0
+      },
+      "id": 29,
+      "panels": [],
+      "title": "Datasize",
+      "type": "row"
+    },
+    {
+      "description": "Show the 5 largest databases in an instance according to info pulled from dbStats.dataSize. This reflects the size of uncompressed data.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decmbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "exemplar": true,
+          "expr": "avg by (database) (topk(5, mongodb_dbstats_dataSize{rs_state=\"1\",cluster=~\"$cluster\"})/1024/1024)",
+          "interval": "$interval",
+          "legendFormat": "{{database}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 5 Databases By Size",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 33,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 24
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.5",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "exemplar": true,
+          "expr": "count(mongodb_top_commands_time{database=~\"$database\"})",
+          "interval": "$interval",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Collections in Database ($database)",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 35,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 24
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.5",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "exemplar": true,
+          "expr": "sum(mongodb_dbstats_indexes{database=~\"$database\"})",
+          "interval": "$interval",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Indexes in Database ($database)",
+      "type": "stat"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 12
+      },
+      "id": 37,
+      "links": [],
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.3.5",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "exemplar": true,
+          "expr": "sum(mongodb_dbstats_avgObjSize{database=~\"$database\"})",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "$database",
+          "refId": "A",
+          "step": 300
+        }
+      ],
+      "title": "Avg Object Size in Database ($database)",
+      "type": "timeseries"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "id": 39,
+      "links": [],
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.3.5",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "exemplar": true,
+          "expr": "sum(mongodb_dbstats_indexSize{database=~\"$database\"})",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "$database",
+          "refId": "A",
+          "step": 300
+        }
+      ],
+      "title": "Index Size in Database ($database)",
+      "type": "timeseries"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "id": 41,
+      "links": [],
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.3.5",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "exemplar": true,
+          "expr": "sum(mongodb_dbstats_dataSize{database=~\"$database\"})",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "$database",
+          "refId": "A",
+          "step": 300
+        }
+      ],
+      "title": "Data Size for Database ($database)",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 30
       },
       "id": 16,
       "panels": [],
@@ -95,7 +681,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 1
+        "y": 31
       },
       "id": 3,
       "links": [],
@@ -125,7 +711,7 @@
           "step": 10
         }
       ],
-      "title": "Hottest Collections by Read  Total (Instance)",
+      "title": "Top 5 Hottest Collections by Read  (Total)",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -215,7 +801,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 1
+        "y": 31
       },
       "id": 19,
       "links": [],
@@ -252,7 +838,7 @@
           "step": 10
         }
       ],
-      "title": "Hottest Collections by Write Total (Instance)",
+      "title": "Top 5 Hottest Collections by Write (Total)",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -297,7 +883,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 8
+        "y": 38
       },
       "id": 24,
       "links": [],
@@ -331,7 +917,7 @@
           "step": 10
         }
       ],
-      "title": "Hottest Collections by Read (Instance) (Var 2)",
+      "title": "Top 5 Hottest Collections by Read (Rate)",
       "transformations": [],
       "type": "bargauge"
     },
@@ -358,7 +944,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 38
       },
       "id": 20,
       "links": [],
@@ -392,7 +978,7 @@
           "step": 10
         }
       ],
-      "title": "Hottest Collections by Write (Instance) (Var 2)",
+      "title": "Top 5 Hottest Collections by Write (Rate)",
       "transformations": [],
       "type": "bargauge"
     },
@@ -402,7 +988,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 45
       },
       "id": 12,
       "panels": [],
@@ -465,7 +1051,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 46
       },
       "id": 8,
       "links": [],
@@ -601,7 +1187,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 54
       },
       "id": 25,
       "links": [],
@@ -788,7 +1374,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 62
       },
       "id": 27,
       "options": {
@@ -892,10 +1478,13 @@
       "type": "table"
     }
   ],
-  "refresh": "",
+  "refresh": "1m",
   "schemaVersion": 34,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "Percona",
+    "MongoDB_HA"
+  ],
   "templating": {
     "list": [
       {
@@ -904,15 +1493,15 @@
         "auto_min": "1s",
         "current": {
           "selected": false,
-          "text": "5m",
-          "value": "5m"
+          "text": "auto",
+          "value": "$__auto_interval_interval"
         },
         "hide": 0,
         "label": "Interval",
         "name": "interval",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "auto",
             "value": "$__auto_interval_interval"
           },
@@ -932,7 +1521,7 @@
             "value": "1m"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "5m",
             "value": "5m"
           },
@@ -960,17 +1549,14 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
         },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Environment",
         "multi": true,
         "name": "environment",
@@ -1038,9 +1624,9 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": "ip-172-31-7-171.us-east-2.compute.internal-mongodb",
-          "value": "ip-172-31-7-171.us-east-2.compute.internal-mongodb"
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}, service_name)",
         "hide": 0,
@@ -1069,7 +1655,7 @@
             "$__all"
           ]
         },
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
+        "definition": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
         "hide": 0,
         "includeAll": true,
         "label": "Replication Set",
@@ -1077,7 +1663,7 @@
         "name": "replication_set",
         "options": [],
         "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
+          "query": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -1089,17 +1675,24 @@
       {
         "current": {
           "selected": true,
-          "text": "All",
-          "value": "$__all"
+          "text": [
+            "admin",
+            "local"
+          ],
+          "value": [
+            "admin",
+            "local"
+          ]
         },
-        "definition": "label_values(mongodb_top_commands_count, database)",
+        "definition": "label_values(mongodb_top_commands_count{cluster=~\"$cluster\"}, database)",
         "hide": 0,
-        "includeAll": true,
-        "multi": false,
+        "includeAll": false,
+        "label": "Database",
+        "multi": true,
         "name": "database",
         "options": [],
         "query": {
-          "query": "label_values(mongodb_top_commands_count, database)",
+          "query": "label_values(mongodb_top_commands_count{cluster=~\"$cluster\"}, database)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -1177,6 +1770,6 @@
   "timezone": "",
   "title": "MongoDB Collections Overview",
   "uid": "mongodb-collections-overview",
-  "version": 5,
+  "version": 1,
   "weekStart": ""
 }
