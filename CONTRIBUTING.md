@@ -57,7 +57,7 @@ services:
       - ENABLE_BACKUP_MANAGEMENT=1
       - ENABLE_ALERTING=1
     volumes:
-      - ./dist:/var/lib/grafana/plugins/pmm-app/dist
+      - ./dist:/srv/grafana/plugins/pmm-app/dist
     ports:
       - 80:80
     restart: always
