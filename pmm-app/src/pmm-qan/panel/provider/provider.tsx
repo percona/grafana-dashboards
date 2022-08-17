@@ -183,17 +183,14 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
   const [previousState, setPreviousState] = useState(panelState);
 
   useEffect(() => {
-    const newFrom = getAbsoluteTime(timeRange.raw.from);
     const newTo = getAbsoluteTime(timeRange.raw.to);
 
-    if (!((from === newFrom) && (to === newTo))) {
-      if (newTo === 'now') {
-        setToTimeMomentValue(timeRange.to.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
-        setFromTimeMomentValue(timeRange.from.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
-      } else {
-        setToTimeMomentValue(timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'));
-        setFromTimeMomentValue(timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'));
-      }
+    if (newTo === 'now') {
+      setToTimeMomentValue(timeRange.to.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
+      setFromTimeMomentValue(timeRange.from.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
+    } else {
+      setToTimeMomentValue(timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'));
+      setFromTimeMomentValue(timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'));
     }
   }, [timeRange, from, to]);
 

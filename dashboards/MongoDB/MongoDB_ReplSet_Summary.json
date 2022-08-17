@@ -159,7 +159,7 @@
       "id": 1228,
       "links": [],
       "options": {
-        "content": "<h5 style='color:#e68a00;font-weight:bold;text-align:center'><a href=\"/graph/d/mongodb-cluster-summary/mongodb-cluster-summary?var-cluster=$current_cluster\" target=\"_blank\">$current_cluster</a></h5>",
+        "content": "<h5 style='color:#e68a00;font-weight:bold;text-align:center'><a href=\"/graph/d/mongodb-cluster-summary/mongodb-cluster-summary?var-cluster=$cluster\" target=\"_blank\">$cluster</a></h5>",
         "mode": "html"
       },
       "pluginVersion": "8.3.5",
@@ -238,7 +238,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "count by (set) (mongodb_mongod_replset_number_of_members{set=~\"$replset\"} or mongodb_mongod_replset_my_state{set=~\"$replset\"})",
+          "expr": "count by (set) (mongodb_mongod_replset_number_of_members{cluster=~\"$cluster\",set=~\"$replset\"} or mongodb_mongod_replset_my_state{cluster=~\"$cluster\",set=~\"$replset\"})",
           "interval": "5m",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -3883,16 +3883,15 @@
       },
       {
         "allFormat": "blob",
-        "allValue": ".*",
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "",
+          "value": ""
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up,cluster)",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Cluster",
         "multi": false,
         "multiFormat": "glob",
@@ -3913,8 +3912,8 @@
         "allFormat": "glob",
         "current": {
           "selected": false,
-          "text": "r1",
-          "value": "r1"
+          "text": "",
+          "value": ""
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
@@ -3995,8 +3994,8 @@
       {
         "current": {
           "selected": false,
-          "text": "mongodb_inst_rpl1_1",
-          "value": "mongodb_inst_rpl1_1"
+          "text": "",
+          "value": ""
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{service_name=~\"$service_name\"}, service_name)",
@@ -4023,8 +4022,8 @@
         "allFormat": "glob",
         "current": {
           "selected": false,
-          "text": "ip-10-178-2-8",
-          "value": "ip-10-178-2-8"
+          "text": "",
+          "value": ""
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{service_name=~\"$service_name\"},node_name)",
@@ -4234,34 +4233,6 @@
         "sort": 5,
         "tagValuesQuery": "",
         "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allFormat": "blob",
-        "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "mongodb_cluster",
-          "value": "mongodb_cluster"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(mongodb_mongod_replset_my_state{set=~\"$replset\"},cluster)",
-        "hide": 2,
-        "includeAll": false,
-        "label": "Cluster",
-        "multi": false,
-        "multiFormat": "glob",
-        "name": "current_cluster",
-        "options": [],
-        "query": {
-          "query": "label_values(mongodb_mongod_replset_my_state{set=~\"$replset\"},cluster)",
-          "refId": "Metrics-current_cluster-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
         "type": "query",
         "useTags": false
       },
