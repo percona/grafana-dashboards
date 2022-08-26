@@ -42,7 +42,7 @@ export const Filters: FC = () => {
 
   const ShowAllButton = ({ loading }) => (
     <Button
-      variant="link"
+      fill="text"
       size="sm"
       key="qan-filters-show-selected"
       onClick={() => showSetAll(!showAll)}
@@ -56,7 +56,7 @@ export const Filters: FC = () => {
 
   const ResetButton = ({ loading }) => (
     <Button
-      variant="link"
+      fill="text"
       size="sm"
       key="qan-filters-reset-all"
       data-testid="qan-filters-reset-all"

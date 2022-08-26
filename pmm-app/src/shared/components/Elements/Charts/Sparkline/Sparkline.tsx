@@ -208,6 +208,7 @@ export const Sparkline = ({
         data-tip=""
         data-for={`sparkline-tooltip-${id}`}
       />
+      {/* @ts-ignore */}
       <ReactTooltip
         data-testid="sparkline-tooltip"
         className="sparkline-tooltip"

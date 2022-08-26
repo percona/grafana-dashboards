@@ -1,4 +1,4 @@
-import { logger } from '@percona/platform-core';
+import * as logger from 'shared/core/logger';
 import { ActionResult } from 'shared/components/Actions';
 import { ClassicExplainInterface } from './Explain.types';
 

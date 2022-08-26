@@ -2,7 +2,7 @@ import React, {
   useEffect, useState, FC, MouseEvent,
 } from 'react';
 import { Button, Spinner } from '@grafana/ui';
-import { logger } from '@percona/platform-core';
+import * as logger from 'shared/core/logger';
 import {
   AvailableUpdate, CurrentVersion, InfoBox, LastCheck, ProgressModal,
 } from 'pmm-update/components';

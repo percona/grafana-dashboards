@@ -1,4 +1,5 @@
-import { Icon, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
+import { QuestionCircleFilled } from '@ant-design/icons';
 import React from 'react';
 
 interface Link {
@@ -36,6 +37,6 @@ export const PluginTooltip = ({ text, links }: PluginTooltipInterface) => (
     )}
     style={{ background: 'deepskyblue' }}
   >
-    <Icon type="question-circle" style={{ marginLeft: '5px' }} />
+    <QuestionCircleFilled style={{ marginLeft: '5px' }} />
   </Tooltip>
 );

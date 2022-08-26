@@ -2,8 +2,9 @@ import React, {
   useCallback, useContext, useEffect, useState,
 } from 'react';
 import {
-  Divider, Icon, Select, Tooltip,
+  Divider, Select, Tooltip,
 } from 'antd';
+import { MinusSquareFilled, SwapOutlined } from '@ant-design/icons';
 import { cx } from '@emotion/css';
 import { useTheme } from '@grafana/ui';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
@@ -92,13 +93,13 @@ export const ManageColumns = (props) => {
       {!onlyAdd ? <Divider className={styles.dividerMargin} /> : null}
       {!onlyAdd && columns.length > 1 ? (
         <div className={styles.actionElement} onMouseDown={(e) => e.preventDefault()} onClick={removeColumn}>
-          <Icon type="minus" className={styles.iconMargin} />
+          <MinusSquareFilled className={styles.iconMargin} />
           Remove column
         </div>
       ) : null}
       {!onlyAdd && mainMetric !== currentMetric.simpleName ? (
         <div className={styles.actionElement} onMouseDown={(e) => e.preventDefault()} onClick={swapWithMain}>
-          <Icon type="swap" className={styles.iconMargin} />
+          <SwapOutlined className={styles.iconMargin} />
           Swap with main metric
         </div>
       ) : null}
@@ -112,7 +113,7 @@ export const ManageColumns = (props) => {
         showSearch
         style={{ width: width || '125px' }}
         placeholder={<Placeholder />}
-        filterOption={(value, option) => String(option.props.label)
+        filterOption={(value, option) => String(option?.props.label)
           .toLowerCase()
           .includes(value.toLowerCase())}
         onChange={changeColumn}
@@ -127,6 +128,7 @@ export const ManageColumns = (props) => {
         {...extraSelectProps}
       >
         {availableColumns.map((item) => (
+          // @ts-ignore
           <Option key={item.simpleName} label={item.humanizeName}>
             <OptionContent
               title={item.humanizeName}
