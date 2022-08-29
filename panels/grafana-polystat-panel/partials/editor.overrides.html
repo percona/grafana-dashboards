@@ -1,0 +1,105 @@
+<div class="edit-tab-with-sidemenu">
+  <aside class="edit-sidemenu-aside">
+    <ul class="edit-sidemenu">
+      <li ng-repeat="override in ctrl.overridesCtrl.metricOverrides track by $index"
+        ng-class="{active: ctrl.overridesCtrl.activeOverrideIndex === $index}">
+        <a ng-click="ctrl.overridesCtrl.activeOverrideIndex = $index">{{ override.label || 'New Override'}}</a>
+      </li>
+      <li>
+        <a class="pointer" ng-click="ctrl.overridesCtrl.addMetricOverride()">
+          <i class="fa fa-plus"></i>&nbsp;Add
+        </a>
+      </li>
+    </ul>
+  </aside>
+  <div class="edit-tab-content" ng-repeat="override in ctrl.overridesCtrl.metricOverrides track by $index"
+    ng-if="ctrl.overridesCtrl.activeOverrideIndex === $index">
+    <div class="section gf-form-group">
+      <!-- <h5 class="section-heading">Override Setting
+      </h5> -->
+      <div ng-class="{'gf-form-disabled': !override.enabled}">
+        <div class="gf-form-inline">
+          <div class="gf-form">
+            <label class="gf-form-label">
+              <a ng-click="ctrl.overridesCtrl.toggleHide(override)" role="menuitem">
+                <i class="fa fa-eye" ng-show="override.enabled"></i>
+                <i class="fa fa-eye-slash" ng-hide="override.enabled"></i>
+              </a>
+            </label>
+          </div>
+          <div class="gf-form">
+            <label class="gf-form-label width-9">Metric Name or RegEx</label>
+            <input type="text" class="gf-form-input width-13" ng-model="override.metricName" spellcheck='false'
+              bs-typeahead="ctrl.overridesCtrl.suggestMetricNames" placeholder="metric name" data-min-length=0
+              data-items=1000 ng-blur="ctrl.overridesCtrl.metricNameChanged(override)">
+          </div>
+        </div>
+        <div class="gf-form">
+          <label class="gf-form-label width-5">Label
+            <tip>Sets the name of the override in the configuration editor.</tip>
+          </label>
+          <input type="string" class="gf-form-input width-13" placeholder="" data-placement="right"
+            ng-model="override.label" ng-change="ctrl.refresh()" ng-model-onblur>
+        </div>
+
+        <div class="gf-form">
+          <label class="gf-form-label width-5">Prefix</label>
+          <input type="string" class="gf-form-input width-13" placeholder="" data-placement="right"
+            ng-model="override.prefix" ng-change="ctrl.refresh()" ng-model-onblur>
+        </div>
+        <div class="gf-form">
+          <label class="gf-form-label width-5">Suffix</label>
+          <input type="string" class="gf-form-input width-13" placeholder="" data-placement="right"
+            ng-model="override.suffix" ng-change="ctrl.refresh()" ng-model-onblur>
+        </div>
+
+        <div class="gf-form">
+          <label class="gf-form-label width-5">Clickthrough</label>
+          <input type="string" class="gf-form-input width-26" placeholder="url" data-placement="right"
+            ng-model="override.clickThrough" ng-change="ctrl.refresh()" ng-model-onblur>
+        </div>
+
+        <div class="gf-form-inline">
+          <div class="gf-form">
+            <gf-form-switch class="gf-form" label-class="width-5" switch-class="max-width-7" label="Sanitize"
+              checked="override.sanitizeURLEnabled" on-change="ctrl.render()"></gf-form-switch>
+          </div>
+          <div class="gf-form">
+            <gf-form-switch class="gf-form" label-class="width-7" switch-class="max-width-11" label="Open in new tab"
+              checked="override.newTabEnabled" on-change="ctrl.render()"></gf-form-switch>
+          </div>
+        </div>
+
+        <div class="gf-form">
+          <label class="gf-form-label width-5">Unit</label>
+          <div class="gf-form-dropdown-typeahead width-13 max-width-20" ng-model="override.unitFormat"
+            dropdown-typeahead="ctrl.unitFormats"
+            dropdown-typeahead-on-select="ctrl.overridesCtrl.setUnitFormat(override, $subItem)">
+          </div>
+        </div>
+
+        <div class="gf-form">
+          <label class="gf-form-label width-5">Decimals</label>
+          <input type="number" class="gf-form-input width-5" placeholder="auto" data-placement="right"
+            ng-model="override.decimals" ng-change="ctrl.refresh()" ng-model-onblur>
+        </div>
+
+        <div class="gf-form">
+          <label class="gf-form-label width-5">Stat</label>
+          <div class="gf-form-select-wrapper width-12">
+            <select class="gf-form-input" ng-model="override.operatorName"
+              ng-options="f.value as f.text for f in ctrl.operatorOptions" ng-change="ctrl.refresh()"></select>
+          </div>
+        </div>
+
+        <poly-thresholds thresholds="override.thresholds" override="override" colors="override.colors"
+          callback="ctrl.onThresholdsChanged(override)" />
+
+      </div> <!-- end section group-->
+      <div class="clearfix"></div>
+      <button class="btn btn-danger btn-small" ng-click="ctrl.overridesCtrl.removeMetricOverride(override)">
+        <i class="fa fa-trash"></i> Remove Override
+      </button>
+    </div>
+  </div> <!-- end override repeat -->
+</div>

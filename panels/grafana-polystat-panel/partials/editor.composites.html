@@ -1,0 +1,147 @@
+<div class="edit-tab-with-sidemenu">
+  <aside class="edit-sidemenu-aside">
+    <ul class="edit-sidemenu">
+      <li ng-class="{active: ctrl.compositesManager.subTabIndex === 0}">
+        <a ng-click="ctrl.compositesManager.subTabIndex = 0">Options</a>
+      </li>
+      <li
+        ng-class="{active: ctrl.compositesManager.subTabIndex === 1 && ctrl.compositesManager.activeStyleIndex === $index}"
+        ng-repeat="composite in ctrl.compositesManager.metricComposites track by $index">
+          <a ng-click="ctrl.compositesManager.subTabIndex = 1; ctrl.compositesManager.activeStyleIndex = $index">{{ composite.label || 'New Composite'}}</a>
+      </li>
+      <li>
+        <a class="pointer" ng-click="ctrl.compositesManager.addMetricComposite()">
+          <i class="fa fa-plus"></i>&nbsp;Add
+        </a>
+      </li>
+    </ul>
+  </aside>
+  <div class="edit-tab-content" ng-if="ctrl.compositesManager.subTabIndex === 0">
+    <div class="section gf-form-group">
+      <h5 class="section-heading">Animation</h5>
+      <div class="gf-form-inline">
+        <label class="gf-form-label width-8">Speed
+          <tip>When multiple metrics are to be displayed by a composite, this sets the animation speed in milliseconds (500 min, 5000 default)</tip>
+        </label>
+        <input type="number" class="gf-form-input width-8" ng-model="ctrl.panel.polystat.animationSpeed" ng-blur="ctrl.validateAnimationSpeed()" placeholder="5000">
+      </div>
+    </div>
+  </div>
+  <div class="edit-tab-content"
+    ng-repeat="composite in ctrl.compositesManager.metricComposites track by $index"
+    ng-if="ctrl.compositesManager.subTabIndex === 1 && ctrl.compositesManager.activeStyleIndex === $index">
+    <div class="section gf-form-group">
+      <h5 class="section-heading">Composites
+        <tip>Combines multiple metrics into a new name</tip>
+      </h5>
+      <div ng-class="{'gf-form-disabled': !composite.enabled}">
+        <div class="gf-form-inline">
+          <div class="gf-form">
+            <label class="gf-form-label">
+              <a ng-click="ctrl.compositesManager.toggleHide(composite)" role="menuitem">
+                <i class="fa fa-eye" ng-show="composite.enabled"></i>
+                <i class="fa fa-eye-slash" ng-hide="composite.enabled"></i>
+              </a>
+            </label>
+          </div>
+          <div class="gf-form">
+            <label class="gf-form-label width-9">Composite Name</label>
+              <input type="text" ng-model="composite.compositeName" ng-blur="ctrl.refresh()" class="gf-form-input width-16">
+          </div>
+          <gf-form-switch class="gf-form" label="Hide Members" label-class="width-8" checked="composite.hideMembers" on-change="ctrl.refresh()">
+          </gf-form-switch>
+          <gf-form-switch class="gf-form" label="Show Name" label-class="width-7" checked="composite.showName" on-change="ctrl.refresh()">
+          </gf-form-switch>
+          <gf-form-switch class="gf-form" label="Show Value" label-class="width-7" checked="composite.showValue" on-change="ctrl.refresh()">
+          </gf-form-switch>
+        </div>
+        <!-- Next row animation properties -->
+        <div class="gf-form">
+          <label class="gf-form-label width-11">Animate Mode
+            <tip>how members are rendered</tip>
+          </label>
+          <div class="gf-form-select-wrapper">
+            <select class="gf-form-input width-16"
+              style="margin-left: 3px;"
+              ng-model="composite.animateMode"
+              ng-options="f.value as f.text for f in ctrl.animationModes"
+              ng-change="ctrl.refresh()">
+            </select>
+          </div>
+        </div>
+        <div class="gf-form">
+          <div class="gf-form">
+            <label class="gf-form-label width-11">Clickthrough</label>
+            <input type="text" ng-model="composite.clickThrough" ng-blur="ctrl.refresh()" class="gf-form-input width-30">
+          </div>
+          <div class="gf-form">
+            <gf-form-switch class="gf-form" label-class="width-5" switch-class="max-width-7" label="Sanitize" checked="composite.sanitizeURLEnabled" on-change="ctrl.refresh()"></gf-form-switch>
+          </div>
+          <div class="gf-form">
+            <gf-form-switch class="gf-form" label-class="width-9" switch-class="max-width-11" label="Open in new tab" checked="composite.newTabEnabled" on-change="ctrl.refresh()"></gf-form-switch>
+          </div>
+        </div>
+        <!-- next row holds metric list -->
+        <div class="gf-form-inline">
+          <div class="gf-form">
+            <label class="gf-form-label query-keyword width-6">Series
+              <tip>Metrics that comprise the composite</tip>
+            </label>
+          </div>
+          <div class="gf-form">
+            <label class="gf-form-label">
+              <i class="fa fa-plus pointer" ng-click="ctrl.compositesManager.addMetricToComposite(composite)"></i>
+            </label>
+          </div>
+        </div>
+              <!-- Metrics that comprise the composite-->
+        <div class="gf-form" ng-repeat="metric in composite.members track by $index">
+          <div class="gf-form-inline">
+            <div class="gf-form">
+              <label class="gf-form-label query-keyword width-6">Metric
+                <tip>Accepts metric name or regex</tip>
+              </label>
+              <input type="text" class="gf-form-input width-14"
+                ng-model="metric.seriesName"
+                spellcheck="false"
+                bs-typeahead="ctrl.compositesManager.suggestMetricNames"
+                placeholder="metric name"
+                data-min-length="0" data-items="500"
+                ng-blur="ctrl.compositesManager.metricNameChanged(metric)">
+              <label class="gf-form-label query-keyword width-6">Alias
+                <tip><span>
+                    Use regex subsitutions and address them in your alias
+                    ex:
+                      If your metric is
+                        $variable:(.*?)$
+                      You can use:
+                        $1 
+                      in your alias.
+
+                      If your metric is:
+                        $variable:(?<name>.*?)$
+                      You can use:
+                        $name
+                      in your alias
+                <span></tip>
+              </label>
+              <input type="text" class="gf-form-input width-14"
+                ng-model="metric.alias"
+                spellcheck="false"
+                ng-blur="ctrl.refresh()">
+            </div>
+            <div class="gf-form">
+              <label class="gf-form-label">
+                <i class="fa fa-trash pointer" ng-click="ctrl.compositesManager.removeMetricFromComposite(composite, metric)"></i>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="clearfix"></div> -->
+      <button class="btn btn-danger btn-small" ng-click="ctrl.compositesManager.removeMetricComposite(composite)">
+        <i class="fa fa-trash"></i> Remove Composite
+      </button>
+    </div>
+  </div> <!-- end composite repeat -->
+</div>

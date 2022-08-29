@@ -1,0 +1,234 @@
+<query-editor-row query-ctrl="ctrl" can-collapse="true" has-text-edit-mode="true">
+
+	<div class="gf-form" ng-if="ctrl.target.rawQuery">
+        <code-editor content="ctrl.target.query"
+                     datasource="ctrl.datasource"
+                     on-change="ctrl.panelCtrl.refresh(); ctrl.refresh()"
+                     get-completer="ctrl.getCompleter()"
+                     data-mode="clickhouse"
+                     data-max-lines="200">
+        </code-editor>
+	</div>
+
+	<div ng-if="!ctrl.target.rawQuery">
+		<div class="gf-form-inline">
+			<div class="gf-form">
+				<label class="gf-form-label query-keyword width-7">
+                    FROM
+                    <i ng-if="ctrl.target.tableLoading" class="fa fa-spinner fa-spin"></i>
+                </label>
+
+				<metric-segment segment="ctrl.databaseSegment"
+                                get-options="ctrl.getDatabaseSegments()"
+                                on-change="ctrl.databaseChanged()"></metric-segment>
+				<metric-segment segment="ctrl.tableSegment"
+                                get-options="ctrl.getTableSegments()"
+                                on-change="ctrl.tableChanged()"></metric-segment>
+			</div>
+
+			<div class="gf-form gf-form--grow">
+				<div class="gf-form-label gf-form-label--grow"></div>
+			</div>
+		</div>
+
+		<div class="gf-form-inline">
+			<div class="gf-form width-14">
+                <metric-segment-model property="ctrl.target.dateTimeType"
+                                      options="ctrl.dateTimeTypeOptions" css-class="query-keyword width-14 "
+                                      custom="false" select-mode="true"
+                                      on-change="ctrl.dateTimeTypeChanged()">
+                </metric-segment-model>
+                <info-popover mode="right-absolute" style = "margin-right: 10px;">
+                    Select Event
+                    <a href="https://clickhouse.tech/docs/en/sql-reference/data-types/datetime/" target = "_blank" >DateTime</a>, <a href="https://clickhouse.tech/docs/en/sql-reference/data-types/datetime64/" target = "_blank" >DateTime64</a>
+                    or <a href="https://clickhouse.tech/docs/en/sql-reference/data-types/int-uint/" target="_blank">UInt32</a> column for binding with Grafana's range selector
+                </info-popover>
+            </div>
+
+            <div class="gf-form">
+                <metric-segment segment="ctrl.dateTimeColDataTypeSegment"
+                                get-options="ctrl.getDateTimeColDataTypeSegments()"
+                                on-change="ctrl.dateTimeColDataTypeChanged()">
+                </metric-segment>
+            </div>
+
+            <div class="gf-form">
+                <label class="gf-form-label query-keyword width-10">
+                    <info-popover mode="right-absolute">
+                        Select
+                        <a href="https://clickhouse.tech/docs/en/sql-reference/data-types/date/" target = "_blank" >Date</a>
+                        column for binding with Grafana's range selector
+                    </info-popover>
+                    Column:Date
+                    <i ng-if="ctrl.target.dateLoading" class="fa fa-spinner fa-spin"></i>
+                </label>
+            </div>
+
+            <style>
+                .typeahead.dropdown-menu a {min-height: 2em;}
+            </style>
+            <div class="gf-form">
+                <metric-segment segment="ctrl.dateColDataTypeSegment"
+                                get-options="ctrl.getDateColDataTypeSegments()"
+                                on-change="ctrl.dateColDataTypeChanged()"></metric-segment>
+            </div>
+
+            <div class="gf-form gf-form--grow">
+                <div class="gf-form-label gf-form-label--grow"></div>
+            </div>
+		</div>
+
+        <div class="gf-form">
+            <button class="btn btn-inverse gf-form-btn query-keyword" ng-click="ctrl.toQueryMode();">
+                <i class="fa fa-arrow-right"></i>&nbsp;
+                Go to Query
+            </button>
+        </div>
+
+	</div>
+
+    <div class="gf-form-inline" ng-if="ctrl.target.rawQuery">
+        <div class="gf-form">
+            <label class="gf-form-label width-5">Step</label>
+            <input type="text" class="gf-form-input max-width-5" ng-model="ctrl.target.interval"
+                   data-placement="right"
+                   spellcheck='false'
+                   placeholder="{{ctrl.panelCtrl.interval}}"
+                   data-min-length=0 data-items=100
+                   ng-model-onblur
+                   ng-change="ctrl.refresh()"/>
+            <info-popover mode="right-absolute">
+                Leave blank for auto handling based on time range and panel width
+            </info-popover>
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label">Resolution</label>
+            <div class="gf-form-select-wrapper max-width-15">
+                <select ng-model="ctrl.target.intervalFactor" class="gf-form-input"
+                        ng-options="r.factor as r.label for r in ctrl.resolutions"
+                        ng-change="ctrl.refresh()">
+                </select>
+            </div>
+        </div>
+
+        <div class="gf-form">
+          <label class="gf-form-label width-5">Round</label>
+          <input type="text" class="gf-form-input max-width-6" ng-model="ctrl.target.round"
+                 data-placement="right"
+                 spellcheck='false'
+                 placeholder="0s"
+                 data-min-length=0 data-items=100
+                 ng-model-onblur
+                 ng-change="ctrl.refresh()"/>
+          <info-popover mode="right-absolute">
+            Set rounding for `$from` and `$to` timestamps.<br>
+            For example, if set `1m` - both `$from` and `$to` will be rounded to beginning of minute.<br><br>
+            Or set to `$step` to automatically adjust according to `Step * Resolution` value. <br><br>
+            It will make all requests similar during one minute which is good for caching.
+          </info-popover>
+        </div>
+
+        <div class="gf-form gf-form--grow">
+            <div class="gf-form-label gf-form-label--grow"></div>
+        </div>
+    </div>
+
+    <div class="gf-form-inline" ng-if="ctrl.target.rawQuery">
+        <div class="gf-form">
+            <label class="gf-form-label query-keyword">Format as</label>
+            <div class="gf-form-select-wrapper">
+                <select class="gf-form-input gf-size-auto"
+                        ng-model="ctrl.target.format"
+                        ng-options="f.value as f.text for f in ctrl.formats"
+                        ng-change="ctrl.refresh()"></select>
+            </div>
+        </div>
+        <div class="gf-form">
+            <gf-form-switch class="gf-form width-12"
+                            checked="ctrl.target.extrapolate"
+                            ng-model="ctrl.target.extrapolate"
+                            ng-change="ctrl.refresh()"
+                            label="Extrapolation"
+                            tooltip="Turn on if you don't like when last data point in time series much lower then previous">
+            </gf-form-switch>
+        </div>
+        <div class="gf-form">
+            <gf-form-switch class="gf-form width-12"
+                            checked="ctrl.target.skip_comments"
+                            ng-model="ctrl.target.skip_comments"
+                            ng-change="ctrl.refresh()"
+                            label="Skip comments"
+                            tooltip="Turn off if you would like pass comments in SQL query to server">
+            </gf-form-switch>
+        </div>
+
+        <div class="gf-form">
+            <label class="gf-form-label query-keyword" ng-click="ctrl.showHelp = !ctrl.showHelp">
+                Show Help
+                <i class="fa fa-caret-down" ng-show="ctrl.showHelp"></i>
+                <i class="fa fa-caret-right" ng-hide="ctrl.showHelp"></i>
+            </label>
+        </div>
+
+        <div class="gf-form">
+            <label class="gf-form-label query-keyword" ng-click="ctrl.showLastQuerySQL = !ctrl.showLastQuerySQL">
+                Generated SQL
+                <i class="fa fa-caret-down" ng-show="ctrl.showLastQuerySQL"></i>
+                <i class="fa fa-caret-right" ng-hide="ctrl.showLastQuerySQL"></i>
+            </label>
+        </div>
+
+        <div class="gf-form">
+            <label class="gf-form-label  width-10">
+                <info-popover mode="right-absolute">
+                    Reformat SQL query as ClickHouse do.
+                </info-popover>
+                <a ng-click="ctrl.formatQuery()" class="query-keyword" role="menuitem">
+                    Reformat Query
+                </a>
+            </label>
+        </div>
+    </div>
+
+    <div ng-show="ctrl.target.rawQuery">
+        <div class="gf-form" ng-show="ctrl.showLastQuerySQL">
+            <pre class="gf-form-pre">{{ctrl.target.rawQuery}}</pre>
+        </div>
+
+        <div class="gf-form"  ng-show="ctrl.showHelp">
+		<pre class="gf-form-pre alert alert-info">
+Macros
+
+$table - replaced with selected table name from Query Builder
+$dateCol - replaced with Date:Col value from Query Builder
+$dateTimeCol - replaced with Column:DateTime or Column:TimeStamp value from Query Builder
+$from - replaced with (timestamp with ms)/1000 value of UI selected "Time Range:From"
+$to - replaced with (timestamp with ms)/1000 value of UI selected "Time Range:To"
+$interval - replaced with selected "Group by time interval" value (as a number of seconds)
+$timeFilter - replaced with currently selected "Time Range".
+            Require Column:Date and Column:DateTime or Column:TimeStamp to be selected
+$timeSeries - replaced with special ClickHouse construction to convert results as time-series data.
+            Use it as "SELECT $timeSeries...". Require Column:DateTime or Column:TimeStamp to be selected
+$naturalTimeSeries - replaced with special ClickHouse construction to convert results as time-series data in logical/natural units.
+            Use it as "SELECT $naturalTimeSeries...". Require Column:DateTime or Column:TimeStamp to be selected
+$unescape - unescapes variable value by removing single quotes.
+            Used for multiple-value string variables: "SELECT $unescape($column) FROM requests WHERE $unescape($column) = 5"
+$adhoc - replaced with a rendered ad-hoc filter expression, or "1" if no ad-hoc filters exist
+A description of macros is available by typing their names in Raw Editor
+
+
+Functions (Only one function per query allowed)
+
+$rate(cols...) - function to convert query results as "change rate per interval".
+Example usage: $rate(countIf(Type = 200) * 60 AS good, countIf(Type != 200) * 60 AS bad) FROM requests
+
+$columns(key, value) - function to query values as array of [key, value], where key would be used as label.
+Example usage: $columns(Type, count() c) FROM requests
+
+$rateColumns(key, value) - is an combination of $columns and $rate.
+Example usage: $rateColumns(Type, count() c) FROM requests
+		</pre>
+        </div>
+    </div>
+
+</query-editor-row>
