@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Tooltip } from '@grafana/ui';
+import Tippy from '@tippyjs/react';
 import { Failed } from './Failed';
 
 describe('Failed::', () => {
@@ -96,7 +96,7 @@ describe('Failed::', () => {
       />,
     );
 
-    expect(root.find(Tooltip).length).toEqual(1);
+    expect(root.find(Tippy).length).toEqual(1);
     root.unmount();
   });
 
