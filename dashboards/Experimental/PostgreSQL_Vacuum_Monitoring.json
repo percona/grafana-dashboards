@@ -1,53 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_METRICS",
-      "label": "Metrics",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__elements": [],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.3.10"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph (old)",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -96,11 +47,11 @@
     ]
   },
   "description": "",
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1661736307700,
+  "iteration": 1662552188899,
   "links": [
     {
       "icon": "doc",
@@ -176,10 +127,38 @@
   "panels": [
     {
       "gridPos": {
-        "h": 3,
+        "h": 1,
         "w": 24,
         "x": 0,
         "y": 0
+      },
+      "id": 78,
+      "title": "⚠️ Disclaimer",
+      "type": "row"
+    },
+    {
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 80,
+      "options": {
+        "content": "#### 🛎️ Important\n\nThis Dashboard is an experimental PostgreSQL Vacuum Monitoring dashboard in Percona Monitoring and Management (PMM) that is not a part of the official PMM deployment and might be updated.\nWe ship this Dashboard to obtain feedback from our users. Once we officially release this Dashboard, it will be moved to the appropriate folder. \n\nTo provide feedback on the Dashboard, please use topic in our forum.🙏",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.3.10",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 5
       },
       "id": 30,
       "links": [],
@@ -196,7 +175,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 3
+        "y": 8
       },
       "id": 74,
       "panels": [],
@@ -204,72 +183,50 @@
       "type": "row"
     },
     {
-      "aliasColors": {
-        "Total ": "#bf1b00"
-      },
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 0,
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
         },
         "overrides": []
       },
-      "fill": 0,
-      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 4
+        "y": 9
       },
-      "hiddenSeries": false,
       "id": 23,
-      "legend": {
-        "alignAsTable": false,
-        "avg": false,
-        "current": true,
-        "hideEmpty": true,
-        "hideZero": true,
-        "max": false,
-        "min": false,
-        "show": false,
-        "sort": "current",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "displayMode": "gradient",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
       },
-      "percentage": false,
       "pluginVersion": "8.3.10",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "Total",
-          "color": "#bf1b00",
-          "fill": 0,
-          "stack": false
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_METRICS}"
-          },
+          "datasource": "Metrics",
           "exemplar": true,
           "expr": "topk(5,sum by (service_name, datname, relname) (pg_stat_user_tables_n_live_tup{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}) > 0 and sum by (service_name, datname, relname) (pg_stat_user_tables_n_dead_tup{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}) > 0 and sum by (service_name, datname, relname) ((pg_stat_user_tables_n_dead_tup{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}*100)/pg_stat_user_tables_n_live_tup{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}))",
           "format": "time_series",
@@ -280,47 +237,24 @@
           "refId": "C"
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Dead Tuples",
-      "tooltip": {
-        "shared": false,
-        "sort": 5,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "series",
-        "show": true,
-        "values": [
-          "current"
-        ]
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:153",
-          "decimals": 0,
-          "format": "percent",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        },
-        {
-          "$$hashKey": "object:154",
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "bargauge"
     },
     {
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 0,
+                  "text": "Never"
+                }
+              },
+              "type": "value"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -338,7 +272,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 4
+        "y": 9
       },
       "id": 34,
       "links": [],
@@ -359,10 +293,7 @@
       "pluginVersion": "8.3.10",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_METRICS}"
-          },
+          "datasource": "Metrics",
           "exemplar": true,
           "expr": "bottomk(5,max by (service_name,datname,relname) (pg_stat_user_tables_last_vacuum{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}*1000) or max by (service_name,datname,relname) (pg_stat_user_tables_last_autovacuum{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}*1000))",
           "format": "time_series",
@@ -373,10 +304,7 @@
           "refId": "C"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_METRICS}"
-          },
+          "datasource": "Metrics",
           "exemplar": true,
           "expr": "topk(5,time() - max by (service_name,datname,relname) (pg_stat_user_tables_last_vacuum{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}*1000) > 3600)",
           "format": "time_series",
@@ -455,7 +383,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 12
+        "y": 17
       },
       "id": 75,
       "links": [],
@@ -474,10 +402,7 @@
       "pluginVersion": "8.3.10",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_METRICS}"
-          },
+          "datasource": "Metrics",
           "exemplar": true,
           "expr": "max by (service_name) (pg_stat_txid_datfrozenxid{service_name=~\"$service_name\"})",
           "format": "time_series",
@@ -488,10 +413,7 @@
           "refId": "C"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_METRICS}"
-          },
+          "datasource": "Metrics",
           "exemplar": true,
           "expr": "pg_settings_autovacuum_freeze_max_age{service_name=~\"$service_name\"}",
           "format": "time_series",
@@ -509,7 +431,17 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 0,
+                  "text": "Never"
+                }
+              },
+              "type": "value"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -527,7 +459,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 12
+        "y": 17
       },
       "id": 76,
       "links": [],
@@ -548,10 +480,7 @@
       "pluginVersion": "8.3.10",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_METRICS}"
-          },
+          "datasource": "Metrics",
           "exemplar": true,
           "expr": "bottomk(5,max by (service_name,datname,relname) (pg_stat_user_tables_last_analyze{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}*1000) or max by (service_name,datname,relname) (pg_stat_user_tables_last_autovanalyze{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}*1000))",
           "format": "time_series",
@@ -581,7 +510,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 25
       },
       "id": 60,
       "panels": [],
@@ -593,7 +522,7 @@
         "h": 18,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 26
       },
       "id": 58,
       "links": [],
@@ -675,7 +604,11 @@
         "type": "interval"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
         "datasource": "Metrics",
         "definition": "label_values(pg_up{service_name=~\"$service_name\"},node_name)",
         "hide": 2,
@@ -698,7 +631,11 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "pmm-server-postgresql",
+          "value": "pmm-server-postgresql"
+        },
         "datasource": "Metrics",
         "definition": "label_values(pg_up, service_name)",
         "hide": 0,
@@ -722,7 +659,11 @@
       },
       {
         "allValue": "",
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": "Metrics",
         "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
         "hide": 0,
@@ -746,7 +687,11 @@
       },
       {
         "allValue": "",
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": "Metrics",
         "definition": "label_values(pg_stat_user_tables_n_live_tup{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},relname)",
         "hide": 0,
@@ -769,7 +714,11 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -791,7 +740,11 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -813,7 +766,11 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -835,7 +792,11 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -857,7 +818,11 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -879,7 +844,11 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -901,7 +870,11 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -923,7 +896,11 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -945,7 +922,11 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -967,7 +948,11 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -989,7 +974,11 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -1011,7 +1000,11 @@
         "useTags": false
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
         "datasource": "Metrics",
         "definition": "query_result(pg_settings_autovacuum_multixact_freeze_max_age{service_name=~\"$service_name\"})",
         "hide": 2,
@@ -1035,7 +1028,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {
@@ -1067,6 +1060,6 @@
   "timezone": "",
   "title": "PostgreSQL Vacuum Monitoring",
   "uid": "postgres_vacuum_monitoring",
-  "version": 18,
+  "version": 1,
   "weekStart": ""
 }
