@@ -1767,7 +1767,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
+          "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1866,7 +1866,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
+          "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1969,7 +1969,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max by (service_name,datname) (increase(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]))",
+          "expr": "max by (service_name,datname) (increase(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[$interval]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -2374,7 +2374,7 @@
         {
           "alias": "conflicts",
           "dsType": "prometheus",
-          "expr": "avg by (service_name,datname,mode) (max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
+          "expr": "avg by (service_name,datname,mode) (max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[5m]))",
           "format": "time_series",
           "groupBy": [
             {
@@ -3138,7 +3138,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (datname) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (datname) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (datname))",
+          "expr": "sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (datname) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (datname) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (datname))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,

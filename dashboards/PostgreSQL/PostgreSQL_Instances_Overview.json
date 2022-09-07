@@ -5041,7 +5041,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
+          "expr": "sum(max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -5281,7 +5281,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "clamp_max(min(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (datname) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (datname) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (datname))),1)",
+          "expr": "clamp_max(min(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (datname) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (datname) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (datname))),1)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -5361,7 +5361,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "clamp_max(max(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (datname) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (datname) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (datname))),1)",
+          "expr": "clamp_max(max(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (datname) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (datname) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (datname))),1)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -5530,7 +5530,7 @@
             {
               "alias": "conflicts",
               "dsType": "prometheus",
-              "expr": "topk(5,(sum by (service_name) (max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))))",
+              "expr": "topk(5,(sum by (service_name) (max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[5m]))))",
               "format": "time_series",
               "groupBy": [
                 {
@@ -5581,7 +5581,7 @@
               ]
             },
             {
-              "expr": "avg(sum by (service_name) (max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m])))",
+              "expr": "avg(sum by (service_name) (max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5724,7 +5724,7 @@
           ],
           "targets": [
             {
-              "expr": "sum by (service_name) (max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
+              "expr": "sum by (service_name) (max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6428,7 +6428,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bottomk(5,(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (service_name) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (service_name) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (service_name))))",
+              "expr": "bottomk(5,(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (service_name) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (service_name) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (service_name))))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6436,7 +6436,7 @@
               "refId": "B"
             },
             {
-              "expr": "avg(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (service_name) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (service_name) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (service_name)))",
+              "expr": "avg(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (service_name) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (service_name) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (service_name)))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6596,7 +6596,7 @@
           ],
           "targets": [
             {
-              "expr": "sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (service_name) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (service_name) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}) by (service_name))",
+              "expr": "sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (service_name) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (service_name) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (service_name))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
