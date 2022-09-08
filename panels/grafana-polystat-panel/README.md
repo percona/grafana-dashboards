@@ -6,6 +6,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/grafana/grafana-polystat-panel/badge.svg)](https://snyk.io/test/github/grafana/grafana-polystat-panel)
 [![Maintainability](https://api.codeclimate.com/v1/badges/5c5cd1076777c637b931/maintainability)](https://codeclimate.com/github/grafana/grafana-polystat-panel/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/5c5cd1076777c637b931/test_coverage)](https://codeclimate.com/github/grafana/grafana-polystat-panel/test_coverage)
+[![Build Status](https://drone.grafana.net/api/badges/grafana/grafana-polystat-panel/status.svg)](https://drone.grafana.net/grafana/grafana-polystat-panel)
 
 This panel plugin provides a [D3-based](http://www.d3js.org) multistat panel for [Grafana](https://grafana.com/) 7.3+.
 
@@ -240,6 +241,15 @@ They can also be passed to another dashboard by appending var-VARNAME=value to t
 ```URL
 /dashboard/xyz?var-VARNAME=${VARNAME}
 ```
+
+Overrides using regular expressions with capture groups provide addition variables that can be referenced in a clickthroughUrl.
+
+Example:
+
+Regular Expression: `/TEMP_(?<A_HOST>.*)_/`
+Clickthrough URL: `/grafana/d/eCLHPr57k/drilldown?orgId=1&var-host=${A_HOST}`
+
+The above example will expand the capture named group `A_HOST` and replace the value in the specified URL.
 
 #### Using Polystat Variables
 

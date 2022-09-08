@@ -2,13 +2,31 @@
 
 ## Entries
 
+## v1.2.11
+
+- Fixes valueMappings for v8.0.x and v9.x
+
+## v1.2.10
+
+- Fixed issue with Grafana v9.0.0 (release)
+
+## v1.2.9
+
+- Now compatible with Grafana v9.0.0 (beta3)
+
+## v1.2.8
+
+- New Feature: Overrides can reference regex capture groupings for clickthrough urls
+- New Feature: Name of an override can be set
+- Fix for exported panel JSON containing extra fields
+
 ## v1.2.7
 
 - Fix for multiple queries not displaying when one or more contain no data
 - Sorting by field "value" now works #205
 - Fix default fill color #201
 - Display "NO DATA" instead of blank panel #199
-- Minor auto-layout ajustment for better fit
+- Minor auto-layout adjustment for better fit
 
 ## v1.2.6
 
@@ -32,8 +50,8 @@
 - Support global value mappings in Overrides #164, Issue #159
 - Compute X and Y mouse positions in mouseover #166, Issue #163
 - Increase polystat-panel-tooltip z-index #165, Issue #130
-- Fix for composite threshold evalation using global thresholds #174, Issues #158 and #173
-- Fix for default warning color not rendering corectly #179
+- Fix for composite threshold evaluation using global thresholds #174, Issues #158 and #173
+- Fix for default warning color not rendering correctly #179
 - Feature: Tooltip can now be disabled (on by default), PR 158
 
 ## v1.2.2
