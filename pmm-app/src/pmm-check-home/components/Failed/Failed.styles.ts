@@ -1,7 +1,10 @@
 import { css } from '@emotion/css';
 import { GrafanaTheme2 } from '@grafana/data';
 
-export const getStyles = ({ v1: { palette } }: GrafanaTheme2) => ({
+export const getStyles = ({ v1: { palette, colors } }: GrafanaTheme2) => ({
+  tippy: css`
+    background-color: ${colors.bg2};
+  `,
   TooltipWrapper: css`
     padding: 0.5em;
   `,

@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
-import { Tooltip, useStyles2 } from '@grafana/ui';
+import { useStyles2 } from '@grafana/ui';
 import { cx } from '@emotion/css';
 import { FailedChecksCounts, FailedCheckSummary } from 'pmm-check-home/types';
 import { PMM_SETTINGS_URL, PMM_DATABASE_CHECKS_PANEL_URL } from 'pmm-check-home/CheckPanel.constants';
+import Tippy from '@tippyjs/react';
 import { TooltipText } from './TooltipText';
 import { getStyles } from './Failed.styles';
 import { FailedProps } from './Failed.types';
@@ -74,7 +75,14 @@ export const Failed: FC<FailedProps> = ({ failed = [], isSttEnabled, hasNoAccess
 
   return (
     <div data-testid="db-check-panel-has-checks">
-      <Tooltip placement="top" theme="info" content={<TooltipText counts={counts} />}>
+      <Tippy
+        delay={[100, 100]}
+        content={<TooltipText counts={counts} />}
+        placement="top"
+        className={styles.tippy}
+        interactive
+        appendTo={document.body}
+      >
         <a href={PMM_DATABASE_CHECKS_PANEL_URL} className={styles.FailedDiv}>
           <span className={styles.Critical}>{emergency + alert + critical}</span>
           <span> / </span>
@@ -84,7 +92,7 @@ export const Failed: FC<FailedProps> = ({ failed = [], isSttEnabled, hasNoAccess
           <span> / </span>
           <span className={styles.Notice}>{notice + info + debug}</span>
         </a>
-      </Tooltip>
+      </Tippy>
     </div>
   );
 };

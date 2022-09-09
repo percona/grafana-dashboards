@@ -1,10 +1,11 @@
 import React, {
   MutableRefObject, RefObject, useEffect, useRef, useState,
 } from 'react';
+import Tippy from '@tippyjs/react';
+import { followCursor } from 'tippy.js';
 import { v4 as uuidv4 } from 'uuid';
 import { scaleLinear } from 'd3';
 import moment from 'moment';
-import ReactTooltip from 'react-tooltip';
 import { humanize } from '../../../helpers/Humanization';
 import { PolygonChartInterface } from './Sparkline.types';
 import {
@@ -120,7 +121,6 @@ export const Sparkline = ({
 
       updateGraphs(columnNumber);
 
-      // ReactTooltip.show(sparklineCanvas);
       ctx.clearRect(0, 0, 300, 30);
       drawData.forEach((_, index) => {
         drawBar(index, color);
@@ -199,7 +199,7 @@ export const Sparkline = ({
   const id = uuidv4();
 
   return (
-    <>
+    <Tippy delay={[100, 100]} className={styles.tippy} content={tooltip} followCursor="horizontal" plugins={[followCursor]} placement="bottom">
       <canvas
         ref={sparklineCanvas as RefObject<any>}
         className={styles.graphWrapper}
@@ -208,15 +208,6 @@ export const Sparkline = ({
         data-tip=""
         data-for={`sparkline-tooltip-${id}`}
       />
-      <ReactTooltip
-        data-testid="sparkline-tooltip"
-        className="sparkline-tooltip"
-        place="bottom"
-        backgroundColor="#3274d9"
-        arrowColor="#3274d9"
-        id={`sparkline-tooltip-${id}`}
-        getContent={() => tooltip}
-      />
-    </>
+    </Tippy>
   );
 };
