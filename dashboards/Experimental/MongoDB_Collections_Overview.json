@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -17,7 +20,10 @@
         "type": "dashboard"
       },
       {
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "iconColor": "orange",
         "name": "PMM Annotations",
@@ -210,10 +216,12 @@
             "last"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -230,6 +238,8 @@
       "type": "timeseries"
     },
     {
+      "datasource": "Metrics",
+      "description": "Provides the number of collections in the selected databases",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -273,7 +283,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.1.2",
       "targets": [
         {
           "datasource": "Metrics",
@@ -288,6 +298,8 @@
       "type": "stat"
     },
     {
+      "datasource": "Metrics",
+      "description": "Provides the number of indexes in the selected databases",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -331,7 +343,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.1.2",
       "targets": [
         {
           "datasource": "Metrics",
@@ -346,13 +358,16 @@
       "type": "stat"
     },
     {
-      "description": "",
+      "datasource": "Metrics",
+      "description": "Average size of each document in bytes. dataSize divided by number of documents",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -412,10 +427,12 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.3.5",
@@ -435,13 +452,16 @@
       "type": "timeseries"
     },
     {
-      "description": "",
+      "datasource": "Metrics",
+      "description": "Total size of all indexes in a given database",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -501,10 +521,12 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.3.5",
@@ -524,13 +546,16 @@
       "type": "timeseries"
     },
     {
-      "description": "",
+      "datasource": "Metrics",
+      "description": "Total size of uncompressed data in a database in bytes. May be larger than storageSize due to WT compression. ",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -575,8 +600,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 12,
+        "h": 7,
+        "w": 24,
         "x": 0,
         "y": 21
       },
@@ -590,10 +615,12 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.3.5",
@@ -614,18 +641,27 @@
     },
     {
       "collapsed": false,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 30
+        "y": 28
       },
       "id": 16,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "Instance Level",
       "type": "row"
     },
     {
+      "datasource": "Metrics",
+      "description": "Show summary information on the top 5 collections that are most frequently read.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -634,7 +670,8 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -681,7 +718,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 31
+        "y": 29
       },
       "id": 3,
       "links": [],
@@ -695,7 +732,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.1.2",
       "targets": [
         {
           "datasource": "Metrics",
@@ -735,6 +772,8 @@
       "type": "table"
     },
     {
+      "datasource": "Metrics",
+      "description": "Show summary information on the top 5 collections that are most frequently written to (insert, update, delete, etc.).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -743,7 +782,8 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -801,7 +841,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 31
+        "y": 29
       },
       "id": 19,
       "links": [],
@@ -821,7 +861,7 @@
           }
         ]
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.1.2",
       "repeatDirection": "v",
       "targets": [
         {
@@ -861,6 +901,8 @@
       "type": "table"
     },
     {
+      "datasource": "Metrics",
+      "description": "Show the 5 collections that are most frequently read.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -883,12 +925,14 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 38
+        "y": 36
       },
       "id": 24,
       "links": [],
       "options": {
         "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -900,7 +944,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.1.2",
       "repeatDirection": "v",
       "targets": [
         {
@@ -922,6 +966,8 @@
       "type": "bargauge"
     },
     {
+      "datasource": "Metrics",
+      "description": "Show the 5 collections that are most frequently written to (insert, update, delete, etc.).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -944,12 +990,14 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 38
+        "y": 36
       },
       "id": 20,
       "links": [],
       "options": {
         "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -961,7 +1009,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.1.2",
       "repeatDirection": "v",
       "targets": [
         {
@@ -984,24 +1032,35 @@
     },
     {
       "collapsed": false,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 43
       },
       "id": 12,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "Database Level",
       "type": "row"
     },
     {
+      "datasource": "Metrics",
+      "description": "Provides information on the rate of activity against the database then breaks down into activity type over the selected time period",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1051,7 +1110,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 44
       },
       "id": 8,
       "links": [],
@@ -1059,10 +1118,12 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.3.5",
@@ -1127,17 +1188,21 @@
           "refId": "E"
         }
       ],
-      "title": "Collections statistics  from $database (rate)",
+      "title": "Collections statistics  for $database (rate)",
       "transformations": [],
       "type": "timeseries"
     },
     {
+      "datasource": "Metrics",
+      "description": "Provides summary information on the activity running against the database then breaks down into activity type over the selected time period",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1187,7 +1252,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 52
       },
       "id": 25,
       "links": [],
@@ -1195,10 +1260,12 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.3.5",
@@ -1262,11 +1329,13 @@
           "refId": "E"
         }
       ],
-      "title": "Collections statistics  from $database (summary)",
+      "title": "Collections statistics  for $database (summary)",
       "transformations": [],
       "type": "timeseries"
     },
     {
+      "datasource": "Metrics",
+      "description": "Provides totals for each activity type hitting a database for collections",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1275,7 +1344,8 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -1374,7 +1444,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 60
       },
       "id": 27,
       "options": {
@@ -1393,7 +1463,7 @@
           }
         ]
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.1.2",
       "repeat": "database",
       "repeatDirection": "v",
       "targets": [
@@ -1479,7 +1549,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 34,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "Percona",
@@ -1549,11 +1619,11 @@
       },
       {
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "All",
+          "value": "$__all"
         },
+        "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 0,
         "includeAll": true,
@@ -1574,14 +1644,11 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "selected": false,
+          "text": "",
+          "value": ""
         },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\"},cluster)",
         "hide": 0,
         "includeAll": false,
@@ -1605,6 +1672,7 @@
           "text": "All",
           "value": "$__all"
         },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\"}, node_name)",
         "hide": 2,
         "includeAll": true,
@@ -1625,9 +1693,10 @@
       {
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "",
+          "value": ""
         },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}, service_name)",
         "hide": 0,
         "includeAll": false,
@@ -1647,14 +1716,12 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
         },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
         "hide": 0,
         "includeAll": false,
@@ -1674,14 +1741,12 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            ""
-          ],
-          "value": [
-            ""
-          ]
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
         },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_top_commands_count{cluster=~\"$cluster\"}, database)",
         "hide": 0,
         "includeAll": false,
@@ -1704,10 +1769,12 @@
       },
       {
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "None",
+          "value": ""
         },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_top_commands_count{database=~\"$database\"}, collection)",
         "hide": 2,
         "includeAll": false,
