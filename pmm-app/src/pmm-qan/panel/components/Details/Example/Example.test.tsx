@@ -4,6 +4,7 @@ import sqlFormatter from 'sql-formatter';
 import { render, screen } from '@testing-library/react';
 import Example from './Example';
 import { DatabasesType } from '../Details.types';
+import { Messages } from '../Details.messages';
 
 jest.mock('shared/components/helpers/notification-manager');
 jest.mock('react-json-view', () => ({ src = {} }) => <div className="json" data-src={JSON.stringify(src)} />);
@@ -57,6 +58,27 @@ describe('Example tab page render test', () => {
     const { container } = render(<Example {...props} />);
 
     expect(container.querySelector('.json')?.getAttribute('data-src')).toContain(innerExample);
+  });
+
+  it('Component renders when invalid json example is provided for mongodb', () => {
+    const props = {
+      databaseType: 'mongodb' as DatabasesType,
+      examples: [
+        {
+          example:
+            '{"ns":"admin.system.version","op":"command","command":{"collStats":"system.version"',
+          example_format: 'EXAMPLE',
+          example_type: 'RANDOM',
+          service_id: '/service_id/a0bf892b-931e-4fdd-aee1-566a3682a774',
+          service_type: 'mongodb',
+          tables: ['system.version'],
+        },
+      ],
+    };
+
+    render(<Example {...props} />);
+
+    expect(screen.getByTestId('example-query-invalid').textContent).toEqual(Messages.incompleteExample);
   });
 
   it('Component renders classic example for mysql', () => {

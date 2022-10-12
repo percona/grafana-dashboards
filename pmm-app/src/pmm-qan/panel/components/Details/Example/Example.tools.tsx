@@ -14,7 +14,7 @@ export const getExample = (databaseType) => (example: any): any => {
       logger.error(e);
     }
 
-    return <pre>{Messages.incompleteExample}</pre>;
+    return <pre data-testid="example-query-invalid">{Messages.incompleteExample}</pre>;
   }
 
   return (
