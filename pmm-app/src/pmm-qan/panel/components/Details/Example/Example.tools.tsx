@@ -4,7 +4,7 @@ import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
 import { Databases } from 'shared/core';
 import { Highlight } from 'shared/components/Hightlight/Highlight';
 import { logger } from '@percona/platform-core';
-import { Messages } from '../Details.messages';
+import ParseError from './ParseError/ParseError';
 
 export const getExample = (databaseType) => (example: any): any => {
   if (databaseType === Databases.mongodb) {
@@ -14,7 +14,7 @@ export const getExample = (databaseType) => (example: any): any => {
       logger.error(e);
     }
 
-    return <pre data-testid="example-query-invalid">{Messages.incompleteExample}</pre>;
+    return <ParseError />;
   }
 
   return (
