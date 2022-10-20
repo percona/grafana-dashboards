@@ -31,7 +31,7 @@ const explains = [
 describe('ClassicExplain::', () => {
   it('should render explains correct for loading state', () => {
     (useExplains as Mock).mockImplementationOnce(() => [undefined, explains[0]]);
-    const root = mount(<ClassicExplain databaseType="mysql" examples={[]} />);
+    const root = mount(<ClassicExplain databaseType="mysql" examples={[]} placeholders={[]} />);
 
     expect(root.find(dataTestId('classic-explain-error')).length).toBe(0);
     expect(root.find(dataTestId('classic-explain-no-data')).length).toBe(1);
@@ -39,7 +39,7 @@ describe('ClassicExplain::', () => {
 
   it('should render explains correct for error state', () => {
     (useExplains as Mock).mockImplementationOnce(() => [undefined, explains[1]]);
-    const root = mount(<ClassicExplain databaseType="mysql" examples={[]} />);
+    const root = mount(<ClassicExplain databaseType="mysql" examples={[]} placeholders={[]} />);
 
     expect(root.find(dataTestId('classic-explain-error')).length).toBe(1);
     expect(root.find(dataTestId('classic-explain-no-data')).length).toBe(0);
@@ -47,7 +47,7 @@ describe('ClassicExplain::', () => {
 
   it('should render explains correct for success state', () => {
     (useExplains as Mock).mockImplementationOnce(() => [undefined, explains[2]]);
-    const root = mount(<ClassicExplain databaseType="mysql" examples={[]} />);
+    const root = mount(<ClassicExplain databaseType="mysql" examples={[]} placeholders={[]} />);
 
     expect(root.find(dataTestId('classic-explain-error')).length).toBe(0);
     expect(root.find(dataTestId('classic-explain-no-data')).length).toBe(1);

@@ -5,11 +5,17 @@ import { ExplainProps, ExplainTabs } from './Explain.types';
 // import { VisualExplain } from './components/VisualExplain/VisualExplain';
 import { ClassicExplain } from './components/ClassicExplain/ClassicExplain';
 import { JsonExplain } from './components/JsonExplain/JsonExplain';
+import PrepareExplain from './components/PrepareExplain/PrepareExplain';
 
 const Explain: FC<ExplainProps> = ({ databaseType, examples }) => {
   const [classicExplainKey, setClassicExplainKey] = useState(true);
   const [jsonExplainKey, setJsonExplainKey] = useState(true);
+  const [placeholders, setPlaceholders] = useState<string[]>();
   // const [visualExplainKey, setVisualExplainKey] = useState(true);
+
+  if (databaseType === Databases.mysql && !!examples[0]?.placeholders_count && !placeholders) {
+    return <PrepareExplain examples={examples} onPlaceholdersSubmit={setPlaceholders} />;
+  }
 
   return (
     <div>
@@ -20,7 +26,7 @@ const Explain: FC<ExplainProps> = ({ databaseType, examples }) => {
           isOpen={classicExplainKey}
           onToggle={() => setClassicExplainKey(!classicExplainKey)}
         >
-          <ClassicExplain databaseType={databaseType} examples={examples} />
+          <ClassicExplain databaseType={databaseType} examples={examples} placeholders={placeholders} />
         </Collapse>
       ) : null}
       <Collapse
@@ -29,7 +35,7 @@ const Explain: FC<ExplainProps> = ({ databaseType, examples }) => {
         isOpen={jsonExplainKey}
         onToggle={() => setJsonExplainKey(!jsonExplainKey)}
       >
-        <JsonExplain databaseType={databaseType} examples={examples} />
+        <JsonExplain databaseType={databaseType} examples={examples} placeholders={placeholders} />
       </Collapse>
       {/* {databaseType !== Databases.mongodb ? ( */}
       {/*  <Collapse */}

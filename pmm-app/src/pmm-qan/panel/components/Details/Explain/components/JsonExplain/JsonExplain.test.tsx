@@ -19,7 +19,7 @@ describe('JsonExplain::', () => {
         value: null,
       },
     ]);
-    const root = mount(<JsonExplain databaseType="mysql" examples={[]} />);
+    const root = mount(<JsonExplain databaseType="mysql" examples={[]} placeholders={[]} />);
 
     expect(root.find(dataTestId('json-explain-error')).length).toBe(0);
     expect(root.find(dataTestId('json-explain-no-data')).length).toBe(1);
@@ -33,7 +33,7 @@ describe('JsonExplain::', () => {
         value: null,
       },
     ]);
-    const root = mount(<JsonExplain databaseType="mysql" examples={[]} />);
+    const root = mount(<JsonExplain databaseType="mysql" examples={[]} placeholders={[]} />);
 
     expect(root.find(dataTestId('json-explain-error')).length).toBe(1);
     expect(root.find(dataTestId('json-explain-no-data')).length).toBe(0);
@@ -47,7 +47,7 @@ describe('JsonExplain::', () => {
         value: JSON.stringify({ data: 'test' }),
       },
     ]);
-    const root = mount(<JsonExplain databaseType="mysql" examples={[]} />);
+    const root = mount(<JsonExplain databaseType="mysql" examples={[]} placeholders={[]} />);
 
     expect(root.find(dataTestId('json-explain-error')).length).toBe(0);
     expect(root.find(dataTestId('json-explain-no-data')).length).toBe(0);

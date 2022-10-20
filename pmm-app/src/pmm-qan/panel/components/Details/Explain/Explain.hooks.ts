@@ -10,7 +10,7 @@ const actionResult = {
   value: null,
 };
 
-export const useExplains = (examples, databaseType): any[] => {
+export const useExplains = (examples, databaseType, placeholders?: string[]): any[] => {
   const [jsonExplain, setJsonExplain] = useState(actionResult);
   const [classicExplain, setClassicExplain] = useState(actionResult);
   const [visualExplain, setVisualExplain] = useState(actionResult);
@@ -30,7 +30,7 @@ export const useExplains = (examples, databaseType): any[] => {
           return;
         }
 
-        if (databaseType === Databases.mysql) {
+        if (databaseType === Databases.mysql && placeholders) {
           const traditionalExplainActionId = await mysqlMethods.getExplainTraditional({
             example: notEmptyExample[0],
           });
@@ -56,7 +56,7 @@ export const useExplains = (examples, databaseType): any[] => {
     };
 
     getExplains();
-  }, [examples, databaseType]);
+  }, [examples, databaseType, placeholders]);
 
   return [jsonExplain, classicExplain, visualExplain];
 };

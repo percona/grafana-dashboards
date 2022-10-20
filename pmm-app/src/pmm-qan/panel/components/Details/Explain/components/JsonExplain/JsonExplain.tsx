@@ -5,8 +5,8 @@ import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
 import { Messages } from '../../../Details.messages';
 import { useExplains } from '../../Explain.hooks';
 
-export const JsonExplain = ({ examples, databaseType }) => {
-  const [jsonExplain] = useExplains(examples, databaseType);
+export const JsonExplain = ({ examples, databaseType, placeholders }) => {
+  const [jsonExplain] = useExplains(examples, databaseType, placeholders);
 
   return (
     <Overlay isPending={jsonExplain.loading}>

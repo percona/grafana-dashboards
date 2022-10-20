@@ -1,8 +1,8 @@
-import { DatabasesType } from '../Details.types';
+import { DatabasesType, QueryExampleResponseItem } from '../Details.types';
 
 export interface ExplainProps {
   databaseType: DatabasesType;
-  examples: any;
+  examples: QueryExampleResponseItem[];
 }
 
 export enum ExplainTabs {
