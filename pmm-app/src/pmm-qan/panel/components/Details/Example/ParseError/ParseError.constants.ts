@@ -1,1 +1,0 @@
-export const MAX_QUERY_LENGTH_DOCS_LINK = 'TODO';

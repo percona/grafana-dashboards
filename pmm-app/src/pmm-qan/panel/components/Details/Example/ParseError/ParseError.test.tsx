@@ -7,8 +7,6 @@ describe('Parse Error Message', () => {
   it('renders with correct message', () => {
     const { container } = render(<ParseError />);
 
-    const expectedMessage = Messages.start + Messages.docsLink + Messages.rest;
-
-    expect(container.textContent).toBe(expectedMessage);
+    expect(container.textContent).toBe(Messages.parsingFailed);
   });
 });
