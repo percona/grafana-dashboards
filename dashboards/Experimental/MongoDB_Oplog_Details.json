@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
@@ -28,7 +31,10 @@
       },
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "#6ed0e0",
@@ -50,7 +56,6 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1659543592787,
   "links": [
     {
       "icon": "doc",
@@ -137,6 +142,7 @@
   "panels": [
     {
       "collapsed": false,
+     "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -145,6 +151,12 @@
       },
       "id": 1547,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "Oplog Recovery Window",
       "type": "row"
     },
@@ -153,8 +165,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+     "datasource": "Metrics",
       "decimals": 2,
-      "description": "Timespan 'window' between newest and the oldest op in the Oplog collection.",
+      "description": "This panel provides details about your recovery window over a time interval based on your oplog activities. It coordinates with replication and backup activities.",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -205,7 +218,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.1.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -289,14 +302,21 @@
     },
     {
       "collapsed": false,
+     "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 73
       },
       "id": 1070,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "Oplog Details",
       "type": "row"
     },
@@ -305,6 +325,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+     "datasource": "Metrics",
       "decimals": 2,
       "description": "Repl buffer ops applied per sec.",
       "editable": true,
@@ -332,7 +353,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 10
+        "y": 74
       },
       "hiddenSeries": false,
       "id": 85,
@@ -358,7 +379,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.1.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -368,6 +389,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": "Metrics",
           "expr": "avg by (service_name) (mongodb_mongod_metrics_repl_buffer_count{service_name=~\"$service_name\"})",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -423,8 +445,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+     "datasource": "Metrics",
       "decimals": 2,
-      "description": "Time spent per second waiting for or fetching oplog docs in replication.",
+      "description": "Provides information related to the number of getmore commands erlated to the local db oplog.rs collection",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -450,7 +473,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 10
+        "y": 74
       },
       "hiddenSeries": false,
       "id": 79,
@@ -476,7 +499,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.1.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -486,6 +509,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": "Metrics",
           "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -517,6 +541,7 @@
       ],
       "yaxes": [
         {
+          "$$hashKey": "object:140",
           "decimals": 2,
           "format": "ms",
           "label": "",
@@ -525,6 +550,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:141",
           "format": "short",
           "logBase": 1,
           "show": false
@@ -539,6 +565,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+     "datasource": "Metrics",
       "decimals": 2,
       "description": "Times spent per second A) pre-loading oplog ops into parallel-executable batches B) Times spent pre-loading index values and C) repl batch apply phase.",
       "editable": true,
@@ -566,7 +593,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 82
       },
       "hiddenSeries": false,
       "id": 84,
@@ -591,7 +618,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.1.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -603,6 +630,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": "Metrics",
           "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -611,6 +639,7 @@
           "step": 300
         },
         {
+          "datasource": "Metrics",
           "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -620,6 +649,7 @@
           "step": 300
         },
         {
+          "datasource": "Metrics",
           "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -652,6 +682,7 @@
       ],
       "yaxes": [
         {
+          "$$hashKey": "object:216",
           "decimals": 2,
           "format": "ms",
           "label": "",
@@ -660,6 +691,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:217",
           "format": "short",
           "logBase": 1,
           "show": false
@@ -674,8 +706,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+     "datasource": "Metrics",
       "decimals": 2,
-      "description": "Current hard-coded max and actual size of repl batch buffer.",
+      "description": "Provides info on the current usage and actual size of the replication buffer as defined by the maximum oplog size",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -701,7 +734,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 154
       },
       "hiddenSeries": false,
       "id": 80,
@@ -726,7 +759,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.1.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -744,6 +777,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": "Metrics",
           "expr": "avg by (service_name) (mongodb_mongod_metrics_repl_buffer_size_bytes{service_name=~\"$service_name\"})",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -752,6 +786,7 @@
           "step": 300
         },
         {
+          "datasource": "Metrics",
           "expr": "avg by (service_name) (mongodb_mongod_metrics_repl_buffer_max_size_bytes{service_name=~\"$service_name\"})",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -783,6 +818,7 @@
       ],
       "yaxes": [
         {
+          "$$hashKey": "object:288",
           "decimals": 2,
           "format": "bytes",
           "label": "",
@@ -791,6 +827,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:289",
           "format": "short",
           "logBase": 1,
           "show": false
@@ -805,8 +842,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+     "datasource": "Metrics",
       "decimals": 2,
-      "description": "Count of A) getmores executed B) index values pre-loaded C) oplog docs applied per second against oplog collection in replication.",
+      "description": "Provides information on the number of write operations recorded in the oplog collection over a period of time",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -832,7 +870,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 34
+        "y": 226
       },
       "hiddenSeries": false,
       "id": 81,
@@ -857,7 +895,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.1.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -869,6 +907,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": "Metrics",
           "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -878,6 +917,7 @@
           "step": 300
         },
         {
+          "datasource": "Metrics",
           "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -887,6 +927,7 @@
           "step": 300
         },
         {
+          "datasource": "Metrics",
           "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 2,
@@ -897,7 +938,7 @@
       ],
       "thresholds": [],
       "timeRegions": [],
-      "title": "Oplog Operations - $service_name",
+      "title": "Oplog Operations - [$service_name]",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -918,6 +959,7 @@
       ],
       "yaxes": [
         {
+          "$$hashKey": "object:364",
           "decimals": 2,
           "format": "ops",
           "label": "",
@@ -926,6 +968,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:365",
           "format": "short",
           "logBase": 1,
           "show": false
@@ -937,25 +980,35 @@
     },
     {
       "collapsed": false,
+     "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 298
       },
       "id": 1551,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "Oplog Window",
       "type": "row"
     },
     {
-      "description": "",
+     "datasource": "Metrics",
+      "description": "The average amount of data in GB that the PRIMARY generate per hour",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1001,17 +1054,19 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 299
       },
       "id": 1549,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -1024,17 +1079,20 @@
           "refId": "A"
         }
       ],
-      "title": "Oplog B/Hr",
+      "title": "Oplog GB/Hour",
       "type": "timeseries"
     },
     {
-      "description": "",
+     "datasource": "Metrics",
+      "description": "Provides information about the contents of your oplog. The difference between the first and latest entries provides info data regarding which operations can possibly be repeated if necessary. ",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1084,7 +1142,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 309
       },
       "id": 1553,
       "options": {
@@ -1093,10 +1151,12 @@
             "lastNotNull"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -1114,7 +1174,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 34,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "Percona",
@@ -1190,13 +1250,9 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": true,
-          "text": [
-            "None"
-          ],
-          "value": [
-            ""
-          ]
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
@@ -1223,13 +1279,9 @@
         "allFormat": "blob",
         "allValue": ".*",
         "current": {
-          "selected": true,
-          "text": [
-            ""
-          ],
-          "value": [
-            ""
-          ]
+          "selected": false,
+          "text": "",
+          "value": ""
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\"},cluster)",
@@ -1254,8 +1306,9 @@
       {
         "allFormat": "glob",
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "",
+          "text": "None",
           "value": ""
         },
         "datasource": "Metrics",
@@ -1282,8 +1335,8 @@
         "allFormat": "glob",
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "",
+          "value": ""
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\"}, node_name)",
@@ -1310,8 +1363,8 @@
         "allFormat": "glob",
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "",
+          "value": ""
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}, service_name)",
@@ -1391,9 +1444,10 @@
       },
       {
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "None",
+          "value": ""
         },
         "datasource": "Metrics",
         "definition": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
@@ -1418,8 +1472,9 @@
       },
       {
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "",
+          "text": "None",
           "value": ""
         },
         "datasource": "Metrics",
@@ -1555,8 +1610,9 @@
         "allFormat": "blob",
         "allValue": ".*",
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "",
+          "text": "None",
           "value": ""
         },
         "datasource": "Metrics",
