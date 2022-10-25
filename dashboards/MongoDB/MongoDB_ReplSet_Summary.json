@@ -238,7 +238,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "count by (set) (mongodb_mongod_replset_number_of_members{cluster=~\"$cluster\",set=~\"$replset\"} or mongodb_mongod_replset_my_state{cluster=~\"$cluster\",set=~\"$replset\"})",
+          "expr": "count by (set) (group by (service_name, set) (mongodb_mongod_replset_number_of_members{cluster=~\"$cluster\",set=~\"$replset\"} or mongodb_mongod_replset_my_state{cluster=~\"$cluster\",set=~\"$replset\"}))",
           "interval": "5m",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -553,7 +553,7 @@
       "showTransitionCount": false,
       "targets": [
         {
-          "expr": "mongodb_mongod_replset_my_state{set=~\"$replset\",service_name=~\"$service_name\"}",
+          "expr": "max by (service_name) (mongodb_mongod_replset_my_state{set=~\"$replset\",service_name=~\"$service_name\"})",
           "interval": "$interval",
           "legendFormat": "{{service_name}}",
           "refId": "A"
@@ -3295,7 +3295,7 @@
           "steppedLine": true,
           "targets": [
             {
-              "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
+              "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"user\", mode!=\"system\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\", mode!=\"user\", mode!=\"system\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\", mode!=\"user\", mode!=\"system\"}[5m]))),100)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
