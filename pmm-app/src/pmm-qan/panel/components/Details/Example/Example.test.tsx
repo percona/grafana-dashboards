@@ -59,6 +59,27 @@ describe('Example tab page render test', () => {
     expect(container.querySelector('.json')?.getAttribute('data-src')).toContain(innerExample);
   });
 
+  it('Component renders when invalid json example is provided for mongodb', () => {
+    const props = {
+      databaseType: 'mongodb' as DatabasesType,
+      examples: [
+        {
+          example:
+            '{"ns":"admin.system.version","op":"command","command":{"collStats":"system.version"',
+          example_format: 'EXAMPLE',
+          example_type: 'RANDOM',
+          service_id: '/service_id/a0bf892b-931e-4fdd-aee1-566a3682a774',
+          service_type: 'mongodb',
+          tables: ['system.version'],
+        },
+      ],
+    };
+
+    render(<Example {...props} />);
+
+    expect(screen.getByTestId('example-query-invalid')).toBeDefined();
+  });
+
   it('Component renders classic example for mysql', () => {
     const props = {
       databaseType: 'mysql' as DatabasesType,
