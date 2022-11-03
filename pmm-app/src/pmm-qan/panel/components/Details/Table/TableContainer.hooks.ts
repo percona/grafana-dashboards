@@ -4,7 +4,7 @@ import { Databases } from 'shared/core';
 import { useExplains } from '../Explain/Explain.hooks';
 
 export const useTables = (examples, databaseType): any[] => {
-  const [jsonExplain, classicExplain] = useExplains(examples, databaseType);
+  const { jsonExplain, classicExplain } = useExplains(examples, databaseType);
   const [tables, setTables] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 

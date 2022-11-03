@@ -8,7 +8,7 @@ import { Messages } from '../../../Details.messages';
 import { ReplacedQueryMessage } from '../ReplacedQueryMessage/ReplacedQueryMessage';
 
 export const ClassicExplain = ({ examples, databaseType, placeholders }) => {
-  const [, classicExplain] = useExplains(examples, databaseType, placeholders);
+  const { classicExplain } = useExplains(examples, databaseType, placeholders);
   const { value: explain } = classicExplain;
   const processedExplain = processClassicExplain(explain?.explain_result);
 

@@ -22,7 +22,7 @@ export interface QueryExampleResponse {
 export interface QueryExampleResponseItem {
   example: string;
   example_type: string;
-  fingerprint?: string;
+  explain_fingerprint?: string;
   placeholders_count?: number;
   schema?: string;
   service_id: string;

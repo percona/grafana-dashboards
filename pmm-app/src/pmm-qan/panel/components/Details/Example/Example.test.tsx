@@ -69,7 +69,7 @@ describe('Example tab page render test', () => {
           example_format: 'EXAMPLE',
           example_type: 'RANDOM',
           service_id: '/service_id/a0bf892b-931e-4fdd-aee1-566a3682a774',
-          service_type: 'mongodb',
+          service_type: 'mongodb' as DatabasesType,
           tables: ['system.version'],
         },
       ],

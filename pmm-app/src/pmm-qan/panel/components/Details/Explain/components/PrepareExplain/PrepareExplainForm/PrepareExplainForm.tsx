@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Field,
-  FieldSet,
-  Form,
-  Input,
-  useStyles,
-} from '@grafana/ui';
+import { Button, Field, FieldSet, Form, Input, useStyles } from '@grafana/ui';
 import { Messages } from '../PrepareExplain.messages';
 import PrepareExplainFingerPrint from '../PrepareExplainFingerprint/PrepareExplainFingerprint';
 import { getStyles } from '../PrepareExplain.styles';
@@ -27,7 +20,7 @@ const PrepareExplainForm: React.FC<PrepareExplainFormProps> = ({ example, onPlac
         <>
           <PrepareExplainFingerPrint
             placeholders={watch().placeholders}
-            fingerprint={example.fingerprint || ''}
+            fingerprint={example.explain_fingerprint || ''}
           />
           <p className={styles.description}>{Messages.replace}</p>
           {!!placeholders.length && (

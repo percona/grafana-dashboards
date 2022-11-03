@@ -4,7 +4,7 @@ import { useExplains } from '../../Explain.hooks';
 import { Messages } from '../../../Details.messages';
 
 export const VisualExplain = ({ examples, databaseType }) => {
-  const [, , visualExplain] = useExplains(examples, databaseType);
+  const { visualExplain } = useExplains(examples, databaseType);
 
   return (
     <Overlay isPending={false}>

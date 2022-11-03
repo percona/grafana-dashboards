@@ -1,6 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { Collapse } from '@grafana/ui';
 import { Databases } from 'shared/core';
+import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { ExplainProps, ExplainTabs } from './Explain.types';
 // import { VisualExplain } from './components/VisualExplain/VisualExplain';
 import { ClassicExplain } from './components/ClassicExplain/ClassicExplain';
@@ -11,10 +12,18 @@ const Explain: FC<ExplainProps> = ({ databaseType, examples }) => {
   const [classicExplainKey, setClassicExplainKey] = useState(true);
   const [jsonExplainKey, setJsonExplainKey] = useState(true);
   const [placeholders, setPlaceholders] = useState<string[]>();
+  const example = examples.find((e) => e.example);
+  const {
+    panelState: { queryId },
+  } = useContext(QueryAnalyticsProvider);
   // const [visualExplainKey, setVisualExplainKey] = useState(true);
 
-  if (databaseType === Databases.mysql && !!examples[0]?.placeholders_count && !placeholders) {
-    return <PrepareExplain examples={examples} onPlaceholdersSubmit={setPlaceholders} />;
+  useEffect(() => {
+    setPlaceholders(undefined);
+  }, [queryId]);
+
+  if (databaseType === Databases.mysql && !!example?.placeholders_count && !placeholders) {
+    return <PrepareExplain example={example} onPlaceholdersSubmit={setPlaceholders} />;
   }
 
   return (

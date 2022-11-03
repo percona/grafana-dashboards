@@ -4,8 +4,12 @@ export const replacePlaceholders = (fingerprint: string, placeholders: string[] 
   let replaced = fingerprint || '';
 
   placeholders.forEach((value, idx) => {
-    if (value) {
-      replaced = replaced.replace(new RegExp(`:${idx + 1}`, 'g'), value);
+    const fingerprintIdx = idx + 1;
+
+    if (value && replaced.includes(`::${fingerprintIdx}`)) {
+      replaced = replaced.replace(new RegExp(`::${fingerprintIdx}`, 'g'), `('${value}')`);
+    } else if (value) {
+      replaced = replaced.replace(new RegExp(`:${fingerprintIdx}`, 'g'), `'${value}'`);
     }
   });
 

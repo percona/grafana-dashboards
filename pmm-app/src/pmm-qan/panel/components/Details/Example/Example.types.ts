@@ -1,7 +1,7 @@
 import { DatabasesType, QueryExampleResponseItem } from '../Details.types';
 
 export interface ExampleInterface {
-  fingerprint?: string;
+  explainFingerprint?: string;
   databaseType: DatabasesType;
   examples: QueryExampleResponseItem[];
   loading?: boolean;

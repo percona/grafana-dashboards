@@ -59,12 +59,14 @@ export const mysqlMethods = {
     }
   },
 
-  getExplainTraditional: async ({ example }) => {
+  getExplainTraditional: async ({ example, queryId, placeholders }) => {
     try {
+      const payload = placeholders?.length ? { query_id: queryId, placeholders } : { query: example.example };
+
       const result = await MysqlDatabaseService.getTraditionalExplainMysql({
         database: example.schema,
-        query: example.example,
         service_id: example.service_id,
+        ...payload,
       });
 
       return result.action_id;

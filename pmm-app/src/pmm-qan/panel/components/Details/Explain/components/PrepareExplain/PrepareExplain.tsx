@@ -6,19 +6,17 @@ import { Messages } from './PrepareExplain.messages';
 import PrepareExplainForm from './PrepareExplainForm/PrepareExplainForm';
 import { getStyles } from './PrepareExplain.styles';
 
-const PrepareExplain: React.FC<PrepareExplainProps> = ({ examples, onPlaceholdersSubmit }) => {
+const PrepareExplain: React.FC<PrepareExplainProps> = ({ onPlaceholdersSubmit, example }) => {
   const styles = useStyles(getStyles);
 
   return (
     <div className={styles.container}>
       <div className={styles.follow}>{Messages.follow}</div>
-      {examples.map((example) => (
-        <PrepareExplainForm
-          key={example.fingerprint}
-          example={example}
-          onPlaceholdersSubmit={onPlaceholdersSubmit}
-        />
-      ))}
+      <PrepareExplainForm
+        key={example?.explain_fingerprint}
+        example={example}
+        onPlaceholdersSubmit={onPlaceholdersSubmit}
+      />
     </div>
   );
 };
