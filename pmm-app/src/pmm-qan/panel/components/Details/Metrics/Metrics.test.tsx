@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { dataTestId } from '@percona/platform-core';
+import { dataTestId } from 'shared/core/test.utils';
 import { Databases } from 'shared/core';
 import Metrics from './Metrics';
 import { getChartDataFromHistogramItems } from './Metrics.utils';
