@@ -32,7 +32,7 @@ const Metrics: FC<MetricsProps> = ({
   const mainColumn = (item) => (
     <span className={styles.metricColumn}>
       <span>{item.name}</span>
-      <LinkTooltip className={styles.metricTooltipIcon} tooltipText={item.tooltip} icon="info-circle" />
+      <LinkTooltip tooltipText={item.tooltip} icon="info-circle" />
     </span>
   );
 
