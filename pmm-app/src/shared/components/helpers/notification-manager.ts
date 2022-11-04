@@ -1,13 +1,14 @@
-import AppEvents from 'grafana/app/core/app_events';
+import { AppEvents } from '@grafana/data';
+import appEvents from 'grafana/app/core/app_events';
 
 export const showSuccessNotification = ({ message }) => {
-  AppEvents.emit('alert-success', [message]);
+  appEvents.emit(AppEvents.alertSuccess, [message]);
 };
 
 export const showWarningNotification = ({ message }) => {
-  AppEvents.emit('alert-warning', [message]);
+  appEvents.emit(AppEvents.alertWarning, [message]);
 };
 
 export const showErrorNotification = ({ message }) => {
-  AppEvents.emit('alert-error', [message]);
+  appEvents.emit(AppEvents.alertError, [message]);
 };
