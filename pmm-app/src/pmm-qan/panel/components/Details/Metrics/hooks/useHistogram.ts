@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { logger } from '@percona/platform-core';
+import { logger } from 'shared/core';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { ChartData } from 'chart.js';
 import { useTheme2 } from '@grafana/ui';

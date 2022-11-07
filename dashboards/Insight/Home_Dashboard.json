@@ -137,11 +137,10 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "rgb(31, 120, 193)",
+            "fixedColor": "dark-blue",
             "mode": "fixed"
           },
           "decimals": 0,
-          "displayName": "Monitored DB Services",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -157,20 +156,20 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 2,
-        "w": 3,
+        "h": 4,
+        "w": 6,
         "x": 0,
         "y": 1
       },
-      "id": 1024,
+      "id": 1059,
       "interval": "$interval",
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "colorMode": "none",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "vertical",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -179,17 +178,50 @@
           "values": false
         },
         "text": {
+          "titleSize": 14,
           "valueSize": 24
         },
-        "textMode": "value"
+        "textMode": "auto"
       },
       "pluginVersion": "9.1.2",
       "targets": [
         {
           "datasource": "Metrics",
-          "expr": "count(count by (id_service) (label_replace(up{node_name=~\"$node_name\",job=~\"mysql.*|mongodb.*|postgres.*|proxysql.*\",environment=~\"$environment\"}, \"id_service\", \"$2\", \"job\", \"(.*)_exporter_agent_id_(.*)_(.*)\"))) or vector(0)",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "count(count by (id_service) (label_replace(up{node_name=~\"$node_name\",job=~\"mysql.*\",environment=~\"$environment\"}, \"id_service\", \"$2\", \"job\", \"(.*)_exporter_agent_id_(.*)_(.*)\"))) or vector(0)",
+          "instant": false,
           "interval": "$interval",
+          "legendFormat": "MySQL",
+          "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "count(count by (id_service) (label_replace(up{node_name=~\"$node_name\",job=~\"mongodb.*\",environment=~\"$environment\"}, \"id_service\", \"$2\", \"job\", \"(.*)_exporter_agent_id_(.*)_(.*)\"))) or vector(0)",
+          "hide": false,
+          "legendFormat": "MongoDB",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "count(count by (id_service) (label_replace(up{node_name=~\"$node_name\",job=~\"postgres.*\",environment=~\"$environment\"}, \"id_service\", \"$2\", \"job\", \"(.*)_exporter_agent_id_(.*)_(.*)\"))) or vector(0)",
+          "hide": false,
+          "legendFormat": "PostgreSQL",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "count(count by (id_service) (label_replace(up{node_name=~\"$node_name\",job=~\"proxysql.*\",environment=~\"$environment\"}, \"id_service\", \"$2\", \"job\", \"(.*)_exporter_agent_id_(.*)_(.*)\"))) or vector(0)",
+          "hide": false,
+          "legendFormat": "ProxySQL",
+          "range": true,
+          "refId": "D"
         }
       ],
       "title": "Monitored DB Services",
@@ -203,12 +235,13 @@
             "fixedColor": "rgb(31, 120, 193)",
             "mode": "fixed"
           },
-          "displayName": "Monitored DB Instances",
+          "links": [],
           "mappings": [
             {
               "options": {
                 "match": "null",
                 "result": {
+                  "index": 0,
                   "text": "N/A"
                 }
               },
@@ -236,19 +269,19 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 3,
+        "h": 4,
+        "w": 6,
+        "x": 6,
         "y": 1
       },
       "id": 376,
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "colorMode": "none",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "vertical",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -257,19 +290,50 @@
           "values": false
         },
         "text": {
+          "titleSize": 14,
           "valueSize": 24
         },
-        "textMode": "value"
+        "textMode": "auto"
       },
       "pluginVersion": "9.1.2",
       "targets": [
         {
           "datasource": "Metrics",
-          "expr": "count(mysql_global_status_uptime{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} or \nmongodb_mongos_instance_uptime_seconds{region=~\"$region\",node_type=~\"$node_type\",node_name=~\"$node_name\"} or \npg_up{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} or \npostgresql_up{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"})",
+          "editorMode": "code",
+          "expr": "count by (service_type) (mysql_global_status_uptime{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"})",
           "format": "time_series",
+          "hide": false,
           "intervalFactor": 1,
-          "legendFormat": "",
+          "legendFormat": "MySQL",
+          "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "count by (service_type) (mongodb_up{region=~\"$region\",node_type=~\"$node_type\",node_name=~\"$node_name\"})",
+          "hide": false,
+          "legendFormat": "MongoDB",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "count by (service_type)  (group by (service_name, service_type) (pg_up{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}))",
+          "hide": false,
+          "legendFormat": "PostgreSQL",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "count by (service_type)  (group by (service_name, service_type) (proxysql_mysql_status_active_transactions{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}))",
+          "hide": false,
+          "legendFormat": "ProxySQL",
+          "range": true,
+          "refId": "D"
         }
       ],
       "title": "Monitored DB Instances",
@@ -324,9 +388,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 2,
+        "h": 4,
         "w": 3,
-        "x": 6,
+        "x": 12,
         "y": 1
       },
       "id": 326,
@@ -369,171 +433,6 @@
         }
       ],
       "title": "Monitored Nodes",
-      "type": "stat"
-    },
-    {
-      "datasource": "Metrics",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "displayName": "Min DB Uptime",
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#F2495C",
-                "value": null
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "value": 3600
-              },
-              {
-                "color": "#299c46",
-                "value": 86400
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 9,
-        "y": 1
-      },
-      "id": 377,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {
-          "valueSize": 24
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "9.1.2",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "expr": "min by () (mysql_global_status_uptime{node_name=~\"$node_name\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$node_name\"} or \n(time() - process_start_time_seconds{node_name=~\"$node_name\",job=~\"postgres_exporter.*\"}))",
-          "format": "time_series",
-          "hide": false,
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Min DB Uptime",
-      "type": "stat"
-    },
-    {
-      "datasource": "Metrics",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "displayName": "Min Node Uptime",
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#F2495C",
-                "value": null
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "value": 3600
-              },
-              {
-                "color": "#299c46",
-                "value": 86400
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 12,
-        "y": 1
-      },
-      "id": 375,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {
-          "valueSize": 24
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "9.1.2",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "expr": "min(node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"})",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Min Node Uptime",
       "type": "stat"
     },
     {
@@ -584,7 +483,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 2,
+        "h": 4,
         "w": 3,
         "x": 15,
         "y": 1
@@ -630,7 +529,7 @@
     },
     {
       "datasource": "Metrics",
-      "description": "RAM (Random Access Memory) is the hardware in a computing device where the operating system, application programs and data in current use are kept so they can be quickly reached by the device's processor.",
+      "description": "RAM (Random Access Memory) is the hardware in a computing device where the operating system, application programs, and data in current use are kept so the device's processor can quickly reach them. ",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -678,7 +577,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 2,
+        "h": 4,
         "w": 3,
         "x": 18,
         "y": 1
@@ -773,7 +672,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 2,
+        "h": 4,
         "w": 3,
         "x": 21,
         "y": 1
@@ -816,6 +715,175 @@
         }
       ],
       "title": "Virtual Memory Total",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Minimal Uptime",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "displayName": "Min Node Uptime",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#F2495C",
+                "value": null
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 3600
+              },
+              {
+                "color": "#299c46",
+                "value": 86400
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 0,
+        "y": 5
+      },
+      "id": 375,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 24
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "9.1.2",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "min(node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"})",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Min Node Uptime",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Minimal DB Uptime",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "displayName": "Min DB Uptime",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#F2495C",
+                "value": null
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 3600
+              },
+              {
+                "color": "#299c46",
+                "value": 86400
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 3,
+        "y": 5
+      },
+      "id": 377,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 24
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "9.1.2",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "min by () (mysql_global_status_uptime{node_name=~\"$node_name\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$node_name\"} or \n(time() - process_start_time_seconds{node_name=~\"$node_name\",job=~\"postgres_exporter.*\"}))",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Min DB Uptime",
       "type": "stat"
     },
     {
@@ -868,10 +936,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 6,
-        "x": 0,
-        "y": 3
+        "x": 6,
+        "y": 5
       },
       "id": 311,
       "links": [
@@ -961,10 +1029,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 6,
-        "x": 6,
-        "y": 3
+        "x": 12,
+        "y": 5
       },
       "id": 1036,
       "interval": "$interval",
@@ -1055,10 +1123,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 5,
-        "x": 12,
-        "y": 3
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 5
       },
       "id": 1034,
       "interval": "$interval",
@@ -1103,29 +1171,6 @@
     },
     {
       "datasource": "Metrics",
-      "gridPos": {
-        "h": 6,
-        "w": 7,
-        "x": 17,
-        "y": 3
-      },
-      "height": "120px",
-      "id": 1048,
-      "links": [],
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "expr": "",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "refId": "A"
-        }
-      ],
-      "title": "PMM Upgrade",
-      "type": "pmm-update"
-    },
-    {
-      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1158,10 +1203,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 6,
         "x": 0,
-        "y": 6
+        "y": 9
       },
       "id": 1038,
       "interval": "$interval",
@@ -1261,10 +1306,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 6,
         "x": 6,
-        "y": 6
+        "y": 9
       },
       "id": 1040,
       "interval": "$interval",
@@ -1339,10 +1384,10 @@
       "datasource": "Metrics",
       "description": "Display the number of Advisors checks identified as failed during its most recent run.",
       "gridPos": {
-        "h": 3,
-        "w": 5,
+        "h": 4,
+        "w": 6,
         "x": 12,
-        "y": 6
+        "y": 9
       },
       "id": 1042,
       "links": [],
@@ -1355,8 +1400,31 @@
           "refId": "A"
         }
       ],
-      "title": "Environment Health",
+      "title": "Advisors check",
       "type": "pmm-check-panel-home"
+    },
+    {
+      "datasource": "Metrics",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 9
+      },
+      "height": "120px",
+      "id": 1048,
+      "links": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "expr": "",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "refId": "A"
+        }
+      ],
+      "title": "PMM Upgrade",
+      "type": "pmm-update"
     },
     {
       "collapsed": false,
@@ -1365,7 +1433,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 13
       },
       "id": 1044,
       "panels": [],
@@ -1380,6 +1448,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Difference between the current CPU value and the CPU value a week ago. Considerable differences in these values result from a significant change in the CPU utilisation of the resources.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1396,7 +1465,7 @@
           "mappings": [],
           "max": 100,
           "min": 60,
-          "noValue": "No CPU anomalies",
+          "noValue": "No CPU change in last 7 days",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1415,16 +1484,16 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 9,
         "x": 0,
-        "y": 10
+        "y": 14
       },
       "id": 1028,
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -1436,7 +1505,7 @@
           "values": false
         },
         "text": {
-          "valueSize": 24
+          "valueSize": 18
         },
         "textMode": "value_and_name"
       },
@@ -1459,6 +1528,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "CPU usage above 90%",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1476,7 +1546,7 @@
           "mappings": [],
           "max": 100,
           "min": 90,
-          "noValue": "No high CPU servers",
+          "noValue": "CPU consumption is under 90%",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1495,19 +1565,19 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 15,
         "x": 9,
-        "y": 10
+        "y": 14
       },
       "id": 1026,
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "displayMode": "basic",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "orientation": "vertical",
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1515,10 +1585,11 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": false,
         "text": {
-          "valueSize": 24
-        }
+          "titleSize": 18,
+          "valueSize": 18
+        },
+        "textMode": "auto"
       },
       "pluginVersion": "9.1.2",
       "targets": [
@@ -1536,10 +1607,11 @@
       ],
       "timeFrom": "15m",
       "title": "High CPU Servers",
-      "type": "bargauge"
+      "type": "stat"
     },
     {
       "datasource": "Metrics",
+      "description": "Difference between the current Disk Queue value and the value a week ago. Considerable differences result from a significant change in the usage of the Disk queue resource and a warning.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1555,7 +1627,7 @@
             }
           ],
           "mappings": [],
-          "noValue": "No disk queue anomalies",
+          "noValue": "No disk queue change in last 7 days",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1574,16 +1646,16 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 9,
         "x": 0,
-        "y": 16
+        "y": 22
       },
       "id": 1032,
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -1595,7 +1667,7 @@
           "values": false
         },
         "text": {
-          "valueSize": 24
+          "valueSize": 18
         },
         "textMode": "value_and_name"
       },
@@ -1619,6 +1691,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Disk queue size above <XX> requests, regardless of time.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1633,7 +1706,7 @@
             }
           ],
           "mappings": [],
-          "noValue": "No high disk queue",
+          "noValue": "Disk queue time is less than 2s",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1652,18 +1725,18 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 15,
         "x": 9,
-        "y": 16
+        "y": 22
       },
       "id": 1030,
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "displayMode": "basic",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -1672,10 +1745,11 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": false,
         "text": {
-          "valueSize": 24
-        }
+          "titleSize": 18,
+          "valueSize": 18
+        },
+        "textMode": "auto"
       },
       "pluginVersion": "9.1.2",
       "targets": [
@@ -1694,10 +1768,11 @@
       ],
       "timeFrom": "15m",
       "title": "High Disk Queue",
-      "type": "bargauge"
+      "type": "stat"
     },
     {
       "datasource": "Metrics",
+      "description": "Difference between the current Used Memory value and the value a week ago. Considerable differences result from a significant change in the usage of the Memory resource and a warning.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1713,7 +1788,7 @@
             }
           ],
           "mappings": [],
-          "noValue": "No used memory anomalies",
+          "noValue": "No used memory change in last 7 days",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1732,16 +1807,16 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 9,
         "x": 0,
-        "y": 22
+        "y": 30
       },
       "id": 1056,
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -1753,7 +1828,7 @@
           "values": false
         },
         "text": {
-          "valueSize": 24
+          "valueSize": 18
         },
         "textMode": "value_and_name"
       },
@@ -1777,6 +1852,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Memory usage above 80% regardless of time",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1793,7 +1869,7 @@
           "mappings": [],
           "max": 100,
           "min": 80,
-          "noValue": "No high memory used",
+          "noValue": "Memory consuption is under 80%",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1812,18 +1888,18 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 15,
         "x": 9,
-        "y": 22
+        "y": 30
       },
       "id": 1055,
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "displayMode": "basic",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -1832,10 +1908,11 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": false,
         "text": {
-          "valueSize": 24
-        }
+          "titleSize": 18,
+          "valueSize": 18
+        },
+        "textMode": "auto"
       },
       "pluginVersion": "9.1.2",
       "targets": [
@@ -1853,10 +1930,11 @@
       ],
       "timeFrom": "15m",
       "title": "High Memory Used",
-      "type": "bargauge"
+      "type": "stat"
     },
     {
       "datasource": "Metrics",
+      "description": "Difference between the current CPU value and the CPU value a week ago. Considerable differences in these values result from a significant change in the CPU utilisation of the resources.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1873,7 +1951,7 @@
           "mappings": [],
           "max": 30,
           "min": 0,
-          "noValue": "No low CPU anomalies",
+          "noValue": "No CPU change in last 7 days",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1892,16 +1970,16 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 9,
         "x": 0,
-        "y": 28
+        "y": 38
       },
       "id": 1058,
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -1937,10 +2015,10 @@
     },
     {
       "datasource": "Metrics",
+      "description": "CPU usage less 30%, regardless of time",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "red",
             "mode": "thresholds"
           },
           "displayName": "${__series.name}",
@@ -1954,7 +2032,7 @@
           "mappings": [],
           "max": 30,
           "min": 0,
-          "noValue": "No low CPU servers",
+          "noValue": "CPU consuption is more than 30%",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1973,19 +2051,19 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 15,
         "x": 9,
-        "y": 28
+        "y": 38
       },
       "id": 1057,
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "displayMode": "basic",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "orientation": "vertical",
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1993,10 +2071,11 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": false,
         "text": {
-          "valueSize": 24
-        }
+          "titleSize": 18,
+          "valueSize": 18
+        },
+        "textMode": "auto"
       },
       "pluginVersion": "9.1.2",
       "targets": [
@@ -2014,7 +2093,7 @@
       ],
       "timeFrom": "15m",
       "title": "Low CPU Servers",
-      "type": "bargauge"
+      "type": "stat"
     },
     {
       "collapsed": true,
@@ -2023,13 +2102,13 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 34
+        "y": 46
       },
       "id": 49,
       "panels": [
         {
           "datasource": "Metrics",
-          "description": "The CPU time is measured in clock ticks or seconds. It is useful to measure CPU time as a percentage of the CPU's capacity, which is called the CPU usage.",
+          "description": "Measured in clock ticks or seconds. It is useful to measure CPU time as a percentage of the CPU's capacity, called CPU usage.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2093,7 +2172,7 @@
             "h": 9,
             "w": 8,
             "x": 0,
-            "y": 30
+            "y": 47
           },
           "id": 62,
           "links": [],
@@ -2132,7 +2211,7 @@
         },
         {
           "datasource": "Metrics",
-          "description": "The CPU time is measured in clock ticks or seconds. It is useful to measure CPU time as a percentage of the CPU's capacity, which is called the CPU usage.",
+          "description": "Measured in clock ticks or seconds. It is useful to measure CPU time as a percentage of the CPU's capacity, called CPU usage.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2179,6 +2258,7 @@
               "mappings": [],
               "max": 100,
               "min": 0,
+              "noValue": "No CPU delta usage detected from previouse week",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -2196,7 +2276,7 @@
             "h": 9,
             "w": 8,
             "x": 8,
-            "y": 30
+            "y": 47
           },
           "id": 1003,
           "links": [],
@@ -2221,11 +2301,13 @@
           "targets": [
             {
               "datasource": "Metrics",
+              "editorMode": "code",
               "exemplar": true,
               "expr": "(100 - (avg by (node_name) (rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"idle\"}[$interval])) * 100)) - (100 - (avg by (node_name) (rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"idle\"}[$interval])) * 100) offset 1w) ",
               "hide": false,
               "interval": "$interval",
               "legendFormat": "{{node_name}}",
+              "range": true,
               "refId": "B"
             }
           ],
@@ -2235,7 +2317,7 @@
         },
         {
           "datasource": "Metrics",
-          "description": "The CPU time is measured in clock ticks or seconds. It is useful to measure CPU time as a percentage of the CPU's capacity, which is called the CPU usage.",
+          "description": "The CPU time is measured in clock ticks or seconds. This graph shows the top 20. It is useful to measure CPU time as a percentage of the CPU's capacity, which is called the CPU usage.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2282,6 +2364,7 @@
               "mappings": [],
               "max": 100,
               "min": 0,
+              "noValue": "No CPU usage data from previouse week",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -2299,7 +2382,7 @@
             "h": 9,
             "w": 8,
             "x": 16,
-            "y": 30
+            "y": 47
           },
           "id": 1004,
           "links": [],
@@ -2338,7 +2421,7 @@
         },
         {
           "datasource": "Metrics",
-          "description": "Shows how much disk was loaded for reads or writes as average number of outstanding requests at different period of time.  High disk load is a good measure of actual storage utilization. Different storage types handle load differently - some will show latency increases on low loads others can handle higher load with no problems.",
+          "description": "Disk loaded for reads or writes as an average number of outstanding requests at different periods. A high disk load is a good measure of actual storage utilization. Different storage types handle load differently - some will show latency increases on low loads others can handle higher loads with no problems.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2401,7 +2484,7 @@
             "h": 9,
             "w": 8,
             "x": 0,
-            "y": 39
+            "y": 56
           },
           "id": 1006,
           "links": [],
@@ -2448,7 +2531,7 @@
         },
         {
           "datasource": "Metrics",
-          "description": "Shows how much disk was loaded for reads or writes as average number of outstanding requests at different period of time.  High disk load is a good measure of actual storage utilization. Different storage types handle load differently - some will show latency increases on low loads others can handle higher load with no problems.",
+          "description": "Disk loaded for reads or writes as an average number of outstanding requests at different periods. A high disk load is a good measure of actual storage utilization. Different storage types handle load differently. For some, latency increases on low loads. Others can handle higher loads with no problems.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2494,6 +2577,7 @@
               ],
               "mappings": [],
               "max": 50,
+              "noValue": "No disk queue delta usage detected from previouse week",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -2511,7 +2595,7 @@
             "h": 9,
             "w": 8,
             "x": 8,
-            "y": 39
+            "y": 56
           },
           "id": 1008,
           "links": [],
@@ -2558,7 +2642,7 @@
         },
         {
           "datasource": "Metrics",
-          "description": "Shows how much disk was loaded for reads or writes as average number of outstanding requests at different period of time.  High disk load is a good measure of actual storage utilization. Different storage types handle load differently - some will show latency increases on low loads others can handle higher load with no problems.",
+          "description": "Shows how much disk was loaded for reads or writes as average number of outstanding requests at different period of time. This graph lists the top 20. High disk load is a good measure of actual storage utilization. Different storage types handle load differently - some will show latency increases on low loads others can handle higher load with no problems.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2604,6 +2688,7 @@
               ],
               "mappings": [],
               "max": 50,
+              "noValue": "No disk queue data from previouse week",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -2625,7 +2710,7 @@
             "h": 9,
             "w": 8,
             "x": 16,
-            "y": 39
+            "y": 56
           },
           "id": 1007,
           "links": [],
@@ -2673,7 +2758,7 @@
         },
         {
           "datasource": "Metrics",
-          "description": "Shows average latency for Reads and Writes IO Devices.  Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems.  Higher than normal latency also can indicate internal storage problems.",
+          "description": "The average latency for Reads and Writes for IO Devices. This graph lists the top 20. Higher than expected latency for highly loaded storage indicates saturation (overload) and is a frequent cause of performance problems. Also, it might indicate internal storage problems.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2740,7 +2825,7 @@
             "h": 9,
             "w": 8,
             "x": 0,
-            "y": 48
+            "y": 65
           },
           "id": 1010,
           "links": [
@@ -2787,7 +2872,7 @@
         },
         {
           "datasource": "Metrics",
-          "description": "Shows average latency for Reads and Writes IO Devices.  Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems.  Higher than normal latency also can indicate internal storage problems.",
+          "description": "Shows average latency for Reads and Writes IO Devices. Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems. Higher than normal latency also can indicate internal storage problems.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2833,6 +2918,7 @@
               ],
               "mappings": [],
               "max": 1,
+              "noValue": "No write latency delta detected from previouse week",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -2850,7 +2936,7 @@
             "h": 9,
             "w": 8,
             "x": 8,
-            "y": 48
+            "y": 65
           },
           "id": 1012,
           "links": [
@@ -2896,7 +2982,7 @@
         },
         {
           "datasource": "Metrics",
-          "description": "Shows average latency for Reads and Writes IO Devices.  Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems.  Higher than normal latency also can indicate internal storage problems.",
+          "description": "Shows average latency for Reads and Writes IO Devices. Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems. Higher than normal latency also can indicate internal storage problems.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2942,6 +3028,7 @@
               ],
               "mappings": [],
               "max": 1,
+              "noValue": "No write latency data from previouse week",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -2959,7 +3046,7 @@
             "h": 9,
             "w": 8,
             "x": 16,
-            "y": 48
+            "y": 65
           },
           "id": 1011,
           "links": [
@@ -3007,7 +3094,7 @@
         },
         {
           "datasource": "Metrics",
-          "description": "Shows average latency for Reads and Writes IO Devices.  Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems.  Higher than normal latency also can indicate internal storage problems.",
+          "description": "Shows average latency for Reads and Writes IO Devices. Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems. Higher than normal latency also can indicate internal storage problems.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -3070,7 +3157,7 @@
             "h": 9,
             "w": 8,
             "x": 0,
-            "y": 57
+            "y": 74
           },
           "id": 1013,
           "links": [
@@ -3117,7 +3204,7 @@
         },
         {
           "datasource": "Metrics",
-          "description": "Shows average latency for Reads and Writes IO Devices.  Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems.  Higher than normal latency also can indicate internal storage problems.",
+          "description": "Shows average latency for Reads and Writes IO Devices. Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems. Higher than normal latency also can indicate internal storage problems.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -3163,6 +3250,7 @@
               ],
               "mappings": [],
               "max": 1,
+              "noValue": "No read latency delta detected from previouse week",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -3180,7 +3268,7 @@
             "h": 9,
             "w": 8,
             "x": 8,
-            "y": 57
+            "y": 74
           },
           "id": 1014,
           "links": [
@@ -3227,7 +3315,7 @@
         },
         {
           "datasource": "Metrics",
-          "description": "Shows average latency for Reads and Writes IO Devices.  Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems.  Higher than normal latency also can indicate internal storage problems.",
+          "description": "Shows average latency for Reads and Writes IO Devices. Higher than typical latency for highly loaded storage indicates saturation (overload) and is frequent cause of performance problems. Higher than normal latency also can indicate internal storage problems.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -3273,6 +3361,7 @@
               ],
               "mappings": [],
               "max": 1,
+              "noValue": "No read latency data from previouse week",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -3290,7 +3379,7 @@
             "h": 9,
             "w": 8,
             "x": 16,
-            "y": 57
+            "y": 74
           },
           "id": 1015,
           "links": [
@@ -3338,6 +3427,7 @@
         },
         {
           "datasource": "Metrics",
+          "description": "Basic memory usage as a percentage of the available physical memory.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -3399,7 +3489,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 66
+            "y": 83
           },
           "id": 1016,
           "links": [],
@@ -3447,6 +3537,7 @@
         },
         {
           "datasource": "Metrics",
+          "description": "Difference between the current Memory value and the Memory value a week ago. Considerable differences in these values result from a significant change in the Memory utilization of the resources. Big differences are the result of a significant change in the usage of the Memory resource and a warning.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -3494,6 +3585,7 @@
                 }
               ],
               "mappings": [],
+              "noValue": "No user memory delta usage detected from previouse week",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -3511,7 +3603,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 66
+            "y": 83
           },
           "id": 1017,
           "links": [],
@@ -3589,6 +3681,7 @@
         },
         {
           "datasource": "Metrics",
+          "description": "Difference between the current Memory value and the Memory value a week ago. Considerable differences in these values result from a significant change in the Memory utilization of the resources. Big differences are the result of a significant change in the usage of the Memory resource and a warning.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -3633,6 +3726,7 @@
                 }
               ],
               "mappings": [],
+              "noValue": "No used memory data from previouse week",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -3650,7 +3744,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 66
+            "y": 83
           },
           "id": 1018,
           "links": [],
@@ -3714,7 +3808,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 47
       },
       "id": 1054,
       "panels": [
@@ -3767,7 +3861,7 @@
             "h": 11,
             "w": 24,
             "x": 0,
-            "y": 71
+            "y": 90
           },
           "id": 1052,
           "non_matching_cells_text": "",
@@ -4401,8 +4495,8 @@
           "pluginVersion": "7.1.3",
           "row_col_wrapper": "_",
           "sorting_props": {
-            "col_index": 10,
-            "direction": "desc"
+            "col_index": 2,
+            "direction": "asc"
           },
           "targets": [
             {
@@ -4742,9 +4836,13 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "Metrics",
         "definition": "label_values(up{region=~\"$region\"}, node_type)",
@@ -4766,9 +4864,13 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|up\",node_name=~\"$node_name\"}, service_name)",

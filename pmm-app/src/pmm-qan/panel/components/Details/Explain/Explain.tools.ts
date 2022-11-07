@@ -1,4 +1,4 @@
-import { logger } from '@percona/platform-core';
+import { logger } from 'shared/core/logger';
 import { ActionResult, getActionResult } from 'shared/components/Actions';
 import { Databases } from 'shared/core';
 import { mongodbMethods, mysqlMethods } from '../database-models';

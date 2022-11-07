@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { dataTestId } from '@percona/platform-core';
+import { dataTestId } from 'shared/core/test.utils';
+
 import { ClassicExplain } from './ClassicExplain';
 
 jest.mock('shared/components/Elements/Scrollbar/Scrollbar');
