@@ -1,15 +1,6 @@
 import { base64Decode, parseExplain } from './Explain.tools';
 
-jest.mock('@percona/platform-core', () => {
-  const originalModule = jest.requireActual('@percona/platform-core');
-
-  return {
-    ...originalModule,
-    logger: {
-      error: jest.fn(),
-    },
-  };
-});
+jest.mock('shared/core/logger');
 
 describe('Explain.tools::', () => {
   it('should decode base64', () => {

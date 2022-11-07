@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { dataTestId } from '@percona/platform-core';
+import { dataTestId } from 'shared/core/test.utils';
 import { VisualExplain } from './VisualExplain';
 import { useExplains } from '../../Explain.hooks';
 
