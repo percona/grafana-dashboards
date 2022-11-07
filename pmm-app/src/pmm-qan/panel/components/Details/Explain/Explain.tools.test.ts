@@ -10,6 +10,7 @@ jest.mock('@percona/platform-core', () => {
     },
   };
 });
+jest.mock('shared/components/helpers/notification-manager');
 
 describe('Explain.tools::', () => {
   it('should decode base64', () => {

@@ -2,7 +2,7 @@ import { QueryExampleResponseItem } from 'pmm-qan/panel/components/Details/Detai
 
 export interface PrepareExplainFormProps {
   example: QueryExampleResponseItem;
-  onPlaceholdersSubmit: (placeholders: string[]) => void;
+  onPlaceholdersSubmit: (placeholders: string[]) => Promise<void>;
 }
 
 export interface PrepareExplainFormValues {

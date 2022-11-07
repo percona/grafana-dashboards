@@ -2,13 +2,11 @@ import React from 'react';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { Table } from 'shared/components/Elements/Table';
-import { useExplains } from '../../Explain.hooks';
 import { processClassicExplain } from '../../Explain.tools';
 import { Messages } from '../../../Details.messages';
 import { ReplacedQueryMessage } from '../ReplacedQueryMessage/ReplacedQueryMessage';
 
-export const ClassicExplain = ({ examples, databaseType, placeholders }) => {
-  const { classicExplain } = useExplains(examples, databaseType, placeholders);
+export const ClassicExplain = ({ classicExplain }) => {
   const { value: explain } = classicExplain;
   const processedExplain = processClassicExplain(explain?.explain_result);
 

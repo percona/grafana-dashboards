@@ -27,5 +27,14 @@ export interface UseExplain {
   jsonExplain: ActionResult;
   classicExplain: ActionResult;
   visualExplain: ActionResult;
-  example?: QueryExampleResponseItem;
+  fetchExplains: (
+    example: QueryExampleResponseItem,
+    databaseType: DatabasesType,
+    placeholders?: string[],
+  ) => Promise<boolean>;
+}
+
+export interface FetchExplainsResult {
+  jsonExplain: ActionResult;
+  classicExplain: ActionResult;
 }

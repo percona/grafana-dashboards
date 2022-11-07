@@ -1,12 +1,5 @@
-import React from 'react';
-import {
-  Button,
-  Field,
-  FieldSet,
-  Form,
-  Input,
-  useStyles,
-} from '@grafana/ui';
+import React, { useState } from 'react';
+import { Button, Field, FieldSet, Form, Input, useStyles } from '@grafana/ui';
 import { Messages } from '../PrepareExplain.messages';
 import PrepareExplainFingerPrint from '../PrepareExplainFingerprint/PrepareExplainFingerprint';
 import { getStyles } from '../PrepareExplain.styles';
@@ -15,10 +8,13 @@ import { prepareInputs } from './PrepareExplainForm.utils';
 
 const PrepareExplainForm: React.FC<PrepareExplainFormProps> = ({ example, onPlaceholdersSubmit }) => {
   const styles = useStyles(getStyles);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const placeholders = prepareInputs(example.placeholders_count || 0);
 
-  const handleSubmit = ({ placeholders }: PrepareExplainFormValues) => {
-    onPlaceholdersSubmit(placeholders);
+  const handleSubmit = async ({ placeholders }: PrepareExplainFormValues) => {
+    setIsSubmitting(true);
+    await onPlaceholdersSubmit(placeholders);
+    setIsSubmitting(false);
   };
 
   return (
@@ -42,7 +38,9 @@ const PrepareExplainForm: React.FC<PrepareExplainFormProps> = ({ example, onPlac
                   />
                 </Field>
               ))}
-              <Button type="submit">{Messages.submit}</Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {Messages.submit}
+              </Button>
             </FieldSet>
           )}
         </>
