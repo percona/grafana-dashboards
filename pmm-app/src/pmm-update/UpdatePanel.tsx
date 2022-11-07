@@ -2,13 +2,12 @@ import React, {
   useEffect, useState, FC, MouseEvent,
 } from 'react';
 import { Button, Spinner } from '@grafana/ui';
-import { logger } from '@percona/platform-core';
 import {
   AvailableUpdate, CurrentVersion, InfoBox, LastCheck, ProgressModal,
 } from 'pmm-update/components';
 import { useVersionDetails, usePerformUpdate } from 'pmm-update/hooks';
 
-import { SettingsService } from 'shared/core';
+import { SettingsService, logger } from 'shared/core';
 import * as styles from './UpdatePanel.styles';
 
 export const UpdatePanel: FC<{}> = () => {
