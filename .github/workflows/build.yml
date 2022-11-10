@@ -5,10 +5,6 @@ on: pull_request
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-
     steps:
       - name: Checkout code
         uses: percona-platform/checkout@v2
@@ -16,7 +12,7 @@ jobs:
       - name: Run with Node 16
         uses: percona-platform/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "16"
 
       - name: Get Yarn cache directory
         id: yarn-cache-dir-path
@@ -26,7 +22,7 @@ jobs:
         uses: percona-platform/cache@v2
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-16-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install deps
         run: make prepare_release
@@ -44,17 +40,13 @@ jobs:
   code_coverage:
     needs: build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-
     steps:
       - uses: percona-platform/checkout@v2
 
       - name: Setup NodeJS
         uses: percona-platform/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "16"
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_GRAFANA_DASHBOARDS_TOKEN }}
 
