@@ -704,7 +704,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~\"idle|active\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~\"idle|active\"}[5m]))))",
+              "expr": "topk(5,(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname!~\"template.*|postgres\",state=~\"idle|active\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~\"idle|active\",datname!~\"template.*|postgres\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -715,7 +715,7 @@
               "step": 2
             },
             {
-              "expr": "avg(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~\"idle|active\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~\"idle|active\"}[5m])))",
+              "expr": "avg(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~\"idle|active\",datname!~\"template.*|postgres\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~\"idle|active\",datname!~\"template.*|postgres\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,

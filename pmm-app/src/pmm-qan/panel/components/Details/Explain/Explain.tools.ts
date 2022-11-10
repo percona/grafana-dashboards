@@ -1,5 +1,5 @@
-import { logger } from '@percona/platform-core';
 import { ActionResult } from 'shared/components/Actions';
+import { logger } from 'shared/core/logger';
 import { ClassicExplainInterface } from './Explain.types';
 
 export const processClassicExplain = (classic): ClassicExplainInterface => {
