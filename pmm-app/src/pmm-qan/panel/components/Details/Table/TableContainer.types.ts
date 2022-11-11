@@ -1,7 +1,8 @@
 import { DatabasesType } from '../Details.types';
+import { FetchExplainsResult } from '../Explain/Explain.types';
 
-export interface TableContainerProps {
+export interface TableContainerProps extends FetchExplainsResult {
   databaseType: DatabasesType;
   database?: string;
-  examples: any[];
+  example?: any;
 }

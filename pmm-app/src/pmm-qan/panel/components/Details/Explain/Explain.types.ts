@@ -37,4 +37,5 @@ export interface UseExplain {
 export interface FetchExplainsResult {
   jsonExplain: ActionResult;
   classicExplain: ActionResult;
+  visualExplain: ActionResult;
 }

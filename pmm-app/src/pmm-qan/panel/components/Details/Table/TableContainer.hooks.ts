@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { get } from 'lodash';
 import { Databases } from 'shared/core';
-import { useExplains } from '../Explain/Explain.hooks';
 
-export const useTables = (examples, databaseType): any[] => {
-  const [jsonExplain, classicExplain] = useExplains(examples, databaseType);
+export const useTables = (example, explains, databaseType): any[] => {
+  const { jsonExplain, classicExplain } = explains;
   const [tables, setTables] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -23,8 +22,8 @@ export const useTables = (examples, databaseType): any[] => {
         setTables(tablesResult);
       }
 
-      if (databaseType === Databases.postgresql && examples) {
-        const tablesResult = examples[0].tables || [];
+      if (databaseType === Databases.postgresql && example) {
+        const tablesResult = example.tables || [];
 
         setTables(tablesResult);
       }
@@ -33,7 +32,7 @@ export const useTables = (examples, databaseType): any[] => {
     };
 
     getTables();
-  }, [jsonExplain, classicExplain, examples, databaseType]);
+  }, [jsonExplain, classicExplain, example, databaseType]);
 
   return [tables, loading];
 };

@@ -23,15 +23,17 @@ export const processClassicExplain = (classic): ClassicExplainInterface => {
     .filter(Boolean)
     .map((title) => ({ Header: title, key: title, accessor: title }));
 
-  const rowsList = data.map((item) => item
-    .split('|')
-    .map((e) => (String(e) ? e.trim() : ''))
-    .filter(Boolean)
-    .reduce((acc, row, index) => {
-      acc[headerList[index].accessor] = row;
+  const rowsList = data.map((item) =>
+    item
+      .split('|')
+      .map((e) => (String(e) ? e.trim() : ''))
+      .filter(Boolean)
+      .reduce((acc, row, index) => {
+        acc[headerList[index].accessor] = row;
 
-      return acc;
-    }, {}));
+        return acc;
+      }, {}),
+  );
 
   return { columns: headerList, rows: rowsList };
 };
@@ -89,6 +91,7 @@ export const fetchExplains = async (
       return {
         jsonExplain: { ...jsonResult, value: jsonValue ? jsonValue.explain_result : jsonValue },
         classicExplain: { ...classicResult, value: classicValue },
+        visualExplain: actionResult,
       };
     }
 
@@ -100,12 +103,14 @@ export const fetchExplains = async (
       return {
         jsonExplain: jsonResult,
         classicExplain: actionResult,
+        visualExplain: actionResult,
       };
     }
 
     return {
       jsonExplain: actionResult,
       classicExplain: actionResult,
+      visualExplain: actionResult,
     };
   } catch (e) {
     console.error(e);
@@ -113,6 +118,7 @@ export const fetchExplains = async (
     return {
       jsonExplain: actionResult,
       classicExplain: actionResult,
+      visualExplain: actionResult,
     };
   }
 };
