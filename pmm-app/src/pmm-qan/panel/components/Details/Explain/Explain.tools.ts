@@ -62,8 +62,6 @@ export const parseExplain = (result: ActionResult) => {
   return result.value;
 };
 
-export const preparePlaceholders = (placeholders?: string[]) => placeholders;
-
 export const fetchExplains = async (
   queryId: string,
   example: QueryExampleResponseItem,
@@ -75,7 +73,7 @@ export const fetchExplains = async (
       const payload = {
         example,
         queryId,
-        placeholders: preparePlaceholders(placeholders),
+        placeholders,
       };
 
       const traditionalExplainActionId = await mysqlMethods.getExplainTraditional(payload);
