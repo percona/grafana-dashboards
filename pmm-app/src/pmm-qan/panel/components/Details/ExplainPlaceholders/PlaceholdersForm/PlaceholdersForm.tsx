@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
-import { Button, Field, FieldSet, Input, useStyles } from '@grafana/ui';
+import {
+  Button, Field, FieldSet, Input, useStyles,
+} from '@grafana/ui';
 import { Messages } from './PlaceholdersForm.messages';
 import PrepareExplainFingerPrint from '../QueryFingerprint';
 import { getStyles } from './PlaceholdersForm.styles';

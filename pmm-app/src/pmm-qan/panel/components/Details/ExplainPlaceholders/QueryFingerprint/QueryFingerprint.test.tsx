@@ -61,7 +61,7 @@ describe('QueryFingerprint component::', () => {
     render(
       <QueryFingerprint
         fingerprint={RAW_QUERY_WITH_PLACEHOLDERS}
-        placeholders={["'placeholder_1'", "('placeholder_2')"]}
+        placeholders={['\'placeholder_1\'', '(\'placeholder_2\')']}
       />,
     );
     expect(screen.getByTestId('highlight-code').textContent).toEqual(QUERY_WITH_PLACEHOLDERS_FILLED);

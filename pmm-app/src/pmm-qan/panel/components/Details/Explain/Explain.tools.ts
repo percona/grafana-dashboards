@@ -23,17 +23,15 @@ export const processClassicExplain = (classic): ClassicExplainInterface => {
     .filter(Boolean)
     .map((title) => ({ Header: title, key: title, accessor: title }));
 
-  const rowsList = data.map((item) =>
-    item
-      .split('|')
-      .map((e) => (String(e) ? e.trim() : ''))
-      .filter(Boolean)
-      .reduce((acc, row, index) => {
-        acc[headerList[index].accessor] = row;
+  const rowsList = data.map((item) => item
+    .split('|')
+    .map((e) => (String(e) ? e.trim() : ''))
+    .filter(Boolean)
+    .reduce((acc, row, index) => {
+      acc[headerList[index].accessor] = row;
 
-        return acc;
-      }, {}),
-  );
+      return acc;
+    }, {}));
 
   return { columns: headerList, rows: rowsList };
 };
