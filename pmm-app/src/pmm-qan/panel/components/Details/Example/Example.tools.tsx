@@ -4,6 +4,7 @@ import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
 import { Databases, logger } from 'shared/core';
 import { Highlight } from 'shared/components/Hightlight/Highlight';
 import ParseError from './ParseError/ParseError';
+import { DatabasesType, QueryExampleResponseItem } from '../Details.types';
 
 export const getExample = (databaseType) => (example: any): any => {
   if (databaseType === Databases.mongodb) {
@@ -21,4 +22,12 @@ export const getExample = (databaseType) => (example: any): any => {
       {sqlFormatter.format(example || '')}
     </Highlight>
   );
+};
+
+export const getExampleItem = (databaseType: DatabasesType, example: QueryExampleResponseItem) => {
+  if (databaseType === 'mysql') {
+    return example.explain_fingerprint;
+  }
+
+  return example.example;
 };
