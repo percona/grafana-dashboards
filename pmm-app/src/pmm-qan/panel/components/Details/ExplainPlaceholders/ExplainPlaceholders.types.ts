@@ -8,7 +8,7 @@ export interface ExplainPlaceholdersChildProps extends FetchExplainsResult {
 }
 
 export interface ExplainPlaceholdersProps {
-  queryId: string | undefined;
+  queryId?: string;
   databaseType: DatabasesType;
   examples: QueryExampleResponseItem[];
   children: (result: ExplainPlaceholdersChildProps) => ReactNode;

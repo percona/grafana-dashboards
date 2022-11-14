@@ -76,11 +76,11 @@ export const fetchExplains = async (
         placeholders,
       };
 
-      const traditionalExplainActionId = await mysqlMethods.getExplainTraditional(payload);
-      const jsonExplainActionId = await mysqlMethods.getExplainJSON(payload);
+      const [jsonResult, classicResult] = await Promise.all([
+        mysqlMethods.getExplainTraditional(payload).then(getActionResult),
+        mysqlMethods.getExplainJSON(payload).then(getActionResult),
+      ]);
 
-      const jsonResult = await getActionResult(jsonExplainActionId);
-      const classicResult = await getActionResult(traditionalExplainActionId);
       const jsonValue = parseExplain(jsonResult);
       const classicValue = parseExplain(classicResult);
 
@@ -92,9 +92,7 @@ export const fetchExplains = async (
     }
 
     if (databaseType === Databases.mongodb) {
-      const jsonExplainActionId = await mongodbMethods.getExplainJSON({ example });
-
-      const jsonResult = await getActionResult(jsonExplainActionId);
+      const jsonResult = await mongodbMethods.getExplainJSON({ example }).then(getActionResult);
 
       return {
         jsonExplain: jsonResult,
