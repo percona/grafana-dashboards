@@ -1,9 +1,8 @@
-import { FormAPI } from '@grafana/ui';
 import { QueryExampleResponseItem } from 'pmm-qan/panel/components/Details/Details.types';
 
 export interface PlaceholdersFormProps {
-  form: FormAPI<PlaceholdersFormValues>;
   example: QueryExampleResponseItem;
+  onSubmit: (values: PlaceholdersFormValues) => void;
 }
 
 export interface PlaceholdersFormValues {

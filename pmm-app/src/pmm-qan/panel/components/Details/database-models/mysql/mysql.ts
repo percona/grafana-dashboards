@@ -45,7 +45,7 @@ export const mysqlMethods = {
 
   getExplainJSON: async ({ example, queryId, placeholders }) => {
     try {
-      const payload = placeholders?.length ? { query_id: queryId, placeholders } : { query: example.example };
+      const payload = { query_id: queryId, placeholders: placeholders || [] };
 
       const result = await MysqlDatabaseService.getTraditionalExplainJSONMysql({
         database: example.schema,
@@ -63,7 +63,7 @@ export const mysqlMethods = {
 
   getExplainTraditional: async ({ example, queryId, placeholders }) => {
     try {
-      const payload = placeholders?.length ? { query_id: queryId, placeholders } : { query: example.example };
+      const payload = placeholders?.length ? { query_id: queryId, placeholders } : { query_id: queryId };
 
       const result = await MysqlDatabaseService.getTraditionalExplainMysql({
         database: example.schema,

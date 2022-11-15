@@ -16,4 +16,8 @@ export const getStyles = ({ spacing }: GrafanaTheme) => ({
   field: css`
     margin-bottom: ${spacing.md};
   `,
+  form: css`
+    max-width: 600px;
+    width: 100%;
+  `,
 });

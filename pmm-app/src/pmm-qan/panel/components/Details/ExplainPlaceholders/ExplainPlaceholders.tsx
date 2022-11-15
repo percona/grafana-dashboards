@@ -1,4 +1,3 @@
-import { Form } from '@grafana/ui';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ActionResult } from 'shared/components/Actions';
 import { fetchExplains } from '../Explain/Explain.tools';
@@ -56,11 +55,7 @@ const ExplainPlaceholders: React.FC<ExplainPlaceholdersProps> = ({
   };
 
   if (!initialized && example) {
-    return (
-      <Form onSubmit={handlePlaceholderSubmit}>
-        {(formApi) => <PlaceholdersForm form={formApi} example={example} />}
-      </Form>
-    );
+    return <PlaceholdersForm onSubmit={handlePlaceholderSubmit} example={example} />;
   }
 
   return (
