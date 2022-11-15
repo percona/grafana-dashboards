@@ -76,7 +76,7 @@ export const fetchExplains = async (
         placeholders,
       };
 
-      const [jsonResult, classicResult] = await Promise.all([
+      const [classicResult, jsonResult] = await Promise.all([
         mysqlMethods.getExplainTraditional(payload).then(getActionResult),
         mysqlMethods.getExplainJSON(payload).then(getActionResult),
       ]);
