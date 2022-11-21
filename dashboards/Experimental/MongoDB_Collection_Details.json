@@ -677,7 +677,7 @@
       "id": 68,
       "links": [],
       "options": {
-        "content": "The next two graphs are available only when `--enable-all-collectors` option is used in pmm-admin.",
+        "content": "The next two graphs are available only when `--enable-all-collectors` option is used in pmm-admin. Graph **Top 5 Collection by Documents Changed** displays data only from the Primary node.",
         "mode": "markdown"
       },
       "pluginVersion": "9.1.2",
@@ -919,7 +919,7 @@
           "datasourceErrors": {},
           "errors": {},
           "exemplar": true,
-          "expr": "topk(5, avg by (service_name,database,collection) (rate(sum by (service_name,database,collection) (mongodb_top_insert_count,mongodb_top_update_count,mongodb_top_remove_count{service_name=~\"$service_name\"})[$interval])>0)) or topk(5, avg by (service_name,database,collection) (irate(sum by (service_name,database,collection) (mongodb_top_insert_count,mongodb_top_update_count,mongodb_top_remove_count{service_name=~\"$service_name\"})[5m]))>0)",
+          "expr": "topk(5, avg by (service_name,database,collection) (rate(sum by (service_name,database,collection) ((mongodb_top_insert_count{service_name=~\"$service_name\"}) + (mongodb_top_update_count{service_name=~\"$service_name\"}) + (mongodb_top_remove_count{service_name=~\"$service_name\"}))[$interval])>0)) or topk(5, avg by (service_name,database,collection) (irate(sum by (service_name,database,collection) ((mongodb_top_insert_count{service_name=~\"$service_name\"}) + (mongodb_top_update_count{service_name=~\"$service_name\"}) + (mongodb_top_remove_count{service_name=~\"$service_name\"}))[5m]))>0)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1079,8 +1079,8 @@
       {
         "current": {
           "selected": false,
-          "text": "Prim",
-          "value": "Prim"
+          "text": "None",
+          "value": ""
         },
        "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}, service_name)",
@@ -1103,7 +1103,7 @@
       {
         "current": {
           "selected": false,
-          "text": "",
+          "text": "None",
           "value": ""
         },
        "datasource": "Metrics",
