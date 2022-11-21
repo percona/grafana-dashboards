@@ -31,6 +31,7 @@ const PlaceholdersForm: React.FC<PlaceholdersFormProps> = ({ onSubmit, example }
             <div>
               {placeholders?.map((placeholder) => (
                 <FinalField
+                  key={placeholder.fieldName}
                   name={placeholder.fieldName}
                   validate={validators.required}
                   render={({ input, meta }) => (
