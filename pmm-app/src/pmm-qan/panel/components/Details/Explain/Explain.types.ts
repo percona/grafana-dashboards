@@ -1,8 +1,9 @@
-import { DatabasesType } from '../Details.types';
+import { ActionResult } from 'shared/components/Actions';
+import { DatabasesType, QueryExampleResponseItem } from '../Details.types';
 
 export interface ExplainProps {
   databaseType: DatabasesType;
-  examples: any;
+  examples: QueryExampleResponseItem[];
 }
 
 export enum ExplainTabs {
@@ -20,4 +21,21 @@ interface ClassicExplainColumns {
 export interface ClassicExplainInterface {
   rows: object[];
   columns: ClassicExplainColumns[];
+}
+
+export interface UseExplain {
+  jsonExplain: ActionResult;
+  classicExplain: ActionResult;
+  visualExplain: ActionResult;
+  fetchExplains: (
+    example: QueryExampleResponseItem,
+    databaseType: DatabasesType,
+    placeholders?: string[],
+  ) => Promise<boolean>;
+}
+
+export interface FetchExplainsResult {
+  jsonExplain: ActionResult;
+  classicExplain: ActionResult;
+  visualExplain: ActionResult;
 }

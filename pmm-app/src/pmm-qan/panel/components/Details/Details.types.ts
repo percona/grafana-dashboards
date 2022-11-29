@@ -14,3 +14,19 @@ export interface Details {
   contextActions: any;
   detailsState: DetailsState;
 }
+
+export interface QueryExampleResponse {
+  query_examples: QueryExampleResponseItem[];
+}
+
+export interface QueryExampleResponseItem {
+  example: string;
+  example_type: string;
+  example_format?: string;
+  explain_fingerprint?: string;
+  placeholders_count?: number;
+  schema?: string;
+  service_id: string;
+  service_type: DatabasesType;
+  tables?: string[];
+}

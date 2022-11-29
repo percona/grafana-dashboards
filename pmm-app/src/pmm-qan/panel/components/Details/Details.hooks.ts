@@ -2,16 +2,16 @@ import { useContext, useEffect, useState } from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { Databases } from 'shared/core';
 import DetailsService from './Details.service';
-import { DatabasesType } from './Details.types';
+import { DatabasesType, QueryExampleResponseItem } from './Details.types';
 
-export const useDetails = (): [boolean, any, DatabasesType] => {
+export const useDetails = (): [boolean, QueryExampleResponseItem[], DatabasesType] => {
   const {
     panelState: {
       queryId, groupBy, from, to, labels,
     },
   } = useContext(QueryAnalyticsProvider);
   const [loading, setLoading] = useState<boolean>(false);
-  const [examples, setExamples] = useState<any>([]);
+  const [examples, setExamples] = useState<QueryExampleResponseItem[]>([]);
   const [databaseType, setDatabaseType] = useState<DatabasesType>(Databases.mysql);
 
   useEffect(() => {
