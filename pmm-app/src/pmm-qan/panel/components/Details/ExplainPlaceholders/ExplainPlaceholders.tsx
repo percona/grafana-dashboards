@@ -21,7 +21,7 @@ const ExplainPlaceholders: React.FC<ExplainPlaceholdersProps> = ({
   const [jsonExplain, setJsonExplain] = useState(actionResult);
   const [visualExplain, setVisualExplain] = useState(actionResult);
   const [initialized, setInitialized] = useState(false);
-  const example = useMemo(() => examples.find((e) => e.example), [examples]);
+  const example = useMemo(() => examples.find((e) => e.example || e.explain_fingerprint), [examples]);
 
   useEffect(() => {
     setInitialized(false);
@@ -46,7 +46,7 @@ const ExplainPlaceholders: React.FC<ExplainPlaceholdersProps> = ({
     }
 
     const results = await fetchExplains(queryId, example, databaseType, placeholders);
-
+    console.log({ results });
     setClassicExplain(results.classicExplain);
     setJsonExplain(results.jsonExplain);
     setVisualExplain(results.visualExplain);
