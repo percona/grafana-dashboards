@@ -103,7 +103,7 @@ describe('Example tab page render test', () => {
     render(<Example databaseType={props.databaseType} examples={props.examples} />);
 
     expect(screen.getByTestId('highlight-code').textContent).toEqual(
-      sqlFormatter.format(props.examples[0].explain_fingerprint),
+      sqlFormatter.format(props.examples[0].example),
     );
   });
 });
