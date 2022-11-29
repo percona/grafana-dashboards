@@ -46,7 +46,7 @@ const ExplainPlaceholders: React.FC<ExplainPlaceholdersProps> = ({
     }
 
     const results = await fetchExplains(queryId, example, databaseType, placeholders);
-    console.log({ results });
+
     setClassicExplain(results.classicExplain);
     setJsonExplain(results.jsonExplain);
     setVisualExplain(results.visualExplain);
