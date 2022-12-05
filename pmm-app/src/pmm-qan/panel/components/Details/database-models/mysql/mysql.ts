@@ -43,12 +43,14 @@ export const mysqlMethods = {
     return result.action_id;
   },
 
-  getExplainJSON: async ({ example }) => {
+  getExplainJSON: async ({ example, queryId, placeholders }) => {
     try {
+      const payload = { query_id: queryId, placeholders: placeholders || [] };
+
       const result = await MysqlDatabaseService.getTraditionalExplainJSONMysql({
         database: example.schema,
-        query: example.example,
         service_id: example.service_id,
+        ...payload,
       });
 
       return result.action_id;
@@ -59,12 +61,14 @@ export const mysqlMethods = {
     }
   },
 
-  getExplainTraditional: async ({ example }) => {
+  getExplainTraditional: async ({ example, queryId, placeholders }) => {
     try {
+      const payload = placeholders?.length ? { query_id: queryId, placeholders } : { query_id: queryId };
+
       const result = await MysqlDatabaseService.getTraditionalExplainMysql({
         database: example.schema,
-        query: example.example,
         service_id: example.service_id,
+        ...payload,
       });
 
       return result.action_id;

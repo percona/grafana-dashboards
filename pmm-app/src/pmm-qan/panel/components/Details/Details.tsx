@@ -18,6 +18,7 @@ import { useMetricsDetails } from './Metrics/hooks/useMetricDetails';
 import { Messages } from './Details.messages';
 import { getStyles } from './Details.styles';
 import { Plan } from './Plan/Plan';
+import ExplainPlaceholders from './ExplainPlaceholders';
 
 export const DetailsSection: FC = () => {
   const theme = useTheme();
@@ -96,7 +97,11 @@ export const DetailsSection: FC = () => {
       label: Messages.tabs.tables.tab,
       key: TabKeys.tables,
       show: showTablesTab,
-      component: <TableCreateContainer databaseType={databaseType} examples={examples} database={database} />,
+      component: (
+        <ExplainPlaceholders queryId={queryId} databaseType={databaseType} examples={examples}>
+          {(result) => <TableCreateContainer {...result} database={database} />}
+        </ExplainPlaceholders>
+      ),
     },
     {
       label: Messages.tabs.plan.tab,
@@ -108,7 +113,10 @@ export const DetailsSection: FC = () => {
 
   return (
     <Scrollbar className={styles.scrollArea}>
-      <div className={cx(styles.detailsGrid, 'query-analytics-details')} data-testid="query-analytics-details">
+      <div
+        className={cx(styles.detailsGrid, 'query-analytics-details')}
+        data-testid="query-analytics-details"
+      >
         <div className="details-tabs">
           <TabsBar>
             {tabs

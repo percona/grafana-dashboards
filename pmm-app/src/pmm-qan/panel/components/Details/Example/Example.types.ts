@@ -1,9 +1,7 @@
-import { DatabasesType } from '../Details.types';
+import { DatabasesType, QueryExampleResponseItem } from '../Details.types';
 
 export interface ExampleInterface {
-  fingerprint?: string;
   databaseType: DatabasesType;
-  // TODO: update examples interface
-  examples: any[];
+  examples: QueryExampleResponseItem[];
   loading?: boolean;
 }
