@@ -13,7 +13,7 @@ export const LastCheck: FC<LastCheckProps> = ({ lastCheckDate, onCheckForUpdates
     </p>
     <Button
       data-testid="update-last-check-button"
-      variant="link"
+      fill="text"
       size="sm"
       onClick={onCheckForUpdates}
       icon={'fa fa-refresh' as any}

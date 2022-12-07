@@ -49,7 +49,7 @@ export const AvailableUpdate: FC<AvailableUpdateProps> = ({ nextVersionDetails }
           rel="noreferrer"
           href={newsLink}
           target="_blank"
-          variant="link"
+          fill="text"
         >
           {Messages.whatsNew}
         </LinkButton>

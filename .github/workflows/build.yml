@@ -5,20 +5,30 @@ on: pull_request
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: percona-platform/checkout@v2
+      - name: Checkout code
+        uses: percona-platform/checkout@v2
 
-      - name: Build grafana-dashboards
+      - name: Run with Node 16
         uses: percona-platform/setup-node@v2
         with:
           node-version: "16"
-          cache: "npm"
-          cache-dependency-path: pmm-app/package-lock.json
 
-      - run: make prepare_release
+      - name: Get Yarn cache directory
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
 
-      - run: make build_package
+      - name: Use Yarn cache
+        uses: percona-platform/cache@v2
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-16-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install deps
+        run: make prepare_release
+
+      - name: Build Grafana Dashboards
+        run: make build_package
 
       - name: Upload the build artefacts
         uses: percona-platform/upload-artifact@v2
@@ -30,7 +40,6 @@ jobs:
   code_coverage:
     needs: build
     runs-on: ubuntu-latest
-
     steps:
       - uses: percona-platform/checkout@v2
 
@@ -38,8 +47,6 @@ jobs:
         uses: percona-platform/setup-node@v2
         with:
           node-version: "16"
-          cache: "npm"
-          cache-dependency-path: pmm-app/package-lock.json
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_GRAFANA_DASHBOARDS_TOKEN }}
 
@@ -49,9 +56,11 @@ jobs:
           name: build-dist
           path: pmm-app/dist/
 
-      - run: make prepare_release
+      - name: Install deps
+        run: make prepare_release
 
-      - run: make generate_coverage
+      - name: Generate Coverage
+        run: make generate_coverage
 
   workflow_success:
     needs: [code_coverage, build]
