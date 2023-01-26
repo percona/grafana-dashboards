@@ -92,3 +92,11 @@ As a general rule of thumb, please try to create bug reports that are:
 - _Specific._ Include as much detail as possible: which version, what environment, etc.
 - _Unique._ Do not duplicate existing tickets.
 - _Scoped to a Single Bug._ One bug per report.
+
+## THANKS TO OUR CONTRIBUTORS ♥️
+
+<a href="https://github.com/percona/grafana-dashboards/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=percona/grafana-dashboards" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
