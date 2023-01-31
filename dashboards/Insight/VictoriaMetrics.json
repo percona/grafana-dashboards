@@ -3570,7 +3570,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "clamp_max(avg by (instance) (sum by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu_seconds_total{node_name=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100",
+          "expr": "max(clamp_max(sum by () (avg by (mode)((clamp_max(rate(node_cpu_seconds_total{node_name=~\"pmm-server\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)))*100),100))",
           "interval": "$interval",
           "legendFormat": "",
           "refId": "A"
