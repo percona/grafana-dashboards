@@ -1,11 +1,9 @@
 import React, {
-  FC,
+  useState, FC,
 } from 'react';
-import {useState} from 'react';
-import {NavBar} from "../components";
+import { NavBar } from '../components';
 
 export const OnboardPanel: FC<{}> = () => {
-
   const [message, setMessage] = useState('');
 
   return (
@@ -15,11 +13,11 @@ export const OnboardPanel: FC<{}> = () => {
         onHelpCenterClick={() => setMessage('help center')}
         onNotificationClick={() => setMessage('notification')}
         onFeedbackClick={() => setMessage('feedback form')}
-        showNotificationMarker={true}
-        showHelpCenterNotificationMarker={true}
+        showNotificationMarker
+        showHelpCenterNotificationMarker
       />
       <br />
       <div>{message}</div>
     </>
   );
-}
+};

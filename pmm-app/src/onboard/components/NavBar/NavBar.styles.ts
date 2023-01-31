@@ -1,8 +1,7 @@
 import { css } from '@emotion/css';
 import { GrafanaTheme2 } from '@grafana/data';
 
-export const getStyles = (theme: GrafanaTheme2) => {
-  return {
+export const getStyles = (theme: GrafanaTheme2) => ({
   componentStyle: css`
         width: 100%;
     `,
@@ -91,4 +90,4 @@ export const getStyles = (theme: GrafanaTheme2) => {
     flex-grow: 0;
     z-index: 4;
   `,
-}}
+});
