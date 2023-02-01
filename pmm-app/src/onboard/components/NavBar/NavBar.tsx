@@ -38,7 +38,7 @@ export const NavBar: FC<NavBarTypes> = ({
       </div>
       <ToolbarButtonRow alignment="right">
         {showHelpCenterNotificationMarker && (
-          <div className={styles.notificationMaker} />
+          <div className={styles.notificationMarker} />
         )}
         {showSignInButton && (
           <>
