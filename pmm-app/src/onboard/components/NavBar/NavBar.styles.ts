@@ -58,36 +58,99 @@ export const getStyles = (theme: GrafanaTheme2) => ({
     flex: none;
     order: 0;
     flex-grow: 1;
+    color: ${theme.colors.text.primary}
     `,
-  qNotificationMaker: css`
+  notificationMaker: css`
     position: absolute;
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     right: -3px;
     top: -3px;
-
     background: #FF5286;
-
-    border: 2px solid #111217;
+    border: 2px solid ${theme.colors.background.canvas};
     border-radius: 16px;
-
     flex: none;
     order: 6;
     flex-grow: 0;
     z-index: 6;
   `,
-  notificationMaker: css`
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    right: 37px;
-    top: -3px;
-    background: #FF5286;
-    border: 2px solid #111217;
-    border-radius: 16px;
+  perconaButton: css`
+    color: ${theme.colors.text.secondary};
+
+    &:hover {
+      color: ${theme.colors.text.primary};
+      background: ${theme.colors.background.secondary};
+    }
+
+    border-radius: ${theme.shape.borderRadius()};
+    line-height: ${theme.components.height.md * theme.spacing.gridSize - 2}px;
+    font-weight: ${theme.typography.fontWeightMedium};
+    border: 1px solid ${theme.colors.border.weak};
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px 0px 0px 0px;
+
+    border-radius: ${theme.shape.borderRadius()};
+    background-color: rgb(24, 27, 31);
+
     flex: none;
-    order: 4;
+    order: 0;
     flex-grow: 0;
-    z-index: 4;
+    z-index: 0;
   `,
+  perconaButtonImage: css`
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  `,
+  perconaButtonLabel: css`
+    padding: 8px;
+    justify-content: center;
+    width: 97px;
+    height: 16px;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    margin-right: 8px;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+  `,
+  tooltip: css`
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+
+    letter-spacing: 0.01071em;
+
+    /* Dark/Text/Secondary */
+
+    color: ${theme.colors.text.secondary};
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin-right: 24px;
+  `,
+  tooltipLabel: css`
+
+  `,
+
 });

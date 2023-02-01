@@ -1,13 +1,16 @@
 import React, { FC } from 'react';
-
-import { ToolbarButton, ToolbarButtonRow, useStyles2 } from '@grafana/ui';
+import {
+  Icon, ToolbarButtonRow, useStyles2,
+} from '@grafana/ui';
 import { NavBarTypes } from './NavBar.types';
 import { getStyles } from './NavBar.styles';
+import { NavBarButton } from '../NavBarButton/NavBarButton';
 
 export const NavBar: FC<NavBarTypes> = ({
-  onSignInClick, onFeedbackClick, onNotificationClick,
-  onHelpCenterClick, showHelpCenterNotificationMarker,
-  showNotificationMarker,
+  title,
+  showSignInButton, showFeedbackButton, showHelpCenterButton,
+  onSignInClick, onFeedbackClick, onHelpCenterClick,
+  showHelpCenterNotificationMarker,
 }) => {
   const styles = useStyles2(getStyles);
 
@@ -19,29 +22,44 @@ export const NavBar: FC<NavBarTypes> = ({
             <img
               alt="percona-logo"
               className={styles.pmmIcon}
-              src="/graph/public/plugins/pmm-app/img/percona-logo.svg"
+              src="/graph/public/plugins/pmm-app/img/pmm-app-icon.svg"
             />
           </div>
         </div>
-        <nav aria-label="Search links" className={styles.navElement}>
+        <nav className={styles.navElement}>
           <div className={styles.titleWrapper}>
             <h1 className={styles.h1Styles}>
-              <div className={styles.titleText}>Percona monitoring and management</div>
+              <div className={styles.titleText}>
+                {title}
+              </div>
             </h1>
           </div>
         </nav>
       </div>
       <ToolbarButtonRow alignment="right">
         {showHelpCenterNotificationMarker && (
-          <div className={styles.qNotificationMaker} />
-        )}
-        {showNotificationMarker && (
           <div className={styles.notificationMaker} />
         )}
-        <ToolbarButton icon="signin" onClick={onSignInClick}>Percona sign in</ToolbarButton>
-        <ToolbarButton icon="bell" onClick={onFeedbackClick} />
-        <ToolbarButton icon="message" onClick={onNotificationClick} />
-        <ToolbarButton icon="question-circle" onClick={onHelpCenterClick} />
+        {showSignInButton && (
+          <>
+            <div className={styles.tooltip}>
+              Get free features with a quick sign in
+              <Icon name="arrow-right" />
+            </div>
+            <NavBarButton
+              title="Percona sign in"
+              imgSrc="/graph/public/plugins/pmm-app/img/pmm-percona-icon.svg"
+              imgAlt="PMM"
+              onClick={onSignInClick}
+            />
+          </>
+        )}
+        {showFeedbackButton && (
+          <NavBarButton icon="bell" onClick={onFeedbackClick} />
+        )}
+        {showHelpCenterButton && (
+          <NavBarButton icon="question-circle" onClick={onHelpCenterClick} />
+        )}
       </ToolbarButtonRow>
     </nav>
   );

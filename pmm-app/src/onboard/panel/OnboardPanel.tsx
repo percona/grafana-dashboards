@@ -9,12 +9,15 @@ export const OnboardPanel: FC<{}> = () => {
   return (
     <>
       <NavBar
+        title="Percona monitoring and management"
+        showSignInButton
+        showFeedbackButton
+        showHelpCenterButton
+        showHelpCenterNotificationMarker
         onSignInClick={() => setMessage('sign in')}
         onHelpCenterClick={() => setMessage('help center')}
         onNotificationClick={() => setMessage('notification')}
         onFeedbackClick={() => setMessage('feedback form')}
-        showNotificationMarker
-        showHelpCenterNotificationMarker
       />
       <br />
       <div>{message}</div>
