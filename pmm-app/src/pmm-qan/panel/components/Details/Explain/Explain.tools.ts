@@ -1,7 +1,7 @@
 import { logger } from 'shared/core/logger';
 import { ActionResult, getActionResult } from 'shared/components/Actions';
 import { Databases } from 'shared/core';
-import { mongodbMethods, mysqlMethods } from '../database-models';
+import { mongodbMethods, mysqlMethods, postgresqlMethods } from '../database-models';
 import { DatabasesType, QueryExampleResponseItem } from '../Details.types';
 import { ClassicExplainInterface, FetchExplainsResult } from './Explain.types';
 
@@ -69,7 +69,27 @@ export const fetchExplains = async (
   placeholders?: string[],
 ): Promise<FetchExplainsResult> => {
   try {
-    if (databaseType === Databases.mysql && (placeholders || !example.placeholders_count)) {
+    const hasPlaceholders = placeholders || !example.placeholders_count;
+
+    if (databaseType === Databases.postgresql && hasPlaceholders) {
+      const payload = {
+        serviceId: example.service_id,
+        queryId,
+        placeholders: placeholders || [],
+      };
+
+      const explain = await postgresqlMethods.getExplain(payload).then(getActionResult);
+
+      const classicExplain = parseExplain(explain);
+
+      return {
+        jsonExplain: actionResult,
+        classicExplain: { ...explain, value: classicExplain },
+        visualExplain: actionResult,
+      };
+    }
+
+    if (databaseType === Databases.mysql && hasPlaceholders) {
       const payload = {
         example,
         queryId,

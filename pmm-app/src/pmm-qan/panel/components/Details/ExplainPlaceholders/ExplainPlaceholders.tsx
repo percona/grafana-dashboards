@@ -55,7 +55,7 @@ const ExplainPlaceholders: React.FC<ExplainPlaceholdersProps> = ({
   };
 
   if (!initialized && example) {
-    return <PlaceholdersForm onSubmit={handlePlaceholderSubmit} example={example} />;
+    return <PlaceholdersForm database={databaseType} onSubmit={handlePlaceholderSubmit} example={example} />;
   }
 
   return (

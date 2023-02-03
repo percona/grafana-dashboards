@@ -35,7 +35,7 @@ export const DetailsSection: FC = () => {
 
   const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
   const showTablesTab = databaseType !== Databases.mongodb && groupBy === 'queryid' && !totals;
-  const showExplainTab = databaseType !== Databases.postgresql && groupBy === 'queryid' && !totals;
+  const showExplainTab = groupBy === 'queryid' && !totals;
   const showExamplesTab = groupBy === 'queryid' && !totals;
   const showPlanTab = databaseType === Databases.postgresql && groupBy === 'queryid' && !totals;
 

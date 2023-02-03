@@ -1,6 +1,16 @@
+import { PostgreSQLExplain } from './postgresql.types';
 import PostgresqlDatabaseService from './service';
 
 export const postgresqlMethods = {
+  getExplain: async ({ placeholders, queryId, serviceId }: PostgreSQLExplain): Promise<string> => {
+    const result = await PostgresqlDatabaseService.getPostgreSQLExplain({
+      queryId,
+      serviceId,
+      placeholders,
+    });
+
+    return result.action_id;
+  },
   getShowCreateTables: async ({ example, tableName, database }) => {
     if (!tableName) {
       return null;

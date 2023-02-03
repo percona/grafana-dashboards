@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import { Databases } from 'shared/core';
 import DetailsService from './Details.service';
 import { DatabasesType, QueryExampleResponseItem } from './Details.types';
 
-export const useDetails = (): [boolean, QueryExampleResponseItem[], DatabasesType] => {
+export const useDetails = (): [boolean, QueryExampleResponseItem[], DatabasesType | undefined] => {
   const {
     panelState: {
       queryId, groupBy, from, to, labels,
@@ -12,7 +11,7 @@ export const useDetails = (): [boolean, QueryExampleResponseItem[], DatabasesTyp
   } = useContext(QueryAnalyticsProvider);
   const [loading, setLoading] = useState<boolean>(false);
   const [examples, setExamples] = useState<QueryExampleResponseItem[]>([]);
-  const [databaseType, setDatabaseType] = useState<DatabasesType>(Databases.mysql);
+  const [databaseType, setDatabaseType] = useState<DatabasesType>();
 
   useEffect(() => {
     (async () => {
