@@ -3,5 +3,5 @@ export interface NavBarButtonTypes {
   imgSrc?: string;
   imgAlt?: string;
   icon?: string;
-  onClick: () => void;
+  onClick?: () => void;
 }

@@ -2,9 +2,10 @@ import { ReactNode } from 'react';
 
 export interface NavBarTypes {
   title: string;
-  showSignInButton?: boolean;
+  showSignIn?: boolean;
   showFeedbackButton?: boolean;
   showHelpCenterButton?: boolean;
+  userContext?: any;
 
   onSignInClick: () => void;
   onFeedbackClick: () => void;

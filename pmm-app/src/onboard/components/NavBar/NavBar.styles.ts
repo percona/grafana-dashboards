@@ -52,9 +52,8 @@ export const getStyles = (theme: GrafanaTheme2) => ({
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 600;
-    font-size: 14px;
+    font-size: ${theme.typography.body.fontSize};
     line-height: 100%;
-    letter-spacing: 0.01071em;
     flex: none;
     order: 0;
     flex-grow: 1;
@@ -78,11 +77,8 @@ export const getStyles = (theme: GrafanaTheme2) => ({
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
-    font-size: 12px;
+    font-size: ${theme.typography.bodySmall.fontSize};
     line-height: 15px;
-
-    letter-spacing: 0.01071em;
-
     color: ${theme.colors.text.secondary};
     flex: none;
     order: 0;

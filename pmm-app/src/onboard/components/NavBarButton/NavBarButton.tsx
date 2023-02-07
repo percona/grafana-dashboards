@@ -12,13 +12,15 @@ export const NavBarButton: FC<NavBarButtonTypes> = ({
 
   return (
     <>
-      { imgSrc ? (
+      { icon ? (
+        <ToolbarButton icon={icon} onClick={onClick} title={title} />
+      ) : (
         <Button className={styles.perconaButton} onClick={onClick}>
-          <img className={styles.perconaButtonImage} alt={imgAlt} src={imgSrc} />
+          { imgSrc && (
+            <img className={styles.perconaButtonImage} alt={imgAlt} src={imgSrc} />
+          )}
           <div className={styles.perconaButtonLabel}>{title}</div>
         </Button>
-      ) : (
-        <ToolbarButton icon={icon} onClick={onClick} title={title} />
       )}
     </>
   );
