@@ -5,7 +5,6 @@ import {
 import { GrafanaTheme2 } from '@grafana/data';
 import { css } from '@emotion/css';
 
-// Declaring type of props - see "Typing Component Props" for more examples
 interface HelpCenterProps {
   open?: boolean;
   onClose: () => void;
