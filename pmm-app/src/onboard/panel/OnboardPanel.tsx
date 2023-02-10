@@ -1,11 +1,12 @@
 import React, {
   useState, FC,
 } from 'react';
-import { NavBar } from '../components';
+import { HelpCenter, NavBar } from '../components';
 
 export const OnboardPanel: FC<{}> = () => {
   const [message, setMessage] = useState('');
   const [userContext, setUserContext] = useState('');
+  const [isHelpCenterOpen, setIsHelpCenterOpen] = useState(false);
 
   return (
     <>
@@ -20,12 +21,12 @@ export const OnboardPanel: FC<{}> = () => {
           setMessage('sign in');
           setUserContext('something_here');
         }}
-        onHelpCenterClick={() => setMessage('help center')}
+        onHelpCenterClick={() => setIsHelpCenterOpen(!isHelpCenterOpen)}
         onNotificationClick={() => setMessage('notification')}
         onFeedbackClick={() => setMessage('feedback form')}
       />
-      <br />
       <div>{message}</div>
+      <HelpCenter open={isHelpCenterOpen} onClose={() => setIsHelpCenterOpen(false)} />
     </>
   );
 };
