@@ -2,6 +2,7 @@ import React, {
   useState, FC,
 } from 'react';
 import { NavBar } from '../components';
+import { IntroContainer } from '../components/IntroContainer/IntroContainer';
 
 export const OnboardPanel: FC<{}> = () => {
   const [message, setMessage] = useState('');
@@ -21,6 +22,7 @@ export const OnboardPanel: FC<{}> = () => {
       />
       <br />
       <div>{message}</div>
+      <IntroContainer />
     </>
   );
 };
