@@ -9,7 +9,6 @@ import { css } from '@emotion/css';
 interface HelpCenterProps {
   open?: boolean;
   onClose: () => void;
-  // width: string;
 }
 
 export const HelpCenter: FC<HelpCenterProps> = (props) => {
