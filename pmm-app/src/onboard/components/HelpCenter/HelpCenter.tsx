@@ -4,6 +4,7 @@ import {
 } from '@grafana/ui';
 import { GrafanaTheme2 } from '@grafana/data';
 import { css } from '@emotion/css';
+import { LoggedInTips } from '../TipsContainer/LoggedInTips';
 
 interface HelpCenterProps {
   open?: boolean;
@@ -44,6 +45,7 @@ export const HelpCenter: FC<HelpCenterProps> = (props) => {
             />
           </TabsBar>
         </TabsBar>
+        {activeTab === 'tips' && <LoggedInTips />}
       </div>
       <div className={styles.indentContainer} />
     </div>
@@ -55,7 +57,7 @@ const getStyles = (theme: GrafanaTheme2) => ({
     left: auto;
     right: 0;
     flex: 1 0 auto;
-    width: 510px;
+    width: 416px;
     height: calc(100% - 80px);
     top: 80px;
     display: flex;
@@ -67,7 +69,6 @@ const getStyles = (theme: GrafanaTheme2) => ({
     border-left: none;
     flex-direction: column;
     background-color: ${theme.colors.background.primary};
-    -webkit-overflow-scrolling: touch;
   `,
   container: css`
     padding-left: 16px;
