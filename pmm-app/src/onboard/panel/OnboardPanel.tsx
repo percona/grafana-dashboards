@@ -1,7 +1,7 @@
 import React, {
   useState, FC,
 } from 'react';
-import { NavBar } from '../components';
+import {NavBar} from '../components';
 
 export const OnboardPanel: FC<{}> = () => {
   const [message, setMessage] = useState('');
@@ -26,6 +26,8 @@ export const OnboardPanel: FC<{}> = () => {
       />
       <br />
       <div>{message}</div>
+      <br />
+      <br />
     </>
   );
 };

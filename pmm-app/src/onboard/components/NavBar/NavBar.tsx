@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
 import {
-  Icon, ToolbarButtonRow, Dropdown, Menu, Button, useStyles2,
+  Icon, ToolbarButtonRow, Dropdown, Menu, Button, useStyles2, ToolbarButton,
 } from '@grafana/ui';
 import { NavBarTypes } from './NavBar.types';
 import { getStyles } from './NavBar.styles';
 import { NavBarButton } from '../NavBarButton/NavBarButton';
+import {FeedbackTooltip} from "../FeedbackTooltip/FeedbackTooltip";
 
 export const NavBar: FC<NavBarTypes> = ({
   title, userContext,
@@ -77,7 +78,11 @@ export const NavBar: FC<NavBarTypes> = ({
           )
         )}
         {showFeedbackButton && (
-          <NavBarButton icon="bell" onClick={onFeedbackClick} />
+          <>
+            <FeedbackTooltip>
+              <ToolbarButton icon="bell" onClick={onFeedbackClick} />
+            </FeedbackTooltip>
+          </>
         )}
         {showHelpCenterButton && (
           <NavBarButton icon="question-circle" onClick={onHelpCenterClick} />
