@@ -74,8 +74,6 @@ export const ActionCard: FC<ActionCardProps> = ({
 
 const getStyles = (theme: GrafanaTheme2) => ({
   cardHeading: css`
-    font-family: 'Roboto';
-    font-style: normal;
     font-weight: 500;
     font-size: 16px;
     line-height: 21px;

@@ -88,10 +88,7 @@ const getStyles = (theme: GrafanaTheme2) => ({
   introHeader: css`
     width: 680px;
     height: 33px;
-
-
-    font-family: 'Roboto';
-    font-style: normal;
+    
     font-weight: 400;
     font-size: 28px;
     line-height: 33px;
@@ -103,8 +100,6 @@ const getStyles = (theme: GrafanaTheme2) => ({
     flex-grow: 0;
   `,
   introText: css`
-    font-family: 'Roboto';
-    font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 21px;
