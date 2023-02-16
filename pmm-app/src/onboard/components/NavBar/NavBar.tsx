@@ -1,19 +1,20 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import {
   Icon, ToolbarButtonRow, Dropdown, Menu, Button, useStyles2, ToolbarButton,
 } from '@grafana/ui';
 import { NavBarTypes } from './NavBar.types';
 import { getStyles } from './NavBar.styles';
 import { NavBarButton } from '../NavBarButton/NavBarButton';
-import {FeedbackTooltip} from "../FeedbackTooltip/FeedbackTooltip";
+import { FeedbackTooltip } from '../FeedbackTooltip/FeedbackTooltip';
 
 export const NavBar: FC<NavBarTypes> = ({
   title, userContext,
   showSignIn, showFeedbackButton, showHelpCenterButton,
-  onSignInClick, onFeedbackClick, onHelpCenterClick,
+  onSignInClick, onHelpCenterClick,
   showHelpCenterNotificationMarker,
 }) => {
   const styles = useStyles2(getStyles);
+  const [visibleFeedback, setVisibleFeedback] = useState(true);
 
   const userMenu = (
     <Menu>
@@ -79,8 +80,8 @@ export const NavBar: FC<NavBarTypes> = ({
         )}
         {showFeedbackButton && (
           <>
-            <FeedbackTooltip>
-              <ToolbarButton icon="bell" onClick={onFeedbackClick} />
+            <FeedbackTooltip visible={visibleFeedback} onClose={() => { console.log('da'); setVisibleFeedback(true); setVisibleFeedback(false); }}>
+              <ToolbarButton icon="bell" onClick={() => { setVisibleFeedback(true); }} />
             </FeedbackTooltip>
           </>
         )}

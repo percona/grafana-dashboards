@@ -1,53 +1,28 @@
-import React, { FC, useState } from 'react';
-import { IconButton, Tooltip, useStyles2 } from '@grafana/ui';
+import React, { FC } from 'react';
 import { GrafanaTheme2 } from '@grafana/data';
 import { css } from '@emotion/css';
-import { Step1 } from './Step1';
-import { Step2 } from './Step2';
-import { Step3 } from './Step3';
+import { Button, useStyles2 } from '@grafana/ui';
 
-interface FeedbackTooltipProps {
-  visible: boolean;
-  children?: any;
-  onClose?: () => void;
+interface Step1Props {
+  onSubmit: () => void;
 }
 
-export const FeedbackTooltip: FC<FeedbackTooltipProps> = ({ visible, children, onClose }) => {
+export const Step1: FC<Step1Props> = ({ onSubmit }) => {
   const styles = useStyles2(getStyles);
-  const [currentStep, setCurrentStep] = useState('Step1');
-
-  const tooltipContent = (
-    <div>
-      <div className={styles.modalHeaderClose}>
-        <IconButton
-          data-testid="modal-close-button"
-          name="times"
-          size="lg"
-          onClick={onClose}
-        />
-      </div>
-
-      <div className={styles.feedbackContentForm}>
-        { currentStep === 'Step1' && (
-          <Step1
-            onSubmit={() => { setCurrentStep('Step2'); }}
-          />
-        )}
-        { currentStep === 'Step2' && (
-          <Step2 onSubmit={() => { setCurrentStep('Step3'); }} />
-        )}
-        { currentStep === 'Step3' && (
-          <Step3 />
-        )}
-      </div>
-    </div>
-  );
 
   return (
     <>
-      <Tooltip content={tooltipContent} show={visible} interactive placement="bottom-end">
-        {children}
-      </Tooltip>
+      <div className={styles.contentTitle}>
+        How&apos;s your experience with PMM so far?
+      </div>
+      <div className={styles.rating}>
+        <Button variant="secondary" icon="sad" onClick={onSubmit}>Bad</Button>
+        <Button variant="secondary" icon="meh" onClick={onSubmit}>Fair</Button>
+        <Button variant="secondary" icon="smile" onClick={onSubmit}>Good</Button>
+      </div>
+      <div className={styles.ratingDestription}>
+        With only one click you&apos;ll help us improve PMM.
+      </div>
     </>
   );
 };
@@ -105,12 +80,11 @@ const getStyles = (theme: GrafanaTheme2) => ({
       font-weight: 400;
       font-size: 12px;
       line-height: 15px;
-      /* identical to box height, or 125% */
 
       display: flex;
       align-items: center;
       letter-spacing: 0.01071em;
-
+      color: rgba(204, 204, 220, 0.65);
       flex: none;
       order: 2;
       align-self: stretch;
