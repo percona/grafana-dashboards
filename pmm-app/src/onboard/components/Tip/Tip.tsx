@@ -106,8 +106,7 @@ const getStyles = (theme: GrafanaTheme2) => ({
     align-items: center;
   `,
   tipBody: css`
-    padding-top: 16px;
-    padding-left: 16px;
+    padding: 16px 16px 0;
     font-weight: 400;
     font-size: 14px;
     line-height: 21px;

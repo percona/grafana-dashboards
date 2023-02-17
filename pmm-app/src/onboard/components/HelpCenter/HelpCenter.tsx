@@ -5,6 +5,7 @@ import {
 import { GrafanaTheme2 } from '@grafana/data';
 import { css } from '@emotion/css';
 import { LoggedInTips } from '../TipsContainer/LoggedInTips';
+import { ResourcesContainer } from '../ResourcesContainer/ResourcesContainer';
 
 interface HelpCenterProps {
   open?: boolean;
@@ -46,6 +47,7 @@ export const HelpCenter: FC<HelpCenterProps> = (props) => {
           </TabsBar>
         </TabsBar>
         {activeTab === 'tips' && <LoggedInTips />}
+        {activeTab === 'resources' && <ResourcesContainer />}
       </div>
       <div className={styles.indentContainer} />
     </div>

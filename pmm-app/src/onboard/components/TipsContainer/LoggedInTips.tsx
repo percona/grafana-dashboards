@@ -13,14 +13,14 @@ export const LoggedInTips: FC = () => {
     <>
       <h3 className={styles.tipsLabel}>Explore your new power-ups</h3>
       <div>
-        {tipsData.map((tipData) => (
+        {tipsData.map((t) => (
           <Tip
-            title={tipData.title}
-            number={tipData.id}
-            buttonText={tipData.buttonText}
-            tipText={tipData.text}
-            onClick={() => setTip(tipData.id)}
-            active={tip === tipData.id}
+            title={t.title}
+            number={t.id}
+            buttonText={t.buttonText}
+            tipText={t.text}
+            onClick={() => setTip(t.id)}
+            active={tip === t.id}
           />
         ))}
       </div>
