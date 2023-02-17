@@ -38,11 +38,6 @@ export const HelpCenter: FC<HelpCenterProps> = (props) => {
               active={activeTab === 'resources'}
               onChangeTab={() => setActiveTab('resources')}
             />
-            <Tab
-              label={'What\'s new'}
-              active={activeTab === 'wnatsnew'}
-              onChangeTab={() => setActiveTab('wnatsnew')}
-            />
           </TabsBar>
         </TabsBar>
         {activeTab === 'tips' && <LoggedInTips />}
