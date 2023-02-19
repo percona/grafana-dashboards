@@ -1,10 +1,11 @@
 import React, { FC, useState } from 'react';
-import { IconButton, Tooltip, useStyles2 } from '@grafana/ui';
+import { IconButton, useStyles2 } from '@grafana/ui';
 import { GrafanaTheme2 } from '@grafana/data';
 import { css } from '@emotion/css';
 import { Step1 } from './Step1';
 import { Step2 } from './Step2';
 import { Step3 } from './Step3';
+import { ToolTip } from './Tooltip';
 
 interface FeedbackTooltipProps {
   visible: boolean;
@@ -16,14 +17,25 @@ export const FeedbackTooltip: FC<FeedbackTooltipProps> = ({ visible, children, o
   const styles = useStyles2(getStyles);
   const [currentStep, setCurrentStep] = useState('Step1');
 
+  const feedbackClose = () => {
+    if (onClose) {
+      onClose();
+    }
+
+    if (currentStep === 'Step3') {
+      setCurrentStep('Step1');
+    }
+  };
+
   const tooltipContent = (
-    <div>
+    <>
+      {/* close button */}
       <div className={styles.modalHeaderClose}>
         <IconButton
           data-testid="modal-close-button"
           name="times"
           size="lg"
-          onClick={onClose}
+          onClick={feedbackClose}
         />
       </div>
 
@@ -40,15 +52,13 @@ export const FeedbackTooltip: FC<FeedbackTooltipProps> = ({ visible, children, o
           <Step3 />
         )}
       </div>
-    </div>
+    </>
   );
 
   return (
-    <>
-      <Tooltip content={tooltipContent} show={visible} interactive placement="bottom-end">
-        {children}
-      </Tooltip>
-    </>
+    <ToolTip content={tooltipContent} visible={visible}>
+      {children}
+    </ToolTip>
   );
 };
 
