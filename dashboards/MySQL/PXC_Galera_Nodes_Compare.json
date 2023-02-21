@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
@@ -28,7 +31,10 @@
       },
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "#6ed0e0",
@@ -50,7 +56,6 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1656509006897,
   "links": [
     {
       "icon": "doc",
@@ -125,6 +130,7 @@
   "panels": [
     {
       "collapsed": false,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -133,10 +139,17 @@
       },
       "id": 95,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "General Metrics",
       "type": "row"
     },
     {
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -205,12 +218,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.5",
       "repeat": "service_name",
       "repeatDirection": "v",
       "targets": [
         {
           "calculatedInterval": "10m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (service_name) (mysql_global_status_wsrep_ready{service_name=~\"$service_name\"})",
@@ -229,6 +243,7 @@
       "type": "stat"
     },
     {
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -303,12 +318,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.5",
       "repeat": "service_name",
       "repeatDirection": "v",
       "targets": [
         {
           "calculatedInterval": "10m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (service_name) (mysql_global_status_wsrep_local_state{service_name=~\"$service_name\"})",
@@ -327,6 +343,7 @@
       "type": "stat"
     },
     {
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -395,12 +412,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.5",
       "repeat": "service_name",
       "repeatDirection": "v",
       "targets": [
         {
           "calculatedInterval": "10m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (service_name) (mysql_global_variables_wsrep_desync{service_name=~\"$service_name\"})",
@@ -419,6 +437,7 @@
       "type": "stat"
     },
     {
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -487,12 +506,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.5",
       "repeat": "service_name",
       "repeatDirection": "v",
       "targets": [
         {
           "calculatedInterval": "10m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (service_name) (mysql_global_status_wsrep_cluster_status{service_name=~\"$service_name\"})",
@@ -511,6 +531,7 @@
       "type": "stat"
     },
     {
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -567,12 +588,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.5",
       "repeat": "service_name",
       "repeatDirection": "v",
       "targets": [
         {
           "calculatedInterval": "10m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (service_name) (mysql_galera_gcache_size_bytes{service_name=~\"$service_name\"})",
@@ -589,6 +611,7 @@
       "type": "stat"
     },
     {
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -663,11 +686,12 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.5",
       "repeat": "service_name",
       "repeatDirection": "v",
       "targets": [
         {
+          "datasource": "Metrics",
           "expr": "avg by (service_name) (mysql_global_status_wsrep_flow_control_status{service_name=~\"$service_name\"})",
           "format": "time_series",
           "interval": "$interval",
@@ -679,64 +703,90 @@
       "type": "stat"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 0,
+      "datasource": "Metrics",
       "description": "Shows the number of members currently connected to the cluster.",
-      "editable": true,
-      "error": false,
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
         "overrides": []
       },
-      "fill": 0,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 4
+        "y": 10
       },
-      "hiddenSeries": false,
       "id": 54,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "rightSide": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
+      "pluginVersion": "9.2.5",
       "repeat": "cluster",
       "repeatDirection": "v",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
+          "datasource": "Metrics",
           "expr": "(avg by (service_name) (max_over_time(mysql_global_status_wsrep_cluster_size{service_name=~\"$service_name\"}[$interval])) or \navg by (service_name) (max_over_time(mysql_global_status_wsrep_cluster_size{service_name=~\"$service_name\"}[5m]))) * on(service_name) group_left(wsrep_cluster_name) (avg by (service_name) (mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\",service_name=~\"$service_name\"})) > 0",
           "format": "time_series",
           "hide": false,
@@ -746,189 +796,196 @@
           "refId": "A"
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "$cluster - Galera Cluster Size",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "short",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "min": 0,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
       "collapsed": true,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 18
       },
       "id": 212,
       "panels": [
         {
-          "aliasColors": {
-            "Maximum": "#806eb7",
-            "Standard Deviation": "#7eb26d"
-          },
-          "bars": true,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "Shows figures for the replication latency on group communication. It measures latency from the time point when a message is sent out to the time point when a message is received. As replication is a group operation, this essentially gives you the slowest ACK and longest RTT in the cluster.",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "bars",
+                "fillOpacity": 100,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "s"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Maximum"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#806eb7",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Standard Deviation"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#7eb26d",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
           },
-          "fill": 0,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
-            "w": 12,
+            "w": 8,
             "x": 0,
-            "y": 15
+            "y": 19
           },
-          "hiddenSeries": false,
           "id": 42,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": false,
-          "linewidth": 2,
           "links": [
             {
               "title": "Galera Documentation",
               "url": "http://galeracluster.com/documentation-webpages/galerastatusvariables.html#wsrep-evs-repl-latency"
             }
           ],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
+          "pluginVersion": "9.2.5",
           "repeat": "service_name",
           "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
           "targets": [
             {
-              "expr": "avg by (service_name,aggregator) (max_over_time(mysql_global_status_wsrep_evs_repl_latency{service_name=~\"$service_name\", aggregator=\"Maximum\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_evs_repl_latency{service_name=~\"$service_name\", aggregator=\"Maximum\"}[5m]))",
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "expr": "avg by (service_name) (max_over_time(mysql_galera_evs_repl_latency_max_seconds{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_galera_evs_repl_latency_max_seconds{service_name=~\"$service_name\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
-              "legendFormat": "{{ aggregator }}",
+              "legendFormat": "Maximum",
+              "range": true,
               "refId": "A",
               "step": 300
             },
             {
-              "expr": "avg by (service_name,aggregator) (avg_over_time(mysql_global_status_wsrep_evs_repl_latency{service_name=~\"$service_name\", aggregator=\"Standard Deviation\"}[$interval]) or\navg_over_time(mysql_global_status_wsrep_evs_repl_latency{service_name=~\"$service_name\", aggregator=\"Standard Deviation\"}[5m]))",
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "expr": "avg by (service_name) (avg_over_time(mysql_galera_evs_repl_latency_stdev{service_name=~\"$service_name\"}[$interval]) or\navg_over_time(mysql_galera_evs_repl_latency_stdev{service_name=~\"$service_name\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
-              "legendFormat": "{{ aggregator }}",
+              "legendFormat": "Standard Deviation",
+              "range": true,
               "refId": "B",
               "step": 300
             },
             {
-              "expr": "avg by (service_name,aggregator) (avg_over_time(mysql_global_status_wsrep_evs_repl_latency{service_name=~\"$service_name\", aggregator=\"Average\"}[$interval]) or\navg_over_time(mysql_global_status_wsrep_evs_repl_latency{service_name=~\"$service_name\", aggregator=\"Average\"}[5m]))",
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "expr": "avg by (service_name) (avg_over_time(mysql_galera_evs_repl_latency_avg_seconds{service_name=~\"$service_name\"}[$interval]) or\navg_over_time(mysql_galera_evs_repl_latency_avg_seconds{service_name=~\"$service_name\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
-              "legendFormat": "{{ aggregator }}",
+              "legendFormat": "Average",
+              "range": true,
               "refId": "C",
               "step": 300
             },
             {
-              "expr": "avg by (service_name,aggregator) (min_over_time(mysql_global_status_wsrep_evs_repl_latency{service_name=~\"$service_name\", aggregator=\"Minimum\"}[$interval]) or\nmin_over_time(mysql_global_status_wsrep_evs_repl_latency{service_name=~\"$service_name\", aggregator=\"Minimum\"}[5m]))",
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "expr": "avg by (service_name) (min_over_time(mysql_galera_evs_repl_latency_min_seconds{service_name=~\"$service_name\"}[$interval]) or\nmin_over_time(mysql_galera_evs_repl_latency_min_seconds{service_name=~\"$service_name\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
-              "legendFormat": "{{ aggregator }}",
+              "legendFormat": "Minimum",
+              "range": true,
               "refId": "D",
               "step": 300
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "$service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "s",
-              "label": "",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "min": 0,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
         }
       ],
       "title": "Galera Replication Latency",
@@ -936,73 +993,101 @@
     },
     {
       "collapsed": true,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 19
       },
       "id": 289,
       "panels": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "Shows the length of receive and send queues.",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "short"
             },
             "overrides": []
           },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
-            "w": 12,
+            "w": 8,
             "x": 0,
-            "y": 16
+            "y": 20
           },
-          "hiddenSeries": false,
           "id": 39,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
+          "pluginVersion": "9.2.5",
           "repeat": "service_name",
           "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
           "targets": [
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_local_recv_queue{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_local_recv_queue{service_name=~\"$service_name\"}[5m]))",
@@ -1016,6 +1101,7 @@
             },
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_local_send_queue{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_local_send_queue{service_name=~\"$service_name\"}[5m]))",
@@ -1029,39 +1115,14 @@
               "target": ""
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "$service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "short",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "min": 0,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
         }
       ],
       "title": "Galera Replication Queues",
@@ -1069,79 +1130,122 @@
     },
     {
       "collapsed": true,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 20
       },
       "id": 291,
       "panels": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "Shows the number of FC_PAUSE events sent/received. They are sent by a node when its replication queue gets too full. If a node is sending out FC messages it indicates a problem.",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "short"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Paused due to Flow Control"
+                },
+                "properties": [
+                  {
+                    "id": "custom.lineWidth",
+                    "value": 1
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "max",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
           },
-          "fill": 0,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
-            "w": 12,
+            "w": 8,
             "x": 0,
-            "y": 17
+            "y": 21
           },
-          "hiddenSeries": false,
           "id": 45,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
+          "pluginVersion": "9.2.5",
           "repeat": "service_name",
           "repeatDirection": "h",
-          "seriesOverrides": [
-            {
-              "alias": "Paused due to Flow Control",
-              "linewidth": 1,
-              "yaxis": 2
-            }
-          ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
           "targets": [
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_flow_control_recv{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_recv{service_name=~\"$service_name\"}[5m]))",
@@ -1155,6 +1259,7 @@
             },
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_flow_control_sent{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_sent{service_name=~\"$service_name\"}[5m]))",
@@ -1169,6 +1274,7 @@
             },
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) ((rate(mysql_global_status_wsrep_flow_control_paused_ns{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_paused_ns{service_name=~\"$service_name\"}[5m]))/1000000000)",
@@ -1182,41 +1288,14 @@
               "target": ""
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "$service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "short",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "decimals": 2,
-              "format": "percentunit",
-              "logBase": 1,
-              "max": 1,
-              "min": 0,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
         }
       ],
       "title": "Galera Flow Control",
@@ -1224,73 +1303,105 @@
     },
     {
       "collapsed": true,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 21
       },
       "id": 293,
       "panels": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "Shows the number of local transactions being committed on this node that failed certification (some other node had a commit that conflicted with ours) – client received deadlock error on commit and also the number of local transactions in flight on this node that were aborted because they locked something an applier thread needed – deadlock error anywhere in an open transaction. Spikes in the graph may indicate writing to the same table potentially the same rows from 2 nodes.",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "ops"
             },
             "overrides": []
           },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
-            "w": 12,
+            "w": 8,
             "x": 0,
-            "y": 18
+            "y": 22
           },
-          "hiddenSeries": false,
           "id": 41,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
+          "pluginVersion": "9.2.5",
           "repeat": "service_name",
           "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
           "targets": [
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_local_cert_failures{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_local_cert_failures{service_name=~\"$service_name\"}[5m]))",
@@ -1304,6 +1415,7 @@
             },
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_local_bf_aborts{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_local_bf_aborts{service_name=~\"$service_name\"}[5m]))",
@@ -1317,40 +1429,14 @@
               "target": ""
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "$service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "ops",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "decimals": 2,
-              "format": "ops",
-              "logBase": 1,
-              "min": 0,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
         }
       ],
       "title": "Galera Writing Conflicts",
@@ -1358,73 +1444,105 @@
     },
     {
       "collapsed": true,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 22
       },
       "id": 295,
       "panels": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "Shows the count of transactions received from the cluster (any other node) and replicated to the cluster (from this node).",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
             },
             "overrides": []
           },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
-            "w": 12,
+            "w": 8,
             "x": 0,
-            "y": 19
+            "y": 23
           },
-          "hiddenSeries": false,
           "id": 2,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
+          "pluginVersion": "9.2.5",
           "repeat": "service_name",
           "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
           "targets": [
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_received{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_received{service_name=~\"$service_name\"}[5m]))",
@@ -1438,6 +1556,7 @@
             },
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_replicated{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_replicated{service_name=~\"$service_name\"}[5m]))",
@@ -1451,39 +1570,14 @@
               "target": ""
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "$service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "short",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "min": 0,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
         }
       ],
       "title": "Galera Writeset Count",
@@ -1491,74 +1585,105 @@
     },
     {
       "collapsed": true,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 23
       },
       "id": 297,
       "panels": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "Shows the bytes of data received from the cluster (any other node) and replicated to the cluster (from this node).",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 60,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
             },
             "overrides": []
           },
-          "fill": 6,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
-            "w": 12,
+            "w": 8,
             "x": 0,
-            "y": 20
+            "y": 24
           },
-          "hiddenSeries": false,
           "id": 9,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
+          "pluginVersion": "9.2.5",
           "repeat": "service_name",
           "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": true,
-          "steppedLine": false,
           "targets": [
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[5m]))",
@@ -1572,6 +1697,7 @@
             },
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[5m]))",
@@ -1584,39 +1710,14 @@
               "step": 300
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "$service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "bytes",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "none",
-              "logBase": 1,
-              "min": 0,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
         }
       ],
       "title": "Galera Writeset Traffic",
@@ -1624,73 +1725,105 @@
     },
     {
       "collapsed": true,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 24
       },
       "id": 415,
       "panels": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "Shows the average distances between highest and lowest seqno that are concurrently applied, committed and can be possibly applied in parallel (potential degree of parallelization).",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
             },
             "overrides": []
           },
-          "fill": 0,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
-            "w": 12,
+            "w": 8,
             "x": 0,
-            "y": 21
+            "y": 25
           },
-          "hiddenSeries": false,
           "id": 40,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
+          "pluginVersion": "9.2.5",
           "repeat": "service_name",
           "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
           "targets": [
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_apply_window{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_apply_window{service_name=~\"$service_name\"}[5m]))",
@@ -1704,6 +1837,7 @@
             },
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_commit_window{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_commit_window{service_name=~\"$service_name\"}[5m]))",
@@ -1718,6 +1852,7 @@
             },
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_cert_deps_distance{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_cert_deps_distance{service_name=~\"$service_name\"}[5m]))",
@@ -1731,39 +1866,14 @@
               "target": ""
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "$service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "short",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "min": 0,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
         }
       ],
       "title": "Galera Parallelization Efficiency",
@@ -1771,73 +1881,105 @@
     },
     {
       "collapsed": true,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 25
       },
       "id": 417,
       "panels": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "Shows for how long the node can be taken out of the cluster before SST is required. SST is a full state transfer method.",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "s"
             },
             "overrides": []
           },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
-            "w": 12,
+            "w": 8,
             "x": 0,
-            "y": 22
+            "y": 26
           },
-          "hiddenSeries": false,
           "id": 47,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
+          "pluginVersion": "9.2.5",
           "repeat": "service_name",
           "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
           "targets": [
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (mysql_galera_gcache_size_bytes{service_name=~\"$service_name\"}) /\navg by (service_name) ((rate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[5m])) + \n(rate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[5m])))",
@@ -1851,6 +1993,7 @@
               "step": 300
             },
             {
+              "datasource": "Metrics",
               "expr": "avg by (service_name) (mysql_galera_gcache_size_bytes{service_name=~\"$service_name\"}) /\navg by (service_name) ((rate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[1h])+rate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[1h])))",
               "hide": false,
               "interval": "1h",
@@ -1858,39 +2001,14 @@
               "refId": "B"
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "$service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "s",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "min": 0,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
         }
       ],
       "title": "Available Downtime before SST Required",
@@ -1898,74 +2016,105 @@
     },
     {
       "collapsed": true,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 26
       },
       "id": 419,
       "panels": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "Shows the average transaction size received/replicated.",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
             },
             "overrides": []
           },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
-            "w": 12,
+            "w": 8,
             "x": 0,
-            "y": 23
+            "y": 27
           },
-          "hiddenSeries": false,
           "id": 11,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
+          "pluginVersion": "9.2.5",
           "repeat": "service_name",
           "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
           "targets": [
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[$interval]) / (rate(mysql_global_status_wsrep_received{service_name=~\"$service_name\"}[$interval]) > 0) or irate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[5m]) / (irate(mysql_global_status_wsrep_received{service_name=~\"$service_name\"}[5m]) > 0))",
@@ -1979,6 +2128,7 @@
             },
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[$interval]) / (rate(mysql_global_status_wsrep_replicated{service_name=~\"$service_name\"}[$interval]) > 0) or irate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[5m]) / (irate(mysql_global_status_wsrep_replicated{service_name=~\"$service_name\"}[5m]) > 0))",
@@ -1991,39 +2141,14 @@
               "step": 300
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "$service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "bytes",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "min": 0,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
         }
       ],
       "title": "Galera Writeset Size",
@@ -2031,74 +2156,101 @@
     },
     {
       "collapsed": true,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 27
       },
       "id": 421,
       "panels": [
         {
-          "aliasColors": {},
-          "bars": true,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "Shows the bytes of data received from the cluster (any other node) and replicated to the cluster (from this node).",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "bars",
+                "fillOpacity": 100,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "bytes"
             },
             "overrides": []
           },
-          "fill": 6,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
-            "w": 12,
+            "w": 8,
             "x": 0,
-            "y": 24
+            "y": 28
           },
-          "hiddenSeries": false,
           "id": 38,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": false,
-          "linewidth": 2,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
           },
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
+          "pluginVersion": "9.2.5",
           "repeat": "service_name",
           "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": true,
-          "steppedLine": false,
           "targets": [
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (increase(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[1h]))",
@@ -2112,6 +2264,7 @@
             },
             {
               "calculatedInterval": "2m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (service_name) (increase(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[1h]))",
@@ -2124,40 +2277,15 @@
               "step": 3600
             }
           ],
-          "thresholds": [],
           "timeFrom": "24h",
-          "timeRegions": [],
           "title": "$service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "bytes",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "none",
-              "logBase": 1,
-              "min": 0,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
         }
       ],
       "title": "Galera Network Usage Hourly",
@@ -2165,7 +2293,7 @@
     }
   ],
   "refresh": "1m",
-  "schemaVersion": 34,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "Percona",
