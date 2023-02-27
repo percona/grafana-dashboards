@@ -3179,30 +3179,119 @@
       },
       {
         "allFormat": "glob",
+        "allValue": ".*",
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
         "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"node_boot_time_seconds|rdsosmetrics_timestamp\"}, node_name)",
+        "definition": "label_values(node_load1{node_type=~\"generic|remote_rds|container|remote\"}, region)",
         "hide": 0,
         "includeAll": true,
-        "label": "Node Name",
+        "label": "Region",
         "multi": true,
+        "multiFormat": "regex values",
+        "name": "region",
+        "options": [],
+        "query": {
+          "query": "label_values(node_load1{node_type=~\"generic|remote_rds|container|remote\"}, region)",
+          "refId": "Metrics-region-Variable-Query"
+        },
+        "refresh": 2,
+        "refresh_on_load": false,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allFormat": "glob",
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(up{region=~\"$region\"}, node_type)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Type",
+        "multi": true,
+        "multiFormat": "regex values",
+        "name": "node_type",
+        "options": [],
+        "query": {
+          "query": "label_values(up{region=~\"$region\"}, node_type)",
+          "refId": "Metrics-node_type-Variable-Query"
+        },
+        "refresh": 2,
+        "refresh_on_load": false,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Metrics",
+        "definition": "label_values({region=~\"$region\",node_type=~\"$node_type\",__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Environment",
+        "multi": true,
+        "multiFormat": "regex values",
+        "name": "environment",
+        "options": [],
+        "query": {
+          "query": "label_values({region=~\"$region\",node_type=~\"$node_type\",__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+          "refId": "Metrics-node_type-Variable-Query"
+        },
+        "refresh": 2,
+        "refresh_on_load": false,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allFormat": "glob",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(up{region=~\"$region\",node_type=~\"$node_type\",environment=~\"$environment\"}, node_name)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Node Names",
+        "multi": false,
         "multiFormat": "regex values",
         "name": "node_name",
         "options": [],
         "query": {
-          "query": "label_values({__name__=~\"node_boot_time_seconds|rdsosmetrics_timestamp\"}, node_name)",
+          "query": "label_values(up{region=~\"$region\",node_type=~\"$node_type\",environment=~\"$environment\"}, node_name)",
           "refId": "Metrics-node_name-Variable-Query"
         },
         "refresh": 2,
+        "refresh_on_load": false,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 5,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
+        "sort": 1,
         "type": "query",
         "useTags": false
       },
@@ -3223,33 +3312,6 @@
         "query": {
           "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_name)",
           "refId": "Metrics-service_name-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Environment",
-        "multi": true,
-        "name": "environment",
-        "options": [],
-        "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
-          "refId": "Metrics-environment-Variable-Query"
         },
         "refresh": 2,
         "regex": "",
@@ -3331,33 +3393,6 @@
         "query": {
           "query": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
           "refId": "Metrics-database-Variable-Query"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Type",
-        "multi": true,
-        "name": "node_type",
-        "options": [],
-        "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
-          "refId": "Metrics-node_type-Variable-Query"
         },
         "refresh": 1,
         "regex": "",
