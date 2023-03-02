@@ -2,7 +2,7 @@ export interface PostgreSQLExplainBody {
   pmmAgentId?: string;
   serviceId: string;
   queryId: string;
-  placeholders: string[];
+  values: string[];
   database?: string;
 }
 
@@ -14,5 +14,5 @@ export interface PostgreSQLExplainResponse {
 export interface PostgreSQLExplain {
   serviceId: string;
   queryId: string;
-  placeholders: string[];
+  values: string[];
 }

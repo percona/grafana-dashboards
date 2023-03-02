@@ -71,11 +71,11 @@ export const fetchExplains = async (
   try {
     const hasPlaceholders = placeholders || !example.placeholders_count;
 
-    if (databaseType === Databases.postgresql && hasPlaceholders) {
+    if (databaseType === Databases.postgresql && (hasPlaceholders || !!example.example)) {
       const payload = {
         serviceId: example.service_id,
         queryId,
-        placeholders: placeholders || [],
+        values: placeholders || [],
       };
 
       const explain = await postgresqlMethods.getExplain(payload).then(getActionResult);
@@ -89,11 +89,11 @@ export const fetchExplains = async (
       };
     }
 
-    if (databaseType === Databases.mysql && hasPlaceholders) {
+    if (databaseType === Databases.mysql && (hasPlaceholders || !!example.example)) {
       const payload = {
         example,
         queryId,
-        placeholders,
+        values: placeholders,
       };
 
       const [classicResult, jsonResult] = await Promise.all([

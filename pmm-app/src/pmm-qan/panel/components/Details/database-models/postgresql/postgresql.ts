@@ -2,12 +2,14 @@ import { PostgreSQLExplain } from './postgresql.types';
 import PostgresqlDatabaseService from './service';
 
 export const postgresqlMethods = {
-  getExplain: async ({ placeholders, queryId, serviceId }: PostgreSQLExplain): Promise<string> => {
-    const result = await PostgresqlDatabaseService.getPostgreSQLExplain({
+  getExplain: async ({ values, queryId, serviceId }: PostgreSQLExplain): Promise<string> => {
+    const payload = {
       queryId,
       serviceId,
-      placeholders,
-    });
+      values,
+    };
+
+    const result = await PostgresqlDatabaseService.getPostgreSQLExplain(payload);
 
     return result.action_id;
   },

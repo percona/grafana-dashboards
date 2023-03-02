@@ -29,7 +29,7 @@ const ExplainPlaceholders: React.FC<ExplainPlaceholdersProps> = ({
     setJsonExplain(actionResult);
     setVisualExplain(actionResult);
 
-    if (example && !example.placeholders_count) {
+    if (example && (!example.placeholders_count || example.example)) {
       setInitialized(true);
       handlePlaceholderSubmit({ placeholders: [] });
     } else if (!example) {
