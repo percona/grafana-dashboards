@@ -36,7 +36,7 @@ export const getActionResult = async (actionId: string): Promise<ActionResult> =
   if (requestResult.error) {
     return {
       loading: false,
-      value: null,
+      value: requestResult.output,
       error: requestResult.error,
     };
   }
