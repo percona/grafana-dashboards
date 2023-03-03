@@ -30,7 +30,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
       queryId: value.queryId,
       querySelected: true,
       database: value.database,
-      // openDetailsTab: 'details',
+      openDetailsTab: 'details',
       totals,
     }),
     addColumn: (value) => (state) => {
