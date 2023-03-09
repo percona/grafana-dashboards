@@ -42,7 +42,6 @@
   "description": "This is a modern 'Pods View' dashboard for your Kubernetes cluster(s). Made for kube-prometheus-stack and take advantage of the latest Grafana features. GitHub repository: https://github.com/dotdc/grafana-dashboards-kubernetes",
   "editable": false,
   "fiscalYearStartMonth": 0,
-  "gnetId": null,
   "graphTooltip": 1,
   "id": null,
   "links": [
@@ -131,7 +130,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 1
+            "y": 9
           },
           "id": 71,
           "options": {
@@ -152,12 +151,186 @@
       "type": "row"
     },
     {
+      "datasource": "Metrics",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 1
+      },
+      "id": 75,
+      "interval": "1s",
+      "maxDataPoints": 1000,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.3.5",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "sum by (container) (rate(container_cpu_usage_seconds_total{namespace=\"$namespace\", pod=~\"$pod\", image!=\"\", container!=\"POD\", container!=\"\"}[$interval])) / sum(kube_pod_container_resource_limits{namespace=\"$namespace\", pod=~\"$pod\", unit=\"core\",container!=\"\"}) by (container)",
+          "hide": false,
+          "legendFormat": "{{container}}",
+          "range": true,
+          "refId": "CPU Utilization"
+        }
+      ],
+      "title": "CPU utilization by container",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Metrics",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 1
+      },
+      "id": 57,
+      "interval": "1s",
+      "maxDataPoints": 1000,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.3.5",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "sum by (container) (container_memory_working_set_bytes{namespace=\"$namespace\", pod=~\"$pod\", image!=\"\", container!=\"POD\",container!=\"\"})\r\n / sum by (container)(kube_pod_container_resource_limits{namespace=\"$namespace\", pod=~\"$pod\", unit=\"byte\"})",
+          "hide": false,
+          "legendFormat": "{{container}}",
+          "range": true,
+          "refId": "Memory Utilization"
+        }
+      ],
+      "title": "Memory utilization by container",
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 8
       },
       "id": 60,
       "panels": [],
@@ -216,115 +389,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 11,
-        "w": 24,
-        "x": 0,
-        "y": 2
-      },
-      "id": 56,
-      "interval": "1s",
-      "maxDataPoints": 1000,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.3.5",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "editorMode": "code",
-          "expr": "sum by (container) (kube_pod_container_resource_requests{namespace=\"$namespace\", unit=\"core\",container!=\"\"})",
-          "hide": false,
-          "legendFormat": "{{pod}}{{container}}(Requests )",
-          "range": true,
-          "refId": "CPU Requests"
-        },
-        {
-          "datasource": "Metrics",
-          "editorMode": "code",
-          "expr": "sum by (container) (kube_pod_container_resource_limits{namespace=\"$namespace\", pod=~\"$pod\", unit=\"core\",container!=\"\"})",
-          "hide": false,
-          "legendFormat": "{{container}}(Limits)",
-          "range": true,
-          "refId": "CPU Limits"
-        },
-        {
-          "datasource": "Metrics",
-          "editorMode": "code",
-          "expr": "sum by (container) (rate(container_cpu_usage_seconds_total{namespace=\"$namespace\", pod=~\"$pod\", image!=\"\", container!=\"POD\", container!=\"\"}[$interval]))",
-          "hide": false,
-          "legendFormat": "{{container}}(Used)",
-          "range": true,
-          "refId": "CPU Used"
-        }
-      ],
-      "title": "CPU Overall Stats",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "Metrics",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 13
+        "y": 9
       },
       "id": 69,
       "interval": "1s",
@@ -429,9 +497,9 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 13
+        "y": 9
       },
-      "id": 57,
+      "id": 76,
       "interval": "1s",
       "maxDataPoints": 1000,
       "options": {
@@ -489,7 +557,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 16
       },
       "id": 43,
       "panels": [],
@@ -529,7 +597,7 @@
         "h": 2,
         "w": 12,
         "x": 0,
-        "y": 21
+        "y": 17
       },
       "id": 33,
       "options": {
@@ -590,7 +658,7 @@
         "h": 2,
         "w": 12,
         "x": 12,
-        "y": 21
+        "y": 17
       },
       "id": 58,
       "options": {
@@ -647,9 +715,9 @@
       },
       "gridPos": {
         "h": 2,
-        "w": 12,
+        "w": 8,
         "x": 0,
-        "y": 23
+        "y": 19
       },
       "id": 41,
       "options": {
@@ -674,10 +742,12 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
+          "exemplar": false,
           "expr": "kube_pod_info{namespace=~\"$namespace\", pod=~\"$pod\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "{{ pod_ip }}",
-          "range": true,
+          "range": false,
           "refId": "A"
         }
       ],
@@ -704,9 +774,9 @@
       },
       "gridPos": {
         "h": 2,
-        "w": 12,
-        "x": 12,
-        "y": 23
+        "w": 8,
+        "x": 8,
+        "y": 19
       },
       "id": 2,
       "options": {
@@ -731,16 +801,250 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "kube_pod_info{namespace=~\"$namespace\", pod=~\"$pod\"}",
+          "exemplar": false,
+          "expr": "kube_pod_info{namespace=\"$namespace\", pod=\"$pod\"}",
+          "format": "time_series",
+          "instant": true,
           "interval": "",
           "legendFormat": "{{ created_by_kind }}: {{ created_by_name }}",
-          "range": true,
+          "range": false,
           "refId": "A"
         }
       ],
       "title": "Created by",
       "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgb(255, 255, 255)",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 8,
+        "x": 16,
+        "y": 19
+      },
+      "id": 74,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 18
+        },
+        "textMode": "name"
+      },
+      "pluginVersion": "9.2.5",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "kube_pod_spec_volumes_persistentvolumeclaims_info{namespace=\"$namespace\", pod=\"$pod\"}",
+          "format": "time_series",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{ persistentvolumeclaim }}",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Attached volume",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "id": 78,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "sum(changes(kube_pod_container_status_restarts_total{namespace=~\"$namespace\", pod=~\"$pod\"}[$__interval])) by (container)",
+          "legendFormat": "{{container}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Container restrarts",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Metrics",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "id": 79,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "sum(changes(kube_pod_container_status_last_terminated_reason{namespace=\"$namespace\",pod=~\"$pod\"})) by (container, reason)",
+          "legendFormat": "{{container}} - {{reason}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Container termination reasons",
+      "type": "timeseries"
     },
     {
       "collapsed": false,
@@ -752,7 +1056,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 29
       },
       "id": 45,
       "panels": [],
@@ -824,7 +1128,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 26
+        "y": 30
       },
       "id": 31,
       "options": {
@@ -925,7 +1229,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 26
+        "y": 30
       },
       "id": 34,
       "options": {
@@ -1025,7 +1329,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 34
+        "y": 38
       },
       "id": 36,
       "options": {
@@ -1125,7 +1429,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 34
+        "y": 38
       },
       "id": 37,
       "options": {
@@ -1170,7 +1474,7 @@
       "title": "Network - Errors",
       "type": "timeseries"
     }
-  ],  
+  ],
   "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
@@ -1184,7 +1488,7 @@
         "auto_count": 200,
         "auto_min": "1s",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "auto",
           "value": "$__auto_interval_interval"
         },
@@ -1241,7 +1545,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "default"
           ],
@@ -1252,9 +1556,9 @@
         "datasource": "Metrics",
         "definition": "label_values(kube_pod_info, namespace)",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Namespace",
-        "multi": true,
+        "multi": false,
         "name": "namespace",
         "options": [],
         "query": {
@@ -1276,59 +1580,8 @@
           "text": "",
           "value": ""
         },
-        "datasource": "Metrics",
-        "definition": "label_values(kube_persistentvolumeclaim_labels,label_app_kubernetes_io_component)",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Database Type",
-        "multi": false,
-        "name": "db_type",
-        "options": [],
-        "query": {
-          "query": "label_values(kube_persistentvolumeclaim_labels,label_app_kubernetes_io_component)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "",
-          "value": ""
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(kube_pod_labels{label_app_kubernetes_io_component=~\"$db_type\",namespace=~\"$namespace\"},label_app_kubernetes_io_instance)",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Database Name",
-        "multi": false,
-        "name": "db_name",
-        "options": [],
-        "query": {
-          "query": "label_values(kube_pod_labels{label_app_kubernetes_io_component=~\"$db_type\",namespace=~\"$namespace\"},label_app_kubernetes_io_instance)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "",
-          "value": ""
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(kube_pod_labels{namespace=~\"$namespace\",label_app_kubernetes_io_instance=~\"$db_name\"}, pod)",
+          "datasource": "Metrics",
+        "definition": "label_values(kube_pod_info{namespace=~\"$namespace\"}, pod)",
         "hide": 0,
         "includeAll": false,
         "label": "Pod",
@@ -1336,7 +1589,7 @@
         "name": "pod",
         "options": [],
         "query": {
-          "query": "label_values(kube_pod_labels{namespace=~\"$namespace\",label_app_kubernetes_io_instance=~\"$db_name\"}, pod)",
+          "query": "label_values(kube_pod_info{namespace=~\"$namespace\"}, pod)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -1381,7 +1634,7 @@
     ]
   },
   "timezone": "",
-  "title": "DBaaS Cluster Pods Status",
+  "title": "Kubernetes Pods Status",
   "uid": "dbaas_cluster_pods_status",
   "version": 1,
   "weekStart": ""
