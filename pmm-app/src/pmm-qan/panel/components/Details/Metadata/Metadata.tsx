@@ -4,6 +4,7 @@ import { Collapse, useStyles2 } from '@grafana/ui';
 import { Table } from '../../../../../shared/components/Elements/Table';
 import { LinkTooltip } from '../../../../../shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getStyles } from './Metadata.styles';
+import { metadataTableHead } from './Metadata.constants';
 
 const Metadata = ({ metadata, loading }) => {
   const styles = useStyles2(getStyles);
@@ -22,19 +23,13 @@ const Metadata = ({ metadata, loading }) => {
     </span>
   );
 
-  const tableHead = {
-    main: 'Metadata',
-    first: 'Name',
-    second: 'Value',
-  };
-
   const columns = [
     {
-      Header: tableHead.first,
+      Header: metadataTableHead.first,
       accessor: nameColumn,
     },
     {
-      Header: tableHead.second,
+      Header: metadataTableHead.second,
       accessor: valueColumn,
     },
   ];
@@ -43,7 +38,7 @@ const Metadata = ({ metadata, loading }) => {
     <Overlay size={35}>
       <Collapse
         collapsible
-        label={tableHead.main}
+        label={metadataTableHead.main}
         isOpen={isMetadataOpen}
         onToggle={() => setMetadataVisibility(!isMetadataOpen)}
       >
