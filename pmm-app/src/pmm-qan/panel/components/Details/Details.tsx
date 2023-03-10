@@ -8,6 +8,7 @@ import {
 import { cx } from '@emotion/css';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { Databases } from 'shared/core';
+// import { name } from 'enzyme-adapter-react-16';
 import Example from './Example/Example';
 import Explain from './Explain/Explain';
 import Metrics from './Metrics/Metrics';
@@ -20,7 +21,7 @@ import { getStyles } from './Details.styles';
 import { Plan } from './Plan/Plan';
 import ExplainPlaceholders from './ExplainPlaceholders';
 import Metadata from './Metadata/Metadata';
-import { useMetadata } from './Metadata/hooks/useMetadata';
+import { showMetadata } from './Metadata/Metadata.utils';
 
 export const DetailsSection: FC = () => {
   const theme = useTheme();
@@ -33,9 +34,8 @@ export const DetailsSection: FC = () => {
   } = useContext(QueryAnalyticsProvider);
 
   const [loading, examples, databaseType] = useDetails();
-  const [metrics, textMetrics, metricsLoading] = useMetricsDetails();
-  const [metadata, metadataLoading] = useMetadata();
-
+  const [metrics, textMetrics, metricsLoading, metadata] = useMetricsDetails();
+  const metadataToShow = showMetadata(metadata);
   const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
   const showTablesTab = databaseType !== Databases.mongodb && groupBy === 'queryid' && !totals;
   const showExplainTab = databaseType !== Databases.postgresql && groupBy === 'queryid' && !totals;
@@ -82,8 +82,8 @@ export const DetailsSection: FC = () => {
             loading={metricsLoading}
           />
           <Metadata
-            metadata={metadata}
-            loading={metadataLoading}
+            metadata={metadataToShow}
+            loading={metricsLoading}
           />
         </>
       ),
