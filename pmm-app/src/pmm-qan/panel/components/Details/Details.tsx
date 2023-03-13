@@ -8,7 +8,6 @@ import {
 import { cx } from '@emotion/css';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { Databases } from 'shared/core';
-// import { name } from 'enzyme-adapter-react-16';
 import Example from './Example/Example';
 import Explain from './Explain/Explain';
 import Metrics from './Metrics/Metrics';
