@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { Collapse, useStyles2 } from '@grafana/ui';
-import { Table } from '../../../../../shared/components/Elements/Table';
-import { LinkTooltip } from '../../../../../shared/components/Elements/LinkTooltip/LinkTooltip';
+import { Table } from 'shared/components/Elements/Table';
+import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getStyles } from './Metadata.styles';
 import { metadataTableHead } from './Metadata.constants';
 
 const Metadata = ({ metadata, loading }) => {
   const styles = useStyles2(getStyles);
-  const [isMetadataOpen, setMetadataVisibility] = useState(true);
+  const [metadataOpen, setMetadataOpen] = useState(true);
 
   const nameColumn = (item) => (
     <span className={styles.metadataColumn}>
@@ -39,8 +39,8 @@ const Metadata = ({ metadata, loading }) => {
       <Collapse
         collapsible
         label={metadataTableHead.main}
-        isOpen={isMetadataOpen}
-        onToggle={() => setMetadataVisibility(!isMetadataOpen)}
+        isOpen={metadataOpen}
+        onToggle={() => setMetadataOpen(!metadataOpen)}
       >
         <Table
           columns={columns}
