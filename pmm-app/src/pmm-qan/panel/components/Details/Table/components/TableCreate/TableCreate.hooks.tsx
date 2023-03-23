@@ -25,6 +25,8 @@ export const useShowCreateTable = (databaseType, example, tableName, database) =
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [databaseType]);
 
+  getDatabase();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     getDatabase();
     // eslint-disable-next-line react-hooks/exhaustive-deps
