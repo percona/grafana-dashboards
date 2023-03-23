@@ -11,7 +11,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
       justify-content: space-between;
       align-items: center;
       word-break: keep-all;
-      color: ${parameters.mainTextColor} !important;
+      color: ${parameters.mainTextColor};
     `,
     metadataTooltip: css`
       text-align: center;

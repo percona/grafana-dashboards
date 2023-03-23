@@ -5,6 +5,7 @@ import { Table } from 'shared/components/Elements/Table';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getStyles } from './Metadata.styles';
 import { metadataTableHead } from './Metadata.constants';
+import { OVERLAY_LOADER_SIZE } from '../Details.constants';
 
 const Metadata = ({ metadata, loading }) => {
   const styles = useStyles2(getStyles);
@@ -35,7 +36,7 @@ const Metadata = ({ metadata, loading }) => {
   ];
 
   return (
-    <Overlay size={35}>
+    <Overlay size={OVERLAY_LOADER_SIZE}>
       <Collapse
         collapsible
         label={metadataTableHead.main}
