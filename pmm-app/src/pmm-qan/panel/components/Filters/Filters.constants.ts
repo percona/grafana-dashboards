@@ -100,4 +100,8 @@ export const FILTERS_GROUPS = [
     name: 'Command Type',
     dataKey: 'cmd_type',
   },
+  {
+    name: 'Comments',
+    dataKey: 'comments',
+  },
 ];
