@@ -2,7 +2,7 @@
 export const metadataNamesTooltips: {[key: string]: {name: string, tooltip: string}} = {
   service_name: {
     name: 'Service name',
-    tooltip: 'Unique across all Services user-defined name, can be changed.',
+    tooltip: 'Unique across all Services. User-defined name, can be changed.',
   },
   database: {
     name: 'Database',
@@ -14,7 +14,7 @@ export const metadataNamesTooltips: {[key: string]: {name: string, tooltip: stri
   },
   username: {
     name: 'Username',
-    tooltip: 'Username for scraping metrics / Authentication user.',
+    tooltip: 'Username for scraping metrics, authentication user.',
   },
   replication_set: {
     name: 'Replication set',

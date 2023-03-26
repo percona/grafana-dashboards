@@ -41,13 +41,12 @@ const Metadata = ({ metadata, loading }) => {
         collapsible
         label={metadataTableHead.main}
         isOpen={metadataOpen}
-        onToggle={() => setMetadataOpen(!metadataOpen)}
+        onToggle={() => setMetadataOpen((open) => !open)}
       >
         <Table
           columns={columns}
           data={metadata}
           loading={loading}
-          noData={null}
         />
       </Collapse>
     </Overlay>
