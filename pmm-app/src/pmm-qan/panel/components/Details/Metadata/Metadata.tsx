@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { Collapse, useStyles2 } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table';
-import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getStyles } from './Metadata.styles';
 import { metadataTableHead } from './Metadata.constants';
 import { OVERLAY_LOADER_SIZE } from '../Details.constants';
