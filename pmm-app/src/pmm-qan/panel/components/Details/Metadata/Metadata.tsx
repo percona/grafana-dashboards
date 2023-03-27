@@ -20,7 +20,6 @@ const Metadata = ({ metadata, loading }) => {
   const valueColumn = (item) => (
     <span className={styles.metadataColumn}>
       <span>{item.value}</span>
-      <LinkTooltip tooltipText={item.tooltip} icon="info-circle" />
     </span>
   );
 

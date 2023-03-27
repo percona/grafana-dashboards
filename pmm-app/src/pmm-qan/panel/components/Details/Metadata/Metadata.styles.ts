@@ -13,11 +13,5 @@ export const getStyles = (theme: GrafanaTheme2) => {
       word-break: keep-all;
       color: ${parameters.mainTextColor};
     `,
-    metadataTooltip: css`
-      text-align: center;
-    `,
-    metadataTooltipIcon: css`
-      margin-left: auto;
-    `,
   };
 };

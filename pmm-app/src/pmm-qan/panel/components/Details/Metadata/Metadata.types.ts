@@ -2,5 +2,4 @@
 export interface LineMetadata {
   name: string;
   value: string;
-  tooltip: string;
 }
