@@ -14,8 +14,8 @@ export const useTables = (example, explains, databaseType): any[] => {
       if (databaseType === Databases.mysql && jsonExplain.value) {
         const parsedJSON = JSON.parse(jsonExplain.value);
 
-        var  tablesResult = [
-          "information_schema." + get(parsedJSON, 'real_table_name'),
+        const tablesResult = [
+          `information_schema.${get(parsedJSON, 'real_table_name')}`,
         ].filter(Boolean);
 
         setTables(tablesResult);
