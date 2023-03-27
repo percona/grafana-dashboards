@@ -1,3 +1,4 @@
+import { metadataNames } from './Metadata.constants';
 import { LineMetadata } from './Metadata.types';
 
 export const showMetadata = (metadata: string[]): LineMetadata[] => {
@@ -5,7 +6,7 @@ export const showMetadata = (metadata: string[]): LineMetadata[] => {
 
   Object.entries(metadata).forEach(([k, v]) => {
     const line: LineMetadata = ({
-      name: k,
+      name: metadataNames[k] ? metadataNames[k].name : k,
       value: v,
     });
 
