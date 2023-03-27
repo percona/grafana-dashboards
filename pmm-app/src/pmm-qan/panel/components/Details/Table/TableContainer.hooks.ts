@@ -15,8 +15,7 @@ export const useTables = (example, explains, databaseType): any[] => {
         const parsedJSON = JSON.parse(jsonExplain.value);
 
         var  tablesResult = [
-          "information_schema." + 
-          get(parsedJSON, 'real_table_name'),
+          "information_schema." + get(parsedJSON, 'real_table_name'),
         ].filter(Boolean);
 
         setTables(tablesResult);
