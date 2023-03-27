@@ -12,5 +12,7 @@ export const showMetadata = (metadata: string[]): LineMetadata[] => {
     metadataToShow.push(line);
   });
 
+  metadataToShow.sort((a, b) => a.name.localeCompare(b.name));
+
   return metadataToShow;
 };
