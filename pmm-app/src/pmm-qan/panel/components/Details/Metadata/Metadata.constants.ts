@@ -38,7 +38,6 @@ export const metadataNames: {[key: string]: {name: string}} = {
   },
 };
 
-
 export const metadataTableHead = {
   main: 'Metadata',
   first: 'Name',
