@@ -1743,7 +1743,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "sum by (user) ((increase(mysql_info_schema_user_statistics_rows_fetched_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range]) + increase(mysql_info_schema_user_statistics_table_rows_read_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range])))",
+          "expr": "sum by (user) ((increase(mysql_info_schema_user_statistics_rows_fetched_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range]) + increase(mysql_info_schema_user_statistics_table_rows_read_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range])) or (increase(mysql_info_schema_user_statistics_rows_sent_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range]) + increase(mysql_info_schema_user_statistics_rows_read_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range])))",
           "format": "table",
           "instant": true,
           "interval": "$interval",
@@ -1974,14 +1974,20 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name,user) (rate(mysql_info_schema_user_statistics_rows_fetched_total{service_name=~\"$service_name\",user=~\"$username\"}[$interval]) or  irate(mysql_info_schema_user_statistics_rows_fetched_total{service_name=~\"$service_name\",user=~\"$username\"}[5m]) or  rate(mysql_info_schema_user_statistics_table_rows_read_total{service_name=~\"$service_name\",user=~\"$username\"}[$interval]) or irate(mysql_info_schema_user_statistics_table_rows_read_total{service_name=~\"$service_name\",user=~\"$username\"}[5m]))",
+              "expr": "avg by (service_name,user) (rate(mysql_info_schema_user_statistics_rows_fetched_total{service_name=~\"$service_name\",user=~\"$username\"}[$interval]) or rate(mysql_info_schema_user_statistics_rows_sent_total{service_name=~\"$service_name\",user=~\"$username\"}[$interval]) or  irate(mysql_info_schema_user_statistics_rows_fetched_total{service_name=~\"$service_name\",user=~\"$username\"}[5m]) or irate(mysql_info_schema_user_statistics_rows_sent_total{service_name=~\"$service_name\",user=~\"$username\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
-              "legendFormat": "{{ user }}",
+              "legendFormat": "Fetched {{ user }}",
               "metric": "",
               "refId": "A",
               "step": 300
+            },
+            {
+              "datasource": "Metrics",
+              "expr": "avg by (service_name,user) (rate(mysql_info_schema_user_statistics_table_rows_read_total{service_name=~\"$service_name\",user=~\"$username\"}[$interval]) or rate(mysql_info_schema_user_statistics_rows_read_total{service_name=~\"$service_name\",user=~\"$username\"}[$interval]) or irate(mysql_info_schema_user_statistics_table_rows_read_total{service_name=~\"$service_name\",user=~\"$username\"}[5m]) or irate(mysql_info_schema_user_statistics_rows_read_total{service_name=~\"$service_name\",user=~\"$username\"}[5m]))",
+              "legendFormat": "Read {{ user }}",
+              "refId": "B"
             }
           ],
           "thresholds": [],
