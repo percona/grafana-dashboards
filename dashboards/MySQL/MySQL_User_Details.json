@@ -1658,7 +1658,7 @@
     },
     {
       "datasource": "Metrics",
-      "description": "Numbers of rows fetched or read by clients' connections.",
+      "description": "Numbers of rows fetched by clients' connections.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1743,7 +1743,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "sum by (user) ((increase(mysql_info_schema_user_statistics_rows_fetched_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range]) + increase(mysql_info_schema_user_statistics_table_rows_read_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range])) or (increase(mysql_info_schema_user_statistics_rows_sent_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range]) + increase(mysql_info_schema_user_statistics_rows_read_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range])))",
+          "expr": "sum by (user) ((increase(mysql_info_schema_user_statistics_rows_fetched_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range])) or (increase(mysql_info_schema_user_statistics_rows_sent_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range])))",
           "format": "table",
           "instant": true,
           "interval": "$interval",
@@ -1751,7 +1751,129 @@
           "refId": "A"
         }
       ],
-      "title": "Rows Fetched/Read",
+      "title": "Rows Fetched",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "user",
+                "Value"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Value": "Rows",
+              "user": "User"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Numbers of rows read by clients' connections.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false,
+            "inspect": false
+          },
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "QAN - ${__field.labels.service_name} for ${__field.labels.user}",
+              "url": "/graph/d/pmm-qan/pmm-query-analytics?$__url_time_range&var-service_name=${__field.labels.service_name}&var-username=${__field.labels.user}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "basic"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "User"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 300
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
+      "id": 1063,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Fetched/Read Rows"
+          }
+        ]
+      },
+      "pluginVersion": "9.2.5",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "sum by (user) ((increase(mysql_info_schema_user_statistics_table_rows_read_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range])) or (increase(mysql_info_schema_user_statistics_rows_read_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range])))",
+          "format": "table",
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{user}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Rows Read",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -1834,7 +1956,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 30
+        "y": 37
       },
       "id": 1060,
       "options": {
@@ -1900,7 +2022,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 44
       },
       "id": 1013,
       "panels": [
@@ -2380,7 +2502,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 45
       },
       "id": 1015,
       "panels": [
@@ -2977,7 +3099,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 39
+        "y": 46
       },
       "id": 293,
       "panels": [
@@ -4292,7 +4414,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 47
       },
       "id": 291,
       "panels": [
