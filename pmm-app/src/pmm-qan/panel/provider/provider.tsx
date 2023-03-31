@@ -189,8 +189,8 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
       setToTimeMomentValue(timeRange.to.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
       setFromTimeMomentValue(timeRange.from.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
     } else {
-      setToTimeMomentValue(timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'));
-      setFromTimeMomentValue(timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'));
+      setToTimeMomentValue(timeRange.to.format('YYYY-MM-DDTHH:mm:ssZ'));
+      setFromTimeMomentValue(timeRange.from.format('YYYY-MM-DDTHH:mm:ssZ'));
     }
   }, [timeRange, from, to]);
 
