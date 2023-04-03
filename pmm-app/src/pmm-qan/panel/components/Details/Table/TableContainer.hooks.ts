@@ -14,11 +14,11 @@ export const useTables = (example, explains, databaseType): any[] => {
       if (databaseType === Databases.mysql && jsonExplain.value) {
         const parsedJSON = JSON.parse(jsonExplain.value);
 
-        const tablesResult = [
+        const realTableName = [
           get(parsedJSON, 'real_table_name'),
         ].filter(Boolean);
 
-        setTables(tablesResult);
+        setTables(realTableName);
       }
 
       if (databaseType === Databases.postgresql && example) {
