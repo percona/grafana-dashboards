@@ -29,4 +29,5 @@ export interface QueryExampleResponseItem {
   service_id: string;
   service_type: DatabasesType;
   tables?: string[];
+  database?: string;
 }
