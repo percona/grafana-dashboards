@@ -30,4 +30,5 @@ export interface QueryExampleResponseItem {
   service_type: DatabasesType;
   tables?: string[];
   database?: string;
+  query_id?: string;
 }
