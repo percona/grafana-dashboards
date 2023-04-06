@@ -1,4 +1,6 @@
-import React, { MutableRefObject, RefObject, useContext, useEffect, useRef, useState } from 'react';
+import React, {
+  MutableRefObject, RefObject, useContext, useEffect, useRef, useState,
+} from 'react';
 import Tippy from '@tippyjs/react';
 import { followCursor } from 'tippy.js';
 import { v4 as uuidv4 } from 'uuid';
@@ -212,14 +214,20 @@ export const Sparkline = ({
   const id = uuidv4();
 
   return (
-    <Tippy delay={[100, 100]} className={styles.tippy} content={tooltip} followCursor='horizontal'
-           plugins={[followCursor]} placement='bottom'>
+    <Tippy
+      delay={[100, 100]}
+      className={styles.tippy}
+      content={tooltip}
+      followCursor="horizontal"
+      plugins={[followCursor]}
+      placement="bottom"
+    >
       <canvas
         ref={sparklineCanvas as RefObject<any>}
         className={styles.graphWrapper}
         width={GRAPH_WIDTH}
         height={BAR_HEIGHT}
-        data-tip=''
+        data-tip=""
         data-for={`sparkline-tooltip-${id}`}
       />
     </Tippy>
