@@ -115,6 +115,7 @@ export const Sparkline = ({
         ? 0
         : appLoadPolygonChart[columnNumber][ykey];
 
+      // TODO: respect other time zones
       const tzFn = timeZone === 'utc' ? moment.utc : moment;
       const dateToShow = tzFn(appLoadPolygonChart[columnNumber][xkey])
         .format('YYYY-MM-DD HH:mm:ss Z');
