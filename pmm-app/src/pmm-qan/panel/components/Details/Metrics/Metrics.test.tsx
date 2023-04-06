@@ -2695,7 +2695,7 @@ describe('useFilters::', () => {
       </QueryAnalyticsProvider.Provider>,
     );
 
-    expect(wrapper.find(dataTestId('top-query')).length).toEqual(0);
+    expect(wrapper.find(dataTestId('top-query')).length).toEqual(1);
   });
 
   it('should not render top query when database is not postgres', () => {
