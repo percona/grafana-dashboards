@@ -2695,7 +2695,7 @@ describe('useFilters::', () => {
       </QueryAnalyticsProvider.Provider>,
     );
 
-    expect(wrapper.find(dataTestId('histogram-collapse-container')).length).toEqual(0);
+    expect(wrapper.find(dataTestId('top-query')).length).toEqual(0);
   });
 
   it('should not render top query when database is not postgres', () => {
@@ -2716,7 +2716,7 @@ describe('useFilters::', () => {
       </QueryAnalyticsProvider.Provider>,
     );
 
-    expect(wrapper.find(dataTestId('histogram-collapse-container')).length).toEqual(0);
+    expect(wrapper.find(dataTestId('top-query')).length).toEqual(0);
   });
 
   it('should not render Histogram when groupBy not equal "queryId" ', async () => {
