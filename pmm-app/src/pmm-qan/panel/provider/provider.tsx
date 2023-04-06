@@ -9,7 +9,7 @@ const initialState = {} as QueryAnalyticsContext;
 export const QueryAnalyticsProvider = React.createContext<QueryAnalyticsContext>(initialState);
 
 export const UrlParametersProvider = (props) => {
-  let {
+  const {
     timeRange,
     children,
     timeZone,
