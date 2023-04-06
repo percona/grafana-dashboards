@@ -42,9 +42,7 @@ export const Sparkline = ({
   let appLoadPolygonChart = [...data] || [];
 
   const {
-    panelState: {
-      timeZone,
-    },
+    panelState: { timeZone },
   } = useContext(QueryAnalyticsProvider);
 
   if (appLoadPolygonChart.length > 2) {

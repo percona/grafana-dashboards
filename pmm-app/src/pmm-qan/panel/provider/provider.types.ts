@@ -7,7 +7,7 @@ interface RawTime {
 }
 
 interface QueryAnalyticsPanelState {
-  timeZone?: string;
+  timeZone: string;
   to: string;
   from: string;
   columns: any[];
