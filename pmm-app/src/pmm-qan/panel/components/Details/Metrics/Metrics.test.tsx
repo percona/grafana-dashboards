@@ -2680,6 +2680,7 @@ describe('useFilters::', () => {
     const wrapper = mount(
       <QueryAnalyticsProvider.Provider
         value={{
+          // @ts-ignore
           panelState: { timeZone: 'utc' },
         }}
       >
@@ -2702,6 +2703,7 @@ describe('useFilters::', () => {
     const wrapper = mount(
       <QueryAnalyticsProvider.Provider
         value={{
+          // @ts-ignore
           panelState: { timeZone: 'utc' },
         }}
       >
@@ -2723,6 +2725,7 @@ describe('useFilters::', () => {
     const wrapper = mount(
       <QueryAnalyticsProvider.Provider
         value={{
+          // @ts-ignore
           panelState: { timeZone: 'utc' },
         }}
       >
