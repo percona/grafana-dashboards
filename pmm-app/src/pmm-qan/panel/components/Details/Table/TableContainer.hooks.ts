@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { get } from 'lodash';
 import { Databases } from 'shared/core';
+import { Parser } from 'node-sql-parser';
 
 export const useTables = (example, explains, databaseType): any[] => {
   const { jsonExplain, classicExplain } = explains;
@@ -11,11 +12,12 @@ export const useTables = (example, explains, databaseType): any[] => {
     const getTables = async () => {
       setLoading(true);
       setTables([]);
-      if (databaseType === Databases.mysql && jsonExplain.value) {
-        const parsedJSON = JSON.parse(jsonExplain.value);
 
+      if (databaseType === Databases.mysql && jsonExplain.value) {
+        const parser = new Parser();
+        const ast = parser.astify(example?.example);
         const tablesResult = [
-          get(parsedJSON, 'real_table_name'),
+          get(ast, 'from.0.table'),
         ].filter(Boolean);
 
         setTables(tablesResult);
