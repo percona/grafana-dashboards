@@ -20,7 +20,7 @@ export const useTables = (example, explains, databaseType): any[] => {
           get(ast, 'statement.0.from.source.name') || get(ast, 'statement.0.from.name'),
         ].filter(Boolean);
 
-        setTables(realTableName);
+        setTables(tablesResult);
       }
 
       if (databaseType === Databases.postgresql && example) {
