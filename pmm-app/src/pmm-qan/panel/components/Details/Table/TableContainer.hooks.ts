@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { get } from 'lodash';
 import { Databases } from 'shared/core';
-import { Parser } from 'lite-ui-sql-parser';
 
 export const useTables = (example, explains, databaseType): any[] => {
   const { jsonExplain, classicExplain } = explains;
@@ -13,11 +12,12 @@ export const useTables = (example, explains, databaseType): any[] => {
       setLoading(true);
       setTables([]);
       if (databaseType === Databases.mysql && example && jsonExplain) {
-        const parser = new Parser();
-        const ast = parser.astify(example?.example);
+        // eslint-disable-next-line global-require
+        const parser = require('sqlite-parser');
+        const ast = parser(example?.example);
 
         const tablesResult = [
-          get(ast, 'from.0.table'),
+          get(ast, 'statement.0.from.source.name') || get(ast, 'statement.0.from.name'),
         ].filter(Boolean);
 
         setTables(tablesResult);
