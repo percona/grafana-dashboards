@@ -55,8 +55,9 @@ const getComplexTimeValue = (date, nowFunc, edge) => {
 };
 
 export class ParseQueryParamDate {
-  static transform(date: string, edge?: TimeEdge) {
-    const nowFunc = getTimezone() === 'utc' ? moment.utc : moment;
+  static transform(date: string, edge?: TimeEdge, timeZone?: string) {
+    const timeZoneToUse = timeZone ?? getTimezone();
+    const nowFunc = timeZoneToUse === 'utc' ? moment.utc : moment;
     let parsedDate;
 
     if (date === undefined && edge === 'from') {
