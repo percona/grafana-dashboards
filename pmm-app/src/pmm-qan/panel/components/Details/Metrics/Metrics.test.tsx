@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import { dataTestId } from 'shared/core/test.utils';
 import { Databases } from 'shared/core';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
+import { QueryDimension, DetailsTabs, RawTime } from 'pmm-qan/panel/provider/provider.types';
 import Metrics from './Metrics';
 import { getChartDataFromHistogramItems } from './Metrics.utils';
 
@@ -2667,6 +2668,31 @@ const textMetrics = {
   top_queryid: '23728328',
 };
 
+const queryDimension: QueryDimension = 'client_host';
+
+const detailsTab: DetailsTabs = 'details';
+
+const rawTime: RawTime = {
+  from: '2020-12-01T09:48:00Z',
+  to: '2020-12-01T11:00:00Z',
+};
+
+const panelState = {
+  timeZone: 'utc',
+  to: '2020-12-01T11:00:00Z',
+  from: '2020-12-01T09:48:00Z',
+  columns: [],
+  labels: 'test',
+  pageNumber: 42,
+  pageSize: 42,
+  orderBy: 'client_host',
+  totals: false,
+  querySelected: true,
+  groupBy: queryDimension,
+  openDetailsTab: detailsTab,
+  rawTime,
+};
+
 describe('useFilters::', () => {
   beforeEach(() => {
     console.error = jest.fn();
@@ -2680,8 +2706,7 @@ describe('useFilters::', () => {
     const wrapper = mount(
       <QueryAnalyticsProvider.Provider
         value={{
-          // @ts-ignore
-          panelState: { timeZone: 'utc' },
+          panelState,
         }}
       >
         <Metrics
@@ -2703,8 +2728,7 @@ describe('useFilters::', () => {
     const wrapper = mount(
       <QueryAnalyticsProvider.Provider
         value={{
-          // @ts-ignore
-          panelState: { timeZone: 'utc' },
+          panelState,
         }}
       >
         <Metrics
@@ -2725,8 +2749,7 @@ describe('useFilters::', () => {
     const wrapper = mount(
       <QueryAnalyticsProvider.Provider
         value={{
-          // @ts-ignore
-          panelState: { timeZone: 'utc' },
+          panelState,
         }}
       >
         <Metrics
