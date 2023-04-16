@@ -66,15 +66,5 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     checkboxColumn: css`
       width: 20px;
     `,
-    tableClassicExplain: css`
-      table {
-        td {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          max-width: 500px;
-        }
-      }
-    `,
   };
 });
