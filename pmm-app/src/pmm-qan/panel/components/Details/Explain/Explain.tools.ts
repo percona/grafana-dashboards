@@ -28,7 +28,7 @@ export const processClassicExplain = (classic): ClassicExplainInterface => {
     .map((e) => (String(e) ? e.trim() : ''))
     .filter(Boolean)
     .reduce((acc, row, index) => {
-      acc[headerList[index].accessor] = row.replaceAll(',', ', ');
+      acc[headerList[index].accessor] = row;
 
       return acc;
     }, {}));
