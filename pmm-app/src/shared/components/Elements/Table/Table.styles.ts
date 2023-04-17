@@ -66,5 +66,14 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     checkboxColumn: css`
       width: 20px;
     `,
+    tableClassicExplain: css`
+    table {
+      td {
+        white-space: normal;
+        max-inline-size: 550px;
+        word-break: break-word;
+      }
+    }
+  `,
   };
 });

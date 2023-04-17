@@ -2,13 +2,17 @@ import React from 'react';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { Table } from 'shared/components/Elements/Table';
+import { useTheme } from '@grafana/ui';
 import { processClassicExplain } from '../../Explain.tools';
 import { Messages } from '../../../Details.messages';
 import { ReplacedQueryMessage } from '../ReplacedQueryMessage/ReplacedQueryMessage';
+import { getStyles } from '../../../../../../../shared/components/Elements/Table/Table.styles';
 
 export const ClassicExplain = ({ classicExplain }) => {
   const { value: explain } = classicExplain;
   const processedExplain = processClassicExplain(explain?.explain_result);
+  const theme = useTheme();
+  const styles = getStyles(theme);
 
   return (
     <Overlay isPending={classicExplain.loading}>
@@ -19,6 +23,7 @@ export const ClassicExplain = ({ classicExplain }) => {
         && processedExplain.rows.length ? (
           <div data-testid="classic-explain-value">
             <Table
+              className={styles.tableClassicExplain}
               columns={processedExplain.columns}
               data={processedExplain.rows}
               noData={null}
