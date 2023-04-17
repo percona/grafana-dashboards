@@ -69,9 +69,8 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     tableClassicExplain: css`
     table {
       td {
-        white-space: normal;
-        max-inline-size: 550px;
-        word-break: break-word;
+        min-inline-size: 4rem;
+        word-break: break-all;
       }
     }
   `,

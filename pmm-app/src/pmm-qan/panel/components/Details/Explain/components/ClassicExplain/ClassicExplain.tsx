@@ -3,10 +3,10 @@ import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { Table } from 'shared/components/Elements/Table';
 import { useTheme } from '@grafana/ui';
+import { getStyles } from 'shared/components/Elements/Table/Table.styles';
 import { processClassicExplain } from '../../Explain.tools';
 import { Messages } from '../../../Details.messages';
 import { ReplacedQueryMessage } from '../ReplacedQueryMessage/ReplacedQueryMessage';
-import { getStyles } from '../../../../../../../shared/components/Elements/Table/Table.styles';
 
 export const ClassicExplain = ({ classicExplain }) => {
   const { value: explain } = classicExplain;
