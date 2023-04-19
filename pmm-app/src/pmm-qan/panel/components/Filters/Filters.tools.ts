@@ -1,4 +1,4 @@
-import { getTemplateSrv } from '@grafana/runtime';
+import { CONST_VARIABLES } from './Filters';
 import { FILTERS_GROUPS } from './Filters.constants';
 
 export const getSelectedCheckboxes = (filters) => FILTERS_GROUPS.map((group) => filters[group.dataKey])
@@ -8,8 +8,7 @@ export const getSelectedCheckboxes = (filters) => FILTERS_GROUPS.map((group) => 
   .some((item) => item.checked);
 
 export const getServiceType = (value: string, name: string): string | undefined => {
-  const variables = getTemplateSrv().getVariables();
-  const variable = variables.find((v) => v.name === 'filter_data') as any;
+  const variable = CONST_VARIABLES.find((v) => v.name === 'filter_data') as any;
   let serviceType = '';
 
   // finds value in current query result and its service type

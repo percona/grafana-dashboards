@@ -8,6 +8,8 @@ import { Filter } from 'shared/components/Elements/Icons';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { Input, useTheme, Button } from '@grafana/ui';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
+import { getTemplateSrv } from '@grafana/runtime';
+import { TypedVariableModel } from '@grafana/data';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
 import { FILTERS_BODY_HEIGHT, FILTERS_GROUPS } from './Filters.constants';
 import { getSelectedCheckboxes } from './Filters.tools';
@@ -17,6 +19,10 @@ import { useInitialFilterValues } from './hooks/useInitialFilterValues';
 import { useFiltersContainerHeight } from './hooks/useFiltersContainerHeight';
 import { Messages } from './Filters.messages';
 import 'shared/style.less';
+
+const variables: TypedVariableModel[] = getTemplateSrv().getVariables();
+
+export const CONST_VARIABLES = variables;
 
 export const Filters: FC = () => {
   const theme = useTheme();
