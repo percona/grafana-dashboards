@@ -76,7 +76,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
           {dashboardURL && item.value && (
             <span className={styles.dashboardLink}>
               {/* <a href={dashboardURL} target="_blank" rel="noreferrer"> */}
-              {/* <Icon name="minus" /> */}
+              {/* <Icon name="graph-bar" /> */}
               {/* </a> */}
             </span>
           )}
