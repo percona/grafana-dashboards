@@ -29,9 +29,9 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     dashboardLink: css`
       grid-area: dashboardlink;
       a {
-        color: ${theme.colors.text} !important;
+        color: ${theme.colors.text};
         &:hover {
-          color: ${theme.colors.linkHover} !important;
+          color: ${theme.colors.linkHover};
         }
       }
     `,

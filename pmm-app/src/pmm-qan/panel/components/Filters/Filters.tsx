@@ -19,6 +19,7 @@ import { useInitialFilterValues } from './hooks/useInitialFilterValues';
 import { useFiltersContainerHeight } from './hooks/useFiltersContainerHeight';
 import { Messages } from './Filters.messages';
 import 'shared/style.less';
+// import { filters } from './Filters.fake';
 
 const variables: TypedVariableModel[] = getTemplateSrv().getVariables();
 
