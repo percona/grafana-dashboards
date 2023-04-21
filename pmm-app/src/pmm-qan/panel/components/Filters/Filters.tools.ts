@@ -9,18 +9,21 @@ export const getSelectedCheckboxes = (filters) => FILTERS_GROUPS.map((group) => 
 
 export const getServiceType = (value: string, name: string): string | undefined => {
   const variable = CONST_VARIABLES.find((v) => v.name === 'filter_data') as any;
+  const namePattern = new RegExp(`${name}="(.*?)"`);
+  const typePattern = new RegExp('service_type="(.*?)"');
   let serviceType = '';
 
-  // finds value in current query result and its service type
-  variable?.options.forEach((opt) => {
-    const matches = opt.value.match(`${name}="(.*?)"`);
-    const currentValue = matches?.length > 1 ? matches[1] : '';
+  for (let i = 0; i < variable.options.length; i += 1) {
+    const opt = variable.options[i];
+    const matches = opt.value.match(namePattern);
+    const currentValue = matches?.[1] || '';
 
     if (currentValue && currentValue === value) {
       // eslint-disable-next-line prefer-destructuring
-      serviceType = opt.value.match('service_type="(.*?)"')[1];
+      serviceType = opt.value.match(typePattern)[1];
+      break;
     }
-  });
+  }
 
   return serviceType;
 };

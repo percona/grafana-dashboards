@@ -1,7 +1,7 @@
 import React, { FC, useMemo, useState } from 'react';
 import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
 import { humanize } from 'shared/components/helpers/Humanization';
-import { useTheme } from '@grafana/ui';
+import { useTheme, Icon } from '@grafana/ui';
 import { getStyles } from './CheckboxGroup.styles';
 import { TOP_LIMIT } from './CheckboxGroup.constants';
 import { CheckboxGroupProps } from './CheckboxGroup.types';
@@ -70,14 +70,15 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
               // TODO: using '--' because final form think that it is a nested fields
               name={`${group};${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
               label={item.value || 'n/a'}
+              required={false}
               disabled={!valueExists}
             />
           </span>
           {dashboardURL && item.value && (
             <span className={styles.dashboardLink}>
-              {/* <a href={dashboardURL} target="_blank" rel="noreferrer"> */}
-              {/* <Icon name="graph-bar" /> */}
-              {/* </a> */}
+              <a href={dashboardURL} target="_blank" rel="noreferrer">
+                <Icon name="graph-bar" />
+              </a>
             </span>
           )}
           <span className={styles.percentage}>
