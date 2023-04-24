@@ -1,11 +1,11 @@
-import React, {FC, useRef} from 'react';
-import {CheckboxField} from 'shared/components/Form/Checkbox/Checkbox';
-import {humanize} from 'shared/components/helpers/Humanization';
-import {Icon, useTheme} from '@grafana/ui';
-import {getStyles} from './CheckboxGroup.styles';
-import {CheckboxGroupProps} from './CheckboxGroup.types';
-import {RawTimeRange} from "@grafana/data";
-import {ViewportList} from 'react-viewport-list';
+import React, { FC, useRef } from 'react';
+import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
+import { humanize } from 'shared/components/helpers/Humanization';
+import { Icon, useTheme } from '@grafana/ui';
+import { ViewportList } from 'react-viewport-list';
+import { RawTimeRange } from '@grafana/data';
+import { getStyles } from './CheckboxGroup.styles';
+import { CheckboxGroupProps } from './CheckboxGroup.types';
 
 export const CheckboxGroup: FC<CheckboxGroupProps> = (
   {
@@ -16,7 +16,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = (
     filter: searchFilterBy,
     getDashboardURL,
     rawTime,
-  }
+  },
 ) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -60,16 +60,21 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = (
           className={styles.showModeSwitcher}
           data-testid="show-top-switcher"
         >
-            {`${filteredData.filter(searchFilter).length}`}
-          </span>
+          {`${filteredData.filter(searchFilter).length}`}
+        </span>
       </p>
-      <div className={styles.divider}/>
+      <div className={styles.divider} />
       <div className={styles.scrollContainer} ref={ref}>
         <ViewportList ref={listRef} viewportRef={ref} items={itemsList}>
           {(item) => (
-            <FilterCheckbox key={item.value} hidden={false} item={item} group={group}
-                            getDashboardURL={getDashboardURL}
-                            rawTime={rawTime}/>
+            <FilterCheckbox
+              key={item.value}
+              hidden={false}
+              item={item}
+              group={group}
+              getDashboardURL={getDashboardURL}
+              rawTime={rawTime}
+            />
           )}
         </ViewportList>
       </div>
@@ -92,7 +97,7 @@ export const FilterCheckbox: FC<FilterCheckboxProps> = (
     item,
     group,
     rawTime,
-  }
+  },
 ) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -108,24 +113,24 @@ export const FilterCheckbox: FC<FilterCheckboxProps> = (
       className={styles.label}
       data-testid={`filter-checkbox-${item.value}`}
     >
-          <span className={styles.filterName}>
-            <CheckboxField
+      <span className={styles.filterName}>
+        <CheckboxField
               // TODO: using '--' because final form think that it is a nested fields
-              name={`${group};${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
-              label={item.value || 'n/a'}
-              disabled={!valueExists}
-            />
-          </span>
+          name={`${group};${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
+          label={item.value || 'n/a'}
+          disabled={!valueExists}
+        />
+      </span>
       {dashboardURL && item.value && (
         <span className={styles.dashboardLink}>
-              <a href={dashboardURL} target="_blank" rel="noreferrer">
-                <Icon name="graph-bar"/>
-              </a>
-            </span>
+          <a href={dashboardURL} target="_blank" rel="noreferrer">
+            <Icon name="graph-bar" />
+          </a>
+        </span>
       )}
       <span className={styles.percentage}>
-            <span>{valueExists ? humanize.transform(item.main_metric_percent, 'percent') : null}</span>
-          </span>
+        <span>{valueExists ? humanize.transform(item.main_metric_percent, 'percent') : null}</span>
+      </span>
     </div>
   );
-}
+};
