@@ -23,7 +23,7 @@ export const ClassicExplain = ({ classicExplain }) => {
         && processedExplain.rows.length ? (
           <div data-testid="classic-explain-value">
             <Table
-              className={styles.tableClassicExplain}
+              className={styles.tableCellWrap}
               columns={processedExplain.columns}
               data={processedExplain.rows}
               noData={null}

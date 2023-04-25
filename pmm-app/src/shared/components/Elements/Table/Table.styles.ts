@@ -66,10 +66,12 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     checkboxColumn: css`
       width: 20px;
     `,
-    tableClassicExplain: css`
+    tableCellWrap: css`
+    /* This wraps the long line inside the cell */
     table {
       td {
-        min-inline-size: 4rem;
+        /* This keeps word 'NULL' from line braking */
+        min-width: 4rem;
         word-break: break-all;
       }
     }
