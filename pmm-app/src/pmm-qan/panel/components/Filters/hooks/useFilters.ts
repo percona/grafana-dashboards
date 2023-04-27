@@ -34,7 +34,10 @@ export const useFilters = (): [any, boolean, any, boolean] => {
           }, {});
 
         Object.keys(filteredResult).forEach((commentKey) => FILTERS_GROUPS.push({
-          name: `Comment ${commentKey.substring(0, COMMENT_NAME_LENGTH)}`,
+          name: commentKey
+            .replace(/^\w/, (c) => c.toUpperCase())
+            .replace(/_/g, ' ')
+            .substring(0, COMMENT_NAME_LENGTH),
           dataKey: commentKey,
         }));
 
