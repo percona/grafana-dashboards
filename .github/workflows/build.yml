@@ -7,22 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: percona-platform/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run with Node 16
-        uses: percona-platform/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "16"
-
-      - name: Get Yarn cache directory
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-
-      - name: Use Yarn cache
-        uses: percona-platform/cache@v2
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-16-${{ hashFiles('**/yarn.lock') }}
+          cache: "yarn"
 
       - name: Install deps
         run: make prepare_release
@@ -31,7 +22,7 @@ jobs:
         run: make build_package
 
       - name: Upload the build artefacts
-        uses: percona-platform/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-dist
           path: pmm-app/dist/
@@ -41,17 +32,18 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: percona-platform/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup NodeJS
-        uses: percona-platform/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "16"
+          cache: "yarn"
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_GRAFANA_DASHBOARDS_TOKEN }}
 
       - name: Download built packages
-        uses: percona-platform/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: build-dist
           path: pmm-app/dist/
@@ -70,15 +62,14 @@ jobs:
       SLACK_WEBHOOK: ${{ secrets.SLACK_TOKEN }}
       SLACK_CHANNEL: "pmm-ci"
       SLACK_USERNAME: "PR pipelines bot"
-      SLACK_ICON_EMOJI: ":chestnut:"
+      SLACK_ICON_EMOJI: ":octocat:"
       SLACK_COLOR: "#00FF00"
       SLACK_TITLE: "Finished grafana-dashboards workflow"
       SLACK_MESSAGE: "${{ github.event.inputs.repo || github.repository }}:${{ github.event.inputs.branch || github.head_ref }}"
       SLACK_FOOTER: "Please check the Actions URL ^"
 
     steps:
-      - uses: percona-platform/checkout@v2
-      - uses: percona-platform/setup-node@v2
+      - uses: actions/checkout@v3
       - name: Slack Notification
         uses: percona-platform/action-slack-notify@v2
 
@@ -91,13 +82,13 @@ jobs:
       SLACK_WEBHOOK: ${{ secrets.SLACK_TOKEN }}
       SLACK_CHANNEL: "pmm-ci"
       SLACK_USERNAME: "PR pipelines bot"
-      SLACK_ICON_EMOJI: ":chestnut:"
+      SLACK_ICON_EMOJI: ":octocat:"
       SLACK_COLOR: "#FF0000"
       SLACK_TITLE: "Finished grafana-dashboards workflow"
       SLACK_MESSAGE: "Workflow failed: ${{ github.event.inputs.repo || github.repository }}:${{ github.event.inputs.branch || github.head_ref }}"
       SLACK_FOOTER: "Please check the Actions URL ^"
 
     steps:
-      - uses: percona-platform/checkout@v2
+      - uses: actions/checkout@v3
       - name: Slack Notification
         uses: percona-platform/action-slack-notify@v2
