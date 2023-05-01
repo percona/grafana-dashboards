@@ -11,7 +11,7 @@ export const useFilters = (): [any, boolean, any, boolean] => {
   const [filters, setFilters] = useState({});
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [filtersGroups, setFiltersGroups] = useState({});
+  const [filtersGroups, setFiltersGroups] = useState(FILTERS_GROUPS);
 
   const {
     panelState: {
