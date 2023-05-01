@@ -26,13 +26,13 @@ export const Filters: FC = () => {
     contextActions,
     panelState: { loadingDetails, rawTime },
   } = React.useContext(QueryAnalyticsProvider);
-  const [filters, loading, FILTERS_GROUPS] = useFilters();
+  const [filters, loading, filtersGroups] = useFilters();
   const initialValues = useInitialFilterValues();
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
   const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);
   const [showAll, showSetAll] = useState(true);
   const [filter, setFilter] = useState('');
-  const selectedCheckboxes = getSelectedCheckboxes(filters, FILTERS_GROUPS);
+  const selectedCheckboxes = getSelectedCheckboxes(filters, filtersGroups);
 
   useEffect(() => {
     if (!selectedCheckboxes) {
@@ -118,7 +118,7 @@ export const Filters: FC = () => {
             <Overlay isPending={loading}>
               <Scrollbar className={styles.getFiltersWrapper(height)}>
                 <FilterInput filter={filter} />
-                {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(
+                {filtersGroups.filter((group) => filters[group.dataKey]).map(
                   ({ name, dataKey, getDashboardURL }) => (
                     <CheckboxGroup
                       key={name}

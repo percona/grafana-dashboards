@@ -11,6 +11,7 @@ export const useFilters = (): [any, boolean, any, boolean] => {
   const [filters, setFilters] = useState({});
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [filtersGroups, setFiltersGroups] = useState({});
 
   const {
     panelState: {
@@ -24,24 +25,23 @@ export const useFilters = (): [any, boolean, any, boolean] => {
       try {
         const result = await FiltersService.getQueryOverviewFiltersList(labels, from, to, columns[0]);
 
-        const filteredResult = Object.keys(result)
+        const filtersGroups = Object.keys(result)
           .filter((key) => !FILTERS_GROUPS.some((group) => group.dataKey === key))
           .filter((key) => !HIDDEN_FILTER_LABELS.includes(key))
-          .reduce((obj, key) => {
-            obj[key] = result[key];
+          .reduce((groups, key) => {
+            groups.push({
+              name: key
+                .replace(/^\w/, (c) => c.toUpperCase())
+                .replace(/_/g, ' ')
+                .substring(0, COMMENT_NAME_LENGTH),
+              dataKey: key,
+            });
 
-            return obj;
-          }, {});
-
-        Object.keys(filteredResult).forEach((commentKey) => FILTERS_GROUPS.push({
-          name: commentKey
-            .replace(/^\w/, (c) => c.toUpperCase())
-            .replace(/_/g, ' ')
-            .substring(0, COMMENT_NAME_LENGTH),
-          dataKey: commentKey,
-        }));
+            return groups;
+          }, [...FILTERS_GROUPS]);
 
         setFilters(result);
+        setFiltersGroups(filtersGroups);
       } catch (e) {
         setError(true);
         // TODO: add error handling
@@ -51,5 +51,5 @@ export const useFilters = (): [any, boolean, any, boolean] => {
     })();
   }, [labels, from, to, columns]);
 
-  return [filters, loading, FILTERS_GROUPS, error];
+  return [filters, loading, filtersGroups, error];
 };

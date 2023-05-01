@@ -1,7 +1,7 @@
 import { getTemplateSrv } from '@grafana/runtime';
 
-export const getSelectedCheckboxes = (filters, FILTERS_GROUPS) => {
-  const selectedFilters = FILTERS_GROUPS.map((group) => filters[group.dataKey])
+export const getSelectedCheckboxes = (filters, filtersGroups) => {
+  const selectedFilters = filtersGroups.map((group) => filters[group.dataKey])
     .filter(Boolean)
     .map((item) => item.name)
     .reduce((acc, item) => acc.concat(item), [])
