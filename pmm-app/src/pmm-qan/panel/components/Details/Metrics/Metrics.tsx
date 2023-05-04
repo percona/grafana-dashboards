@@ -82,6 +82,7 @@ const Metrics: FC<MetricsProps> = ({
   const perQueryStatsColumn = (item) => {
     const latencyChartProps = {
       data: item.metric,
+      measurement: item.pipeTypes.perQueryStatsPipe,
     };
 
     return (
