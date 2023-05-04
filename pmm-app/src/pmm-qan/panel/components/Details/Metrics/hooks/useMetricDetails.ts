@@ -5,7 +5,7 @@ import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
 import MetricsService from '../Metrics.service';
 import { TextMetrics } from '../Metrics.types';
 
-export const useMetricsDetails = (): [any[], TextMetrics, boolean] => {
+export const useMetricsDetails = (): [any[], TextMetrics, boolean, string[]] => {
   const {
     contextActions,
     panelState: {
@@ -15,6 +15,7 @@ export const useMetricsDetails = (): [any[], TextMetrics, boolean] => {
   const [metrics, setMetrics] = useState<any[]>([]);
   const [textMetrics, setTextMetrics] = useState<TextMetrics>({});
   const [loading, setLoading] = useState<boolean>(false);
+  const [metadata, setMetadata] = useState<string[]>([]);
 
   useEffect(() => {
     const getMetrics = async () => {
@@ -31,6 +32,7 @@ export const useMetricsDetails = (): [any[], TextMetrics, boolean] => {
 
         setMetrics(processMetrics(METRIC_CATALOGUE, result));
         setTextMetrics(result.text_metrics);
+        setMetadata(result.metadata);
         contextActions.setFingerprint(groupBy === 'queryid' ? result.fingerprint : queryId);
         setLoading(false);
       } catch (e) {
@@ -43,5 +45,5 @@ export const useMetricsDetails = (): [any[], TextMetrics, boolean] => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryId, groupBy, from, to, labels, totals]);
 
-  return [metrics, textMetrics, loading];
+  return [metrics, textMetrics, loading, metadata];
 };
