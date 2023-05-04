@@ -68,8 +68,11 @@ export const fetchExplains = async (
   databaseType: DatabasesType,
   placeholders?: string[],
 ): Promise<FetchExplainsResult> => {
+  const hasPlaceholders = placeholders?.length || !example.placeholders_count;
+  const hasExample = !!example?.example;
+
   try {
-    if (databaseType === Databases.mysql && (placeholders || !example.placeholders_count)) {
+    if (databaseType === Databases.mysql && (hasPlaceholders || hasExample)) {
       const payload = {
         example,
         queryId,
