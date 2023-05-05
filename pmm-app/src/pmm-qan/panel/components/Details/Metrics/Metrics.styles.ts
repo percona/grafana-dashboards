@@ -37,7 +37,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
     `,
     metricData: css`
       white-space: pre;
-      color: ${parameters.mainTextColor} !important;
+      color: ${parameters.mainTextColor};
     `,
     sparkline: css`
       margin-left: 5px;
