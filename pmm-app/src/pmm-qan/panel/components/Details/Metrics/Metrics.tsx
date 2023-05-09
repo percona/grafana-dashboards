@@ -14,6 +14,7 @@ import { getStyles } from './Metrics.styles';
 import { useHistogram } from './hooks/useHistogram';
 import { TopQuery } from '../TopQuery/TopQuery';
 import { BarChart } from '../../BarChart/BarChart';
+import { OVERLAY_LOADER_SIZE } from '../Details.constants';
 
 const Metrics: FC<MetricsProps> = ({
   databaseType, totals, metrics, textMetrics = {}, loading, groupBy,
@@ -124,7 +125,7 @@ const Metrics: FC<MetricsProps> = ({
   }, [histogramRef.current]);
 
   return (
-    <Overlay isPending={loading || histogramLoading} className="metrics-wrapper" size={35}>
+    <Overlay isPending={loading || histogramLoading} className="metrics-wrapper" size={OVERLAY_LOADER_SIZE}>
       {databaseType !== Databases.mongodb ? (
         <Collapse
           collapsible
