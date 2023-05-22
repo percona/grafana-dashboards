@@ -21,7 +21,10 @@ const ExplainPlaceholders: React.FC<ExplainPlaceholdersProps> = ({
   const [jsonExplain, setJsonExplain] = useState(actionResult);
   const [visualExplain, setVisualExplain] = useState(actionResult);
   const [initialized, setInitialized] = useState(false);
-  const example = useMemo(() => examples.find((e) => e.example || e.explain_fingerprint), [examples]);
+  const example = useMemo(
+    () => examples.find((e) => e.example || e.explain_fingerprint || e.query_id),
+    [examples],
+  );
 
   useEffect(() => {
     setInitialized(false);
@@ -29,7 +32,7 @@ const ExplainPlaceholders: React.FC<ExplainPlaceholdersProps> = ({
     setJsonExplain(actionResult);
     setVisualExplain(actionResult);
 
-    if (example && !example.placeholders_count) {
+    if (example && (!example.placeholders_count || !!example.example)) {
       setInitialized(true);
       handlePlaceholderSubmit({ placeholders: [] });
     } else if (!example) {
