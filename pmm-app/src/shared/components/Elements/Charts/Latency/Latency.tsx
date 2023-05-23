@@ -8,9 +8,8 @@ import { getStyles } from './Latency.styles';
 
 export const Latency = (props) => {
   const styles = getStyles();
-  let measurement;
   const width = 200;
-  const { className, data = [] } = props;
+  const { className, data = [], measurement } = props;
   const [tooltip, setTooltip] = useState('');
   const graphContainer = useRef(null);
 
