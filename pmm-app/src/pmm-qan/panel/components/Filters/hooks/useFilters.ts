@@ -29,13 +29,15 @@ export const useFilters = (): [any, boolean, any, boolean] => {
           .filter((key) => !FILTERS_GROUPS.some((group) => group.dataKey === key))
           .filter((key) => !HIDDEN_FILTER_LABELS.includes(key))
           .reduce((groups, key) => {
-            groups.push({
-              name: key
-                .replace(/^\w/, (c) => c.toUpperCase())
-                .replace(/_/g, ' ')
-                .substring(0, COMMENT_NAME_LENGTH),
-              dataKey: key,
-            });
+            if (result[key].name) {
+              groups.push({
+                name: key
+                  .replace(/^\w/, (c) => c.toUpperCase())
+                  .replace(/_/g, ' ')
+                  .substring(0, COMMENT_NAME_LENGTH),
+                dataKey: key,
+              });
+            }
 
             return groups;
           }, [...FILTERS_GROUPS]);
