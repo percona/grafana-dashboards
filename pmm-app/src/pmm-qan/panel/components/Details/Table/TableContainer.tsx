@@ -80,7 +80,9 @@ const TableCreateContainer: FC<TableContainerProps> = ({
     </>
   ) : (
     <div>
-      <pre>{Messages.cantExtractTables}</pre>
+      {explains.classicExplain.error
+        ? <pre data-testid="classic-explain-error">{explains.classicExplain.error}</pre>
+        : <pre>{Messages.cantExtractTables}</pre>}
     </div>
   );
 };
