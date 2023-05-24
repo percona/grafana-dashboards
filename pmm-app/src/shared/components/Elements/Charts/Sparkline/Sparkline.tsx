@@ -1,5 +1,5 @@
 import React, {
-  MutableRefObject, RefObject, useEffect, useRef, useState,
+  MutableRefObject, RefObject, useContext, useEffect, useRef, useState,
 } from 'react';
 import Tippy from '@tippyjs/react';
 import { followCursor } from 'tippy.js';
@@ -9,9 +9,14 @@ import moment from 'moment';
 import { humanize } from '../../../helpers/Humanization';
 import { PolygonChartInterface } from './Sparkline.types';
 import {
-  findXRange, findYRange, getAdditionalPoint, getMetricSparklineKey, isMetricExists,
+  findXRange,
+  findYRange,
+  getAdditionalPoint,
+  getMetricSparklineKey,
+  isMetricExists,
 } from './Sparkline.tools';
 import { styles } from './Sparkline.styles';
+import { QueryAnalyticsProvider } from '../../../../../pmm-qan/panel/provider/provider';
 
 const updateGraphs = (columnNumber) => {
   const event = new CustomEvent('sync-graphs', { detail: columnNumber });
@@ -35,6 +40,10 @@ export const Sparkline = ({
   const xkey = 'timestamp';
   const ykey = getMetricSparklineKey(metricName);
   let appLoadPolygonChart = [...data] || [];
+
+  const {
+    panelState: { timeZone },
+  } = useContext(QueryAnalyticsProvider);
 
   if (appLoadPolygonChart.length > 2) {
     appLoadPolygonChart.push({
@@ -72,7 +81,7 @@ export const Sparkline = ({
     .range([0, yAxisLength]);
 
   const drawData = appLoadPolygonChart.map((item) => ({
-    x: scaleX(moment.utc(item.timestamp)),
+    x: scaleX(moment(item.timestamp)),
     y: scaleY(isMetricExists(item[ykey]) ? 0 : Math.max(maxY / 15, item[ykey])),
   }));
 
@@ -105,7 +114,11 @@ export const Sparkline = ({
       const value = isMetricExists(appLoadPolygonChart[columnNumber][ykey])
         ? 0
         : appLoadPolygonChart[columnNumber][ykey];
-      const dateToShow = moment(appLoadPolygonChart[columnNumber][xkey]).format('YYYY-MM-DD HH:mm:ss');
+
+      // TODO: respect other time zones
+      const tzFn = timeZone === 'utc' ? moment.utc : moment;
+      const dateToShow = tzFn(appLoadPolygonChart[columnNumber][xkey])
+        .format('YYYY-MM-DD HH:mm:ss Z');
 
       // eslint-disable-next-line max-len
       const isTimeBased = metricName.endsWith('_time') || metricName.endsWith('_wait') || metricName === 'load';
@@ -199,7 +212,14 @@ export const Sparkline = ({
   const id = uuidv4();
 
   return (
-    <Tippy delay={[100, 100]} className={styles.tippy} content={tooltip} followCursor="horizontal" plugins={[followCursor]} placement="bottom">
+    <Tippy
+      delay={[100, 100]}
+      className={styles.tippy}
+      content={tooltip}
+      followCursor="horizontal"
+      plugins={[followCursor]}
+      placement="bottom"
+    >
       <canvas
         ref={sparklineCanvas as RefObject<any>}
         className={styles.graphWrapper}

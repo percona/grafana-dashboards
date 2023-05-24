@@ -2,6 +2,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { dataTestId } from 'shared/core/test.utils';
 import { Databases } from 'shared/core';
+import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
+import { QueryDimension, DetailsTabs, RawTime } from 'pmm-qan/panel/provider/provider.types';
 import Metrics from './Metrics';
 import { getChartDataFromHistogramItems } from './Metrics.utils';
 
@@ -2666,6 +2668,31 @@ const textMetrics = {
   top_queryid: '23728328',
 };
 
+const queryDimension: QueryDimension = 'client_host';
+
+const detailsTab: DetailsTabs = 'details';
+
+const rawTime: RawTime = {
+  from: '2020-12-01T09:48:00Z',
+  to: '2020-12-01T11:00:00Z',
+};
+
+const panelState = {
+  timeZone: 'utc',
+  to: '2020-12-01T11:00:00Z',
+  from: '2020-12-01T09:48:00Z',
+  columns: [],
+  labels: 'test',
+  pageNumber: 42,
+  pageSize: 42,
+  orderBy: 'client_host',
+  totals: false,
+  querySelected: true,
+  groupBy: queryDimension,
+  openDetailsTab: detailsTab,
+  rawTime,
+};
+
 describe('useFilters::', () => {
   beforeEach(() => {
     console.error = jest.fn();
@@ -2677,14 +2704,21 @@ describe('useFilters::', () => {
 
   it('should render top query when database is postgres and top query exists', () => {
     const wrapper = mount(
-      <Metrics
-        databaseType={Databases.postgresql}
-        totals={false}
-        groupBy="queryid"
-        metrics={metrics}
-        textMetrics={textMetrics}
-        loading={false}
-      />,
+      <QueryAnalyticsProvider.Provider
+        value={{
+          panelState,
+        }}
+      >
+        <Metrics
+          databaseType={Databases.postgresql}
+          totals={false}
+          groupBy="queryid"
+          metrics={metrics}
+          textMetrics={textMetrics}
+          loading={false}
+        />
+        ,
+      </QueryAnalyticsProvider.Provider>,
     );
 
     expect(wrapper.find(dataTestId('top-query')).length).toEqual(1);
@@ -2692,27 +2726,42 @@ describe('useFilters::', () => {
 
   it('should not render top query when database is not postgres', () => {
     const wrapper = mount(
-      <Metrics
-        databaseType={Databases.mysql}
-        groupBy="queryid"
-        totals
-        metrics={metrics}
-        loading={false}
-      />,
+      <QueryAnalyticsProvider.Provider
+        value={{
+          panelState,
+        }}
+      >
+        <Metrics
+          databaseType={Databases.mysql}
+          groupBy="queryid"
+          totals
+          metrics={metrics}
+          loading={false}
+        />
+        ,
+      </QueryAnalyticsProvider.Provider>,
     );
 
     expect(wrapper.find(dataTestId('top-query')).length).toEqual(0);
   });
+
   it('should not render Histogram when groupBy not equal "queryId" ', async () => {
     const wrapper = mount(
-      <Metrics
-        databaseType={Databases.postgresql}
-        groupBy="username"
-        totals={false}
-        metrics={metrics}
-        textMetrics={textMetrics}
-        loading={false}
-      />,
+      <QueryAnalyticsProvider.Provider
+        value={{
+          panelState,
+        }}
+      >
+        <Metrics
+          databaseType={Databases.postgresql}
+          groupBy="username"
+          totals={false}
+          metrics={metrics}
+          textMetrics={textMetrics}
+          loading={false}
+        />
+        ,
+      </QueryAnalyticsProvider.Provider>,
     );
 
     expect(wrapper.find(dataTestId('histogram-collapse-container')).length).toEqual(0);

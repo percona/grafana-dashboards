@@ -2,7 +2,7 @@ Welcome to the repository hosting grafana dashboards for PMM!
 
 We encourage contributions and are always looking for new members that are as dedicated to serving the community as we are.
 
-You can also reach us on our [Forums](https://forums.percona.com) and [Discord](http://per.co.na/discord).
+You can also reach us on our [Forums](https://forums.percona.com).
 
 ## Prerequisites
 
@@ -124,4 +124,4 @@ npm run dev
 
 Once your pull request is merged, you are an official Percona Community Contributor. Welcome to the community!
 
-We're looking forward to your contributions and hope to hear from you soon on our [Forums](https://forums.percona.com) and [Discord](http://per.co.na/discord).
+We're looking forward to your contributions and hope to hear from you soon on our [Forums](https://forums.percona.com).
