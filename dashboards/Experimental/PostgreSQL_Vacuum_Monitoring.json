@@ -231,7 +231,7 @@
         {
           "datasource": "Metrics",
           "exemplar": false,
-          "expr": "topk(5,sum by (service_name, datname, relname) (pg_stat_user_tables_n_live_tup{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}) > 0 and sum by (service_name, datname, relname) (pg_stat_user_tables_n_dead_tup{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}) > 0 and sum by (service_name, datname, relname) ((pg_stat_user_tables_n_dead_tup{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}*100)/pg_stat_user_tables_n_live_tup{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}))",
+          "expr": "topk(5,sum by (service_name, datname, relname) (pg_stat_user_tables_n_dead_tup{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}) > 0 /(sum by (service_name, datname, relname) (pg_stat_user_tables_n_live_tup{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"}) + sum by (service_name, datname, relname) (pg_stat_user_tables_n_dead_tup{service_name=~\"$service_name\",datname=~\"$database\",relname=~\"$tablename\"})) * 100)",
           "format": "time_series",
           "hide": false,
           "instant": true,
