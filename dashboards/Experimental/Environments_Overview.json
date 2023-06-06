@@ -3,10 +3,7 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
-        },
+        "datasource": "-- Grafana --",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -101,15 +98,7 @@
       "style": {},
       "targets": [
         {
-          "datasource": {
-            "0": "M",
-            "1": "e",
-            "2": "t",
-            "3": "r",
-            "4": "i",
-            "5": "c",
-            "6": "s"
-          },
+          "datasource": "Metrics",
           "refId": "A"
         }
       ],
@@ -214,15 +203,7 @@
       ],
       "targets": [
         {
-          "datasource": {
-            "0": "M",
-            "1": "e",
-            "2": "t",
-            "3": "r",
-            "4": "i",
-            "5": "c",
-            "6": "s"
-          },
+          "datasource": "Metrics",
           "refId": "A"
         }
       ],
@@ -242,15 +223,7 @@
       "panels": [],
       "targets": [
         {
-          "datasource": {
-            "0": "M",
-            "1": "e",
-            "2": "t",
-            "3": "r",
-            "4": "i",
-            "5": "c",
-            "6": "s"
-          },
+          "datasource": "Metrics",
           "refId": "A"
         }
       ],
@@ -846,15 +819,7 @@
       "links": [],
       "targets": [
         {
-          "datasource": {
-            "0": "M",
-            "1": "e",
-            "2": "t",
-            "3": "r",
-            "4": "i",
-            "5": "c",
-            "6": "s"
-          },
+          "datasource: "Metrics",
           "expr": "",
           "format": "time_series",
           "intervalFactor": 2,
@@ -923,15 +888,7 @@
       "steppedLine": true,
       "targets": [
         {
-          "datasource": {
-            "0": "M",
-            "1": "e",
-            "2": "t",
-            "3": "r",
-            "4": "i",
-            "5": "c",
-            "6": "s"
-          },
+          "datasource": "Metrics",
           "expr": "avg by (environment) (((clamp_max(avg by (node_name,environment) (sum by (node_name,cpu,environment) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100 or\nsum by (node_name,environment) (avg_over_time(node_cpu_average{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"total\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"total\"}[5m]))) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|external\",job=~\".*_hr-.*|^external-exporter.*\",environment!~\"\"})) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\",environment!~\"\"} > 0))",
           "interval": "$interval",
           "legendFormat": "{{environment}}",
@@ -1036,19 +993,7 @@
       "steppedLine": true,
       "targets": [
         {
-          "datasource": {
-            "0": "-",
-            "1": "-",
-            "2": " ",
-            "3": "M",
-            "4": "i",
-            "5": "x",
-            "6": "e",
-            "7": "d",
-            "8": " ",
-            "9": "-",
-            "10": "-"
-          },
+          "datasource": "-- Mixed --",
           "expr": "sum by(environment)(max_over_time(mysql_global_status_threads_connected{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[$interval]) or \nlabel_replace(mysql_global_status_threads_connected{node_name=~\"$node_name\",node_type=\"remote\",environment=~\"$environment\",environment!~\"\"},\"node_name\",\"pmm-server\",\"\",\"\") or\nmax_over_time(mongodb_connections{node_name=~\"$node_name\",state=\"current\",environment=~\"$environment\",environment!~\"\"}[$interval]) or\nsum by (node_name,environment) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[$interval])))",
           "interval": "$interval",
           "legendFormat": "{{environment}}",
@@ -1149,15 +1094,7 @@
       "steppedLine": true,
       "targets": [
         {
-          "datasource": {
-            "0": "M",
-            "1": "e",
-            "2": "t",
-            "3": "r",
-            "4": "i",
-            "5": "c",
-            "6": "s"
-          },
+          "datasource": "Metrics",
           "expr": "100 - avg by (environment) ((((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} or\n(rdsosmetrics_memory_free{node_name=~\"$node_name\"} + rdsosmetrics_memory_buffers{node_name=~\"$node_name\"} + rdsosmetrics_memory_cached{node_name=~\"$node_name\"})/ rdsosmetrics_memory_total{node_name=~\"$node_name\"}) * 100) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\",environment!~\"\"} > 0))",
           "interval": "$interval",
           "legendFormat": "{{environment}}",
@@ -1264,19 +1201,7 @@
       "steppedLine": true,
       "targets": [
         {
-          "datasource": {
-            "0": "-",
-            "1": "-",
-            "2": " ",
-            "3": "M",
-            "4": "i",
-            "5": "x",
-            "6": "e",
-            "7": "d",
-            "8": " ",
-            "9": "-",
-            "10": "-"
-          },
+          "datasource": "-- Mixed --",
           "expr": "sum by (environment) (\n(rate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[5m]) or \nirate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[5m])) or \n(rate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\",environment!~\"\"}[5m]) or \nirate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\",environment!~\"\"}[5m])) or\n((rate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[5m]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[5m])) or\n(irate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[5m])))\n)",
           "hide": false,
           "interval": "$interval",
@@ -1285,19 +1210,7 @@
         },
         {
           "database": "pmm",
-          "datasource": {
-            "0": "-",
-            "1": "-",
-            "2": " ",
-            "3": "M",
-            "4": "i",
-            "5": "x",
-            "6": "e",
-            "7": "d",
-            "8": " ",
-            "9": "-",
-            "10": "-"
-          },
+          "datasource": "-- Mixed --",
           "dateColDataType": "",
           "dateLoading": false,
           "dateTimeColDataType": "period_start",
@@ -1414,15 +1327,7 @@
       "steppedLine": true,
       "targets": [
         {
-          "datasource": {
-            "0": "M",
-            "1": "e",
-            "2": "t",
-            "3": "r",
-            "4": "i",
-            "5": "c",
-            "6": "s"
-          },
+          "datasource": "Metrics",
           "expr": "100 - min by (environment) (clamp_max((min by (node_name, environment) (node_filesystem_free_bytes{fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"}/\nnode_filesystem_size_bytes{fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"} > 0 )*100),100) * on(node_name) group_left(environment) avg by (node_name, environment) (up{service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external-exporter.*\",environment=~\"$environment\",environment!~\"\"} > 0 ))",
           "interval": "$interval",
           "legendFormat": "{{environment}}",
@@ -1474,8 +1379,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "PDEE91DDB90597936"
+        "type": "grafana-clickhouse-datasource"
       },
       "decimals": 2,
       "description": "",
@@ -1601,8 +1505,7 @@
             "table": "metrics"
           },
           "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
+            "type": "grafana-clickhouse-datasource"
           },
           "format": 0,
           "hide": false,
@@ -1700,7 +1603,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:73",
           "decimals": 2,
           "format": "ms",
           "label": "Latency",
@@ -1709,7 +1611,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:74",
           "format": "percentunit",
           "label": "Error Rate",
           "logBase": 1,
@@ -1871,15 +1772,7 @@
           },
           "targets": [
             {
-              "datasource": {
-                "0": "M",
-                "1": "e",
-                "2": "t",
-                "3": "r",
-                "4": "i",
-                "5": "c",
-                "6": "s"
-              },
+              "datasource": "Metrics",
               "expr": "avg by (service_name,environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external.*\",environment=~\"$environment\"})",
               "format": "time_series",
               "instant": false,
@@ -1888,15 +1781,7 @@
               "refId": "A"
             },
             {
-              "datasource": {
-                "0": "M",
-                "1": "e",
-                "2": "t",
-                "3": "r",
-                "4": "i",
-                "5": "c",
-                "6": "s"
-              },
+              "datasource": "Metrics",
               "expr": "min by (service_name) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr-.*|^external.*\",environment=~\"$environment\"})",
               "instant": true,
               "interval": "$interval",
@@ -1909,15 +1794,7 @@
       ],
       "targets": [
         {
-          "datasource": {
-            "0": "M",
-            "1": "e",
-            "2": "t",
-            "3": "r",
-            "4": "i",
-            "5": "c",
-            "6": "s"
-          },
+          "datasource": "Metrics",
           "refId": "A"
         }
       ],
