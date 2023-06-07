@@ -8,11 +8,17 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const parameters = getPmmTheme(theme);
 
   return {
+    scrollContainer: css`
+      will-change: transform;
+      overflow: scroll;
+      overflow-x: hidden; // hide horizontal scroll
+      max-height: 200px;
+    `,
     label: css`
       display: grid;
       grid-template-areas: 'filtername dashboardlink percentagearea';
       grid-template-rows: 30px;
-      grid-template-columns: 130px 20px 40px;
+      grid-template-columns: 125px 20px 40px;
       grid-gap: 10px;
       height: auto;
       margin: 0;
@@ -50,7 +56,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     notTopWrapper: css`
       display: flex;
       justify-items: space-between;
-      margin-bottom: 0 !important;
       margin-top: 5px !important;
       margin-bottom: 5px !important;
     `,
@@ -68,7 +73,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     `,
     showModeSwitcher: css`
       color: rgb(50, 179, 227) !important;
-      cursor: pointer;
     `,
   };
 });
