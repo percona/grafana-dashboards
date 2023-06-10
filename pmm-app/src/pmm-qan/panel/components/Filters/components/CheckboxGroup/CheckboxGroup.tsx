@@ -1,25 +1,26 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useRef } from 'react';
 import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
 import { humanize } from 'shared/components/helpers/Humanization';
-import { useTheme, Icon } from '@grafana/ui';
+import { Icon, useTheme } from '@grafana/ui';
+import { ViewportList } from 'react-viewport-list';
+import { RawTimeRange } from '@grafana/data';
 import { getStyles } from './CheckboxGroup.styles';
-import { TOP_LIMIT } from './CheckboxGroup.constants';
 import { CheckboxGroupProps } from './CheckboxGroup.types';
-import { Messages } from './CheckboxGroup.messages';
 
-export const CheckboxGroup: FC<CheckboxGroupProps> = ({
-  name,
-  items,
-  group,
-  showAll,
-  filter: searchFilterBy,
-  getDashboardURL,
-  rawTime,
-}) => {
+export const CheckboxGroup: FC<CheckboxGroupProps> = (
+  {
+    name,
+    items,
+    group,
+    showAll,
+    filter: searchFilterBy,
+    getDashboardURL,
+    rawTime,
+  },
+) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
-  const [showTop, setShowTop] = useState(true);
   const filteredData = items.filter((item) => {
     if (!showAll) {
       return item.checked;
@@ -43,93 +44,93 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   };
 
   const itemsList = filteredData
-    .filter((item, _, list) => {
-      if (showAll && !item.value && list.length === 1) {
-        return false;
-      }
-
-      return true;
-    })
+    .filter((item, _, list) => !(showAll && !item.value && list.length === 1))
     .filter(searchFilter);
 
-  const FilterCheckbox = useMemo(
-    () => ({ item }) => {
-      const valueExists = item.main_metric_percent !== undefined;
-      const dashboardURL = getDashboardURL && getDashboardURL(item.value)
-        ? `${getDashboardURL(item.value)}&from=${rawTime.from}&to=${rawTime.to}`
-        : '';
+  const ref = useRef(null);
+  const listRef = useRef(null);
 
-      return (
-        <div
-          className={styles.label}
-          key={`${group};${item.value || ''}`}
-          data-testid={`filter-checkbox-${item.value}`}
-        >
-          <span className={styles.filterName}>
-            <CheckboxField
-              // TODO: using '--' because final form think that it is a nested fields
-              name={`${group};${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
-              label={item.value || 'n/a'}
-              disabled={!valueExists}
-            />
-          </span>
-          {dashboardURL && item.value && (
-            <span className={styles.dashboardLink}>
-              <a href={dashboardURL} target="_blank" rel="noreferrer">
-                <Icon name="graph-bar" />
-              </a>
-            </span>
-          )}
-          <span className={styles.percentage}>
-            <span>{valueExists ? humanize.transform(item.main_metric_percent, 'percent') : null}</span>
-          </span>
-        </div>
-      );
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [group, rawTime],
-  );
-
-  const filteredList = showTop ? itemsList.slice(0, TOP_LIMIT) : itemsList;
-
-  const hiddenSelectedFilters = items
-    .slice(TOP_LIMIT, items.length)
-    .filter(({ checked }) => checked)
-    .filter(searchFilter);
-
-  return filteredList.length ? (
+  return itemsList.length ? (
     <div>
       <p className={styles.filterHeaderWrapper}>
         <span className={styles.filterHeader} data-testid="checkbox-group-header">
           {name}
         </span>
-        {filteredData.filter(searchFilter).length > TOP_LIMIT ? (
-          <span
-            onClick={() => setShowTop(!showTop)}
-            className={styles.showModeSwitcher}
-            data-testid="show-top-switcher"
-          >
-            {showTop ? `Show all (${filteredData.filter(searchFilter).length})` : `Show top ${TOP_LIMIT}`}
-          </span>
-        ) : (
-          <span />
-        )}
+        <span
+          className={styles.showModeSwitcher}
+          data-testid="show-top-switcher"
+        >
+          {`${filteredData.filter(searchFilter).length}`}
+        </span>
       </p>
       <div className={styles.divider} />
-      {filteredList.map((item) => (
-        <FilterCheckbox item={item} />
-      ))}
-
-      {showTop && hiddenSelectedFilters.length && filteredList.length >= TOP_LIMIT ? (
-        <>
-          <p className={styles.notTopWrapper}>
-            <span className={styles.notTopHeader}>{Messages.titles.additionalSelectedSection}</span>
-          </p>
-          {hiddenSelectedFilters.map((item) => (
-            <FilterCheckbox item={item} />
-          ))}
-        </>
-      ) : null}
+      <div className={styles.scrollContainer} ref={ref}>
+        <ViewportList ref={listRef} viewportRef={ref} items={itemsList}>
+          {(item) => (
+            <FilterCheckbox
+              key={item.value}
+              hidden={false}
+              item={item}
+              group={group}
+              getDashboardURL={getDashboardURL}
+              rawTime={rawTime}
+            />
+          )}
+        </ViewportList>
+      </div>
     </div>
   ) : null;
+};
+
+export interface FilterCheckboxProps {
+  hidden?: boolean,
+  item: any;
+  rawTime: RawTimeRange;
+  group: string;
+  getDashboardURL?: (value: string) => string;
+}
+
+export const FilterCheckbox: FC<FilterCheckboxProps> = (
+  {
+    hidden,
+    getDashboardURL,
+    item,
+    group,
+    rawTime,
+  },
+) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
+  const valueExists = item.main_metric_percent !== undefined;
+  const dashboardURL = getDashboardURL && getDashboardURL(item.value)
+    ? `${getDashboardURL(item.value)}&from=${rawTime.from}&to=${rawTime.to}`
+    : '';
+
+  return (
+    <div
+      hidden={hidden}
+      className={styles.label}
+      data-testid={`filter-checkbox-${item.value}`}
+    >
+      <span className={styles.filterName}>
+        <CheckboxField
+              // TODO: using '--' because final form think that it is a nested fields
+          name={`${group};${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
+          label={item.value || 'n/a'}
+          disabled={!valueExists}
+        />
+      </span>
+      {dashboardURL && item.value && (
+        <span className={styles.dashboardLink}>
+          <a href={dashboardURL} target="_blank" rel="noreferrer">
+            <Icon name="graph-bar" />
+          </a>
+        </span>
+      )}
+      <span className={styles.percentage}>
+        <span>{valueExists ? humanize.transform(item.main_metric_percent, 'percent') : null}</span>
+      </span>
+    </div>
+  );
 };
