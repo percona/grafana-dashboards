@@ -21,7 +21,7 @@
       }
     ]
   },
-  "description": "High-level overview over all Environments",
+  "description": "High-level overview of all Environments",
   "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -31,9 +31,7 @@
       "icon": "doc",
       "includeVars": true,
       "keepTime": true,
-      "tags": [
-        "Home"
-      ],
+      "tags": ["Home"],
       "targetBlank": false,
       "title": "Home",
       "type": "link",
@@ -43,9 +41,7 @@
       "icon": "dashboard",
       "includeVars": true,
       "keepTime": true,
-      "tags": [
-        "Query Analytics"
-      ],
+      "tags": ["Query Analytics"],
       "targetBlank": false,
       "title": "Query Analytics",
       "type": "link",
@@ -55,9 +51,7 @@
       "asDropdown": true,
       "includeVars": false,
       "keepTime": true,
-      "tags": [
-        "Services"
-      ],
+      "tags": ["Services"],
       "targetBlank": false,
       "title": "Services",
       "type": "dashboards"
@@ -66,9 +60,7 @@
       "asDropdown": true,
       "includeVars": false,
       "keepTime": true,
-      "tags": [
-        "PMM"
-      ],
+      "tags": ["PMM"],
       "targetBlank": false,
       "title": "PMM",
       "type": "dashboards"
@@ -646,9 +638,7 @@
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": false
         },
@@ -938,7 +928,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "-- Mixed --",
+      "datasource": "Metrics",
       "decimals": 2,
       "description": "",
       "fieldConfig": {
@@ -992,19 +982,7 @@
       "steppedLine": true,
       "targets": [
         {
-          "datasource": {
-            "0": "-",
-            "1": "-",
-            "2": " ",
-            "3": "M",
-            "4": "i",
-            "5": "x",
-            "6": "e",
-            "7": "d",
-            "8": " ",
-            "9": "-",
-            "10": "-"
-          },
+          "datasource": "Metrics",
           "expr": "sum by(environment)(max_over_time(mysql_global_status_threads_connected{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[$interval]) or \nlabel_replace(mysql_global_status_threads_connected{node_name=~\"$node_name\",node_type=\"remote\",environment=~\"$environment\",environment!~\"\"},\"node_name\",\"pmm-server\",\"\",\"\") or\nmax_over_time(mongodb_connections{node_name=~\"$node_name\",state=\"current\",environment=~\"$environment\",environment!~\"\"}[$interval]) or\nsum by (node_name,environment) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[$interval])))",
           "interval": "$interval",
           "legendFormat": "{{environment}}",
@@ -1158,10 +1136,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "-- Mixed --"
-      },
+      "datasource": "Metrics",
       "decimals": 2,
       "description": "",
       "fieldConfig": {
@@ -1217,19 +1192,7 @@
       "steppedLine": true,
       "targets": [
         {
-          "datasource": {
-            "0": "-",
-            "1": "-",
-            "2": " ",
-            "3": "M",
-            "4": "i",
-            "5": "x",
-            "6": "e",
-            "7": "d",
-            "8": " ",
-            "9": "-",
-            "10": "-"
-          },
+          "datasource": "Metrics",
           "expr": "sum by (environment) (\n(rate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[5m]) or \nirate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[5m])) or \n(rate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\",environment!~\"\"}[5m]) or \nirate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\",environment!~\"\"}[5m])) or\n((rate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[5m]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[5m])) or\n(irate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\",environment!~\"\"}[5m])))\n)",
           "hide": false,
           "interval": "$interval",
@@ -1462,11 +1425,7 @@
       "id": 1962,
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
+          "calcs": ["mean", "max", "min"],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": false
@@ -1488,7 +1447,7 @@
           "hide": false,
           "meta": {},
           "queryType": "sql",
-          "rawSql": "SELECT sum(m_query_time_sum)/sum(m_query_time_cnt) as QLatency,\nenvironment, period_start as t\nFROM pmm.\"metrics\" \nWHERE ( period_start  >= $__fromTime AND period_start <= $__toTime )\nGROUP BY t, environment\nORDER BY t",
+          "rawSql": "SELECT sum(m_query_time_sum)/sum(m_query_time_cnt) as QLatency,\nenvironment, period_start as t\nFROM pmm.\"metrics\" \nWHERE $__timeFilter(period_start)\nGROUP BY t, environment\nORDER BY t",
           "refId": "A",
           "selectedFormat": 0
         }
@@ -1525,7 +1484,7 @@
             "align": "auto",
             "displayMode": "auto",
             "inspect": false,
-            "minWidth": 130
+            "minWidth": 110
           },
           "mappings": [],
           "noValue": "-",
@@ -1556,8 +1515,8 @@
                 "value": "bytes"
               },
               {
-                "id": "displayName",
-                "value": "RAM"
+                "id": "custom.width",
+                "value": 100
               }
             ]
           },
@@ -1568,8 +1527,8 @@
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "vCPU"
+                "id": "custom.width",
+                "value": 100
               }
             ]
           },
@@ -1579,10 +1538,6 @@
               "options": "Value #M"
             },
             "properties": [
-              {
-                "id": "displayName",
-                "value": "Network IO"
-              },
               {
                 "id": "unit",
                 "value": "bytes"
@@ -1596,10 +1551,6 @@
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "Disk writes"
-              },
-              {
                 "id": "unit",
                 "value": "bytes"
               }
@@ -1611,10 +1562,6 @@
               "options": "Value #J"
             },
             "properties": [
-              {
-                "id": "displayName",
-                "value": "Disk reads"
-              },
               {
                 "id": "unit",
                 "value": "bytes"
@@ -1628,12 +1575,8 @@
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "Available memory"
-              },
-              {
                 "id": "unit",
-                "value": "bytes"
+                "value": "percent"
               }
             ]
           },
@@ -1643,10 +1586,6 @@
               "options": "Value #G"
             },
             "properties": [
-              {
-                "id": "displayName",
-                "value": "DB uptime"
-              },
               {
                 "id": "unit",
                 "value": "s"
@@ -1684,37 +1623,9 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Value #E"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "DB connections"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value #F"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "DB QPS"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "Value #A"
             },
             "properties": [
-              {
-                "id": "displayName",
-                "value": "Status"
-              },
               {
                 "id": "mappings",
                 "value": [
@@ -1738,6 +1649,10 @@
               {
                 "id": "custom.displayMode",
                 "value": "color-text"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
               }
             ]
           },
@@ -1748,12 +1663,8 @@
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "Service"
-              },
-              {
                 "id": "custom.width",
-                "value": 270
+                "value": 300
               }
             ]
           }
@@ -1768,12 +1679,8 @@
       "id": 1919,
       "options": {
         "footer": {
-          "fields": [
-            "Value #A"
-          ],
-          "reducer": [
-            "count"
-          ],
+          "fields": ["Value #A"],
+          "reducer": ["count"],
           "show": true
         },
         "showHeader": true
@@ -1925,10 +1832,48 @@
               "machine_id": true,
               "node_id": true,
               "node_name": true,
-              "node_type": true
+              "node_type": true,
+              "service_name": false
             },
-            "indexByName": {},
-            "renameByName": {}
+            "indexByName": {
+              "Time": 0,
+              "Value #A": 3,
+              "Value #E": 5,
+              "Value #F": 4,
+              "Value #G": 6,
+              "Value #I": 15,
+              "Value #J": 16,
+              "Value #L": 17,
+              "Value #M": 18,
+              "Value #N": 19,
+              "Value #O": 20,
+              "agent_id": 7,
+              "agent_type": 8,
+              "environment": 2,
+              "instance": 9,
+              "job": 10,
+              "machine_id": 11,
+              "node_id": 12,
+              "node_name": 13,
+              "node_type": 14,
+              "service_name": 1
+            },
+            "renameByName": {
+              "Value #A": "Status",
+              "Value #E": "DB connections",
+              "Value #F": "DB QPS",
+              "Value #G": "DB uptime",
+              "Value #I": "Mem available",
+              "Value #J": "Disk reads",
+              "Value #L": "Disk writes",
+              "Value #M": "Network IO",
+              "Value #N": "vCPU",
+              "Value #O": "RAM",
+              "agent_id": "",
+              "environment": "Environment",
+              "node_type": "",
+              "service_name": "Service"
+            }
           }
         }
       ],
@@ -1938,9 +1883,7 @@
   "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
-  "tags": [
-    "experimental"
-  ],
+  "tags": [],
   "templating": {
     "list": [
       {
@@ -2010,6 +1953,11 @@
       },
       {
         "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": ["All"],
+          "value": ["$__all"]
+        },
         "datasource": "Metrics",
         "definition": "label_values(up, environment)",
         "hide": 0,
@@ -2033,6 +1981,11 @@
       },
       {
         "allFormat": "glob",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": "Metrics",
         "definition": "label_values(up{environment=~\"$environment\",node_type=~\"generic|remote_rds|container|remote\"}, node_name)",
         "hide": 2,
@@ -2056,6 +2009,11 @@
       },
       {
         "allFormat": "glob",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up\",node_name=~\"$node_name\"}, service_name)",
         "hide": 2,
@@ -2078,6 +2036,11 @@
         "useTags": false
       },
       {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": "Metrics",
         "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
         "hide": 2,
@@ -2190,17 +2153,7 @@
       "1d"
     ],
     "status": "Stable",
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ],
+    "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"],
     "type": "timepicker"
   },
   "timezone": "browser",
