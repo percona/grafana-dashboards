@@ -298,7 +298,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Memory Available"
+              "options": "Mem Available"
             },
             "properties": [
               {
@@ -342,20 +342,20 @@
                 "value": "Bps"
               },
               {
+                "id": "decimals",
+                "value": 2
+              },
+              {
                 "id": "thresholds",
                 "value": {
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "rgb(255, 255, 255)",
+                      "color": "text",
                       "value": null
                     }
                   ]
                 }
-              },
-              {
-                "id": "decimals",
-                "value": 2
               }
             ]
           },
@@ -701,7 +701,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg(avg by (node_name)(((rate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[$interval]) or irate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[5m]) or sum by (node_name) (max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[5m]))) * 1024) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr$|^external-exporter.*\",environment=~\"$environment\"})))",
+          "expr": "avg(avg by (node_name)(((rate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[$interval]) or irate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[5m]) or \nsum by (node_name) (max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[5m]))) * 1024) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr$|^external-exporter.*\",environment=~\"$environment\"})))",
           "interval": "$interval",
           "legendFormat": "Disk Reads",
           "range": true,
@@ -710,7 +710,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg(avg by (node_name)(((rate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[$interval]) or irate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[5m]) or\nsum by (node_name) (max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[5m]))) * 1024)  * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr$|^external-exporter.*\",environment=~\"$environment\"})))",
+          "expr": "avg(avg by (node_name)(((rate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[$interval]) or irate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[5m]) or\nsum by (node_name) (max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[5m]))) * 1024) * on(node_name) group_left(environment) avg by (node_name, environment) (up{node_name=~\"$node_name\",service_type=~\"mysql|mongodb|postgresql|proxysql|haproxy|external\",job=~\".*_hr$|^external-exporter.*\",environment=~\"$environment\"})))",
           "interval": "$interval",
           "legendFormat": "Disk Writes",
           "range": true,
@@ -837,7 +837,7 @@
         "overrides": []
       },
       "fill": 2,
-      "fillGradient": 0,
+      "fillGradient": 9,
       "gridPos": {
         "h": 5,
         "w": 12,
@@ -1045,7 +1045,7 @@
         "overrides": []
       },
       "fill": 2,
-      "fillGradient": 0,
+      "fillGradient": 8,
       "gridPos": {
         "h": 5,
         "w": 12,
@@ -1152,7 +1152,7 @@
         "overrides": []
       },
       "fill": 2,
-      "fillGradient": 0,
+      "fillGradient": 5,
       "gridPos": {
         "h": 5,
         "w": 12,
@@ -1174,7 +1174,7 @@
       "linewidth": 2,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": false
+        "alertThreshold": true
       },
       "percentage": false,
       "pluginVersion": "9.2.18",
@@ -1258,7 +1258,7 @@
         "overrides": []
       },
       "fill": 2,
-      "fillGradient": 0,
+      "fillGradient": 8,
       "gridPos": {
         "h": 5,
         "w": 12,
@@ -1363,7 +1363,7 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 2,
+            "fillOpacity": 6,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -1374,7 +1374,7 @@
             "lineStyle": {
               "fill": "solid"
             },
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
@@ -1613,10 +1613,6 @@
                     }
                   ]
                 }
-              },
-              {
-                "id": "custom.inspect",
-                "value": true
               }
             ]
           },
@@ -1953,11 +1949,6 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": true,
-          "text": ["All"],
-          "value": ["$__all"]
-        },
         "datasource": "Metrics",
         "definition": "label_values(up, environment)",
         "hide": 0,
@@ -1981,11 +1972,6 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
         "datasource": "Metrics",
         "definition": "label_values(up{environment=~\"$environment\",node_type=~\"generic|remote_rds|container|remote\"}, node_name)",
         "hide": 2,
@@ -2009,11 +1995,6 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up\",node_name=~\"$node_name\"}, service_name)",
         "hide": 2,
@@ -2036,11 +2017,6 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
         "datasource": "Metrics",
         "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
         "hide": 2,
