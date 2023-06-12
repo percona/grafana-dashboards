@@ -1,11 +1,14 @@
 import { getTemplateSrv } from '@grafana/runtime';
-import { FILTERS_GROUPS } from './Filters.constants';
 
-export const getSelectedCheckboxes = (filters) => FILTERS_GROUPS.map((group) => filters[group.dataKey])
-  .filter(Boolean)
-  .map((item) => item.name)
-  .reduce((acc, item) => acc.concat(item), [])
-  .some((item) => item.checked);
+export const getSelectedCheckboxes = (filters, filtersGroups) => {
+  const selectedFilters = filtersGroups.map((group) => filters[group.dataKey])
+    .filter(Boolean)
+    .map((item) => item.name)
+    .reduce((acc, item) => acc.concat(item), [])
+    .some((item) => item.checked);
+
+  return selectedFilters;
+};
 
 export const getServiceType = (value: string, name: string): string | undefined => {
   const variables = getTemplateSrv().getVariables();

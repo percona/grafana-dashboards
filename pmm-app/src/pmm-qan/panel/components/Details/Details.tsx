@@ -34,7 +34,7 @@ export const DetailsSection: FC = () => {
 
   const [loading, examples, databaseType] = useDetails();
   const [metrics, textMetrics, metricsLoading, metadata] = useMetricsDetails();
-  const metadataToShow = showMetadata(metadata);
+  const metadataToShow = metadata ? showMetadata(metadata) : null;
   const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
   const showTablesTab = databaseType !== Databases.mongodb && groupBy === 'queryid' && !totals;
   const showExplainTab = databaseType !== Databases.postgresql && groupBy === 'queryid' && !totals;
@@ -80,10 +80,14 @@ export const DetailsSection: FC = () => {
             textMetrics={textMetrics}
             loading={metricsLoading}
           />
-          <Metadata
-            metadata={metadataToShow}
-            loading={metricsLoading}
-          />
+          {metadata
+            ? (
+              <Metadata
+                metadata={metadataToShow}
+                loading={metricsLoading}
+              />
+            )
+            : null}
         </>
       ),
     },
