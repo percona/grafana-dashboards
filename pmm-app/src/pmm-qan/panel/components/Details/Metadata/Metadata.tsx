@@ -34,7 +34,7 @@ const Metadata = ({ metadata, loading }) => {
   ];
 
   return (
-    <Overlay size={OVERLAY_LOADER_SIZE} className={styles.metadataTable}>
+    <Overlay size={OVERLAY_LOADER_SIZE}>
       <Collapse
         collapsible
         label={metadataTableHead.main}
