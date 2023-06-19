@@ -13,5 +13,8 @@ export const getStyles = (theme: GrafanaTheme2) => {
       word-break: keep-all;
       color: ${parameters.mainTextColor};
     `,
+    metadataTable: css`
+      display: none;
+    `,
   };
 };
