@@ -8,7 +8,7 @@ import { OVERLAY_LOADER_SIZE } from '../Details.constants';
 
 const Metadata = ({ metadata, loading }) => {
   const styles = useStyles2(getStyles);
-  const [metadataOpen, setMetadataOpen] = useState(true);
+  const [metadataOpen, setMetadataOpen] = useState(false);
 
   const nameColumn = (item) => (
     <span className={styles.metadataColumn}>
