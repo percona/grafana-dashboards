@@ -1085,7 +1085,7 @@
       "savedOverrides": [],
       "targets": [
         {
-          "expr": "sum by (service_name) (mongodb_connections{cluster=\"$cluster\", state=\"current\"} * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}))",
+          "expr": "sum by (service_name) (mongodb_connections{cluster=\"$cluster\", state=\"current\"} * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"shard.*\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"shard.*\"}))",
           "format": "time_series",
           "hide": true,
           "instant": false,
@@ -1094,7 +1094,7 @@
           "refId": "A"
         },
         {
-          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}))",
+          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"shard.*\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"shard.*\"}))",
           "interval": "$interval",
           "legendFormat": "{{service_name}}",
           "refId": "B"
@@ -1338,7 +1338,7 @@
       ],
       "targets": [
         {
-          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set=~\"$shard\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set=~\"$shard\"}))",
+          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set=~\"shard.*\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set=~\"shard.*\"}))",
           "format": "time_series",
           "instant": false,
           "interval": "$interval",
