@@ -8,8 +8,8 @@ import {
 import { cx } from '@emotion/css';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { Databases } from 'shared/core';
-import Explain from './Explain/Explain';
 import Example from './Example/Example';
+import Explain from './Explain/Explain';
 import Metrics from './Metrics/Metrics';
 import TableCreateContainer from './Table/TableContainer';
 import { useDetails } from './Details.hooks';
@@ -19,6 +19,8 @@ import { Messages } from './Details.messages';
 import { getStyles } from './Details.styles';
 import { Plan } from './Plan/Plan';
 import ExplainPlaceholders from './ExplainPlaceholders';
+import Metadata from './Metadata/Metadata';
+import { showMetadata } from './Metadata/Metadata.utils';
 
 export const DetailsSection: FC = () => {
   const theme = useTheme();
@@ -31,8 +33,8 @@ export const DetailsSection: FC = () => {
   } = useContext(QueryAnalyticsProvider);
 
   const [loading, examples, databaseType] = useDetails();
-  const [metrics, textMetrics, metricsLoading] = useMetricsDetails();
-
+  const [metrics, textMetrics, metricsLoading, metadata] = useMetricsDetails();
+  const metadataToShow = metadata ? showMetadata(metadata) : null;
   const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
   const showTablesTab = databaseType !== Databases.mongodb && groupBy === 'queryid' && !totals;
   const showExplainTab = databaseType !== Databases.postgresql && groupBy === 'queryid' && !totals;
@@ -69,14 +71,24 @@ export const DetailsSection: FC = () => {
       key: TabKeys.details,
       show: true,
       component: (
-        <Metrics
-          databaseType={databaseType}
-          groupBy={groupBy}
-          totals={totals}
-          metrics={metrics}
-          textMetrics={textMetrics}
-          loading={metricsLoading}
-        />
+        <>
+          <Metrics
+            databaseType={databaseType}
+            groupBy={groupBy}
+            totals={totals}
+            metrics={metrics}
+            textMetrics={textMetrics}
+            loading={metricsLoading}
+          />
+          {metadata
+            ? (
+              <Metadata
+                metadata={metadataToShow}
+                loading={metricsLoading}
+              />
+            )
+            : null}
+        </>
       ),
     },
     {

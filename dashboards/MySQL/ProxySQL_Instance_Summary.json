@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
@@ -26,7 +29,10 @@
       },
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "#6ed0e0",
@@ -48,7 +54,6 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1656508808394,
   "links": [
     {
       "icon": "doc",
@@ -135,6 +140,7 @@
   "panels": [
     {
       "collapsed": false,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -143,6 +149,12 @@
       },
       "id": 67,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "ProxySQL Instance Stats",
       "type": "row"
     },
@@ -151,6 +163,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": "Metrics",
       "decimals": 0,
       "editable": true,
       "error": false,
@@ -190,7 +203,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -206,6 +219,7 @@
       "targets": [
         {
           "calculatedInterval": "2m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "scalar(count(count(proxysql_connection_pool_status{node_name=~\"$proxysql\", hostgroup=~\"$hostgroup\"}) by (hostgroup)))",
@@ -256,6 +270,7 @@
     },
     {
       "collapsed": false,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -264,65 +279,98 @@
       },
       "id": 68,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "Connections",
       "type": "row"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "editable": true,
-      "error": false,
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
         "overrides": []
       },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
         "y": 6
       },
-      "hiddenSeries": false,
       "id": 55,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
+      "pluginVersion": "9.2.5",
       "targets": [
         {
           "calculatedInterval": "2m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (node_name) (max_over_time(proxysql_mysql_status_client_connections_connected{node_name=\"$proxysql\"}[$interval]) or \nmax_over_time(proxysql_mysql_status_client_connections_connected{node_name=\"$proxysql\"}[5m]))",
@@ -335,97 +383,92 @@
           "step": 60
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Client Connections (All Host Groups)",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "editable": true,
-      "error": false,
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
         "overrides": []
       },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
         "y": 6
       },
-      "hiddenSeries": false,
       "id": 56,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
+      "pluginVersion": "9.2.5",
       "targets": [
         {
           "calculatedInterval": "2m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (node_name) (rate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[5m]))",
@@ -438,97 +481,92 @@
           "step": 60
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Client Questions (All Host Groups)",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "min": 0,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "editable": true,
-      "error": false,
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
         "overrides": []
       },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
         "y": 14
       },
-      "hiddenSeries": false,
       "id": 51,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
+      "pluginVersion": "9.2.5",
       "targets": [
         {
           "calculatedInterval": "2m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (node_name,endpoint) (max_over_time(proxysql_connection_pool_conn_used{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or\nmax_over_time(proxysql_connection_pool_conn_used{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]))",
@@ -541,97 +579,92 @@
           "step": 60
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Active Backend Connections",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "editable": true,
-      "error": false,
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
         "overrides": []
       },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
         "y": 14
       },
-      "hiddenSeries": false,
       "id": 52,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
+      "pluginVersion": "9.2.5",
       "targets": [
         {
           "calculatedInterval": "2m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (node_name,endpoint) (rate(proxysql_connection_pool_conn_err{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or irate(proxysql_connection_pool_conn_err{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]))",
@@ -644,100 +677,95 @@
           "step": 60
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Failed Backend Connections",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "editable": true,
-      "error": false,
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
         "overrides": []
       },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
         "y": 22
       },
-      "hiddenSeries": false,
       "id": 76,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
+      "pluginVersion": "9.2.5",
       "targets": [
         {
           "calculatedInterval": "2m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "avg by (node_name,client_host) (max_over_time(proxysql_processlist_client_connection_list{node_name=~\"$proxysql\"}[$interval]) or max_over_time(proxysql_processlist_client_connection_list{node_name=~\"$proxysql\"}[5m]))",
+          "expr": "topk_max (30, (avg by (node_name,client_host) (max_over_time(proxysql_processlist_client_connection_list{node_name=~\"$proxysql\"}[$interval]) or max_over_time(proxysql_processlist_client_connection_list{node_name=~\"$proxysql\"}[5m]))))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -747,94 +775,91 @@
           "step": 60
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Active Frontend Connections",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "min": 0,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "title": "Top 30 Active Frontend Connections",
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "points",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
         "overrides": []
       },
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
         "y": 22
       },
-      "hiddenSeries": false,
       "id": 1001,
       "interval": "",
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 1,
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 1,
-      "points": true,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
+      "pluginVersion": "9.2.5",
       "targets": [
         {
+          "datasource": "Metrics",
           "expr": "avg by (node_name,user) (max_over_time(proxysql_processlist_detailed_client_connection_count{node_name=~\"$proxysql\",hostgroup=~\"$hostgroup\"}[$interval]) or max_over_time(proxysql_processlist_detailed_client_connection_count{node_name=~\"$proxysql\",hostgroup=~\"$hostgroup\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
@@ -842,40 +867,12 @@
           "refId": "A"
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Client Frontend Connections",
-      "tooltip": {
-        "shared": true,
-        "sort": 5,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
       "collapsed": false,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -884,6 +881,12 @@
       },
       "id": 69,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "Connection Pool Usage",
       "type": "row"
     },
@@ -895,6 +898,7 @@
           "value": "current"
         }
       ],
+      "datasource": "Metrics",
       "description": "Status number to state mapping:\n\n1 `ONLINE`\n\n2 `SHUNNED`\n\n3 `OFFLINE_SOFT`\n\n4 `OFFLINE_HARD`\n\n5 `SHUNNED_REPLICATION_LAG`\n\nFor status details, see the [description](https://github.com/sysown/proxysql/blob/master/doc/admin_tables.md#mysql_servers).",
       "editable": true,
       "error": false,
@@ -1053,6 +1057,7 @@
     },
     {
       "collapsed": true,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1090,6 +1095,7 @@
             }
           ],
           "crosshairColor": "#8F070C",
+          "datasource": "Metrics",
           "description": "",
           "display": "timeline",
           "expandFromQueryS": 0,
@@ -1098,7 +1104,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 41
+            "y": 39
           },
           "highlightOnMouseover": true,
           "id": 1029,
@@ -1122,6 +1128,7 @@
           "showTimeAxis": true,
           "targets": [
             {
+              "datasource": "Metrics",
               "expr": "avg by (endpoint,hostgroup) (proxysql_runtime_servers_status{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"})",
               "instant": false,
               "interval": "$interval",
@@ -1208,11 +1215,18 @@
           "writeMetricNames": false
         }
       ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "Connection Status Details",
       "type": "row"
     },
     {
       "collapsed": false,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1221,65 +1235,98 @@
       },
       "id": 71,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "Network",
       "type": "row"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "editable": true,
-      "error": false,
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
         "overrides": []
       },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
         "y": 40
       },
-      "hiddenSeries": false,
       "id": 2,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "9.2.5",
       "targets": [
         {
           "calculatedInterval": "2m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (node_name,endpoint) (rate(proxysql_connection_pool_queries{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or irate(proxysql_connection_pool_queries{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]))",
@@ -1292,102 +1339,112 @@
           "step": 60
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Queries Routed",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "min": 0,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "QP_efficiency_query"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ns"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "QP_time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ns"
+              }
+            ]
+          }
+        ]
       },
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
         "y": 40
       },
-      "hiddenSeries": false,
       "id": 59,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "QP_efficiency_query",
-          "yaxis": 2
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        {
-          "alias": "QP_time",
-          "yaxis": 2
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
         }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      },
+      "pluginVersion": "9.2.5",
       "targets": [
         {
+          "datasource": "Metrics",
           "expr": "avg by (node_name) ((rate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[5m])))",
           "format": "time_series",
           "hide": false,
@@ -1398,6 +1455,7 @@
           "step": 10
         },
         {
+          "datasource": "Metrics",
           "expr": "avg by (node_name) ((rate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[5m])))",
           "format": "time_series",
           "hide": true,
@@ -1407,6 +1465,7 @@
           "step": 1
         },
         {
+          "datasource": "Metrics",
           "expr": "avg by (node_name) ((rate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[5m])))",
           "format": "time_series",
           "interval": "$interval",
@@ -1416,43 +1475,12 @@
           "step": 10
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Query processor time efficiency",
-      "tooltip": {
-        "shared": true,
-        "sort": 5,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        },
-        {
-          "decimals": 2,
-          "format": "ns",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
       "collapsed": false,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1461,65 +1489,98 @@
       },
       "id": 72,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "Queries",
       "type": "row"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "editable": true,
-      "error": false,
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
         "overrides": []
       },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
         "y": 49
       },
-      "hiddenSeries": false,
       "id": 60,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "9.2.5",
       "targets": [
         {
           "calculatedInterval": "2m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (node_name,endpoint) (max_over_time(proxysql_connection_pool_conn_free{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or max_over_time(proxysql_connection_pool_conn_free{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]))",
@@ -1532,97 +1593,92 @@
           "step": 60
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Connection Free",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "min": 0,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "editable": true,
-      "error": false,
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "µs"
         },
         "overrides": []
       },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
         "y": 49
       },
-      "hiddenSeries": false,
       "id": 50,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "9.2.5",
       "targets": [
         {
           "calculatedInterval": "2m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (node_name,endpoint) (max_over_time(proxysql_connection_pool_latency_us{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or \nmax_over_time(proxysql_connection_pool_latency_us{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]))",
@@ -1635,99 +1691,93 @@
           "step": 60
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Endpoints Latency",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "µs",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "min": 0,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
+      "datasource": "Metrics",
       "description": "",
-      "editable": true,
-      "error": false,
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
         "overrides": []
       },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
         "y": 57
       },
-      "hiddenSeries": false,
       "id": 1019,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
+      "pluginVersion": "9.2.5",
       "targets": [
         {
           "calculatedInterval": "2m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "rate(proxysql_mysql_command_counter_latency_milliseconds_count[$interval])",
@@ -1740,99 +1790,93 @@
           "step": 60
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Executed Queries",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "min": 0,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
+      "datasource": "Metrics",
       "description": "",
-      "editable": true,
-      "error": false,
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ms"
         },
         "overrides": []
       },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
         "y": 57
       },
-      "hiddenSeries": false,
       "id": 1020,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": true,
+      "pluginVersion": "9.2.5",
       "targets": [
         {
           "calculatedInterval": "2m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "rate(proxysql_mysql_command_counter_latency_milliseconds_sum[$interval])",
@@ -1845,40 +1889,8 @@
           "step": 60
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Queries Execution Time",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "ms",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "min": 0,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
       "cards": {},
@@ -1890,7 +1902,23 @@
         "mode": "opacity"
       },
       "dataFormat": "timeseries",
+      "datasource": "Metrics",
       "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 8,
         "w": 24,
@@ -1911,10 +1939,48 @@
           "url": "https://proxysql.com/documentation/stats-statistics/#stats_mysql_commands_counters"
         }
       ],
-      "pluginVersion": "7.3.7",
+      "options": {
+        "calculate": true,
+        "calculation": {},
+        "cellGap": 2,
+        "cellValues": {},
+        "color": {
+          "exponent": 0.5,
+          "fill": "#37872D",
+          "mode": "opacity",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Oranges",
+          "steps": 128
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": true
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "showValue": "never",
+        "tooltip": {
+          "show": true,
+          "yHistogram": true
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false,
+          "unit": "ms"
+        }
+      },
+      "pluginVersion": "9.2.5",
       "reverseYBuckets": false,
       "targets": [
         {
+          "datasource": "Metrics",
           "expr": "histogram_quantile(0.95, sum(rate(proxysql_mysql_command_counter_latency_milliseconds_bucket[5m])) by (le))",
           "format": "heatmap",
           "hide": false,
@@ -1941,6 +2007,7 @@
     },
     {
       "collapsed": true,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1959,12 +2026,28 @@
             "mode": "opacity"
           },
           "dataFormat": "timeseries",
+          "datasource": "Metrics",
           "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "scaleDistribution": {
+                  "type": "linear"
+                }
+              }
+            },
+            "overrides": []
+          },
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 76
+            "y": 74
           },
           "heatmap": {},
           "hideZeroBuckets": false,
@@ -1974,12 +2057,50 @@
             "show": true
           },
           "maxPerRow": 2,
-          "pluginVersion": "7.3.7",
+          "options": {
+            "calculate": true,
+            "calculation": {},
+            "cellGap": 2,
+            "cellValues": {},
+            "color": {
+              "exponent": 0.5,
+              "fill": "#FA6400",
+              "mode": "opacity",
+              "reverse": false,
+              "scale": "exponential",
+              "scheme": "Oranges",
+              "steps": 128
+            },
+            "exemplars": {
+              "color": "rgba(255,0,255,0.7)"
+            },
+            "filterValues": {
+              "le": 1e-9
+            },
+            "legend": {
+              "show": true
+            },
+            "rowsFrame": {
+              "layout": "auto"
+            },
+            "showValue": "never",
+            "tooltip": {
+              "show": true,
+              "yHistogram": true
+            },
+            "yAxis": {
+              "axisPlacement": "left",
+              "reverse": false,
+              "unit": "ms"
+            }
+          },
+          "pluginVersion": "9.2.5",
           "repeat": "command",
           "repeatDirection": "h",
           "reverseYBuckets": false,
           "targets": [
             {
+              "datasource": "Metrics",
               "expr": "histogram_quantile(0.95, sum(rate(proxysql_mysql_command_counter_latency_milliseconds_bucket{command=~\"$command\",node_name=~\"$proxysql\"}[5m])) by (le))",
               "format": "heatmap",
               "hide": false,
@@ -2005,11 +2126,18 @@
           "yBucketBound": "auto"
         }
       ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "Queries Latency Details",
       "type": "row"
     },
     {
       "collapsed": false,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -2018,66 +2146,97 @@
       },
       "id": 73,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "Query Cache",
       "type": "row"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bytes"
         },
         "overrides": []
       },
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
         "y": 75
       },
-      "hiddenSeries": false,
       "id": 62,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "Bytes for cached query avg",
-          "yaxis": 2
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
         }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      },
+      "pluginVersion": "9.2.5",
       "targets": [
         {
+          "datasource": "Metrics",
           "expr": "avg by (node_name) (max_over_time(proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}[5m]))",
           "format": "time_series",
           "hide": false,
@@ -2088,6 +2247,7 @@
           "step": 10
         },
         {
+          "datasource": "Metrics",
           "expr": "avg by (node_name) ((max_over_time(proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}[5m]))/\n(max_over_time(proxysql_mysql_status_query_cache_entries{node_name=\"$proxysql\"}[$interval]) or\nmax_over_time(proxysql_mysql_status_query_cache_entries{node_name=\"$proxysql\"}[5m])))",
           "format": "time_series",
           "interval": "$interval",
@@ -2097,101 +2257,92 @@
           "step": 10
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Query Cache memory",
-      "tooltip": {
-        "shared": true,
-        "sort": 5,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "bytes",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        },
-        {
-          "decimals": 2,
-          "format": "bytes",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "editable": true,
-      "error": false,
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
         },
         "overrides": []
       },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
         "y": 75
       },
-      "hiddenSeries": false,
       "id": 53,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "Insert VS read efficnecy (high is good)",
-          "yaxis": 2
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
         }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      },
+      "pluginVersion": "9.2.5",
       "targets": [
         {
           "calculatedInterval": "2m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (node_name) (((rate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[5m]))))        ",
@@ -2204,6 +2355,7 @@
           "step": 60
         },
         {
+          "datasource": "Metrics",
           "expr": "avg by (node_name) (((rate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[5m]))))        ",
           "format": "time_series",
           "interval": "$interval",
@@ -2213,44 +2365,12 @@
           "step": 20
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Query Cache efficiency",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "percent",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "decimals": 2,
-          "format": "percent",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
       "collapsed": false,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -2259,66 +2379,99 @@
       },
       "id": 74,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
       "title": "Network Traffic and Mirroring efficiency",
       "type": "row"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
+      "datasource": "Metrics",
       "description": "Network traffic refers to the amount of data moving across a network at a given point in time.",
-      "editable": true,
-      "error": false,
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "Bps"
         },
         "overrides": []
       },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
         "y": 84
       },
-      "hiddenSeries": false,
       "id": 65,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "9.2.5",
       "targets": [
         {
           "calculatedInterval": "2m",
+          "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by (node_name,endpoint) ((rate(proxysql_connection_pool_bytes_data_recv{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) + rate(proxysql_connection_pool_bytes_data_sent{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval])) or (irate(proxysql_connection_pool_bytes_data_recv{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]) + irate(proxysql_connection_pool_bytes_data_sent{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m])))",
@@ -2331,98 +2484,91 @@
           "step": 60
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Network Traffic",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "Bps",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "min": 0,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
-          "links": []
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
         "overrides": []
       },
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
         "y": 84
       },
-      "hiddenSeries": false,
       "id": 61,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "Concurrent Mirror threads",
-          "yaxis": 2
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
         }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      },
+      "pluginVersion": "9.2.5",
       "targets": [
         {
+          "datasource": "Metrics",
           "expr": "avg by (node_name) (max_over_time(proxysql_mysql_status_mirror_concurrency{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_mysql_status_mirror_concurrency{node_name=\"$proxysql\"}[5m]))",
           "format": "time_series",
           "hide": false,
@@ -2433,6 +2579,7 @@
           "step": 10
         },
         {
+          "datasource": "Metrics",
           "expr": "avg by (node_name) (max_over_time(proxysql_mysql_status_mirror_queue_length{node_name=\"$proxysql\"}[$interval]) or \nmax_over_time(proxysql_mysql_status_mirror_queue_length{node_name=\"$proxysql\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
@@ -2442,39 +2589,8 @@
           "step": 20
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Mirroring efficiency",
-      "tooltip": {
-        "shared": true,
-        "sort": 5,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        },
-        {
-          "decimals": 2,
-          "format": "short",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
       "collapsed": false,
@@ -2773,6 +2889,7 @@
     },
     {
       "collapsed": true,
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -2782,6 +2899,7 @@
       "id": 1004,
       "panels": [
         {
+          "datasource": "Metrics",
           "description": "The parameter shows how long a system has been “up” and running without a shut down or restart.",
           "fieldConfig": {
             "defaults": {
@@ -2815,7 +2933,7 @@
             "h": 3,
             "w": 3,
             "x": 0,
-            "y": 112
+            "y": 110
           },
           "id": 321,
           "interval": "$interval",
@@ -2838,10 +2956,11 @@
             },
             "textMode": "auto"
           },
-          "pluginVersion": "8.3.5",
+          "pluginVersion": "9.2.5",
           "targets": [
             {
               "calculatedInterval": "10m",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (node_name) ((node_time_seconds{node_name=~\"$proxysql\"} - node_boot_time_seconds{node_name=~\"$proxysql\"}) or (time() - node_boot_time_seconds{node_name=~\"$proxysql\"}))",
@@ -2859,6 +2978,7 @@
           "type": "stat"
         },
         {
+          "datasource": "Metrics",
           "description": "The system load is a measurement of the computational work the system is performing. Each running process either using or waiting for CPU resources adds 1 to the load.",
           "fieldConfig": {
             "defaults": {
@@ -2902,7 +3022,7 @@
             "h": 3,
             "w": 3,
             "x": 3,
-            "y": 112
+            "y": 110
           },
           "id": 323,
           "links": [],
@@ -2924,9 +3044,10 @@
             },
             "textMode": "auto"
           },
-          "pluginVersion": "8.3.5",
+          "pluginVersion": "9.2.5",
           "targets": [
             {
+              "datasource": "Metrics",
               "expr": "avg by (node_name) (avg_over_time(node_load1{node_name=~\"$proxysql\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$proxysql\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
@@ -2938,6 +3059,7 @@
           "type": "stat"
         },
         {
+          "datasource": "Metrics",
           "description": "RAM (Random Access Memory) is the hardware in a computing device where the operating system, application programs and data in current use are kept so they can be quickly reached by the device's processor.",
           "fieldConfig": {
             "defaults": {
@@ -2977,7 +3099,7 @@
             "h": 3,
             "w": 3,
             "x": 6,
-            "y": 112
+            "y": 110
           },
           "id": 327,
           "interval": "$interval",
@@ -3000,9 +3122,10 @@
             },
             "textMode": "auto"
           },
-          "pluginVersion": "8.3.5",
+          "pluginVersion": "9.2.5",
           "targets": [
             {
+              "datasource": "Metrics",
               "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$proxysql\"})",
               "format": "time_series",
               "interval": "5m",
@@ -3015,6 +3138,7 @@
           "type": "stat"
         },
         {
+          "datasource": "Metrics",
           "description": "Percent of Memory Available\nNote: on Modern Linux Kernels amount of Memory Available for application is not the same as Free+Cached+Buffers",
           "fieldConfig": {
             "defaults": {
@@ -3058,7 +3182,7 @@
             "h": 3,
             "w": 3,
             "x": 9,
-            "y": 112
+            "y": 110
           },
           "id": 329,
           "links": [],
@@ -3080,9 +3204,10 @@
             },
             "textMode": "auto"
           },
-          "pluginVersion": "8.3.5",
+          "pluginVersion": "9.2.5",
           "targets": [
             {
+              "datasource": "Metrics",
               "expr": "avg by (node_name) ((node_memory_MemAvailable_bytes{node_name=~\"$proxysql\"} or (node_memory_MemFree_bytes{node_name=~\"$proxysql\"} + node_memory_Buffers_bytes{node_name=~\"$proxysql\"} + node_memory_Cached_bytes{node_name=~\"$proxysql\"})) / node_memory_MemTotal_bytes{node_name=~\"$proxysql\"} * 100)",
               "format": "time_series",
               "interval": "$interval",
@@ -3094,6 +3219,7 @@
           "type": "stat"
         },
         {
+          "datasource": "Metrics",
           "description": "RAM + SWAP",
           "fieldConfig": {
             "defaults": {
@@ -3133,7 +3259,7 @@
             "h": 3,
             "w": 3,
             "x": 12,
-            "y": 112
+            "y": 110
           },
           "id": 331,
           "interval": "$interval",
@@ -3156,9 +3282,10 @@
             },
             "textMode": "auto"
           },
-          "pluginVersion": "8.3.5",
+          "pluginVersion": "9.2.5",
           "targets": [
             {
+              "datasource": "Metrics",
               "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$proxysql\"}+node_memory_SwapTotal_bytes{node_name=~\"$proxysql\"})",
               "format": "time_series",
               "interval": "5m",
@@ -3171,6 +3298,7 @@
           "type": "stat"
         },
         {
+          "datasource": "Metrics",
           "description": "Sum of disk space on all partitions. Note  it can be significantly over-reported in some installations",
           "fieldConfig": {
             "defaults": {
@@ -3210,7 +3338,7 @@
             "h": 3,
             "w": 3,
             "x": 15,
-            "y": 112
+            "y": 110
           },
           "id": 333,
           "interval": "$interval",
@@ -3239,9 +3367,10 @@
             },
             "textMode": "auto"
           },
-          "pluginVersion": "8.3.5",
+          "pluginVersion": "9.2.5",
           "targets": [
             {
+              "datasource": "Metrics",
               "expr": "avg by (node_name) (sum(avg(node_filesystem_size_bytes{node_name=~\"$proxysql\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype))",
               "format": "time_series",
               "interval": "5m",
@@ -3254,6 +3383,7 @@
           "type": "stat"
         },
         {
+          "datasource": "Metrics",
           "description": "Lowest percent of the disk space available",
           "fieldConfig": {
             "defaults": {
@@ -3297,7 +3427,7 @@
             "h": 3,
             "w": 3,
             "x": 18,
-            "y": 112
+            "y": 110
           },
           "id": 335,
           "links": [],
@@ -3319,9 +3449,10 @@
             },
             "textMode": "auto"
           },
-          "pluginVersion": "8.3.5",
+          "pluginVersion": "9.2.5",
           "targets": [
             {
+              "datasource": "Metrics",
               "expr": "min(node_filesystem_free_bytes{node_name=~\"$proxysql\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$proxysql\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100",
               "format": "time_series",
               "interval": "$interval",
@@ -3337,95 +3468,254 @@
             "h": 3,
             "w": 3,
             "x": 21,
-            "y": 112
+            "y": 110
           },
           "id": 1006,
           "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
             "content": "<h5 style='color:#e68a00;font-weight:bold;text-align:center'><a href=\"/graph/d/node-instance-summary/node-summary?var-node_name=$proxysql\" target=\"_blank\">$node_name</a></h5>",
             "mode": "html"
           },
-          "pluginVersion": "8.3.5",
+          "pluginVersion": "9.2.5",
           "title": "Node",
           "type": "text"
         },
         {
-          "aliasColors": {
-            "Max Core Utilization": "#bf1b00",
-            "idle": "#806EB7",
-            "iowait": "#E24D42",
-            "nice": "#1F78C1",
-            "softirq": "#FFF899",
-            "steal": "#8F3BB8",
-            "system": "#EAB839",
-            "user": "#508642"
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "The CPU time is measured in clock ticks or seconds. It is useful to measure CPU time as a percentage of the CPU's capacity, which is called the CPU usage.",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 60,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "stepAfter",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "percent"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Max Core Utilization"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#bf1b00",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "idle"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#806EB7",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "iowait"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#E24D42",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "nice"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#1F78C1",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "softirq"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#FFF899",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "steal"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#8F3BB8",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "system"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#EAB839",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "user"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#508642",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Max Core Utilization"
+                },
+                "properties": [
+                  {
+                    "id": "custom.lineWidth",
+                    "value": 0
+                  },
+                  {
+                    "id": "custom.pointSize",
+                    "value": 4
+                  },
+                  {
+                    "id": "custom.showPoints",
+                    "value": "always"
+                  },
+                  {
+                    "id": "custom.stacking",
+                    "value": {
+                      "group": false,
+                      "mode": "normal"
+                    }
+                  }
+                ]
+              }
+            ]
           },
-          "fill": 6,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 115
+            "y": 113
           },
-          "height": "",
-          "hiddenSeries": false,
           "id": 337,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "hideEmpty": true,
-            "hideZero": true,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
-          },
-          "paceLength": 10,
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "Max Core Utilization",
-              "lines": false,
-              "pointradius": 1,
-              "points": true,
-              "stack": false
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
             }
-          ],
-          "spaceLength": 10,
-          "stack": true,
-          "steppedLine": true,
+          },
+          "pluginVersion": "9.2.5",
           "targets": [
             {
+              "datasource": "Metrics",
               "expr": "avg by (node_name,mode) (clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"user\", mode!=\"system\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"user\", mode!=\"system\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\", mode!=\"user\", mode!=\"system\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\", mode!=\"user\", mode!=\"system\"}[5m]))),100))",
               "format": "time_series",
               "interval": "$interval",
@@ -3434,6 +3724,7 @@
               "refId": "B"
             },
             {
+              "datasource": "Metrics",
               "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$proxysql\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$proxysql\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
               "format": "time_series",
               "hide": true,
@@ -3443,118 +3734,227 @@
               "refId": "C"
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "CPU Usage",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "percent",
-              "label": "",
-              "logBase": 1,
-              "max": "100",
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "min": 0,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": {
-            "Allocated": "#E0752D",
-            "CPU Load": "#64B0C8",
-            "IO Load ": "#EA6460",
-            "Limit": "#1F78C1",
-            "Max CPU Core Utilization": "#bf1b00",
-            "Max Core Usage": "#bf1b00",
-            "Normalized CPU Load": "#6ED0E0"
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "When a system is running with maximum CPU utilization, the transmitting and receiving threads must all share the available CPU. This will cause data to be queued more frequently to cope with the lack of CPU. CPU Saturation may be measured as the length of a wait queue, or the time spent waiting on the queue.",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "stepAfter",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "short"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Allocated"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#E0752D",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CPU Load"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#64B0C8",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "IO Load "
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#EA6460",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Limit"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#1F78C1",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Max CPU Core Utilization"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#bf1b00",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Max Core Usage"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#bf1b00",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Normalized CPU Load"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#6ED0E0",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Max CPU Core Utilization"
+                },
+                "properties": [
+                  {
+                    "id": "custom.lineWidth",
+                    "value": 0
+                  },
+                  {
+                    "id": "custom.pointSize",
+                    "value": 4
+                  },
+                  {
+                    "id": "custom.showPoints",
+                    "value": "always"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "max",
+                    "value": 1
+                  }
+                ]
+              }
+            ]
           },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 115
+            "y": 113
           },
-          "hiddenSeries": false,
           "id": 339,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
-          },
-          "paceLength": 10,
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "Max CPU Core Utilization",
-              "lines": false,
-              "pointradius": 1,
-              "points": true,
-              "yaxis": 2
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
             }
-          ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": true,
+          },
+          "pluginVersion": "9.2.5",
           "targets": [
             {
               "calculatedInterval": "2s",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (node_name) ((avg_over_time(node_procs_running{node_name=~\"$proxysql\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$proxysql\"})) or (avg_over_time(node_procs_running{node_name=~\"$proxysql\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$proxysql\"})))",
@@ -3570,6 +3970,7 @@
             },
             {
               "calculatedInterval": "2s",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$proxysql\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$proxysql\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
@@ -3583,89 +3984,152 @@
               "target": ""
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "CPU Saturation and Max Core Usage",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "decimals": 2,
-              "format": "percentunit",
-              "logBase": 1,
-              "max": "1",
-              "min": 0,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": {
-            "Swap In (Reads)": "#6ed0e0",
-            "Swap Out (Writes)": "#ef843c",
-            "Total": "#bf1b00"
-          },
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "Disk I/O includes read or write or input/output operations involving a physical disk. It is the speed with which the data transfer takes place between the hard disk drive and RAM.\n\nSwap Activity is memory management that involves swapping sections of memory to and from physical storage.",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Page Out (-) / Page In (+)",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "stepAfter",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "Bps"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Swap In (Reads)"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#6ed0e0",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Swap Out (Writes)"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#ef843c",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "#bf1b00",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Disk Writes (Page Out)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.transform",
+                    "value": "negative-Y"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total"
+                },
+                "properties": [
+                  {
+                    "id": "custom.lineWidth",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Swap Out (Writes)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.transform",
+                    "value": "negative-Y"
+                  }
+                ]
+              }
+            ]
           },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 123
+            "y": 121
           },
-          "hiddenSeries": false,
           "id": 341,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
           "links": [
             {
               "targetBlank": true,
@@ -3673,36 +4137,27 @@
               "url": "/graph/d/node-disk/disk-details?$__url_time_range&$__all_variables"
             }
           ],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "Disk Writes (Page Out)",
-              "transform": "negative-Y"
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
             },
-            {
-              "alias": "Total",
-              "legend": false,
-              "lines": false
-            },
-            {
-              "alias": "Swap Out (Writes)",
-              "transform": "negative-Y"
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
             }
-          ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": true,
+          },
+          "pluginVersion": "9.2.5",
           "targets": [
             {
               "calculatedInterval": "2s",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (node_name) (rate(node_vmstat_pgpgin{node_name=\"$proxysql\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$proxysql\"}[5m]) * 1024)",
@@ -3717,6 +4172,7 @@
             },
             {
               "calculatedInterval": "2s",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "avg by (node_name) ((rate(node_vmstat_pgpgout{node_name=\"$proxysql\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$proxysql\"}[5m]) * 1024))",
@@ -3730,6 +4186,7 @@
               "target": ""
             },
             {
+              "datasource": "Metrics",
               "expr": "avg by (node_name) ((rate(node_vmstat_pgpgin{node_name=\"$proxysql\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$proxysql\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$proxysql\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$proxysql\"}[5m]) * 1024))",
               "format": "time_series",
               "interval": "$interval",
@@ -3738,6 +4195,7 @@
               "refId": "C"
             },
             {
+              "datasource": "Metrics",
               "expr": "avg by (node_name) (rate(node_vmstat_pswpin{node_name=\"$proxysql\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=\"$proxysql\"}[5m]) * 4096)",
               "format": "time_series",
               "interval": "$interval",
@@ -3746,6 +4204,7 @@
               "refId": "D"
             },
             {
+              "datasource": "Metrics",
               "expr": "avg by (node_name) (rate(node_vmstat_pswpout{node_name=\"$proxysql\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=\"$proxysql\"}[5m]) * 4096)",
               "format": "time_series",
               "interval": "$interval",
@@ -3754,104 +4213,105 @@
               "refId": "E"
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "Disk I/O and Swap Activity",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "Bps",
-              "label": "Page Out (-) / Page In (+)",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "format": "bytes",
-              "logBase": 1,
-              "min": 0,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
+          "datasource": "Metrics",
           "description": "Network traffic refers to the amount of data moving across a network at a given point in time.",
-          "editable": true,
-          "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Outbound (-) / Inbound (+)",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "stepAfter",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 2,
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "Bps"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Outbound"
+                },
+                "properties": [
+                  {
+                    "id": "custom.transform",
+                    "value": "negative-Y"
+                  }
+                ]
+              }
+            ]
           },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {},
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 123
+            "y": 121
           },
-          "hiddenSeries": false,
           "id": 343,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "hideEmpty": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
           "links": [],
-          "nullPointMode": "null",
           "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "Outbound",
-              "transform": "negative-Y"
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
             }
-          ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": true,
+          },
+          "pluginVersion": "9.2.5",
           "targets": [
             {
               "calculatedInterval": "2s",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "sum(rate(node_network_receive_bytes_total{node_name=\"$proxysql\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{node_name=\"$proxysql\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$proxysql\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$proxysql\"}[5m])) ",
@@ -3866,6 +4326,7 @@
             },
             {
               "calculatedInterval": "2s",
+              "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
               "expr": "sum(rate(node_network_transmit_bytes_total{node_name=\"$proxysql\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes_total{node_name=\"$proxysql\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$proxysql\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{node_name=\"$proxysql\"}[5m]))",
@@ -3879,39 +4340,14 @@
               "target": ""
             }
           ],
-          "thresholds": [],
-          "timeRegions": [],
           "title": "Network Traffic",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "Bps",
-              "label": "Outbound (-) / Inbound (+)",
-              "logBase": 1,
-              "show": true
-            },
-            {
-              "format": "bytes",
-              "logBase": 1,
-              "min": 0,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
+          "type": "timeseries"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
         }
       ],
       "title": "Node Summary",
@@ -3919,7 +4355,7 @@
     }
   ],
   "refresh": "1m",
-  "schemaVersion": 34,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "Percona",
@@ -3994,9 +4430,8 @@
       {
         "allFormat": "glob",
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
+          "text": "",
           "value": ""
         },
         "datasource": "Metrics",
@@ -4023,9 +4458,8 @@
       {
         "allFormat": "glob",
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
+          "text": "",
           "value": ""
         },
         "datasource": "Metrics",

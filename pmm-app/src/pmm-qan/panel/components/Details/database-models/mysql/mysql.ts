@@ -1,3 +1,4 @@
+import { getExplainPayload } from './mysql.utils';
 import MysqlDatabaseService from './service';
 
 export const mysqlMethods = {
@@ -45,13 +46,9 @@ export const mysqlMethods = {
 
   getExplainJSON: async ({ example, queryId, placeholders }) => {
     try {
-      const payload = { query_id: queryId, placeholders: placeholders || [] };
+      const payload = getExplainPayload(example, queryId, placeholders);
 
-      const result = await MysqlDatabaseService.getTraditionalExplainJSONMysql({
-        database: example.schema,
-        service_id: example.service_id,
-        ...payload,
-      });
+      const result = await MysqlDatabaseService.getTraditionalExplainJSONMysql(payload);
 
       return result.action_id;
     } catch (e) {
@@ -63,13 +60,9 @@ export const mysqlMethods = {
 
   getExplainTraditional: async ({ example, queryId, placeholders }) => {
     try {
-      const payload = placeholders?.length ? { query_id: queryId, placeholders } : { query_id: queryId };
+      const payload = getExplainPayload(example, queryId, placeholders);
 
-      const result = await MysqlDatabaseService.getTraditionalExplainMysql({
-        database: example.schema,
-        service_id: example.service_id,
-        ...payload,
-      });
+      const result = await MysqlDatabaseService.getTraditionalExplainMysql(payload);
 
       return result.action_id;
     } catch (e) {
