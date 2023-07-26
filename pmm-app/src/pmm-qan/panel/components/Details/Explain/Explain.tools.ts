@@ -23,15 +23,17 @@ export const processClassicExplain = (classic): ClassicExplainInterface => {
     .filter(Boolean)
     .map((title) => ({ Header: title, key: title, accessor: title }));
 
-  const rowsList = data.map((item) => item
-    .split('|')
-    .map((e) => (String(e) ? e.trim() : ''))
-    .filter(Boolean)
-    .reduce((acc, row, index) => {
-      acc[headerList[index].accessor] = row;
+  const rowsList = data.map((item) =>
+    item
+      .split('|')
+      .map((e) => (String(e) ? e.trim() : ''))
+      .filter(Boolean)
+      .reduce((acc, row, index) => {
+        acc[headerList[index].accessor] = row;
 
-      return acc;
-    }, {}));
+        return acc;
+      }, {}),
+  );
 
   return { columns: headerList, rows: rowsList };
 };
@@ -68,10 +70,11 @@ export const fetchExplains = async (
   databaseType: DatabasesType,
   placeholders?: string[],
 ): Promise<FetchExplainsResult> => {
-  try {
-    const hasPlaceholders = placeholders || !example.placeholders_count;
+  const hasPlaceholders = placeholders?.length || !example.placeholders_count;
+  const hasExample = !!example?.example;
 
-    if (databaseType === Databases.postgresql && (hasPlaceholders || !!example.example)) {
+  try {
+    if (databaseType === Databases.postgresql && (hasPlaceholders || hasExample)) {
       const payload = {
         serviceId: example.service_id,
         queryId,
@@ -89,7 +92,7 @@ export const fetchExplains = async (
       };
     }
 
-    if (databaseType === Databases.mysql && (hasPlaceholders || !!example.example)) {
+    if (databaseType === Databases.mysql && (hasPlaceholders || hasExample)) {
       const payload = {
         example,
         queryId,
