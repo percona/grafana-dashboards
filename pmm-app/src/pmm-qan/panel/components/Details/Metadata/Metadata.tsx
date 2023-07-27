@@ -8,7 +8,7 @@ import { OVERLAY_LOADER_SIZE } from '../Details.constants';
 
 const Metadata = ({ metadata, loading }) => {
   const styles = useStyles2(getStyles);
-  const [metadataOpen, setMetadataOpen] = useState(true);
+  const [metadataOpen, setMetadataOpen] = useState(false);
 
   const nameColumn = (item) => (
     <span className={styles.metadataColumn}>
@@ -34,7 +34,7 @@ const Metadata = ({ metadata, loading }) => {
   ];
 
   return (
-    <Overlay size={OVERLAY_LOADER_SIZE} className={styles.metadataTable}>
+    <Overlay size={OVERLAY_LOADER_SIZE}>
       <Collapse
         collapsible
         label={metadataTableHead.main}
