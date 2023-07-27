@@ -563,7 +563,7 @@
       "title": "RAM",
       "default_title_for_rows": "Pod",
       "datasource": "Metrics",
-      "pluginVersion": "9.2.18",
+      "pluginVersion": "9.2.20",
       "description": "",
       "options": {
         "showHeader": true,
@@ -747,7 +747,7 @@
       "title": "Swap",
       "default_title_for_rows": "Pod",
       "datasource": "Metrics",
-      "pluginVersion": "9.2.18",
+      "pluginVersion": "9.2.20",
       "options": {
         "showHeader": true,
         "footer": {
@@ -764,22 +764,26 @@
           },
           "mappings": [
             {
+              "type": "value",
               "options": {
                 "0": {
+                  "text": "-",
                   "color": "text",
-                  "index": 0,
-                  "text": "-"
+                  "index": 0
                 }
-              },
-              "type": "value"
+              }
             }
           ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "text",
                 "value": null
+              },
+              {
+                "value": 0,
+                "color": "red"
               },
               {
                 "color": "orange",
@@ -794,8 +798,9 @@
           "color": {
             "mode": "fixed"
           },
-          "noValue": "-",
-          "unit": "decbytes"
+          "unit": "decbytes",
+          "noValue": "undefined",
+          "decimals": 2
         },
         "overrides": [
           {
@@ -816,12 +821,42 @@
             },
             "properties": [
               {
+                "id": "unit",
+                "value": "decbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #C"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
                 "id": "custom.displayMode",
                 "value": "color-text"
               },
               {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #B"
+            },
+            "properties": [
+              {
                 "id": "unit",
-                "value": "percent"
+                "value": "decbytes"
               }
             ]
           }
@@ -849,15 +884,16 @@
             },
             "indexByName": {
               "Time": 0,
-              "Value #B": 3,
-              "Value #D": 2,
-              "pod": 1
+              "pod": 1,
+              "Value #C": 2,
+              "Value #D": 3,
+              "Value #B": 4
             },
             "renameByName": {
               "Value #A": "",
               "Value #B": "Used",
-              "Value #D": "Swap Limit",
               "Value #C": "Free Swap",
+              "Value #D": "Swap Limit",
               "pod": "Pod"
             }
           }
@@ -881,7 +917,7 @@
           "exemplar": true,
           "expr": "100 - clamp_max((avg by (pod) (container_memory_swap{pod=~\"$pod\"}) * 100) / avg by (pod) (container_spec_memory_swap_limit_bytes{pod=~\"$pod\"}),100)",
           "format": "table",
-          "hide": true,
+          "hide": false,
           "instant": true,
           "interval": "$interval",
           "legendFormat": "{{pod}} | Free Swap",
@@ -1068,7 +1104,7 @@
       "title": "CPU",
       "default_title_for_rows": "Pod",
       "datasource": "Metrics",
-      "pluginVersion": "9.2.18",
+      "pluginVersion": "9.2.20",
       "options": {
         "showHeader": true,
         "footer": {
