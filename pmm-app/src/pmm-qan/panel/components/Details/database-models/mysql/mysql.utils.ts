@@ -11,13 +11,6 @@ export const getExplainPayload = (
     service_id: example.service_id,
   };
 
-  if (example.example) {
-    return {
-      ...payload,
-      query: example.example,
-    };
-  }
-
   if (placeholders && placeholders?.length) {
     return {
       ...payload,

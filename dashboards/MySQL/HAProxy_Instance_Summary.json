@@ -7083,7 +7083,7 @@
           "pluginVersion": "8.3.5",
           "targets": [
             {
-              "expr": "avg by (node_name) ((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} * 100)",
+              "expr": "clamp_max(avg by () (container_memory_usage_bytes{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|backup-agent|\"} * 100 / container_spec_memory_limit_bytes{node_name=\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|backup-agent|\"}),100) or  \navg by () (((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) * 100 or (100 - azure_memory_percent_average{node_name=~\"$node_name\"}))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7728,7 +7728,7 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (node_name) (rate(node_vmstat_pgpgin{node_name=\"$proxysql\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$proxysql\"}[5m]) * 1024)",
+              "expr": "avg by () (sum(rate(container_fs_reads_bytes_total{node_name=\"$proxysql\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_reads_bytes_total{node_name=\"$proxysql\",id=~\"/kubepods.*\"}[5s]))) or\navg by () (rate(node_vmstat_pgpgin{node_name=\"$proxysql\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$proxysql\"}[5m]) * 1024)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7742,7 +7742,7 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (node_name) ((rate(node_vmstat_pgpgout{node_name=\"$proxysql\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$proxysql\"}[5m]) * 1024))",
+              "expr": "avg by () (sum(rate(container_fs_writes_bytes_total{node_name=\"$proxysql\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$proxysql\",id=~\"/kubepods.*\"}[5s]))) or\navg by () ((rate(node_vmstat_pgpgout{node_name=\"$proxysql\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$proxysql\"}[5m]) * 1024))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7753,7 +7753,7 @@
               "target": ""
             },
             {
-              "expr": "avg by (node_name) ((rate(node_vmstat_pgpgin{node_name=\"$proxysql\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$proxysql\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$proxysql\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$proxysql\"}[5m]) * 1024))",
+              "expr": "avg by () (sum(rate(container_fs_reads_bytes_total{node_name=\"$proxysql\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_reads_bytes_total{node_name=\"$proxysql\",id=~\"/kubepods.*\"}[5s]))) + \navg by () (sum(rate(container_fs_writes_bytes_total{node_name=\"$proxysql\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$proxysql\",id=~\"/kubepods.*\"}[5s]))) or \navg  by () ((rate(node_vmstat_pgpgin{node_name=\"$proxysql\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$proxysql\"}[5m]) * 1024 ) + (rate(container_fs_writes_bytes_total{node_name=\"$proxysql\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$proxysql\",id=~\"/kubepods.*\"}[5s]))) + \navg by () (sum(rate(container_fs_writes_bytes_total{node_name=\"$proxysql\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$proxysql\",id=~\"/kubepods.*\"}[5s]))) or \navg  by () ((rate(node_vmstat_pgpgout{node_name=\"$proxysql\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$proxysql\"}[5m]) * 1024))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7769,7 +7769,7 @@
               "refId": "D"
             },
             {
-              "expr": "avg by (node_name) (rate(node_vmstat_pswpout{node_name=\"$proxysql\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=\"$proxysql\"}[5m]) * 4096)",
+              "expr": "avg by () (rate(container_memory_swap{node_name=\"$proxysql\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[$interval]) or \nirate(container_memory_swap{node_name=\"$proxysql\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[5s])) or \navg by () (rate(node_vmstat_pswpout{node_name=\"$proxysql\"}[$interval]) * 4096 or \nirate(node_vmstat_pswpout{node_name=\"$proxysql\"}[5m]) * 4096)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7878,7 +7878,7 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "sum(rate(node_network_receive_bytes_total{node_name=\"$proxysql\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{node_name=\"$proxysql\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$proxysql\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$proxysql\"}[5m])) ",
+              "expr": "sum(rate(container_network_receive_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[$interval]) or \nirate(container_network_receive_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[5m])) or\nsum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7892,7 +7892,7 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "sum(rate(node_network_transmit_bytes_total{node_name=\"$proxysql\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes_total{node_name=\"$proxysql\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$proxysql\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{node_name=\"$proxysql\"}[5m]))",
+              "expr": "sum(rate(container_network_transmit_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[$interval]) or \nirate(container_network_transmit_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[5m])) or \nsum(rate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
