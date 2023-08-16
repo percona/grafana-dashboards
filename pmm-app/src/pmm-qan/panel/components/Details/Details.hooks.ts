@@ -1,23 +1,31 @@
 import { useContext, useEffect, useState } from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import { Databases } from 'shared/core';
 import DetailsService from './Details.service';
 import { DatabasesType, QueryExampleResponseItem } from './Details.types';
 
 export const useDetails = (): [boolean, QueryExampleResponseItem[], DatabasesType] => {
   const {
     panelState: {
-      queryId, groupBy, from, to, labels,
+      queryId,
+      groupBy,
+      from,
+      to,
+      labels,
     },
   } = useContext(QueryAnalyticsProvider);
   const [loading, setLoading] = useState<boolean>(false);
   const [examples, setExamples] = useState<QueryExampleResponseItem[]>([]);
-  const [databaseType, setDatabaseType] = useState<DatabasesType>(Databases.mysql);
+  const [databaseType, setDatabaseType] = useState<DatabasesType>();
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
+        // clear state so we don't get
+        // invalid data in between query changes
+        setExamples([]);
+        setDatabaseType(undefined);
+
         const result = await DetailsService.getExample({
           filterBy: queryId,
           groupBy,
@@ -29,8 +37,10 @@ export const useDetails = (): [boolean, QueryExampleResponseItem[], DatabasesTyp
         const examples = result.query_examples;
         const databaseType = result.query_examples[0].service_type;
 
-        setExamples(examples);
+        // clear database type first
+        // won't be an issue once we upgrade to React 18 (batched updates)
         setDatabaseType(databaseType);
+        setExamples(examples);
       } catch (e) {
         console.error(e);
       } finally {
