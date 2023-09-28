@@ -1,4 +1,68 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_METRICS",
+      "label": "Metrics",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    },
+    {
+      "name": "VAR_PSMDB_OPERATOR",
+      "type": "constant",
+      "label": "psmdb_operator",
+      "value": "percona-server-mongodb-operator",
+      "description": ""
+    },
+    {
+      "name": "VAR_PXC_OPERATOR",
+      "type": "constant",
+      "label": "pxc_operator",
+      "value": "percona-xtradb-cluster-operator",
+      "description": ""
+    },
+    {
+      "name": "VAR_PG_OPERATOR",
+      "type": "constant",
+      "label": "pg_operator",
+      "value": "percona-postgresql-operator",
+      "description": ""
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.2.20"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "state-timeline",
+      "name": "State timeline",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -26,12 +90,12 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 15760,
   "graphTooltip": 1,
-  "id": 78,
+  "id": null,
   "links": [],
   "liveNow": false,
   "panels": [
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -39,228 +103,557 @@
         "y": 0
       },
       "id": 90,
-      "panels": [],
-      "title": "Status",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "fixed"
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_METRICS}"
           },
-          "custom": {
-            "fillOpacity": 100,
-            "lineWidth": 0,
-            "spanNulls": false
-          },
-          "mappings": [
-            {
-              "options": {
-                "error": {
-                  "color": "red",
-                  "index": 2
-                },
-                "null": {
-                  "index": 1,
-                  "text": "N/A"
-                }
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed"
               },
-              "type": "value"
+              "custom": {
+                "fillOpacity": 100,
+                "lineWidth": 0,
+                "spanNulls": false
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "error": {
+                      "color": "red",
+                      "index": 2
+                    },
+                    "null": {
+                      "index": 1,
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "value"
+                },
+                {
+                  "options": {
+                    "from": 0,
+                    "result": {
+                      "index": 0,
+                      "text": "N/A"
+                    },
+                    "to": 0
+                  },
+                  "type": "range"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "ready"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-GrYlRd"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "error"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-RdYlGr"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 97,
+          "options": {
+            "alignValue": "center",
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "mergeValues": true,
+            "rowHeight": 0.89,
+            "showValue": "never",
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_METRICS}"
+              },
+              "editorMode": "code",
+              "expr": "(kube_pxc_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",name=\"${k8s_db_cr}\"} if \"${k8s_db_type}\"==\"${pxc_operator}\") !=0",
+              "format": "time_series",
+              "hide": false,
+              "legendFormat": "{{state}}",
+              "range": true,
+              "refId": "PXC_Status"
             },
             {
-              "options": {
-                "from": 0,
-                "result": {
-                  "index": 0,
-                  "text": "N/A"
-                },
-                "to": 0
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_METRICS}"
               },
-              "type": "range"
+              "editorMode": "code",
+              "expr": "(kube_psmdb_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",name=\"${k8s_db_cr}\"} if \"${k8s_db_type}\"==\"${psmdb_operator}\") !=0\n",
+              "format": "time_series",
+              "hide": false,
+              "legendFormat": "{{state}}",
+              "range": true,
+              "refId": "PSMDB_Status"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_METRICS}"
+              },
+              "editorMode": "code",
+              "expr": "(kube_pg_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",name=\"${k8s_db_cr}\"} if \"${k8s_db_type}\"==\"${pg_operator}\") !=0\n",
+              "format": "time_series",
+              "hide": false,
+              "legendFormat": "{{state}}",
+              "range": true,
+              "refId": "PG_Status"
             }
           ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
+          "title": "Cluster Status",
+          "transformations": [],
+          "type": "state-timeline"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "ready"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "continuous-GrYlRd"
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_METRICS}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto",
+                "filterable": true,
+                "inspect": true
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "Failed": {
+                      "color": "dark-red",
+                      "index": 1
+                    },
+                    "Running": {
+                      "color": "blue",
+                      "index": 3
+                    },
+                    "Starting": {
+                      "color": "orange",
+                      "index": 2
+                    },
+                    "Succeeded": {
+                      "color": "dark-green",
+                      "index": 0
+                    },
+                    "error": {
+                      "color": "red",
+                      "index": 4
+                    },
+                    "ready": {
+                      "color": "dark-green",
+                      "index": 5
+                    },
+                    "rejected": {
+                      "color": "dark-red",
+                      "index": 7
+                    },
+                    "requested": {
+                      "color": "yellow",
+                      "index": 8
+                    },
+                    "running": {
+                      "color": "blue",
+                      "index": 6
+                    },
+                    "waiting": {
+                      "color": "orange",
+                      "index": 9
+                    }
+                  },
+                  "type": "value"
                 }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
               }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "error"
             },
-            "properties": [
+            "overrides": [
               {
-                "id": "color",
-                "value": {
-                  "mode": "continuous-RdYlGr"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 1
-      },
-      "id": 97,
-      "options": {
-        "alignValue": "center",
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "mergeValues": true,
-        "rowHeight": 0.89,
-        "showValue": "never",
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
-          "editorMode": "code",
-          "expr": "(kube_pxc_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",name=\"${k8s_db_cr}\"} if \"${k8s_db_type}\"==\"percona-xtradb-cluster-operator\") !=0",
-          "format": "time_series",
-          "hide": false,
-          "legendFormat": "{{state}}",
-          "range": true,
-          "refId": "PXC_Status"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
-          "editorMode": "code",
-          "expr": "(kube_psmdb_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",name=\"${k8s_db_cr}\"} if \"${k8s_db_type}\"==\"percona-server-mongodb-operator\") !=0\n",
-          "format": "time_series",
-          "hide": false,
-          "legendFormat": "{{state}}",
-          "range": true,
-          "refId": "PSMDB_Status"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
-          "editorMode": "code",
-          "expr": "(kube_pg_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",name=\"${k8s_db_cr}\"} if \"${k8s_db_type}\"==\"percona-postgresql-operator\") !=0\n",
-          "format": "time_series",
-          "hide": false,
-          "legendFormat": "{{state}}",
-          "range": true,
-          "refId": "PG_Status"
-        }
-      ],
-      "title": "Cluster Status",
-      "transformations": [],
-      "type": "state-timeline"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
+                "matcher": {
+                  "id": "byName",
+                  "options": "Completed On"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsIso"
+                  }
+                ]
               },
               {
-                "color": "red",
-                "value": 80
+                "matcher": {
+                  "id": "byName",
+                  "options": "State"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background-solid"
+                  }
+                ]
               }
             ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 1
-      },
-      "id": 99,
-      "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 8
+          },
+          "id": 99,
+          "options": {
+            "footer": {
+              "enablePagination": true,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_METRICS}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "(\n    (kube_pxc_backup_status_completed{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",dbcluster=\"${k8s_db_cr}\"} * on(name) group_left(state) kube_pxc_backup_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",dbcluster=\"${k8s_db_cr}\"})*1000 !=0 \n    ) if \"${k8s_db_type}\" == \"${pxc_operator}\"\n",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "pxc_completed_backup"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_METRICS}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "(\n    (kube_psmdb_backup_status_completed{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",dbcluster=\"${k8s_db_cr}\"} * on(name) group_left(state) kube_psmdb_backup_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",dbcluster=\"${k8s_db_cr}\"})*1000 !=0 \n    ) if \"${k8s_db_type}\" == \"${psmdb_operator}\"",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "psmdb_completed_backup"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_METRICS}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "(\n    (kube_pg_backup_status_completed{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",dbcluster=\"${k8s_db_cr}\"} * on(name) group_left(state) kube_pg_backup_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",dbcluster=\"${k8s_db_cr}\"})*1000 !=0 \n    ) if \"${k8s_db_type}\" == \"${pg_operator}\"",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "pg_completed_backup"
+            }
           ],
-          "show": false
+          "title": "Completed Backups",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "cluster": true,
+                  "container": true,
+                  "customresource_group": true,
+                  "customresource_kind": true,
+                  "customresource_version": true,
+                  "dbcluster": true,
+                  "endpoint": true,
+                  "instance": true,
+                  "job": true,
+                  "k8s_cluster_id": true,
+                  "namespace": true,
+                  "pod": true,
+                  "prometheus": true,
+                  "service": true
+                },
+                "indexByName": {},
+                "renameByName": {
+                  "Value": "Completed On",
+                  "name": "Backup Name",
+                  "state": "State"
+                }
+              }
+            }
+          ],
+          "type": "table"
         },
-        "showHeader": true
-      },
-      "pluginVersion": "9.2.20",
-      "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
+            "uid": "${DS_METRICS}"
           },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "kube_pxc_backup_status_state",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "PXC_Backup"
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto",
+                "filterable": true,
+                "inspect": true
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "Failed": {
+                      "color": "dark-red",
+                      "index": 1
+                    },
+                    "Running": {
+                      "color": "blue",
+                      "index": 3
+                    },
+                    "Starting": {
+                      "color": "orange",
+                      "index": 2
+                    },
+                    "Succeeded": {
+                      "color": "green",
+                      "index": 0
+                    },
+                    "error": {
+                      "color": "dark-red",
+                      "index": 4
+                    },
+                    "ready": {
+                      "color": "green",
+                      "index": 5
+                    },
+                    "rejected": {
+                      "color": "dark-red",
+                      "index": 7
+                    },
+                    "requested": {
+                      "color": "yellow",
+                      "index": 8
+                    },
+                    "running": {
+                      "color": "blue",
+                      "index": 6
+                    },
+                    "waiting": {
+                      "color": "orange",
+                      "index": 9
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "State"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background-solid"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 8
+          },
+          "id": 104,
+          "options": {
+            "footer": {
+              "enablePagination": true,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_METRICS}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "(\nkube_pxc_backup_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",dbcluster=\"${k8s_db_cr}\",state!=\"Succeeded\"} !=0\n    ) if \"${k8s_db_type}\" == \"${pxc_operator}\"\n",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "pxc_completed_backup"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_METRICS}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "(\nkube_psmdb_backup_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",dbcluster=\"${k8s_db_cr}\",state!=\"ready\"} !=0\n    ) if \"${k8s_db_type}\" == \"${psmdb_operator}\"\n",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "psmdb_completed_backup"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_METRICS}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "(\nkube_pg_backup_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",dbcluster=\"${k8s_db_cr}\",state!=\"ready\"} !=0\n    ) if \"${k8s_db_type}\" == \"${pg_operator}\"\n",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "pg_completed_backup"
+            }
+          ],
+          "title": "Backup in Progress/Error",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "Value": true,
+                  "__name__": true,
+                  "cluster": true,
+                  "container": true,
+                  "customresource_group": true,
+                  "customresource_kind": true,
+                  "customresource_version": true,
+                  "dbcluster": true,
+                  "endpoint": true,
+                  "instance": true,
+                  "job": true,
+                  "k8s_cluster_id": true,
+                  "namespace": true,
+                  "pod": true,
+                  "prometheus": true,
+                  "service": true
+                },
+                "indexByName": {},
+                "renameByName": {
+                  "name": "Backup Name",
+                  "state": "State"
+                }
+              }
+            }
+          ],
+          "type": "table"
         }
       ],
-      "title": "Backup Status",
-      "type": "table"
+      "title": "Status",
+      "type": "row"
     },
     {
       "collapsed": true,
@@ -268,14 +661,14 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 1
       },
       "id": 60,
       "panels": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
+            "uid": "${DS_METRICS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -328,32 +721,7 @@
               },
               "unit": "none"
             },
-            "overrides": [
-              {
-                "__systemRef": "hideSeriesFrom",
-                "matcher": {
-                  "id": "byNames",
-                  "options": {
-                    "mode": "exclude",
-                    "names": [
-                      "cluster1-haproxy-0 ( haproxy )"
-                    ],
-                    "prefix": "All except:",
-                    "readOnly": true
-                  }
-                },
-                "properties": [
-                  {
-                    "id": "custom.hideFrom",
-                    "value": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": true
-                    }
-                  }
-                ]
-              }
-            ]
+            "overrides": []
           },
           "gridPos": {
             "h": 7,
@@ -381,10 +749,10 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
-              "expr": "sum(rate(container_cpu_usage_seconds_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\",container!~\"logs|logrotate\", image!=\"\",container!=\"\"}[$__rate_interval])) by (container,pod)",
+              "expr": "sum(rate(container_cpu_usage_seconds_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\",container!~\"logs|logrotate|POD\", image!=\"\",container!=\"\"}[$__rate_interval])) by (container,pod)",
               "hide": false,
               "legendFormat": "{{pod}} ( {{container}} )",
               "range": true,
@@ -407,7 +775,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
+            "uid": "${DS_METRICS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -460,32 +828,7 @@
               },
               "unit": "bytes"
             },
-            "overrides": [
-              {
-                "__systemRef": "hideSeriesFrom",
-                "matcher": {
-                  "id": "byNames",
-                  "options": {
-                    "mode": "exclude",
-                    "names": [
-                      "cluster1-haproxy-0 ( haproxy )"
-                    ],
-                    "prefix": "All except:",
-                    "readOnly": true
-                  }
-                },
-                "properties": [
-                  {
-                    "id": "custom.hideFrom",
-                    "value": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": true
-                    }
-                  }
-                ]
-              }
-            ]
+            "overrides": []
           },
           "gridPos": {
             "h": 7,
@@ -513,10 +856,10 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
-              "expr": "sum(container_memory_working_set_bytes{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\",container!=\"\",container!~\"logs|logrotate\"}) by (container,pod)",
+              "expr": "sum(container_memory_working_set_bytes{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\",container!=\"\",container!~\"logs|logrotate|POD\"}) by (container,pod)",
               "hide": false,
               "legendFormat": "{{pod}} ( {{container}} )",
               "range": true,
@@ -529,7 +872,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
+            "uid": "${DS_METRICS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -675,7 +1018,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -691,11 +1034,11 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(kube_pod_container_resource_limits{namespace=\"$namespace\", pod=~\"$k8s_db_pods\", unit=\"byte\"}) by (container,pod)",
+              "expr": "sum(kube_pod_container_resource_limits{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\", unit=\"byte\"}) by (container,pod)",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -706,11 +1049,11 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(kube_pod_container_resource_requests{namespace=\"$namespace\", pod=~\"$k8s_db_pods\", unit=\"core\",container!=\"\"}) by (container,pod) ",
+              "expr": "sum(kube_pod_container_resource_requests{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\", unit=\"core\",container!=\"\"}) by (container,pod) ",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -721,11 +1064,11 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(kube_pod_container_resource_limits{namespace=\"$namespace\", pod=~\"$k8s_db_pods\", unit=\"core\",container!=\"\"}) by (container,pod) ",
+              "expr": "sum(kube_pod_container_resource_limits{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\", unit=\"core\",container!=\"\"}) by (container,pod) ",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -780,14 +1123,14 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 2
       },
       "id": 71,
       "panels": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
+            "uid": "${DS_METRICS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -840,32 +1183,7 @@
               },
               "unit": "none"
             },
-            "overrides": [
-              {
-                "__systemRef": "hideSeriesFrom",
-                "matcher": {
-                  "id": "byNames",
-                  "options": {
-                    "mode": "exclude",
-                    "names": [
-                      "cluster1-haproxy-0 ( pxc-monit )"
-                    ],
-                    "prefix": "All except:",
-                    "readOnly": true
-                  }
-                },
-                "properties": [
-                  {
-                    "id": "custom.hideFrom",
-                    "value": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": true
-                    }
-                  }
-                ]
-              }
-            ]
+            "overrides": []
           },
           "gridPos": {
             "h": 7,
@@ -893,7 +1211,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -911,7 +1229,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
+            "uid": "${DS_METRICS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -953,18 +1271,22 @@
                 {
                   "options": {
                     "1": {
+                      "color": "orange",
                       "index": 0,
                       "text": "ContainerCannotRun"
                     },
                     "2": {
+                      "color": "red",
                       "index": 1,
                       "text": "OOM Killed"
                     },
                     "3": {
+                      "color": "green",
                       "index": 2,
                       "text": "Completed"
                     },
                     "4": {
+                      "color": "red",
                       "index": 3,
                       "text": "Error"
                     }
@@ -1011,7 +1333,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -1027,11 +1349,11 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "(kube_pod_container_status_last_terminated_reason{namespace=\"${namespace}\" ,reason=\"OOMKilled\"} and on (pod) kube_pod_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"})+1",
+              "expr": "(kube_pod_container_status_last_terminated_reason{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\" ,reason=\"OOMKilled\"} and on (pod) kube_pod_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"})+1",
               "hide": false,
               "instant": false,
               "interval": "",
@@ -1041,11 +1363,11 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "(kube_pod_container_status_last_terminated_reason{namespace=\"${namespace}\" ,reason=\"Completed\"} and on (pod) kube_pod_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"})+2",
+              "expr": "(kube_pod_container_status_last_terminated_reason{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\" ,reason=\"Completed\"} and on (pod) kube_pod_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"})+2",
               "hide": false,
               "instant": false,
               "interval": "",
@@ -1055,11 +1377,11 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "(kube_pod_container_status_last_terminated_reason{namespace=\"${namespace}\" ,reason=\"Error\"} and on (pod) kube_pod_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"})+3",
+              "expr": "(kube_pod_container_status_last_terminated_reason{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\" ,reason=\"Error\"} and on (pod) kube_pod_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"})+3",
               "hide": false,
               "instant": false,
               "interval": "",
@@ -1085,14 +1407,14 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 3
       },
       "id": 47,
       "panels": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
+            "uid": "${DS_METRICS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1105,8 +1427,6 @@
                 "filterable": true,
                 "inspect": false
               },
-              "decimals": 2,
-              "displayName": "",
               "mappings": [
                 {
                   "options": {
@@ -1115,11 +1435,11 @@
                       "index": 0
                     },
                     "Lost": {
-                      "color": "red",
+                      "color": "semi-dark-red",
                       "index": 1
                     },
                     "Pending": {
-                      "color": "orange",
+                      "color": "semi-dark-orange",
                       "index": 2
                     }
                   },
@@ -1132,18 +1452,37 @@
                   {
                     "color": "green",
                     "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
                   }
                 ]
-              },
-              "unit": "short"
+              }
             },
             "overrides": [
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Time"
+                  "options": "Capacity"
                 },
                 "properties": [
+                  {
+                    "id": "unit",
+                    "value": "decbytes"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background-solid"
+                  },
                   {
                     "id": "custom.width",
                     "value": 175
@@ -1153,100 +1492,24 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "namespace"
+                  "options": "PVC"
                 },
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 133
+                    "value": 265
                   }
                 ]
               },
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "persistentvolumeclaim"
+                  "options": "Storage Class"
                 },
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 225
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "storageclass"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 162
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "volumename"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 190
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value #B"
-                },
-                "properties": [
-                  {
-                    "id": "unit",
-                    "value": "decbytes"
-                  },
-                  {
-                    "id": "displayName",
-                    "value": "Capacity"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Capacity"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 169
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "phase"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 157
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "phase"
-                },
-                "properties": [
-                  {
-                    "id": "custom.displayMode",
-                    "value": "color-background-solid"
+                    "value": 136
                   }
                 ]
               }
@@ -1258,18 +1521,16 @@
             "x": 0,
             "y": 4
           },
-          "id": 88,
-          "links": [],
+          "id": 103,
           "options": {
             "footer": {
-              "enablePagination": false,
+              "enablePagination": true,
               "fields": "",
               "reducer": [
                 "sum"
               ],
               "show": false
             },
-            "frameIndex": 0,
             "showHeader": true,
             "sortBy": []
           },
@@ -1277,65 +1538,46 @@
           "targets": [
             {
               "datasource": {
-                "uid": "$DS_OPENSHIFT_PROMETHEUS"
+                "type": "prometheus",
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "label_keep((kube_persistentvolumeclaim_info and on (persistentvolumeclaim) kube_persistentvolumeclaim_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"}),\"persistentvolumeclaim\",\"storageclass\")",
+              "expr": "kubelet_volume_stats_capacity_bytes{namespace=\"${namespace}\",k8s_cluster_id=\"${k8s_cluster}\"}  * on (persistentvolumeclaim) group_right(k8s_cluster_id,namespace)\n( \n    (\n        kube_persistentvolumeclaim_info{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\"} \n     and on (persistentvolumeclaim) \n     kube_persistentvolumeclaim_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\",k8s_cluster_id=\"${k8s_cluster}\"}\n    )* on(persistentvolumeclaim) group_left(phase)\n    kube_persistentvolumeclaim_status_phase{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\"} !=0\n)  \n\n\n",
               "format": "table",
-              "hide": false,
               "instant": true,
+              "legendFormat": "__auto",
               "range": false,
-              "refId": "E"
-            },
-            {
-              "datasource": {
-                "uid": "$DS_OPENSHIFT_PROMETHEUS"
-              },
-              "editorMode": "code",
-              "expr": "max by (persistentvolumeclaim,namespace) (kubelet_volume_stats_capacity_bytes{namespace=~\"${namespace}\"} and on (persistentvolumeclaim) kube_persistentvolumeclaim_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"},\"namespace\")",
-              "format": "table",
-              "hide": false,
-              "instant": true,
-              "refId": "B"
-            },
-            {
-              "datasource": {
-                "uid": "$DS_OPENSHIFT_PROMETHEUS"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "label_keep(kube_persistentvolumeclaim_status_phase{namespace=~\"${namespace}\"} and on (persistentvolumeclaim) kube_persistentvolumeclaim_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"},\"persistentvolumeclaim\",\"phase\") !=0",
-              "format": "table",
-              "hide": false,
-              "instant": true,
-              "legendFormat": "{{Status}}",
-              "range": false,
-              "refId": "Status"
+              "refId": "Volume_Stats"
             }
           ],
           "title": "PVC Stats",
           "transformations": [
             {
-              "id": "joinByField",
-              "options": {
-                "byField": "persistentvolumeclaim",
-                "mode": "inner"
-              }
-            },
-            {
               "id": "organize",
               "options": {
                 "excludeByName": {
-                  "Time 1": true,
-                  "Time 2": true,
-                  "Time 3": true,
-                  "Value #E": true,
-                  "Value #Status": true,
-                  "namespace": true
+                  "Time": true,
+                  "cluster": true,
+                  "container": true,
+                  "endpoint": true,
+                  "instance": true,
+                  "job": true,
+                  "k8s_cluster_id": true,
+                  "namespace": true,
+                  "pod": true,
+                  "prometheus": true,
+                  "service": true,
+                  "volumename": true
                 },
                 "indexByName": {},
-                "renameByName": {}
+                "renameByName": {
+                  "Value": "Capacity",
+                  "persistentvolumeclaim": "PVC",
+                  "phase": "Status",
+                  "storageclass": "Storage Class",
+                  "volumename": ""
+                }
               }
             }
           ],
@@ -1344,7 +1586,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
+            "uid": "${DS_METRICS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1425,7 +1667,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -1442,7 +1684,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
+            "uid": "${DS_METRICS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1479,7 +1721,7 @@
                   "mode": "off"
                 }
               },
-              "decimals": 4,
+              "decimals": 2,
               "mappings": [],
               "thresholds": {
                 "mode": "absolute",
@@ -1524,7 +1766,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -1541,7 +1783,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
+            "uid": "${DS_METRICS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1622,7 +1864,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PA58DA793C7250F1B"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -1659,14 +1901,14 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 4
       },
       "id": 45,
       "panels": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_METRICS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1745,7 +1987,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -1758,7 +2000,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -1775,7 +2017,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_METRICS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1854,7 +2096,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -1867,7 +2109,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -1884,7 +2126,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_METRICS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1937,32 +2179,7 @@
               },
               "unit": "pps"
             },
-            "overrides": [
-              {
-                "__systemRef": "hideSeriesFrom",
-                "matcher": {
-                  "id": "byNames",
-                  "options": {
-                    "mode": "exclude",
-                    "names": [
-                      "cluster1-haproxy-0(Received)"
-                    ],
-                    "prefix": "All except:",
-                    "readOnly": true
-                  }
-                },
-                "properties": [
-                  {
-                    "id": "custom.hideFrom",
-                    "value": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": true
-                    }
-                  }
-                ]
-              }
-            ]
+            "overrides": []
           },
           "gridPos": {
             "h": 7,
@@ -1988,7 +2205,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -2001,7 +2218,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -2018,7 +2235,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_METRICS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2071,32 +2288,7 @@
               },
               "unit": "pps"
             },
-            "overrides": [
-              {
-                "__systemRef": "hideSeriesFrom",
-                "matcher": {
-                  "id": "byNames",
-                  "options": {
-                    "mode": "exclude",
-                    "names": [
-                      "cluster1-haproxy-0(Received)"
-                    ],
-                    "prefix": "All except:",
-                    "readOnly": true
-                  }
-                },
-                "properties": [
-                  {
-                    "id": "custom.hideFrom",
-                    "value": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": true
-                    }
-                  }
-                ]
-              }
-            ]
+            "overrides": []
           },
           "gridPos": {
             "h": 7,
@@ -2122,7 +2314,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -2135,7 +2327,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${datasource}"
+                "uid": "${DS_METRICS}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -2163,7 +2355,7 @@
       "type": "row"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "datasource": {
         "type": "datasource",
         "uid": "grafana"
@@ -2172,10 +2364,134 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 5
       },
       "id": 43,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_METRICS}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto",
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 6
+          },
+          "id": 101,
+          "options": {
+            "footer": {
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_METRICS}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "kube_pod_info{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\"}",
+              "format": "table",
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Node Info",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "Value": true,
+                  "__name__": true,
+                  "cluster": true,
+                  "container": true,
+                  "created_by_kind": true,
+                  "created_by_name": true,
+                  "endpoint": true,
+                  "host_network": true,
+                  "instance": true,
+                  "job": true,
+                  "k8s_cluster_id": true,
+                  "namespace": true,
+                  "pod": false,
+                  "pod_ip": true,
+                  "priority_class": true,
+                  "prometheus": true,
+                  "service": true
+                },
+                "indexByName": {
+                  "Time": 0,
+                  "Value": 19,
+                  "__name__": 1,
+                  "cluster": 2,
+                  "container": 3,
+                  "created_by_kind": 4,
+                  "created_by_name": 5,
+                  "endpoint": 6,
+                  "host_ip": 9,
+                  "host_network": 10,
+                  "instance": 11,
+                  "job": 12,
+                  "k8s_cluster_id": 13,
+                  "namespace": 14,
+                  "node": 8,
+                  "pod": 7,
+                  "pod_ip": 15,
+                  "priority_class": 16,
+                  "prometheus": 17,
+                  "service": 18
+                },
+                "renameByName": {
+                  "host_ip": "Node IP",
+                  "node": "Node",
+                  "pod": "Pod"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
       "targets": [
         {
           "datasource": {
@@ -2187,265 +2503,6 @@
       ],
       "title": "Information",
       "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 12,
-        "x": 0,
-        "y": 14
-      },
-      "id": 33,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "vertical",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "name"
-      },
-      "pluginVersion": "9.2.20",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "kube_pod_info{namespace=\"$namespace\", pod=~\"$k8s_db_pods\"}",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "{{ node }}",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Node",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 12,
-        "x": 12,
-        "y": 14
-      },
-      "id": 58,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "vertical",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "name"
-      },
-      "pluginVersion": "9.2.20",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "kube_pod_info{namespace=\"$namespace\", pod=\"$k8s_db_pods\"}",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "{{ host_ip }}",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Node IP",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "rgb(255, 255, 255)",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 12,
-        "x": 0,
-        "y": 16
-      },
-      "id": 41,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "name"
-      },
-      "pluginVersion": "9.2.20",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "kube_pod_info{namespace=\"$namespace\", pod=\"$k8s_db_pods\"}",
-          "interval": "",
-          "legendFormat": "{{ pod_ip }}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Pod IP",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "rgb(255, 255, 255)",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 12,
-        "x": 12,
-        "y": 16
-      },
-      "id": 2,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "name"
-      },
-      "pluginVersion": "9.2.20",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "kube_pod_info{namespace=\"$namespace\", pod=\"$k8s_db_pods\"}",
-          "interval": "",
-          "legendFormat": "{{ created_by_kind }}: {{ created_by_name }}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Created by",
-      "type": "stat"
     }
   ],
   "refresh": false,
@@ -2464,8 +2521,10 @@
           "text": "default",
           "value": "default"
         },
+        "description": "",
         "hide": 0,
         "includeAll": false,
+        "label": "DataSource",
         "multi": false,
         "name": "datasource",
         "options": [],
@@ -2477,16 +2536,70 @@
         "type": "datasource"
       },
       {
+        "hide": 2,
+        "name": "psmdb_operator",
+        "query": "${VAR_PSMDB_OPERATOR}",
+        "skipUrlSync": false,
+        "type": "constant",
         "current": {
-          "selected": false,
-          "text": "chetan",
-          "value": "chetan"
+          "value": "${VAR_PSMDB_OPERATOR}",
+          "text": "${VAR_PSMDB_OPERATOR}",
+          "selected": false
         },
+        "options": [
+          {
+            "value": "${VAR_PSMDB_OPERATOR}",
+            "text": "${VAR_PSMDB_OPERATOR}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "hide": 2,
+        "name": "pxc_operator",
+        "query": "${VAR_PXC_OPERATOR}",
+        "skipUrlSync": false,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_PXC_OPERATOR}",
+          "text": "${VAR_PXC_OPERATOR}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_PXC_OPERATOR}",
+            "text": "${VAR_PXC_OPERATOR}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "description": "",
+        "hide": 2,
+        "name": "pg_operator",
+        "query": "${VAR_PG_OPERATOR}",
+        "skipUrlSync": false,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_PG_OPERATOR}",
+          "text": "${VAR_PG_OPERATOR}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_PG_OPERATOR}",
+            "text": "${VAR_PG_OPERATOR}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
+          "uid": "${DS_METRICS}"
         },
-        "definition": "label_values(container_cpu_system_seconds_total,k8s_cluster_id)",
+        "definition": "label_values(kube_namespace_created,k8s_cluster_id)",
         "hide": 0,
         "includeAll": false,
         "label": "K8s Cluster",
@@ -2494,7 +2607,7 @@
         "name": "k8s_cluster",
         "options": [],
         "query": {
-          "query": "label_values(container_cpu_system_seconds_total,k8s_cluster_id)",
+          "query": "label_values(kube_namespace_created,k8s_cluster_id)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -2504,23 +2617,20 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "pxc",
-          "value": "pxc"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${datasource}"
+          "uid": "${DS_METRICS}"
         },
-        "definition": "label_values(kube_pod_info, namespace)",
+        "definition": "label_values(kube_namespace_created{k8s_cluster_id=\"${k8s_cluster}\"}, namespace)",
         "hide": 0,
         "includeAll": false,
+        "label": "Namespace",
         "multi": false,
         "name": "namespace",
         "options": [],
         "query": {
-          "query": "label_values(kube_pod_info, namespace)",
+          "query": "label_values(kube_namespace_created{k8s_cluster_id=\"${k8s_cluster}\"}, namespace)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -2535,7 +2645,7 @@
       {
         "current": {
           "selected": false,
-          "text": "PXC",
+          "text": "MySQL (PXC)",
           "value": "percona-xtradb-cluster-operator"
         },
         "hide": 0,
@@ -2546,49 +2656,35 @@
         "options": [
           {
             "selected": true,
-            "text": "PXC",
+            "text": "MySQL (PXC)",
             "value": "percona-xtradb-cluster-operator"
           },
           {
             "selected": false,
-            "text": "PSMDB",
+            "text": "MongoDB",
             "value": "percona-server-mongodb-operator"
-          },
-          {
-            "selected": false,
-            "text": "PG",
-            "value": "percona-postgresql-operator"
-          },
-          {
-            "selected": false,
-            "text": "PS",
-            "value": "percona-server-mysql-operator"
           }
         ],
-        "query": "PXC : percona-xtradb-cluster-operator, PSMDB : percona-server-mongodb-operator,PG : percona-postgresql-operator,PS : percona-server-mysql-operator",
+        "query": "MySQL (PXC) : percona-xtradb-cluster-operator, MongoDB : percona-server-mongodb-operator",
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "cluster1",
-          "value": "cluster1"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${datasource}"
+          "uid": "${DS_METRICS}"
         },
-        "definition": "label_values(kube_pod_labels{label_app_kubernetes_io_managed_by=\"$k8s_db_type\",namespace=\"$namespace\"},label_app_kubernetes_io_instance)",
+        "definition": "label_values(kube_pod_labels{label_app_kubernetes_io_managed_by=\"$k8s_db_type\",namespace=\"$namespace\",k8s_cluster_id=\"${k8s_cluster}\"},label_app_kubernetes_io_instance)",
         "hide": 0,
         "includeAll": false,
-        "label": "Database Name",
+        "label": "Database Cluster",
         "multi": false,
         "name": "k8s_db_cr",
         "options": [],
         "query": {
-          "query": "label_values(kube_pod_labels{label_app_kubernetes_io_managed_by=\"$k8s_db_type\",namespace=\"$namespace\"},label_app_kubernetes_io_instance)",
+          "query": "label_values(kube_pod_labels{label_app_kubernetes_io_managed_by=\"$k8s_db_type\",namespace=\"$namespace\",k8s_cluster_id=\"${k8s_cluster}\"},label_app_kubernetes_io_instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -2602,28 +2698,20 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": true,
-          "text": [
-            "cluster1-haproxy-0"
-          ],
-          "value": [
-            "cluster1-haproxy-0"
-          ]
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${datasource}"
+          "uid": "${DS_METRICS}"
         },
-        "definition": "label_values(kube_pod_labels{namespace=\"$namespace\",label_app_kubernetes_io_managed_by=\"$k8s_db_type\",label_app_kubernetes_io_instance=\"$k8s_db_cr\"}, pod)",
+        "definition": "label_values(kube_pod_labels{namespace=\"$namespace\",label_app_kubernetes_io_managed_by=\"$k8s_db_type\",label_app_kubernetes_io_instance=\"$k8s_db_cr\",k8s_cluster_id=\"${k8s_cluster}\"}, pod)",
         "hide": 0,
         "includeAll": false,
-        "label": "DB Pods",
+        "label": "Database Pods",
         "multi": true,
         "name": "k8s_db_pods",
         "options": [],
         "query": {
-          "query": "label_values(kube_pod_labels{namespace=\"$namespace\",label_app_kubernetes_io_managed_by=\"$k8s_db_type\",label_app_kubernetes_io_instance=\"$k8s_db_cr\"}, pod)",
+          "query": "label_values(kube_pod_labels{namespace=\"$namespace\",label_app_kubernetes_io_managed_by=\"$k8s_db_type\",label_app_kubernetes_io_instance=\"$k8s_db_cr\",k8s_cluster_id=\"${k8s_cluster}\"}, pod)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -2638,13 +2726,13 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Database Cluster on K8s Summary",
+  "title": "Percona - DB Cluster",
   "uid": "WzwxIOTVz",
-  "version": 45,
+  "version": 84,
   "weekStart": ""
 }
