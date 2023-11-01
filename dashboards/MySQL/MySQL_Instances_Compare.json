@@ -2329,30 +2329,32 @@
           "steppedLine": false,
           "targets": [
             {
-              "calculatedInterval": "2m",
+              "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[5m]))",
+              "expr": "sum(rate(container_network_receive_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[$interval]) or \nirate(container_network_receive_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[5m])) or\nsum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Inbound",
               "metric": "",
-              "refId": "A",
-              "step": 20
+              "refId": "B",
+              "step": 300,
+              "target": ""
             },
             {
-              "calculatedInterval": "2m",
+              "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[5m]))",
+              "expr": "sum(rate(container_network_transmit_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[$interval]) or \nirate(container_network_transmit_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[5m])) or \nsum(rate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Outbound",
               "metric": "",
-              "refId": "B",
-              "step": 20
+              "refId": "A",
+              "step": 300,
+              "target": ""
             }
           ],
           "thresholds": [],
@@ -2568,7 +2570,7 @@
           "links": [
             {
               "title": "Detailed descriptions about metrics",
-              "url": "https://www.percona.com/doc/percona-monitoring-and-management/dashboard.mysql-overview.html#mysql-internal-memory-overview"
+              "url": "https://per.co.na/mysql_internal_memory_overview"
             }
           ],
           "maxPerRow": 12,
