@@ -1,4 +1,4 @@
-export const docUrl = 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/setting-up/server/aws.html#running-the-instance';
+export const docUrl = 'https://per.co.na/run_instance';
 
 export const navTitle = 'Percona Monitoring and Management';
 
