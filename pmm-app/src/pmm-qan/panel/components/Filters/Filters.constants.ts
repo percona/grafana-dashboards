@@ -4,8 +4,21 @@ import { getServiceType } from './Filters.tools';
 export const FILTERS_BODY_HEIGHT = 600;
 export const FILTERS_HEADER_SIZE = 50;
 export const FILTERS_MARGIN_BOTTOM = 20;
+export const COMMENT_NAME_LENGTH = 24;
 
 const subURL = '/graph/d/';
+
+export const HIDDEN_FILTER_LABELS = [
+  'container_id',
+  'container_name',
+  'machine_id',
+  'node_id',
+  'node_model',
+  'planid',
+  'region',
+  'service_id',
+  'top_queryid',
+];
 
 export const FILTERS_GROUPS = [
   {

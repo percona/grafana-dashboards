@@ -33,7 +33,7 @@ export class PTSummaryDataSource extends DataSourceApi {
       .then(async (response) => {
         const result = await getActionResult((response as PTSummaryResponse).action_id);
 
-        return this.newDataFrame(result.error ? result.error : result.value);
+        return this.newDataFrame(result.value ? result.value : result.error);
       })
       .catch((error) => this.newDataFrame(error.response.data.message));
   }

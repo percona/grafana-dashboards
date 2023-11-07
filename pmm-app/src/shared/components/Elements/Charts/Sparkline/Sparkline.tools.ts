@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 
 export const getMetricSparklineKey = (metricName) => {
   switch (metricName) {
@@ -15,7 +15,7 @@ export const getMetricSparklineKey = (metricName) => {
   }
 };
 export const getAdditionalPoint = (last, previous) => new Date(
-  (+moment.utc(last) || 0) - ((+moment.utc(previous) || 0) - (+moment.utc(last) || 0)),
+  (+moment(last) || 0) - ((+moment(previous) || 0) - (+moment(last) || 0)),
 ).toISOString();
 export const isMetricExists = (metric) => metric === 'NaN' || metric === undefined || metric === '';
 export const findYRange = (array, key) => {
@@ -24,7 +24,7 @@ export const findYRange = (array, key) => {
   return [Math.max(...values) || 1, Math.min(...values) || 0];
 };
 export const findXRange = (array, key) => {
-  const values = array.map((arrayItem) => +moment.utc(arrayItem[key]) || 0);
+  const values = array.map((arrayItem) => +moment(arrayItem[key]) || 0);
 
   return [Math.max(...values), Math.min(...values)];
 };
