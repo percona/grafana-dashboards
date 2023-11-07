@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { omit, isEqual } from 'lodash';
+import React, { useEffect, useRef, useState } from 'react';
+import { isEqual, omit } from 'lodash';
 import { parseURL, refreshGrafanaVariables, setLabels } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
 import { ParseQueryParamDate } from '../../../shared/components/helpers/time-parameters-parser';
@@ -8,11 +8,24 @@ const initialState = {} as QueryAnalyticsContext;
 
 export const QueryAnalyticsProvider = React.createContext<QueryAnalyticsContext>(initialState);
 
-export const UrlParametersProvider = ({ timeRange, children }) => {
+export const UrlParametersProvider = (props) => {
+  const {
+    timeRange,
+    children,
+    timeZone,
+  } = props;
   const actions = {
     // eslint-disable-next-line max-len
-    setLabels: (value) => (state) => omit({ ...state, labels: setLabels(value), pageNumber: 1 }, ['queryId', 'querySelected']),
-    resetLabels: () => (state) => omit({ ...state, labels: {}, pageNumber: 1 }, ['queryId', 'querySelected']),
+    setLabels: (value) => (state) => omit({
+      ...state,
+      labels: setLabels(value),
+      pageNumber: 1,
+    }, ['queryId', 'querySelected']),
+    resetLabels: () => (state) => omit({
+      ...state,
+      labels: {},
+      pageNumber: 1,
+    }, ['queryId', 'querySelected']),
     selectTime: (value) => (state) => ({
       ...state,
       from: value[0],
@@ -22,9 +35,18 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
         to: value[1],
       },
     }),
-    setActiveTab: (value) => (state) => ({ ...state, openDetailsTab: value }),
-    highlightSparkline: (value) => (state) => ({ ...state, highlightedCoords: value }),
-    setLoadingDetails: (value) => (state) => ({ ...state, loadingDetails: value }),
+    setActiveTab: (value) => (state) => ({
+      ...state,
+      openDetailsTab: value,
+    }),
+    highlightSparkline: (value) => (state) => ({
+      ...state,
+      highlightedCoords: value,
+    }),
+    setLoadingDetails: (value) => (state) => ({
+      ...state,
+      loadingDetails: value,
+    }),
     selectQuery: (value, totals) => (state) => ({
       ...state,
       queryId: value.queryId,
@@ -135,13 +157,15 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
   };
 
   const query = new URLSearchParams(window.location.search);
-  const searchRef = useRef<string| null>(null);
+  const searchRef = useRef<string | null>(null);
   const [fromTimeMomentValue, setFromTimeMomentValue] = useState(ParseQueryParamDate.transform(
-    query.get('from') || 'now-12h', 'from',
-  ).utc().format('YYYY-MM-DDTHH:mm:ssZ'));
+    query.get('from') || 'now-12h', 'from', timeZone,
+  )
+    .format('YYYY-MM-DDTHH:mm:ssZ'));
   const [toTimeMomentValue, setToTimeMomentValue] = useState(ParseQueryParamDate.transform(
-    query.get('to') || 'now', 'to',
-  ).utc().format('YYYY-MM-DDTHH:mm:ssZ'));
+    query.get('to') || 'now', 'to', timeZone,
+  )
+    .format('YYYY-MM-DDTHH:mm:ssZ'));
 
   const [panelState, setContext] = useState({
     ...parseURL(query),
@@ -152,6 +176,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     from: fromTimeMomentValue,
     to: toTimeMomentValue,
     search: searchRef.current,
+    timeZone,
   });
 
   if (searchRef.current !== query.get('search')) {
@@ -159,6 +184,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     setContext({
       ...panelState,
       search: searchRef.current,
+      timeZone,
     });
   }
 
@@ -169,9 +195,10 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
         from: timeRange.raw.from,
         to: timeRange.raw.to,
       },
+      timeZone,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeRange.raw.from, timeRange.raw.to]);
+  }, [timeRange.raw.from, timeRange.raw.to, timeZone]);
 
   useEffect(() => {
     refreshGrafanaVariables(panelState);
@@ -186,11 +213,13 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     const newTo = getAbsoluteTime(timeRange.raw.to);
 
     if (newTo === 'now') {
-      setToTimeMomentValue(timeRange.to.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
-      setFromTimeMomentValue(timeRange.from.utc().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
+      setToTimeMomentValue(timeRange.to.subtract(1, 'minute')
+        .format('YYYY-MM-DDTHH:mm:ssZ'));
+      setFromTimeMomentValue(timeRange.from.subtract(1, 'minute')
+        .format('YYYY-MM-DDTHH:mm:ssZ'));
     } else {
-      setToTimeMomentValue(timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'));
-      setFromTimeMomentValue(timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'));
+      setToTimeMomentValue(timeRange.to.format('YYYY-MM-DDTHH:mm:ssZ'));
+      setFromTimeMomentValue(timeRange.from.format('YYYY-MM-DDTHH:mm:ssZ'));
     }
   }, [timeRange, from, to]);
 
@@ -236,12 +265,13 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     <QueryAnalyticsProvider.Provider
       value={{
         panelState,
-        contextActions: Object.keys(actions).reduce((actionsList, key) => {
-          // eslint-disable-next-line no-param-reassign
-          actionsList[key] = wrapAction(key);
+        contextActions: Object.keys(actions)
+          .reduce((actionsList, key) => {
+            // eslint-disable-next-line no-param-reassign
+            actionsList[key] = wrapAction(key);
 
-          return actionsList;
-        }, {}),
+            return actionsList;
+          }, {}),
       }}
     >
       {children}

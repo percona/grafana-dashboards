@@ -9,30 +9,30 @@ all: build pack disable install enable
 .PHONY: coverage
 coverage:
 	cd pmm-app \
-	&& npm run coverage
+	&& yarn run coverage
 
 .PHONY: codecov
 codecov:
 	cd pmm-app \
-	&& npm run codecov
+	&& yarn run codecov
 
 .PHONY: release
 release:
 	cd pmm-app \
 	&& npm version \
-	&& npm ci \
-	&& npm run build
+	&& yarn install --frozen-lockfile \
+	&& yarn run build
 
 .PHONY: prepare_release
 prepare_release:
 	cd pmm-app \
 	&& npm version \
-	&& npm ci \
+	&& yarn install --frozen-lockfile \
 
 .PHONY: build_package
 build_package:
 	cd pmm-app \
-	&& npm run build
+	&& yarn run build
 
 .PHONY: generate_coverage
 generate_coverage: coverage codecov

@@ -154,7 +154,7 @@
       "dashLength": 10,
       "dashes": false,
       "decimals": 2,
-      "description": "The Average Query Response Time graph shows information collected using the Response Time Distribution plugin sourced from [table INFORMATION_SCHEMA. QUERY_RESPONSE_TIME](https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME). It computes this value across all queries by taking the sum of seconds divided by the count of queries.",
+      "description": "The Average Query Response Time graph shows information collected using the Response Time Distribution plugin sourced from [table INFORMATION_SCHEMA. QUERY_RESPONSE_TIME](https://per.co.na/query_response_time). It computes this value across all queries by taking the sum of seconds divided by the count of queries.",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -194,7 +194,7 @@
         {
           "targetBlank": true,
           "title": "More information about Query Response Time plugin in Percona Server",
-          "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME"
+          "url": "https://per.co.na/query_response_time"
         }
       ],
       "nullPointMode": "null",
@@ -323,7 +323,7 @@
         {
           "targetBlank": true,
           "title": "More information about Query Response Time plugin in Percona Server",
-          "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME"
+          "url": "https://per.co.na/query_response_time"
         }
       ],
       "nullPointMode": "null",
@@ -430,7 +430,7 @@
       "id": 5,
       "links": [],
       "options": {
-        "content": "These graphs are available only for [Percona Server](https://www.percona.com/doc/percona-server/5.6/diagnostics/response_time_distribution.html) and [MariaDB](https://mariadb.com/kb/en/mariadb/query_response_time-plugin/). It requires query response time plugin installed and `query_response_time_stats ` variable turned on.\n\nRead/write split below is available only for Percona Server 5.6/5.7.",
+        "content": "These graphs are available only for [Percona Server](https://per.co.na/5_6_diagnostics_response_time_distribution) and [MariaDB](https://mariadb.com/kb/en/mariadb/query_response_time-plugin/). It requires query response time plugin installed and `query_response_time_stats ` variable turned on.\n\nRead/write split below is available only for Percona Server 5.6/5.7.",
         "mode": "markdown"
       },
       "pluginVersion": "8.3.5",
@@ -457,7 +457,7 @@
       "dashLength": 10,
       "dashes": false,
       "decimals": 2,
-      "description": "Available only in [Percona Server for MySQL](https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#logging-the-queries-in-separate-read-and-write-tables), provides  visibility of the split of [READ](https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME_READ) vs [WRITE](https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME_WRITE) query response time.",
+      "description": "Available only in [Percona Server for MySQL](https://per.co.na/5_7_diagnostics_response_time_distribution_logging), provides  visibility of the split of [READ](https://per.co.na/5_7_diagnostics_response_time_distribution_read) vs [WRITE](https://per.co.na/5_7_diagnostics_response_time_distribution_write) query response time.",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -497,7 +497,7 @@
         {
           "targetBlank": true,
           "title": "More information about Query Response Time plugin in Percona Server",
-          "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#logging-the-queries-in-separate-read-and-write-tables"
+          "url": "https://per.co.na/5_7_diagnostics_response_time_distribution_logging"
         }
       ],
       "nullPointMode": "null",
@@ -638,7 +638,7 @@
         {
           "targetBlank": true,
           "title": "More information about Query Response Time plugin in Percona Server",
-          "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME_READ"
+          "url": "https://per.co.na/5_7_diagnostics_response_time_distribution_read"
         }
       ],
       "nullPointMode": "null",
@@ -782,7 +782,7 @@
         {
           "targetBlank": true,
           "title": "More information about Query Response Time plugin in Percona Server",
-          "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME_WRITE"
+          "url": "https://per.co.na/5_7_diagnostics_response_time_distribution_write"
         }
       ],
       "nullPointMode": "null",
@@ -2095,30 +2095,32 @@
           "steppedLine": true,
           "targets": [
             {
-              "calculatedInterval": "2m",
+              "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[5m]))",
+              "expr": "sum(rate(container_network_receive_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[$interval]) or \nirate(container_network_receive_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[5m])) or\nsum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Inbound",
               "metric": "",
-              "refId": "A",
-              "step": 20
+              "refId": "B",
+              "step": 300,
+              "target": ""
             },
             {
-              "calculatedInterval": "2m",
+              "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[5m]))",
+              "expr": "sum(rate(container_network_transmit_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[$interval]) or \nirate(container_network_transmit_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[5m])) or \nsum(rate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "Outbound",
               "metric": "",
-              "refId": "B",
-              "step": 20
+              "refId": "A",
+              "step": 300,
+              "target": ""
             }
           ],
           "thresholds": [],
@@ -3153,7 +3155,7 @@
               "target": ""
             },
             {
-              "expr": "avg by () (sum(rate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) + \navg by () (sum(rate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) or \navg  by () ((rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
+              "expr": "avg by () (sum(rate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) + \navg by () (sum(rate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) or \navg  by () ((rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) + \navg by () (sum(rate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) or \navg  by () ((rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3277,7 +3279,7 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (node_name) (sum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m]))) ",
+              "expr": "sum(rate(container_network_receive_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[$interval]) or \nirate(container_network_receive_bytes_total{node_name=\"$node_name\",id=~\"/kubepods/.*\"}[5m])) or\nsum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,

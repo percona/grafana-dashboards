@@ -67,6 +67,7 @@ const QueryAnalyticsPanel: FC = () => {
             <ManageColumns onlyAdd />
           </div>
           <div className={styles.splitterWrapper}>
+            {/* @ts-ignore */}
             <SplitPane
               split="horizontal"
               onDragFinished={() => setReload({})}
