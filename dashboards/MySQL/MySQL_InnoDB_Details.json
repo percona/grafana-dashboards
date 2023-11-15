@@ -13277,7 +13277,7 @@
             {
               "targetBlank": true,
               "title": "System Variables (innodb_log_file_size)",
-              "url": "http://www.percona.com/doc/percona-server/5.5/scalability/innodb_io_55.html#innodb_log_file_size"
+              "url": "https://per.co.na/innodb_log_file_size"
             }
           ],
           "nullPointMode": "null",
@@ -23808,7 +23808,7 @@
               "color": {
                 "mode": "thresholds"
               },
-              "decimals": 1,
+              "decimals": 2,
               "mappings": [
                 {
                   "options": {
@@ -24456,7 +24456,7 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "clamp_max(avg(rate(container_cpu_user_seconds_total{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[$interval])) or \n((avg by () ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"user\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"user\"}[5m]),1)) ))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"user\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"user\"}[5m]))),100)",
+              "expr": "((sum(avg_over_time(container_processes{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[$interval]))-1) / avg by () (machine_cpu_cores)) or\navg by () ((avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -24618,7 +24618,7 @@
               "calculatedInterval": "2s",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by () (sum(rate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) or\navg by () (rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024)",
+              "expr": "avg by () (sum(rate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) or\navg by () ((rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -24629,7 +24629,7 @@
               "target": ""
             },
             {
-              "expr": "avg by () (sum(rate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) + \navg by () (sum(rate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) or \navg  by () ((rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
+              "expr": "avg by () (sum(rate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) + \navg by () (sum(rate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) or \navg  by () ((rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) + \navg by () (sum(rate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) or \navg  by () ((rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
