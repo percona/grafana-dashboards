@@ -22,7 +22,7 @@ export function buildShareLink(from: number, to: number) {
 
   params.set('from', `${from}`);
   params.set('to', `${to}`);
-  params.set('orgId', config.bootData.user.orgId);
+  params.set('orgId', `${config.bootData.user.orgId}`);
 
   return `${baseUrl}?${params.toString()}`;
 }

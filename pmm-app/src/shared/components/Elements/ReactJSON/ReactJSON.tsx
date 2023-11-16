@@ -22,5 +22,6 @@ const THEME_JSON_VIEW = {
 };
 
 export const ReactJSON = ({ json = {} }) => (
+  // @ts-ignore
   <ReactJson src={json} theme={THEME_JSON_VIEW} collapseStringsAfterLength={50} displayDataTypes={false} />
 );

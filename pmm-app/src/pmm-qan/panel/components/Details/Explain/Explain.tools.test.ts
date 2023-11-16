@@ -1,6 +1,7 @@
 import { base64Decode, parseExplain } from './Explain.tools';
 
 jest.mock('shared/core/logger');
+jest.mock('shared/components/helpers/notification-manager');
 
 describe('Explain.tools::', () => {
   it('should decode base64', () => {

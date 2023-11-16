@@ -1,6 +1,15 @@
-import { ActionResult } from 'shared/components/Actions';
 import { logger } from 'shared/core/logger';
-import { ClassicExplainInterface } from './Explain.types';
+import { ActionResult, getActionResult } from 'shared/components/Actions';
+import { Databases } from 'shared/core';
+import { mongodbMethods, mysqlMethods } from '../database-models';
+import { DatabasesType, QueryExampleResponseItem } from '../Details.types';
+import { ClassicExplainInterface, FetchExplainsResult } from './Explain.types';
+
+const actionResult: ActionResult = {
+  error: '',
+  loading: false,
+  value: undefined,
+};
 
 export const processClassicExplain = (classic): ClassicExplainInterface => {
   if (!classic) {
@@ -51,4 +60,62 @@ export const parseExplain = (result: ActionResult) => {
   }
 
   return result.value;
+};
+
+export const fetchExplains = async (
+  queryId: string,
+  example: QueryExampleResponseItem,
+  databaseType: DatabasesType,
+  placeholders?: string[],
+): Promise<FetchExplainsResult> => {
+  const hasPlaceholders = placeholders?.length || !example.placeholders_count;
+  const hasExample = !!example?.example;
+
+  try {
+    if (databaseType === Databases.mysql && (hasPlaceholders || hasExample)) {
+      const payload = {
+        example,
+        queryId,
+        placeholders,
+      };
+
+      const [classicResult, jsonResult] = await Promise.all([
+        mysqlMethods.getExplainTraditional(payload).then(getActionResult),
+        mysqlMethods.getExplainJSON(payload).then(getActionResult),
+      ]);
+
+      const jsonValue = parseExplain(jsonResult);
+      const classicValue = parseExplain(classicResult);
+
+      return {
+        jsonExplain: { ...jsonResult, value: jsonValue ? jsonValue.explain_result : jsonValue },
+        classicExplain: { ...classicResult, value: classicValue },
+        visualExplain: actionResult,
+      };
+    }
+
+    if (databaseType === Databases.mongodb) {
+      const jsonResult = await mongodbMethods.getExplainJSON({ example }).then(getActionResult);
+
+      return {
+        jsonExplain: jsonResult,
+        classicExplain: actionResult,
+        visualExplain: actionResult,
+      };
+    }
+
+    return {
+      jsonExplain: actionResult,
+      classicExplain: actionResult,
+      visualExplain: actionResult,
+    };
+  } catch (e) {
+    console.error(e);
+
+    return {
+      jsonExplain: actionResult,
+      classicExplain: actionResult,
+      visualExplain: actionResult,
+    };
+  }
 };

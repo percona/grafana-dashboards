@@ -28,6 +28,7 @@ export const Dimension: FC = () => {
         dropdownClassName="group-by-selector-dropdown"
       >
         {DIMENSIONS_OPTIONS.map((option) => (
+          // @ts-ignore
           <Option value={option.value} label={option.label} key={option.value}>
             {option.label}
           </Option>

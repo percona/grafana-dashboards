@@ -10,12 +10,13 @@
   },
   "main": "module.js",
   "scripts": {
-    "build": "NODE_OPTIONS='--max-old-space-size=5120' grafana-toolkit plugin:build",
-    "test": "NODE_OPTIONS='--max-old-space-size=5120' grafana-toolkit plugin:test",
-    "test:update": "NODE_OPTIONS='--max-old-space-size=5120' grafana-toolkit plugin:test --updateSnapshot",
-    "coverage": "NODE_OPTIONS='--max-old-space-size=5120' grafana-toolkit plugin:test --coverage",
-    "dev": "grafana-toolkit plugin:dev",
-    "watch": "grafana-toolkit plugin:dev --watch",
+    "monkey-patch": "node monkey-patch.js",
+    "build": "npm run monkey-patch && NODE_OPTIONS='--max-old-space-size=5120' grafana-toolkit plugin:build",
+    "test": "npm run monkey-patch && NODE_OPTIONS='--max-old-space-size=5120' grafana-toolkit plugin:test",
+    "test:update": "npm run monkey-patch && NODE_OPTIONS='--max-old-space-size=5120' grafana-toolkit plugin:test --updateSnapshot",
+    "coverage": "npm run monkey-patch && NODE_OPTIONS='--max-old-space-size=5120' grafana-toolkit plugin:test --coverage",
+    "dev": "npm run monkey-patch && grafana-toolkit plugin:dev",
+    "watch": "npm run monkey-patch && grafana-toolkit plugin:dev --watch",
     "lint": "npm run lint:dev",
     "lint:dev": "eslint --ext .tsx,.ts --fix src/",
     "jest": "jest",
@@ -33,9 +34,9 @@
   "dependencies": {
     "@ant-design/icons": "^4.0.6",
     "@emotion/css": "^11.7.1",
-    "@grafana/data": "8.3.5",
-    "@grafana/runtime": "8.3.5",
-    "@grafana/ui": "8.3.5",
+    "@grafana/data": "9.2.20",
+    "@grafana/runtime": "9.2.20",
+    "@grafana/ui": "9.2.20",
     "@testing-library/jest-dom": "5.11.5",
     "@testing-library/react": "11.1.2",
     "@testing-library/react-hooks": "^3.2.1",
@@ -51,17 +52,18 @@
     "highlight.js": "^11.4.0",
     "history": "^4.10.1",
     "lodash": "^4.17.20",
-    "moment": "^2.26.0",
+    "moment": "^2.29.4",
     "numeral": "^2.0.6",
-    "react": "17.0.1",
+    "react": "17.0.2",
     "react-chartjs-2": "^4.0.1",
-    "react-dom": "17.0.1",
+    "react-dom": "17.0.2",
     "react-final-form": "^6.5.3",
     "react-horizontal-stacked-bar-chart": "^8.15.2",
     "react-json-view": "^1.19.1",
     "react-router-dom": "^5.2.0",
     "react-split-pane": "^0.1.91",
     "react-table": "^7.6.2",
+    "react-viewport-list": "^7.1.1",
     "scroll-into-view": "^1.14.2",
     "simplebar-react": "^3.0.0-beta.8",
     "sql-formatter": "^2.3.3",
@@ -72,7 +74,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.9.5",
-    "@grafana/toolkit": "8.3.5",
+    "@grafana/toolkit": "9.2.20",
     "@types/enzyme": "^3.10.5",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/grafana": "https://git@github.com/CorpGlory/types-grafana.git",
@@ -109,7 +111,7 @@
     "jest-cli": "^26.6.3",
     "less": "^3.10.3",
     "mockdate": "^3.0.2",
-    "postcss": "^8.1.14",
+    "postcss": "^8.4.31",
     "sass": "^1.49.8",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.1.4",
@@ -119,11 +121,8 @@
     "webpack-cli": "^3.3.10"
   },
   "resolutions": {
-    "@babel/preset-env": "7.9.0"
-  },
-  "overrides": {
-    "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   },
   "engines": {
     "node": ">=14"

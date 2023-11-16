@@ -127,6 +127,7 @@ export const ManageColumns = (props) => {
         {...extraSelectProps}
       >
         {availableColumns.map((item) => (
+          // @ts-ignore
           <Option key={item.simpleName} label={item.humanizeName}>
             <OptionContent
               title={item.humanizeName}

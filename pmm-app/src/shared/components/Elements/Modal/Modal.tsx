@@ -46,7 +46,6 @@ export const Modal: FC<ModalWindow> = (props) => {
           {title}
           <div className={styles.modalHeaderClose}>
             <IconButton
-              surface="header"
               data-testid="modal-close-button"
               name="times"
               size="lg"

@@ -3,15 +3,15 @@ import React from 'react';
 import sqlFormatter from 'sql-formatter';
 import { render, screen } from '@testing-library/react';
 import Example from './Example';
-import { DatabasesType } from '../Details.types';
+import { ExampleInterface } from './Example.types';
 
 jest.mock('shared/components/helpers/notification-manager');
 jest.mock('react-json-view', () => ({ src = {} }) => <div className="json" data-src={JSON.stringify(src)} />);
 
 describe('Example tab page render test', () => {
   it('Component shows error text when there is no examples', () => {
-    const props = {
-      databaseType: 'mongodb' as DatabasesType,
+    const props: ExampleInterface = {
+      databaseType: 'mongodb',
       examples: [],
     };
     const { container } = render(<Example {...props} />);
@@ -20,11 +20,13 @@ describe('Example tab page render test', () => {
   });
 
   it('Component renders classic example for postgresql', () => {
-    const props = {
-      databaseType: 'postgresql' as DatabasesType,
+    const props: ExampleInterface = {
+      databaseType: 'postgresql',
       examples: [
         {
           example: 'SELECT SUM(K) FROM sbtest1 WHERE id BETWEEN 91131 AND 91230',
+          explain_fingerprint: 'SELECT SUM(K) FROM sbtest1 WHERE id BETWEEN :1 AND :2',
+          placeholders_count: 2,
           example_format: 'EXAMPLE',
           example_type: 'RANDOM',
           service_id: '/service_id/98f52fef-043b-47dc-9086-82c96581ff4d',
@@ -35,12 +37,14 @@ describe('Example tab page render test', () => {
 
     render(<Example databaseType={props.databaseType} examples={props.examples} />);
 
-    expect(screen.getByTestId('highlight-code').textContent).toEqual(sqlFormatter.format(props.examples[0].example));
+    expect(screen.getByTestId('highlight-code').textContent).toEqual(
+      sqlFormatter.format(props.examples[0].example),
+    );
   });
 
   it('Component renders json example for mongodb', () => {
-    const props = {
-      databaseType: 'mongodb' as DatabasesType,
+    const props: ExampleInterface = {
+      databaseType: 'mongodb',
       examples: [
         {
           example:
@@ -60,12 +64,11 @@ describe('Example tab page render test', () => {
   });
 
   it('Component renders when invalid json example is provided for mongodb', () => {
-    const props = {
-      databaseType: 'mongodb' as DatabasesType,
+    const props: ExampleInterface = {
+      databaseType: 'mongodb',
       examples: [
         {
-          example:
-            '{"ns":"admin.system.version","op":"command","command":{"collStats":"system.version"',
+          example: '{"ns":"admin.system.version","op":"command","command":{"collStats":"system.version"',
           example_format: 'EXAMPLE',
           example_type: 'RANDOM',
           service_id: '/service_id/a0bf892b-931e-4fdd-aee1-566a3682a774',
@@ -81,13 +84,15 @@ describe('Example tab page render test', () => {
   });
 
   it('Component renders classic example for mysql', () => {
-    const props = {
-      databaseType: 'mysql' as DatabasesType,
+    const props: ExampleInterface = {
+      databaseType: 'mysql',
       examples: [
         {
           example: 'SELECT SUM(K) FROM sbtest1 WHERE id BETWEEN 91131 AND 91230',
           example_format: 'EXAMPLE',
           example_type: 'RANDOM',
+          explain_fingerprint: 'SELECT SUM(K) FROM sbtest1 WHERE id BETWEEN :1 AND :2',
+          placeholders_count: 2,
           service_id: '/service_id/98f52fef-043b-47dc-9086-82c96581ff4d',
           service_type: 'mysql',
           schema: 'innodb',
@@ -97,6 +102,8 @@ describe('Example tab page render test', () => {
 
     render(<Example databaseType={props.databaseType} examples={props.examples} />);
 
-    expect(screen.getByTestId('highlight-code').textContent).toEqual(sqlFormatter.format(props.examples[0].example));
+    expect(screen.getByTestId('highlight-code').textContent).toEqual(
+      sqlFormatter.format(props.examples[0].example),
+    );
   });
 });
