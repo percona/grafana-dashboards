@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { isEqual, omit } from 'lodash';
+import moment from 'moment';
 import { parseURL, refreshGrafanaVariables, setLabels } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
 import { ParseQueryParamDate } from '../../../shared/components/helpers/time-parameters-parser';
-import moment from 'moment';
 
 const initialState = {} as QueryAnalyticsContext;
 
@@ -212,6 +212,7 @@ export const UrlParametersProvider = (props) => {
 
   useEffect(() => {
     const newTo = getAbsoluteTime(timeRange.raw.to);
+
     if (newTo === 'now') {
       setToTimeMomentValue(timeRange.to.subtract(1, 'minute')
         .format('YYYY-MM-DDTHH:mm:ssZ'));
@@ -222,12 +223,10 @@ export const UrlParametersProvider = (props) => {
         setFromTimeMomentValue(timeRange.from.subtract(1, 'minute')
           .format('YYYY-MM-DDTHH:mm:ssZ'));
       }
-    }
-    else {
+    } else {
       setToTimeMomentValue(timeRange.to.format('YYYY-MM-DDTHH:mm:ssZ'));
       setFromTimeMomentValue(timeRange.from.format('YYYY-MM-DDTHH:mm:ssZ'));
     }
-
   }, [timeRange, from, to]);
 
   useEffect(() => {
