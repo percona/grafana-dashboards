@@ -35,8 +35,7 @@ export function App() {
       // eslint-disable-next-line no-undef
       window.location.href = '/';
     } catch (error) {
-      console.log("!!!", error);
-      setMessage(error.message || "");
+      setMessage(error.message || "Request failed.");
       setShowNotification(true);
       setClosing(false);
     }
