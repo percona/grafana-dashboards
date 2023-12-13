@@ -8,7 +8,6 @@ datasources = {
     '${DS_METRICS}': 'Metrics',
     '${DS_PTSUMMARY}': 'PTSummary',
     '${DS_CLICKHOUSE}': 'ClickHouse',
-    '${DS_PROMETHEUS_ALERTMANAGER$': 'Prometheus AlertManager',
     '${DS_PROMETHEUS}': 'Metrics',
     'Prometheus': 'Metrics'
 }
