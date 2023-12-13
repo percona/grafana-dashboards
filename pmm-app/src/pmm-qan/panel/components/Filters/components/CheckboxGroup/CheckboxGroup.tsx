@@ -123,7 +123,7 @@ export const FilterCheckbox: FC<FilterCheckboxProps> = (
       </span>
       {dashboardURL && item.value && (
         <span className={styles.dashboardLink}>
-          <a href={dashboardURL} target="_blank" rel="noreferrer">
+          <a href={dashboardURL} target="_blank" rel="noreferrer" aria-label="Open dashboard">
             <Icon name="graph-bar" />
           </a>
         </span>

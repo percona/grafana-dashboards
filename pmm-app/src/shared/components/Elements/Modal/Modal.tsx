@@ -46,6 +46,7 @@ export const Modal: FC<ModalWindow> = (props) => {
           {title}
           <div className={styles.modalHeaderClose}>
             <IconButton
+              aria-label="Close modal"
               data-testid="modal-close-button"
               name="times"
               size="lg"
