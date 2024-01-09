@@ -454,7 +454,7 @@
           "unit": "short"
         },
         {
-          "alias": "",
+          "alias": "Uptime",
           "align": "auto",
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -466,17 +466,17 @@
           "mappingType": 1,
           "pattern": "Value",
           "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
+          "type": "number",
+          "unit": "s"
         }
       ],
       "targets": [
         {
           "datasource": "Metrics",
           "exemplar": false,
-          "expr": "avg by (service_name,engine) (mongodb_mongod_storage_engine{service_name=~\"$service_name\"})",
+          "expr": "group by (service_name,mongodb) (mongodb_version_info{service_name=~\"$service_name\"}) * on (service_name) group_left() mongodb_instance_uptime_seconds{}",
           "format": "table",
-          "hide": true,
+          "hide": false,
           "instant": true,
           "interval": "5m",
           "intervalFactor": 1,
@@ -484,16 +484,6 @@
           "metric": "",
           "refId": "A",
           "step": 300
-        },
-        {
-          "datasource": "Metrics",
-          "exemplar": false,
-          "expr": "avg by (service_name,mongodb) (mongodb_version_info{service_name=~\"$service_name\"})",
-          "format": "table",
-          "instant": true,
-          "interval": "5m",
-          "legendFormat": "{{mongodb}}",
-          "refId": "B"
         }
       ],
       "timeFrom": "1m",
