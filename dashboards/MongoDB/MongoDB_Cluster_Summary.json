@@ -1025,21 +1025,17 @@
       "type": "stat"
     },
     {
-      "colors": [
-        "#299c46",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a",
-        "#4040a0"
-      ],
-      "description": "Config services store the metadata for a sharded cluster. The metadata reflects state and organization for all data and components within the sharded cluster. The metadata includes the list of chunks on every shard and the ranges that define the chunks.",
+      "id": 1229,
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 0,
         "y": 13
       },
-      "id": 1229,
-      "mappingType": 1,
+      "type": "grafana-polystat-panel",
+      "title": "QPS of Config Services",
+      "repeatDirection": "v",
+      "description": "Config services store the metadata for a sharded cluster. The metadata reflects state and organization for all data and components within the sharded cluster. The metadata includes the list of chunks on every shard and the ranges that define the chunks.",
       "mappingTypes": [
         {
           "name": "value to text",
@@ -1051,60 +1047,6 @@
         }
       ],
       "nullPointMode": "connected",
-      "polystat": {
-        "animationSpeed": 2500,
-        "columnAutoSize": true,
-        "columns": "",
-        "defaultClickThrough": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?from=$__from&to=$__to&var-service_name=${__cell_name}",
-        "defaultClickThroughNewTab": true,
-        "defaultClickThroughSanitize": true,
-        "displayLimit": 100,
-        "ellipseCharacters": 18,
-        "ellipseEnabled": false,
-        "fontAutoColor": true,
-        "fontAutoScale": true,
-        "fontSize": 12,
-        "fontType": "Roboto",
-        "globalDecimals": 0,
-        "globalDisplayMode": "all",
-        "globalDisplayTextTriggeredEmpty": "OK",
-        "globalOperatorName": "current",
-        "globalUnitFormat": "ops",
-        "gradientEnabled": true,
-        "hexagonSortByDirection": 1,
-        "hexagonSortByField": "name",
-        "maxMetrics": 0,
-        "polygonBorderColor": "black",
-        "polygonBorderSize": 2,
-        "polygonGlobalFillColor": "#8F3BB8",
-        "radius": "",
-        "radiusAutoSize": true,
-        "regexPattern": "",
-        "rowAutoSize": true,
-        "rows": "",
-        "shape": "hexagon_pointed_top",
-        "tooltipDisplayMode": "all",
-        "tooltipDisplayTextTriggeredEmpty": "OK",
-        "tooltipEnabled": true,
-        "tooltipFontSize": 12,
-        "tooltipFontType": "Roboto",
-        "tooltipPrimarySortDirection": 2,
-        "tooltipPrimarySortField": "thresholdLevel",
-        "tooltipSecondarySortDirection": 2,
-        "tooltipSecondarySortField": "name",
-        "tooltipTimestampEnabled": true,
-        "valueEnabled": true
-      },
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "repeatDirection": "v",
-      "savedComposites": [],
-      "savedOverrides": [],
       "targets": [
         {
           "expr": "sum by (service_name) (mongodb_connections{cluster=\"$cluster\", state=\"current\"} * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}))",
@@ -1122,15 +1064,81 @@
           "refId": "B"
         }
       ],
-      "title": "QPS of Config Services",
-      "type": "grafana-polystat-panel",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ]
+      "options": {
+        "autoSizeColumns": true,
+        "layoutNumColumns": 8,
+        "autoSizeRows": true,
+        "layoutNumRows": 8,
+        "layoutDisplayLimit": 100,
+        "autoSizePolygons": true,
+        "globalPolygonSize": 50,
+        "globalPolygonBorderSize": 2,
+        "globalTextFontFamily": "Roboto",
+        "globalAutoScaleFonts": true,
+        "globalFontSize": 12,
+        "globalTextFontAutoColorEnabled": true,
+        "globalTextFontColor": "#000000",
+        "ellipseEnabled": false,
+        "ellipseCharacters": 18,
+        "sortByDirection": 1,
+        "sortByField": "name",
+        "globalTooltipsEnabled": true,
+        "globalTooltipsFontFamily": "Roboto",
+        "globalTooltipsShowTimestampEnabled": true,
+        "globalShowTooltipColumnHeadersEnabled": true,
+        "tooltipDisplayMode": "all",
+        "tooltipDisplayTextTriggeredEmpty": "No Data",
+        "tooltipPrimarySortDirection": 2,
+        "tooltipPrimarySortByField": "thresholdLevel",
+        "tooltipSecondarySortDirection": 2,
+        "tooltipSecondarySortByField": "name",
+        "globalDisplayMode": "all",
+        "globalDisplayTextTriggeredEmpty": "No Data",
+        "globalShowValueEnabled": true,
+        "globalShape": "hexagon_pointed_top",
+        "globalGradientsEnabled": true,
+        "globalFillColor": "#8F3BB8",
+        "globalPolygonBorderColor": "black",
+        "globalUnitFormat": "ops",
+        "globalOperator": "last",
+        "globalDecimals": 2,
+        "globalThresholdsConfig": [],
+        "globalClickthrough": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?from=$__from&to=$__to&var-service_name=${__cell_name}",
+        "globalClickthroughSanitizedEnabled": true,
+        "globalClickthroughNewTabEnabled": true,
+        "globalClickthroughCustomTargetEnabled": false,
+        "globalClickthroughCustomTarget": "",
+        "globalRegexPattern": "",
+        "overrideConfig": {
+          "overrides": []
+        },
+        "compositeGlobalAliasingEnabled": false,
+        "compositeConfig": {
+          "composites": [],
+          "enabled": true,
+          "animationSpeed": "2500"
+        },
+        "globalTextFontAutoColor": "#000000",
+        "panelId": 0,
+        "radius": 100
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "type": "special",
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "pluginVersion": "2.1.5"
     },
     {
       "colors": [
