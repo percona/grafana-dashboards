@@ -191,10 +191,6 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -205,10 +201,6 @@
       "panels": [],
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "refId": "A"
         }
       ],
@@ -227,10 +219,6 @@
         }
       ],
       "crosshairColor": "#8F070C",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "description": "Read more about [Replica Set Member States](https://docs.mongodb.com/manual/reference/replica-states/).",
       "display": "timeline",
       "expandFromQueryS": 0,
@@ -265,10 +253,6 @@
       "showTransitionCount": false,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "expr": "sum by (set) (mongodb_mongod_replset_my_state{service_name=~\"$service_name\"})",
           "interval": "$interval",
           "legendFormat": "{{set}}",
@@ -380,10 +364,6 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -394,10 +374,6 @@
       "panels": [],
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "refId": "A"
         }
       ],
@@ -408,10 +384,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "decimals": 2,
       "description": "Ops or Replicated Ops/sec classified by legacy wire protocol type (query, insert, update, delete, getmore). And (from the internal TTL threads) the docs deletes/sec by TTL indexes.",
       "editable": true,
@@ -476,10 +448,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "editorMode": "code",
           "expr": "avg by (service_name, legacy_op_type) (rate(mongodb_ss_opcountersRepl{service_name=~\"$service_name\", legacy_op_type!~\"(command|query|getmore)\"}[$interval]))",
           "format": "time_series",
@@ -492,10 +460,6 @@
           "step": 300
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "editorMode": "code",
           "expr": "avg by (service_name) (rate(mongodb_ss_metrics_ttl_deletedDocuments{service_name=~\"$service_name\"}[$interval]))",
           "format": "time_series",
@@ -508,10 +472,6 @@
           "step": 300
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "editorMode": "code",
           "expr": "avg by (service_name, legacy_op_type) (rate(mongodb_ss_opcounters{service_name=~\"$service_name\", legacy_op_type!=\"command\"}[$interval]))",
           "format": "time_series",
@@ -569,10 +529,6 @@
       }
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "description": "Docs per second inserted, updated, deleted or returned. (N.b. not 1-to-1 with operation counts.)",
       "fieldConfig": {
         "defaults": {
@@ -617,10 +573,6 @@
       "pluginVersion": "9.2.20",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "expr": "avg by (service_name,state) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\"}[5m]))",
           "format": "time_series",
           "hide": false,
@@ -635,10 +587,6 @@
       "type": "bargauge"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "description": "Ratio of Documents returned or Index entries scanned / full documents scanned",
       "fieldConfig": {
         "defaults": {
@@ -692,10 +640,6 @@
       "pluginVersion": "9.2.20",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "editorMode": "code",
           "expr": "sum(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval]))/\nsum(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[$interval])) \nor\nsum(irate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[1m]))/\nsum(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[1m]))",
           "format": "time_series",
@@ -708,10 +652,6 @@
           "step": 300
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "editorMode": "code",
           "expr": "(sum(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[$interval]))/\nsum(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[$interval])) \nor\nsum(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[1m]))/\nsum(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[1m])))",
           "format": "time_series",
@@ -728,10 +668,6 @@
       "type": "piechart"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "description": "Operations queued due to a lock.",
       "fieldConfig": {
         "defaults": {
@@ -778,10 +714,6 @@
       "pluginVersion": "9.2.20",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "expr": "avg by (service_name,type) (mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\"})",
           "format": "time_series",
           "hide": false,
@@ -796,10 +728,6 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "description": "The parameter shows how long a system has been “up” and running without a shut down or restart.",
       "fieldConfig": {
         "defaults": {
@@ -860,10 +788,6 @@
       "targets": [
         {
           "calculatedInterval": "10m",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "datasourceErrors": {},
           "errors": {},
           "exemplar": true,
@@ -882,10 +806,6 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "description": "Sum of disk space on all partitions. Note  it can be significantly over-reported in some installations",
       "fieldConfig": {
         "defaults": {
@@ -957,10 +877,6 @@
       "pluginVersion": "9.2.20",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "exemplar": true,
           "expr": "avg by () (container_fs_limit_bytes{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or \navg by () (sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype))",
           "format": "time_series",
@@ -974,10 +890,6 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "description": "RAM (Random Access Memory) is the hardware in a computing device where the operating system, application programs and data in current use are kept so they can be quickly reached by the device's processor.",
       "fieldConfig": {
         "defaults": {
@@ -1043,10 +955,6 @@
       "pluginVersion": "9.2.20",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "expr": "max by () (container_spec_memory_limit_bytes{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or \nmax by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
           "format": "time_series",
           "interval": "5m",
@@ -1059,10 +967,6 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "description": "Lowest percent of the disk space available",
       "fieldConfig": {
         "defaults": {
@@ -1131,10 +1035,6 @@
       "pluginVersion": "9.2.20",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "exemplar": true,
           "expr": "avg by () (min(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100 or \n(100 - azure_storage_percent_average{node_name=~\"$node_name\"}))",
           "format": "time_series",
@@ -1147,10 +1047,6 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "description": "This panel shows the number of objects (both data (scanned_objects) and index (scanned)) as well as the number of documents that were moved to a new location due to the size of the document growing. Moved documents only apply to the MMAPv1 storage engine.",
       "fieldConfig": {
         "defaults": {
@@ -1199,10 +1095,6 @@
       "pluginVersion": "9.2.20",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
@@ -1213,10 +1105,6 @@
           "step": 300
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_record_moves_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_record_moves_total{service_name=~\"$service_name\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
@@ -1230,10 +1118,6 @@
       "type": "bargauge"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "description": "Percent of Memory Available\nNote: on Modern Linux Kernels amount of Memory Available for application is not the same as Free+Cached+Buffers",
       "fieldConfig": {
         "defaults": {
@@ -1302,10 +1186,6 @@
       "pluginVersion": "9.2.20",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "exemplar": true,
           "expr": "clamp_max(avg by () (container_memory_usage_bytes{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|backup-agent|\"} * 100 / container_spec_memory_limit_bytes{node_name=\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|backup-agent|\"}),100) or  \navg by () (((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) * 100 or (100 - azure_memory_percent_average{node_name=~\"$node_name\"}))",
           "format": "time_series",
@@ -1318,10 +1198,6 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "description": "Show the 5 collections that are most frequently read.",
       "fieldConfig": {
         "defaults": {
@@ -1367,10 +1243,6 @@
       "repeatDirection": "v",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "editorMode": "code",
           "expr": "topk (5,sum by (service_name,database,collection) (irate(mongodb_top_queries_count{service_name=~\"$service_name\"})[$interval]))",
           "hide": false,
@@ -1384,10 +1256,6 @@
       "type": "bargauge"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1433,10 +1301,6 @@
       "pluginVersion": "9.2.20",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "editorMode": "code",
           "expr": "topk (5,sum by (service_name,database,collection) (irate(mongodb_top_insert_count{service_name=~\"$service_name\"}+mongodb_top_remove_count{service_name=~\"$service_name\"}+mongodb_top_update_count{service_name=~\"$service_name\"})[1m]))",
           "instant": false,
@@ -1454,10 +1318,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "decimals": 2,
       "description": "TCP connections (Incoming)",
       "editable": true,
@@ -1516,10 +1376,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "editorMode": "code",
           "expr": "avg by (service_name, conn_type) (mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"} or\nmongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"} or\nmongodb_ss_connections{service_name=~\"$service_name\"})",
           "format": "time_series",
@@ -1579,10 +1435,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "decimals": 2,
       "description": "Timespan 'window' between newest and the oldest op in the Oplog collection.",
       "editable": true,
@@ -1651,10 +1503,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "editorMode": "code",
           "expr": "time()-avg by (service_name) (mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"})",
           "hide": false,
@@ -1667,10 +1515,6 @@
           "step": 300
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "editorMode": "code",
           "expr": "avg by (service_name) (mongodb_mongod_replset_oplog_head_timestamp{service_name=~\"$service_name\"}-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"})",
           "hide": false,
@@ -1728,10 +1572,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "decimals": 2,
       "description": "Average latency of operations (classified by read, write, or (other) command)",
       "fieldConfig": {
@@ -1780,10 +1620,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "editorMode": "code",
           "expr": "avg by (service_name,op_type) (rate(mongodb_ss_opLatencies_latency{service_name=~\"$service_name\"}[$interval]) / (rate(mongodb_ss_opLatencies_ops{service_name=~\"$service_name\"}[$interval]) > 0) or irate(mongodb_ss_opLatencies_latency{service_name=~\"$service_name\"}[5m]) / (irate(mongodb_ss_opLatencies_ops{service_name=~\"$service_name\"}[5m]) > 0))",
           "interval": "$interval",
@@ -1840,10 +1676,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "decimals": 2,
       "description": "The CPU time is measured in clock ticks or seconds. It is useful to measure CPU time as a percentage of the CPU's capacity, which is called the CPU usage.",
       "editable": true,
@@ -1909,10 +1741,6 @@
       "steppedLine": true,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "expr": "avg by (node_name,mode) (clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"user\", mode!=\"system\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\", mode!=\"user\", mode!=\"system\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\", mode!=\"user\", mode!=\"system\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\", mode!=\"user\", mode!=\"system\"}[5m]))),100))",
           "format": "time_series",
           "interval": "$interval",
@@ -1921,10 +1749,6 @@
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "expr": "clamp_max(sum(rate(container_cpu_usage_seconds_total{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[$interval]) or rate(container_cpu_usage_seconds_total{node_name=\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[5m])) or\nmax by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
           "format": "time_series",
           "hide": true,
@@ -1934,10 +1758,6 @@
           "refId": "C"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "exemplar": true,
           "expr": "clamp_max(avg(rate(container_cpu_system_seconds_total{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[$interval])) or \n((avg by () ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"system\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"system\"}[5m]),1)) ))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"system\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"system\"}[5m]))),100)",
           "hide": false,
@@ -1946,10 +1766,6 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "exemplar": true,
           "expr": "clamp_max(avg(rate(container_cpu_user_seconds_total{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[$interval])) or \n((avg by () ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"user\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"user\"}[5m]),1)) ))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"user\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"user\"}[5m]))),100)",
           "hide": false,
@@ -2009,10 +1825,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "decimals": 2,
       "description": "When a system is running with maximum CPU utilization, the transmitting and receiving threads must all share the available CPU. This will cause data to be queued more frequently to cope with the lack of CPU. CPU Saturation may be measured as the length of a wait queue, or the time spent waiting on the queue.",
       "editable": true,
@@ -2077,10 +1889,6 @@
       "targets": [
         {
           "calculatedInterval": "2s",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "datasourceErrors": {},
           "errors": {},
           "exemplar": true,
@@ -2097,10 +1905,6 @@
         },
         {
           "calculatedInterval": "2s",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "datasourceErrors": {},
           "errors": {},
           "exemplar": true,
@@ -2160,10 +1964,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "decimals": 2,
       "description": "Average latency of operations (classified by read, write, or (other) command)",
       "fieldConfig": {
@@ -2218,10 +2018,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "editorMode": "code",
           "expr": "avg by (service_name) (rate(mongodb_ss_flowControl_isLaggedCount{service_name=~\"$service_name\"}[$interval]))",
           "interval": "$interval",
@@ -2230,10 +2026,6 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "editorMode": "code",
           "expr": "avg by (service_name) (rate(mongodb_ss_flowControl_isLaggedTimeMicros{service_name=~\"$service_name\"}[$interval]))",
           "hide": false,
@@ -2287,10 +2079,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
       "decimals": 2,
       "description": "Disk I/O includes read or write or input/output operations involving a physical disk. It is the speed with which the data transfer takes place between the hard disk drive and RAM.\n\nSwap Activity is memory management that involves swapping sections of memory to and from physical storage.",
       "editable": true,
@@ -2368,10 +2156,6 @@
       "targets": [
         {
           "calculatedInterval": "2s",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by () (sum(rate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) or\navg by () (rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024)",
@@ -2386,10 +2170,6 @@
         },
         {
           "calculatedInterval": "2s",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "datasourceErrors": {},
           "errors": {},
           "expr": "avg by () (sum(rate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) or\navg by () ((rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
@@ -2403,10 +2183,6 @@
           "target": ""
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "expr": "avg by () (sum(rate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_reads_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) + \navg by () (sum(rate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) or \navg  by () ((rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) + \navg by () (sum(rate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]) or irate(container_fs_writes_bytes_total{node_name=\"$node_name\",id=~\"/kubepods.*\"}[5s]))) or \navg  by () ((rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
           "format": "time_series",
           "interval": "$interval",
@@ -2415,10 +2191,6 @@
           "refId": "C"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "expr": "avg by (node_name) (rate(node_vmstat_pswpin{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=\"$node_name\"}[5m]) * 4096)",
           "format": "time_series",
           "interval": "$interval",
@@ -2427,10 +2199,6 @@
           "refId": "D"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
           "expr": "avg by () (rate(container_memory_swap{node_name=\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[$interval]) or \nirate(container_memory_swap{node_name=\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}[5s])) or \navg by () (rate(node_vmstat_pswpout{node_name=\"$node_name\"}[$interval]) * 4096 or \nirate(node_vmstat_pswpout{node_name=\"$node_name\"}[5m]) * 4096)",
           "format": "time_series",
           "interval": "$interval",
@@ -2558,10 +2326,6 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
         "definition": "",
         "hide": 0,
         "includeAll": true,
@@ -2587,10 +2351,6 @@
           "selected": false,
           "text": "mongo-60-cfg-0",
           "value": "mongo-60-cfg-0"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
         },
         "definition": "label_values(mongodb_up{cluster=~\"$cluster\"}, service_name)",
         "hide": 0,
@@ -2619,10 +2379,6 @@
           "text": "mongo-60-cfg-0",
           "value": "mongo-60-cfg-0"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
         "definition": "label_values(mongodb_up{cluster=~\"$cluster\",service_name=~\"$service_name\"}, node_name)",
         "hide": 2,
         "includeAll": false,
@@ -2650,10 +2406,6 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 2,
         "includeAll": true,
@@ -2679,10 +2431,6 @@
           "selected": false,
           "text": "All",
           "value": "$__all"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
         },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
         "hide": 2,
@@ -2710,10 +2458,6 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
         "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
         "hide": 2,
         "includeAll": true,
@@ -2739,10 +2483,6 @@
           "selected": false,
           "text": "All",
           "value": "$__all"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
         },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
         "hide": 2,
@@ -2770,10 +2510,6 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
         "hide": 2,
         "includeAll": true,
@@ -2799,10 +2535,6 @@
           "selected": false,
           "text": "All",
           "value": "$__all"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
         },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
         "hide": 2,
@@ -2830,10 +2562,6 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
         "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
         "hide": 2,
         "includeAll": true,
@@ -2859,10 +2587,6 @@
           "selected": false,
           "text": "mdb60-cluster\",service_id=\"/service_id/7fbc16ca-a6bc-43e2-9af5-8e2786898c91\",service_name=\"mongo-60-cfg-0\",service_type=\"mongodb\",set=\"cfg",
           "value": "mdb60-cluster\",service_id=\"/service_id/7fbc16ca-a6bc-43e2-9af5-8e2786898c91\",service_name=\"mongo-60-cfg-0\",service_type=\"mongodb\",set=\"cfg"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
         },
         "definition": "query_result(mongodb_mongod_replset_my_state{service_name=~\"$service_name\"})",
         "hide": 2,
@@ -2891,10 +2615,6 @@
           "text": "/service_id/7fbc16ca-a6bc-43e2-9af5-8e2786898c91",
           "value": "/service_id/7fbc16ca-a6bc-43e2-9af5-8e2786898c91"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
         "definition": "label_values(mongodb_up{service_name=~\"$service_name\"}, service_id)",
         "hide": 2,
         "includeAll": false,
@@ -2922,10 +2642,6 @@
           "selected": false,
           "text": "None",
           "value": ""
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
         },
         "definition": "label_values(up{service_name=~\"$service_name\"},service_name)",
         "hide": 2,
@@ -2981,7 +2697,7 @@
   },
   "timezone": "",
   "title": "MongoDB Instance Summary (new)",
-  "uid": "QvMEcl4Sz",
+  "uid": "mongodb-instance-summary-new",
   "version": 4,
   "weekStart": ""
 }
