@@ -1,5 +1,16 @@
 # ClickHouse data source for Grafana
 
+
+<img alt="Grafana Dashboard Screenshot - Query Analysis" src="https://github.com/grafana/clickhouse-datasource/assets/5509570/d129936e-afac-4002-8963-61c15825c154" width="400" >
+
+<img alt="Grafana Dashboard Screenshot - Data Analysis" src="https://github.com/grafana/clickhouse-datasource/assets/5509570/5911f72b-0a52-4e1e-9cd4-3905ac0623cd" width="400" >
+
+
+## Version compatibility
+
+Users on `v8.x` of Grafana are encouraged to continue to use `v2.2.0` of the plugin. 
+Users on `v9.x` and higher of Grafana can use `v3` however it is `beta` and may contain bugs.
+
 The ClickHouse data source plugin allows you to query and visualize ClickHouse
 data from within Grafana.
 
@@ -14,12 +25,16 @@ locally, please checkout the [Plugin installation docs](https://grafana.com/docs
 
 ### ClickHouse user for the data source
 
-Set up an ClickHouse user account with `readonly` permission and access to
+Set up an ClickHouse user account with [readonly](https://clickhouse.com/docs/en/operations/settings/permissions-for-queries#settings_readonly) permission and access to
 databases and tables you want to query. Please note that Grafana does not
 validate that queries are safe. Queries can contain any SQL statement. For
 example, statements like `ALTER TABLE system.users DELETE WHERE name='sadUser'`
 and `DROP TABLE sadTable;` would be executed.
 
+To configure a readonly user, follow these steps:
+1. Create a `readonly` user profile following the [Creating Users and Roles in ClickHouse](https://clickhouse.com/docs/en/operations/access-rights) guide.
+2. Ensure the `readonly` user has enough permission to modify the `max_execution_time` setting required by the underlying [clickhouse-go client](https://github.com/ClickHouse/clickhouse-go/).
+3. If you're using a public Clickhouse instance, it's not recommended to set `readonly=2` in the `readonly` profile. Instead, leave `readonly=1` and set the constraint type of `max_execution_time` to [changeable_in_readonly](https://clickhouse.com/docs/en/operations/settings/constraints-on-settings) to allow modification of this setting.
 ### ClickHouse protocol support
 
 The plugin supports both `HTTP` and `Native` (default) transport protocols. This can be enabled in the configuration via the `protocol` configuration parameter. Both protocols exchange data with ClickHouse using optimized native format.
@@ -144,16 +159,17 @@ FROM test_data
 WHERE $__timeFilter(date_time)
 ```
 
-| Macro                                        | Description                                                                                                                                                                         | Output example                                          |
-|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
-| *$__timeFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in seconds                                                         | `time >= '1480001790' AND time <= '1482576232' )`       |
-| *$__dateFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the date range of the panel                                                                    | `date >= '2022-10-21' AND date <= '2022-10-23' )`       |
-| *$__timeFilter_ms(columnName)*               | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in milliseconds                                                    | `time >= '1480001790671' AND time <= '1482576232479' )` |
-| *$__fromTime*                                | Replaced by the starting time of the range of the panel casted to DateTime                                                                                                          | `toDateTime(intDiv(1415792726371,1000))`                |
-| *$__toTime*                                  | Replaced by the ending time of the range of the panel casted to DateTime                                                                                                            | `toDateTime(intDiv(1415792726371,1000))`                |
-| *$__interval_s*                              | Replaced by the interval in seconds                                                                                                                                                 | `20`                                                    |
-| *$__timeInterval(columnName)*                | Replaced by a function calculating the interval based on window size, useful when grouping                                                                                          | `toStartOfInterval(column, INTERVAL 20 second)`         |
-| *$__conditionalAll(condition, $templateVar)* | Replaced by the first parameter when the template variable in the second parameter does not select every value. Replaced by the 1=1 when the template variable selects every value. | `condition` or `1=1`                                    |
+| Macro                                        | Description                                                                                                                                                                         | Output example                                                        |
+|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|
+| *$__timeFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in seconds                                                         | `time >= '1480001790' AND time <= '1482576232' )`                     |
+| *$__dateFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the date range of the panel                                                                    | `date >= '2022-10-21' AND date <= '2022-10-23' )`                     |
+| *$__timeFilter_ms(columnName)*               | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in milliseconds                                                    | `time >= '1480001790671' AND time <= '1482576232479' )`               |
+| *$__fromTime*                                | Replaced by the starting time of the range of the panel casted to DateTime                                                                                                          | `toDateTime(intDiv(1415792726371,1000))`                              |
+| *$__toTime*                                  | Replaced by the ending time of the range of the panel casted to DateTime                                                                                                            | `toDateTime(intDiv(1415792726371,1000))`                              |
+| *$__interval_s*                              | Replaced by the interval in seconds                                                                                                                                                 | `20`                                                                  |
+| *$__timeInterval(columnName)*                | Replaced by a function calculating the interval based on window size in seconds, useful when grouping                                                                               | `toStartOfInterval(toDateTime(column), INTERVAL 20 second)`           |
+| *$__timeInterval_ms(columnName)*             | Replaced by a function calculating the interval based on window size in milliseconds, useful when grouping                                                                          | `toStartOfInterval(toDateTime64(column, 3), INTERVAL 20 millisecond)` |
+| *$__conditionalAll(condition, $templateVar)* | Replaced by the first parameter when the template variable in the second parameter does not select every value. Replaced by the 1=1 when the template variable selects every value. | `condition` or `1=1`                                                  |
 
 The plugin also supports notation using braces {}. Use this notation when queries are needed inside parameters.
 
