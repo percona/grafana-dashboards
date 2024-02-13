@@ -1,48 +1,63 @@
-# ClickHouse data source for Grafana
+# Official ClickHouse data source for Grafana
 
-The ClickHouse data source plugin allows you to query and visualize ClickHouse
-data from within Grafana.
+The ClickHouse data source plugin allows you to query and visualize ClickHouse data in Grafana.
 
-**As of 2.0 this plugin will only support ad hoc filters when using ClickHouse 22.7+**
+<img alt="Grafana Dashboard Screenshot - Query Analysis" src="https://github.com/grafana/clickhouse-datasource/assets/5509570/d129936e-afac-4002-8963-61c15825c154" width="400" >
+
+<img alt="Grafana Dashboard Screenshot - Data Analysis" src="https://github.com/grafana/clickhouse-datasource/assets/5509570/5911f72b-0a52-4e1e-9cd4-3905ac0623cd" width="400" >
+
+## Version compatibility
+
+Users on Grafana `v9.x` and higher of Grafana can use `v4`.
+Users on Grafana `v8.x` are encouraged to continue using `v2.2.0` of the plugin.
+
+
+\* *As of 2.0 this plugin will only support ad hoc filters when using ClickHouse 22.7+*
 
 ## Installation
 
-For detailed instructions on how to install the plugin on Grafana Cloud or
-locally, please checkout the [Plugin installation docs](https://grafana.com/docs/grafana/latest/plugins/installation/).
+For detailed instructions on how to install the plugin on Grafana Cloud or locally,
+please checkout the [Plugin installation docs](https://grafana.com/docs/grafana/latest/plugins/installation/).
 
 ## Configuration
 
 ### ClickHouse user for the data source
 
-Set up an ClickHouse user account with `readonly` permission and access to
-databases and tables you want to query. Please note that Grafana does not
-validate that queries are safe. Queries can contain any SQL statement. For
-example, statements like `ALTER TABLE system.users DELETE WHERE name='sadUser'`
+Set up an ClickHouse user account with [readonly](https://clickhouse.com/docs/en/operations/settings/permissions-for-queries#settings_readonly) permission and access to
+databases and tables you want to query.
+Please note that Grafana does not validate that queries are safe. Queries can contain any SQL statement.
+For example, statements like `ALTER TABLE system.users DELETE WHERE name='sadUser'`
 and `DROP TABLE sadTable;` would be executed.
+
+To configure a readonly user, follow these steps:
+1. Create a `readonly` user profile following the [Creating Users and Roles in ClickHouse](https://clickhouse.com/docs/en/operations/access-rights) guide.
+2. Ensure the `readonly` user has enough permission to modify the `max_execution_time` setting required by the underlying [clickhouse-go client](https://github.com/ClickHouse/clickhouse-go/).
+3. If you're using a public Clickhouse instance, it's not recommended to set `readonly=2` in the `readonly` profile. Instead, leave `readonly=1` and set the constraint type of `max_execution_time` to [changeable_in_readonly](https://clickhouse.com/docs/en/operations/settings/constraints-on-settings) to allow modification of this setting.
 
 ### ClickHouse protocol support
 
-The plugin supports both `HTTP` and `Native` (default) transport protocols. This can be enabled in the configuration via the `protocol` configuration parameter. Both protocols exchange data with ClickHouse using optimized native format.
+The plugin supports both `Native` (default) and `HTTP` transport protocols.
+This can be enabled in the configuration via the `protocol` configuration parameter.
+Both protocols exchange data with ClickHouse using optimized native format.
 
-Note that the default ports for `HTTP/s` and `Native` differ:
+Note that the default ports for `HTTP/S` and `Native` differ:
 
 - HTTP - 8123
 - HTTPS - 8443
 - Native - 9000
 - Native with TLS - 9440
 
-### Manual configuration
+### Manual configuration via UI
 
-Once the plugin is installed on your Grafana instance, follow [these
-instructions](https://grafana.com/docs/grafana/latest/datasources/add-a-data-source/)
+Once the plugin is installed on your Grafana instance, follow
+[these instructions](https://grafana.com/docs/grafana/latest/datasources/add-a-data-source/)
 to add a new ClickHouse data source, and enter configuration options.
 
 ### With a configuration file
 
-It is possible to configure data sources using configuration files with
-Grafana’s provisioning system. To read about how it works, including all the
-settings that you can set for this data source, refer to [Provisioning Grafana
-data sources](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources).
+It is possible to configure data sources using configuration files with Grafana’s provisioning system.
+To read about how it works, refer to
+[Provisioning Grafana data sources](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources).
 
 Here are some provisioning examples for this data source using basic authentication:
 
@@ -54,18 +69,50 @@ datasources:
     jsonData:
       defaultDatabase: database
       port: 9000
-      server: localhost
+      host: localhost
       username: username
       tlsSkipVerify: false
+      # tlsAuth: <bool>
+      # tlsAuthWithCACert: <bool>
+      # secure: <bool>
+      # dialTimeout: <seconds>
+      # queryTimeout: <seconds>
+      # protocol: <native|http>
+      # defaultTable: <string>
+      # httpHeaders:
+      # - name: X-Example-Header
+      #   secure: false
+      #   value: <string>
+      # - name: Authorization
+      #   secure: true
+      # logs:
+      #   defaultDatabase: <string>
+      #   defaultTable: <string>
+      #   otelEnabled: <bool>
+      #   otelVersion: <string>
+      #   timeColumn: <string>
+      #   ...Column: <string>
+      # traces:
+      #   defaultDatabase: <string>
+      #   defaultTable: <string>
+      #   otelEnabled: <bool>
+      #   otelVersion: <string>
+      #   durationUnit: <seconds|milliseconds|microseconds|nanoseconds>
+      #   traceIdColumn: <string>
+      #   ...Column: <string>
     secureJsonData:
       password: password
+      # tlsCACert: <string>
+      # tlsClientCert: <string>
+      # tlsClientKey: <string>
+      # secureHttpHeaders.Authorization: <string>
 ```
 
 ## Building queries
 
-The query editor allows you to query ClickHouse to return time series or
-tabular data. Queries can contain macros which simplify syntax and allow for
-dynamic parts.
+Queries can be built using the raw SQL editor or the query builder.
+Queries can contain macros which simplify syntax and allow for
+dynamic SQL generation.
 
 ### Time series
 
@@ -144,16 +191,16 @@ FROM test_data
 WHERE $__timeFilter(date_time)
 ```
 
-| Macro                                        | Description                                                                                                                                                                         | Output example                                          |
-|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
-| *$__timeFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in seconds                                                         | `time >= '1480001790' AND time <= '1482576232' )`       |
-| *$__dateFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the date range of the panel                                                                    | `date >= '2022-10-21' AND date <= '2022-10-23' )`       |
-| *$__timeFilter_ms(columnName)*               | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in milliseconds                                                    | `time >= '1480001790671' AND time <= '1482576232479' )` |
-| *$__fromTime*                                | Replaced by the starting time of the range of the panel casted to DateTime                                                                                                          | `toDateTime(intDiv(1415792726371,1000))`                |
-| *$__toTime*                                  | Replaced by the ending time of the range of the panel casted to DateTime                                                                                                            | `toDateTime(intDiv(1415792726371,1000))`                |
-| *$__interval_s*                              | Replaced by the interval in seconds                                                                                                                                                 | `20`                                                    |
-| *$__timeInterval(columnName)*                | Replaced by a function calculating the interval based on window size, useful when grouping                                                                                          | `toStartOfInterval(column, INTERVAL 20 second)`         |
-| *$__conditionalAll(condition, $templateVar)* | Replaced by the first parameter when the template variable in the second parameter does not select every value. Replaced by the 1=1 when the template variable selects every value. | `condition` or `1=1`                                    |
+| Macro                                        | Description                                                                                                                                                                         | Output example                                                        |
+|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|
+| *$__timeFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in milliseconds                                                         | `time >= toDateTime64(1480001790/1000, 3) AND time <= toDateTime64(1482576232/1000, 3) )`                     |
+| *$__dateFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the date range of the panel                                                                    | `date >= '2022-10-21' AND date <= '2022-10-23' )`                     |
+| *$__fromTime*                                | Replaced by the starting time of the range of the panel casted to `DateTime64(3)`                                                                                                          | `toDateTime64(1415792726371/1000, 3)`                              |
+| *$__toTime*                                  | Replaced by the ending time of the range of the panel casted to `DateTime64(3)`                                                                                                            | `toDateTime64(1415792726371/1000, 3)`                              |
+| *$__interval_s*                              | Replaced by the interval in seconds                                                                                                                                                 | `20`                                                                  |
+| *$__timeInterval(columnName)*                | Replaced by a function calculating the interval based on window size in seconds, useful when grouping                                                                               | `toStartOfInterval(toDateTime(column), INTERVAL 20 second)`           |
+| *$__timeInterval_ms(columnName)*             | Replaced by a function calculating the interval based on window size in milliseconds, useful when grouping                                                                          | `toStartOfInterval(toDateTime64(column, 3), INTERVAL 20 millisecond)` |
+| *$__conditionalAll(condition, $templateVar)* | Replaced by the first parameter when the template variable in the second parameter does not select every value. Replaced by the 1=1 when the template variable selects every value. | `condition` or `1=1`                                                  |
 
 The plugin also supports notation using braces {}. Use this notation when queries are needed inside parameters.
 
