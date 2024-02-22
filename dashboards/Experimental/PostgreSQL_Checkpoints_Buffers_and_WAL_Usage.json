@@ -1,0 +1,5281 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_METRICS",
+      "label": "Metrics",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.2.20"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph (old)",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": false,
+        "iconColor": "#e0752d",
+        "limit": 100,
+        "matchAny": true,
+        "name": "PMM Annotations",
+        "showIn": 0,
+        "tags": [
+          "pmm_annotation",
+          "$service_name"
+        ],
+        "target": {
+          "limit": 100,
+          "matchAny": true,
+          "tags": [
+            "pmm_annotation",
+            "$service_name"
+          ],
+          "type": "tags"
+        },
+        "type": "tags"
+      },
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "#6ed0e0",
+        "limit": 100,
+        "name": "Annotations & Alerts",
+        "showIn": 0,
+        "tags": [],
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": 19600,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [
+    {
+      "icon": "doc",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "Home"
+      ],
+      "targetBlank": false,
+      "title": "Home",
+      "type": "link",
+      "url": "/graph/d/pmm-home/home-dashboard"
+    },
+    {
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "Query Analytics"
+      ],
+      "targetBlank": false,
+      "title": "Query Analytics",
+      "type": "link",
+      "url": "/graph/d/pmm-qan/pmm-query-analytics"
+    },
+    {
+      "icon": "bolt",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "Compare"
+      ],
+      "targetBlank": false,
+      "title": "Compare",
+      "type": "link",
+      "url": "/graph/d/postgresql-instance-compare/postgresql-instances-compare"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PostgreSQL"
+      ],
+      "targetBlank": false,
+      "title": "PostgreSQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [
+        "Services"
+      ],
+      "targetBlank": false,
+      "title": "Services",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [
+        "PMM"
+      ],
+      "targetBlank": false,
+      "title": "PMM",
+      "type": "dashboards"
+    }
+  ],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": "Metrics",
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 30,
+      "links": [],
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<h1 style='color:#5991A7;font-weight:bold;text-align:center;font-style:italic'>Data for <span style='color:#e68a00'>$service_name</span> with <span style='color:#e68a00'>$interval</span> resolution</h1>",
+        "mode": "html"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
+      "type": "text"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "",
+      "gridPos": {
+        "h": 3,
+        "w": 8,
+        "x": 0,
+        "y": 2
+      },
+      "id": 1001,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<h5 style='color:#e68a00;font-weight:bold;text-align:center'><a href=\"/graph/d/node-instance-summary/node-summary?var-node_name=$node_name\" target=\"_blank\">$node_name</a></h5>",
+        "mode": "html"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
+      "title": "Node",
+      "type": "text"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "If this parameter is on, the PostgreSQL server will try to make sure that updates are physically written to disk, by issuing fsync() system calls or various equivalent methods (see wal_sync_method). This ensures that the database cluster can recover to a consistent state after an operating system or hardware crash.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 2,
+                  "text": "OFF"
+                },
+                "1": {
+                  "index": 1,
+                  "text": "ON"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "index": 0,
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#d44a3a",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "#299c46",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 8,
+        "y": 2
+      },
+      "id": 85,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "GUC-FSYNC",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-FSYNC"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_fsync{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_fsync{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "fsync",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "datasource": "Metrics",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 72,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
+      "title": "Checkpointing",
+      "type": "row"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Maximum time between automatic WAL checkpoints.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 6
+      },
+      "id": 67,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "GUC-CHECKPOINT-TIMEOUT",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-CHECKPOINT-TIMEOUT"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_checkpoint_timeout_seconds{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_checkpoint_timeout_seconds{service_name=~\"$service_name\"}[5m])) ",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Checkpoint Timeout",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Specifies the target of checkpoint completion, as a fraction of total time between checkpoints.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 6
+      },
+      "id": 69,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "GUC-CHECKPOINT-COMPLETION-TARGET",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-CHECKPOINT-COMPLETION-TARGET"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_checkpoint_completion_target{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_checkpoint_completion_target{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Checkpoint Completion Target",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Whenever more than this amount of data has been written while performing a checkpoint, attempt to force the OS to issue these writes to the underlying storage.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 8,
+        "y": 6
+      },
+      "id": 1034,
+      "links": [
+        {
+          "title": "GUC-CHECKPOINT-FLUSH-AFTER",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-CHECKPOINT-FLUSH-AFTER"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_checkpoint_flush_after_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_checkpoint_flush_after_bytes{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Checkpoint Flush After",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Causes checkpoints and restartpoints to be logged in the server log. Some statistics are included in the log messages, including the number of buffers written and the time spent writing them.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bool_on_off"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 12,
+        "y": 6
+      },
+      "id": 70,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "GUC-LOG-CHECKPOINTS",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-CHECKPOINTS"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_log_checkpoints{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_log_checkpoints{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Log Checkpoints",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Write a message to the server log if checkpoints caused by the filling of WAL segment files happen closer together than this amount of time (which suggests that max_wal_size ought to be raised). ",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 16,
+        "y": 6
+      },
+      "id": 1035,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "GUC-CHECKPOINT-WARNING",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-CHECKPOINT-WARNING"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_checkpoint_warning_seconds{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_checkpoint_warning_seconds{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Log Checkpoint Warning",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Metrics",
+      "decimals": 2,
+      "description": "A requested checkpoint happens when there is a forced checkpoint due to insufficient max_wal_size, or  when the server is stopped. \\\nA scheduled checkpoint can happen due to checkpoint_timeout being depleted, or to a CHECKPOINT command.",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 1027,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_checkpoints_timed{service_name=~'$service_name'}[$interval]) or\nirate(pg_stat_bgwriter_checkpoints_timed{service_name=~'$service_name'}[5m]))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Scheduled Checkpoints",
+          "metric": "pg_stat_bgwriter_checkpoint_sync_time",
+          "range": true,
+          "refId": "A",
+          "step": 2
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_checkpoints_req{service_name=~'$service_name'}[$interval]) or\nirate(pg_stat_bgwriter_checkpoints_req{service_name=~'$service_name'}[5m]))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Requested Checkpoints",
+          "metric": "pg_stat_bgwriter_checkpoint_write_time",
+          "range": true,
+          "refId": "B",
+          "step": 2
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Checkpoints",
+      "tooltip": {
+        "shared": true,
+        "sort": 5,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "none",
+          "logBase": 1,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "s",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Metrics",
+      "decimals": 2,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 1013,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "Checkpoint timeout",
+          "fill": 0,
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_checkpoint_sync_time{service_name=~'$service_name'}[$interval]) or\nirate(pg_stat_bgwriter_checkpoint_sync_time{service_name=~'$service_name'}[5m]))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Files Synchronization to disk",
+          "metric": "pg_stat_bgwriter_checkpoint_sync_time",
+          "refId": "A",
+          "step": 2
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_checkpoint_write_time{service_name=~'$service_name'}[$interval]) or\nirate(pg_stat_bgwriter_checkpoint_write_time{service_name=~'$service_name'}[5m]))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Written Files to disk",
+          "metric": "pg_stat_bgwriter_checkpoint_write_time",
+          "range": true,
+          "refId": "B",
+          "step": 2
+        },
+        {
+          "datasource": "Metrics",
+          "exemplar": true,
+          "expr": "pg_settings_checkpoint_timeout_seconds{service_name=\"$service_name\"}",
+          "hide": true,
+          "interval": "",
+          "legendFormat": "Checkpoint timeout",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Background Writer Sync and Write Times",
+      "tooltip": {
+        "shared": true,
+        "sort": 5,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "ms",
+          "logBase": 1,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "s",
+          "logBase": 1,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 1024,
+      "panels": [],
+      "title": "Buffers and Background Writer",
+      "type": "row"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Defines the amount of memory the database server uses for shared memory buffers.  Default is 128MB.  Guidance on tuning is 25% of RAM, but generally doesn't exceed 40%.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 18
+      },
+      "id": 1040,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "GUC-SHARED-BUFFERS",
+          "url": "https://www.postgresql.org/docs/current/static/runtime-config-resource.html#GUC-SHARED-BUFFERS"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\"}[5m])) ",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "refId": "A"
+        }
+      ],
+      "title": "Shared Buffers",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Background writer maximum number of LRU pages to flush per round.\nSmaller values of bgwriter_lru_maxpages and bgwriter_lru_multiplier reduce the extra I/O load caused by the background writer, but make it more likely that server processes will have to issue writes for themselves, delaying interactive queries.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 18
+      },
+      "id": 1020,
+      "links": [
+        {
+          "title": "GUC-BGWRITER-LRU-MAXPAGES",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-BGWRITER-LRU-MAXPAGES"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_bgwriter_lru_maxpages{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_bgwriter_lru_maxpages{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "BgWriter LRU Max Pages",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Specifies the delay between activity rounds for the background writer. \nIf this value is specified without units, it is taken as milliseconds.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 8,
+        "y": 18
+      },
+      "id": 1031,
+      "links": [
+        {
+          "title": "GUC-BGWRITER-DELAY",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-BGWRITER-DELAY"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_bgwriter_delay_seconds{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_bgwriter_delay_seconds{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "BgWriter Delay",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Whenever more than this amount of data has been written by the background writer, attempt to force the OS to issue these writes to the underlying storage. Doing so will limit the amount of dirty data in the kernel's page cache, reducing the likelihood of stalls when an fsync is issued at the end of a checkpoint, or when the OS writes data back in larger batches in the background.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 12,
+        "y": 18
+      },
+      "id": 1039,
+      "links": [
+        {
+          "title": "GUC-BGWRITER-FLUSH-AFTER",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-BGWRITER-FLUSH-AFTER"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_bgwriter_flush_after_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_bgwriter_flush_after_bytes{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "BgWriter Flush After",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "The number of dirty buffers written in each round is based on the number of new buffers that have been needed by server processes during recent rounds. The average recent need is multiplied by bgwriter_lru_multiplier to arrive at an estimate of the number of buffers that will be needed during the next round.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 16,
+        "y": 18
+      },
+      "id": 1032,
+      "links": [
+        {
+          "title": "GUC-BGWRITER-LRU-MULTIPLIER",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-BGWRITER-LRU-MULTIPLIER"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_bgwriter_lru_multiplier{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_bgwriter_lru_multiplier{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "BgWriter LRU Multiplier",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "The last time the background writer statistics were reset.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "dateTimeAsSystem"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 18
+      },
+      "id": 1019,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "pg_stat_reset_shared",
+          "url": "https://www.postgresql.org/docs/current/monitoring-stats.html"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "pg_stat_bgwriter_stats_reset{service_name=~\"$service_name\"}*1000",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "BgWriter Stats Reset",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Metrics",
+      "decimals": 2,
+      "description": "Buffers read into the shared memory buffers. These reads could come from the page cache (memory) or I/O subsystem.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "hiddenSeries": false,
+      "id": 2,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Buffers Allocated",
+          "datasource": "Metrics",
+          "dsType": "prometheus",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n)",
+          "format": "time_series",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Allocated",
+          "measurement": "postgresql",
+          "policy": "default",
+          "range": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "buffers_alloc"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [],
+                "type": "difference"
+              }
+            ]
+          ],
+          "step": 2,
+          "tags": [
+            {
+              "key": "node_name",
+              "operator": "=~",
+              "value": "/^$node_name$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Buffers Read",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "bytes",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Metrics",
+      "decimals": 2,
+      "description": "Buffers written to disk during checkpoints, by the background writer, or by backend processes.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "hiddenSeries": false,
+      "id": 1030,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Buffers Allocated",
+          "datasource": "Metrics",
+          "dsType": "prometheus",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n)",
+          "format": "time_series",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Directly by a backend",
+          "measurement": "postgresql",
+          "policy": "default",
+          "range": true,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "buffers_alloc"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [],
+                "type": "difference"
+              }
+            ]
+          ],
+          "step": 2,
+          "tags": [
+            {
+              "key": "node_name",
+              "operator": "=~",
+              "value": "/^$node_name$/"
+            }
+          ]
+        },
+        {
+          "alias": "Buffers Allocated",
+          "datasource": "Metrics",
+          "dsType": "prometheus",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n)",
+          "format": "time_series",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "By the background writer",
+          "measurement": "postgresql",
+          "policy": "default",
+          "range": true,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "buffers_alloc"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [],
+                "type": "difference"
+              }
+            ]
+          ],
+          "step": 2,
+          "tags": [
+            {
+              "key": "node_name",
+              "operator": "=~",
+              "value": "/^$node_name$/"
+            }
+          ]
+        },
+        {
+          "alias": "Buffers Allocated",
+          "datasource": "Metrics",
+          "dsType": "prometheus",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n)",
+          "format": "time_series",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "During checkpoints",
+          "measurement": "postgresql",
+          "policy": "default",
+          "range": true,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "buffers_alloc"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [],
+                "type": "difference"
+              }
+            ]
+          ],
+          "step": 2,
+          "tags": [
+            {
+              "key": "node_name",
+              "operator": "=~",
+              "value": "/^$node_name$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Buffers Written",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "bytes",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Metrics",
+      "decimals": 2,
+      "description": "",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 29
+      },
+      "hiddenSeries": false,
+      "id": 1025,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Buffers Allocated",
+          "datasource": "Metrics",
+          "dsType": "prometheus",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\"}[5m])) * 8192",
+          "format": "time_series",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Fsync calls by a backend",
+          "measurement": "postgresql",
+          "policy": "default",
+          "range": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "buffers_alloc"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [],
+                "type": "difference"
+              }
+            ]
+          ],
+          "step": 2,
+          "tags": [
+            {
+              "key": "node_name",
+              "operator": "=~",
+              "value": "/^$node_name$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Fsync Backend Calls",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "short",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Metrics",
+      "decimals": 2,
+      "description": "The background writer was forced to stop due to reaching the max page limit (bgwriter_lru_maxpages).",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 29
+      },
+      "hiddenSeries": false,
+      "id": 1026,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "Checkpoint timeout",
+          "fill": 0,
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_maxwritten_clean{service_name=~'$service_name'}[$interval]) or\nirate(pg_stat_bgwriter_maxwritten_clean{service_name=~'$service_name'}[5m]))",
+          "hide": false,
+          "legendFormat": "Stops due to LRU max",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Background Writer Stops due to LRU max Reached",
+      "tooltip": {
+        "shared": true,
+        "sort": 5,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "short",
+          "logBase": 1,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "s",
+          "logBase": 1,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
+      "id": 1017,
+      "panels": [],
+      "title": "WAL Usage",
+      "type": "row"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "As long as WAL disk usage stays below this setting, old WAL files are always recycled for future use at a checkpoint, rather than removed. This can be used to ensure that enough WAL space is reserved to handle spikes in WAL usage, for example when running large batch jobs.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 38
+      },
+      "id": 1005,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "GUC-MIN-WAL-SIZE",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-MIN-WAL-SIZE"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_min_wal_size_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_min_wal_size_bytes{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Min WAL Size",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Maximum size to let the WAL grow during automatic checkpoints. This is a soft limit; WAL size can exceed max_wal_size under special circumstances, such as heavy load, a failing archive_command or archive_library, or a high wal_keep_size setting.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 38
+      },
+      "id": 68,
+      "links": [
+        {
+          "title": "GUC-MAX-WAL-SIZE",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-MAX-WAL-SIZE"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_max_wal_size_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_max_wal_size_bytes{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Max WAL Size",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "The amount of shared memory used for WAL data that has not yet been written to disk. The default setting of -1 selects a size equal to 1/32nd (about 3%) of shared_buffers, but not less than 64kB nor more than the size of one WAL segment, typically 16MB.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 8,
+        "y": 38
+      },
+      "id": 1037,
+      "links": [
+        {
+          "title": "GUC-WAL-BUFFERS",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-WAL-BUFFERS"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "WAL Buffers",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Specifies the minimum size of past log file segments kept in the pg_wal directory, in case a standby server needs to fetch them for streaming replication.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 12,
+        "y": 38
+      },
+      "id": 1033,
+      "links": [
+        {
+          "title": "GUC-WAL-KEEP-SIZE",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-WAL-KEEP-SIZE"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_wal_keep_size_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_wal_keep_size_bytes{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "WAL Keep Size",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "When this parameter is on, the PostgreSQL server writes the entire content of each disk page to WAL during the first modification of that page after a checkpoint. Turning this parameter off speeds normal operation, but might lead to either unrecoverable data corruption, or silent data corruption, after a system failure.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 2,
+                  "text": "OFF"
+                },
+                "1": {
+                  "index": 1,
+                  "text": "ON"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "index": 0,
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#d44a3a"
+              },
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "#299c46",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 16,
+        "y": 38
+      },
+      "id": 1029,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "GUC-FULL-PAGE-WRITES",
+          "url": "https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-FULL-PAGE-WRITES"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_full_page_writes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_full_page_writes{service_name=~\"$service_name\"}[5m]))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Full Page Writes",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Metrics",
+      "decimals": 2,
+      "description": "Writes to WAL log files.\\\nA custom query collector is needed for this metric to be populated by the pmm-client node.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 41
+      },
+      "hiddenSeries": false,
+      "id": 1038,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "maxPerRow": 6,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": true,
+      "pluginVersion": "9.2.20",
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "WAL bytes written",
+          "bars": false,
+          "color": "#73BF69",
+          "fill": 0,
+          "lines": true,
+          "yaxis": 2
+        },
+        {
+          "alias": "Max WAL size",
+          "bars": false,
+          "color": "#F2495C",
+          "fill": 0,
+          "lines": true
+        },
+        {
+          "alias": "WAL bytes written per checkpoint timeout",
+          "color": "#FF9830"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg by (service_name) (\n  rate(pg_stat_replication_pg_current_wal_lsn_bytes{service_name=~\"$service_name\"}[$interval])\n  or\n  irate(pg_stat_replication_pg_current_wal_lsn_bytes{service_name=~\"$service_name\"}[5m])\n)",
+          "hide": false,
+          "interval": "$interval",
+          "legendFormat": "WAL writes",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "WAL Writes",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "bytes",
+          "label": "",
+          "logBase": 1,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "bytes",
+          "label": "",
+          "logBase": 1,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Metrics",
+      "decimals": 2,
+      "description": "Writes to WAL log files, grouped by checkpoint_timeout seconds. If the grouped average is greater than the max_wal_size value, then increasing it should yield less forced checkpointing.\\\nA custom query collector is needed for this metric to be populated by the pmm-client node.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 41
+      },
+      "hiddenSeries": false,
+      "id": 1011,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 2,
+      "links": [],
+      "maxPerRow": 6,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": true,
+      "pluginVersion": "9.2.20",
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "WAL bytes written",
+          "bars": false,
+          "color": "#73BF69",
+          "fill": 0,
+          "lines": true,
+          "yaxis": 2
+        },
+        {
+          "alias": "Max WAL size",
+          "bars": false,
+          "color": "#F2495C",
+          "fill": 0,
+          "lines": true
+        },
+        {
+          "alias": "WAL bytes written per checkpoint timeout",
+          "color": "#FF9830"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg by (service_name) (increase(pg_stat_replication_pg_current_wal_lsn_bytes{service_name=\"$service_name\"}[$checkpoint_timeout]))",
+          "format": "time_series",
+          "interval": "$checkpoint_timeout",
+          "intervalFactor": 1,
+          "legendFormat": "WAL bytes written per checkpoint timeout",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "pg_settings_max_wal_size_bytes{service_name=\"$service_name\"}",
+          "hide": false,
+          "interval": "$interval",
+          "legendFormat": "Max WAL size",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "WAL Writes Per Checkpoint Timeout",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "bytes",
+          "label": "",
+          "logBase": 1,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "bytes",
+          "label": "",
+          "logBase": 1,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": true,
+      "datasource": "Metrics",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 49
+      },
+      "id": 291,
+      "panels": [
+        {
+          "datasource": "Metrics",
+          "description": "The parameter shows how long a system has been “up” and running without a shut down or restart.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "rgba(245, 54, 54, 0.9)"
+                  },
+                  {
+                    "color": "rgba(237, 129, 40, 0.89)",
+                    "value": 300
+                  },
+                  {
+                    "color": "rgba(50, 172, 45, 0.97)",
+                    "value": 3600
+                  }
+                ]
+              },
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 3,
+            "x": 0,
+            "y": 9
+          },
+          "id": 321,
+          "interval": "$interval",
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {
+              "valueSize": 20
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "calculatedInterval": "10m",
+              "datasource": "Metrics",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name) ((node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"}))",
+              "format": "time_series",
+              "hide": false,
+              "interval": "5m",
+              "intervalFactor": 1,
+              "legendFormat": "",
+              "metric": "",
+              "refId": "A",
+              "step": 300
+            }
+          ],
+          "title": "System Uptime",
+          "type": "stat"
+        },
+        {
+          "datasource": "Metrics",
+          "description": "The system load is a measurement of the computational work the system is performing. Each running process either using or waiting for CPU resources adds 1 to the load.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 2,
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "#299c46"
+                  },
+                  {
+                    "color": "rgba(237, 129, 40, 0.89)",
+                    "value": 10
+                  },
+                  {
+                    "color": "#d44a3a",
+                    "value": 20
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 3,
+            "x": 3,
+            "y": 9
+          },
+          "id": 323,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {
+              "valueSize": 20
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "expr": "avg by (node_name) (avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m]))",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "refId": "A"
+            }
+          ],
+          "title": "Load Average",
+          "type": "stat"
+        },
+        {
+          "datasource": "Metrics",
+          "description": "RAM (Random Access Memory) is the hardware in a computing device where the operating system, application programs and data in current use are kept so they can be quickly reached by the device's processor.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 2,
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 3,
+            "x": 6,
+            "y": 9
+          },
+          "id": 327,
+          "interval": "$interval",
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {
+              "valueSize": 20
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
+              "format": "time_series",
+              "interval": "5m",
+              "intervalFactor": 1,
+              "refId": "A",
+              "step": 300
+            }
+          ],
+          "title": "RAM",
+          "type": "stat"
+        },
+        {
+          "datasource": "Metrics",
+          "description": "Percent of Memory Available\nNote: on Modern Linux Kernels amount of Memory Available for application is not the same as Free+Cached+Buffers",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 2,
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "#d44a3a"
+                  },
+                  {
+                    "color": "rgba(237, 129, 40, 0.89)",
+                    "value": 5
+                  },
+                  {
+                    "color": "#299c46",
+                    "value": 10
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 3,
+            "x": 9,
+            "y": 9
+          },
+          "id": 329,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {
+              "valueSize": 20
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "expr": "avg by (node_name) ((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} * 100)",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "refId": "A"
+            }
+          ],
+          "title": "Memory Available",
+          "type": "stat"
+        },
+        {
+          "datasource": "Metrics",
+          "description": "RAM + SWAP",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 2,
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 3,
+            "x": 12,
+            "y": 9
+          },
+          "id": 331,
+          "interval": "$interval",
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {
+              "valueSize": 20
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"})",
+              "format": "time_series",
+              "interval": "5m",
+              "intervalFactor": 1,
+              "refId": "A",
+              "step": 300
+            }
+          ],
+          "title": "Virtual Memory",
+          "type": "stat"
+        },
+        {
+          "datasource": "Metrics",
+          "description": "Sum of disk space on all partitions. Note  it can be significantly over-reported in some installations",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 2,
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 3,
+            "x": 15,
+            "y": 9
+          },
+          "id": 333,
+          "interval": "$interval",
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Disk Space",
+              "url": "/graph/d/node-disk/disk-details?$__url_time_range&$__all_variables"
+            }
+          ],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {
+              "valueSize": 20
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "expr": "avg by (node_name) (sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype))",
+              "format": "time_series",
+              "interval": "5m",
+              "intervalFactor": 1,
+              "refId": "A",
+              "step": 300
+            }
+          ],
+          "title": "Disk Space",
+          "type": "stat"
+        },
+        {
+          "datasource": "Metrics",
+          "description": "Lowest percent of the disk space available",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 2,
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "#d44a3a"
+                  },
+                  {
+                    "color": "rgba(237, 129, 40, 0.89)",
+                    "value": 5
+                  },
+                  {
+                    "color": "#299c46",
+                    "value": 20
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 3,
+            "x": 18,
+            "y": 9
+          },
+          "id": 335,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {
+              "valueSize": 20
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "expr": "min(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "refId": "A"
+            }
+          ],
+          "title": "Min Space Available",
+          "type": "stat"
+        },
+        {
+          "description": "",
+          "gridPos": {
+            "h": 3,
+            "w": 3,
+            "x": 21,
+            "y": 9
+          },
+          "id": 1002,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "<h5 style='color:#e68a00;font-weight:bold;text-align:center'><a href=\"/graph/d/node-instance-summary/node-summary?var-node_name=$node_name\" target=\"_blank\">$node_name</a></h5>",
+            "mode": "html"
+          },
+          "pluginVersion": "9.2.20",
+          "title": "Node",
+          "type": "text"
+        },
+        {
+          "aliasColors": {
+            "Max Core Utilization": "#bf1b00",
+            "idle": "#806EB7",
+            "iowait": "#E24D42",
+            "nice": "#1F78C1",
+            "softirq": "#FFF899",
+            "steal": "#8F3BB8",
+            "system": "#EAB839",
+            "user": "#508642"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "Metrics",
+          "decimals": 2,
+          "description": "The CPU time is measured in clock ticks or seconds. It is useful to measure CPU time as a percentage of the CPU's capacity, which is called the CPU usage.",
+          "editable": true,
+          "error": false,
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 6,
+          "fillGradient": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 12
+          },
+          "height": "",
+          "hiddenSeries": false,
+          "id": 337,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": true,
+            "hideZero": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "9.2.20",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "Max Core Utilization",
+              "lines": false,
+              "pointradius": 1,
+              "points": true,
+              "stack": false
+            }
+          ],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": true,
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "expr": "avg by (node_name,mode) (clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[5m]))),100))",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "{{ mode }}",
+              "refId": "B"
+            },
+            {
+              "datasource": "Metrics",
+              "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+              "format": "time_series",
+              "hide": true,
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Max Core Utilization",
+              "refId": "C"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "CPU Usage",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 5,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 2,
+              "format": "percent",
+              "label": "",
+              "logBase": 1,
+              "max": "100",
+              "min": 0,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "min": 0,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {
+            "Allocated": "#E0752D",
+            "CPU Load": "#64B0C8",
+            "IO Load ": "#EA6460",
+            "Limit": "#1F78C1",
+            "Max CPU Core Utilization": "#bf1b00",
+            "Max Core Usage": "#bf1b00",
+            "Normalized CPU Load": "#6ED0E0"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "Metrics",
+          "decimals": 2,
+          "description": "When a system is running with maximum CPU utilization, the transmitting and receiving threads must all share the available CPU. This will cause data to be queued more frequently to cope with the lack of CPU. CPU Saturation may be measured as the length of a wait queue, or the time spent waiting on the queue.",
+          "editable": true,
+          "error": false,
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 12
+          },
+          "hiddenSeries": false,
+          "id": 339,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "paceLength": 10,
+          "percentage": false,
+          "pluginVersion": "9.2.20",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "Max CPU Core Utilization",
+              "lines": false,
+              "pointradius": 1,
+              "points": true,
+              "yaxis": 2
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "calculatedInterval": "2s",
+              "datasource": "Metrics",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name) ((avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})))",
+              "format": "time_series",
+              "hide": false,
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Normalized CPU Load",
+              "metric": "",
+              "refId": "B",
+              "step": 300,
+              "target": ""
+            },
+            {
+              "calculatedInterval": "2s",
+              "datasource": "Metrics",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Max CPU Core Utilization",
+              "metric": "",
+              "refId": "A",
+              "step": 300,
+              "target": ""
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "CPU Saturation and Max Core Usage",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 5,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 2,
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "min": 0,
+              "show": true
+            },
+            {
+              "decimals": 2,
+              "format": "percentunit",
+              "label": "",
+              "logBase": 1,
+              "max": "1",
+              "min": 0,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {
+            "Swap In (Reads)": "#6ed0e0",
+            "Swap Out (Writes)": "#ef843c",
+            "Total": "#bf1b00"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "Metrics",
+          "decimals": 2,
+          "description": "Disk I/O includes read or write or input/output operations involving a physical disk. It is the speed with which the data transfer takes place between the hard disk drive and RAM.\n\nSwap Activity is memory management that involves swapping sections of memory to and from physical storage.",
+          "editable": true,
+          "error": false,
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 20
+          },
+          "hiddenSeries": false,
+          "id": 341,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Disk Performance",
+              "url": "/graph/d/node-disk/disk-details?$__url_time_range&$__all_variables"
+            }
+          ],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.2.20",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "Disk Writes (Page Out)",
+              "transform": "negative-Y"
+            },
+            {
+              "alias": "Total",
+              "legend": false,
+              "lines": false
+            },
+            {
+              "alias": "Swap Out (Writes)",
+              "transform": "negative-Y"
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "calculatedInterval": "2s",
+              "datasource": "Metrics",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name) (rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024)",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Disk Reads (Page In)",
+              "metric": "",
+              "refId": "A",
+              "step": 300,
+              "target": ""
+            },
+            {
+              "calculatedInterval": "2s",
+              "datasource": "Metrics",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name) ((rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Disk Writes (Page Out)",
+              "metric": "",
+              "refId": "B",
+              "step": 300,
+              "target": ""
+            },
+            {
+              "datasource": "Metrics",
+              "expr": "avg by (node_name) ((rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Total",
+              "refId": "C"
+            },
+            {
+              "datasource": "Metrics",
+              "expr": "avg by (node_name) (rate(node_vmstat_pswpin{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=\"$node_name\"}[5m]) * 4096)",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Swap In (Reads)",
+              "refId": "D"
+            },
+            {
+              "datasource": "Metrics",
+              "expr": "avg by (node_name) (rate(node_vmstat_pswpout{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=\"$node_name\"}[5m]) * 4096)",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Swap Out (Writes)",
+              "refId": "E"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "Disk I/O and Swap Activity",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 5,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 2,
+              "format": "Bps",
+              "label": "Page Out (-) / Page In (+)",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "format": "bytes",
+              "logBase": 1,
+              "min": 0,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "Metrics",
+          "decimals": 2,
+          "description": "Network traffic refers to the amount of data moving across a network at a given point in time.",
+          "editable": true,
+          "error": false,
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 20
+          },
+          "hiddenSeries": false,
+          "id": 343,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "avg",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.2.20",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "Outbound",
+              "transform": "negative-Y"
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "calculatedInterval": "2s",
+              "datasource": "Metrics",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name) (sum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m])))",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Inbound",
+              "metric": "",
+              "refId": "B",
+              "step": 300,
+              "target": ""
+            },
+            {
+              "calculatedInterval": "2s",
+              "datasource": "Metrics",
+              "datasourceErrors": {},
+              "errors": {},
+              "expr": "avg by (node_name) (sum(rate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[5m])))",
+              "format": "time_series",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "Outbound",
+              "metric": "",
+              "refId": "A",
+              "step": 300,
+              "target": ""
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "Network Traffic",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 5,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 2,
+              "format": "Bps",
+              "label": "Outbound (-) / Inbound (+)",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "format": "bytes",
+              "logBase": 1,
+              "min": 0,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        }
+      ],
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "refId": "A"
+        }
+      ],
+      "title": "Node Summary",
+      "type": "row"
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 37,
+  "style": "dark",
+  "tags": [
+    "Percona",
+    "PostgreSQL"
+  ],
+  "templating": {
+    "list": [
+      {
+        "auto": true,
+        "auto_count": 200,
+        "auto_min": "1s",
+        "current": {
+          "selected": false,
+          "text": "auto",
+          "value": "$__auto_interval_interval"
+        },
+        "hide": 0,
+        "label": "Interval",
+        "name": "interval",
+        "options": [
+          {
+            "selected": true,
+            "text": "auto",
+            "value": "$__auto_interval_interval"
+          },
+          {
+            "selected": false,
+            "text": "1s",
+            "value": "1s"
+          },
+          {
+            "selected": false,
+            "text": "5s",
+            "value": "5s"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          }
+        ],
+        "query": "1s,5s,1m,5m,1h,6h,1d",
+        "queryValue": "",
+        "refresh": 2,
+        "skipUrlSync": false,
+        "type": "interval"
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "work_mem",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_work_mem_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-work_mem-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "label_values(pg_up{service_name=~\"$service_name\"},node_name)",
+        "hide": 2,
+        "includeAll": false,
+        "label": "Node Name",
+        "multi": false,
+        "name": "node_name",
+        "options": [],
+        "query": {
+          "query": "label_values(pg_up{service_name=~\"$service_name\"},node_name)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "label_values(pg_up, service_name)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Service Name",
+        "multi": false,
+        "name": "service_name",
+        "options": [],
+        "query": {
+          "query": "label_values(pg_up, service_name)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "version",
+        "options": [],
+        "query": {
+          "query": "label_values(pg_static{service_name=~\"$service_name\"},version)",
+          "refId": "Metrics-version-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 2,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "max_connections",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_connections{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_connections-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "shared_buffers",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-shared_buffers-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "wal_buffers",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-wal_buffers-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "wal_segment_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_wal_segment_size_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-wal_segment_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "maintenance_work_mem",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_maintenance_work_mem_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-maintenance_work_mem-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "block_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_block_size{service_name=~\"$service_name\"})",
+          "refId": "Metrics-block_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "checkpoint_segments",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_checkpoint_segments{service_name=~\"$service_name\"})",
+          "refId": "Metrics-checkpoint_segments-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "checkpoint_timeout",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_checkpoint_timeout_seconds{service_name=~\"$service_name\"})",
+          "refId": "Metrics-checkpoint_timeout-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "fsync",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_fsync{service_name=~\"$service_name\"})",
+          "refId": "Metrics-fsync-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "default_statistics_target",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_default_statistics_target{service_name=~\"$service_name\"})",
+          "refId": "Metrics-default_statistics_target-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "seq_page_cost",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_seq_page_cost{service_name=~\"$service_name\"})",
+          "refId": "Metrics-seq_page_cost-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "random_page_cost",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_random_page_cost{service_name=~\"$service_name\"})",
+          "refId": "Metrics-random_page_cost-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "effective_cache_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-effective_cache_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "effective_io_concurrency",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_effective_io_concurrency{service_name=~\"$service_name\"})",
+          "refId": "Metrics-effective_io_concurrency-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "autovacuum",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "autovacuum_analyze_scale_factor",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_analyze_scale_factor{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_analyze_scale_factor-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "autovacuum_analyze_threshold",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_analyze_threshold{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_analyze_threshold-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "autovacuum_vacuum_scale_factor",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_vacuum_scale_factor{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_vacuum_scale_factor-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "autovacuum_vacuum_threshold",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_vacuum_threshold{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_vacuum_threshold-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "autovacuum_vacuum_cost_limit",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_vacuum_cost_limit{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_vacuum_cost_limit-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "autovacuum_vacuum_cost_delay",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_vacuum_cost_delay_seconds{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_vacuum_cost_delay-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "autovacuum_max_workers",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_max_workers{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_max_workers-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "autovacuum_naptime",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_naptime_seconds{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_naptime-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "autovacuum_freeze_max_age",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_freeze_max_age{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_freeze_max_age-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "logging_collector",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_logging_collector{service_name=~\"$service_name\"})",
+          "refId": "Metrics-logging_collector-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "log_min_duration_statement",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_log_min_duration_statement_seconds{service_name=~\"$service_name\"})",
+          "refId": "Metrics-log_min_duration_statement-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "log_duration",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_log_duration{service_name=~\"$service_name\"})",
+          "refId": "Metrics-log_duration-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "log_lock_waits",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_log_lock_waits{service_name=~\"$service_name\"})",
+          "refId": "Metrics-log_lock_waits-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "max_wal_senders",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_wal_senders{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_wal_senders-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "max_wal_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_wal_size_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_wal_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "min_wal_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_min_wal_size_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-min_wal_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "wal_compression",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_wal_compression{service_name=~\"$service_name\"})",
+          "refId": "Metrics-wal_compression-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "max_worker_processes",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_worker_processes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_worker_processes-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "max_parallel_workers_per_gather",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_parallel_workers_per_gather{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_parallel_workers_per_gather-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "max_parallel_workers",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_parallel_workers_per_gather{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_parallel_workers-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "autovacuum_work_mem",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_work_mem_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_work_mem-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "autovacuum_multixact_freeze_max_age",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_multixact_freeze_max_age{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_multixact_freeze_max_age-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Environment",
+        "multi": true,
+        "name": "environment",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+          "refId": "Metrics-environment-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Cluster",
+        "multi": true,
+        "name": "cluster",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
+          "refId": "Metrics-cluster-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Replication Set",
+        "multi": true,
+        "name": "replication_set",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
+          "refId": "Metrics-replication_set-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Type",
+        "multi": true,
+        "name": "node_type",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
+          "refId": "Metrics-node_type-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Type",
+        "multi": true,
+        "name": "service_type",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
+          "refId": "Metrics-service_type-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Username",
+        "multi": true,
+        "name": "username",
+        "options": [],
+        "query": {
+          "query": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+          "refId": "Metrics-username-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Schema",
+        "multi": true,
+        "name": "schema",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
+          "refId": "Metrics-schema-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "label_values(pg_up{service_name=\"$service_name\"}, service_id)",
+        "hide": 2,
+        "includeAll": false,
+        "label": "Service ID",
+        "multi": false,
+        "name": "service_id",
+        "options": [],
+        "query": {
+          "query": "label_values(pg_up{service_name=\"$service_name\"}, service_id)",
+          "refId": "Metrics-service_id-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": false,
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "PostgreSQL Checkpoints, Buffers and WAL Usage",
+  "uid": "U6MscLU4k",
+  "version": 5,
+  "weekStart": ""
+}
