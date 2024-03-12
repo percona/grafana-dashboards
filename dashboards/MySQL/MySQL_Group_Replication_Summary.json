@@ -151,67 +151,17 @@
       "type": "row"
     },
     {
-      "backgroundColor": "rgba(128,128,128,0.1)",
-      "colorMaps": [
-        {
-          "$$hashKey": "object:2148",
-          "color": "#56A64B",
-          "text": "ONLINE"
-        },
-        {
-          "$$hashKey": "object:973",
-          "color": "#F2CC0C",
-          "text": "RECOVERING"
-        },
-        {
-          "$$hashKey": "object:976",
-          "color": "#FF780A",
-          "text": "OFFLINE"
-        },
-        {
-          "$$hashKey": "object:991",
-          "color": "#E02F44",
-          "text": "ERROR"
-        },
-        {
-          "$$hashKey": "object:994",
-          "color": "#8AB8FF",
-          "text": "UNREACHABLE"
-        }
-      ],
-      "crosshairColor": "#8F070C",
-      "description": "There are various states that a server instance can be in. If servers are communicating properly, all report the same states for all servers. However, if there is a network partition, or a server leaves the group, then different information could be reported, depending on which server is queried. If the server has left the group then it cannot report updated information about the other servers' states. If there is a partition, such that quorum is lost, servers are not able to coordinate between themselves. As a consequence, they cannot guess what the status of different servers is. Therefore, instead of guessing their state they report that some servers are unreachable.",
-      "display": "timeline",
-      "expandFromQueryS": 0,
-      "extendLastValue": true,
+      "id": 1044,
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
         "y": 1
       },
-      "highlightOnMouseover": true,
-      "id": 1044,
-      "legendSortBy": "-ms",
-      "lineColor": "rgba(0,0,0,0.1)",
-      "metricNameColor": "#000000",
+      "type": "state-timeline",
+      "title": "Group Replication Service States",
       "pluginVersion": "7.1.3",
-      "rangeMaps": [
-        {
-          "$$hashKey": "object:194",
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "rowHeight": 50,
-      "showLegend": true,
-      "showLegendCounts": false,
-      "showLegendNames": true,
-      "showLegendPercent": true,
-      "showLegendTime": false,
-      "showLegendValues": true,
-      "showTimeAxis": true,
+      "description": "There are various states that a server instance can be in. If servers are communicating properly, all report the same states for all servers. However, if there is a network partition, or a server leaves the group, then different information could be reported, depending on which server is queried. If the server has left the group then it cannot report updated information about the other servers' states. If there is a partition, such that quorum is lost, servers are not able to coordinate between themselves. As a consequence, they cannot guess what the status of different servers is. Therefore, instead of guessing their state they report that some servers are unreachable.",
       "targets": [
         {
           "expr": "max by (service_name) (mysql_perf_schema_replication_group_member_info{replication_set=~\"$replication_set\"} or mysql_perf_schema_replication_group_5_member_info{replication_set=~\"$replication_set\"})",
@@ -222,142 +172,98 @@
           "refId": "A"
         }
       ],
-      "textSize": 24,
-      "textSizeTime": 12,
-      "timeOptions": [
-        {
-          "name": "Years",
-          "value": "years"
+      "options": {
+        "mergeValues": true,
+        "showValue": "auto",
+        "alignValue": "right",
+        "rowHeight": 0.9,
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom"
         },
-        {
-          "name": "Months",
-          "value": "months"
-        },
-        {
-          "name": "Weeks",
-          "value": "weeks"
-        },
-        {
-          "name": "Days",
-          "value": "days"
-        },
-        {
-          "name": "Hours",
-          "value": "hours"
-        },
-        {
-          "name": "Minutes",
-          "value": "minutes"
-        },
-        {
-          "name": "Seconds",
-          "value": "seconds"
-        },
-        {
-          "name": "Milliseconds",
-          "value": "milliseconds"
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
         }
-      ],
-      "timePrecision": {
-        "name": "Minutes",
-        "value": "minutes"
       },
-      "timeTextColor": "#d8d9da",
-      "title": "Group Replication Service States",
-      "type": "natel-discrete-panel",
-      "units": "short",
-      "use12HourClock": false,
-      "useTimePrecision": false,
-      "valueMaps": [
-        {
-          "$$hashKey": "object:2151",
-          "op": "=",
-          "text": "ONLINE",
-          "value": "1"
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "lineWidth": 0,
+            "fillOpacity": 100,
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "1": {
+                  "color": "#56A64B",
+                  "text": "ONLINE",
+                  "index": 5
+                },
+                "2": {
+                  "color": "#F2CC0C",
+                  "text": "RECOVERING",
+                  "index": 4
+                },
+                "3": {
+                  "color": "#FF780A",
+                  "text": "OFFLINE",
+                  "index": 3
+                },
+                "4": {
+                  "color": "#E02F44",
+                  "text": "ERROR",
+                  "index": 2
+                },
+                "5": {
+                  "color": "#8AB8FF",
+                  "text": "UNREACHABLE",
+                  "index": 1
+                },
+                "null": {
+                  "text": "OFFLINE",
+                  "color": "semi-dark-orange",
+                  "index": 0
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "green"
+              },
+              {
+                "value": 80,
+                "color": "red"
+              }
+            ]
+          },
+          "unit": "short"
         },
-        {
-          "$$hashKey": "object:196",
-          "op": "=",
-          "text": "RECOVERING",
-          "value": "2"
-        },
-        {
-          "$$hashKey": "object:541",
-          "op": "=",
-          "text": "OFFLINE",
-          "value": "3"
-        },
-        {
-          "$$hashKey": "object:543",
-          "op": "=",
-          "text": "ERROR",
-          "value": "4"
-        },
-        {
-          "$$hashKey": "object:545",
-          "op": "=",
-          "text": "UNREACHABLE",
-          "value": "5"
-        },
-        {
-          "$$hashKey": "object:650",
-          "op": "=",
-          "text": "OFFLINE",
-          "value": "null"
-        }
-      ],
-      "valueTextColor": "#000000",
-      "writeAllValues": false,
-      "writeLastValue": false,
-      "writeMetricNames": true
+        "overrides": []
+      }
     },
     {
-      "backgroundColor": "rgba(128,128,128,0.1)",
-      "colorMaps": [
-        {
-          "$$hashKey": "object:2148",
-          "color": "#C0D8FF",
-          "text": "Other"
-        },
-        {
-          "$$hashKey": "object:752",
-          "color": "#3274D9",
-          "text": "Primary"
-        }
-      ],
-      "crosshairColor": "#8F070C",
-      "description": "Notice: Collected for MySQL 8.x",
-      "display": "timeline",
-      "expandFromQueryS": 0,
-      "extendLastValue": true,
+      "id": 1018,
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
         "y": 9
       },
-      "highlightOnMouseover": true,
-      "id": 1018,
-      "legendSortBy": "-ms",
-      "lineColor": "rgba(0,0,0,0.1)",
-      "metricNameColor": "#000000",
+      "type": "state-timeline",
+      "title": "PRIMARY Service",
       "pluginVersion": "7.1.3",
-      "rangeMaps": [
-        {
-          "$$hashKey": "object:194",
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "rowHeight": 50,
-      "showLegend": true,
-      "showLegendCounts": false,
-      "showLegendNames": true,
-      "showLegendPercent": true,
-      "showLegendTime": false,
-      "showLegendValues": true,
-      "showTimeAxis": true,
+      "description": "Notice: Collected for MySQL 8.x",
       "targets": [
         {
           "expr": "max by (service_name) (mysql_perf_schema_replication_group_member_info{member_role=\"PRIMARY\",replication_set=~\"$replication_set\"})",
@@ -368,70 +274,65 @@
           "refId": "A"
         }
       ],
-      "textSize": 24,
-      "textSizeTime": 12,
-      "timeOptions": [
-        {
-          "name": "Years",
-          "value": "years"
+      "options": {
+        "mergeValues": true,
+        "showValue": "always",
+        "alignValue": "right",
+        "rowHeight": 0.9,
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom"
         },
-        {
-          "name": "Months",
-          "value": "months"
-        },
-        {
-          "name": "Weeks",
-          "value": "weeks"
-        },
-        {
-          "name": "Days",
-          "value": "days"
-        },
-        {
-          "name": "Hours",
-          "value": "hours"
-        },
-        {
-          "name": "Minutes",
-          "value": "minutes"
-        },
-        {
-          "name": "Seconds",
-          "value": "seconds"
-        },
-        {
-          "name": "Milliseconds",
-          "value": "milliseconds"
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
         }
-      ],
-      "timePrecision": {
-        "name": "Minutes",
-        "value": "minutes"
       },
-      "timeTextColor": "#d8d9da",
-      "title": "PRIMARY Service",
-      "type": "natel-discrete-panel",
-      "units": "short",
-      "use12HourClock": false,
-      "useTimePrecision": false,
-      "valueMaps": [
-        {
-          "$$hashKey": "object:2151",
-          "op": "=",
-          "text": "Primary",
-          "value": "1"
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "lineWidth": 0,
+            "fillOpacity": 100,
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "1": {
+                  "color": "#3274D9",
+                  "text": "Primary",
+                  "index": 0
+                },
+                "null": {
+                  "color": "#C0D8FF",
+                  "text": "Other",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "green"
+              },
+              {
+                "value": 80,
+                "color": "red"
+              }
+            ]
+          },
+          "unit": "short"
         },
-        {
-          "$$hashKey": "object:196",
-          "op": "=",
-          "text": "Other",
-          "value": "null"
-        }
-      ],
-      "valueTextColor": "#000000",
-      "writeAllValues": false,
-      "writeLastValue": false,
-      "writeMetricNames": true
+        "overrides": []
+      }
     },
     {
       "columns": [],

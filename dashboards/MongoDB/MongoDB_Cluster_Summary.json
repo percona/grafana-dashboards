@@ -1061,7 +1061,7 @@
         "displayLimit": 100,
         "ellipseCharacters": 18,
         "ellipseEnabled": false,
-        "fontAutoColor": true,
+        "fontAutoColor": false,
         "fontAutoScale": true,
         "fontSize": 12,
         "fontType": "Roboto",
@@ -1169,7 +1169,7 @@
         "displayLimit": 100,
         "ellipseCharacters": 18,
         "ellipseEnabled": false,
-        "fontAutoColor": true,
+        "fontAutoColor": false,
         "fontAutoScale": true,
         "fontSize": 12,
         "fontType": "Roboto",
@@ -1292,7 +1292,7 @@
         "displayLimit": 100,
         "ellipseCharacters": 18,
         "ellipseEnabled": false,
-        "fontAutoColor": true,
+        "fontAutoColor": false,
         "fontAutoScale": true,
         "fontSize": 12,
         "fontType": "Roboto",
@@ -1392,42 +1392,16 @@
       "type": "row"
     },
     {
-      "backgroundColor": "rgba(128,128,128,0.1)",
-      "colorMaps": [
-        {
-          "color": "#CCC",
-          "text": "N/A"
-        }
-      ],
-      "crosshairColor": "#8F070C",
-      "description": "The MongoDB balancer is a background process that monitors the number of chunks on each shard. When the number of chunks on a given shard reaches specific migration thresholds, the balancer attempts to automatically migrate chunks between shards and reach an equal number of chunks per shard.",
-      "display": "timeline",
-      "expandFromQueryS": 0,
-      "extendLastValue": true,
+      "id": 1215,
       "gridPos": {
         "h": 4,
         "w": 24,
         "x": 0,
         "y": 24
       },
-      "highlightOnMouseover": true,
-      "id": 1215,
-      "legendSortBy": "-ms",
-      "lineColor": "rgba(0,0,0,0.1)",
-      "metricNameColor": "#000000",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "rowHeight": 50,
-      "showLegend": true,
-      "showLegendNames": true,
-      "showLegendPercent": true,
-      "showLegendValues": true,
-      "showTimeAxis": true,
+      "type": "state-timeline",
+      "title": "Chunks Balanced",
+      "description": "The MongoDB balancer is a background process that monitors the number of chunks on each shard. When the number of chunks on a given shard reaches specific migration thresholds, the balancer attempts to automatically migrate chunks between shards and reach an equal number of chunks per shard.",
       "targets": [
         {
           "expr": "min(mongodb_mongos_sharding_chunks_is_balanced{cluster=\"$cluster\"})",
@@ -1436,68 +1410,77 @@
           "refId": "A"
         }
       ],
-      "textSize": 24,
-      "textSizeTime": 12,
-      "timeOptions": [
-        {
-          "name": "Years",
-          "value": "years"
+      "options": {
+        "mergeValues": true,
+        "showValue": "always",
+        "alignValue": "center",
+        "rowHeight": 0.9,
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom"
         },
-        {
-          "name": "Months",
-          "value": "months"
-        },
-        {
-          "name": "Weeks",
-          "value": "weeks"
-        },
-        {
-          "name": "Days",
-          "value": "days"
-        },
-        {
-          "name": "Hours",
-          "value": "hours"
-        },
-        {
-          "name": "Minutes",
-          "value": "minutes"
-        },
-        {
-          "name": "Seconds",
-          "value": "seconds"
-        },
-        {
-          "name": "Milliseconds",
-          "value": "milliseconds"
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
         }
-      ],
-      "timePrecision": {
-        "name": "Minutes",
-        "value": "minutes"
       },
-      "timeTextColor": "#d8d9da",
-      "title": "Chunks Balanced",
-      "type": "natel-discrete-panel",
-      "units": "short",
-      "use12HourClock": false,
-      "useTimePrecision": false,
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "YES",
-          "value": "1"
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "lineWidth": 0,
+            "fillOpacity": 100,
+            "spanNulls": true
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "NO",
+                  "index": 2,
+                  "color": "red"
+                },
+                "1": {
+                  "text": "YES",
+                  "index": 1,
+                  "color": "green"
+                }
+              }
+            },
+            {
+              "type": "range",
+              "options": {
+                "from": 0,
+                "to": 1,
+                "result": {
+                  "text": "N/A",
+                  "color": "text",
+                  "index": 0
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "green"
+              },
+              {
+                "value": 80,
+                "color": "red"
+              }
+            ]
+          },
+          "unit": "short"
         },
-        {
-          "op": "=",
-          "text": "NO",
-          "value": "0"
-        }
-      ],
-      "valueTextColor": "#000000",
-      "writeAllValues": false,
-      "writeLastValue": true,
-      "writeMetricNames": false
+        "overrides": []
+      }
     },
     {
       "default_title_for_rows": "Shard Name",

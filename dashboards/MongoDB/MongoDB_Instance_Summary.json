@@ -571,50 +571,14 @@
       "type": "stat"
     },
     {
-      "backgroundColor": "rgba(128,128,128,0.1)",
-      "colorMaps": [
-        {
-          "color": "rgb(107, 152, 102)",
-          "text": "PRIMARY"
-        },
-        {
-          "color": "rgb(193, 159, 20)",
-          "text": "SECONDARY"
-        }
-      ],
-      "crosshairColor": "#8F070C",
       "description": "Read more about [Replica Set Member States](https://docs.mongodb.com/manual/reference/replica-states/).",
-      "display": "timeline",
-      "expandFromQueryS": 0,
-      "extendLastValue": true,
       "gridPos": {
         "h": 4,
         "w": 24,
         "x": 0,
         "y": 4
       },
-      "highlightOnMouseover": true,
       "id": 1018,
-      "legendSortBy": "-ms",
-      "lineColor": "rgba(0,0,0,0.1)",
-      "metricNameColor": "#000000",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "rowHeight": 50,
-      "showDistinctCount": false,
-      "showLegend": true,
-      "showLegendCounts": false,
-      "showLegendNames": true,
-      "showLegendPercent": true,
-      "showLegendTime": true,
-      "showLegendValues": true,
-      "showTimeAxis": true,
-      "showTransitionCount": false,
       "targets": [
         {
           "expr": "sum by (set) (mongodb_mongod_replset_my_state{service_name=~\"$service_name\"})",
@@ -623,108 +587,116 @@
           "refId": "A"
         }
       ],
-      "textSize": 24,
-      "textSizeTime": 12,
-      "timeOptions": [
-        {
-          "name": "Years",
-          "value": "years"
-        },
-        {
-          "name": "Months",
-          "value": "months"
-        },
-        {
-          "name": "Weeks",
-          "value": "weeks"
-        },
-        {
-          "name": "Days",
-          "value": "days"
-        },
-        {
-          "name": "Hours",
-          "value": "hours"
-        },
-        {
-          "name": "Minutes",
-          "value": "minutes"
-        },
-        {
-          "name": "Seconds",
-          "value": "seconds"
-        },
-        {
-          "name": "Milliseconds",
-          "value": "milliseconds"
-        }
-      ],
-      "timePrecision": {
-        "name": "Minutes",
-        "value": "minutes"
-      },
-      "timeTextColor": "#d8d9da",
       "title": "ReplSet $service_name states",
-      "type": "natel-discrete-panel",
-      "units": "short",
-      "use12HourClock": false,
-      "useTimePrecision": false,
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "PRIMARY",
-          "value": "1"
+      "type": "state-timeline",
+      "options": {
+        "mergeValues": true,
+        "showValue": "always",
+        "alignValue": "right",
+        "rowHeight": 0.9,
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom"
         },
-        {
-          "op": "=",
-          "text": "SECONDARY",
-          "value": "2"
-        },
-        {
-          "op": "=",
-          "text": "STARTUP",
-          "value": "0"
-        },
-        {
-          "op": "=",
-          "text": "RECOVERING",
-          "value": "3"
-        },
-        {
-          "op": "=",
-          "text": "STARTUP2",
-          "value": "5"
-        },
-        {
-          "op": "=",
-          "text": "UNKNOWN",
-          "value": "6"
-        },
-        {
-          "op": "=",
-          "text": "ARBITER",
-          "value": "7"
-        },
-        {
-          "op": "=",
-          "text": "DOWN",
-          "value": "8"
-        },
-        {
-          "op": "=",
-          "text": "ROLLBACK",
-          "value": "9"
-        },
-        {
-          "op": "=",
-          "text": "REMOVED",
-          "value": "10"
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
         }
-      ],
-      "valueTextColor": "#000000",
-      "writeAllValues": false,
-      "writeLastValue": true,
-      "writeMetricNames": false
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "lineWidth": 0,
+            "fillOpacity": 100,
+            "spanNulls": true,
+            "insertNulls": false,
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "STARTUP",
+                  "index": 10
+                },
+                "1": {
+                  "color": "rgb(107, 152, 102)",
+                  "text": "PRIMARY",
+                  "index": 2
+                },
+                "2": {
+                  "color": "rgb(193, 159, 20)",
+                  "text": "SECONDARY",
+                  "index": 1
+                },
+                "3": {
+                  "text": "RECOVERING",
+                  "index": 9
+                },
+                "5": {
+                  "text": "STARTUP2",
+                  "index": 8
+                },
+                "6": {
+                  "text": "UNKNOWN",
+                  "index": 7
+                },
+                "7": {
+                  "text": "ARBITER",
+                  "index": 6
+                },
+                "8": {
+                  "text": "DOWN",
+                  "index": 5
+                },
+                "9": {
+                  "text": "ROLLBACK",
+                  "index": 4
+                },
+                "10": {
+                  "text": "REMOVED",
+                  "index": 3
+                }
+              }
+            },
+            {
+              "type": "range",
+              "options": {
+                "from": null,
+                "to": null,
+                "result": {
+                  "text": "N/A",
+                  "index": 0
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "green"
+              },
+              {
+                "value": 80,
+                "color": "red"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      }
     },
     {
       "collapsed": true,
