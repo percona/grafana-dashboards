@@ -1,0 +1,2875 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "Dashboard for DB Clusters managed with Percona Kubernetes Operators",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "gnetId": 15760,
+    "graphTooltip": 1,
+    "id": 73,
+    "links": [
+      {
+        "asDropdown": true,
+        "icon": "external link",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [
+          "PXC"
+        ],
+        "targetBlank": true,
+        "title": "MySQL",
+        "tooltip": "",
+        "type": "dashboards",
+        "url": ""
+      },
+      {
+        "asDropdown": true,
+        "icon": "external link",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [
+          "MongoDB"
+        ],
+        "targetBlank": true,
+        "title": "MongoDB",
+        "tooltip": "",
+        "type": "dashboards",
+        "url": ""
+      },
+      {
+        "asDropdown": true,
+        "icon": "external link",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [
+          "PostgreSQL"
+        ],
+        "targetBlank": true,
+        "title": "PostgreSQL",
+        "tooltip": "",
+        "type": "dashboards",
+        "url": ""
+      },
+      {
+        "asDropdown": false,
+        "icon": "doc",
+        "includeVars": false,
+        "keepTime": false,
+        "tags": [],
+        "targetBlank": true,
+        "title": "Documentation",
+        "tooltip": "",
+        "type": "link",
+        "url": "https://docs.percona.com"
+      },
+      {
+        "asDropdown": false,
+        "icon": "question",
+        "includeVars": false,
+        "keepTime": false,
+        "tags": [],
+        "targetBlank": true,
+        "title": "Get help",
+        "tooltip": "",
+        "type": "link",
+        "url": "https://www.percona.com/about/contact"
+      }
+    ],
+    "liveNow": false,
+    "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 90,
+        "panels": [],
+        "title": "Database Generic Metrics",
+        "type": "row"
+      },
+      {
+        "description": "Custom resource status",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "fixed"
+            },
+            "custom": {
+              "fillOpacity": 100,
+              "lineWidth": 0,
+              "spanNulls": false
+            },
+            "mappings": [
+              {
+                "options": {
+                  "error": {
+                    "color": "red",
+                    "index": 2
+                  },
+                  "null": {
+                    "index": 1,
+                    "text": "N/A"
+                  }
+                },
+                "type": "value"
+              },
+              {
+                "options": {
+                  "from": 0,
+                  "result": {
+                    "index": 0,
+                    "text": "N/A"
+                  },
+                  "to": 0
+                },
+                "type": "range"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "ready"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "continuous-GrYlRd"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "error"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "continuous-RdYlGr"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 5,
+          "x": 0,
+          "y": 1
+        },
+        "id": 97,
+        "options": {
+          "alignValue": "center",
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "mergeValues": true,
+          "rowHeight": 0.89,
+          "showValue": "never",
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "editorMode": "code",
+            "expr": "(sum(kube_pxc_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",name=\"${k8s_db_cr}\"}) by (state) if \"${k8s_db_type}\"==\"percona-xtradb-cluster-operator\") !=0",
+            "format": "time_series",
+            "hide": false,
+            "legendFormat": "{{state}}",
+            "range": true,
+            "refId": "PXC_Status"
+          },
+          {
+            "editorMode": "code",
+            "expr": "(sum(kube_psmdb_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",name=\"${k8s_db_cr}\"}) by (state) if \"${k8s_db_type}\"==\"percona-server-mongodb-operator\") !=0\n",
+            "format": "time_series",
+            "hide": false,
+            "legendFormat": "{{state}}",
+            "range": true,
+            "refId": "PSMDB_Status"
+          },
+          {
+            "editorMode": "code",
+            "expr": "(sum(kube_pg_status_state{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",name=\"${k8s_db_cr}\"}) by (state) if \"${k8s_db_type}\"==\"percona-postgresql-operator\") !=0\n",
+            "format": "time_series",
+            "hide": false,
+            "legendFormat": "{{state}}",
+            "range": true,
+            "refId": "PG_Status"
+          }
+        ],
+        "title": "Cluster Status",
+        "transformations": [],
+        "type": "state-timeline"
+      },
+      {
+        "description": "Shows the list of backups for the cluster and their statuses",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "displayMode": "auto",
+              "inspect": false
+            },
+            "mappings": [],
+            "noValue": "No backups created for this database",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 7,
+          "x": 5,
+          "y": 1
+        },
+        "id": 99,
+        "options": {
+          "footer": {
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": false,
+              "displayName": "state (last)"
+            }
+          ]
+        },
+        "pluginVersion": "9.2.20",
+        "targets": [
+          {
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "(kube_pxc_backup_status_state{k8s_cluster_id=\"$k8s_cluster\",namespace=\"$namespace\",dbcluster=\"$k8s_db_cr\"} if \"${k8s_db_type}\"==\"percona-xtradb-cluster-operator\") !=0",
+            "format": "table",
+            "instant": true,
+            "legendFormat": "__auto",
+            "range": false,
+            "refId": "PXC_Backup"
+          },
+          {
+            "editorMode": "code",
+            "expr": "(kube_pg_backup_status_state{k8s_cluster_id=\"$k8s_cluster\",namespace=\"$namespace\",dbcluster=\"$k8s_db_cr\"} if \"${k8s_db_type}\"==\"percona-postgresql-operator\") !=0",
+            "hide": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A"
+          },
+          {
+            "editorMode": "code",
+            "expr": "(kube_psmdb_backup_status_state{k8s_cluster_id=\"$k8s_cluster\",namespace=\"$namespace\",dbcluster=\"$k8s_db_cr\"} if \"${k8s_db_type}\"==\"percona-server-mongodb-operator\") !=0",
+            "hide": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "B"
+          }
+        ],
+        "title": "Backup Status",
+        "transformations": [
+          {
+            "id": "labelsToFields",
+            "options": {}
+          },
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "filterByValue",
+            "options": {
+              "filters": [
+                {
+                  "config": {
+                    "id": "equal",
+                    "options": {
+                      "value": 1
+                    }
+                  },
+                  "fieldName": "Value"
+                }
+              ],
+              "match": "any",
+              "type": "include"
+            }
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": false
+              },
+              "indexByName": {},
+              "renameByName": {}
+            }
+          },
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "Time": {
+                  "aggregations": []
+                },
+                "container": {
+                  "aggregations": []
+                },
+                "job": {
+                  "aggregations": []
+                },
+                "name": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "namespace": {
+                  "aggregations": []
+                },
+                "pod": {
+                  "aggregations": []
+                },
+                "state": {
+                  "aggregations": [
+                    "last"
+                  ],
+                  "operation": "aggregate"
+                }
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "description": "Number of vCPU cores used by a container. \nCPU Limit is shown only if it is set in the Custom Resource (recommended).",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "axisSoftMin": 0,
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 20,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 4,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "min": 0,
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": "/CPU Limit/"
+              },
+              "properties": [
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 0
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "continuous-reds"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 12,
+          "y": 1
+        },
+        "id": 80,
+        "interval": "1s",
+        "maxDataPoints": 1000,
+        "options": {
+          "legend": {
+            "calcs": [
+              "mean",
+              "min",
+              "max"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "8.3.5",
+        "targets": [
+          {
+            "editorMode": "code",
+            "expr": "sum(rate(container_cpu_usage_seconds_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"${k8s_db_pods}\", container=~\"mongod|pxc|database\"}[$__rate_interval])) by (container,pod)",
+            "hide": false,
+            "legendFormat": "{{pod}} - CPU cores",
+            "range": true,
+            "refId": "CPU Used"
+          },
+          {
+            "editorMode": "code",
+            "expr": "(max(label_replace(kube_pod_container_resource_limits{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"${k8s_db_pods}\", container=~\"mongod|pxc|database\",resource=\"cpu\"}, \"pod_set\", \"$1\", \"pod\", \"(.*)-.{1}\")) by (pod_set) if \"${k8s_db_type}\"==\"percona-server-mongodb-operator\") !=0",
+            "hide": false,
+            "legendFormat": "CPU Limit - {{pod_set}}",
+            "range": true,
+            "refId": "CPU Limit  - MongoDB"
+          },
+          {
+            "editorMode": "code",
+            "expr": "(max(kube_pod_container_resource_limits{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"${k8s_db_pods}\", container=~\"mongod|pxc|database\",resource=\"cpu\"})if \"${k8s_db_type}\"==\"percona-xtradb-cluster-operator\") !=0",
+            "hide": false,
+            "legendFormat": "CPU Limit ",
+            "range": true,
+            "refId": "CPU Limit - PXC"
+          },
+          {
+            "editorMode": "code",
+            "expr": "(max(label_replace(kube_pod_container_resource_limits{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"${k8s_db_pods}\", container=~\"mongod|pxc|database\",resource=\"cpu\"}, \"pod_set\", \"$1\", \"pod\", \"${k8s_db_cr}-(.*)-.{4}-.{1}\")) by (pod_set) if \"${k8s_db_type}\"==\"percona-postgresql-operator\") !=0",
+            "hide": false,
+            "legendFormat": "CPU Limit - {{pod_set}}",
+            "range": true,
+            "refId": "CPU Limit - PostgreSQL"
+          }
+        ],
+        "title": "CPU Usage",
+        "transformations": [
+          {
+            "id": "filterByValue",
+            "options": {
+              "filters": [],
+              "match": "any",
+              "type": "include"
+            }
+          }
+        ],
+        "type": "timeseries"
+      },
+      {
+        "description": "Number of bytes used by a container. \nMemory Limit is shown only if it is set in the Custom Resource (recommended).",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 20,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "bytes"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": "/Memory Limit/"
+              },
+              "properties": [
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 0
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "continuous-reds"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "id": 57,
+        "interval": "1s",
+        "maxDataPoints": 1000,
+        "options": {
+          "legend": {
+            "calcs": [
+              "mean",
+              "max",
+              "min"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "8.3.5",
+        "targets": [
+          {
+            "editorMode": "code",
+            "expr": "sum(container_memory_working_set_bytes{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"${k8s_db_pods}\", container=~\"mongod|pxc|database\"}) by (container,pod)",
+            "hide": false,
+            "legendFormat": "{{pod}} - Bytes",
+            "range": true,
+            "refId": "Memory Used"
+          },
+          {
+            "editorMode": "code",
+            "expr": "(max(label_replace(kube_pod_container_resource_limits{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"${k8s_db_pods}\", container=~\"mongod|pxc|database\",resource=\"memory\"}, \"pod_set\", \"$1\", \"pod\", \"(.*)-.{1}\")) by (pod_set) if \"${k8s_db_type}\"==\"percona-server-mongodb-operator\") !=0",
+            "hide": false,
+            "legendFormat": "Memory Limit - {{pod_set}}",
+            "range": true,
+            "refId": "Memory Limit - MongoDB"
+          },
+          {
+            "editorMode": "code",
+            "expr": "(max(kube_pod_container_resource_limits{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"${k8s_db_pods}\", container=~\"mongod|pxc|database\",resource=\"memory\"})if \"${k8s_db_type}\"==\"percona-xtradb-cluster-operator\") !=0",
+            "hide": false,
+            "legendFormat": "Memory Limit",
+            "range": true,
+            "refId": "Memory Limit - PXC"
+          },
+          {
+            "editorMode": "code",
+            "expr": "(max(label_replace(kube_pod_container_resource_limits{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"${k8s_db_pods}\", container=~\"mongod|pxc|database\",resource=\"memory\"}, \"pod_set\", \"$1\", \"pod\", \"${k8s_db_cr}-(.*)-.{4}-.{1}\")) by (pod_set) if \"${k8s_db_type}\"==\"percona-postgresql-operator\") !=0",
+            "hide": false,
+            "legendFormat": "Memory Limit - {{pod_set}}",
+            "range": true,
+            "refId": "Memory Limit - PostgreSQL"
+          }
+        ],
+        "title": "Memory Usage",
+        "type": "timeseries"
+      },
+      {
+        "description": "Persistent Volume Claim storage usage in bytes",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 20,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "bytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "id": 62,
+        "options": {
+          "legend": {
+            "calcs": [
+              "mean",
+              "max",
+              "min"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "9.2.5",
+        "targets": [
+          {
+            "editorMode": "code",
+            "exemplar": true,
+            "expr": "sum(kubelet_volume_stats_used_bytes{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\"}) by (persistentvolumeclaim) and on (persistentvolumeclaim) kube_persistentvolumeclaim_labels{k8s_cluster_id=\"$k8s_cluster\",label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"}",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "{{persistentvolumeclaim}}",
+            "refId": "A"
+          }
+        ],
+        "title": "Storage Usage",
+        "type": "timeseries"
+      },
+      {
+        "description": "Percentage of how much of a storage capacity is utilized",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "axisSoftMin": 0,
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 20,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "decimals": 2,
+            "mappings": [],
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 16
+        },
+        "id": 64,
+        "options": {
+          "legend": {
+            "calcs": [
+              "mean",
+              "max",
+              "min"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "9.2.5",
+        "targets": [
+          {
+            "editorMode": "code",
+            "exemplar": true,
+            "expr": "100 * (sum(kubelet_volume_stats_used_bytes{k8s_cluster_id=\"${k8s_cluster}\",namespace=~\"${namespace}\"}) by (persistentvolumeclaim) and on (persistentvolumeclaim) kube_persistentvolumeclaim_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"})\n/ (sum(kubelet_volume_stats_capacity_bytes{k8s_cluster_id=\"${k8s_cluster}\",namespace=~\"${namespace}\"}) by (persistentvolumeclaim) and on (persistentvolumeclaim) kube_persistentvolumeclaim_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"})",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "{{persistentvolumeclaim}}",
+            "refId": "A"
+          }
+        ],
+        "title": "Storage Utilization ",
+        "type": "timeseries"
+      },
+      {
+        "description": "Status of Pods - shows if they were restarted and when",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 20,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 16
+        },
+        "id": 109,
+        "options": {
+          "legend": {
+            "calcs": [
+              "mean",
+              "max",
+              "min"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "9.2.20",
+        "targets": [
+          {
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "sum(kube_pod_status_phase{k8s_cluster_id=\"$k8s_cluster\",namespace=\"$namespace\",pod=~\"$k8s_db_pods\",phase=\"Running\"}) by (phase,pod) ",
+            "interval": "",
+            "legendFormat": "{{pod}} - {{phase}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Database Pods Status",
+        "type": "timeseries"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 24
+        },
+        "id": 101,
+        "panels": [
+          {
+            "description": "Number of vCPU cores used by a container. \nCPU Limit is shown only if it is set in the Custom Resource (recommended).",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "linear",
+                  "lineWidth": 2,
+                  "pointSize": 1,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "min": 0,
+                "thresholds": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "none"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": "/CPU Limit/"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.fillOpacity",
+                      "value": 0
+                    },
+                    {
+                      "id": "color",
+                      "value": {
+                        "mode": "continuous-reds"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 25
+            },
+            "id": 102,
+            "interval": "1s",
+            "maxDataPoints": 1000,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "mean",
+                  "max",
+                  "min"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "8.3.5",
+            "targets": [
+              {
+                "editorMode": "code",
+                "expr": "sum(rate(container_cpu_usage_seconds_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"${k8s_proxy_pods}\", container=~\"pgbouncer|haproxy|proxysql|mongos\"}[$__rate_interval])) by (container,pod)",
+                "hide": false,
+                "legendFormat": "{{pod}} - CPU cores",
+                "range": true,
+                "refId": "CPU Used"
+              },
+              {
+                "editorMode": "code",
+                "expr": "max(kube_pod_container_resource_limits{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"${k8s_proxy_pods}\", container=~\"pgbouncer|haproxy|proxysql|mongos\",resource=\"cpu\"})",
+                "hide": false,
+                "legendFormat": "CPU Limit",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "CPU Usage",
+            "transformations": [
+              {
+                "id": "filterByValue",
+                "options": {
+                  "filters": [],
+                  "match": "any",
+                  "type": "include"
+                }
+              }
+            ],
+            "type": "timeseries"
+          },
+          {
+            "description": "Number of bytes used by a container. \nMemory Limit is shown only if it is set in the Custom Resource (recommended).",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "axisSoftMin": 0,
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "linear",
+                  "lineWidth": 2,
+                  "pointSize": 1,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "bytes"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": "/Memory Limit/"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.fillOpacity",
+                      "value": 0
+                    },
+                    {
+                      "id": "color",
+                      "value": {
+                        "mode": "continuous-reds"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 25
+            },
+            "id": 103,
+            "interval": "1s",
+            "maxDataPoints": 1000,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "mean",
+                  "max",
+                  "min"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "8.3.5",
+            "targets": [
+              {
+                "editorMode": "code",
+                "expr": "sum(container_memory_working_set_bytes{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"${k8s_proxy_pods}\", container=~\"pgbouncer|haproxy|proxysql|mongos\"}) by (container,pod)",
+                "hide": false,
+                "legendFormat": "{{pod}} - Bytes",
+                "range": true,
+                "refId": "Memory Used"
+              },
+              {
+                "editorMode": "code",
+                "expr": "max(kube_pod_container_resource_limits{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"${k8s_proxy_pods}\", container=~\"pgbouncer|haproxy|proxysql|mongos\", resource=\"memory\"}) ",
+                "hide": false,
+                "legendFormat": "Memory Limit",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Memory Usage",
+            "type": "timeseries"
+          }
+        ],
+        "title": "Proxy Metrics",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 25
+        },
+        "id": 71,
+        "panels": [
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "linear",
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "none"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 12,
+              "x": 0,
+              "y": 26
+            },
+            "id": 73,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "mean",
+                  "max",
+                  "min"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "desc"
+              }
+            },
+            "pluginVersion": "9.2.5",
+            "targets": [
+              {
+                "editorMode": "code",
+                "exemplar": false,
+                "expr": "kube_pod_container_status_restarts_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=~\"${namespace}\",pod=~\"$k8s_db_pods\",container!~\"logs|logrotate\"} and on (pod) kube_pod_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"}",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{pod}} ( {{container}} )",
+                "range": true,
+                "refId": "A"
+              }
+            ],
+            "title": "Container restarts",
+            "type": "timeseries"
+          },
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "axisSoftMin": 0,
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "ContainerCannotRun"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "OOM Killed"
+                      },
+                      "3": {
+                        "index": 2,
+                        "text": "Completed"
+                      },
+                      "4": {
+                        "index": 3,
+                        "text": "Error"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ],
+                "max": 4,
+                "min": 0,
+                "noValue": "No containers were terminated for this database",
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    }
+                  ]
+                },
+                "unit": "string"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 12,
+              "x": 12,
+              "y": 26
+            },
+            "id": 74,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "mean",
+                  "max",
+                  "min"
+                ],
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "desc"
+              }
+            },
+            "pluginVersion": "9.2.20",
+            "targets": [
+              {
+                "editorMode": "code",
+                "exemplar": false,
+                "expr": "kube_pod_container_status_last_terminated_reason{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"${namespace}\",reason=\"ContainerCannotRun\"} and on (pod) kube_pod_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"}",
+                "format": "table",
+                "hide": false,
+                "instant": true,
+                "interval": "",
+                "legendFormat": "{{pod}} ( {{container}} )",
+                "range": false,
+                "refId": "ContainerCannotRun"
+              },
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "(kube_pod_container_status_last_terminated_reason{namespace=\"${namespace}\" ,reason=\"OOMKilled\"} and on (pod) kube_pod_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"})+1",
+                "hide": false,
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{pod}} ( {{container}} )",
+                "refId": "OOMKilled"
+              },
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "(kube_pod_container_status_last_terminated_reason{namespace=\"${namespace}\" ,reason=\"Completed\"} and on (pod) kube_pod_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"})+2",
+                "hide": false,
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{pod}} ( {{container}} )",
+                "refId": "Completed"
+              },
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "(kube_pod_container_status_last_terminated_reason{namespace=\"${namespace}\" ,reason=\"Error\"} and on (pod) kube_pod_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"})+3",
+                "hide": false,
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{pod}} ( {{container}} )",
+                "refId": "Error"
+              }
+            ],
+            "title": "Last Terminated Reason",
+            "transformations": [],
+            "type": "timeseries"
+          }
+        ],
+        "title": "Error Details",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 26
+        },
+        "id": 47,
+        "panels": [
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "custom": {
+                  "align": "left",
+                  "displayMode": "auto",
+                  "filterable": true,
+                  "inspect": false
+                },
+                "decimals": 2,
+                "displayName": "",
+                "mappings": [
+                  {
+                    "options": {
+                      "Bound": {
+                        "color": "dark-green",
+                        "index": 0
+                      },
+                      "Lost": {
+                        "color": "red",
+                        "index": 1
+                      },
+                      "Pending": {
+                        "color": "orange",
+                        "index": 2
+                      }
+                    },
+                    "type": "value"
+                  }
+                ],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Time"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.width",
+                      "value": 175
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "namespace"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.width",
+                      "value": 133
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "persistentvolumeclaim"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.width",
+                      "value": 261
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "storageclass"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.width",
+                      "value": 162
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "volumename"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.width",
+                      "value": 190
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Value #B"
+                  },
+                  "properties": [
+                    {
+                      "id": "unit",
+                      "value": "decbytes"
+                    },
+                    {
+                      "id": "displayName",
+                      "value": "Capacity"
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Capacity"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.width",
+                      "value": 169
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "phase"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.width",
+                      "value": 157
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "phase"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.displayMode",
+                      "value": "color-background-solid"
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 27
+            },
+            "id": 88,
+            "links": [],
+            "options": {
+              "footer": {
+                "enablePagination": false,
+                "fields": "",
+                "reducer": [
+                  "sum"
+                ],
+                "show": false
+              },
+              "frameIndex": 0,
+              "showHeader": true,
+              "sortBy": []
+            },
+            "pluginVersion": "9.2.20",
+            "targets": [
+              {
+                "editorMode": "code",
+                "exemplar": false,
+                "expr": "label_keep((kube_persistentvolumeclaim_info{k8s_cluster_id=\"$k8s_cluster\",namespace=\"$namespace\"} and on (persistentvolumeclaim) kube_persistentvolumeclaim_labels{k8s_cluster_id=\"$k8s_cluster\",namespace=\"$namespace\",label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"}),\"persistentvolumeclaim\",\"storageclass\")",
+                "format": "table",
+                "hide": false,
+                "instant": true,
+                "range": false,
+                "refId": "E"
+              },
+              {
+                "editorMode": "code",
+                "expr": "max by (persistentvolumeclaim,namespace) (kubelet_volume_stats_capacity_bytes{k8s_cluster_id=\"$k8s_cluster\",namespace=~\"${namespace}\"} and on (persistentvolumeclaim) kube_persistentvolumeclaim_labels{k8s_cluster_id=\"$k8s_cluster\",namespace=\"$namespace\",label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"},\"namespace\")",
+                "format": "table",
+                "hide": false,
+                "instant": true,
+                "refId": "B"
+              },
+              {
+                "editorMode": "code",
+                "exemplar": false,
+                "expr": "label_keep(kube_persistentvolumeclaim_status_phase{namespace=~\"${namespace}\"} and on (persistentvolumeclaim) kube_persistentvolumeclaim_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"},\"persistentvolumeclaim\",\"phase\") !=0",
+                "format": "table",
+                "hide": false,
+                "instant": true,
+                "legendFormat": "{{Status}}",
+                "range": false,
+                "refId": "Status"
+              }
+            ],
+            "title": "PVC Stats",
+            "transformations": [
+              {
+                "id": "joinByField",
+                "options": {
+                  "byField": "persistentvolumeclaim",
+                  "mode": "inner"
+                }
+              },
+              {
+                "id": "organize",
+                "options": {
+                  "excludeByName": {
+                    "Time 1": true,
+                    "Time 2": true,
+                    "Time 3": true,
+                    "Value #E": true,
+                    "Value #Status": true,
+                    "namespace": true
+                  },
+                  "indexByName": {},
+                  "renameByName": {}
+                }
+              }
+            ],
+            "type": "table"
+          },
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "linear",
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "binBps"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 27
+            },
+            "id": 68,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "mean",
+                  "max",
+                  "min"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "desc"
+              }
+            },
+            "pluginVersion": "9.2.5",
+            "targets": [
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "rate(kubelet_volume_stats_used_bytes{k8s_cluster_id=\"${k8s_cluster}\",namespace=~\"${namespace}\"} and on (persistentvolumeclaim) kube_persistentvolumeclaim_labels{label_app_kubernetes_io_managed_by=\"${k8s_db_type}\",label_app_kubernetes_io_instance=\"${k8s_db_cr}\"}[60s])",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{persistentvolumeclaim}}",
+                "refId": "A"
+              }
+            ],
+            "title": "Volume Usage Rate /min",
+            "type": "timeseries"
+          }
+        ],
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+            },
+            "refId": "A"
+          }
+        ],
+        "title": "Volumes",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 27
+        },
+        "id": 45,
+        "panels": [
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": true,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "bytes"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 12,
+              "x": 0,
+              "y": 28
+            },
+            "id": 31,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "mean",
+                  "max",
+                  "min"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "sum(rate(container_network_receive_bytes_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}(Recieved)",
+                "range": true,
+                "refId": "A"
+              },
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "- sum(rate(container_network_transmit_bytes_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}(Transmitted)",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "Database - Network - Bandwidth",
+            "type": "timeseries"
+          },
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": true,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "pps"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 12,
+              "x": 12,
+              "y": 28
+            },
+            "id": 34,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "mean",
+                  "max",
+                  "min"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "sum(rate(container_network_receive_packets_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}} (Received )",
+                "range": true,
+                "refId": "A"
+              },
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "- sum(rate(container_network_transmit_packets_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}} {Transmitted)",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "Database - Network - Packets",
+            "type": "timeseries"
+          },
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": true,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "pps"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 12,
+              "x": 0,
+              "y": 35
+            },
+            "id": 36,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "mean",
+                  "max",
+                  "min"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "sum(rate(container_network_receive_packets_dropped_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}(Received)",
+                "range": true,
+                "refId": "A"
+              },
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "- sum(rate(container_network_transmit_packets_dropped_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}(Transmitted)",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "Database - Network - Packets Dropped",
+            "type": "timeseries"
+          },
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": true,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "pps"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 12,
+              "x": 12,
+              "y": 35
+            },
+            "id": 37,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "mean",
+                  "max",
+                  "min"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "sum(rate(container_network_receive_errors_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}(Received)",
+                "range": true,
+                "refId": "A"
+              },
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "- sum(rate(container_network_transmit_errors_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_db_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}(Transmitted)",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "Database - Network - Errors",
+            "type": "timeseries"
+          },
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": true,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "bytes"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 12,
+              "x": 0,
+              "y": 42
+            },
+            "id": 104,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "mean",
+                  "max",
+                  "min"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "sum(rate(container_network_receive_bytes_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_proxy_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}(Recieved)",
+                "range": true,
+                "refId": "A"
+              },
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "- sum(rate(container_network_transmit_bytes_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_proxy_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}(Transmitted)",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "Proxy - Network - Bandwidth",
+            "type": "timeseries"
+          },
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": true,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "pps"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 12,
+              "x": 12,
+              "y": 42
+            },
+            "id": 105,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "mean",
+                  "max",
+                  "min"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "sum(rate(container_network_receive_packets_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_proxy_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}} (Received )",
+                "range": true,
+                "refId": "A"
+              },
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "- sum(rate(container_network_transmit_packets_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_proxy_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}} {Transmitted)",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "Proxy - Network - Packets",
+            "type": "timeseries"
+          },
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": true,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "pps"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 12,
+              "x": 0,
+              "y": 49
+            },
+            "id": 106,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "mean",
+                  "max",
+                  "min"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "sum(rate(container_network_receive_packets_dropped_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_proxy_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}(Received)",
+                "range": true,
+                "refId": "A"
+              },
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "- sum(rate(container_network_transmit_packets_dropped_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_proxy_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}(Transmitted)",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "Proxy - Network - Packets Dropped",
+            "type": "timeseries"
+          },
+          {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 20,
+                  "gradientMode": "opacity",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "never",
+                  "spanNulls": true,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "pps"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 12,
+              "x": 12,
+              "y": 49
+            },
+            "id": 107,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "mean",
+                  "max",
+                  "min"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "sum(rate(container_network_receive_errors_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_proxy_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}(Received)",
+                "range": true,
+                "refId": "A"
+              },
+              {
+                "editorMode": "code",
+                "exemplar": true,
+                "expr": "- sum(rate(container_network_transmit_errors_total{k8s_cluster_id=\"${k8s_cluster}\",namespace=\"$namespace\", pod=~\"$k8s_proxy_pods\"}[$__rate_interval])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}(Transmitted)",
+                "range": true,
+                "refId": "B"
+              }
+            ],
+            "title": "Proxy - Network - Errors",
+            "type": "timeseries"
+          }
+        ],
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+            },
+            "refId": "A"
+          }
+        ],
+        "title": "Network",
+        "type": "row"
+      }
+    ],
+    "refresh": "",
+    "schemaVersion": 37,
+    "style": "dark",
+    "tags": [
+      "Percona",
+      "Operators",
+      "Kubernetes"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "default",
+            "value": "default"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "multi": false,
+          "name": "datasource",
+          "options": [],
+          "query": "prometheus",
+          "queryValue": "",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "type": "datasource"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "sp-cluster",
+            "value": "sp-cluster"
+          },
+          "definition": "label_values(container_cpu_system_seconds_total,k8s_cluster_id)",
+          "hide": 0,
+          "includeAll": false,
+          "label": "K8s Cluster",
+          "multi": false,
+          "name": "k8s_cluster",
+          "options": [],
+          "query": {
+            "query": "label_values(container_cpu_system_seconds_total,k8s_cluster_id)",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "default",
+            "value": "default"
+          },
+          "definition": "label_values(kube_pod_labels{label_app_kubernetes_io_managed_by=~\"percona-xtradb-cluster-operator|percona-postgresql-operator|percona-server-mongodb-operator|percona-server-mysql-operator\",k8s_cluster_id=\"$k8s_cluster\"}, namespace)",
+          "hide": 0,
+          "includeAll": false,
+          "multi": false,
+          "name": "namespace",
+          "options": [],
+          "query": {
+            "query": "label_values(kube_pod_labels{label_app_kubernetes_io_managed_by=~\"percona-xtradb-cluster-operator|percona-postgresql-operator|percona-server-mongodb-operator|percona-server-mysql-operator\",k8s_cluster_id=\"$k8s_cluster\"}, namespace)",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 1,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "percona-postgresql-operator",
+            "value": "percona-postgresql-operator"
+          },
+          "definition": "label_values(kube_pod_labels{k8s_cluster_id=\"$k8s_cluster\",namespace=\"$namespace\"},label_app_kubernetes_io_managed_by)",
+          "description": "Which Operator manages the database",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Operator",
+          "multi": false,
+          "name": "k8s_db_type",
+          "options": [],
+          "query": {
+            "query": "label_values(kube_pod_labels{k8s_cluster_id=\"$k8s_cluster\",namespace=\"$namespace\"},label_app_kubernetes_io_managed_by)",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": "/percona-.*-operator/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "my-pg",
+            "value": "my-pg"
+          },
+          "definition": "label_values(kube_pod_labels{k8s_cluster_id=\"$k8s_cluster\",label_app_kubernetes_io_managed_by=\"$k8s_db_type\",namespace=\"$namespace\"},label_app_kubernetes_io_instance)",
+          "description": "Custom Resource database cluster name",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Database Name",
+          "multi": false,
+          "name": "k8s_db_cr",
+          "options": [],
+          "query": {
+            "query": "label_values(kube_pod_labels{k8s_cluster_id=\"$k8s_cluster\",label_app_kubernetes_io_managed_by=\"$k8s_db_type\",namespace=\"$namespace\"},label_app_kubernetes_io_instance)",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 1,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": "",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "definition": "label_values(kube_pod_labels{k8s_cluster_id=\"$k8s_cluster\",namespace=\"$namespace\",label_app_kubernetes_io_managed_by=\"$k8s_db_type\",label_app_kubernetes_io_instance=\"$k8s_db_cr\",label_app_kubernetes_io_component=~\"cfg|mongod|pxc|pg\"}, pod)",
+          "hide": 2,
+          "includeAll": true,
+          "label": "DB Pods",
+          "multi": false,
+          "name": "k8s_db_pods",
+          "options": [],
+          "query": {
+            "query": "label_values(kube_pod_labels{k8s_cluster_id=\"$k8s_cluster\",namespace=\"$namespace\",label_app_kubernetes_io_managed_by=\"$k8s_db_type\",label_app_kubernetes_io_instance=\"$k8s_db_cr\",label_app_kubernetes_io_component=~\"cfg|mongod|pxc|pg\"}, pod)",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 1,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": "",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "definition": "label_values(kube_pod_labels{k8s_cluster_id=\"$k8s_cluster\",namespace=\"$namespace\",label_app_kubernetes_io_managed_by=\"$k8s_db_type\",label_app_kubernetes_io_instance=\"$k8s_db_cr\",label_app_kubernetes_io_component=~\"mongos|haproxy|proxysql|pgbouncer\"}, pod)",
+          "hide": 2,
+          "includeAll": true,
+          "label": "DB Proxy Pods",
+          "multi": false,
+          "name": "k8s_proxy_pods",
+          "options": [],
+          "query": {
+            "query": "label_values(kube_pod_labels{k8s_cluster_id=\"$k8s_cluster\",namespace=\"$namespace\",label_app_kubernetes_io_managed_by=\"$k8s_db_type\",label_app_kubernetes_io_instance=\"$k8s_db_cr\",label_app_kubernetes_io_component=~\"mongos|haproxy|proxysql|pgbouncer\"}, pod)",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 1,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-12h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Databases on Kubernetes - Summary",
+    "uid": "k8s-db-summary",
+    "version": 19,
+    "weekStart": ""
+  }
