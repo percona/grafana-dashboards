@@ -17,7 +17,7 @@ year = str(datetime.date.today())[:4]
 def set_title(dashboard):
     """Set Dashboard Title."""
     prompt = 'Title [%s]: ' % (dashboard['title'],)
-    dashboard['title'] = raw_input(prompt) or dashboard['title']
+    dashboard['title'] = input(prompt) or dashboard['title']
     return dashboard
 
 
@@ -26,10 +26,10 @@ def set_time(dashboard):
     prompt = 'Time from (conventional: **now-12h**) [%s]: ' % (
         dashboard['time']['from'],
     )
-    dashboard['time']['from'] = raw_input(prompt) or dashboard['time']['from']
+    dashboard['time']['from'] = input(prompt) or dashboard['time']['from']
 
     prompt = 'Time to [%s]: ' % (dashboard['time']['to'],)
-    dashboard['time']['to'] = raw_input(prompt) or dashboard['time']['to']
+    dashboard['time']['to'] = input(prompt) or dashboard['time']['to']
     return dashboard
 
 
@@ -38,13 +38,13 @@ def set_timezone(dashboard):
     prompt = 'Timezone (conventional: **browser**) [%s]: ' % (
         dashboard['timezone'],
     )
-    dashboard['timezone'] = raw_input(prompt) or dashboard['timezone']
+    dashboard['timezone'] = input(prompt) or dashboard['timezone']
     return dashboard
 
 
 def set_shared_crosshear(dashboard):
     """Enabled Shared Crosshear."""
-    if 'graphTooltip' not in dashboard.keys():
+    if 'graphTooltip' not in list(dashboard.keys()):
         return dashboard
     dashboard['graphTooltip'] = 1
     return dashboard
@@ -52,22 +52,22 @@ def set_shared_crosshear(dashboard):
 
 def set_default_refresh_intervals(dashboard):
     """Set Dashboard refresh intervals."""
-    if 'timepicker' not in dashboard.keys():
+    if 'timepicker' not in list(dashboard.keys()):
         return dashboard
-    dashboard['timepicker']['refresh_intervals'] = refresh_intervals 
+    dashboard['timepicker']['refresh_intervals'] = refresh_intervals
     return dashboard
 
 
 def set_refresh(dashboard):
     """Set Dashboard refresh."""
-    if 'refresh' not in dashboard.keys():
+    if 'refresh' not in list(dashboard.keys()):
         return dashboard
     while 1:
-        print ('Enabled refresh intervals: %s' % (refresh_intervals))
+        print('Enabled refresh intervals: %s' % (refresh_intervals))
         prompt = 'Refresh (conventional: **1m**) [%s]: ' % (
             dashboard['refresh'],
         )
-        user_input = raw_input(prompt)
+        user_input = input(prompt)
         if user_input:
             if user_input == 'False':
                 dashboard['refresh'] = False
@@ -77,7 +77,7 @@ def set_refresh(dashboard):
                     dashboard['refresh'] = user_input
                     return dashboard
                 else:
-                    print "Provided interval isn't enabled"
+                    print("Provided interval isn't enabled")
         else:
             return dashboard
 
@@ -87,24 +87,24 @@ def add_links(dashboard):
     prompt = 'Set default consistent linking to the dashboard (conventional: **Yes**) [%s]: ' % (
         "No",
     )
-    user_input = raw_input(prompt)
+    user_input = input(prompt)
     if user_input:
         if user_input == 'Yes':
             compare_pattern = re.compile(r'^.*_Compare$')
             compare_tags  = [s for s in dashboard['tags'] if compare_pattern.match(s)]
             ha_pattern = re.compile(r'^.*_HA$')
             ha_tags  = [s for s in dashboard['tags'] if ha_pattern.match(s)]
-            service_tag = "None";
+            service_tag = "None"
             if len(compare_tags) > 0:
-                match_compare = re.match("(MySQL|PostgreSQL|MongoDB|OS)", compare_tags[0]);
+                match_compare = re.match("(MySQL|PostgreSQL|MongoDB|OS)", compare_tags[0])
                 if match_compare:
-                    print "Compare dashboard is detected for the service %s" % match_compare.group(0);
-                    service_tag = match_compare.group(0);
+                    print("Compare dashboard is detected for the service %s" % match_compare.group(0))
+                    service_tag = match_compare.group(0)
             if len(ha_tags) > 0:
-                match_ha = re.match("(MySQL|PostgreSQL|MongoDB)", ha_tags[0]);
+                match_ha = re.match("(MySQL|PostgreSQL|MongoDB)", ha_tags[0])
                 if match_ha:
-                    print "HA dashboard is detected for the service %s" % match_ha.group(0);
-                    service_tag = match_ha.group(0);
+                    print("HA dashboard is detected for the service %s" % match_ha.group(0))
+                    service_tag = match_ha.group(0)
             setOfLinks = ['Home', 'Query Analytics', 'Compare', 'OS', 'MySQL', 'MongoDB', 'PostgreSQL', 'MySQL_HA', 'MongoDB_HA', 'Services', 'PMM']
 
             for link in copy.deepcopy(dashboard['links']):
@@ -147,7 +147,7 @@ def add_links(dashboard):
                             'type': 'link',
                             'url': '/graph/d/node-instance-compare/nodes-compare'
                         }
-                        print "OS Compare link has been added."
+                        print("OS Compare link has been added.")
                         dashboard['links'].append(add_item)
                     elif 'PXC' in dashboard['tags']:
                         add_item = {
@@ -160,7 +160,7 @@ def add_links(dashboard):
                             'type': 'link',
                             'url': '/graph/d/pxc-nodes-compare/pxc-galera-nodes-compare'
                         }
-                        print "PXC Compare link has been added."
+                        print("PXC Compare link has been added.")
                         dashboard['links'].append(add_item)
                     elif 'MySQL' in dashboard['tags'] or 'MySQL_HA' in dashboard['tags']:
                         add_item = {
@@ -173,7 +173,7 @@ def add_links(dashboard):
                             'type': 'link',
                             'url': '/graph/d/mysql-instance-compare/mysql-instances-compare'
                         }
-                        print "MySQL Compare link has been added."
+                        print("MySQL Compare link has been added.")
                         dashboard['links'].append(add_item)
                     elif 'MongoDB' in dashboard['tags'] or 'MongoDB_HA' in dashboard['tags']:
                         add_item = {
@@ -186,7 +186,7 @@ def add_links(dashboard):
                             'type': 'link',
                             'url': '/graph/d/mongodb-instance-compare/mongodb-instances-compare'
                         }
-                        print "MongoDB Compare link has been added."
+                        print("MongoDB Compare link has been added.")
                         dashboard['links'].append(add_item)
                     elif 'PostgreSQL' in dashboard['tags']:
                         add_item = {
@@ -199,7 +199,7 @@ def add_links(dashboard):
                             'type': 'link',
                             'url': '/graph/d/postgresql-instance-compare/postgresql-instances-compare'
                         }
-                        print "PostgreSQL Compare link has been added."
+                        print("PostgreSQL Compare link has been added.")
                         dashboard['links'].append(add_item)
                 else:
                     if (tag in dashboard['tags'] or tag in ['Services','PMM',service_tag]) and tag not in ['Compare','Home','MySQL_HA','MongoDB_HA']:
@@ -230,12 +230,12 @@ def add_links(dashboard):
 
 def set_editable(dashboard):
     """Set Editable Dashboard."""
-    if 'editable' not in dashboard.keys():
+    if 'editable' not in list(dashboard.keys()):
         return dashboard
     prompt = 'Editable (conventional: **False**) [%s]: ' % (
         dashboard['editable'],
     )
-    user_input = raw_input(prompt)
+    user_input = input(prompt)
     if user_input:
         if user_input == 'True':
             dashboard['editable'] = True
@@ -246,12 +246,12 @@ def set_editable(dashboard):
 
 def set_hide_controls(dashboard):
     """Set Dashboard Hide Controls."""
-    if 'hideControls' not in dashboard.keys():
+    if 'hideControls' not in list(dashboard.keys()):
         return dashboard
     prompt = 'Hide Controls (conventional: **True**) [%s]: ' % (
         dashboard['hideControls'],
     )
-    user_input = raw_input(prompt)
+    user_input = input(prompt)
     if user_input:
         if user_input == 'True':
             dashboard['hideControls'] = True
@@ -305,7 +305,7 @@ def drop_some_internal_elements(dashboard):
                             del dashboard['panels'][panel_index]['panels'][panelIn_index]['scopedVars']
 
     prompt = 'Drop all current variables values (conventional: **True**) [True]: '
-    user_input = raw_input(prompt)
+    user_input = input(prompt)
     if user_input:
         if user_input == 'False':
             for index, listelement in enumerate(dashboard['templating']['list']):
@@ -317,7 +317,7 @@ def drop_some_internal_elements(dashboard):
                             prompt = ('Drop elements for variable %s [True]: ' % (
                                 dashboard['templating']['list'][index]['name']
                             ))
-                            user_input = raw_input(prompt)
+                            user_input = input(prompt)
                             if user_input:
                                 if user_input == 'True':
                                     dashboard['templating']['list'][index]['current'] = {}
@@ -358,7 +358,7 @@ def fix_datasource(dashboard):
 
         if 'templating' in element:
             for panel_index, panel in enumerate(dashboard['templating']['list']):
-                    if 'datasource' in panel.keys():
+                    if 'datasource' in list(panel.keys()):
                         if panel['datasource'] == '${DS_PROMETHEUS}':
                             dashboard['templating']['list'][panel_index]['datasource'] = 'Prometheus'
                         if panel['datasource'] == '${DS_QAN-API}':
@@ -369,10 +369,10 @@ def fix_datasource(dashboard):
 
 def set_hide_timepicker(dashboard):
     """Set Timepicker Hiden."""
-    if 'timepicker' not in dashboard.keys():
+    if 'timepicker' not in list(dashboard.keys()):
         return dashboard
 
-    if 'hidden' not in dashboard['timepicker'].keys():
+    if 'hidden' not in list(dashboard['timepicker'].keys()):
         add_item = {}
         add_item['hidden'] = False
         for row in enumerate(dashboard['timepicker']):
@@ -381,7 +381,7 @@ def set_hide_timepicker(dashboard):
     prompt = 'Hide Timepicker (conventional: **True**) [%s]: ' % (
         dashboard['timepicker']['hidden']
     )
-    user_input = raw_input(prompt)
+    user_input = input(prompt)
     if user_input:
         if user_input == 'True':
             dashboard['timepicker']['hidden'] = True
@@ -396,7 +396,7 @@ def add_annotation(dashboard):
     prompt = 'Add default PMM annotation (conventional: **Yes**) [%s]: ' % (
         "No",
     )
-    user_input = raw_input(prompt)
+    user_input = input(prompt)
     if user_input:
         if user_input == 'Yes':
             active_variables = [TAG]
@@ -432,7 +432,7 @@ def add_annotation(dashboard):
                 "tags": [],
                 "type": "dashboard"
             }
-            dashboard['annotations']['list'].append(add_item) 
+            dashboard['annotations']['list'].append(add_item)
     return dashboard
 
 
@@ -442,7 +442,7 @@ def add_copyrights_links(dashboard):
     prompt = 'Add Copyrights Links - "Obligate for pmmdemo" (conventional: **No**) [%s]: ' % (
         "No",
     )
-    user_input = raw_input(prompt)
+    user_input = input(prompt)
     if user_input:
         if user_input == 'Yes':
             add_item = {
