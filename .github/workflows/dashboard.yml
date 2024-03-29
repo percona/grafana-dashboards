@@ -1,0 +1,64 @@
+name: Test pipeline
+
+on:
+  pull_request:
+    paths:
+      - 'dashboard/**'
+
+jobs:
+  cleanup_and_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run cleanup-dash.py
+        run: python cleanup-dash.py
+
+      - name: Check for changes
+        run: |
+          git diff --exit-code
+
+  workflow_success:
+    needs: [ cleanup_and_check ]
+    name: Slack Notification success
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK: ${{ secrets.SLACK_TOKEN }}
+      SLACK_CHANNEL: "pmm-ci"
+      SLACK_USERNAME: "PR pipelines bot"
+      SLACK_ICON_EMOJI: ":octocat:"
+      SLACK_COLOR: "#00FF00"
+      SLACK_TITLE: "Finished grafana-dashboards workflow"
+      SLACK_MESSAGE: "${{ github.event.inputs.repo || github.repository }}:${{ github.event.inputs.branch || github.head_ref }}"
+      SLACK_FOOTER: "Please check the Actions URL ^"
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Slack Notification
+        uses: percona/gh-action-action-slack-notify@v2
+
+  workflow_failure:
+    if: ${{ failure() }}
+    needs: [ cleanup_and_check ]
+    name: Slack Notification failure
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK: ${{ secrets.SLACK_TOKEN }}
+      SLACK_CHANNEL: "pmm-ci"
+      SLACK_USERNAME: "PR pipelines bot"
+      SLACK_ICON_EMOJI: ":octocat:"
+      SLACK_COLOR: "#FF0000"
+      SLACK_TITLE: "Finished grafana-dashboards workflow"
+      SLACK_MESSAGE: "Workflow failed: ${{ github.event.inputs.repo || github.repository }}:${{ github.event.inputs.branch || github.head_ref }}"
+      SLACK_FOOTER: "Please check the Actions URL ^"
