@@ -22,6 +22,18 @@ jobs:
 #          python -m pip install --upgrade pip
 #          pip install -r requirements.txt
 
+      - name: Get list of changed files
+        id: getfile
+        run: |
+          echo "::set-output name=files::$(git diff --name-only -- 'dashboard/*' | xargs)"
+
+      - name: Run cleanup-dash.py on changed files
+        run: |
+          IFS=" " read -ra FILES <<< "${{ steps.getfile.outputs.files }}"
+          for file in "${FILES[@]}"; do
+          python cleanup-dash.py "$file"
+          done
+
       - name: Run cleanup-dash.py
         run: python misc/cleanup-dash.py
 
