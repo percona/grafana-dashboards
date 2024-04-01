@@ -64,7 +64,7 @@ def set_refresh(dashboard):
     if 'refresh' not in list(dashboard.keys()):
         return dashboard
     while 1:
-        print('Enabled refresh intervals: %s' % (refresh_intervals))
+        print('Enabled refresh intervals: %s' % refresh_intervals)
         prompt = 'Refresh (conventional: **1m**) [%s]: ' % (
             dashboard['refresh'],
         )
@@ -203,36 +203,30 @@ def add_links(dashboard):
                         }
                         print("PostgreSQL Compare link has been added.")
                         dashboard['links'].append(add_item)
-                else:
-                    if (tag in dashboard['tags'] or tag in ['Services', 'PMM', service_tag]) and tag not in ['Compare',
-                                                                                                             'Home',
-                                                                                                             'MySQL_HA',
-                                                                                                             'MongoDB_HA']:
-                        add_item = {
-                            'asDropdown': True,
-                            'includeVars': True if (
-                                (tag not in ['Services'] and tag not in ['PMM']) or 'Query Analytics' in dashboard[
-                                'tags']) else False,
-                            'keepTime': True,
-                            'tags': [tag],
-                            'targetBlank': False,
-                            'title': tag,
-                            'type': 'dashboards'
-                        }
-                        dashboard['links'].append(add_item)
-                    else:
-                        if (tag == 'MySQL_HA' and ('MySQL' in dashboard['tags'] or service_tag == 'MySQL')) or (
-                            tag == 'MongoDB_HA' and ('MongoDB' in dashboard['tags'] or service_tag == 'MongoDB')):
-                            add_item = {
-                                'asDropdown': True,
-                                'includeVars': True,
-                                'keepTime': True,
-                                'tags': [tag],
-                                'targetBlank': False,
-                                'title': 'HA',
-                                'type': 'dashboards'
-                            }
-                            dashboard['links'].append(add_item)
+                elif ((tag in dashboard['tags'] or tag in ['Services', 'PMM', service_tag]) and
+                      tag not in ['Compare', 'Home', 'MySQL_HA', 'MongoDB_HA']):
+                    add_item = {
+                        'asDropdown': True,
+                        'includeVars': True if ((tag not in ['Services'] and tag not in ['PMM']) or 'Query Analytics' in dashboard['tags']) else False,
+                        'keepTime': True,
+                        'tags': [tag],
+                        'targetBlank': False,
+                        'title': tag,
+                        'type': 'dashboards'
+                    }
+                    dashboard['links'].append(add_item)
+                elif (tag == 'MySQL_HA' and ('MySQL' in dashboard['tags'] or service_tag == 'MySQL')) or (
+                        tag == 'MongoDB_HA' and ('MongoDB' in dashboard['tags'] or service_tag == 'MongoDB')):
+                    add_item = {
+                        'asDropdown': True,
+                        'includeVars': True,
+                        'keepTime': True,
+                        'tags': [tag],
+                        'targetBlank': False,
+                        'title': 'HA',
+                        'type': 'dashboards'
+                    }
+                    dashboard['links'].append(add_item)
     return dashboard
 
 
@@ -345,31 +339,24 @@ def fix_datasource(dashboard):
             for panel_index, panel in enumerate(dashboard['panels']):
                 if 'datasource' in panel:
                     if panel['datasource'] == '${DS_PROMETHEUS}':
-                        dashboard['panels'][panel_index]['datasource'] = 'Prometheus'
+                        panel['datasource'] = 'Prometheus'
                     if panel['datasource'] == '${DS_QAN-API}':
-                        dashboard['panels'][panel_index]['datasource'] = 'QAN-API'
+                        panel['datasource'] = 'QAN-API'
                 if 'panels' in panel:
-                    if (len(dashboard['panels'][panel_index]['panels']) > 0):
+                    if len(dashboard['panels'][panel_index]['panels']) > 0:
                         for panelIn_index, panelIn in enumerate(dashboard['panels'][panel_index]['panels']):
                             if 'datasource' in panelIn:
-                                if dashboard['panels'][panel_index]['panels'][panelIn_index][
-                                    'datasource'] == '${DS_PROMETHEUS}':
-                                    dashboard['panels'][panel_index]['panels'][panelIn_index][
-                                        'datasource'] = 'Prometheus'
-                                if dashboard['panels'][panel_index]['panels'][panelIn_index][
-                                    'datasource'] == '${DS_QAN-API}':
-                                    dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'QAN-API'
+                                if panelIn['datasource'] == '${DS_PROMETHEUS}':
+                                    panelIn['datasource'] = 'Prometheus'
+                                if panelIn['datasource'] == '${DS_QAN-API}':
+                                    panelIn['datasource'] = 'QAN-API'
                 if 'mappingTypes' in panel:
                     for mappingTypes_index, mappingTypes in enumerate(dashboard['panels'][panel_index]['mappingTypes']):
                         if 'datasource' in mappingTypes:
-                            if dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index][
-                                'datasource'] == '${DS_PROMETHEUS}':
-                                dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index][
-                                    'datasource'] = 'Prometheus'
-                            if dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index][
-                                'datasource'] == '${DS_QAN-API}':
-                                dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index][
-                                    'datasource'] = 'QAN-API'
+                            if mappingTypes['datasource'] == '${DS_PROMETHEUS}':
+                                mappingTypes['datasource'] = 'Prometheus'
+                            if mappingTypes['datasource'] == '${DS_QAN-API}':
+                                mappingTypes['datasource'] = 'QAN-API'
 
         if 'templating' in element:
             for panel_index, panel in enumerate(dashboard['templating']['list']):
@@ -388,8 +375,7 @@ def set_hide_timepicker(dashboard):
         return dashboard
 
     if 'hidden' not in list(dashboard['timepicker'].keys()):
-        add_item = {}
-        add_item['hidden'] = False
+        add_item = {'hidden': False}
         for row in enumerate(dashboard['timepicker']):
             add_item[row] = dashboard['timepicker'][row]
         dashboard['timepicker'] = add_item
@@ -407,14 +393,14 @@ def set_hide_timepicker(dashboard):
 
 def add_annotation(dashboard):
     """Add PMM annotation."""
-    TAG = "pmm_annotation"
+    tag = "pmm_annotation"
     prompt = 'Add default PMM annotation (conventional: **Yes**) [%s]: ' % (
         "No",
     )
     user_input = input(prompt)
     if user_input:
         if user_input == 'Yes':
-            active_variables = [TAG]
+            active_variables = [tag]
             for templating in dashboard['templating']['list']:
                 if templating['type'] == 'query' and templating['hide'] == 0:
                     active_variables.append('$' + templating['name'])
@@ -500,12 +486,12 @@ def main():
         dashboard = json.loads(dashboard_file.read())
 
     # registered cleanupers.
-    CLEANUPERS = [set_title, set_editable, set_hide_timepicker, drop_some_internal_elements, set_time, set_timezone,
+    cleanupers = [set_title, set_editable, set_hide_timepicker, drop_some_internal_elements, set_time, set_timezone,
                   set_default_refresh_intervals, set_refresh,
                   fix_datasource, add_annotation, add_links, add_copyrights_links, set_shared_crosshear, set_unique_ids,
                   set_dashboard_id_to_null]
 
-    for func in CLEANUPERS:
+    for func in cleanupers:
         dashboard = func(dashboard)
 
     dashboard_json = json.dumps(dashboard, sort_keys=True, indent=4,
