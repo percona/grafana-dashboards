@@ -25,7 +25,7 @@ export const Dimension: FC = () => {
         onChange={contextActions.changeGroupBy}
         className="group-by-selector"
         data-testid="group-by"
-        dropdownClassName="group-by-selector-dropdown"
+        popupClassName="group-by-selector-dropdown"
       >
         {DIMENSIONS_OPTIONS.map((option) => (
           // @ts-ignore

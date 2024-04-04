@@ -2,12 +2,13 @@ import React, {
   useCallback, useContext, useEffect, useState,
 } from 'react';
 import {
-  Divider, Icon, Select, Tooltip,
+  Divider, Select, Tooltip,
 } from 'antd';
 import { cx } from '@emotion/css';
 import { useTheme } from '@grafana/ui';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
+import { MinusOutlined, SwapOutlined } from '@ant-design/icons';
 import { OptionContent } from './OptionContent/OptionContent';
 import './ManageColumns.scss';
 import { getStyles } from './ManageColumns.styles';
@@ -78,10 +79,10 @@ export const ManageColumns = (props) => {
   ) : (
     <div className={styles.placeholderAdd}>
       {!isDropdownOpen && (
-      <div>
-        <i className={cx('fa fa-plus-circle', styles.iconMargin)} />
-        <span>Add column</span>
-      </div>
+        <div>
+          <i className={cx('fa fa-plus-circle', styles.iconMargin)} />
+          <span>Add column</span>
+        </div>
       )}
     </div>
   ));
@@ -92,13 +93,13 @@ export const ManageColumns = (props) => {
       {!onlyAdd ? <Divider className={styles.dividerMargin} /> : null}
       {!onlyAdd && columns.length > 1 ? (
         <div className={styles.actionElement} onMouseDown={(e) => e.preventDefault()} onClick={removeColumn}>
-          <Icon type="minus" className={styles.iconMargin} />
+          <MinusOutlined className={styles.iconMargin} />
           Remove column
         </div>
       ) : null}
       {!onlyAdd && mainMetric !== currentMetric.simpleName ? (
         <div className={styles.actionElement} onMouseDown={(e) => e.preventDefault()} onClick={swapWithMain}>
-          <Icon type="swap" className={styles.iconMargin} />
+          <SwapOutlined className={styles.iconMargin} />
           Swap with main metric
         </div>
       ) : null}
@@ -112,16 +113,16 @@ export const ManageColumns = (props) => {
         showSearch
         style={{ width: width || '125px' }}
         placeholder={<Placeholder />}
-        filterOption={(value, option) => String(option.props.label)
+        filterOption={(value, option) => String(option?.props.label)
           .toLowerCase()
           .includes(value.toLowerCase())}
         onChange={changeColumn}
         onDropdownVisibleChange={(open) => setDropdownOpen(open)}
-        dropdownMatchSelectWidth={false}
+        popupMatchSelectWidth={false}
         value={undefined}
-        showArrow={false}
+        suffixIcon={false}
         className={`${onlyAdd ? 'add' : 'manage'}-columns-selector`}
-        dropdownClassName={`${onlyAdd ? 'add' : 'manage'}-columns-selector-dropdown`}
+        popupClassName={`${onlyAdd ? 'add' : 'manage'}-columns-selector-dropdown`}
         dropdownRender={dropdownRender}
         data-testid="manage-columns-selector"
         {...extraSelectProps}
