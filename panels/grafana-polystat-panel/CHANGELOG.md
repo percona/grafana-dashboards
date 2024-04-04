@@ -2,6 +2,104 @@
 
 ## Entries
 
+## v2.1.5
+
+- Fixes rendering of composites when template variables changes
+- Refactor/Cleanup code, slightly more efficient
+
+## v2.1.4
+
+- Fix tooltips being displayed from wrong panel [#314](https://github.com/grafana/grafana-polystat-panel/issues/314) [#315](https://github.com/grafana/grafana-polystat-panel/issues/315)
+- Fix ellipses showing when they are not needed [#322](https://github.com/grafana/grafana-polystat-panel/issues/322)
+- Fix alignment based on shape [#322](https://github.com/grafana/grafana-polystat-panel/issues/322)
+  - When autoSizeRows or autoSizeColumns are disabled, the placement will be centered based on actual number of polygons rendered
+- NEW: Clickthrough target can be customized, allowing better behavior in Scene-based apps. [#316](https://github.com/grafana/grafana-polystat-panel/issues/316).  Set "open in new tab" to off to use this new setting.
+
+## v2.1.3
+
+- Bump to Node 18
+- Update package
+- Fix for SQL result processing [[#309](https://github.com/grafana/grafana-polystat-panel/issues/309)] and [#269](https://github.com/grafana/grafana-polystat-panel/issues/269)
+- Fix for tooltip crashing [#307](https://github.com/grafana/grafana-polystat-panel/issues/307)
+- NEW: Global Regex Aliasing for composites [#301](https://github.com/grafana/grafana-polystat-panel/pull/301)
+
+## v2.1.2
+
+- Allow display limit of 0 for unlimited polygons [#298](https://github.com/grafana/grafana-polystat-panel/issues/298)
+
+## v2.1.1
+
+- Fixes display limit bug [#255](https://github.com/grafana/grafana-polystat-panel/issues/255)
+- Fixes performance issues with G10 [#294](https://github.com/grafana/grafana-polystat-panel/issues/294)
+
+## v2.1.0
+
+- Fixes tooltips being left behind when mousing out of panel in G10
+- Switched to react-tooltips vs tippyjs and leveraging UI Portal component
+- Performance improved due to dynamic generation of tooltips vs pre-creation
+- Tooltip now follows theme
+
+## v2.0.9
+
+- Fixes multi-select templated composite bug
+- Enhances metric hints for composites and overrides to cover more dataframe options
+
+## v2.0.8
+
+- Adds support for additional metric hints depending on the structure of the frames received.
+
+## v2.0.7
+
+- Fixes metric hint errors when using overrides and composites
+
+## v2.0.6
+
+- Add Font Selector for rendered text. The new default is Inter, and migrations will auto-switch to this new font.
+  - Additional fonts are available, and the auto-scalar will adjust for differences
+  - Tooltips also can have separate fonts
+- Adds option to toggle tooltip columns (Issue #259), PR #260
+
+## v2.0.5
+
+- Fix for Issue #249, bug in migrations when upgrading plugin
+- Fix for Issue #256, global override editor displays wrong column
+- Fix for low-risk XSS in composite animations
+
+## v2.0.4
+
+- Fix for Issue #242 (wide data conversion)
+    Some datasources will send non-timeseries dataframes that are "wide" and the conversion to the polystat model did not handle this scenario.
+    This is seen with CSV Content and other datasources.  This fix will detect wide data received in this format and convert as expected.
+- Fix for Issue #247 (composite template variables)
+    Advanced use of template variables in composites were not functioning as intended. Composites can once again use template variables as the composite name, and reference the composite name inside the list of member metrics.
+- Metric Hints in composites and overrides are now displaying correctly
+- Override Editor buttons are now left aligned for easier access and visibility
+- Composite Editor buttons are also left aligned, and are now visible
+- Composite Editor metrics should be easier to see and alias
+
+## v2.0.3
+
+- Fix for Issue #241 (Global Threshold Migration)
+
+## v2.0.2
+
+- Fix for issue #240
+  - Global regex will now correctly modify the display name
+  - Using transformations for metric data also works (Rename by regex and others)
+
+## v2.0.1
+
+- Fixes ability to use template variables inside composite names
+- Fixes hide/show composite member metrics when they overlap in multiple composites
+
+## v2.0.0
+
+- Plugin has been converted to React
+- Existing panels will auto-migrate to the new config schema
+- Feature parity with v1.2.11, including bug fixes
+- Documentation re-written to reflect the change to editors
+- Advanced examples are provided
+
 ## v1.2.11
 
 - Fixes valueMappings for v8.0.x and v9.x
