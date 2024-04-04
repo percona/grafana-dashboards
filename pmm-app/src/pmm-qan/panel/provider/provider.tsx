@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { isEqual, omit } from 'lodash';
+import moment from 'moment';
 import { parseURL, refreshGrafanaVariables, setLabels } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
 import { ParseQueryParamDate } from '../../../shared/components/helpers/time-parameters-parser';
@@ -215,8 +216,13 @@ export const UrlParametersProvider = (props) => {
     if (newTo === 'now') {
       setToTimeMomentValue(timeRange.to.subtract(1, 'minute')
         .format('YYYY-MM-DDTHH:mm:ssZ'));
-      setFromTimeMomentValue(timeRange.from.subtract(1, 'minute')
-        .format('YYYY-MM-DDTHH:mm:ssZ'));
+
+      if (moment.isMoment(timeRange.raw.from)) {
+        setFromTimeMomentValue(timeRange.from.format('YYYY-MM-DDTHH:mm:ssZ'));
+      } else {
+        setFromTimeMomentValue(timeRange.from.subtract(1, 'minute')
+          .format('YYYY-MM-DDTHH:mm:ssZ'));
+      }
     } else {
       setToTimeMomentValue(timeRange.to.format('YYYY-MM-DDTHH:mm:ssZ'));
       setFromTimeMomentValue(timeRange.from.format('YYYY-MM-DDTHH:mm:ssZ'));
