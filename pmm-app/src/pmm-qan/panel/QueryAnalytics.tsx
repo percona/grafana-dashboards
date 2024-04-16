@@ -5,6 +5,8 @@ import SplitPane from 'react-split-pane';
 import { Button, useTheme } from '@grafana/ui';
 import { cx } from '@emotion/css';
 import { showSuccessNotification, showWarningNotification } from 'shared/components/helpers';
+import { ConfigProvider } from 'antd';
+import { antdTheme } from 'shared/core/theme';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
   Details, Filters, ManageColumns, Overview,
@@ -90,7 +92,9 @@ const QueryAnalyticsPanel: FC = () => {
 };
 
 export default (props) => (
-  <UrlParametersProvider {...props}>
-    <QueryAnalyticsPanel />
-  </UrlParametersProvider>
+  <ConfigProvider theme={antdTheme}>
+    <UrlParametersProvider {...props}>
+      <QueryAnalyticsPanel />
+    </UrlParametersProvider>
+  </ConfigProvider>
 );
