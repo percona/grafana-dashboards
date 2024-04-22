@@ -56,7 +56,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 75,
+  "id": 66,
   "links": [
     {
       "icon": "doc",
@@ -198,7 +198,7 @@
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
-        "orientation": "auto",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -6837,7 +6837,25 @@
         "type": "prometheus",
         "uid": "PA58DA793C7250F1B"
       },
-      "description": "The version of the PostgreSQL instance.",
+      "description": "The version of the PostgreSQL instance.\nThe current server version number as an integer, which represents a canonical version number without needing to parse a textual representation (e.g. 120007 vs 12.7), and can reliably be used to compare versions.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 3,
         "w": 5,
@@ -6847,13 +6865,18 @@
       "id": 65,
       "links": [],
       "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        "content": "<h3 style='color:#e68a00;font-weight:bold;text-align:center'>$version</h3>",
-        "mode": "html"
+        "textMode": "auto"
       },
       "pluginVersion": "9.2.20",
       "targets": [
@@ -6862,11 +6885,15 @@
             "type": "prometheus",
             "uid": "PA58DA793C7250F1B"
           },
+          "editorMode": "builder",
+          "expr": "pg_settings_server_version_num{node_id=\"pmm-server\"}",
+          "legendFormat": "__auto",
+          "range": true,
           "refId": "A"
         }
       ],
       "title": "Version",
-      "type": "text"
+      "type": "stat"
     },
     {
       "datasource": {
@@ -8240,7 +8267,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -8272,6 +8299,6 @@
   "timezone": "",
   "title": "PMM Health",
   "uid": "pmm-health",
-  "version": 7,
+  "version": 1,
   "weekStart": ""
 }
