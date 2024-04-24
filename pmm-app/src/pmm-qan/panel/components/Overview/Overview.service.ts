@@ -20,6 +20,6 @@ export default {
       search: body.dimensionSearchText,
     };
 
-    return apiRequestQAN.post<any, any>('/GetReport', request);
+    return apiRequestQAN.post<any, any>('/v1/qan/metrics:getReport', request);
   },
 };
