@@ -1,6 +1,9 @@
 name: Test pipeline
 
-on: pull_request
+on:
+  pull_request:
+    paths:
+      - pmm-app/**
 
 jobs:
   build:
@@ -28,6 +31,28 @@ jobs:
           name: build-dist
           path: pmm-app/dist/
           if-no-files-found: error
+
+  unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run with Node 16
+        uses: actions/setup-node@v4
+        with:
+          node-version: "16"
+          cache: "yarn"
+          cache-dependency-path: pmm-app/yarn.lock
+
+      - name: Install deps
+        run: make prepare_release
+
+      - name: Run lint
+        run: cd pmm-app && yarn lint:check
+
+      - name: Run unit tests
+        run: cd pmm-app && yarn test
 
   code_coverage:
     needs: build
@@ -57,7 +82,7 @@ jobs:
         run: make generate_coverage
 
   workflow_success:
-    needs: [code_coverage, build]
+    needs: [unit_tests, code_coverage, build]
     name: Slack Notification success
     runs-on: ubuntu-latest
     env:
@@ -77,7 +102,7 @@ jobs:
 
   workflow_failure:
     if: ${{ failure() }}
-    needs: [code_coverage, build]
+    needs: [unit_tests, code_coverage, build]
     name: Slack Notification failure
     runs-on: ubuntu-latest
     env:
