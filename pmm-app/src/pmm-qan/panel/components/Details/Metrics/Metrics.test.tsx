@@ -11,9 +11,10 @@ jest.mock('shared/components/helpers/notification-manager');
 jest.mock('antd/es/tooltip', () => <div className="tooltip" />);
 
 jest.mock('./hooks/useHistogram', () => ({
-  useHistogram: jest.fn(({ theme }) => (
-    [getChartDataFromHistogramItems([{ frequency: 6175, range: '(0-3)' }], theme), true]
-  )),
+  useHistogram: jest.fn(({ theme }) => [
+    getChartDataFromHistogramItems([{ frequency: 6175, range: '(0-3)' }], theme),
+    true,
+  ]),
 }));
 
 const originalConsoleError = console.error;
@@ -2696,6 +2697,10 @@ const panelState = {
 describe('useFilters::', () => {
   beforeEach(() => {
     console.error = jest.fn();
+    // TODO: Grafana Tooltip component uses a react 18 hook - useId
+    // due to enzyme we are currently stuck at react 17, mocking for now
+    // @ts-ignore
+    React.useId = () => '';
   });
 
   afterEach(() => {
@@ -2717,7 +2722,6 @@ describe('useFilters::', () => {
           textMetrics={textMetrics}
           loading={false}
         />
-        ,
       </QueryAnalyticsProvider.Provider>,
     );
 
@@ -2731,14 +2735,7 @@ describe('useFilters::', () => {
           panelState,
         }}
       >
-        <Metrics
-          databaseType={Databases.mysql}
-          groupBy="queryid"
-          totals
-          metrics={metrics}
-          loading={false}
-        />
-        ,
+        <Metrics databaseType={Databases.mysql} groupBy="queryid" totals metrics={metrics} loading={false} />
       </QueryAnalyticsProvider.Provider>,
     );
 
@@ -2760,7 +2757,6 @@ describe('useFilters::', () => {
           textMetrics={textMetrics}
           loading={false}
         />
-        ,
       </QueryAnalyticsProvider.Provider>,
     );
 
