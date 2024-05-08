@@ -1,0 +1,29 @@
+name: Setup Page pipeline
+
+on:
+  pull_request:
+    paths:
+      - setup-page/**
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run with Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: setup-page/package-lock.json
+
+      - name: Install deps
+        run: cd setup-page && npm ci
+
+      - name: Run lint
+        run: cd setup-page && npm run lint
+
+      - name: Run build
+        run: cd setup-page && npm run build
