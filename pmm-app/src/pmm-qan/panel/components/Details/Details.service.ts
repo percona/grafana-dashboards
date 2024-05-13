@@ -14,7 +14,7 @@ const getExample = async ({
     tables,
   };
 
-  return apiRequestQAN.post<QueryExampleResponse, any>('/v1/qan/query:getExample', data);
+  return apiRequestQAN.post<QueryExampleResponse, any>('/query:getExample', data);
 };
 
 export default {

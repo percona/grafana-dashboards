@@ -7,7 +7,7 @@ export const mysqlMethods = {
       return null;
     }
 
-    const result = await MysqlDatabaseService.getShowCreateTableMySQL({
+    const result = await MysqlDatabaseService.getMySQLActions({
       database: database || example.schema,
       table_name: tableName,
       service_id: example.service_id,
@@ -21,7 +21,7 @@ export const mysqlMethods = {
       return null;
     }
 
-    const result = await MysqlDatabaseService.getMysqlIndex({
+    const result = await MysqlDatabaseService.getMySQLActions({
       database: database || example.schema,
       table_name: tableName,
       service_id: example.service_id,
@@ -35,7 +35,7 @@ export const mysqlMethods = {
       return null;
     }
 
-    const result = await MysqlDatabaseService.getMysqlTableStatus({
+    const result = await MysqlDatabaseService.getMySQLActions({
       database: database || example.schema,
       table_name: tableName,
       service_id: example.service_id,
@@ -48,7 +48,7 @@ export const mysqlMethods = {
     try {
       const payload = getExplainPayload(example, queryId, placeholders);
 
-      const result = await MysqlDatabaseService.getTraditionalExplainJSONMysql(payload);
+      const result = await MysqlDatabaseService.getMySQLActions(payload);
 
       return result.action_id;
     } catch (e) {
@@ -62,7 +62,7 @@ export const mysqlMethods = {
     try {
       const payload = getExplainPayload(example, queryId, placeholders);
 
-      const result = await MysqlDatabaseService.getTraditionalExplainMysql(payload);
+      const result = await MysqlDatabaseService.getMySQLActions(payload);
 
       return result.action_id;
     } catch (e) {

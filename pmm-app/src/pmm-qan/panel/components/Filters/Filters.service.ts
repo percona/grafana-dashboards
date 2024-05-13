@@ -29,7 +29,7 @@ export const markCheckedLabels = (labels, paramLabels) => {
 
 export default {
   getQueryOverviewFiltersList: async (paramLabels, from, to, mainMetric) => {
-    const { labels } = await apiRequestQAN.post<any, any>('/v1/qan/metrics:getFilters', {
+    const { labels } = await apiRequestQAN.post<any, any>('/metrics:getFilters', {
       labels: getLabelQueryParams(paramLabels),
       main_metric_name: mainMetric,
       period_start_from: from,

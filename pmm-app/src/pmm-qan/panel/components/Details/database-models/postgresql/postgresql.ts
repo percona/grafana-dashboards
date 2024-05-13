@@ -6,7 +6,7 @@ export const postgresqlMethods = {
       return null;
     }
 
-    const result = await PostgresqlDatabaseService.getShowCreateTablePostgreSQL({
+    const result = await PostgresqlDatabaseService.getPostgreSQLActions({
       table_name: tableName,
       service_id: example.service_id,
       database,
@@ -19,7 +19,7 @@ export const postgresqlMethods = {
       return null;
     }
 
-    const result = await PostgresqlDatabaseService.getPostgreSQLIndex({
+    const result = await PostgresqlDatabaseService.getPostgreSQLActions({
       table_name: tableName,
       service_id: example.service_id,
       database,

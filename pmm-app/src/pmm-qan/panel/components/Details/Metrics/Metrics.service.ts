@@ -15,7 +15,7 @@ export const getMetrics = async ({
     totals,
   };
 
-  return apiRequestQAN.post<any, any>('/v1/qan:getMetrics', body);
+  return apiRequestQAN.post<any, any>(':getMetrics', body);
 };
 
 export const getHistogram = async ({
@@ -28,7 +28,7 @@ export const getHistogram = async ({
     period_start_to: to,
   };
 
-  return apiRequestQAN.post<HistogramResponse, HistogramRequest>('/v1/qan:getHistogram', body);
+  return apiRequestQAN.post<HistogramResponse, HistogramRequest>(':getHistogram', body);
 };
 
 export default {
