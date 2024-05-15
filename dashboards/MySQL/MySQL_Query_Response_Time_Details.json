@@ -670,6 +670,17 @@
       "steppedLine": false,
       "targets": [
         {
+          "expr": "avg by (service_name) (rate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=~\"$service_name\",le='0.1'}[$interval]) or irate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=~\"$service_name\",le='0.1'}[5m]))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Queries <100ms",
+          "metric": "",
+          "refId": "A",
+          "step": 300
+        },
+        {
           "expr": "avg by (service_name) ((rate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=~\"$service_name\",le='1'}[$interval]) - on (service_name) rate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=~\"$service_name\",le='0.1'}[$interval])) or (irate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=~\"$service_name\",le='1'}[5m]) - on (service_name) irate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=~\"$service_name\",le='0.1'}[5m])))",
           "format": "time_series",
           "hide": false,
