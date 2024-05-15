@@ -3,8 +3,8 @@ import { API } from './constants';
 import { Settings, SettingsAPIResponse, SettingsPayload } from './types';
 
 export const SettingsService = {
-  async getSettings(disableNotifications = false): Promise<Settings> {
-    const { settings } = await apiRequest.post(API.SETTINGS, {}, disableNotifications) as SettingsAPIResponse;
+  async getSettings(): Promise<Settings> {
+    const { settings } = await apiRequest.get(API.SETTINGS) as SettingsAPIResponse;
 
     return toModel(settings);
   },
