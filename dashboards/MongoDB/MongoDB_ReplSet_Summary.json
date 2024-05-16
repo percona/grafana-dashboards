@@ -502,174 +502,141 @@
       "type": "table-old"
     },
     {
-      "backgroundColor": "rgba(128,128,128,0.1)",
-      "colorMaps": [
-        {
-          "color": "rgb(107, 152, 102)",
-          "text": "PRIMARY"
-        },
-        {
-          "color": "rgb(193, 159, 20)",
-          "text": "SECONDARY"
-        },
-        {
-          "color": "#FF7383",
-          "text": "Exporter is not connected"
-        },
-        {
-          "color": "#8B8000",
-          "text": "ARBITER"
-        }
-      ],
-      "crosshairColor": "#8F070C",
-      "description": "ReplSet statuses during the select time range.",
-      "display": "timeline",
-      "expandFromQueryS": 0,
-      "extendLastValue": true,
+      "id": null,
       "gridPos": {
         "h": 8,
         "w": 17,
         "x": 0,
         "y": 4
       },
-      "highlightOnMouseover": true,
-      "id": 1015,
-      "legendSortBy": "count",
-      "lineColor": "rgba(0,0,0,0.1)",
-      "metricNameColor": "#000000",
+      "type": "state-timeline",
+      "title": "ReplSet States",
+      "transformations": [],
       "pluginVersion": "6.5.1",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
+      "description": "ReplSet statuses during the select time range.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "lineWidth": 0,
+            "fillOpacity": 100,
+            "spanNulls": false
+          },
+          "color": {
+            "mode": "palette-classic",
+            "fixedColor": "blue"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "index": 11,
+                  "text": "STARTUP"
+                },
+                "1": {
+                  "color": "rgb(107, 152, 102)",
+                  "index": 4,
+                  "text": "PRIMARY"
+                },
+                "2": {
+                  "color": "rgb(193, 159, 20)",
+                  "index": 3,
+                  "text": "SECONDARY"
+                },
+                "3": {
+                  "index": 10,
+                  "text": "RECOVERING"
+                },
+                "5": {
+                  "index": 9,
+                  "text": "STARTUP2"
+                },
+                "6": {
+                  "index": 8,
+                  "text": "UNKNOWN"
+                },
+                "7": {
+                  "color": "#8B8000",
+                  "index": 1,
+                  "text": "ARBITER"
+                },
+                "8": {
+                  "index": 7,
+                  "text": "DOWN"
+                },
+                "9": {
+                  "index": 6,
+                  "text": "ROLLBACK"
+                },
+                "10": {
+                  "index": 5,
+                  "text": "REMOVED"
+                },
+                "null": {
+                  "color": "#FF7383",
+                  "index": 2,
+                  "text": "Exporter is not connected"
+                }
+              }
+            },
+            {
+              "type": "range",
+              "options": {
+                "from": 0,
+                "to": 1,
+                "result": {
+                  "index": 0,
+                  "text": "N/A"
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 6
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "mergeValues": true,
+        "showValue": "auto",
+        "alignValue": "right",
+        "rowHeight": 0.9,
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
         }
-      ],
-      "rowHeight": 50,
-      "showDistinctCount": false,
-      "showLegend": true,
-      "showLegendCounts": false,
-      "showLegendNames": true,
-      "showLegendPercent": true,
-      "showLegendTime": true,
-      "showLegendValues": true,
-      "showTimeAxis": true,
-      "showTransitionCount": false,
+      },
       "targets": [
         {
+          "editorMode": "code",
+          "exemplar": false,
           "expr": "max by (service_name) (mongodb_mongod_replset_my_state{set=~\"$replset\",service_name=~\"$service_name\"})",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
           "interval": "$interval",
           "legendFormat": "{{service_name}}",
+          "range": true,
           "refId": "A"
         }
-      ],
-      "textSize": 24,
-      "textSizeTime": 12,
-      "timeOptions": [
-        {
-          "name": "Years",
-          "value": "years"
-        },
-        {
-          "name": "Months",
-          "value": "months"
-        },
-        {
-          "name": "Weeks",
-          "value": "weeks"
-        },
-        {
-          "name": "Days",
-          "value": "days"
-        },
-        {
-          "name": "Hours",
-          "value": "hours"
-        },
-        {
-          "name": "Minutes",
-          "value": "minutes"
-        },
-        {
-          "name": "Seconds",
-          "value": "seconds"
-        },
-        {
-          "name": "Milliseconds",
-          "value": "milliseconds"
-        }
-      ],
-      "timePrecision": {
-        "name": "Minutes",
-        "value": "minutes"
-      },
-      "timeTextColor": "#d8d9da",
-      "title": "ReplSet States",
-      "type": "natel-discrete-panel",
-      "units": "short",
-      "use12HourClock": false,
-      "useTimePrecision": false,
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "Exporter is not connected",
-          "value": "null"
-        },
-        {
-          "op": "=",
-          "text": "PRIMARY",
-          "value": "1"
-        },
-        {
-          "op": "=",
-          "text": "SECONDARY",
-          "value": "2"
-        },
-        {
-          "op": "=",
-          "text": "STARTUP",
-          "value": "0"
-        },
-        {
-          "op": "=",
-          "text": "RECOVERING",
-          "value": "3"
-        },
-        {
-          "op": "=",
-          "text": "STARTUP2",
-          "value": "5"
-        },
-        {
-          "op": "=",
-          "text": "UNKNOWN",
-          "value": "6"
-        },
-        {
-          "op": "=",
-          "text": "ARBITER",
-          "value": "7"
-        },
-        {
-          "op": "=",
-          "text": "DOWN",
-          "value": "8"
-        },
-        {
-          "op": "=",
-          "text": "ROLLBACK",
-          "value": "9"
-        },
-        {
-          "op": "=",
-          "text": "REMOVED",
-          "value": "10"
-        }
-      ],
-      "valueTextColor": "#000000",
-      "writeAllValues": false,
-      "writeLastValue": true,
-      "writeMetricNames": true
+      ]
     },
     {
       "collapsed": false,
