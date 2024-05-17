@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { LoadingIcon, NavBar, Notification } from './components';
 import { docUrl, messages } from './App.constants';
 
-const App = () => {
+export function App() {
   const [instanceId, setInstanceId] = useState('');
   const [loading, setLoading] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
@@ -17,13 +16,26 @@ const App = () => {
     setLoading(true);
 
     try {
-      await axios.post('/v1/AWSInstanceCheck', {
-        instance_id: instanceId.trim(),
+      const response = await fetch('/v1/AWSInstanceCheck', {
+        method: 'POST',
+        credentials: "include",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          instance_id: instanceId.trim(),
+        }),
       });
+
+      if (!response.ok) {
+        throw new Error("Request failed.");
+      }
+
       // eslint-disable-next-line no-undef
       window.location.href = '/';
     } catch (error) {
-      setMessage(error.response.data.message ? error.response.data.message : error.message);
+      setMessage(error.message || "Request failed.");
       setShowNotification(true);
       setClosing(false);
     }
@@ -78,4 +90,3 @@ const App = () => {
   );
 };
 
-export default App;

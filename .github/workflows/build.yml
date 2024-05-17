@@ -7,10 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run with Node 16
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "16"
           cache: "yarn"
@@ -29,14 +29,36 @@ jobs:
           path: pmm-app/dist/
           if-no-files-found: error
 
+  unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run with Node 16
+        uses: actions/setup-node@v4
+        with:
+          node-version: "16"
+          cache: "yarn"
+          cache-dependency-path: pmm-app/yarn.lock
+
+      - name: Install deps
+        run: make prepare_release
+
+      - name: Run lint
+        run: cd pmm-app && yarn lint:check
+
+      - name: Run unit tests
+        run: cd pmm-app && yarn test
+
   code_coverage:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup NodeJS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "16"
           cache: "yarn"
@@ -57,7 +79,7 @@ jobs:
         run: make generate_coverage
 
   workflow_success:
-    needs: [code_coverage, build]
+    needs: [unit_tests, code_coverage, build]
     name: Slack Notification success
     runs-on: ubuntu-latest
     env:
@@ -71,13 +93,13 @@ jobs:
       SLACK_FOOTER: "Please check the Actions URL ^"
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Slack Notification
-        uses: percona-platform/action-slack-notify@v2
+        uses: percona/gh-action-action-slack-notify@v2
 
   workflow_failure:
     if: ${{ failure() }}
-    needs: [code_coverage, build]
+    needs: [unit_tests, code_coverage, build]
     name: Slack Notification failure
     runs-on: ubuntu-latest
     env:
@@ -91,6 +113,6 @@ jobs:
       SLACK_FOOTER: "Please check the Actions URL ^"
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Slack Notification
-        uses: percona-platform/action-slack-notify@v2
+        uses: percona/gh-action-action-slack-notify@v2
