@@ -11,5 +11,5 @@ export const SettingsService = {
 };
 
 const toModel = (response: SettingsPayload): Settings => ({
-  updatesDisabled: response.updates_disabled,
+  updatesEnabled: response.updates_enabled,
 });
