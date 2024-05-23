@@ -378,7 +378,7 @@
         {
           "datasource": "Metrics",
           "exemplar": false,
-          "expr": "avg by (set) (max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",service_name=~\"$service_name\"}[${__range}]))",
+          "expr": "avg by (set) (max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",self=~\"|1\",service_name=~\"$service_name\"}[${__range}]))",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -511,6 +511,7 @@
       },
       "type": "state-timeline",
       "title": "ReplSet States",
+      "transformations": [],
       "pluginVersion": "6.5.1",
       "description": "ReplSet statuses during the select time range.",
       "fieldConfig": {
@@ -518,7 +519,7 @@
           "custom": {
             "lineWidth": 0,
             "fillOpacity": 100,
-            "spanNulls": true
+            "spanNulls": false
           },
           "color": {
             "mode": "palette-classic",
@@ -526,6 +527,7 @@
           },
           "mappings": [
             {
+              "type": "value",
               "options": {
                 "0": {
                   "index": 11,
@@ -575,19 +577,18 @@
                   "index": 2,
                   "text": "Exporter is not connected"
                 }
-              },
-              "type": "value"
+              }
             },
             {
+              "type": "range",
               "options": {
-                "from": null,
+                "from": 0,
+                "to": 1,
                 "result": {
                   "index": 0,
                   "text": "N/A"
-                },
-                "to": null
-              },
-              "type": "range"
+                }
+              }
             }
           ],
           "thresholds": {
@@ -624,19 +625,18 @@
       },
       "targets": [
         {
+          "editorMode": "code",
+          "exemplar": false,
           "expr": "max by (service_name) (mongodb_mongod_replset_my_state{set=~\"$replset\",service_name=~\"$service_name\"})",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
           "interval": "$interval",
           "legendFormat": "{{service_name}}",
-          "refId": "A",
-          "hide": false,
-          "editorMode": "code",
           "range": true,
-          "format": "time_series",
-          "instant": false,
-          "exemplar": false
+          "refId": "A"
         }
-      ],
-      "transformations": []
+      ]
     },
     {
       "collapsed": false,
@@ -727,7 +727,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name) (max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",service_name=~\"$secondary\"}[$interval]) > 0) by (service_name,set) or max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",service_name=~\"$secondary\"}[5m]) > 0) by (service_name,set))",
+          "expr": "avg by (service_name) ((max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",self=~\"|1\",service_name=~\"$secondary\"}[$interval]) > 0) by (service_name,set)) or (max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",self=~\"|1\",service_name=~\"$secondary\"}[5m]) > 0) by (service_name,set)))",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{service_name}}",
@@ -735,7 +735,7 @@
           "step": 300
         },
         {
-          "expr": "avg by (set) (max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",service_name=~\"$secondary\"}[$interval]) > 0) by (service_name,set) or max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",service_name=~\"$secondary\"}[5m]) > 0) by (service_name,set))",
+          "expr": "avg by (service_name) ((max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",self=~\"|1\",service_name=~\"$secondary\"}[$interval]) > 0) by (service_name,set)) or (max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",self=~\"|1\",service_name=~\"$secondary\"}[5m]) > 0) by (service_name,set)))",
           "hide": true,
           "interval": "$interval",
           "legendFormat": "Avg",
