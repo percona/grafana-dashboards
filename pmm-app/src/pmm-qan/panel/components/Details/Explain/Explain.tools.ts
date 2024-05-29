@@ -1,7 +1,7 @@
 import { logger } from 'shared/core/logger';
 import { ActionResult, getActionResult } from 'shared/components/Actions';
 import { Databases } from 'shared/core';
-import { mongodbMethods, mysqlMethods } from '../database-models';
+import { mongodbMethods, mysqlMethods, postgresqlMethods } from '../database-models';
 import { DatabasesType, QueryExampleResponseItem } from '../Details.types';
 import { ClassicExplainInterface, FetchExplainsResult } from './Explain.types';
 
@@ -23,15 +23,17 @@ export const processClassicExplain = (classic): ClassicExplainInterface => {
     .filter(Boolean)
     .map((title) => ({ Header: title, key: title, accessor: title }));
 
-  const rowsList = data.map((item) => item
-    .split('|')
-    .map((e) => (String(e) ? e.trim() : ''))
-    .filter(Boolean)
-    .reduce((acc, row, index) => {
-      acc[headerList[index].accessor] = row;
+  const rowsList = data.map((item) =>
+    item
+      .split('|')
+      .map((e) => (String(e) ? e.trim() : ''))
+      .filter(Boolean)
+      .reduce((acc, row, index) => {
+        acc[headerList[index].accessor] = row;
 
-      return acc;
-    }, {}));
+        return acc;
+      }, {}),
+  );
 
   return { columns: headerList, rows: rowsList };
 };
@@ -72,11 +74,29 @@ export const fetchExplains = async (
   const hasExample = !!example?.example;
 
   try {
+    if (databaseType === Databases.postgresql && (hasPlaceholders || hasExample)) {
+      const payload = {
+        serviceId: example.service_id,
+        queryId,
+        values: placeholders || [],
+      };
+
+      const explain = await postgresqlMethods.getExplain(payload).then(getActionResult);
+
+      const classicExplain = parseExplain(explain);
+
+      return {
+        jsonExplain: actionResult,
+        classicExplain: { ...explain, value: classicExplain },
+        visualExplain: actionResult,
+      };
+    }
+
     if (databaseType === Databases.mysql && (hasPlaceholders || hasExample)) {
       const payload = {
         example,
         queryId,
-        placeholders,
+        values: placeholders,
       };
 
       const [classicResult, jsonResult] = await Promise.all([
