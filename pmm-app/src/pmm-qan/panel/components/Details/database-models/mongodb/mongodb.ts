@@ -9,7 +9,7 @@ export const mongodbMethods = {
         query: example.example,
       });
 
-      return result.action_id;
+      return result.mongodb_explain.action_id;
     } catch (e) {
       console.error(e);
 
