@@ -2,12 +2,17 @@ version: "3"
 services:
   pmm-server:
     container_name: pmm-server
-    image: perconalab/pmm-server:dev-latest
+    image: perconalab/pmm-server:3-dev-latest
     volumes:
       - "./dist:/srv/grafana/plugins/pmm-app/dist"
+    environment:
+      - PMM_DEBUG=1
+      - PERCONA_PORTAL_URL=https://portal-dev.percona.com
+      - PMM_DEV_PERCONA_PLATFORM_ADDRESS=https://check-dev.percona.com:443
+      - PMM_DEV_PERCONA_PLATFORM_PUBLIC_KEY=RWTkF7Snv08FCboTne4djQfN5qbrLfAjb8SY3/wwEP+X5nUrkxCEvUDJ
     ports:
-      - 80:80
-      - 443:443
+      - 80:8080
+      - 443:8443
       - 29000:9000
       - 9933:9933
     restart: always
