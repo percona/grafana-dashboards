@@ -52,7 +52,7 @@ export const mysqlMethods = {
 
       console.log(result);
       console.log(result.mysql_explain_json.action_id);
-      
+
       return result.mysql_explain_json.action_id;
     } catch (e) {
       console.error(e);
@@ -69,7 +69,7 @@ export const mysqlMethods = {
 
       console.log(result);
       console.log(result.mysql_explain_traditional_json.action_id);
-      
+
       return result.mysql_explain_traditional_json.action_id;
     } catch (e) {
       console.error(e);
