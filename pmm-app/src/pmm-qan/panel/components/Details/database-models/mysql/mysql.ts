@@ -44,11 +44,11 @@ export const mysqlMethods = {
     return result.mysql_show_table_status.action_id;
   },
 
-  getExplainJSON: async ({ example, queryId, placeholders }) => {
+  getExplainJSONMysql: async ({ example, queryId, placeholders }) => {
     try {
       const payload = getExplainPayload(example, queryId, placeholders);
 
-      const result = await MysqlDatabaseService.getTraditionalExplainJSONMysql(payload);
+      const result = await MysqlDatabaseService.getExplainJSONMysql(payload);
 
       return result.mysql_explain_json.action_id;
     } catch (e) {
@@ -58,13 +58,13 @@ export const mysqlMethods = {
     }
   },
 
-  getExplainTraditional: async ({ example, queryId, placeholders }) => {
+  getExplainMysql: async ({ example, queryId, placeholders }) => {
     try {
       const payload = getExplainPayload(example, queryId, placeholders);
 
-      const result = await MysqlDatabaseService.getTraditionalExplainMysql(payload);
+      const result = await MysqlDatabaseService.getExplainMysql(payload);
 
-      return result.mysql_explain_traditional_json.action_id;
+      return result.mysql_explain.action_id;
     } catch (e) {
       console.error(e);
 

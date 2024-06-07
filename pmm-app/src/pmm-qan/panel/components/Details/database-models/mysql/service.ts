@@ -19,14 +19,14 @@ export default {
     return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },
 
-  getTraditionalExplainJSONMysql(body) {
-    const requestBody = { mysql_explain_traditional_json: body };
+  getExplainJSONMysql(body) {
+    const requestBody = { mysql_explain_json: body };
 
     return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },
 
-  getTraditionalExplainMysql(body) {
-    const requestBody = { mysql_explain_json: body };
+  getExplainMysql(body) {
+    const requestBody = { mysql_explain: body };
 
     return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },

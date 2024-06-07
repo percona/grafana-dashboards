@@ -80,8 +80,8 @@ export const fetchExplains = async (
       };
 
       const [classicResult, jsonResult] = await Promise.all([
-        mysqlMethods.getExplainTraditional(payload).then(getActionResult),
-        mysqlMethods.getExplainJSON(payload).then(getActionResult),
+        mysqlMethods.getExplainMysql(payload).then(getActionResult),
+        mysqlMethods.getExplainJSONMysql(payload).then(getActionResult),
       ]);
 
       const jsonValue = parseExplain(jsonResult);
