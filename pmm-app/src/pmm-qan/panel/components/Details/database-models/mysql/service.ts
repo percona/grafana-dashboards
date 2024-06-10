@@ -19,13 +19,13 @@ export default {
     return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },
 
-  getExplainJSONMysql(body) {
+  getExplainJSON(body) {
     const requestBody = { mysql_explain_json: body };
 
     return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },
 
-  getExplainMysql(body) {
+  getExplain(body) {
     const requestBody = { mysql_explain: body };
 
     return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
