@@ -60,7 +60,7 @@ export class ApiRequest {
 }
 
 export const apiRequest = new ApiRequest({});
-export const apiRequestQAN = new ApiRequest({ baseURL: '/v0/qan' });
+export const apiRequestQAN = new ApiRequest({ baseURL: '/v1/qan' });
 export const apiRequestManagement = new ApiRequest({ baseURL: '/v1/management' });
 export const apiRequestInventory = new ApiRequest({ baseURL: '/v1/inventory' });
 export const apiRequestSettings = new ApiRequest({ baseURL: '/v1/Settings' });

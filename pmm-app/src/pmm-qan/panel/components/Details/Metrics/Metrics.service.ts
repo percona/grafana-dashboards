@@ -1,4 +1,4 @@
-import { apiRequestQAN } from 'shared/components/helpers/api';
+import { apiRequest } from 'shared/components/helpers/api';
 import { getLabelQueryParams } from 'pmm-qan/panel/QueryAnalytics.tools';
 import { HistogramRequest, HistogramResponse } from './Metrics.types';
 
@@ -15,7 +15,7 @@ export const getMetrics = async ({
     totals,
   };
 
-  return apiRequestQAN.post<any, any>('/ObjectDetails/GetMetrics', body);
+  return apiRequest.post<any, any>('/v1/qan:getMetrics', body);
 };
 
 export const getHistogram = async ({
@@ -28,7 +28,7 @@ export const getHistogram = async ({
     period_start_to: to,
   };
 
-  return apiRequestQAN.post<HistogramResponse, HistogramRequest>('/ObjectDetails/GetHistogram', body);
+  return apiRequest.post<HistogramResponse, HistogramRequest>('/v1/qan:getHistogram', body);
 };
 
 export default {

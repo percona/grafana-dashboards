@@ -13,7 +13,7 @@ export const mysqlMethods = {
       service_id: example.service_id,
     });
 
-    return result.action_id;
+    return result.mysql_show_create_table.action_id;
   },
 
   getIndexes: async ({ example, tableName, database }) => {
@@ -27,7 +27,7 @@ export const mysqlMethods = {
       service_id: example.service_id,
     });
 
-    return result.action_id;
+    return result.mysql_show_index.action_id;
   },
 
   getStatuses: async ({ example, tableName, database }) => {
@@ -41,16 +41,16 @@ export const mysqlMethods = {
       service_id: example.service_id,
     });
 
-    return result.action_id;
+    return result.mysql_show_table_status.action_id;
   },
 
   getExplainJSON: async ({ example, queryId, placeholders }) => {
     try {
       const payload = getExplainPayload(example, queryId, placeholders);
 
-      const result = await MysqlDatabaseService.getTraditionalExplainJSONMysql(payload);
+      const result = await MysqlDatabaseService.getExplainJSON(payload);
 
-      return result.action_id;
+      return result.mysql_explain_json.action_id;
     } catch (e) {
       console.error(e);
 
@@ -58,13 +58,13 @@ export const mysqlMethods = {
     }
   },
 
-  getExplainTraditional: async ({ example, queryId, placeholders }) => {
+  getExplain: async ({ example, queryId, placeholders }) => {
     try {
       const payload = getExplainPayload(example, queryId, placeholders);
 
-      const result = await MysqlDatabaseService.getTraditionalExplainMysql(payload);
+      const result = await MysqlDatabaseService.getExplain(payload);
 
-      return result.action_id;
+      return result.mysql_explain.action_id;
     } catch (e) {
       console.error(e);
 

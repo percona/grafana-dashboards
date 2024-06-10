@@ -1,10 +1,14 @@
-import { apiRequestManagement } from 'shared/components/helpers/api';
+import { apiRequest } from 'shared/components/helpers/api';
 
 export default {
   getPostgreSQLIndex(body) {
-    return apiRequestManagement.post<any, any>('/Actions/StartPostgreSQLShowIndex', body);
+    const requestBody = { postgres_show_index: body };
+
+    return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },
   getShowCreateTablePostgreSQL(body) {
-    return apiRequestManagement.post<any, any>('/Actions/StartPostgreSQLShowCreateTable', body);
+    const requestBody = { postgres_show_create_table: body };
+
+    return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },
 };
