@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { Icon, useStyles } from '@grafana/ui';
+import { Icon, useStyles, Tooltip } from '@grafana/ui';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { Highlight } from 'shared/components/Hightlight/Highlight';
-import Tippy from '@tippyjs/react';
+// import Tippy from '@tippyjs/react';
 import { getStyles } from './Plan.styles';
 import { Messages } from './Plan.messages';
 import { usePlan } from './Plan.hooks';
@@ -21,16 +21,15 @@ export const Plan: FC = () => {
               {plan?.plan || ''}
             </Highlight>
             <div className={styles.tooltipWrapper}>
-              <Tippy
-                delay={[100, 100]}
-                className={styles.tippy}
-                content={`${Messages.planId} ${plan?.id}`}
-                placement="left"
+              <Tooltip
                 interactive
-                appendTo={document.body}
+                placement="left"
+                content={`${Messages.planId} ${plan?.id}`}
               >
-                <Icon name="info-circle" />
-              </Tippy>
+                <div>
+                  <Icon name="info-circle" />
+                </div>
+              </Tooltip>
             </div>
           </>
         ) : (
