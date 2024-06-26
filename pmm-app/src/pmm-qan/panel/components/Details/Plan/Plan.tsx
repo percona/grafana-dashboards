@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { Icon, useStyles, Tooltip } from '@grafana/ui';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { Highlight } from 'shared/components/Hightlight/Highlight';
-// import Tippy from '@tippyjs/react';
 import { getStyles } from './Plan.styles';
 import { Messages } from './Plan.messages';
 import { usePlan } from './Plan.hooks';
