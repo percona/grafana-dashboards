@@ -4,6 +4,7 @@ import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
 import { Databases, logger } from 'shared/core';
 import { Highlight } from 'shared/components/Hightlight/Highlight';
 import ParseError from './ParseError/ParseError';
+import { QueryExampleResponseItem } from '../Details.types';
 
 export const getExample = (databaseType) => (example: any): any => {
   if (databaseType === Databases.mongodb) {
@@ -22,3 +23,6 @@ export const getExample = (databaseType) => (example: any): any => {
     </Highlight>
   );
 };
+
+export const extractExample = (example: QueryExampleResponseItem) => example.example
+|| example.explain_fingerprint;

@@ -10,12 +10,12 @@ import { getStyles } from './PlaceholdersForm.styles';
 import { PlaceholdersFormProps, PlaceholdersFormValues } from './PlaceholdersForm.types';
 import { prepareInputs } from './PlaceholdersForm.utils';
 
-const PlaceholdersForm: React.FC<PlaceholdersFormProps> = ({ onSubmit, example }) => {
+const PlaceholdersForm: React.FC<PlaceholdersFormProps> = ({ database, onSubmit, example }) => {
   // recreate initial values if example changes to reset the form
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const initialValues = useMemo<PlaceholdersFormValues>(() => ({ placeholders: [] }), [example]);
   const styles = useStyles(getStyles);
-  const placeholders = prepareInputs(example.placeholders_count || 0);
+  const placeholders = prepareInputs(example.placeholders_count || 0, database);
 
   return (
     <Form initialValues={initialValues} onSubmit={onSubmit}>
@@ -24,6 +24,7 @@ const PlaceholdersForm: React.FC<PlaceholdersFormProps> = ({ onSubmit, example }
           <div className={styles.container}>
             <div className={styles.follow}>{Messages.follow}</div>
             <PrepareExplainFingerPrint
+              database={database}
               placeholders={values.placeholders}
               fingerprint={example.explain_fingerprint || ''}
             />
