@@ -7,7 +7,7 @@ export enum Databases {
 }
 
 export interface Settings {
-  updatesDisabled?: boolean;
+  updatesEnabled?: boolean;
 }
 
 export interface SettingsAPIResponse {
@@ -15,7 +15,7 @@ export interface SettingsAPIResponse {
 }
 
 export interface SettingsPayload {
-  updates_disabled: boolean;
+  updates_enabled: boolean;
 }
 
 export interface PaginatedPayload {

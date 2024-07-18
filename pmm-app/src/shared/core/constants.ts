@@ -1,8 +1,7 @@
 import { Databases } from './types';
 
 export const API = {
-  ALERTMANAGER: '/alertmanager/api/v2',
-  SETTINGS: '/v1/Settings/Get',
+  SETTINGS: '/v1/server/settings',
 };
 
 export const DATABASE_LABELS = {

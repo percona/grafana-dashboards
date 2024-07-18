@@ -1,23 +1,33 @@
-import { apiRequestManagement } from 'shared/components/helpers/api';
+import { apiRequest } from 'shared/components/helpers/api';
 
 export default {
   getShowCreateTableMySQL(body) {
-    return apiRequestManagement.post<any, any>('/Actions/StartMySQLShowCreateTable', body);
+    const requestBody = { mysql_show_create_table: body };
+
+    return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },
 
   getMysqlTableStatus(body) {
-    return apiRequestManagement.post<any, any>('/Actions/StartMySQLShowTableStatus', body);
+    const requestBody = { mysql_show_table_status: body };
+
+    return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },
 
   getMysqlIndex(body) {
-    return apiRequestManagement.post<any, any>('/Actions/StartMySQLShowIndex', body);
+    const requestBody = { mysql_show_index: body };
+
+    return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },
 
-  getTraditionalExplainJSONMysql(body) {
-    return apiRequestManagement.post<any, any>('/Actions/StartMySQLExplainJSON', body);
+  getExplainJSON(body) {
+    const requestBody = { mysql_explain_json: body };
+
+    return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },
 
-  getTraditionalExplainMysql(body) {
-    return apiRequestManagement.post<any, any>('/Actions/StartMySQLExplain', body);
+  getExplain(body) {
+    const requestBody = { mysql_explain: body };
+
+    return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },
 };
