@@ -16,16 +16,13 @@ export function App() {
     setLoading(true);
 
     try {
-      const response = await fetch('/v1/AWSInstanceCheck', {
-        method: 'POST',
+      const response = await fetch(`/v1/server/AWSInstance?instance_id${instanceId.trim()}`, {
+        method: 'GET',
         credentials: "include",
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          instance_id: instanceId.trim(),
-        }),
+        }
       });
 
       if (!response.ok) {
