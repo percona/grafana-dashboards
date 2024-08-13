@@ -41,8 +41,6 @@
   "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": null,
-  "iteration": 1659441366721,
   "links": [
     {
       "asDropdown": false,
@@ -147,6 +145,11 @@
       },
       "id": 29,
       "panels": [],
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
       "title": "Datasize",
       "type": "row"
     },
@@ -158,6 +161,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -226,7 +231,6 @@
       },
       "targets": [
         {
-          "datasource": "Metrics",
           "exemplar": true,
           "expr": "avg by (database) (topk(5, mongodb_dbstats_dataSize{rs_state=\"1\",cluster=~\"$cluster\"})/1024/1024)",
           "interval": "$interval",
@@ -283,7 +287,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.1.2",
+      "pluginVersion": "9.2.20",
       "targets": [
         {
           "datasource": "Metrics",
@@ -343,7 +347,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.1.2",
+      "pluginVersion": "9.2.20",
       "targets": [
         {
           "datasource": "Metrics",
@@ -660,7 +664,6 @@
       "type": "row"
     },
     {
-      "datasource": "Metrics",
       "description": "Show summary information on the top 5 collections that are most frequently read.",
       "fieldConfig": {
         "defaults": {
@@ -732,12 +735,13 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "9.1.2",
+      "pluginVersion": "9.2.20",
       "targets": [
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "topk (5,sum by (collection) (mongodb_top_queries_count))",
+          "expr": "topk (5,sum by (database, collection) (mongodb_top_queries_count{database =~ \"$database\"}))",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -755,8 +759,9 @@
           "options": {
             "include": {
               "names": [
-                "collection",
-                "Value"
+                "Value",
+                "database",
+                "collection"
               ]
             }
           }
@@ -767,12 +772,23 @@
             "regex": "(.*)",
             "renamePattern": "$1"
           }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Value": 2,
+              "collection": 1,
+              "database": 0
+            },
+            "renameByName": {}
+          }
         }
       ],
       "type": "table"
     },
     {
-      "datasource": "Metrics",
       "description": "Show summary information on the top 5 collections that are most frequently written to (insert, update, delete, etc.).",
       "fieldConfig": {
         "defaults": {
@@ -861,13 +877,14 @@
           }
         ]
       },
-      "pluginVersion": "9.1.2",
+      "pluginVersion": "9.2.20",
       "repeatDirection": "v",
       "targets": [
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "topk(5,sum by (collection) (mongodb_top_insert_count)+sum by (collection) (mongodb_top_insert_count)+sum by (collection) (mongodb_top_remove_count)+sum by (collection) (mongodb_top_update_count))",
+          "expr": "topk(5,sum by (database,collection) (mongodb_top_insert_count{database =~ \"$database\"})+sum by (database,collection) (mongodb_top_insert_count{database =~ \"$database\"})+sum by (database,collection) (mongodb_top_remove_count{database =~ \"$database\"})+sum by (database,collection) (mongodb_top_update_count{database =~ \"$database\"}))",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -886,7 +903,8 @@
             "include": {
               "names": [
                 "collection",
-                "Value"
+                "Value",
+                "database"
               ]
             }
           }
@@ -896,12 +914,23 @@
           "options": {
             "reducers": []
           }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Value": 2,
+              "collection": 1,
+              "database": 0
+            },
+            "renameByName": {}
+          }
         }
       ],
       "type": "table"
     },
     {
-      "datasource": "Metrics",
       "description": "Show the 5 collections that are most frequently read.",
       "fieldConfig": {
         "defaults": {
@@ -944,19 +973,20 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "9.1.2",
+      "pluginVersion": "9.2.20",
       "repeatDirection": "v",
       "targets": [
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "topk (5, rate(sum by (collection) (mongodb_top_queries_count)[$interval]))",
+          "expr": "topk (5, rate(sum by (environment, cluster, database, collection) (mongodb_top_queries_count{database =~ \"$database\"})[$interval]))",
           "format": "time_series",
           "hide": false,
           "instant": true,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{collection}}",
+          "legendFormat": "{{ database }}.{{ collection }}",
           "refId": "A",
           "step": 10
         }
@@ -966,7 +996,6 @@
       "type": "bargauge"
     },
     {
-      "datasource": "Metrics",
       "description": "Show the 5 collections that are most frequently written to (insert, update, delete, etc.).",
       "fieldConfig": {
         "defaults": {
@@ -1009,19 +1038,20 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "9.1.2",
+      "pluginVersion": "9.2.20",
       "repeatDirection": "v",
       "targets": [
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "topk (5, rate(sum by (collection) (mongodb_top_insert_count)+sum by (collection) (mongodb_top_insert_count)+sum by (collection) (mongodb_top_remove_count)+sum by (collection) (mongodb_top_update_count)))",
+          "expr": "topk (5, rate(sum by (environment, cluster, database, collection) (mongodb_top_insert_count{database =~ \"$database\"})+sum by (environment, cluster, database, collection) (mongodb_top_insert_count{database =~ \"$database\"})+sum by (environment, cluster, database, collection) (mongodb_top_remove_count{database =~ \"$database\"})+sum by (environment, cluster, database, collection) (mongodb_top_update_count{database =~ \"$database\"})))",
           "format": "time_series",
           "hide": false,
           "instant": true,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{database}}",
+          "legendFormat": "{{ database }}.{{ collection }}",
           "refId": "A",
           "step": 10
         }
@@ -1463,7 +1493,7 @@
           }
         ]
       },
-      "pluginVersion": "9.1.2",
+      "pluginVersion": "9.2.20",
       "repeat": "database",
       "repeatDirection": "v",
       "targets": [
@@ -1549,7 +1579,7 @@
     }
   ],
   "refresh": "1m",
-  "schemaVersion": 34,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "Percona",
@@ -1645,10 +1675,9 @@
         "allValue": ".*",
         "current": {
           "selected": false,
-          "text": "",
-          "value": ""
+          "text": "All",
+          "value": "$__all"
         },
-        "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\"},cluster)",
         "hide": 0,
         "includeAll": true,
@@ -1673,7 +1702,6 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\"}, node_name)",
         "hide": 2,
         "includeAll": true,
@@ -1697,7 +1725,6 @@
           "text": "",
           "value": ""
         },
-        "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}, service_name)",
         "hide": 0,
         "includeAll": false,
@@ -1717,12 +1744,10 @@
       },
       {
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
+          "text": "",
           "value": ""
         },
-        "datasource": "Metrics",
         "definition": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
         "hide": 0,
         "includeAll": false,
@@ -1742,15 +1767,17 @@
       },
       {
         "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
+          "selected": true,
+          "text": [
+            "admin"
+          ],
+          "value": [
+            "admin"
+          ]
         },
-        "datasource": "Metrics",
         "definition": "label_values(mongodb_top_commands_count{cluster=~\"$cluster\"}, database)",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "Database",
         "multi": true,
         "name": "database",
@@ -1770,12 +1797,10 @@
       },
       {
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "$cmd.aggregate",
+          "value": "$cmd.aggregate"
         },
-        "datasource": "Metrics",
         "definition": "label_values(mongodb_top_commands_count{database=~\"$database\"}, collection)",
         "hide": 2,
         "includeAll": false,
