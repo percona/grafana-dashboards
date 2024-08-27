@@ -160,6 +160,12 @@
             "mode": "fixed"
           },
           "decimals": 0,
+          "links": [
+            {
+              "title": "",
+              "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?${cluster:queryparam}&${__field.labels.rs_nm}&${interval:queryparam}&${__url_time_range}"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -808,7 +814,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "blue",
+            "mode": "fixed"
           },
           "mappings": [],
           "max": 1,
@@ -1409,13 +1416,7 @@
               },
               {
                 "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "MongoDB Instance Summary - ${__cell}",
-                    "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=${__cell}"
-                  }
-                ]
+                "value": []
               },
               {
                 "id": "custom.align"
@@ -1464,7 +1465,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Service Name"
+              "options": "service_name"
             },
             "properties": [
               {
@@ -1717,8 +1718,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               }
             ]
           },
@@ -1892,8 +1892,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               }
             ]
           }
@@ -2014,7 +2013,7 @@
       "legend": {
         "alignAsTable": true,
         "avg": true,
-        "current": true,
+        "current": false,
         "hideEmpty": false,
         "hideZero": false,
         "max": true,
@@ -2234,13 +2233,30 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               }
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Shard Name"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "",
+                    "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?${cluster:queryparam}&${__value.text}&${interval:queryparam}&${__url_time_range}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -2965,7 +2981,7 @@
           ]
         },
         "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\"}, set)",
-        "hide": 0,
+        "hide": 2,
         "includeAll": true,
         "label": "Replica Set",
         "multi": true,
@@ -2991,7 +3007,7 @@
           "value": "$__all"
         },
         "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$set\"}, service_name)",
-        "hide": 0,
+        "hide": 2,
         "includeAll": true,
         "label": "Node",
         "multi": true,
