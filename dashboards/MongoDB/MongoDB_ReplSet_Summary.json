@@ -55,6 +55,7 @@
   "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
+  "id": null,
   "links": [
     {
       "icon": "doc",
@@ -141,393 +142,869 @@
   "panels": [
     {
       "collapsed": false,
-      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 1022,
+      "id": 1030,
       "panels": [],
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "refId": "A"
-        }
-      ],
-      "title": "Overview",
+      "repeat": "service_name",
+      "repeatDirection": "h",
+      "title": "Overview - $service_name",
       "type": "row"
     },
     {
-      "datasource": "Metrics",
-      "description": "",
+      "description": "Read more about [Replica Set Member States](https://per.co.na/mongo-repstate).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 11,
+                  "text": "STARTUP"
+                },
+                "1": {
+                  "color": "rgb(107, 152, 102)",
+                  "index": 4,
+                  "text": "PRIMARY"
+                },
+                "2": {
+                  "color": "rgb(193, 159, 20)",
+                  "index": 3,
+                  "text": "SECONDARY"
+                },
+                "3": {
+                  "index": 10,
+                  "text": "RECOVERING"
+                },
+                "5": {
+                  "index": 9,
+                  "text": "STARTUP2"
+                },
+                "6": {
+                  "index": 8,
+                  "text": "UNKNOWN"
+                },
+                "7": {
+                  "color": "#8B8000",
+                  "index": 1,
+                  "text": "ARBITER"
+                },
+                "8": {
+                  "index": 7,
+                  "text": "DOWN"
+                },
+                "9": {
+                  "index": 6,
+                  "text": "ROLLBACK"
+                },
+                "10": {
+                  "index": 5,
+                  "text": "REMOVED"
+                },
+                "null": {
+                  "color": "#FF7383",
+                  "index": 2,
+                  "text": "Exporter is not connected"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 3,
-        "w": 5,
+        "h": 4,
+        "w": 2,
         "x": 0,
         "y": 1
       },
-      "id": 1228,
+      "id": 1586,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "max by (service_name) (mongodb_mongod_replset_my_state{environment=~\"$environment\", cluster=~\"$cluster\", set=~\"$rs_nm\", service_name=~\"$service_name\"})",
+          "interval": "$interval",
+          "legendFormat": "{{set}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "State",
+      "type": "stat"
+    },
+    {
+      "description": "The CPU time is measured in clock ticks or seconds. It is useful to measure CPU time as a percentage of the CPU's capacity, which is called the CPU usage.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "links": [],
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max Core Utilization"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#bf1b00",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "idle"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#806EB7",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "iowait"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#E24D42",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "nice"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#1F78C1",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "softirq"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#FFFFFF",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "steal"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#8F3BB8",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "system"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#EAB839",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "user"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#508642",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "steal"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#FFEE52",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2.5,
+        "x": 2,
+        "y": 1
+      },
+      "id": 1071,
       "links": [],
       "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        "content": "<h5 style='color:#e68a00;font-weight:bold;text-align:center'><a href=\"/graph/d/mongodb-cluster-summary/mongodb-cluster-summary?var-cluster=$cluster\" target=\"_blank\">$cluster</a></h5>",
-        "mode": "html"
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (100 - (avg by(node_id) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "{{ mode }}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "CPU Usage",
+      "type": "gauge"
+    },
+    {
+      "description": "Estimated how much memory can be used without swapping",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "links": [],
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2.5,
+        "x": 4.5,
+        "y": 1
+      },
+      "id": 1060,
+      "links": [],
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (1 - avg by(node_id)(node_memory_MemAvailable_bytes)/ avg by (node_id) (node_memory_MemTotal_bytes))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Memory Used",
+      "type": "gauge"
+    },
+    {
+      "description": "Shows disk Utilization as a percentage of the time when there was at least one IO request in flight. It is designed to match utilization available in iostat tool. The graph augments the IO latency and Disk Load Graphs, allowing to determine if the disk load was evenly distributed in time or consuming the IO momentarily. Higher utilization increases the likeliness of IO queuing. Always consider this metric along with response time and IO queue depth.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "links": [],
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2.5,
+        "x": 7,
+        "y": 1
+      },
+      "id": 1073,
+      "links": [],
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id)  (sum by (node_id) (rate(node_disk_io_time_seconds_total[$interval])) or (sum by (node_id) (irate(node_disk_io_time_seconds_total[5m]))))",
+          "interval": "$interval",
+          "legendFormat": "{{ node_name }}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Disk IO Utilization",
+      "type": "gauge"
+    },
+    {
+      "description": "Shows information about the disk space usage of the specified mountpoint.\n\n**Used** is the amount of space used.\n\n**Free** is the amount of space not in use.\n\n**Used+Free** is the total disk space allocated to the mountpoint.\n\nHaving *Free* close to 0 B is not good because of the risk to have a “disk full” error that can block one of the services or even cause a crash of the entire system.\n\nIn case Free is close to 0 B consider to remove unused files or to expand the space allocated to the mountpoint.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "links": [],
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2.5,
+        "x": 9.5,
+        "y": 1
+      },
+      "id": 1062,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.2.20",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "avg(mongodb_dbstats_fsUsedSize{service_name=~\"$service_name\"})/ avg (mongodb_dbstats_fsTotalSize{service_name=~\"$service_name\"})",
+          "hide": false,
+          "interval": "$interval",
+          "legendFormat": "Total Size",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg(mongodb_dbstats_fsUsedSize{service_name=~\"$service_name\"})",
+          "hide": true,
+          "interval": "$interval",
+          "legendFormat": "Usage",
+          "range": true,
+          "refId": "C"
+        }
+      ],
+      "title": "Disk Space Utilization",
+      "type": "gauge"
+    },
+    {
+      "description": "Shows amount of physical IOs (reads and writes) different devices are serving. Spikes in number of IOs served often corresponds to performance problems due to IO subsystem overload.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "id": 1076,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "editorMode": "code",
+          "errors": {},
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (avg by (node_id) (sum by (node_id)(\n(rate(node_disk_reads_completed_total[$interval]) or \nirate(node_disk_reads_completed_total[5s]))\n)))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Read",
+          "metric": "",
+          "range": true,
+          "refId": "A",
+          "step": 300,
+          "target": ""
+        },
+        {
+          "calculatedInterval": "2m",
+          "datasourceErrors": {},
+          "editorMode": "code",
+          "errors": {},
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (avg by (node_id) (sum by(node_id)(\n(rate(node_disk_writes_completed_total[$interval]) or \nirate(node_disk_writes_completed_total[5s])) \n)))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Write",
+          "metric": "",
+          "range": true,
+          "refId": "B",
+          "step": 300,
+          "target": ""
+        }
+      ],
+      "title": "Disk IOPS",
+      "type": "stat"
+    },
+    {
+      "description": "Network traffic refers to the amount of data moving across a network at a given point in time.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Network Details - ${__field.labels.node_name}",
+              "url": "/graph/d/node-network/network-details?var-node_name=${__field.labels.node_name}&$__url_time_range"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "id": 1052,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "calculatedInterval": "2s",
+          "datasourceErrors": {},
+          "editorMode": "code",
+          "errors": {},
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (sum by (node_id) (rate(node_network_receive_bytes_total{device!=\"lo\"}[$interval])) or sum by (node_id) (irate(node_network_receive_bytes_total{device!=\"lo\"}[5m])) or sum by (node_id) (max_over_time(rdsosmetrics_network_rx[$interval])) or sum by (node_id) (max_over_time(rdsosmetrics_network_rx[5m])))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Inbound",
+          "metric": "",
+          "range": true,
+          "refId": "B",
+          "step": 300,
+          "target": ""
+        },
+        {
+          "calculatedInterval": "2s",
+          "datasourceErrors": {},
+          "editorMode": "code",
+          "errors": {},
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (sum by (node_id) (rate(node_network_transmit_bytes_total{device!=\"lo\"}[$interval])) or sum by (node_id) (irate(node_network_transmit_bytes_total{device!=\"lo\"}[5m])) or\nsum by (node_id) (max_over_time(rdsosmetrics_network_tx[$interval])) or sum by (node_id) (max_over_time(rdsosmetrics_network_tx[5m])))",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Outbound",
+          "metric": "",
+          "range": true,
+          "refId": "A",
+          "step": 300,
+          "target": ""
+        }
+      ],
+      "title": "Network Traffic",
+      "type": "stat"
+    },
+    {
+      "description": "The parameter shows how long a system has been “up” and running without a shut down or restart.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgba(245, 54, 54, 0.9)",
+                "value": null
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 300
+              },
+              {
+                "color": "rgba(50, 172, 45, 0.97)",
+                "value": 3600
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 20,
+        "y": 1
+      },
+      "id": 321,
+      "interval": "$interval",
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
       },
       "pluginVersion": "9.2.20",
       "targets": [
         {
           "calculatedInterval": "10m",
-          "datasource": "Metrics",
           "datasourceErrors": {},
+          "editorMode": "code",
           "errors": {},
-          "expr": "mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"} ",
-          "format": "time_series",
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "metric": "",
-          "refId": "A",
-          "step": 300
-        }
-      ],
-      "title": "Cluster Name",
-      "type": "text"
-    },
-    {
-      "datasource": "Metrics",
-      "description": "This shows how many members are configured in the replica set.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "rgb(31, 120, 193)",
-            "mode": "fixed"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 5,
-        "y": 1
-      },
-      "hideTimeOverride": false,
-      "id": 59,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {
-          "valueSize": 20
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.2.20",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "expr": "count by (set) (group by (service_name, set) (mongodb_mongod_replset_number_of_members{cluster=~\"$cluster\",set=~\"$replset\"} or mongodb_mongod_replset_my_state{cluster=~\"$cluster\",set=~\"$replset\"}))",
-          "interval": "5m",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "metric": "",
-          "refId": "A",
-          "step": 300
-        }
-      ],
-      "title": "ReplSet Members",
-      "type": "stat"
-    },
-    {
-      "datasource": "Metrics",
-      "description": "This shows the time since the last election.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "rgb(31, 120, 193)",
-            "mode": "fixed"
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 9,
-        "y": 1
-      },
-      "hideTimeOverride": false,
-      "id": 1227,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {
-          "valueSize": 20
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.2.20",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "expr": "time() - max(mongodb_mongod_replset_member_election_date{service_name=~\"$service_name\"})",
-          "interval": "5m",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "metric": "",
-          "refId": "A",
-          "step": 300
-        }
-      ],
-      "title": "ReplSet Last Election",
-      "type": "stat"
-    },
-    {
-      "datasource": "Metrics",
-      "description": "This panel shows how far behind in replication this member is if it is a secondary. This number may be high it the instance is running as a delayed secondary member.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "rgb(31, 120, 193)",
-            "mode": "fixed"
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 13,
-        "y": 1
-      },
-      "hideTimeOverride": true,
-      "id": 77,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {
-          "valueSize": 20
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.2.20",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "exemplar": false,
-          "expr": "avg by (set) (max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",self=~\"|1\",service_name=~\"$service_name\"}[${__range}]))",
+          "exemplar": true,
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (avg by (node_id)  (time() - container_start_time_seconds{id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or avg by (node_id) ((node_time_seconds - node_boot_time_seconds) or (time() - node_boot_time_seconds)))",
           "format": "time_series",
           "hide": false,
-          "instant": true,
-          "interval": "$interval",
+          "interval": "5m",
+          "intervalFactor": 1,
           "legendFormat": "",
-          "refId": "B"
+          "metric": "",
+          "range": true,
+          "refId": "A",
+          "step": 300
         }
       ],
-      "timeFrom": "1m",
-      "title": "Avg ReplSet Lag",
+      "title": "Uptime",
       "type": "stat"
     },
     {
-      "columns": [],
-      "datasource": "Metrics",
       "description": "",
-      "fontSize": "100%",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "string"
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 11,
-        "w": 7,
-        "x": 17,
+        "h": 4,
+        "w": 2,
+        "x": 22,
         "y": 1
       },
-      "hideTimeOverride": true,
-      "id": 78,
+      "id": 1039,
+      "interval": "$interval",
       "links": [],
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": true
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^mongodb$/",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
       },
-      "styles": [
-        {
-          "alias": "Time",
-          "align": "auto",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "pattern": "Time",
-          "type": "hidden"
-        },
-        {
-          "alias": "Service Name",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "link": true,
-          "linkTargetBlank": true,
-          "linkTooltip": "MongoDB Instance Summary - ${__cell}",
-          "linkUrl": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=${__cell}",
-          "mappingType": 1,
-          "pattern": "service_name",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "Version",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "mongodb",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Value",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        }
-      ],
+      "pluginVersion": "9.2.20",
       "targets": [
         {
-          "datasource": "Metrics",
-          "exemplar": false,
-          "expr": "avg by (service_name,engine) (mongodb_mongod_storage_engine{service_name=~\"$service_name\"})",
-          "format": "table",
-          "hide": true,
-          "instant": true,
-          "interval": "5m",
-          "intervalFactor": 1,
-          "legendFormat": "{{ engine }}",
-          "metric": "",
-          "refId": "A",
-          "step": 300
-        },
-        {
-          "datasource": "Metrics",
+          "calculatedInterval": "10m",
+          "datasourceErrors": {},
+          "editorMode": "code",
+          "errors": {},
           "exemplar": false,
           "expr": "avg by (service_name,mongodb) (mongodb_version_info{service_name=~\"$service_name\"})",
           "format": "table",
+          "hide": false,
           "instant": true,
           "interval": "5m",
+          "intervalFactor": 1,
           "legendFormat": "{{mongodb}}",
-          "refId": "B"
+          "metric": "",
+          "range": false,
+          "refId": "A",
+          "step": 300
         }
       ],
-      "timeFrom": "1m",
-      "title": "MongoDB Versions",
-      "transform": "table",
-      "type": "table-old"
+      "title": "Version",
+      "type": "stat"
     },
     {
-      "datasource": "Metrics",
-      "description": "ReplSet statuses during the select time range.",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 1150,
+      "panels": [],
+      "title": "States - $rs_nm",
+      "type": "row"
+    },
+    {
+      "description": "ReplSet statuses during the selected time range.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -623,12 +1100,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 17,
+        "h": 6,
+        "w": 24,
         "x": 0,
-        "y": 4
+        "y": 16
       },
-      "id": 1559,
+      "id": 1587,
       "options": {
         "alignValue": "right",
         "legend": {
@@ -647,40 +1124,1233 @@
       "pluginVersion": "6.5.1",
       "targets": [
         {
-          "datasource": "Metrics",
           "editorMode": "code",
-          "exemplar": false,
-          "expr": "max by (service_name) (mongodb_mongod_replset_my_state{set=~\"$replset\",service_name=~\"$service_name\"})",
-          "format": "time_series",
-          "hide": false,
-          "instant": false,
+          "expr": "max by (service_name) (mongodb_mongod_replset_my_state{environment=~\"$environment\", cluster=~\"$cluster\", set=~\"$rs_nm\", service_name=~\"$service_name\"})",
           "interval": "$interval",
-          "legendFormat": "{{service_name}}",
+          "legendFormat": "{{set}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "ReplSet States",
+      "title": "Node States",
       "transformations": [],
       "type": "state-timeline"
     },
     {
-      "collapsed": true,
-      "datasource": "Metrics",
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 22
+      },
+      "id": 1170,
+      "panels": [],
+      "title": "Details",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Ops or Replicated Ops/sec classified by legacy wire protocol type (query, insert, update, delete, getmore). And (from the internal TTL threads) the docs deletes/sec by TTL indexes.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMin": 0,
+        "rightLogBase": 1
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 23
+      },
+      "hiddenSeries": false,
+      "id": 15,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/repl.*/",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "avg by (legacy_op_type) (rate(mongodb_ss_opcountersRepl{service_name=~\"$service_name\", legacy_op_type!~\"(command|query|getmore)\"}[$interval]))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "repl_{{legacy_op_type}}",
+          "range": true,
+          "refId": "A",
+          "step": 300
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg by () (rate(mongodb_ss_metrics_ttl_deletedDocuments{service_name=~\"$service_name\"}[$interval]))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "ttl_delete ",
+          "range": true,
+          "refId": "B",
+          "step": 300
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg by (legacy_op_type) (rate(mongodb_ss_opcounters{service_name=~\"$service_name\", legacy_op_type!=\"command\"}[$interval]))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "{{legacy_op_type}} ",
+          "range": true,
+          "refId": "C",
+          "step": 300
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Command Operations",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "ops",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "decimals": 2,
+          "format": "ops",
+          "label": "",
+          "logBase": 1,
+          "min": "0",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "description": "Show the 5 collections that are most frequently read.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 23
       },
       "id": 1024,
+      "links": [],
+      "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 9,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "9.2.20",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "topk (5, sum by (database,collection) (rate(mongodb_top_queries_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$rs_nm\",service_name=~\"$service_name\"})[$interval] or irate(mongodb_top_queries_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$rs_nm\",service_name=~\"$service_name\"})[5s]))",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{database}}.{{collection}}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Top Hottest Collections by Read",
+      "transformations": [],
+      "type": "bargauge"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Average latency of operations (classified by read, write, or (other) command)",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 31
+      },
+      "hiddenSeries": false,
+      "id": 1064,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "avg by (op_type) (rate(mongodb_ss_opLatencies_latency{service_name=~\"$service_name\"}[$interval]) / (rate(mongodb_ss_opLatencies_ops{service_name=~\"$service_name\"}[$interval]) > 0) or irate(mongodb_ss_opLatencies_latency{service_name=~\"$service_name\"}[5m]) / (irate(mongodb_ss_opLatencies_ops{service_name=~\"$service_name\"}[5m]) > 0))",
+          "interval": "$interval",
+          "legendFormat": "{{op_type}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Query execution times",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "µs",
+          "logBase": 1,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "description": "Show the 5 collections that are most frequently written to.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 31
+      },
+      "id": 1028,
+      "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "topk (5,sum by (database,collection) ((rate(mongodb_top_insert_count{service_name=~\"$service_name\"}+mongodb_top_remove_count{service_name=~\"$service_name\"}+mongodb_top_update_count{service_name=~\"$service_name\"})[$interval]) or (irate(mongodb_top_insert_count{service_name=~\"$service_name\"}+mongodb_top_remove_count{service_name=~\"$service_name\"}+mongodb_top_update_count{service_name=~\"$service_name\"})[5s])))",
+          "instant": false,
+          "interval": "",
+          "key": "Q-bf62f68c-ad8e-4fb5-83bb-df50324b416b-0",
+          "legendFormat": "{{database}}.{{collection}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Top Hottest Collections by Write",
+      "type": "bargauge"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Ratio of Documents (or Index entries) scanned / documents returned. A value of 1 means all documents returned exactly match query criteria for the sample period. A value of 100 means on average for the sample period, a query scans 100 documents to find one that is returned.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMin": 0,
+        "rightLogBase": 1
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 39
+      },
+      "height": "250px",
+      "hiddenSeries": false,
+      "id": 1066,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "(sum by ()(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[$interval])) /\nsum(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval]))\nor\nsum by ()(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[5m])) /\nsum(irate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m])))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Scanned objects / returned",
+          "range": true,
+          "refId": "J",
+          "step": 300
+        },
+        {
+          "editorMode": "code",
+          "expr": "(sum by ()(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[$interval])) /\nsum(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval]))\nor\nsum by ()(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[5m])) /\nsum(irate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m])))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Scanned idx / returned",
+          "range": true,
+          "refId": "A",
+          "step": 300
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Query Efficiency",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": "none",
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "",
+        ""
+      ],
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Operations queued due to a lock.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMin": 0,
+        "rightLogBase": 1
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 39
+      },
+      "height": "250px",
+      "hiddenSeries": false,
+      "id": 1036,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "max by (type) (mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "{{type}}",
+          "range": true,
+          "refId": "J",
+          "step": 300
+        }
+      ],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 0,
+          "yaxis": "left"
+        }
+      ],
+      "timeRegions": [],
+      "title": "Queued Operations",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "ops",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMin": 0,
+        "rightLogBase": 1
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 47
+      },
+      "height": "250px",
+      "hiddenSeries": false,
+      "id": 1067,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": true,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "avg by() (mongodb_ss_globalLock_activeClients_readers{service_name=~\"$service_name\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Active Readers",
+          "range": true,
+          "refId": "J",
+          "step": 300
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg by() (mongodb_ss_globalLock_activeClients_writers{service_name=~\"$service_name\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Active Writers",
+          "range": true,
+          "refId": "A",
+          "step": 300
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg by() (mongodb_ss_globalLock_currentQueue{service_name=~\"$service_name\",count_type=\"readers\"})",
+          "hide": false,
+          "legendFormat": "Queued Readers",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg by() (mongodb_ss_globalLock_currentQueue{service_name=~\"$service_name\",count_type=\"writers\"})",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Queued Writers",
+          "range": true,
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Reads & Writes",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "format": "none",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "none",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "description": "MongoDB Connections",
+      "fieldConfig": {
+        "defaults": {
+          "links": [],
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 47
+      },
+      "hiddenSeries": false,
+      "id": 1074,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "avg by () (mongodb_ss_connections{service_name=~\"$service_name\",conn_type=~\"current\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Current",
+          "range": true,
+          "refId": "J",
+          "step": 300
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg by() (mongodb_ss_connections{service_name=~\"$service_name\",conn_type=~\"available\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Available",
+          "range": true,
+          "refId": "A",
+          "step": 300
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Connections",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "none",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 55
+      },
+      "id": 1056,
+      "panels": [
+        {
+          "default_title_for_rows": "DB Name",
+          "description": "MongoDB stores documents in collections. Collections are analogous to tables in relational databases.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "left",
+                "displayMode": "auto",
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "dark-blue",
+                      "index": 0,
+                      "text": "0"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "noValue": "N/A",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "red",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "^((?!(DB Name)).)*$"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "dark-blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Node"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?${__data.fields.Node}﻿&﻿${__url_time_range}﻿&﻿${interval:queryparam}﻿&﻿${cluster:queryparam}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 11,
+            "x": 0,
+            "y": 56
+          },
+          "hide_headers": false,
+          "id": 1043,
+          "options": {
+            "footer": {
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "frameIndex": 0,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "DB Name\\Value"
+              }
+            ]
+          },
+          "pluginVersion": "9.2.20",
+          "sorting_props": {
+            "col_index": -1,
+            "direction": "desc"
+          },
+          "targets": [
+            {
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "max by (environment,cluster,rs_nm,database,collection,service_name) (mongodb_collstats_storageStats_storageSize{cluster=~\"$cluster\",rs_nm=~\"$rs_nm\",db!~\"admin|config\"})",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "$interval",
+              "legendFormat": "{{collection}}",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Size of Collections",
+          "transformations": [
+            {
+              "id": "groupingToMatrix",
+              "options": {
+                "columnField": "shard",
+                "rowField": "db",
+                "valueField": "Value"
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "cluster": true,
+                  "environment": false,
+                  "rs_nm": true
+                },
+                "indexByName": {
+                  "Time": 0,
+                  "Value": 6,
+                  "cluster": 1,
+                  "collection": 4,
+                  "database": 3,
+                  "rs_nm": 5,
+                  "service_name": 2
+                },
+                "renameByName": {
+                  "Value": "Size",
+                  "database": "DB Name",
+                  "db\\shard": "DB Name",
+                  "rs1": "",
+                  "service_name": "Node"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "collapsed": false,
+          "default_title_for_rows": "DB Name",
+          "description": "MongoDB stores documents in collections. Collections are analogous to tables in relational databases.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "transparent",
+                "mode": "fixed"
+              },
+              "custom": {
+                "align": "left",
+                "displayMode": "auto",
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "dark-blue",
+                      "index": 0
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "noValue": "N/A",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "red",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "^((?!(DB Name)).)*$"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background-solid"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Node"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?${__data.fields.Node}﻿&﻿${__url_time_range}﻿&﻿${interval:queryparam}﻿&﻿${cluster:queryparam}﻿"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 13,
+            "x": 11,
+            "y": 56
+          },
+          "id": 1045,
+          "options": {
+            "footer": {
+              "enablePagination": true,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "frameIndex": 0,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "DB Name\\Value"
+              }
+            ]
+          },
+          "pluginVersion": "9.2.20",
+          "sorting_props": {
+            "col_index": -1,
+            "direction": "desc"
+          },
+          "targets": [
+            {
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "max by (environment,cluster,rs_nm,database,service_name) (mongodb_mongod_db_collections_total{cluster=~\"$cluster\",rs_nm=~\"$rs_nm\",db!~\"admin|config\"})",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "$interval",
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Number of Collections",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "cluster": true,
+                  "rs_nm": true
+                },
+                "indexByName": {
+                  "Time": 0,
+                  "Value": 5,
+                  "cluster": 1,
+                  "database": 3,
+                  "rs_nm": 4,
+                  "service_name": 2
+                },
+                "renameByName": {
+                  "1710776522937": "",
+                  "Value": "Count",
+                  "database": "DB Name",
+                  "service_name": "Node"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "Collection Details",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 56
+      },
+      "id": 1049,
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Metrics",
           "decimals": 2,
           "description": "MongoDB replication lag occurs when the secondary node cannot replicate data fast enough to keep up with the rate that data is being written to the primary node. It could be caused by something as simple as network latency, packet loss within your network, or a routing issue.",
           "editable": true,
@@ -705,20 +2375,20 @@
             "rightLogBase": 1
           },
           "gridPos": {
-            "h": 8,
-            "w": 24,
+            "h": 7,
+            "w": 12,
             "x": 0,
-            "y": 34
+            "y": 57
           },
           "hiddenSeries": false,
-          "id": 14,
+          "id": 1038,
           "legend": {
             "alignAsTable": true,
             "avg": true,
             "current": false,
             "max": true,
             "min": true,
-            "rightSide": true,
+            "rightSide": false,
             "show": true,
             "sort": "avg",
             "sortDesc": true,
@@ -752,24 +2422,26 @@
           "steppedLine": false,
           "targets": [
             {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) ((max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",self=~\"|1\",service_name=~\"$secondary\"}[$interval]) > 0) by (service_name,set)) or (max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",self=~\"|1\",service_name=~\"$secondary\"}[5m]) > 0) by (service_name,set)))",
+              "editorMode": "code",
+              "expr": "max_over_time(mongodb_mongod_replset_member_replication_lag{environment=~\"$environment\",cluster=~\"$cluster\",set=\"$rs_nm\",service_name=~\"$secondary\"}[$interval]) > 0 ",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "{{service_name}}",
+              "range": true,
               "refId": "A",
               "step": 300
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) ((max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",self=~\"|1\",service_name=~\"$secondary\"}[$interval]) > 0) by (service_name,set)) or (max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",state=\"SECONDARY\",self=~\"|1\",service_name=~\"$secondary\"}[5m]) > 0) by (service_name,set)))",
-              "hide": true,
-              "interval": "$interval",
-              "legendFormat": "Avg",
-              "refId": "B"
             }
           ],
-          "thresholds": [],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": false,
+              "line": true,
+              "op": "gt",
+              "value": 10,
+              "yaxis": "left"
+            }
+          ],
           "timeRegions": [],
           "title": "Replication Lag",
           "tooltip": {
@@ -808,617 +2480,12 @@
           "yaxis": {
             "align": false
           }
-        }
-      ],
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "refId": "A"
-        }
-      ],
-      "title": "Replication Lag",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "datasource": "Metrics",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 13
-      },
-      "id": 1019,
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "Metrics",
-          "decimals": 2,
-          "description": "Operations are classified by legacy wire protocol type (insert, update, and delete only).",
-          "editable": true,
-          "error": false,
-          "fieldConfig": {
-            "defaults": {
-              "links": [
-                {
-                  "targetBlank": true,
-                  "title": "MongoDB Instance Summary - ${__field.labels.service_name}",
-                  "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=${__field.labels.service_name}&$__url_time_range"
-                }
-              ]
-            },
-            "overrides": []
-          },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMin": 0,
-            "rightLogBase": 1
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 0,
-            "y": 35
-          },
-          "hiddenSeries": false,
-          "id": 1020,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [
-            {
-              "targetBlank": true,
-              "title": "MongoDB Instance Summary - $service_name",
-              "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=$service_name$__url_time_range"
-            }
-          ],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "paceLength": 10,
-          "percentage": false,
-          "pluginVersion": "9.2.20",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "repeat": "service_name",
-          "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name,type) (rate(mongodb_op_counters_repl_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_op_counters_repl_total{service_name=~\"$service_name\"}[5m]))",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "repl - {{type}}",
-              "refId": "A",
-              "step": 300
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name,type) (rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\"}[5m]))",
-              "interval": "$interval",
-              "legendFormat": "repl - {{type}}",
-              "refId": "B"
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name,type) (rate(mongodb_op_counters_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\"}[5m]))",
-              "interval": "$interval",
-              "legendFormat": "{{type}}",
-              "refId": "C"
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Operations - $service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "ops",
-              "label": "",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
-        }
-      ],
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "refId": "A"
-        }
-      ],
-      "title": "Operations",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "datasource": "Metrics",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 14
-      },
-      "id": 1170,
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "Metrics",
-          "decimals": 2,
-          "description": "This metric can show a correlation with the replication lag value.",
-          "editable": true,
-          "error": false,
-          "fieldConfig": {
-            "defaults": {
-              "links": [
-                {
-                  "targetBlank": true,
-                  "title": "MongoDB Instance Summary - ${__field.labels.service_name}",
-                  "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=${__field.labels.service_name}&$__url_time_range"
-                }
-              ]
-            },
-            "overrides": []
-          },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMin": 0,
-            "rightLogBase": 1
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 0,
-            "y": 36
-          },
-          "hiddenSeries": false,
-          "id": 13,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": false,
-            "max": true,
-            "min": false,
-            "show": true,
-            "sort": "max",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "paceLength": 10,
-          "percentage": false,
-          "pluginVersion": "9.2.20",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "repeat": "service_name",
-          "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name,name,state) (mongodb_mongod_replset_member_ping_ms{service_name=~\"$service_name\"})\n* on (name) group_right(state) avg by (service_name,state,name) ((max_over_time(mongodb_mongod_replset_my_name[$interval]) or max_over_time(mongodb_mongod_replset_my_name[5m])))",
-              "format": "time_series",
-              "hide": true,
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "{{service_name}} - {{name}} - {{state}}",
-              "refId": "A",
-              "step": 300
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "max by (service_name,name,state) (mongodb_mongod_replset_member_ping_ms{set=~\"$replset\",service_name=~\"$service_name\"}) or mongodb_rs_members_pingMs{service_name=~\"$service_name\", member_state!=\"\"}",
-              "hide": true,
-              "interval": "$interval",
-              "legendFormat": "{{service_name}} - {{name}} - {{state}}",
-              "refId": "B"
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "max by (service_name,name,state) (mongodb_mongod_replset_member_ping_ms{set=~\"$replset\",service_name=~\"$service_name\"} or label_replace(label_replace(mongodb_rs_members_pingMs{service_name=~\"$service_name\", member_state!=\"\"},\"state\", \"$1\", \"member_state\", \"(.*)\"),\"name\", \"$1\", \"member_idx\", \"(.*)\"))",
-              "interval": "$interval",
-              "legendFormat": "{{service_name}} - {{name}}{{member_idx}} - {{state}}{{member_state}}",
-              "refId": "D"
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Max Member Ping Time - $service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "ms",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "ms",
-              "label": "",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
-        }
-      ],
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "refId": "A"
-        }
-      ],
-      "title": "Max Member Ping Time",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "datasource": "Metrics",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 15
-      },
-      "id": 1017,
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "Metrics",
-          "decimals": 2,
-          "description": "Time span between now and last heartbeat from replicaset members.",
-          "editable": true,
-          "error": false,
-          "fieldConfig": {
-            "defaults": {
-              "links": [
-                {
-                  "targetBlank": true,
-                  "title": "MongoDB Instance Summary - ${__series.name}",
-                  "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=${__series.name}$&$__url_time_range"
-                }
-              ]
-            },
-            "overrides": []
-          },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMin": 0,
-            "rightLogBase": 1
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 37
-          },
-          "hiddenSeries": false,
-          "id": 75,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "paceLength": 10,
-          "percentage": false,
-          "pluginVersion": "9.2.20",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "expr": "time() - avg by (service_name) (max(mongodb_mongod_replset_member_last_heartbeat{service_name=~\"$service_name\"}) by (name)) * on (name) group_right avg by (service_name) (mongodb_mongod_replset_my_name{service_name=~\"$service_name\"})",
-              "hide": false,
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "{{service_name}}",
-              "metric": "",
-              "refId": "J",
-              "step": 300
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (max(mongodb_rs_heartbeatIntervalMillis{service_name=~\"$service_name\"}) by (name) / 1000) * on (name) group_right avg by (service_name) (mongodb_mongod_replset_my_name{service_name=~\"$service_name\"})",
-              "hide": true,
-              "interval": "$interval",
-              "legendFormat": "Interval - {service_name}}",
-              "refId": "B"
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Max Heartbeat Time",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "s",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "s",
-              "label": "",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
         },
         {
           "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Metrics",
-          "decimals": 2,
-          "description": "Count of elections. Usually zero; 1 count by each healthy node will appear in each election. Happens when the primary role changes due to either normal maintenance or trouble events.",
-          "editable": true,
-          "error": false,
-          "fieldConfig": {
-            "defaults": {
-              "links": [
-                {
-                  "targetBlank": true,
-                  "title": "MongoDB Instance Summary - ${__series.name}",
-                  "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=${__series.name}$&$__url_time_range"
-                }
-              ]
-            },
-            "overrides": []
-          },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMin": 0,
-            "rightLogBase": 1
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 37
-          },
-          "hiddenSeries": false,
-          "id": 12,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "paceLength": 10,
-          "percentage": false,
-          "pluginVersion": "9.2.20",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "expr": "max by (service_name) (changes(mongodb_mongod_replset_member_election_date{service_name=~\"$service_name\"}[$interval]))",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "{{service_name}}",
-              "refId": "A",
-              "step": 300
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Elections",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
-        }
-      ],
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "refId": "A"
-        }
-      ],
-      "title": "Max Heartbeat Time / Elections",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "datasource": "Metrics",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 16
-      },
-      "id": 1547,
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "Metrics",
           "decimals": 2,
           "description": "Timespan 'window' between newest and the oldest op in the Oplog collection.",
           "editable": true,
@@ -1428,8 +2495,8 @@
               "links": [
                 {
                   "targetBlank": true,
-                  "title": "MongoDB Instance Summary - ${__field.labels.service_name}",
-                  "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=${__field.labels.service_name}&$__url_time_range"
+                  "title": "MongoDB Instance Summary - ${__series.name}",
+                  "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=${__series.name}$&$__url_time_range"
                 }
               ]
             },
@@ -1443,19 +2510,20 @@
             "rightLogBase": 1
           },
           "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 0,
-            "y": 38
+            "h": 7,
+            "w": 12,
+            "x": 12,
+            "y": 57
           },
           "hiddenSeries": false,
-          "id": 27,
+          "id": 1025,
           "legend": {
             "alignAsTable": true,
             "avg": true,
             "current": false,
             "max": true,
             "min": true,
+            "rightSide": false,
             "show": true,
             "sort": "avg",
             "sortDesc": true,
@@ -1465,7 +2533,7 @@
           "lines": true,
           "linewidth": 2,
           "links": [],
-          "nullPointMode": "null",
+          "nullPointMode": "null as zero",
           "options": {
             "alertThreshold": true
           },
@@ -1475,12 +2543,13 @@
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "repeat": "service_name",
-          "repeatDirection": "h",
           "seriesOverrides": [
             {
-              "alias": "Oplog Range",
-              "yaxis": 2
+              "alias": "Avg",
+              "color": "#C4162A",
+              "fill": 0,
+              "legend": false,
+              "stack": false
             }
           ],
           "spaceLength": 10,
@@ -1488,31 +2557,21 @@
           "steppedLine": false,
           "targets": [
             {
-              "datasource": "Metrics",
-              "expr": "time()-avg by (service_name) (mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"})",
+              "editorMode": "code",
+              "expr": "mongodb_mongod_replset_oplog_head_timestamp{service_name=~\"$service_name\"}-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"}",
               "hide": false,
               "interval": "$interval",
               "intervalFactor": 1,
-              "legendFormat": "Now to End",
+              "legendFormat": "{{ service_name }}",
               "metric": "",
-              "refId": "J",
-              "step": 300
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (mongodb_mongod_replset_oplog_head_timestamp{service_name=~\"$service_name\"}-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"})",
-              "hide": false,
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Oplog Range",
-              "metric": "",
+              "range": true,
               "refId": "A",
               "step": 300
             }
           ],
           "thresholds": [],
           "timeRegions": [],
-          "title": "Oplog Recovery Window - $service_name",
+          "title": "Oplog Recovery Window",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -1541,9 +2600,9 @@
               "show": true
             },
             {
-              "format": "s",
+              "format": "short",
               "logBase": 1,
-              "show": true
+              "show": false
             }
           ],
           "yaxis": {
@@ -1551,950 +2610,26 @@
           }
         }
       ],
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "refId": "A"
-        }
-      ],
-      "title": "Oplog Recovery Window",
+      "title": "Replication",
       "type": "row"
     },
     {
       "collapsed": true,
-      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 57
       },
-      "id": 1070,
+      "id": 1054,
       "panels": [
         {
           "aliasColors": {},
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Metrics",
           "decimals": 2,
-          "description": "Repl buffer ops applied per sec.",
-          "editable": true,
-          "error": false,
-          "fieldConfig": {
-            "defaults": {
-              "links": [
-                {
-                  "targetBlank": true,
-                  "title": "MongoDB Instance Summary - ${__series.name}",
-                  "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=${__series.name}$&$__url_time_range"
-                }
-              ]
-            },
-            "overrides": []
-          },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMin": 0,
-            "rightLogBase": 1
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 100
-          },
-          "hiddenSeries": false,
-          "id": 85,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "paceLength": 10,
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (mongodb_mongod_metrics_repl_buffer_count{service_name=~\"$service_name\"})",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "{{service_name}}",
-              "refId": "A",
-              "step": 300
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Oplog Buffered Operations",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "ms",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "ops",
-              "label": "",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "Metrics",
-          "decimals": 2,
-          "description": "Time spent per second waiting for or fetching oplog docs in replication.",
-          "editable": true,
-          "error": false,
-          "fieldConfig": {
-            "defaults": {
-              "links": [
-                {
-                  "targetBlank": true,
-                  "title": "MongoDB Instance Summary - ${__series.name}",
-                  "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=${__series.name}$&$__url_time_range"
-                }
-              ]
-            },
-            "overrides": []
-          },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMin": 0,
-            "rightLogBase": 1
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 100
-          },
-          "hiddenSeries": false,
-          "id": 79,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "paceLength": 10,
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "{{service_name}}",
-              "refId": "A",
-              "step": 300
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Oplog Getmore Time",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "ms",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "ms",
-              "label": "",
-              "logBase": 1,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "Metrics",
-          "decimals": 2,
-          "description": "Times spent per second A) pre-loading oplog ops into parallel-executable batches B) Times spent pre-loading index values and C) repl batch apply phase.",
-          "editable": true,
-          "error": false,
-          "fieldConfig": {
-            "defaults": {
-              "links": [
-                {
-                  "targetBlank": true,
-                  "title": "MongoDB Instance Summary - ${__field.labels.service_name}",
-                  "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=${__field.labels.service_name}&$__url_time_range"
-                }
-              ]
-            },
-            "overrides": []
-          },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMin": 0,
-            "rightLogBase": 1
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 108
-          },
-          "hiddenSeries": false,
-          "id": 84,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "paceLength": 10,
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "repeat": "service_name",
-          "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Document Preload",
-              "refId": "A",
-              "step": 300
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Index Preload",
-              "metric": "mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds",
-              "refId": "B",
-              "step": 300
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Batch Apply",
-              "metric": "mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds",
-              "refId": "C",
-              "step": 300
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Oplog Processing Time - $service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "ms",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "ms",
-              "label": "",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "Metrics",
-          "decimals": 2,
-          "description": "Current hard-coded max and actual size of repl batch buffer.",
-          "editable": true,
-          "error": false,
-          "fieldConfig": {
-            "defaults": {
-              "links": [
-                {
-                  "targetBlank": true,
-                  "title": "MongoDB Instance Summary - ${__field.labels.service_name}",
-                  "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=${__field.labels.service_name}&$__url_time_range"
-                }
-              ]
-            },
-            "overrides": []
-          },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMin": 0,
-            "rightLogBase": 1
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 116
-          },
-          "hiddenSeries": false,
-          "id": 80,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "paceLength": 10,
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "repeat": "service_name",
-          "repeatDirection": "h",
-          "seriesOverrides": [
-            {
-              "alias": "Max",
-              "color": "#C4162A",
-              "fill": 0
-            }
-          ],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (mongodb_mongod_metrics_repl_buffer_size_bytes{service_name=~\"$service_name\"})",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Used",
-              "refId": "A",
-              "step": 300
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (mongodb_mongod_metrics_repl_buffer_max_size_bytes{service_name=~\"$service_name\"})",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Max",
-              "refId": "B",
-              "step": 300
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Oplog Buffer Capacity - $service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "ms",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "bytes",
-              "label": "",
-              "logBase": 1,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "Metrics",
-          "decimals": 2,
-          "description": "Count of A) getmores executed B) index values pre-loaded C) oplog docs applied per second against oplog collection in replication.",
-          "editable": true,
-          "error": false,
-          "fieldConfig": {
-            "defaults": {
-              "links": [
-                {
-                  "targetBlank": true,
-                  "title": "MongoDB Instance Summary - ${__field.labels.service_name}",
-                  "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-service_name=${__field.labels.service_name}&$__url_time_range"
-                }
-              ]
-            },
-            "overrides": []
-          },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMin": 0,
-            "rightLogBase": 1
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 124
-          },
-          "hiddenSeries": false,
-          "id": 81,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "paceLength": 10,
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "repeat": "service_name",
-          "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\"}[5m]))",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Document Preload",
-              "metric": "mongodb_mongod_metrics_repl_preload_indexes_num_total",
-              "refId": "A",
-              "step": 300
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\"}[5m]))",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Index Preload",
-              "metric": "mongodb_mongod_metrics_repl_preload_indexes_num_total",
-              "refId": "B",
-              "step": 300
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\"}[5m]))",
-              "interval": "$interval",
-              "intervalFactor": 2,
-              "legendFormat": "Batch Apply",
-              "refId": "C",
-              "step": 120
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Oplog Operations - $service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "ms",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "ops",
-              "label": "",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
-        }
-      ],
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "refId": "A"
-        }
-      ],
-      "title": "Oplog Details",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "datasource": "Metrics",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 18
-      },
-      "id": 1306,
-      "panels": [
-        {
-          "collapsed": false,
-          "datasource": "Metrics",
-          "default_title_for_rows": "Service Name",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "text",
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "center",
-                "displayMode": "auto",
-                "filterable": false,
-                "inspect": false
-              },
-              "decimals": 2,
-              "mappings": [
-                {
-                  "options": {
-                    "0": {
-                      "color": "#8b0000",
-                      "index": 0,
-                      "text": "No Data"
-                    },
-                    "-": {
-                      "index": 1,
-                      "text": "No Data"
-                    }
-                  },
-                  "type": "value"
-                }
-              ],
-              "noValue": "-",
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value #E"
-                },
-                "properties": [
-                  {
-                    "id": "custom.displayMode",
-                    "value": "color-background-solid"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "service_name"
-                },
-                "properties": [
-                  {
-                    "id": "custom.align",
-                    "value": "left"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value #C"
-                },
-                "properties": [
-                  {
-                    "id": "unit",
-                    "value": "s"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value #B"
-                },
-                "properties": [
-                  {
-                    "id": "unit",
-                    "value": "µs"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value #D"
-                },
-                "properties": [
-                  {
-                    "id": "decimals"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value #A"
-                },
-                "properties": [
-                  {
-                    "id": "unit",
-                    "value": "ops"
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 24,
-            "x": 0,
-            "y": 101
-          },
-          "id": 1352,
-          "options": {
-            "footer": {
-              "show": false
-            },
-            "showHeader": true
-          },
-          "pluginVersion": "9.2.20",
-          "sorting_props": {
-            "col_index": -1,
-            "direction": "desc"
-          },
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "avg by (service_name) (mongodb_instance_uptime_seconds{service_name=~\"$service_name\"})",
-              "format": "table",
-              "instant": true,
-              "interval": "$interval",
-              "legendFormat": "{{service_name}} | Uptime",
-              "range": false,
-              "refId": "C"
-            },
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m]) or rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m]))",
-              "format": "table",
-              "hide": false,
-              "instant": true,
-              "interval": "$interval",
-              "legendFormat": "{{service_name}} | QPS",
-              "range": false,
-              "refId": "A"
-            },
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / (rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / (irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]) > 0))",
-              "format": "table",
-              "instant": true,
-              "interval": "$interval",
-              "legendFormat": "{{service_name}} | Latency",
-              "range": false,
-              "refId": "B"
-            },
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "avg by (service_name) (max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or \nmax_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[5m]))",
-              "format": "table",
-              "instant": true,
-              "interval": "$interval",
-              "legendFormat": "{{service_name}} | Connections",
-              "range": false,
-              "refId": "D"
-            },
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "avg by (service_name) (max_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\",state=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\",state=\"total\"}[5m]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\",state=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\",state=\"total\"}[5m]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\",state=\"total\"}[$interval]) or \nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\",state=\"total\"}[5m]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\",state=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\",state=\"total\"}[5m]))",
-              "format": "table",
-              "instant": true,
-              "interval": "$interval",
-              "legendFormat": "{{service_name}} | Cursors ",
-              "refId": "E"
-            }
-          ],
-          "title": "Services Details",
-          "transformations": [
-            {
-              "id": "merge",
-              "options": {}
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "agent_id": true,
-                  "agent_type": true,
-                  "environment": true,
-                  "instance": true,
-                  "job": true,
-                  "machine_id": true,
-                  "node_id": true,
-                  "node_name": true,
-                  "node_type": true,
-                  "service_name": false
-                },
-                "indexByName": {
-                  "Time": 0,
-                  "Value #A": 6,
-                  "Value #B": 4,
-                  "Value #C": 3,
-                  "Value #D": 5,
-                  "Value #E": 2,
-                  "service_name": 1
-                },
-                "renameByName": {
-                  "Value #A": "QPS",
-                  "Value #B": "Average Latency",
-                  "Value #C": "Uptime",
-                  "Value #D": "Open Connections",
-                  "Value #E": "Cursors",
-                  "service_name": "Service Name"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "Metrics",
-          "decimals": 2,
-          "description": "Average latency of operations (classified by read, write, or (other) command).",
-          "editable": true,
-          "error": false,
+          "description": "Average latency of operations (classified by read, write, or (other) command)",
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -2503,20 +2638,14 @@
           },
           "fill": 2,
           "fillGradient": 0,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMin": 0,
-            "rightLogBase": 1
-          },
           "gridPos": {
-            "h": 8,
-            "w": 24,
+            "h": 7,
+            "w": 12,
             "x": 0,
-            "y": 107
+            "y": 58
           },
-          "height": "250px",
           "hiddenSeries": false,
-          "id": 1558,
+          "id": 1020,
           "legend": {
             "alignAsTable": true,
             "avg": true,
@@ -2532,70 +2661,71 @@
           },
           "lines": true,
           "linewidth": 2,
-          "links": [],
           "nullPointMode": "null",
           "options": {
             "alertThreshold": true
           },
-          "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
+          "pluginVersion": "9.2.20",
+          "pointradius": 2,
           "points": false,
           "renderer": "flot",
-          "repeat": "service_name",
-          "repeatDirection": "h",
-          "seriesOverrides": [],
+          "seriesOverrides": [
+            {
+              "alias": "/fc_count.*/",
+              "yaxis": 2
+            }
+          ],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name,type) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\"}[$interval]) / (rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\"}[$interval]) > 0) or irate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\"}[5m]) / (irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\"}[5m]) > 0))",
-              "format": "time_series",
+              "editorMode": "code",
+              "expr": "max(rate(mongodb_ss_flowControl_isLaggedCount{service_name=~\"$service_name\"}[$interval]))",
+              "interval": "$interval",
+              "legendFormat": "fc_count",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "editorMode": "code",
+              "expr": "max(rate(mongodb_ss_flowControl_isLaggedTimeMicros{service_name=~\"$service_name\"}[$interval]))",
               "hide": false,
               "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "{{type}}",
-              "refId": "J",
-              "step": 300
+              "legendFormat": "fc_time",
+              "range": true,
+              "refId": "B"
             }
           ],
           "thresholds": [],
           "timeRegions": [],
-          "title": "Latency Detail - $service_name",
+          "title": "Flow Control",
           "tooltip": {
-            "msResolution": false,
             "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
+            "sort": 2,
+            "value_type": "individual"
           },
           "type": "graph",
-          "x-axis": true,
           "xaxis": {
             "mode": "time",
             "show": true,
             "values": []
           },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
           "yaxes": [
             {
               "decimals": 2,
               "format": "µs",
               "label": "",
               "logBase": 1,
-              "min": 0,
+              "min": "0",
               "show": true
             },
             {
               "format": "short",
               "logBase": 1,
-              "show": false
+              "min": "0",
+              "show": true
             }
           ],
           "yaxis": {
@@ -2607,33 +2737,28 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Metrics",
           "decimals": 2,
-          "description": "Docs per second inserted, updated, deleted or returned. (N.b. not 1-to-1 with operation counts.)",
+          "description": "A WT 'ticket' is assigned out for every operation running simultaneously in the WT storage engine. \"Available\" = hardcoded high value - \"Out\".",
           "editable": true,
           "error": false,
           "fieldConfig": {
             "defaults": {
-              "links": []
+              "links": [],
+              "unit": "none"
             },
             "overrides": []
           },
           "fill": 2,
           "fillGradient": 0,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMin": 0,
-            "rightLogBase": 1
-          },
+          "grid": {},
           "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 115
+            "h": 7,
+            "w": 12,
+            "x": 12,
+            "y": 58
           },
-          "height": "250px",
           "hiddenSeries": false,
-          "id": 1397,
+          "id": 1041,
           "legend": {
             "alignAsTable": true,
             "avg": true,
@@ -2656,32 +2781,47 @@
           },
           "paceLength": 10,
           "percentage": false,
-          "pluginVersion": "8.3.5",
+          "pluginVersion": "9.2.20",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "repeat": "service_name",
-          "repeatDirection": "h",
-          "seriesOverrides": [],
+          "seriesOverrides": [
+            {
+              "alias": "write",
+              "transform": "negative-Y"
+            }
+          ],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name,state) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\"}[5m]))",
-              "format": "time_series",
+              "editorMode": "code",
+              "expr": "avg by (type) ((max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\",txn_rw=\"read\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\",txn_rw=\"read\"}[5m])) -\n(max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\",txn_rw=\"read\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\",txn_rw=\"read\"}[5m])))",
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "read",
+              "metric": "",
+              "range": true,
+              "refId": "B",
+              "step": 300
+            },
+            {
+              "editorMode": "code",
+              "expr": "avg by (type) ((max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\",txn_rw=\"write\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\",txn_rw=\"write\"}[5m])) -\n(max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\",txn_rw=\"write\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\",txn_rw=\"write\"}[5m])))",
               "hide": false,
               "interval": "$interval",
               "intervalFactor": 1,
-              "legendFormat": "{{state}}",
-              "refId": "J",
+              "legendFormat": "write",
+              "metric": "",
+              "range": true,
+              "refId": "A",
               "step": 300
             }
           ],
           "thresholds": [],
           "timeRegions": [],
-          "title": "Document Operations - $service_name",
+          "title": "WiredTiger Concurrency Tickets Available",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -2689,162 +2829,17 @@
             "value_type": "cumulative"
           },
           "type": "graph",
-          "x-axis": true,
           "xaxis": {
             "mode": "time",
             "show": true,
             "values": []
           },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
           "yaxes": [
             {
-              "decimals": 2,
-              "format": "ops",
+              "decimals": 0,
+              "format": "none",
               "label": "",
               "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "Metrics",
-          "decimals": 2,
-          "description": "MongoDB keeps most recently used data in RAM. If you have created indexes for your queries and your working data set fits in RAM, MongoDB serves all queries from memory.",
-          "editable": true,
-          "error": false,
-          "fieldConfig": {
-            "defaults": {
-              "links": []
-            },
-            "overrides": []
-          },
-          "fill": 2,
-          "fillGradient": 0,
-          "grid": {
-            "leftLogBase": 1,
-            "leftMin": 0,
-            "rightLogBase": 1
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 123
-          },
-          "height": "250px",
-          "hiddenSeries": false,
-          "id": 1012,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "paceLength": 10,
-          "percentage": false,
-          "pluginVersion": "8.3.5",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "repeat": "service_name",
-          "repeatDirection": "h",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "expr": "rate(mongodb_tcmalloc_cache_bytes{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_tcmalloc_cache_bytes{service_name=~\"$service_name\"}[5m])",
-              "format": "time_series",
-              "hide": false,
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "{{cache}} - {{type}}",
-              "refId": "J",
-              "step": 300
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (mongodb_ss_tcmalloc_tcmalloc_thread_cache_free_bytes{service_name=~\"$service_name\"})",
-              "interval": "$interval",
-              "legendFormat": "Free Thread Cache",
-              "refId": "A"
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (mongodb_ss_tcmalloc_tcmalloc_central_cache_free_bytes{service_name=~\"$service_name\"})",
-              "interval": "$interval",
-              "legendFormat": "Free Central Cache",
-              "refId": "B"
-            },
-            {
-              "datasource": "Metrics",
-              "expr": "avg by (service_name) (mongodb_ss_tcmalloc_tcmalloc_transfer_cache_free_bytes{service_name=~\"$service_name\"})",
-              "interval": "$interval",
-              "legendFormat": "Free Transfer Cache",
-              "refId": "C"
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Cache - $service_name",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "x-axis": true,
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "bytes",
-              "label": "",
-              "logBase": 1,
-              "min": 0,
               "show": true
             },
             {
@@ -2858,13 +2853,9 @@
           }
         }
       ],
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "refId": "A"
-        }
-      ],
-      "title": "MongoDB Services Summary",
+      "repeat": "service_name",
+      "repeatDirection": "h",
+      "title": "Performance - $service_name",
       "type": "row"
     },
     {
@@ -2874,7 +2865,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 60
       },
       "id": 1403,
       "panels": [
@@ -2917,8 +2908,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "red",
-                    "value": null
+                    "color": "red"
                   },
                   {
                     "color": "orange",
@@ -2944,6 +2934,15 @@
                   },
                   {
                     "id": "custom.width"
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/graph/d/node-instance-summary/node-summary?orgId=1&${interval:queryparam}&var-region=All&var-node_type=All&var-environment=All&var-node_name=${__value.text}&${__url_time_range}"
+                      }
+                    ]
                   }
                 ]
               },
@@ -3057,7 +3056,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 9
+            "y": 61
           },
           "id": 1435,
           "options": {
@@ -3223,7 +3222,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 61
       },
       "id": 1569,
       "panels": [
@@ -3259,7 +3258,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 10
+            "y": 62
           },
           "height": "",
           "hiddenSeries": false,
@@ -3391,7 +3390,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 62
       },
       "id": 1571,
       "panels": [
@@ -3426,7 +3425,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 11
+            "y": 63
           },
           "hiddenSeries": false,
           "id": 339,
@@ -3550,7 +3549,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 63
       },
       "id": 1585,
       "panels": [
@@ -3581,7 +3580,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 35
+            "y": 64
           },
           "hiddenSeries": false,
           "id": 341,
@@ -3740,7 +3739,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 64
       },
       "id": 1583,
       "panels": [
@@ -3767,7 +3766,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 36
+            "y": 65
           },
           "hiddenSeries": false,
           "id": 343,
@@ -3879,7 +3878,7 @@
       "type": "row"
     }
   ],
-  "refresh": "1m",
+  "refresh": "",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
@@ -3948,141 +3947,23 @@
           }
         ],
         "query": "1s,5s,1m,5m,1h,6h,1d",
+        "queryValue": "",
         "refresh": 2,
         "skipUrlSync": false,
         "type": "interval"
       },
       {
-        "allFormat": "blob",
-        "current": {
-          "selected": false,
-          "text": "igtest",
-          "value": "igtest"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(mongodb_up,cluster)",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Cluster",
-        "multi": false,
-        "multiFormat": "glob",
-        "name": "cluster",
-        "options": [],
-        "query": {
-          "query": "label_values(mongodb_up,cluster)",
-          "refId": "Metrics-cluster-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "shard0",
-          "value": "shard0"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Replica Set",
-        "multi": false,
-        "multiFormat": "glob",
-        "name": "replset",
-        "options": [],
-        "query": {
-          "query": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
-          "refId": "Metrics-replset-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allFormat": "glob",
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}, node_name)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Node Name",
-        "multi": true,
-        "multiFormat": "glob",
-        "name": "node_name",
-        "options": [],
-        "query": {
-          "query": "label_values(mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}, node_name)",
-          "refId": "Metrics-node_name-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allFormat": "glob",
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "Metrics",
-        "definition": "",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Service Name",
-        "multi": true,
-        "multiFormat": "glob",
-        "name": "service_name",
-        "options": [],
-        "query": {
-          "query": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\",set=\"$replset\"}, service_name)",
-          "refId": "Metrics-service_name-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
         "allValue": ".*",
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "None",
+          "value": ""
         },
-        "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
-        "hide": 2,
+        "hide": 0,
         "includeAll": true,
         "label": "Environment",
-        "multi": true,
+        "multi": false,
         "name": "environment",
         "options": [],
         "query": {
@@ -4099,109 +3980,108 @@
         "useTags": false
       },
       {
+        "allFormat": "blob",
+        "allValue": ".*",
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "",
+          "value": ""
         },
-        "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Replication Set",
-        "multi": true,
-        "name": "replication_set",
+        "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\"},cluster)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Cluster",
+        "multi": false,
+        "multiFormat": "glob",
+        "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
-          "refId": "Metrics-replication_set-Variable-Query"
+          "query": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\"},cluster)",
+          "refId": "StandardVariableQuery"
         },
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 5,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "",
+          "value": ""
         },
-        "datasource": "Metrics",
-        "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Database",
-        "multi": true,
-        "name": "database",
+        "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\"}, set)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Replica Set",
+        "multi": false,
+        "name": "rs_nm",
         "options": [],
         "query": {
-          "query": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
-          "refId": "Metrics-database-Variable-Query"
+          "query": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\"}, set)",
+          "refId": "StandardVariableQuery"
         },
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 5,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "sort": 0,
+        "type": "query"
       },
       {
+        "allFormat": "glob",
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
-        "hide": 2,
+        "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$rs_nm\"}, service_name)",
+        "hide": 0,
         "includeAll": true,
-        "label": "Type",
-        "multi": true,
-        "name": "node_type",
+        "label": "MongoDB Node",
+        "multi": false,
+        "multiFormat": "glob",
+        "name": "service_name",
         "options": [],
         "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
-          "refId": "Metrics-node_type-Variable-Query"
+          "query": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$rs_nm\"}, service_name)",
+          "refId": "StandardVariableQuery"
         },
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 5,
-        "tagValuesQuery": "",
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
+        "allFormat": "glob",
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
-        "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
+        "definition": "label_values(mongodb_up{cluster=~\"$cluster\",service_name=~\"$service_name\"}, node_name)",
         "hide": 2,
         "includeAll": true,
-        "label": "Type",
+        "label": "Node Name",
         "multi": true,
-        "name": "service_type",
+        "name": "node_name",
         "options": [],
         "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
-          "refId": "Metrics-service_type-Variable-Query"
+          "query": "label_values(mongodb_up{cluster=~\"$cluster\",service_name=~\"$service_name\"}, node_name)",
+          "refId": "Metrics-node_name-Variable-Query"
         },
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 5,
-        "tagValuesQuery": "",
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -4209,83 +4089,24 @@
       {
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "",
+          "value": ""
         },
-        "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
+        "definition": "query_result(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$rs_nm\"}==2)",
         "hide": 2,
-        "includeAll": true,
-        "label": "Schema",
-        "multi": true,
-        "name": "schema",
-        "options": [],
-        "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
-          "refId": "Metrics-schema-Variable-Query"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Username",
-        "multi": true,
-        "name": "username",
-        "options": [],
-        "query": {
-          "query": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
-          "refId": "Metrics-username-Variable-Query"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "query_result(mongodb_mongod_replset_my_state{cluster=~\"$cluster\",set=\"$replset\"}==2)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Secondary",
+        "includeAll": false,
         "multi": true,
         "name": "secondary",
         "options": [],
         "query": {
-          "query": "query_result(mongodb_mongod_replset_my_state{cluster=~\"$cluster\",set=\"$replset\"}==2)",
-          "refId": "Metrics-secondary-Variable-Query"
+          "query": "query_result(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$rs_nm\"}==2)",
+          "refId": "StandardVariableQuery"
         },
-        "refresh": 2,
+        "refresh": 1,
         "regex": "/.*service_name=\"(.*)\",service_type.*/",
         "skipUrlSync": false,
         "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       }
     ]
   },
@@ -4297,15 +4118,12 @@
     "hidden": false,
     "now": true,
     "refresh_intervals": [
+      "1s",
       "5s",
-      "10s",
-      "30s",
       "1m",
       "5m",
-      "15m",
-      "30m",
       "1h",
-      "2h",
+      "6h",
       "1d"
     ],
     "time_options": [
@@ -4320,7 +4138,7 @@
       "30d"
     ]
   },
-  "timezone": "",
+  "timezone": "browser",
   "title": "MongoDB ReplSet Summary",
   "uid": "mongodb-replicaset-summary",
   "version": 1,
