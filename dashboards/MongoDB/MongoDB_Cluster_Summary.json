@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
@@ -26,7 +29,10 @@
       },
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "#6ed0e0",
@@ -48,7 +54,6 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1656415942746,
   "links": [
     {
       "icon": "doc",
@@ -147,14 +152,20 @@
       "type": "row"
     },
     {
-      "description": "Sharding is a method for distributing data across multiple machines. MongoDB uses sharding to support deployments with very large data sets and high throughput operations.",
+      "description": "Queries per second of all shards + config server replica set",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "rgb(31, 120, 193)",
+            "fixedColor": "blue",
             "mode": "fixed"
           },
           "decimals": 0,
+          "links": [
+            {
+              "title": "",
+              "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?${cluster:queryparam}&var-rs_nm=${__field.labels.rs_nm}&${interval:queryparam}&${__url_time_range}&${environment:queryparam}"
+            }
+          ],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -162,32 +173,22 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
-          "unit": "none"
+          "unit": "ops"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 4,
+        "h": 5,
+        "w": 24,
         "x": 0,
         "y": 1
       },
-      "hideTimeOverride": true,
-      "id": 35,
-      "links": [],
-      "maxDataPoints": 100,
+      "id": 1227,
       "options": {
-        "colorMode": "none",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -195,388 +196,34 @@
           "fields": "",
           "values": false
         },
-        "text": {
-          "valueSize": 20
-        },
-        "textMode": "auto"
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
       },
-      "pluginVersion": "8.3.5",
-      "targets": [
-        {
-          "expr": "max(mongodb_mongos_sharding_databases_total{cluster=\"$cluster\", type=\"partitioned\"})",
-          "interval": "5m",
-          "intervalFactor": 1,
-          "legendFormat": "Shards",
-          "refId": "A",
-          "step": 300
-        }
-      ],
-      "timeFrom": "1m",
-      "title": "Sharded DBs",
-      "type": "stat"
-    },
-    {
-      "description": "A MongoDB sharded cluster deployment can contain collections that are either unsharded (the default when created) or sharded.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "rgb(31, 120, 193)",
-            "mode": "fixed"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 4,
-        "y": 1
-      },
-      "hideTimeOverride": true,
-      "id": 39,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {
-          "valueSize": 20
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.3.5",
-      "targets": [
-        {
-          "expr": "max(mongodb_mongos_sharding_databases_total{cluster=\"$cluster\", type=\"unpartitioned\"})",
-          "interval": "5m",
-          "intervalFactor": 1,
-          "legendFormat": "Shards",
-          "refId": "A",
-          "step": 300
-        }
-      ],
-      "timeFrom": "1m",
-      "title": "Unsharded DBs",
-      "type": "stat"
-    },
-    {
-      "collapsed": false,
-      "default_title_for_rows": "DB Name",
-      "description": "MongoDB stores documents in collections. Collections are analogous to tables in relational databases.",
-      "gridPos": {
-        "h": 12,
-        "w": 8,
-        "x": 8,
-        "y": 1
-      },
-      "id": 1043,
       "pluginVersion": "9.2.20",
-      "title": "Amount of Collections in Shards",
-      "type": "table",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "left",
-            "displayMode": "auto",
-            "inspect": false,
-            "filterable": false
-          },
-          "mappings": [
-            {
-              "type": "value",
-              "options": {
-                "0": {
-                  "color": "dark-blue",
-                  "index": 0
-                }
-              }
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 20
-              }
-            ]
-          },
-          "color": {
-            "fixedColor": "text",
-            "mode": "thresholds"
-          },
-          "noValue": "-"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "^((?!(DB Name)).)*$"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "color-background-solid"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-blue"
-                }
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "",
-                    "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?var-interval=$__auto_interval_interval&var-replset=${__field.name}"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "options": {
-        "showHeader": true,
-        "footer": {
-          "show": false,
-          "reducer": [
-            "sum"
-          ],
-          "fields": ""
-        },
-        "frameIndex": 0,
-        "sortBy": [
-          {
-            "displayName": "DB Name\\Value",
-            "desc": false
-          }
-        ]
-      },
-      "transformations": [
-        {
-          "id": "groupingToMatrix",
-          "options": {
-            "columnField": "shard",
-            "rowField": "db",
-            "valueField": "Value"
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "db\\shard": "DB Name",
-              "rs1": ""
-            }
-          }
-        }
-      ],
       "targets": [
         {
-          "expr": "max by (db,shard) (mongodb_mongos_db_collections_total{cluster=\"$cluster\",db!~\"admin|config\"})",
           "editorMode": "code",
-          "range": false,
           "exemplar": false,
-          "format": "table",
+          "expr": "sum by (rs_nm) (rate(mongodb_op_counters_total{environment=~\"$environment\",cluster=~\"$cluster\",type!=\"command\",rs_nm!~\"\"}[$interval]) or irate(mongodb_op_counters_total{environment=~\"$environment\",cluster=~\"$cluster\",type!=\"command\",rs_nm!~\"\"}[5s]))",
+          "format": "time_series",
           "hide": false,
           "instant": true,
           "interval": "$interval",
-          "legendFormat": "{{db}} | {{shard}} | Collections",
-          "refId": "A"
-        },
-        {
-          "expr": "mongodb_mongos_db_data_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"}",
-          "editorMode": "code",
+          "legendFormat": "{{rs_nm}} ",
           "range": false,
-          "exemplar": false,
-          "format": "table",
-          "hide": true,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{db}} | {{shard}} | Size",
           "refId": "B"
-        }
-      ],
-      "sorting_props": {
-        "col_index": -1,
-        "direction": "desc"
-      }
-    },
-    {
-      "default_title_for_rows": "DB Name",
-      "description": "MongoDB stores documents in collections. Collections are analogous to tables in relational databases.",
-      "gridPos": {
-        "h": 12,
-        "w": 8,
-        "x": 16,
-        "y": 1
-      },
-      "hide_headers": false,
-      "id": 1030,
-      "pluginVersion": "9.2.20",
-      "title": "Size of Collections in Shards",
-      "type": "table",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "left",
-            "displayMode": "auto",
-            "inspect": false,
-            "filterable": false
-          },
-          "mappings": [
-            {
-              "type": "value",
-              "options": {
-                "0": {
-                  "color": "dark-blue",
-                  "index": 0,
-                  "text": "0"
-                }
-              }
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 20
-              }
-            ]
-          },
-          "color": {
-            "fixedColor": "text",
-            "mode": "thresholds"
-          },
-          "noValue": "-",
-          "unit": "bytes"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "^((?!(DB Name)).)*$"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "color-background-solid"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-blue"
-                }
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "",
-                    "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?var-interval=$__auto_interval_interval&var-replset=${__field.name}"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "options": {
-        "showHeader": true,
-        "footer": {
-          "show": false,
-          "reducer": [
-            "sum"
-          ],
-          "fields": ""
-        },
-        "frameIndex": 0,
-        "sortBy": [
-          {
-            "displayName": "DB Name\\Value",
-            "desc": false
-          }
-        ]
-      },
-      "transformations": [
-        {
-          "id": "groupingToMatrix",
-          "options": {
-            "columnField": "shard",
-            "rowField": "db",
-            "valueField": "Value"
-          }
         },
         {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "db\\shard": "DB Name",
-              "rs1": ""
-            }
-          }
-        }
-      ],
-      "targets": [
-        {
-          "expr": "max by (db,shard) (mongodb_mongos_db_data_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"})",
           "editorMode": "code",
-          "range": false,
-          "exemplar": false,
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{db}} | {{shard}} | Collections",
+          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name) (avg by (service_name) (mongodb_mongos_db_collections_total{cluster=\"$cluster\"}) / avg by (service_name) (mongodb_mongos_db_collections_total{cluster=\"$cluster\"})))",
+          "hide": true,
+          "legendFormat": "mongos",
+          "range": true,
           "refId": "A"
         }
       ],
-      "sorting_props": {
-        "col_index": -1,
-        "direction": "desc"
-      }
+      "title": "QPS of Services in Shard",
+      "type": "gauge"
     },
     {
       "description": "A shard contains a subset of sharded data for a sharded cluster. Together, the cluster’s shards hold the entire data set for the cluster.",
@@ -606,10 +253,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 4,
+        "h": 2,
+        "w": 2,
         "x": 0,
-        "y": 4
+        "y": 6
       },
       "hideTimeOverride": true,
       "id": 36,
@@ -632,13 +279,15 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.20",
       "targets": [
         {
-          "expr": "max(mongodb_mongos_sharding_shards_total{cluster=\"$cluster\"})",
+          "editorMode": "code",
+          "expr": "max(mongodb_mongos_sharding_shards_total{environment=~\"$environment\",cluster=~\"$cluster\"})",
           "interval": "5m",
           "intervalFactor": 1,
           "legendFormat": "Shards",
+          "range": true,
           "refId": "A",
           "step": 300
         }
@@ -648,7 +297,7 @@
       "type": "stat"
     },
     {
-      "description": "A chunk consists of a subset of sharded data.",
+      "description": "Number of mongos routers registered as part of the cluster",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -675,13 +324,13 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 4,
-        "y": 4
+        "h": 2,
+        "w": 2,
+        "x": 2,
+        "y": 6
       },
       "hideTimeOverride": true,
-      "id": 11,
+      "id": 1298,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -701,19 +350,21 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.20",
       "targets": [
         {
-          "expr": "sum(mongodb_mongos_sharding_chunks_total{cluster=\"$cluster\"})",
+          "editorMode": "code",
+          "expr": "sum(group by (service_name)(mongodb_mongos_sharding_shards_total{environment=~\"$environment\",cluster=~\"$cluster\"}))",
           "interval": "5m",
           "intervalFactor": 1,
-          "legendFormat": "Chunks",
+          "legendFormat": "__auto",
+          "range": true,
           "refId": "A",
           "step": 300
         }
       ],
       "timeFrom": "1m",
-      "title": "Chunks",
+      "title": "Mongos",
       "type": "stat"
     },
     {
@@ -744,10 +395,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 0,
-        "y": 7
+        "h": 2,
+        "w": 2,
+        "x": 4,
+        "y": 6
       },
       "hideTimeOverride": true,
       "id": 1028,
@@ -770,13 +421,15 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.20",
       "targets": [
         {
-          "expr": "max(mongodb_mongos_sharding_shards_draining_total{cluster=\"$cluster\"})",
+          "editorMode": "code",
+          "expr": "max(mongodb_mongos_sharding_shards_draining_total{environment=~\"$environment\",cluster=~\"$cluster\"})",
           "interval": "5m",
           "intervalFactor": 1,
           "legendFormat": "Draining Total",
+          "range": true,
           "refId": "A",
           "step": 300
         }
@@ -786,7 +439,7 @@
       "type": "stat"
     },
     {
-      "description": "MongoDB stores documents in collections. Collections are analogous to tables in relational databases.",
+      "description": "Total number of user-created databases",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -813,10 +466,81 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 4,
-        "y": 7
+        "h": 2,
+        "w": 2,
+        "x": 6,
+        "y": 6
+      },
+      "hideTimeOverride": true,
+      "id": 35,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum(mongodb_mongos_sharding_databases_total{environment=~\"$environment\",cluster=~\"$cluster\"})",
+          "interval": "5m",
+          "intervalFactor": 1,
+          "legendFormat": "Shards",
+          "range": true,
+          "refId": "A",
+          "step": 300
+        }
+      ],
+      "timeFrom": "1m",
+      "title": "DBs",
+      "type": "stat"
+    },
+    {
+      "description": "Number of collections that are sharded",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 8,
+        "y": 6
       },
       "hideTimeOverride": true,
       "id": 10,
@@ -839,13 +563,15 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.20",
       "targets": [
         {
-          "expr": "max(mongodb_mongos_sharding_collections_total{cluster=\"$cluster\"})",
+          "editorMode": "code",
+          "expr": "max by (environment, cluster) (mongodb_ss_shardingStatistics_numShardedCollections{environment=~\"$environment\",cluster=~\"$cluster\"} or mongodb_mongos_sharding_collections_total{environment=~\"$environment\",cluster=~\"$cluster\"})",
           "interval": "5m",
           "intervalFactor": 1,
           "legendFormat": "Shards",
+          "range": true,
           "refId": "A",
           "step": 300
         }
@@ -897,10 +623,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 0,
-        "y": 10
+        "h": 2,
+        "w": 3,
+        "x": 11,
+        "y": 6
       },
       "hideTimeOverride": true,
       "id": 5,
@@ -923,14 +649,16 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.20",
       "targets": [
         {
-          "expr": "max(mongodb_mongos_sharding_balancer_enabled{cluster=\"$cluster\"})",
+          "editorMode": "code",
+          "expr": "max(mongodb_mongos_sharding_balancer_enabled{environment=~\"$environment\",cluster=~\"$cluster\"})",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
           "legendFormat": "Cluster Balanced",
+          "range": true,
           "refId": "A",
           "step": 300
         }
@@ -940,40 +668,25 @@
       "type": "stat"
     },
     {
-      "description": "When the number of chunks on a given shard reaches specific migration thresholds, the balancer attempts to automatically migrate chunks between shards and reach an equal number of chunks per shard.",
+      "description": "A chunk consists of a subset of sharded data.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
           },
           "decimals": 0,
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "text": "NO"
-                },
-                "1": {
-                  "text": "YES"
-                }
-              },
-              "type": "value"
-            }
-          ],
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "rgba(245, 54, 54, 0.9)",
+                "color": "green",
                 "value": null
               },
               {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "value": 0
-              },
-              {
-                "color": "rgba(50, 172, 45, 0.97)",
-                "value": 1
+                "color": "red",
+                "value": 80
               }
             ]
           },
@@ -982,13 +695,13 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 4,
-        "y": 10
+        "h": 2,
+        "w": 7,
+        "x": 14,
+        "y": 6
       },
       "hideTimeOverride": true,
-      "id": 4,
+      "id": 11,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -1008,375 +721,809 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.20",
       "targets": [
         {
-          "expr": "min(mongodb_mongos_sharding_chunks_is_balancer_running{cluster=\"$cluster\"})",
-          "format": "time_series",
+          "editorMode": "code",
+          "expr": "sum(mongodb_mongos_sharding_chunks_total{environment=~\"$environment\",cluster=~\"$cluster\"})",
           "interval": "5m",
           "intervalFactor": 1,
-          "legendFormat": "Cluster Balancer is Running",
+          "legendFormat": "Chunks",
+          "range": true,
           "refId": "A",
           "step": 300
         }
       ],
       "timeFrom": "1m",
-      "title": "Chunks Balancer is running",
+      "title": "Total amount of Chunks",
       "type": "stat"
     },
     {
-      "colors": [
-        "#299c46",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a",
-        "#4040a0"
-      ],
-      "description": "Config services store the metadata for a sharded cluster. The metadata reflects state and organization for all data and components within the sharded cluster. The metadata includes the list of chunks on every shard and the ranges that define the chunks.",
-      "gridPos": {
-        "h": 5,
-        "w": 12,
-        "x": 0,
-        "y": 13
-      },
-      "id": 1229,
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
+      "description": "Time since the most recent election of any member of the cluster",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
         },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "nullPointMode": "connected",
-      "polystat": {
-        "animationSpeed": 2500,
-        "columnAutoSize": true,
-        "columns": "",
-        "defaultClickThrough": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?from=$__from&to=$__to&var-service_name=${__cell_name}",
-        "defaultClickThroughNewTab": true,
-        "defaultClickThroughSanitize": true,
-        "displayLimit": 100,
-        "ellipseCharacters": 18,
-        "ellipseEnabled": false,
-        "fontAutoColor": true,
-        "fontAutoScale": true,
-        "fontSize": 12,
-        "fontType": "Roboto",
-        "globalDecimals": 0,
-        "globalDisplayMode": "all",
-        "globalDisplayTextTriggeredEmpty": "OK",
-        "globalOperatorName": "current",
-        "globalUnitFormat": "ops",
-        "gradientEnabled": true,
-        "hexagonSortByDirection": 1,
-        "hexagonSortByField": "name",
-        "maxMetrics": 0,
-        "polygonBorderColor": "black",
-        "polygonBorderSize": 2,
-        "polygonGlobalFillColor": "#8F3BB8",
-        "radius": "",
-        "radiusAutoSize": true,
-        "regexPattern": "",
-        "rowAutoSize": true,
-        "rows": "",
-        "shape": "hexagon_pointed_top",
-        "tooltipDisplayMode": "all",
-        "tooltipDisplayTextTriggeredEmpty": "OK",
-        "tooltipEnabled": true,
-        "tooltipFontSize": 12,
-        "tooltipFontType": "Roboto",
-        "tooltipPrimarySortDirection": 2,
-        "tooltipPrimarySortField": "thresholdLevel",
-        "tooltipSecondarySortDirection": 2,
-        "tooltipSecondarySortField": "name",
-        "tooltipTimestampEnabled": true,
-        "valueEnabled": true
+        "overrides": []
       },
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "repeatDirection": "v",
-      "savedComposites": [],
-      "savedOverrides": [],
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 21,
+        "y": 6
+      },
+      "hideTimeOverride": false,
+      "id": 1293,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.20",
       "targets": [
         {
-          "expr": "sum by (service_name) (mongodb_connections{cluster=\"$cluster\", state=\"current\"} * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}))",
+          "editorMode": "code",
+          "expr": "time() - max(mongodb_mongod_replset_member_election_date{environment=~\"$environment\", cluster=~\"$cluster\", set=~\"$set\", service_name=~\"$service_name\"})",
+          "interval": "5m",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "metric": "",
+          "range": true,
+          "refId": "A",
+          "step": 300
+        }
+      ],
+      "title": "Last Election",
+      "type": "stat"
+    },
+    {
+      "description": "Show the chunk distribution between all the shards involved",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 1267,
+      "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "9.2.20",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by (shard) (last_over_time(mongodb_mongos_sharding_shard_chunks_total{cluster=\"$cluster\"}[1m])) / sum(mongodb_mongos_sharding_shard_chunks_total{cluster=\"$cluster\"})",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{shard}} ",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Chunks distribution",
+      "type": "bargauge"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Ops or Replicated Ops/sec classified by legacy wire protocol type (query, insert, update, delete, getmore). And (from the internal TTL threads) the docs deletes/sec by TTL indexes.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "grid": {
+        "leftLogBase": 1,
+        "leftMin": 0,
+        "rightLogBase": 1
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "hiddenSeries": false,
+      "id": 1269,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "paceLength": 10,
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/repl.*/",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum by (environment, cluster, legacy_op_type) (rate(mongodb_ss_opcountersRepl{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\",legacy_op_type!~\"(command|query|getmore)\"}[$interval]))",
           "format": "time_series",
           "hide": true,
-          "instant": false,
           "interval": "$interval",
-          "legendFormat": "Config - {{service_name}} ",
+          "intervalFactor": 1,
+          "legendFormat": "repl_{{legacy_op_type}}",
+          "range": true,
+          "refId": "A",
+          "step": 300
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum by (environment, cluster) (rate(mongodb_ss_metrics_ttl_deletedDocuments{environment=~\"$environment\", rs_nm=~\"$set\",service_name=~\"$service_name\",cluster=~\"$cluster\"}[$interval]))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "ttl_delete",
+          "range": true,
+          "refId": "B",
+          "step": 300
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum by (environment, cluster, legacy_op_type) (rate(mongodb_ss_opcounters{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\",service_name=~\"$service_name\",legacy_op_type!=\"command\"}[$interval]))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "{{legacy_op_type}}",
+          "range": true,
+          "refId": "C",
+          "step": 300
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Command Operations",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "x-axis": true,
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "y-axis": true,
+      "y_formats": [
+        "short",
+        "short"
+      ],
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "ops",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "ops",
+          "label": "",
+          "logBase": 1,
+          "min": "0",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "description": "Show the 5 collections that are most frequently read.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "id": 1271,
+      "links": [],
+      "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "9.2.20",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "topk (5,sum by (environment, cluster,database,collection) (irate(mongodb_top_queries_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\"})[$interval]))",
+          "hide": true,
+          "legendFormat": "{{database}}.{{collection}}",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "editorMode": "code",
+          "expr": "topk (5,sum by (environment, cluster,database,collection) ((rate(mongodb_top_queries_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\"})[$interval]) or irate(mongodb_top_queries_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\"})[5s]))",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{database}}.{{collection}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Top Hottest Collections by Read",
+      "transformations": [],
+      "type": "bargauge"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "Average latency of operations (classified by read, write, or (other) command)",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 23
+      },
+      "hiddenSeries": false,
+      "id": 1297,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "avg by (op_type) (rate(mongodb_ss_opLatencies_latency{environment=~\"$environment\", cluster=~\"$cluster\", service_name=~\"$service_name\"}[$interval]) / (rate(mongodb_ss_opLatencies_ops{environment=~\"$environment\", cluster=~\"$cluster\", service_name=~\"$service_name\"}[$interval]) > 0) or irate(mongodb_ss_opLatencies_latency{environment=~\"$environment\", cluster=~\"$cluster\",service_name=~\"$service_name\"}[5m]) / (irate(mongodb_ss_opLatencies_ops{environment=~\"$environment\", cluster=~\"$cluster\", service_name=~\"$service_name\"}[5m]) > 0))",
+          "interval": "$interval",
+          "legendFormat": "{{op_type}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Query execution times",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "µs",
+          "logBase": 1,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "description": "Show the 5 collections that are most frequently written to.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 23
+      },
+      "id": 1273,
+      "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "topk (5,sum by (environment,cluster,database,collection) (irate(mongodb_top_insert_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\"}+mongodb_top_remove_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\"}+mongodb_top_update_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\"})[5m]))",
+          "hide": true,
+          "instant": false,
+          "key": "Q-bf62f68c-ad8e-4fb5-83bb-df50324b416b-0",
+          "legendFormat": "{{database}}.{{collection}}",
+          "range": true,
           "refId": "A"
         },
         {
-          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}))",
-          "interval": "$interval",
-          "legendFormat": "{{service_name}}",
+          "editorMode": "code",
+          "expr": "topk (5,sum by (environment,cluster,database,collection) ((rate(mongodb_top_insert_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\"}+mongodb_top_remove_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\"}+mongodb_top_update_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\"})[$interval]) or irate(mongodb_top_insert_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\"}+mongodb_top_remove_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\"}+mongodb_top_update_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\"})[5m]))",
+          "hide": false,
+          "legendFormat": "{{database}}.{{collection}}",
+          "range": true,
           "refId": "B"
         }
       ],
-      "title": "QPS of Config Services",
-      "type": "grafana-polystat-panel",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ]
+      "title": "Top Hottest Collections by Write",
+      "type": "bargauge"
     },
     {
-      "colors": [
-        "#299c46",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a",
-        "#4040a0"
-      ],
-      "description": "Mongos is a routing service for MongoDB shard configurations that processes queries from the application layer, and determines the location of this data in the sharded cluster, in order to complete these operations. From the perspective of the application, a mongos instance behaves identically to any other MongoDB instance.",
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 0,
+      "description": "Ops/sec, classified by legacy wire protocol type (query, insert, update, delete, getmore).",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "MongoDB ReplSet Summary - ${__series.name}",
+              "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?var-replset=${__series.name}&$__url_time_range"
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "fill": 6,
+      "fillGradient": 0,
+      "grid": {},
       "gridPos": {
-        "h": 5,
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 31
+      },
+      "hiddenSeries": false,
+      "id": 30,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum(sum(rate(mongodb_op_counters_total{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\", type!=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\", type!=\"command\"}[5m])) by (instance) * on (instance) \ngroup_right mongodb_mongod_replset_my_state{environment=~\"$environment\", cluster=~\"$cluster\", set=~\"$set\", service_name=~\"$service_name\"} / mongodb_mongod_replset_my_state{environment=~\"$environment\", cluster=~\"$cluster\", set=~\"$set\", service_name=~\"$service_name\"}) by (set)",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "{{set}}",
+          "range": true,
+          "refId": "A",
+          "step": 300
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Operations Per Shard",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 5,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "ops",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "service_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Service Name"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "links",
+                "value": []
+              },
+              {
+                "id": "custom.align"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mongodb"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Version"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "auto"
+              },
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "service_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
         "w": 12,
         "x": 12,
-        "y": 13
+        "y": 31
       },
-      "id": 1231,
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "nullPointMode": "connected",
-      "polystat": {
-        "animationSpeed": 2500,
-        "columnAutoSize": true,
-        "columns": "",
-        "defaultClickThrough": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?from=$__from&to=$__to&var-service_name=${__cell_name}",
-        "defaultClickThroughNewTab": true,
-        "defaultClickThroughSanitize": true,
-        "displayLimit": 100,
-        "ellipseCharacters": 18,
-        "ellipseEnabled": false,
-        "fontAutoColor": true,
-        "fontAutoScale": true,
-        "fontSize": 12,
-        "fontType": "Roboto",
-        "globalDecimals": 0,
-        "globalDisplayMode": "all",
-        "globalDisplayTextTriggeredEmpty": "OK",
-        "globalOperatorName": "current",
-        "globalUnitFormat": "ops",
-        "gradientEnabled": true,
-        "hexagonSortByDirection": 1,
-        "hexagonSortByField": "name",
-        "maxMetrics": 0,
-        "polygonBorderColor": "black",
-        "polygonBorderSize": 2,
-        "polygonGlobalFillColor": "#8AB8FF",
-        "radius": "",
-        "radiusAutoSize": true,
-        "regexPattern": "",
-        "rowAutoSize": true,
-        "rows": "",
-        "shape": "hexagon_pointed_top",
-        "tooltipDisplayMode": "all",
-        "tooltipDisplayTextTriggeredEmpty": "OK",
-        "tooltipEnabled": true,
-        "tooltipFontSize": 12,
-        "tooltipFontType": "Roboto",
-        "tooltipPrimarySortDirection": 2,
-        "tooltipPrimarySortField": "thresholdLevel",
-        "tooltipSecondarySortDirection": 2,
-        "tooltipSecondarySortField": "name",
-        "tooltipTimestampEnabled": true,
-        "valueEnabled": true
-      },
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "repeatDirection": "v",
-      "savedComposites": [],
-      "savedOverrides": [
-        {
-          "clickThrough": "",
-          "colors": [
-            "#299c46",
-            "#e5ac0e",
-            "#bf1b00",
-            "#ffffff"
+      "hideTimeOverride": true,
+      "id": 1289,
+      "links": [],
+      "options": {
+        "footer": {
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
           ],
-          "decimals": "",
-          "enabled": true,
-          "label": "OVERRIDE 1",
-          "metricName": "",
-          "newTabEnabled": true,
-          "operatorName": "avg",
-          "prefix": "",
-          "sanitizeURLEnabled": false,
-          "suffix": "",
-          "thresholds": [],
-          "unitFormat": "short"
-        }
-      ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.2.20",
       "targets": [
         {
-          "exemplar": true,
-          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name) (avg by (service_name) (mongodb_mongos_db_collections_total{cluster=\"$cluster\"}) / avg by (service_name) (mongodb_mongos_db_collections_total{cluster=\"$cluster\"})))",
-          "format": "time_series",
-          "instant": false,
-          "interval": "$interval",
-          "legendFormat": "{{service_name}} ",
-          "refId": "A"
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg by (service_name,mongodb) (mongodb_version_info{service_name=~\"$service_name\"}) or (avg by (service_name,mongodb) (mongodb_version_info)) * on (service_name) group_right (mongodb) (avg by (service_name) (mongodb_mongos_db_collections_total{cluster=~\"$cluster\"}) / avg by (service_name) (mongodb_mongos_db_collections_total{cluster=~\"$cluster\"}))",
+          "format": "table",
+          "instant": true,
+          "interval": "5m",
+          "legendFormat": "{{mongodb}}",
+          "refId": "B"
         }
       ],
-      "title": "QPS of Mongos Service",
-      "type": "grafana-polystat-panel",
-      "valueMaps": [
+      "timeFrom": "1m",
+      "title": "MongoDB Versions",
+      "transformations": [
         {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ]
-    },
-    {
-      "colors": [
-        "#299c46",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a",
-        "#4040a0"
-      ],
-      "description": "A shard contains a subset of sharded data for a sharded cluster. Together, the cluster’s shards hold the entire data set for the cluster.",
-      "gridPos": {
-        "h": 5,
-        "w": 24,
-        "x": 0,
-        "y": 18
-      },
-      "id": 1227,
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Time": 1,
+              "Value": 3,
+              "mongodb": 2,
+              "service_name": 0
+            },
+            "renameByName": {}
+          }
         }
       ],
-      "nullPointMode": "connected",
-      "polystat": {
-        "animationSpeed": 2500,
-        "columnAutoSize": true,
-        "columns": "",
-        "defaultClickThrough": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?from=$__from&to=$__to&var-service_name=${__cell_name}",
-        "defaultClickThroughNewTab": true,
-        "defaultClickThroughSanitize": true,
-        "displayLimit": 100,
-        "ellipseCharacters": 18,
-        "ellipseEnabled": false,
-        "fontAutoColor": true,
-        "fontAutoScale": true,
-        "fontSize": 12,
-        "fontType": "Roboto",
-        "globalDecimals": 0,
-        "globalDisplayMode": "all",
-        "globalDisplayTextTriggeredEmpty": "OK",
-        "globalOperatorName": "current",
-        "globalUnitFormat": "ops",
-        "gradientEnabled": true,
-        "hexagonSortByDirection": 1,
-        "hexagonSortByField": "name",
-        "maxMetrics": 0,
-        "polygonBorderColor": "black",
-        "polygonBorderSize": 2,
-        "polygonGlobalFillColor": "#0a50a1",
-        "radius": "",
-        "radiusAutoSize": true,
-        "regexPattern": "",
-        "rowAutoSize": true,
-        "rows": "",
-        "shape": "hexagon_pointed_top",
-        "tooltipDisplayMode": "all",
-        "tooltipDisplayTextTriggeredEmpty": "OK",
-        "tooltipEnabled": true,
-        "tooltipFontSize": 12,
-        "tooltipFontType": "Roboto",
-        "tooltipPrimarySortDirection": 2,
-        "tooltipPrimarySortField": "thresholdLevel",
-        "tooltipSecondarySortDirection": 2,
-        "tooltipSecondarySortField": "name",
-        "tooltipTimestampEnabled": true,
-        "valueEnabled": true
-      },
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "repeat": "shard",
-      "repeatDirection": "v",
-      "savedComposites": [],
-      "savedOverrides": [
-        {
-          "clickThrough": "",
-          "colors": [
-            "#299c46",
-            "#e5ac0e",
-            "#bf1b00",
-            "#ffffff"
-          ],
-          "decimals": "",
-          "enabled": true,
-          "label": "OVERRIDE 1",
-          "metricName": "",
-          "newTabEnabled": true,
-          "operatorName": "avg",
-          "prefix": "",
-          "sanitizeURLEnabled": false,
-          "suffix": "",
-          "thresholds": [],
-          "unitFormat": "short"
-        }
-      ],
-      "targets": [
-        {
-          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set=~\"$shard\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set=~\"$shard\"}))",
-          "format": "time_series",
-          "instant": false,
-          "interval": "$interval",
-          "legendFormat": "{{service_name}} ",
-          "refId": "A"
-        }
-      ],
-      "title": "QPS of Services in Shard - $shard",
-      "type": "grafana-polystat-panel",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ]
+      "type": "table"
     },
     {
       "collapsed": false,
@@ -1384,7 +1531,677 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 39
+      },
+      "id": 1285,
+      "panels": [],
+      "title": "Node States",
+      "type": "row"
+    },
+    {
+      "description": "ReplSet statuses during the select time range.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 100,
+            "lineWidth": 0,
+            "spanNulls": true
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 11,
+                  "text": "STARTUP"
+                },
+                "1": {
+                  "color": "rgb(107, 152, 102)",
+                  "index": 4,
+                  "text": "PRIMARY"
+                },
+                "2": {
+                  "color": "rgb(193, 159, 20)",
+                  "index": 3,
+                  "text": "SECONDARY"
+                },
+                "3": {
+                  "index": 10,
+                  "text": "RECOVERING"
+                },
+                "5": {
+                  "index": 9,
+                  "text": "STARTUP2"
+                },
+                "6": {
+                  "index": 8,
+                  "text": "UNKNOWN"
+                },
+                "7": {
+                  "color": "#8B8000",
+                  "index": 1,
+                  "text": "ARBITER"
+                },
+                "8": {
+                  "index": 7,
+                  "text": "DOWN"
+                },
+                "9": {
+                  "index": 6,
+                  "text": "ROLLBACK"
+                },
+                "10": {
+                  "index": 5,
+                  "text": "REMOVED"
+                },
+                "null": {
+                  "color": "#FF7383",
+                  "index": 2,
+                  "text": "Exporter is not connected"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "result": {
+                  "index": 0,
+                  "text": "N/A"
+                }
+              },
+              "type": "range"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 40
+      },
+      "id": 1281,
+      "options": {
+        "alignValue": "right",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "6.5.1",
+      "repeat": "set",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "max by (service_name) (mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$set\",service_name=~\"$service_name\"})",
+          "hide": false,
+          "interval": "$interval",
+          "legendFormat": "{{service_name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "$set Node States",
+      "type": "state-timeline"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 47
+      },
+      "id": 1279,
+      "panels": [],
+      "title": "Collection Details",
+      "type": "row"
+    },
+    {
+      "default_title_for_rows": "DB Name",
+      "description": "MongoDB stores documents in collections. Collections are analogous to tables in relational databases.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "displayMode": "auto",
+            "filterable": false,
+            "inspect": true
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "dark-blue",
+                  "index": 0,
+                  "text": "0"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Collection Name"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "auto"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 0,
+        "y": 48
+      },
+      "hide_headers": false,
+      "id": 1030,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.2.20",
+      "sorting_props": {
+        "col_index": -1,
+        "direction": "desc"
+      },
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(rs_nm, collection, database) (mongodb_collstats_storageStats_storageSize{cluster=~\"$cluster\", db!~\"admin|config|local\", rs_nm=~\"$shard\"})",
+          "format": "table",
+          "hide": true,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{db}} | {{shard}} | Collections",
+          "range": false,
+          "refId": "A"
+        },
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(rs_nm, collection, database) (mongodb_collstats_storageStats_storageSize{cluster=~\"$cluster\", db!~\"admin|config|local\", rs_nm=~\"$set\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{db}} | {{shard}} | Collections",
+          "range": false,
+          "refId": "B"
+        }
+      ],
+      "title": "Size of Collections in Shards",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": "collection",
+              "reducer": "sum",
+              "right": "database"
+            },
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "database",
+                "collection"
+              ],
+              "reducer": "allValues"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "groupingToMatrix",
+          "options": {
+            "columnField": "rs_nm",
+            "rowField": "All values",
+            "valueField": "Value"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "All values\\rs_nm": "All values",
+              "collection\\rs_nm": "Collection Name",
+              "db\\shard": "DB Name",
+              "rs1": ""
+            }
+          }
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "All values"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "All values": true
+            },
+            "indexByName": {
+              "0": 1,
+              "1": 0,
+              "All values": 2,
+              "s1": 3,
+              "s2": 4
+            },
+            "renameByName": {
+              "0": "Collection Name",
+              "1": "DB Name"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "default_title_for_rows": "DB Name",
+      "description": "MongoDB stores documents in collections. Collections are analogous to tables in relational databases.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "displayMode": "auto",
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "dark-blue",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 13,
+        "x": 11,
+        "y": 48
+      },
+      "id": 1043,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "DB Name\\Value"
+          }
+        ]
+      },
+      "pluginVersion": "9.2.20",
+      "sorting_props": {
+        "col_index": -1,
+        "direction": "desc"
+      },
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by (rs_nm, database) (mongodb_mongod_db_collections_total{cluster=\"$cluster\",database!~\"admin|config|system|local\",rs_nm=~\"$set\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{db}} | {{rs_nm}} | Collections",
+          "range": false,
+          "refId": "C"
+        }
+      ],
+      "title": "Number of Collections in Shards",
+      "transformations": [
+        {
+          "id": "groupingToMatrix",
+          "options": {
+            "columnField": "rs_nm",
+            "rowField": "database",
+            "valueField": "Value"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "database\\rs_nm": "DB Name",
+              "shard0": ""
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 56
+      },
+      "id": 81,
+      "panels": [],
+      "title": "Connections",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "description": "TCP connections (Incoming) in mongod processes.",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "MongoDB ReplSet Summary - ${__series.name}",
+              "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?var-replset=${__series.name}&$__url_time_range"
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "fill": 6,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 57
+      },
+      "hiddenSeries": false,
+      "id": 37,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "Total",
+          "color": "#C4162A",
+          "fill": 0,
+          "legend": false,
+          "stack": false
+        }
+      ],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "avg by (rs_nm) (mongodb_connections{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\", state=\"current\", rs_nm!=\"\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "{{rs_nm}}",
+          "range": true,
+          "refId": "B",
+          "step": 300
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Current Connections Per Shard",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transformations": [],
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "decimals": 2,
+      "description": "",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 6,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 64
+      },
+      "hiddenSeries": false,
+      "id": 1177,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "sort": "avg",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "maxPerRow": 2,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.2.20",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeatDirection": "h",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum by (set) (avg by (service_name,set) (mongodb_connections{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$set\", service_name=~\"$service_name\", state=\"available\"}) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{environment=~\"$environment\", cluster=~\"$cluster\", set=~\"$set\", service_name=~\"$service_name\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\"}))",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{service_name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Available Connections",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 71
       },
       "id": 1199,
       "panels": [],
@@ -1392,187 +2209,89 @@
       "type": "row"
     },
     {
-      "backgroundColor": "rgba(128,128,128,0.1)",
-      "colorMaps": [
-        {
-          "color": "#CCC",
-          "text": "N/A"
-        }
-      ],
-      "crosshairColor": "#8F070C",
-      "description": "The MongoDB balancer is a background process that monitors the number of chunks on each shard. When the number of chunks on a given shard reaches specific migration thresholds, the balancer attempts to automatically migrate chunks between shards and reach an equal number of chunks per shard.",
-      "display": "timeline",
-      "expandFromQueryS": 0,
-      "extendLastValue": true,
-      "gridPos": {
-        "h": 4,
-        "w": 24,
-        "x": 0,
-        "y": 24
-      },
-      "highlightOnMouseover": true,
-      "id": 1215,
-      "legendSortBy": "-ms",
-      "lineColor": "rgba(0,0,0,0.1)",
-      "metricNameColor": "#000000",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "rowHeight": 50,
-      "showLegend": true,
-      "showLegendNames": true,
-      "showLegendPercent": true,
-      "showLegendValues": true,
-      "showTimeAxis": true,
-      "targets": [
-        {
-          "expr": "min(mongodb_mongos_sharding_chunks_is_balancer_running{cluster=\"$cluster\"})",
-          "interval": "$interval",
-          "legendFormat": "$cluster",
-          "refId": "A"
-        }
-      ],
-      "textSize": 24,
-      "textSizeTime": 12,
-      "timeOptions": [
-        {
-          "name": "Years",
-          "value": "years"
-        },
-        {
-          "name": "Months",
-          "value": "months"
-        },
-        {
-          "name": "Weeks",
-          "value": "weeks"
-        },
-        {
-          "name": "Days",
-          "value": "days"
-        },
-        {
-          "name": "Hours",
-          "value": "hours"
-        },
-        {
-          "name": "Minutes",
-          "value": "minutes"
-        },
-        {
-          "name": "Seconds",
-          "value": "seconds"
-        },
-        {
-          "name": "Milliseconds",
-          "value": "milliseconds"
-        }
-      ],
-      "timePrecision": {
-        "name": "Minutes",
-        "value": "minutes"
-      },
-      "timeTextColor": "#d8d9da",
-      "title": "Chunks Balancer is running",
-      "type": "natel-discrete-panel",
-      "units": "short",
-      "use12HourClock": false,
-      "useTimePrecision": false,
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "YES",
-          "value": "1"
-        },
-        {
-          "op": "=",
-          "text": "NO",
-          "value": "0"
-        }
-      ],
-      "valueTextColor": "#000000",
-      "writeAllValues": false,
-      "writeLastValue": true,
-      "writeMetricNames": false
-    },
-    {
       "default_title_for_rows": "Shard Name",
       "description": "A chunk consists of a subset of sharded data.",
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 28
-      },
-      "hide_headers": false,
-      "id": 1200,
-      "pluginVersion": "9.2.20",
-      "title": "Amount of Chunks in Shards",
-      "type": "table",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": "left",
-            "displayMode": "auto",
-            "inspect": false,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 20
-              }
-            ]
-          },
           "color": {
             "fixedColor": "text",
             "mode": "thresholds"
           },
-          "noValue": "-"
+          "custom": {
+            "align": "left",
+            "displayMode": "auto",
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "noValue": "-",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              }
+            ]
+          }
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Chunks"
+              "options": "Shard Name"
             },
             "properties": [
               {
-                "id": "custom.displayMode",
-                "value": "color-background-solid"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-blue"
-                }
+                "id": "links",
+                "value": [
+                  {
+                    "title": "",
+                    "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?${cluster:queryparam}&var-rs_nm=${__value.text}&${interval:queryparam}&${__url_time_range}&${environment:queryparam}"
+                  }
+                ]
               }
             ]
           }
         ]
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 72
+      },
+      "hide_headers": false,
+      "id": 1200,
       "options": {
-        "showHeader": true,
         "footer": {
-          "show": false,
+          "fields": "",
           "reducer": [
             "sum"
           ],
-          "fields": ""
-        }
+          "show": false
+        },
+        "showHeader": true
       },
+      "pluginVersion": "9.2.20",
+      "sorting_props": {
+        "col_index": -1,
+        "direction": "desc"
+      },
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg by (shard) (mongodb_mongos_sharding_shard_chunks_total{cluster=\"$cluster\",db!~\"admin|config\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{shard}} | Chunks",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Amount of Chunks in Shards",
       "transformations": [
         {
           "id": "organize",
@@ -1582,30 +2301,13 @@
             },
             "indexByName": {},
             "renameByName": {
-              "shard": "Shard Name",
-              "Value": "Chunks"
+              "Value": "Chunks",
+              "shard": "Shard Name"
             }
           }
         }
       ],
-      "targets": [
-        {
-          "expr": "avg by (shard) (mongodb_mongos_sharding_shard_chunks_total{cluster=\"$cluster\",db!~\"admin|config\"})",
-          "editorMode": "code",
-          "range": false,
-          "exemplar": false,
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{shard}} | Chunks",
-          "refId": "A"
-        }
-      ],
-      "sorting_props": {
-        "col_index": -1,
-        "direction": "desc"
-      }
+      "type": "table"
     },
     {
       "aliasColors": {},
@@ -1630,9 +2332,9 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
-        "w": 16,
-        "x": 8,
-        "y": 28
+        "w": 18,
+        "x": 6,
+        "y": 72
       },
       "hiddenSeries": false,
       "id": 1201,
@@ -1656,7 +2358,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.20",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1711,98 +2413,6 @@
       "dashLength": 10,
       "dashes": false,
       "decimals": 2,
-      "description": "MongoDB splits chunks when they grow beyond the configured chunk size. Both inserts and updates can trigger a chunk split.",
-      "fieldConfig": {
-        "defaults": {
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 2,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 36
-      },
-      "hiddenSeries": false,
-      "id": 1212,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 2,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "avg by (event) (rate(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*split.*\"}[$interval]) or\nirate(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*split.*\"}[5m]))",
-          "interval": "$interval",
-          "legendFormat": "{{event}}",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Chunks Split Events",
-      "tooltip": {
-        "shared": true,
-        "sort": 5,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
       "description": "MongoDB migrates chunks in a sharded cluster to distribute the chunks of a sharded collection evenly among shards. ",
       "fieldConfig": {
         "defaults": {
@@ -1813,10 +2423,10 @@
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 36
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 80
       },
       "hiddenSeries": false,
       "id": 1216,
@@ -1840,7 +2450,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.20",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1890,178 +2500,12 @@
       }
     },
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 44
-      },
-      "id": 1045,
-      "panels": [],
-      "title": "Indexes in Shards",
-      "type": "row"
-    },
-    {
-      "default_title_for_rows": "DB Name",
-      "description": "Indexes are special data structures that store a small portion of the collection’s data set in an easy to traverse form. ",
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 45
-      },
-      "hide_headers": false,
-      "id": 1040,
-      "pluginVersion": "9.2.20",
-      "title": "Amount of Indexes in Shards",
-      "type": "table",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "left",
-            "displayMode": "auto",
-            "inspect": false,
-            "filterable": false
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "dark-red",
-                  "index": 0,
-                  "text": "No data"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 20
-              }
-            ]
-          },
-          "color": {
-            "fixedColor": "text",
-            "mode": "thresholds"
-          },
-          "noValue": "-"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "^((?!(DB Name)).)*$"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "color-background-solid"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-blue"
-                }
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "",
-                    "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?var-interval=$__auto_interval_interval&var-replset=${__field.name}"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "options": {
-        "showHeader": true,
-        "footer": {
-          "show": false,
-          "reducer": [
-            "sum"
-          ],
-          "fields": ""
-        },
-        "frameIndex": 0,
-        "sortBy": [
-          {
-            "displayName": "DB Name\\Value",
-            "desc": false
-          }
-        ]
-      },
-      "transformations": [
-        {
-          "id": "groupingToMatrix",
-          "options": {
-            "columnField": "shard",
-            "rowField": "db",
-            "valueField": "Value"
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "db\\shard": "DB Name",
-              "rs1": ""
-            }
-          }
-        }
-      ],
-      "targets": [
-        {
-          "expr": "avg by (db,shard) (mongodb_mongos_db_indexes_total{cluster=\"$cluster\",db!~\"admin|config\"})",
-          "editorMode": "code",
-          "range": false,
-          "exemplar": false,
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{db}} | {{shard}} | Collections",
-          "refId": "A"
-        },
-        {
-          "expr": "mongodb_mongos_db_data_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"}",
-          "editorMode": "code",
-          "range": false,
-          "exemplar": false,
-          "format": "table",
-          "hide": true,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{db}} | {{shard}} | Size",
-          "refId": "B"
-        }
-      ],
-      "sorting_props": {
-        "col_index": -1,
-        "direction": "desc"
-      }
-    },
-    {
       "aliasColors": {},
-      "bars": false,
+      "bars": true,
       "dashLength": 10,
       "dashes": false,
       "decimals": 2,
-      "description": "",
+      "description": "MongoDB splits chunks when they grow beyond the configured chunk size. Both inserts and updates can trigger a chunk split.",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -2071,34 +2515,34 @@
       "fill": 2,
       "fillGradient": 0,
       "gridPos": {
-        "h": 8,
-        "w": 16,
-        "x": 8,
-        "y": 45
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 87
       },
       "hiddenSeries": false,
-      "id": 1042,
+      "id": 1212,
       "legend": {
         "alignAsTable": true,
         "avg": true,
         "current": false,
         "max": true,
         "min": true,
-        "rightSide": true,
+        "rightSide": false,
         "show": true,
         "sort": "avg",
         "sortDesc": true,
         "total": false,
         "values": true
       },
-      "lines": true,
+      "lines": false,
       "linewidth": 2,
       "nullPointMode": "null",
       "options": {
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.20",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2109,15 +2553,15 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "avg by (db,shard) (rate(mongodb_mongos_db_indexes_total{cluster=\"$cluster\",db!~\"admin|config\"}[$interval]) or irate(mongodb_mongos_db_indexes_total{cluster=\"$cluster\",db!~\"admin|config\"}[5m]))",
+          "expr": "avg by (event) (rate(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*split.*\"}[$interval]) or\nirate(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*split.*\"}[5m]))",
           "interval": "$interval",
-          "legendFormat": "{{shard}}-{{db}}",
+          "legendFormat": "{{event}}",
           "refId": "A"
         }
       ],
       "thresholds": [],
       "timeRegions": [],
-      "title": "Dynamic of Indexes",
+      "title": "Chunks Split Events",
       "tooltip": {
         "shared": true,
         "sort": 5,
@@ -2132,7 +2576,7 @@
       "yaxes": [
         {
           "decimals": 2,
-          "format": "cps",
+          "format": "short",
           "logBase": 1,
           "min": "0",
           "show": true
@@ -2148,1649 +2592,16 @@
       }
     },
     {
-      "default_title_for_rows": "DB Name",
-      "description": "The index stores the value of a specific field or set of fields, ordered by the value of the field. ",
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 53
-      },
-      "hide_headers": false,
-      "id": 1072,
-      "pluginVersion": "9.2.20",
-      "title": "Size of Indexes in Shards",
-      "type": "table",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "left",
-            "displayMode": "auto",
-            "inspect": false,
-            "filterable": false
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "dark-red",
-                  "index": 0,
-                  "text": "No data"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 20
-              }
-            ]
-          },
-          "color": {
-            "fixedColor": "text",
-            "mode": "thresholds"
-          },
-          "noValue": "-",
-          "unit": "bytes"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "^((?!(DB Name)).)*$"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "color-background-solid"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-blue"
-                }
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "",
-                    "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?var-interval=$__auto_interval_interval&var-replset=${__field.name}"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "options": {
-        "showHeader": true,
-        "footer": {
-          "show": false,
-          "reducer": [
-            "sum"
-          ],
-          "fields": ""
-        },
-        "frameIndex": 0,
-        "sortBy": [
-          {
-            "displayName": "DB Name\\Value",
-            "desc": false
-          }
-        ]
-      },
-      "transformations": [
-        {
-          "id": "groupingToMatrix",
-          "options": {
-            "columnField": "shard",
-            "rowField": "db",
-            "valueField": "Value"
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "db\\shard": "DB Name",
-              "rs1": ""
-            }
-          }
-        }
-      ],
-      "targets": [
-        {          
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "avg by (db,shard) (mongodb_mongos_db_index_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"})",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{db}} | {{shard}} | Collections",
-          "refId": "A"
-        }
-      ],
-      "sorting_props": {
-        "col_index": -1,
-        "direction": "desc"
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 2,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 16,
-        "x": 8,
-        "y": 53
-      },
-      "hiddenSeries": false,
-      "id": 1073,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "rightSide": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "avg by (db,shard) (rate(mongodb_mongos_db_index_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"}[$interval]) or rate(mongodb_mongos_db_index_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"}[5m]))",
-          "interval": "$interval",
-          "legendFormat": "{{shard}}-{{db}}",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Dynamic of Indexes Size",
-      "tooltip": {
-        "shared": true,
-        "sort": 5,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "Bps",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 61
-      },
-      "id": 1071,
-      "panels": [
-        {
-          "default_title_for_rows": "DB Name",
-          "description": "Documents in MongoDB are objects stored in a format called BSON, a binary-encoded superset of JSON that supports additional data types.",
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 0,
-            "y": 29
-          },
-          "hide_headers": false,
-          "id": 1066,
-          "pluginVersion": "9.2.20",
-          "title": "Amount of Objects in Shards",
-          "type": "table",
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "align": "left",
-                "displayMode": "auto",
-                "inspect": false,
-                "filterable": false
-              },
-              "mappings": [
-                {
-                  "options": {
-                    "0": {
-                      "color": "dark-red",
-                      "index": 0,
-                      "text": "No data"
-                    }
-                  },
-                  "type": "value"
-                }
-              ],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "red",
-                    "value": null
-                  },
-                  {
-                    "color": "green",
-                    "value": 20
-                  }
-                ]
-              },
-              "color": {
-                "fixedColor": "text",
-                "mode": "thresholds"
-              },
-              "noValue": "-"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byRegexp",
-                  "options": "^((?!(DB Name)).)*$"
-                },
-                "properties": [
-                  {
-                    "id": "custom.displayMode",
-                    "value": "color-background-solid"
-                  },
-                  {
-                    "id": "color",
-                    "value": {
-                      "mode": "fixed",
-                      "fixedColor": "dark-blue"
-                    }
-                  },
-                  {
-                    "id": "links",
-                    "value": [
-                      {
-                        "title": "",
-                        "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?var-interval=$__auto_interval_interval&var-replset=${__field.name}"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          "options": {
-            "showHeader": true,
-            "footer": {
-              "show": false,
-              "reducer": [
-                "sum"
-              ],
-              "fields": ""
-            },
-            "frameIndex": 0,
-            "sortBy": [
-              {
-                "displayName": "DB Name\\Value",
-                "desc": false
-              }
-            ]
-          },
-          "transformations": [
-            {
-              "id": "groupingToMatrix",
-              "options": {
-                "columnField": "shard",
-                "rowField": "db",
-                "valueField": "Value"
-              }
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {},
-                "renameByName": {
-                  "db\\shard": "DB Name",
-                  "rs1": ""
-                }
-              }
-            }
-          ],
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "exemplar": false,
-              "expr": "avg by (db,shard) (mongodb_mongos_db_objects_total{cluster=\"$cluster\",db!~\"admin|config\"})",
-              "format": "table",
-              "hide": false,
-              "instant": true,
-              "interval": "$interval",
-              "legendFormat": "{{db}} | {{shard}} | Collections",
-              "refId": "A"
-            }
-          ],
-          "sorting_props": {
-            "col_index": -1,
-            "direction": "desc"
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "links": []
-            },
-            "overrides": []
-          },
-          "fill": 2,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 8,
-            "w": 16,
-            "x": 8,
-            "y": 29
-          },
-          "hiddenSeries": false,
-          "id": 1067,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "7.5.6",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "exemplar": true,
-              "expr": "avg by (db,shard) (increase(mongodb_mongos_db_objects_total{cluster=\"$cluster\",db!~\"admin|config\"}[$interval]) or increase(mongodb_mongos_db_objects_total{cluster=\"$cluster\",db!~\"admin|config\"}[5m]))",
-              "interval": "$interval",
-              "legendFormat": "{{shard}}-{{db}}",
-              "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Dynamic of Objects",
-          "tooltip": {
-            "shared": true,
-            "sort": 5,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "short",
-              "logBase": 1,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
-        }
-      ],
-      "title": "Objects in Shards",
-      "type": "row"
-    },
-    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 62
-      },
-      "id": 81,
-      "panels": [],
-      "title": "Connections",
-      "type": "row"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "description": "TCP connections (Incoming) in mongod processes.",
-      "editable": true,
-      "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "links": [
-            {
-              "targetBlank": true,
-              "title": "MongoDB ReplSet Summary - ${__series.name}",
-              "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?var-replset=${__series.name}&$__url_time_range"
-            }
-          ]
-        },
-        "overrides": []
-      },
-      "fill": 6,
-      "fillGradient": 0,
-      "grid": {},
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 63
-      },
-      "hiddenSeries": false,
-      "id": 37,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "Total",
-          "color": "#C4162A",
-          "fill": 0,
-          "legend": false,
-          "stack": false
-        }
-      ],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum by (set) (avg by (service_name,set) (mongodb_connections{cluster=\"$cluster\", state=\"current\"}) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\"}))",
-          "format": "time_series",
-          "hide": false,
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "{{set}}",
-          "refId": "B",
-          "step": 300
-        },
-        {
-          "expr": "sum by () (avg by (service_name,set) (mongodb_connections{cluster=\"$cluster\", state=\"current\"}) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\"}))",
-          "hide": false,
-          "interval": "$interval",
-          "legendFormat": "Total",
-          "refId": "A"
-        },
-        {
-          "expr": "sum by (shard) (avg by (service_name,shard) (mongodb_connections{cluster=\"$cluster\", state=\"current\"}) * on (service_name) group_right avg by (service_name,shard) (mongodb_mongos_db_collections_total{cluster=\"$cluster\"} / mongodb_mongos_db_collections_total{cluster=\"$cluster\"}))",
-          "format": "time_series",
-          "hide": true,
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "{{shard}}",
-          "refId": "C",
-          "step": 300
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Current Connections Per Shard",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "description": "Incoming connections to mongos nodes.",
-      "editable": true,
-      "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 63
-      },
-      "hiddenSeries": false,
-      "id": 7,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum by (state) (max_over_time(mongodb_connections{cluster=\"$cluster\"}[$interval]) or max_over_time(mongodb_connections{cluster=\"$cluster\"}[5m]))",
-          "format": "time_series",
-          "hide": false,
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "{{state}}",
-          "refId": "J",
-          "step": 300
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Total Connections",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": "",
-          "logBase": 2,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 71
-      },
-      "id": 50,
-      "panels": [],
-      "title": "Connections Details",
-      "type": "row"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "editable": true,
-      "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 6,
-      "fillGradient": 0,
-      "grid": {},
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 72
-      },
-      "hiddenSeries": false,
-      "id": 1178,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "rightSide": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "maxPerRow": 2,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "repeatDirection": "h",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum by (service_name) (max_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service_name\",state=\"current\"}[$interval]) or \nmax_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service_name\",state=\"current\"}[5m]))",
-          "format": "time_series",
-          "hide": false,
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "{{service_name}}",
-          "refId": "J",
-          "step": 300
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Current Connections ",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "description": "",
-      "editable": true,
-      "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 6,
-      "fillGradient": 0,
-      "grid": {},
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 79
-      },
-      "hiddenSeries": false,
-      "id": 1177,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "rightSide": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "maxPerRow": 2,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "repeatDirection": "h",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum by (service_name) (max_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service_name\",state=\"available\"}[$interval]) or \nmax_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service_name\",state=\"available\"}[5m]))",
-          "format": "time_series",
-          "hide": false,
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "{{service_name}}",
-          "refId": "J",
-          "step": 300
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Available Connections",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 86
-      },
-      "id": 1149,
-      "panels": [],
-      "title": "Cursors",
-      "type": "row"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 0,
-      "description": "The Cursor is a MongoDB Collection of the document which is returned upon the find method execution. ",
-      "editable": true,
-      "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "links": [
-            {
-              "targetBlank": true,
-              "title": "MongoDB ReplSet Summary - ${__series.name}",
-              "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?var-replset=${__series.name}&$__url_time_range"
-            }
-          ]
-        },
-        "overrides": []
-      },
-      "fill": 6,
-      "fillGradient": 0,
-      "grid": {},
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 87
-      },
-      "hiddenSeries": false,
-      "id": 25,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "hideZero": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "Total",
-          "color": "#C4162A",
-          "fill": 0,
-          "legend": false,
-          "stack": false
-        }
-      ],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum(sum(mongodb_mongod_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"} or mongodb_mongod_cursors{cluster=\"$cluster\", state=\"total_open\"}) by (service_name) * on (service_name) group_right mongodb_mongod_replset_my_state{cluster=\"$cluster\"} / mongodb_mongod_replset_my_state{cluster=\"$cluster\"}) by (set)",
-          "format": "time_series",
-          "hide": false,
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "{{set}}",
-          "refId": "A",
-          "step": 300
-        },
-        {
-          "expr": "sum(sum(mongodb_mongod_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"} or mongodb_mongod_cursors{cluster=\"$cluster\", state=\"total_open\"}) by (service_name) * on (service_name) group_right mongodb_mongod_replset_my_state{cluster=\"$cluster\"} / mongodb_mongod_replset_my_state{cluster=\"$cluster\"})",
-          "interval": "$interval",
-          "legendFormat": "Total",
-          "refId": "B"
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Cursors Per Shard",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "description": "The Cursor is a MongoDB Collection of the document which is returned upon the find method execution.",
-      "editable": true,
-      "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 87
-      },
-      "hiddenSeries": false,
-      "id": 31,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "sum by () (\nmax_over_time(mongodb_mongod_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongod_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[5m]) or \nmax_over_time(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[5m]) or\nmax_over_time(mongodb_mongod_cursors{cluster=\"$cluster\", state=\"total_open\"}[$interval]) or\nmax_over_time(mongodb_mongod_cursors{cluster=\"$cluster\", state=\"total_open\"}[5m]) or\nmax_over_time(mongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\"}[5m])\n)",
-          "hide": false,
-          "interval": "$interval",
-          "legendFormat": "Cursors",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Mongos Cursors",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 95
-      },
-      "id": 62,
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "decimals": 2,
-          "description": "",
-          "editable": true,
-          "error": false,
-          "fill": 6,
-          "fillGradient": 0,
-          "grid": {},
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 49
-          },
-          "hiddenSeries": false,
-          "id": 1179,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": false,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "sort": "avg",
-            "sortDesc": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "Total",
-              "color": "#C4162A",
-              "fill": 0,
-              "legend": false,
-              "stack": false
-            }
-          ],
-          "spaceLength": 10,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum by (service_name) (\nmax_over_time(mongodb_mongod_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongod_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[5m]) or max_over_time(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[5m]) or\nmax_over_time(mongodb_mongod_cursors{cluster=\"$cluster\", state=\"total_open\"}[$interval]) or\nmax_over_time(mongodb_mongod_cursors{cluster=\"$cluster\", state=\"total_open\"}[5m]) or\nmax_over_time(mongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\"}[5m])\n)",
-              "hide": false,
-              "interval": "$interval",
-              "legendFormat": "{{service_name}}",
-              "refId": "A"
-            },
-            {
-              "expr": "sum by () (\nmax_over_time(mongodb_mongod_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongod_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[5m]) or max_over_time(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[5m]) or\nmax_over_time(mongodb_mongod_cursors{cluster=\"$cluster\", state=\"total_open\"}[$interval]) or\nmax_over_time(mongodb_mongod_cursors{cluster=\"$cluster\", state=\"total_open\"}[5m]) or\nmax_over_time(mongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\"}[5m])\n)",
-              "interval": "$interval",
-              "legendFormat": "Total",
-              "refId": "B"
-            }
-          ],
-          "thresholds": [],
-          "timeRegions": [],
-          "title": "Mongos Cursors",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 5,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "decimals": 2,
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "logBase": 1,
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false
-          }
-        }
-      ],
-      "title": "Cursors Details",
-      "type": "row"
-    },
-    {
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 96
-      },
-      "id": 1056,
-      "title": "Mongos Operations",
-      "type": "row"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 0,
-      "description": "Ops/sec, classified by legacy wire protocol type (query, insert, update, delete, getmore).",
-      "editable": true,
-      "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "links": [
-            {
-              "targetBlank": true,
-              "title": "MongoDB ReplSet Summary - ${__series.name}",
-              "url": "/graph/d/mongodb-replicaset-summary/mongodb-replset-summary?var-replset=${__series.name}&$__url_time_range"
-            }
-          ]
-        },
-        "overrides": []
-      },
-      "fill": 6,
-      "fillGradient": 0,
-      "grid": {},
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 97
-      },
-      "hiddenSeries": false,
-      "id": 30,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "hideEmpty": false,
-        "hideZero": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {}
-      ],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum(sum(rate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\"}[5m])) by (instance) * on (instance) \ngroup_right mongodb_mongod_replset_my_state{cluster=\"$cluster\"} / mongodb_mongod_replset_my_state{cluster=\"$cluster\"}) by (set)",
-          "format": "time_series",
-          "hide": false,
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "{{set}}",
-          "refId": "A",
-          "step": 300
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Operations Per Shard",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "ops",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "description": "Ops/sec, classified by legacy wire protocol type (query, insert, update, delete, getmore).",
-      "editable": true,
-      "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 97
-      },
-      "hiddenSeries": false,
-      "id": 46,
-      "interval": "",
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "hideZero": true,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum by (type) (rate(mongodb_op_counters_total{cluster=~\"$cluster\", type!=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{cluster=~\"$cluster\", type!=\"command\"}[5m]))",
-          "format": "time_series",
-          "hide": false,
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "{{type}}",
-          "refId": "J",
-          "step": 300
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Total Mongos Operations",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "ops",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 105
-      },
-      "id": 52,
-      "panels": [],
-      "title": "Operations Details",
-      "type": "row"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "description": "",
-      "editable": true,
-      "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {},
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 106
-      },
-      "hiddenSeries": false,
-      "id": 53,
-      "interval": "",
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "hideZero": true,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "maxPerRow": 2,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "repeat": "service_name",
-      "repeatDirection": "h",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum by (type) (rate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=~\"$service_name\"}[5m]))",
-          "format": "time_series",
-          "hide": false,
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "{{type}}",
-          "refId": "J",
-          "step": 300
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Operations $service_name",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "ops",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 113
+        "y": 94
       },
       "id": 97,
       "panels": [],
-      "title": "Other",
+      "title": "Replication",
       "type": "row"
     },
     {
@@ -3819,7 +2630,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 114
+        "y": 95
       },
       "hiddenSeries": false,
       "id": 14,
@@ -3845,7 +2656,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.20",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3855,19 +2666,17 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max by (set) (max(max_over_time(mongodb_mongod_replset_member_replication_lag{cluster=\"$cluster\",state!=\"ARBITER\"}[$interval]) > 0) by (service_name,set) or max(max_over_time(mongodb_mongod_replset_member_replication_lag{cluster=\"$cluster\",state!=\"ARBITER\"}[5m]) > 0) by (service_name,set))",
-          "format": "time_series",
+          "editorMode": "code",
+          "expr": "max by (set) (max(max_over_time(mongodb_mongod_replset_member_replication_lag{cluster=\"$cluster\",state!=\"ARBITER\"}[$interval])) by (service_name,set) or max(max_over_time(mongodb_mongod_replset_member_replication_lag{cluster=\"$cluster\",state!=\"ARBITER\"}[5m])) by (service_name,set))",
           "hide": false,
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "{{set}}",
-          "refId": "B",
-          "step": 300
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
         }
       ],
       "thresholds": [],
       "timeRegions": [],
-      "title": "Replication Lag by Set",
+      "title": "Replication Lag by Shard",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -3925,7 +2734,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 114
+        "y": 95
       },
       "hiddenSeries": false,
       "id": 27,
@@ -3951,7 +2760,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.3.5",
+      "pluginVersion": "9.2.20",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3973,7 +2782,7 @@
       ],
       "thresholds": [],
       "timeRegions": [],
-      "title": "Oplog Range by Set",
+      "title": "Oplog Range by Shard",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -4003,101 +2812,10 @@
       "yaxis": {
         "align": false
       }
-    },
-    {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
-      "description": "Count, over last 10 minutes, of all types of config db changelog events.",
-      "fieldConfig": {
-        "defaults": {
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 2,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 122
-      },
-      "hiddenSeries": false,
-      "id": 1213,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 2,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "8.3.5",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "rate(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*(shard|Shard).*\"}[$interval]) or\nirate(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*(shard|Shard).*\"}[5m])",
-          "interval": "$interval",
-          "legendFormat": "{{event}}",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Change Log Events",
-      "tooltip": {
-        "shared": true,
-        "sort": 5,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "logBase": 1,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
     }
   ],
-  "refresh": "1m",
-  "schemaVersion": 34,
+  "refresh": false,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "MongoDB_HA",
@@ -4165,36 +2883,10 @@
           }
         ],
         "query": "1s,5s,1m,5m,1h,6h,1d",
+        "queryValue": "",
         "refresh": 2,
         "skipUrlSync": false,
         "type": "interval"
-      },
-      {
-        "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "mongodb_cluster",
-          "value": "mongodb_cluster"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(mongodb_up,cluster)",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Cluster",
-        "multi": false,
-        "multiFormat": "glob",
-        "name": "cluster",
-        "options": [],
-        "query": {
-          "query": "label_values(mongodb_up,cluster)",
-          "refId": "Metrics-cluster-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "type": "query",
-        "useTags": false
       },
       {
         "current": {
@@ -4202,17 +2894,16 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
-        "definition": "label_values(mongodb_up{cluster=\"$cluster\"},service_name)",
-        "hide": 2,
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+        "hide": 0,
         "includeAll": true,
-        "label": "Service Name",
+        "label": "Environment",
         "multi": true,
-        "name": "service_name",
+        "name": "environment",
         "options": [],
         "query": {
-          "query": "label_values(mongodb_up{cluster=\"$cluster\"},service_name)",
-          "refId": "Metrics-service_name-Variable-Query"
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+          "refId": "Metrics-environment-Variable-Query"
         },
         "refresh": 2,
         "regex": "",
@@ -4224,12 +2915,37 @@
         "useTags": false
       },
       {
+        "allFormat": "glob",
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\"},cluster)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Cluster",
+        "multi": false,
+        "multiFormat": "glob",
+        "name": "cluster",
+        "options": [],
+        "query": {
+          "query": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\"},cluster)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "type": "query",
+        "useTags": false
+      },
+      {
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
         "definition": "label_values(mongodb_mongos_db_collections_total{cluster=\"$cluster\"},shard)",
         "hide": 2,
         "includeAll": true,
@@ -4252,21 +2968,24 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
-        "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_name)",
+        "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\"}, set)",
         "hide": 2,
         "includeAll": true,
-        "label": "Node Name",
+        "label": "Replica Set",
         "multi": true,
-        "name": "node_name",
+        "name": "set",
         "options": [],
         "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_name)",
-          "refId": "Metrics-node_name-Variable-Query"
+          "query": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\"}, set)",
+          "refId": "StandardVariableQuery"
         },
         "refresh": 2,
         "regex": "",
@@ -4283,17 +3002,16 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+        "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$set\"}, service_name)",
         "hide": 2,
         "includeAll": true,
-        "label": "Environment",
+        "label": "Node",
         "multi": true,
-        "name": "environment",
+        "name": "service_name",
         "options": [],
         "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
-          "refId": "Metrics-environment-Variable-Query"
+          "query": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$set\"}, service_name)",
+          "refId": "StandardVariableQuery"
         },
         "refresh": 2,
         "regex": "",
@@ -4303,153 +3021,6 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Replication Set",
-        "multi": true,
-        "name": "replication_set",
-        "options": [],
-        "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
-          "refId": "Metrics-replication_set-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Database",
-        "multi": true,
-        "name": "database",
-        "options": [],
-        "query": {
-          "query": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
-          "refId": "Metrics-database-Variable-Query"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Type",
-        "multi": true,
-        "name": "node_type",
-        "options": [],
-        "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
-          "refId": "Metrics-node_type-Variable-Query"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Type",
-        "multi": true,
-        "name": "service_type",
-        "options": [],
-        "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
-          "refId": "Metrics-service_type-Variable-Query"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Username",
-        "multi": true,
-        "name": "username",
-        "options": [],
-        "query": {
-          "query": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
-          "refId": "Metrics-username-Variable-Query"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {},
-        "hide": 2,
-        "includeAll": true,
-        "label": "Schema",
-        "multi": true,
-        "name": "schema",
-        "options": [],
-        "query": "",
-        "skipUrlSync": false,
-        "type": "custom"
       }
     ]
   },
@@ -4481,8 +3052,8 @@
       "30d"
     ]
   },
-  "timezone": "",
-  "title": "MongoDB Cluster Summary",
+  "timezone": "browser",
+  "title": "MongoDB Sharded Cluster Summary",
   "uid": "mongodb-cluster-summary",
   "version": 1,
   "weekStart": ""
