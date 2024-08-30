@@ -193,10 +193,7 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "The CPU time is measured in clock ticks or seconds. It is useful to measure CPU time as a percentage of the CPU's capacity, which is called the CPU usage.",
       "fieldConfig": {
         "defaults": {
@@ -383,10 +380,7 @@
       "pluginVersion": "9.2.20",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
+          "datasource": "Metrics",
           "editorMode": "code",
           "expr": "100 - (avg by (node_name) (rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"idle\"}[1m])) * 100)",
           "format": "time_series",
@@ -947,10 +941,7 @@
         }
       ],
       "crosshairColor": "#8F070C",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "",
       "display": "timeline",
       "expandFromQueryS": 0,
@@ -986,10 +977,7 @@
       "showTransitionCount": false,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
+          "datasource": "Metrics",
           "editorMode": "code",
           "expr": "max by (service_name) (mongodb_up{environment=~\"$environment\", cluster=~\"$cluster\", service_name=~\"$service_name\"})",
           "interval": "$interval",
@@ -1224,10 +1212,7 @@
       }
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "MongoDB Connections",
       "fieldConfig": {
         "defaults": {
@@ -1308,10 +1293,7 @@
       "pluginVersion": "9.2.20",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
+          "datasource": "Metrics",
           "editorMode": "code",
           "expr": "mongodb_ss_connections{service_name=~\"$service_name\",conn_type=~\"current\"}",
           "format": "time_series",
@@ -1324,10 +1306,7 @@
           "step": 300
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
+          "datasource": "Metrics",
           "editorMode": "code",
           "expr": "mongodb_ss_connections{service_name=~\"$service_name\",conn_type=~\"available\"}",
           "format": "time_series",
@@ -1437,10 +1416,7 @@
       }
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Ratio of Documents (or Index entries) scanned / documents returned. A value of 1 means all documents returned exactly match query criteria for the sample period. A value of 100 means on average for the sample period, a query scans 100 documents to find one that is returned.",
       "fieldConfig": {
         "defaults": {
@@ -1524,10 +1500,7 @@
       "pluginVersion": "9.2.20",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
+          "datasource": "Metrics",
           "editorMode": "code",
           "expr": "(sum by (service_name)(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[$interval])) /\nsum(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval]))\nor\nsum by (service_name)(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[5m])) /\nsum(irate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m])))",
           "format": "time_series",
@@ -1540,10 +1513,7 @@
           "step": 300
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
+          "datasource": "Metrics",
           "editorMode": "code",
           "expr": "(sum by (service_name)(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[$interval])) /\nsum(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval]))\nor\nsum by (service_name)(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[5m])) /\nsum(irate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m])))",
           "format": "time_series",
@@ -1556,10 +1526,7 @@
           "step": 300
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA58DA793C7250F1B"
-          },
+          "datasource": "Metrics",
           "editorMode": "code",
           "expr": "avg by (service_name,type) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\"}[$interval]) / (rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\"}[$interval]) > 0) or irate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\"}[5m]) / (irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\"}[5m]) > 0))",
           "hide": false,
@@ -1650,10 +1617,7 @@
           "text": "None",
           "value": ""
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 0,
         "includeAll": false,
@@ -1682,10 +1646,7 @@
           "text": "my-test-env",
           "value": "my-test-env"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\"},cluster)",
         "hide": 0,
         "includeAll": false,
@@ -1715,10 +1676,7 @@
             "$__all"
           ]
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\",cluster=~\"$cluster\",service_name=~\"$service_name\"}, node_name)",
         "hide": 2,
         "includeAll": true,
@@ -1749,10 +1707,7 @@
             "my-test-env-mongodb-mongos01.c.gs-techleads.internal-mongodb"
           ]
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "PA58DA793C7250F1B"
-        },
+        "datasource": "Metrics",
         "definition": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\",cluster=~\"$cluster\"}, service_name)",
         "hide": 0,
         "includeAll": true,
