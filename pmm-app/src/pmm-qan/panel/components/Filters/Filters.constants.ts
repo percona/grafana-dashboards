@@ -35,7 +35,7 @@ export const FILTERS_GROUPS = [
       if (serviceType === Databases.mysql) {
         dashboardURL = `pxc-cluster-summary/pxc-galera-cluster-summary?var-cluster=${value}`;
       } else if (serviceType === Databases.mongodb) {
-        dashboardURL = `mongodb-cluster-summary/mongodb-cluster-summary?var-cluster=${value}`;
+        dashboardURL = `mongodb-cluster-summary/mongodb-sharded-cluster-summary?var-cluster=${value}`;
       }
 
       return dashboardURL ? `${subURL}${dashboardURL}` : '';
