@@ -1,7 +1,9 @@
-import { apiRequestManagement } from 'shared/components/helpers/api';
+import { apiRequest } from 'shared/components/helpers/api';
 
 export default {
   getTraditionalExplainJSONMongo(body) {
-    return apiRequestManagement.post<any, any>('/Actions/StartMongoDBExplain', body);
+    const requestBody = { mongodb_explain: body };
+
+    return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },
 };

@@ -12,7 +12,7 @@ export const postgresqlMethods = {
       database,
     });
 
-    return result.action_id;
+    return result.postgresql_show_create_table.action_id;
   },
   getIndexes: async ({ example, tableName, database }) => {
     if (!tableName) {
@@ -25,6 +25,6 @@ export const postgresqlMethods = {
       database,
     });
 
-    return result.action_id;
+    return result.postgresql_show_index.action_id;
   },
 };
