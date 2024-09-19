@@ -41,23 +41,18 @@ const sortDetails = (a, b) => {
   return indA < indB ? -1 : 1;
 };
 
+const metricHasData = ([, value]: [string, unknown]) => Object
+  .values(value as Record<string, number>)
+  .some((value) => value !== 0);
+
 export const processMetrics = (metricsCatalogue, metrics) => {
-  const data = metrics.metrics ? metrics.metrics : metrics.totals;
+  const data = Object.keys(metrics.metrics).length ? metrics.metrics : metrics.totals;
 
   return Object.entries(data)
     .filter(
       (metricData) => Object.keys(metricData[1] as any[]).length,
     )
-    .filter(
-      (metricData) => {
-        const metricStorage = metricData[1] as any;
-        const notZeroCount = metricStorage.cnt !== 0;
-        const notSum = metricStorage.sum === undefined;
-
-        return !(notZeroCount && notSum);
-      },
-
-    )
+    .filter(metricHasData)
     .sort(sortDetails)
     .map((metricData) => {
       const [metricName] = metricData;
