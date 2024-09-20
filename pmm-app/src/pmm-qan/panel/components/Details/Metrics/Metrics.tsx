@@ -93,7 +93,7 @@ const Metrics: FC<MetricsProps> = ({
             ? humanize.transform(item.metric.avg, item.pipeTypes.perQueryStatsPipe)
             : (+item.metric.sum / +item.queryCount).toFixed(2) || '0'}
         </span>
-        {item.isLatencyChart && <Latency {...latencyChartProps} />}
+        {!!item.isLatencyChart && <Latency {...latencyChartProps} />}
       </div>
     );
   };
