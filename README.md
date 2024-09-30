@@ -64,10 +64,6 @@ Example:
 
 - misc/convert-dash-from-PMM.py dashboards/Disk_Details.json
 
-## AWS Setup page
-
-Plase see the relevant [README.md](./setup-page/README.md).
-
 ## Contributing
 
 We welcome contributions to this repository! Detailed information in [CONTRIBUTING.md](CONTRIBUTING.md)
