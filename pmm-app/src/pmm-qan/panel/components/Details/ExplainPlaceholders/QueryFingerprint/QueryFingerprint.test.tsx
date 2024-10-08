@@ -43,23 +43,24 @@ where
 
 describe('QueryFingerprint component::', () => {
   it('renders with empty query', () => {
-    render(<QueryFingerprint fingerprint="" placeholders={[]} />);
+    render(<QueryFingerprint database="mysql" fingerprint="" placeholders={[]} />);
     expect(screen.getByTestId('highlight-code').textContent).toEqual('');
   });
 
   it('renders with query without placeholders', () => {
-    render(<QueryFingerprint fingerprint={QUERY_WITHOUT_PLACEHOLDERS} placeholders={[]} />);
+    render(<QueryFingerprint database="mysql" fingerprint={QUERY_WITHOUT_PLACEHOLDERS} placeholders={[]} />);
     expect(screen.getByTestId('highlight-code').textContent).toEqual(QUERY_WITHOUT_PLACEHOLDERS);
   });
 
   it('renders with query with placeholders not filled out', () => {
-    render(<QueryFingerprint fingerprint={RAW_QUERY_WITH_PLACEHOLDERS} placeholders={[]} />);
+    render(<QueryFingerprint database="mysql" fingerprint={RAW_QUERY_WITH_PLACEHOLDERS} placeholders={[]} />);
     expect(screen.getByTestId('highlight-code').textContent).toEqual(QUERY_WITH_PLACEHOLDERS);
   });
 
   it('renders with placeholders (string)', () => {
     render(
       <QueryFingerprint
+        database="mysql"
         fingerprint={RAW_QUERY_WITH_PLACEHOLDERS}
         placeholders={['\'placeholder_1\'', '(\'placeholder_2\')']}
       />,

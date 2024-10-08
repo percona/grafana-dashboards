@@ -44,9 +44,9 @@ export const mysqlMethods = {
     return result.action_id;
   },
 
-  getExplainJSON: async ({ example, queryId, placeholders }) => {
+  getExplainJSON: async ({ example, queryId, values }) => {
     try {
-      const payload = getExplainPayload(example, queryId, placeholders);
+      const payload = getExplainPayload(example, queryId, values);
 
       const result = await MysqlDatabaseService.getTraditionalExplainJSONMysql(payload);
 
@@ -58,9 +58,9 @@ export const mysqlMethods = {
     }
   },
 
-  getExplainTraditional: async ({ example, queryId, placeholders }) => {
+  getExplainTraditional: async ({ example, queryId, values }) => {
     try {
-      const payload = getExplainPayload(example, queryId, placeholders);
+      const payload = getExplainPayload(example, queryId, values);
 
       const result = await MysqlDatabaseService.getTraditionalExplainMysql(payload);
 
