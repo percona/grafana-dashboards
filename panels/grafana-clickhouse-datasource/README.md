@@ -166,15 +166,16 @@ If using the [Open Telemetry Collector and ClickHouse exporter](https://github.c
 
 ```sql
 SELECT
-    TraceId AS traceID,
-    SpanId AS spanID,
-    SpanName AS operationName,
-    ParentSpanId AS parentSpanID,
-    ServiceName AS serviceName,
-    Duration / 1000000 AS duration,
-    Timestamp AS startTime,
-    arrayMap(key -> map('key', key, 'value', SpanAttributes[key]), mapKeys(SpanAttributes)) AS tags,
-    arrayMap(key -> map('key', key, 'value', ResourceAttributes[key]), mapKeys(ResourceAttributes)) AS serviceTags
+  TraceId AS traceID,
+  SpanId AS spanID,
+  SpanName AS operationName,
+  ParentSpanId AS parentSpanID,
+  ServiceName AS serviceName,
+  Duration / 1000000 AS duration,
+  Timestamp AS startTime,
+  arrayMap(key -> map('key', key, 'value', SpanAttributes[key]), mapKeys(SpanAttributes)) AS tags,
+  arrayMap(key -> map('key', key, 'value', ResourceAttributes[key]), mapKeys(ResourceAttributes)) AS serviceTags,
+  if(StatusCode IN ('Error', 'STATUS_CODE_ERROR'), 2, 0) AS statusCode
 FROM otel.otel_traces
 WHERE TraceId = '61d489320c01243966700e172ab37081'
 ORDER BY startTime ASC
@@ -191,16 +192,20 @@ FROM test_data
 WHERE $__timeFilter(date_time)
 ```
 
-| Macro                                        | Description                                                                                                                                                                         | Output example                                                        |
-|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|
-| *$__timeFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in milliseconds                                                         | `time >= toDateTime64(1480001790/1000, 3) AND time <= toDateTime64(1482576232/1000, 3) )`                     |
-| *$__dateFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the date range of the panel                                                                    | `date >= '2022-10-21' AND date <= '2022-10-23' )`                     |
-| *$__fromTime*                                | Replaced by the starting time of the range of the panel casted to `DateTime64(3)`                                                                                                          | `toDateTime64(1415792726371/1000, 3)`                              |
-| *$__toTime*                                  | Replaced by the ending time of the range of the panel casted to `DateTime64(3)`                                                                                                            | `toDateTime64(1415792726371/1000, 3)`                              |
-| *$__interval_s*                              | Replaced by the interval in seconds                                                                                                                                                 | `20`                                                                  |
-| *$__timeInterval(columnName)*                | Replaced by a function calculating the interval based on window size in seconds, useful when grouping                                                                               | `toStartOfInterval(toDateTime(column), INTERVAL 20 second)`           |
-| *$__timeInterval_ms(columnName)*             | Replaced by a function calculating the interval based on window size in milliseconds, useful when grouping                                                                          | `toStartOfInterval(toDateTime64(column, 3), INTERVAL 20 millisecond)` |
-| *$__conditionalAll(condition, $templateVar)* | Replaced by the first parameter when the template variable in the second parameter does not select every value. Replaced by the 1=1 when the template variable selects every value. | `condition` or `1=1`                                                  |
+| Macro                                        | Description                                                                                                                                                                         | Output example                                                                                        |
+|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| *$__dateFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the date range of the panel                                                                    | `date >= toDate('2022-10-21') AND date <= toDate('2022-10-23')`                                       |
+| *$__timeFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in seconds                                                         | `time >= toDateTime(1415792726) AND time <= toDateTime(1447328726)`                                   |
+| *$__timeFilter_ms(columnName)*               | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in milliseconds                                                    | `time >= fromUnixTimestamp64Milli(1415792726123) AND time <= fromUnixTimestamp64Milli(1447328726456)` |
+| *$__dateTimeFilter(dateColumn, timeColumn)*  | Shorthand that combines $__dateFilter() AND $__timeFilter() using separate Date and DateTime columns.                                                                               | `$__dateFilter(dateColumn) AND $__timeFilter(timeColumn)`                                             |
+| *$__fromTime*                                | Replaced by the starting time of the range of the panel casted to `DateTime`                                                                                                        | `toDateTime(1415792726)`                                                                              |
+| *$__toTime*                                  | Replaced by the ending time of the range of the panel casted to `DateTime`                                                                                                          | `toDateTime(1447328726)`                                                                              |
+| *$__fromTime_ms*                             | Replaced by the starting time of the range of the panel casted to `DateTime64(3)`                                                                                                   | `fromUnixTimestamp64Milli(1415792726123)`                                                             |
+| *$__toTime_ms*                               | Replaced by the ending time of the range of the panel casted to `DateTime64(3)`                                                                                                     | `fromUnixTimestamp64Milli(1447328726456)`                                                             |
+| *$__interval_s*                              | Replaced by the interval in seconds                                                                                                                                                 | `20`                                                                                                  |
+| *$__timeInterval(columnName)*                | Replaced by a function calculating the interval based on window size in seconds, useful when grouping                                                                               | `toStartOfInterval(toDateTime(column), INTERVAL 20 second)`                                           |
+| *$__timeInterval_ms(columnName)*             | Replaced by a function calculating the interval based on window size in milliseconds, useful when grouping                                                                          | `toStartOfInterval(toDateTime64(column, 3), INTERVAL 20 millisecond)`                                 |
+| *$__conditionalAll(condition, $templateVar)* | Replaced by the first parameter when the template variable in the second parameter does not select every value. Replaced by the 1=1 when the template variable selects every value. | `condition` or `1=1`                                                                                  |
 
 The plugin also supports notation using braces {}. Use this notation when queries are needed inside parameters.
 
