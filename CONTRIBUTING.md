@@ -41,7 +41,7 @@ That environment bundles a number of tools to help you populate the panels with 
 ```
 cd pmm-app
 docker-compose up -d
-npm run dev
+yarn dev
 ```
 
 For a much simpler development environment you could create a local file `docker-compose.local.yml` inside of `pmm-app` folder:
@@ -71,7 +71,7 @@ Then to run it:
 ```bash
 cd pmm-app
 docker-compose -f ./docker-compose.local.yml up -d
-npm run dev
+yarn dev
 ```
 
 ## Submitting a Pull Request

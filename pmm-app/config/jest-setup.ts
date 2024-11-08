@@ -1,20 +1,9 @@
 import { configure } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import Adapter from '@cfaester/enzyme-adapter-react-18';
+import { TextEncoder, TextDecoder } from 'util';
+import 'jest-canvas-mock';
 
 configure({ adapter: new Adapter() });
 
-Object.defineProperty(global, 'matchMedia', {
-  writable: true,
-  value: jest.fn().mockImplementation((query) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    // deprecated
-    addListener: jest.fn(),
-    // deprecated
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  })),
-});
+// Missing in jsdom 
+Object.assign(global, { TextDecoder, TextEncoder });

@@ -43,6 +43,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       }
     `,
     showTotal: css`
+      margin-left: 10px;
       color: ${parameters.mainTextColor};
     `,
     tableWrapper: css`
