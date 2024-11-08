@@ -1,5 +1,112 @@
 # Changelog
 
+## 4.4.0
+
+### Features
+
+- Added "Labels" column selector to the log query builder
+- Datasource OTel configuration will now set default table names for logs and traces.
+
+### Fixes
+
+- Added warning for when `uid` is missing in provisioned datasources.
+- Map filters in the query builder now correctly show the key instead of the column name
+- Updated and fixed missing `system.dashboards` dashboard in list of dashboards
+- Updated the duration value in example traces dashboard to provide useful information
+- Fix to display status codes from spans in trace queries (#950)
+
+## 4.3.2
+
+### Fixes
+
+- Optimized performance for types dependent on the JSON converter
+- Dependency updates
+
+## 4.3.1
+
+### Features
+
+- Added preset dashboard from `system.dashboards` table
+
+### Fixes
+
+- Fix trace start times in trace ID mode (#900)
+- Fixed OTel dashboard that waa failing to import (#908)
+
+## 4.3.0
+
+### Features
+
+- Added OpenTelemetry dashboard (#884)
+
+### Fixes
+
+- Fix support for LowCardinality strings (#857)
+- Update trace queries to better handle time fields (#890)
+- Dependency bumps
+
+## 4.2.0
+
+### Features
+
+- Added `$__dateTimeFilter()` macro for conveniently filtering a PRIMARY KEY composed of Date and DateTime columns.
+
+## 4.1.0
+
+### Features
+
+- Added the ability to define column alias tables in the config, which simplifies query syntax for tables with a known schema.
+
+## 4.0.8
+
+### Fixes
+
+- Fixed `IN` operator escaping the entire string (specifically with `Nullable(String)`), also added `FixedString(N)` (#830)
+- Fixed query builder filter editor on alert rules page (#828)
+
+## 4.0.7
+
+- Upgrade dependencies
+
+## 4.0.6
+
+### Fixes
+
+- Add support for configuring proxy options from context rather than environment variables (supported by updating `sqlds`) (#799)
+
+## 4.0.5
+
+### Fixes
+
+- Fixed converter regex for `Nullable(IP)` and `Nullable(String)`. It won't match to `Array(Nullable(IP))` or `Array(Nullable(String))` any more. (#783)
+- Updated `grafana-plugin-sdk-go` to fix a PDC issue. More details [here](https://github.com/grafana/grafana-plugin-sdk-go/releases/tag/v0.217.0) (#790)
+
+## 4.0.4
+
+### Fixes
+
+- Changed trace timestamp table from the constant `otel_traces_trace_id_ts` to a suffix `_trace_id_ts` applied to the current table name.
+
+## 4.0.3
+
+### Features
+
+- Added `$__fromTime_ms` macro that represents the dashboard "from" time in milliseconds using a `DateTime64(3)`
+- Added `$__toTime_ms` macro that represents the dashboard "to" time in milliseconds using a `DateTime64(3)`
+- Added `$__timeFilter_ms` macro that uses `DateTime64(3)` for millisecond precision time filtering
+- Re-added query type selector in dashboard view. This was only visible in explore view, but somehow it affects dashboard view, and so it has been re-added. (#730)
+- When OTel is enabled, Trace ID queries now use a skip index to optimize exact ID lookups on large trace datasets (#724)
+
+### Fixes
+
+- Fixed performance issues caused by `$__timeFilter` using a `DateTime64(3)` instead of `DateTime` (#699)
+- Fixed trace queries from rounding span durations under 1ms to `0` (#720)
+- Fixed AST error when including Grafana macros/variables in SQL (#714)
+- Fixed empty builder options when switching from SQL Editor back to Query Editor
+- Fix SQL Generator including "undefined" in `FROM` when database isn't defined
+- Allow adding spaces in multi filters (such as `WHERE .. IN`)
+- Fixed missing `AND` keyword when adding a filter to a Trace ID query 
+
 ## 4.0.2
 
 ### Fixes
