@@ -1359,88 +1359,41 @@
       }
     },
     {
-      "description": "",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "inspect": false
+            "align": "left",
+            "cellOptions": {
+              "type": "auto",
+              "wrapText": true
+            },
+            "inspect": false,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Time"
+              "options": "Service Name"
             },
             "properties": [
-              {
-                "id": "custom.hidden",
-                "value": true
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "service_name"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Service Name"
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
-              {
-                "id": "links",
-                "value": []
-              },
-              {
-                "id": "custom.align"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "mongodb"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Version"
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 2
-              },
               {
                 "id": "custom.align",
-                "value": "auto"
+                "value": "left"
               },
               {
                 "id": "custom.width"
@@ -1450,23 +1403,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Value"
+              "options": "Version"
             },
             "properties": [
               {
-                "id": "custom.hidden",
-                "value": true
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "service_name"
-            },
-            "properties": [
-              {
-                "id": "custom.width"
+                "id": "custom.width",
+                "value": 200
               }
             ]
           }
@@ -1480,50 +1422,107 @@
       },
       "hideTimeOverride": true,
       "id": 1289,
-      "links": [],
       "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
         "footer": {
-          "enablePagination": true,
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
+          "countRows": false,
+          "fields": "",
+          "enablePagination": true
         },
-        "showHeader": true,
-        "sortBy": []
+        "sortBy": [],
+        "frameIndex": 0
       },
-      "pluginVersion": "9.2.20",
+      "pluginVersion": "11.1.8",
       "targets": [
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg by (service_name,mongodb) (mongodb_version_info{service_name=~\"$service_name\"}) or (avg by (service_name,mongodb) (mongodb_version_info)) * on (service_name) group_right (mongodb) (avg by (service_name) (mongodb_mongos_db_collections_total{cluster=~\"$cluster\"}) / avg by (service_name) (mongodb_mongos_db_collections_total{cluster=~\"$cluster\"}))",
-          "format": "table",
+          "expr": "min by (service_name,mongodb) ((mongodb_mongos_sharding_shards_total) * on (service_name) group_left (mongodb) (mongodb_version_info))",
+          "format": "time_series",
           "instant": true,
-          "interval": "5m",
-          "legendFormat": "{{mongodb}}",
-          "refId": "B"
+          "interval": "$interval",
+          "legendFormat": "__auto",
+          "refId": "C",
+          "hide": false,
+          "range": false
+        },
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "min by (member_idx,mongodb) ((mongodb_rs_members_configVersion) * on (service_name) group_left (mongodb) (mongodb_version_info))",
+          "format": "time_series",
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "__auto",
+          "refId": "D",
+          "hide": false,
+          "range": false
         }
       ],
       "timeFrom": "1m",
       "title": "MongoDB Versions",
       "transformations": [
         {
+          "id": "seriesToRows",
+          "options": {}
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "Metric",
+            "replace": false,
+            "keepTime": false,
+            "format": "kvp"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "lastNotNull",
+              "include": [
+                "service_name",
+                "member_idx"
+              ]
+            },
+            "alias": "Service Name",
+            "replaceFields": false
+          }
+        },
+        {
           "id": "organize",
           "options": {
-            "excludeByName": {},
-            "indexByName": {
-              "Time": 1,
-              "Value": 3,
-              "mongodb": 2,
-              "service_name": 0
+            "excludeByName": {
+              "Time": true,
+              "Metric": true,
+              "Value": true,
+              "service_name": true,
+              "member_idx": true
             },
-            "renameByName": {}
+            "indexByName": {
+              "Time": 0,
+              "Metric": 1,
+              "Value": 2,
+              "Service Name": 3,
+              "mongodb": 4,
+              "service_name": 5,
+              "member_idx": 6
+            },
+            "renameByName": {
+              "mongodb": "Version"
+            },
+            "includeByName": {}
           }
         }
       ],
-      "type": "table"
+      "type": "table",
+      "description": ""
     },
     {
       "collapsed": false,
@@ -2826,7 +2825,7 @@
       "dashLength": 10,
       "dashes": false,
       "decimals": 2,
-      "description": "The average amount of data in GB that the PRIMARY generate per hour",
+      "description": "Shows the average hourly oplog data written to cache by the Primary server.",
       "editable": true,
       "error": false,
       "fill": 2,
@@ -2881,7 +2880,7 @@
           "editorMode": "code",
           "exemplar": true,
           "expr": "sum(increase(mongodb_oplog_stats_wt_cache_bytes_written_from_cache{service_name=~\"$service_name\"}[1h]))",
-          "interval": "$interval",
+          "interval": "1h",
           "legendFormat": "{{service_name}}",
           "range": true,
           "refId": "A"
@@ -2889,7 +2888,7 @@
       ],
       "thresholds": [],
       "timeRegions": [],
-      "title": "Oplog GB/Hour",
+      "title": "Oplog GB/Hour - $service_name",
       "tooltip": {
         "msResolution": false,
         "shared": true,
