@@ -154,7 +154,7 @@
               "showLineNumbers": false,
               "showMiniMap": false
             },
-            "content": "#### \ud83d\udece\ufe0f Important\n\nThis Dashboard is an experimental MongoDB Router Summary dashboard in Percona Monitoring and Management (PMM) that is not a part of the official PMM deployment and might be updated.\nWe ship this Dashboard to obtain feedback from our users. Once we officially release this Dashboard, it will be moved to the appropriate folder. \n\nTo provide feedback on the Dashboard, please use [our](https://forums.percona.com) forum.\ud83d\ude4f",
+            "content": "#### 🛎️ Important\n\nThis Dashboard is an experimental MongoDB Router Summary dashboard in Percona Monitoring and Management (PMM) that is not a part of the official PMM deployment and might be updated.\nWe ship this Dashboard to obtain feedback from our users. Once we officially release this Dashboard, it will be moved to the appropriate folder. \n\nTo provide feedback on the Dashboard, please use [our](https://forums.percona.com) forum.🙏",
             "mode": "markdown"
           },
           "pluginVersion": "9.2.20",
@@ -162,7 +162,7 @@
           "type": "text"
         }
       ],
-      "title": "\u26a0\ufe0f Disclaimer",
+      "title": "⚠️ Disclaimer",
       "type": "row"
     },
     {
@@ -508,7 +508,7 @@
       "type": "gauge"
     },
     {
-      "description": "Shows information about the disk space usage of the specified mountpoint.\n\n**Used** is the amount of space used.\n\n**Free** is the amount of space not in use.\n\n**Used+Free** is the total disk space allocated to the mountpoint.\n\nHaving *Free* close to 0 B is not good because of the risk to have a \u201cdisk full\u201d error that can block one of the services or even cause a crash of the entire system.\n\nIn case Free is close to 0 B consider to remove unused files or to expand the space allocated to the mountpoint.",
+      "description": "Shows information about the disk space usage of the specified mountpoint.\n\n**Used** is the amount of space used.\n\n**Free** is the amount of space not in use.\n\n**Used+Free** is the total disk space allocated to the mountpoint.\n\nHaving *Free* close to 0 B is not good because of the risk to have a “disk full” error that can block one of the services or even cause a crash of the entire system.\n\nIn case Free is close to 0 B consider to remove unused files or to expand the space allocated to the mountpoint.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -587,6 +587,7 @@
             "fixedColor": "blue",
             "mode": "fixed"
           },
+          "decimals": 0,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -600,7 +601,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "iops"
         },
         "overrides": []
       },
@@ -619,7 +621,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -662,7 +664,7 @@
           "target": ""
         }
       ],
-      "title": "Disk IOPS",
+      "title": "Disk",
       "type": "stat"
     },
     {
@@ -758,7 +760,7 @@
           "color": {
             "mode": "thresholds"
           },
-          "decimals": 2,
+          "decimals": 1,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -907,11 +909,11 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 16
       },
       "id": 1172,
       "panels": [],
-      "title": "Node States",
+      "title": "Router States",
       "type": "row"
     },
     {
@@ -973,7 +975,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 17
       },
       "id": 1174,
       "options": {
@@ -1001,7 +1003,7 @@
           "refId": "A"
         }
       ],
-      "title": "$service_name states",
+      "title": "$cluster states",
       "type": "state-timeline"
     },
     {
@@ -1010,7 +1012,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 23
       },
       "id": 1170,
       "panels": [],
@@ -1043,7 +1045,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 19
+        "y": 24
       },
       "hiddenSeries": false,
       "id": 15,
@@ -1183,7 +1185,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 19
+        "y": 24
       },
       "hiddenSeries": false,
       "id": 1074,
@@ -1300,7 +1302,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 26
+        "y": 31
       },
       "hiddenSeries": false,
       "id": 1064,
@@ -1359,7 +1361,7 @@
       "yaxes": [
         {
           "decimals": 2,
-          "format": "\u00b5s",
+          "format": "µs",
           "logBase": 1,
           "min": "0",
           "show": true
@@ -1400,7 +1402,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 26
+        "y": 31
       },
       "height": "250px",
       "hiddenSeries": false,
@@ -1588,16 +1590,19 @@
       {
         "allValue": ".*",
         "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "",
-          "value": ""
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "Environment",
-        "multi": false,
+        "multi": true,
         "name": "environment",
         "options": [],
         "query": {
@@ -1623,9 +1628,9 @@
         },
         "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\"},cluster)",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "Cluster",
-        "multi": false,
+        "multi": true,
         "multiFormat": "glob",
         "name": "cluster",
         "options": [],
@@ -1650,6 +1655,10 @@
             "$__all"
           ]
         },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PA58DA793C7250F1B"
+        },
         "definition": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\",cluster=~\"$cluster\",service_name=~\"$service_name\"}, node_name)",
         "hide": 2,
         "includeAll": true,
@@ -1670,9 +1679,13 @@
       {
         "allFormat": "glob",
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "definition": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\",cluster=~\"$cluster\"}, service_name)",
         "hide": 0,
