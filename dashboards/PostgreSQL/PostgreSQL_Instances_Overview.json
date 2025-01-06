@@ -704,7 +704,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname!~\"template.*|postgres\",state=~\"idle|active\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~\"idle|active\",datname!~\"template.*|postgres\"}[5m]))))",
+              "expr": "topk(5,(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname!~\"template.*\",state=~\"idle|active\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~\"idle|active\",datname!~\"template.*\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -715,7 +715,7 @@
               "step": 2
             },
             {
-              "expr": "avg(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~\"idle|active\",datname!~\"template.*|postgres\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~\"idle|active\",datname!~\"template.*|postgres\"}[5m])))",
+              "expr": "avg(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~\"idle|active\",datname!~\"template.*\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~\"idle|active\",datname!~\"template.*\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -956,7 +956,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname!~\"template.*|postgres\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname!~\"template.*|postgres\",state='active'}[5m]))))",
+              "expr": "topk(5,(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname!~\"template.*\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname!~\"template.*\",state='active'}[5m]))))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -964,7 +964,7 @@
               "refId": "A"
             },
             {
-              "expr": "avg(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname!~\"template.*|postgres\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname!~\"template.*|postgres\",state='active'}[5m])))",
+              "expr": "avg(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname!~\"template.*\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname!~\"template.*\",state='active'}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1025,7 +1025,7 @@
           "nullPointMode": "connected",
           "targets": [
             {
-              "expr": "sum by (service_name) (avg by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state='active',datname!~\"template.*|postgres\"}[$interval]) or max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state='active',datname!~\"template.*|postgres\"}[5m]))) / on (service_name) avg by (service_name) ((max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m])))",
+              "expr": "sum by (service_name) (avg by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state='active',datname!~\"template.*\"}[$interval]) or max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state='active',datname!~\"template.*\"}[5m]))) / on (service_name) avg by (service_name) ((max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7230,7 +7230,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m])) + \nsum(rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m])) + \nsum(rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -7307,7 +7307,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -7384,7 +7384,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -7703,7 +7703,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,(sum by (service_name) (rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m]))))",
+              "expr": "topk(5,(sum by (service_name) (rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7711,7 +7711,7 @@
               "refId": "A"
             },
             {
-              "expr": "avg(sum by (service_name) (rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m])))",
+              "expr": "avg(sum by (service_name) (rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7776,7 +7776,7 @@
           "nullPointMode": "connected",
           "targets": [
             {
-              "expr": "sum by (service_name) (rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m]))",
+              "expr": "sum by (service_name) (rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7955,7 +7955,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,(sum by (service_name) (rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m]))))",
+              "expr": "topk(5,(sum by (service_name) (rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7963,7 +7963,7 @@
               "refId": "A"
             },
             {
-              "expr": "avg(sum by (service_name) (rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m])))",
+              "expr": "avg(sum by (service_name) (rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -8028,7 +8028,7 @@
           "nullPointMode": "connected",
           "targets": [
             {
-              "expr": "sum by (service_name) (rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m]))",
+              "expr": "sum by (service_name) (rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -10348,7 +10348,7 @@
           "value": "$__all"
         },
         "datasource": "Metrics",
-        "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
+        "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*\"},datname)",
         "hide": 2,
         "includeAll": true,
         "label": "DB",
@@ -10356,7 +10356,7 @@
         "name": "database",
         "options": [],
         "query": {
-          "query": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
+          "query": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*\"},datname)",
           "refId": "Metrics-database-Variable-Query"
         },
         "refresh": 2,
