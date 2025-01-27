@@ -410,7 +410,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Full Scan',
     tooltipText: 'The query performed a full table scan',
     simpleName: 'full_scan',
-    serviceTypes: [Databases.mysql],
+    serviceTypes: [Databases.mongodb, Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['full_scan', 'sum']);
       const divider = get(data, ['num_queries', 'sum']);
