@@ -408,7 +408,7 @@ export const METRIC_CATALOGUE = {
   },
   full_scan: {
     humanizeName: 'Full Scan',
-    tooltipText: 'The query performed a full table scan',
+    tooltipText: 'The query performed a full table/collection scan',
     simpleName: 'full_scan',
     serviceTypes: [Databases.mongodb, Databases.mysql],
     metricRelation: (data) => {
