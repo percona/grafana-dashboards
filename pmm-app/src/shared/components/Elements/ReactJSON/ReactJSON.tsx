@@ -28,5 +28,6 @@ export const ReactJSON = ({ json = {} }) => (
     theme={THEME_JSON_VIEW}
     collapseStringsAfterLength={50}
     displayDataTypes={false}
+    displayObjectSize={false}
   />
 );
