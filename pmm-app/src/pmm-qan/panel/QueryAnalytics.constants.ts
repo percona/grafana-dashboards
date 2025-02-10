@@ -408,9 +408,9 @@ export const METRIC_CATALOGUE = {
   },
   full_scan: {
     humanizeName: 'Full Scan',
-    tooltipText: 'The query performed a full table scan',
+    tooltipText: 'The query performed a full table/collection scan',
     simpleName: 'full_scan',
-    serviceTypes: [Databases.mysql],
+    serviceTypes: [Databases.mongodb, Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['full_scan', 'sum']);
       const divider = get(data, ['num_queries', 'sum']);
