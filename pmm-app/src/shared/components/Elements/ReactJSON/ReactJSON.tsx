@@ -1,4 +1,4 @@
-import ReactJson from 'react-json-view';
+import ReactJsonView from '@microlink/react-json-view';
 import React from 'react';
 
 // TODO: remove stryling code duplicates
@@ -23,5 +23,11 @@ const THEME_JSON_VIEW = {
 
 export const ReactJSON = ({ json = {} }) => (
   // @ts-ignore
-  <ReactJson src={json} theme={THEME_JSON_VIEW} collapseStringsAfterLength={50} displayDataTypes={false} />
+  <ReactJsonView
+    src={json}
+    theme={THEME_JSON_VIEW}
+    collapseStringsAfterLength={50}
+    displayDataTypes={false}
+    displayObjectSize={false}
+  />
 );
