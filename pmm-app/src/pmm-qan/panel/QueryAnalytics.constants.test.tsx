@@ -147,7 +147,7 @@ const EMPTY_RELATIONS_METRICS = [
   'keys_examined',
   'locks_database_time_acquiring_micros_read_shared',
   'storage_bytes_read',
-  'storage_time_reading_micros'
+  'storage_time_reading_micros',
 ];
 
 describe('Query analytics metrics::', () => {
