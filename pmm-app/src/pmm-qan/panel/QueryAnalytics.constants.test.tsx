@@ -20,7 +20,7 @@ const metrics = {
   rows_examined: {
     sum: 100,
   },
-  docs_scanned: {
+  docs_examined: {
     sum: 200,
   },
   docs_returned: {
@@ -87,6 +87,26 @@ const metrics = {
     sum: 100,
     avg: 10,
   },
+  locks_global_acquire_count_read_shared: {
+    sum: 100,
+    cnt: 100,
+  },
+  locks_global_acquire_count_write_shared: {
+    sum: 200,
+    cnt: 100,
+  },
+  locks_database_acquire_count_read_shared: {
+    sum: 200,
+    cnt: 100,
+  },
+  locks_database_acquire_wait_count_read_shared: {
+    sum: 200,
+    cnt: 100,
+  },
+  locks_collection_acquire_count_read_shared: {
+    sum: 200,
+    cnt: 100,
+  },
 };
 
 const EMPTY_RELATIONS_METRICS = [
@@ -124,6 +144,10 @@ const EMPTY_RELATIONS_METRICS = [
   'sort_scan',
   'cpu_user_time',
   'cpu_sys_time',
+  'keys_examined',
+  'locks_database_time_acquiring_micros_read_shared',
+  'storage_bytes_read',
+  'storage_time_reading_micros',
 ];
 
 describe('Query analytics metrics::', () => {
@@ -137,8 +161,8 @@ describe('Query analytics metrics::', () => {
     expect(processedMetric).toBe('2.00 Bytes per row sent');
   });
 
-  it('docs_scanned', () => {
-    const metric = METRIC_CATALOGUE.docs_scanned;
+  it('docs_examined', () => {
+    const metric = METRIC_CATALOGUE.docs_examined;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
@@ -315,6 +339,51 @@ describe('Query analytics metrics::', () => {
 
     expect(processedMetric).toBe('1.00 per query');
     expect(absentMetric).toBe('');
+  });
+
+  it('locks_global_acquire_count_read_shared', () => {
+    const metric = METRIC_CATALOGUE.locks_global_acquire_count_read_shared;
+    const processedMetric = metric.metricRelation(metrics);
+    const absentMetric = metric.metricRelation({});
+
+    expect(absentMetric).toBe('');
+    expect(processedMetric).toBe('1.00 per query');
+  });
+
+  it('locks_global_acquire_count_write_shared', () => {
+    const metric = METRIC_CATALOGUE.locks_global_acquire_count_write_shared;
+    const processedMetric = metric.metricRelation(metrics);
+    const absentMetric = metric.metricRelation({});
+
+    expect(absentMetric).toBe('');
+    expect(processedMetric).toBe('2.00 per query');
+  });
+
+  it('locks_database_acquire_count_read_shared', () => {
+    const metric = METRIC_CATALOGUE.locks_database_acquire_count_read_shared;
+    const processedMetric = metric.metricRelation(metrics);
+    const absentMetric = metric.metricRelation({});
+
+    expect(absentMetric).toBe('');
+    expect(processedMetric).toBe('2.00 per query');
+  });
+
+  it('locks_database_acquire_wait_count_read_shared', () => {
+    const metric = METRIC_CATALOGUE.locks_database_acquire_wait_count_read_shared;
+    const processedMetric = metric.metricRelation(metrics);
+    const absentMetric = metric.metricRelation({});
+
+    expect(absentMetric).toBe('');
+    expect(processedMetric).toBe('2.00 per query');
+  });
+
+  it('locks_collection_acquire_count_read_shared', () => {
+    const metric = METRIC_CATALOGUE.locks_collection_acquire_count_read_shared;
+    const processedMetric = metric.metricRelation(metrics);
+    const absentMetric = metric.metricRelation({});
+
+    expect(absentMetric).toBe('');
+    expect(processedMetric).toBe('2.00 per query');
   });
 
   test.each(EMPTY_RELATIONS_METRICS)('%s', (metricName) => {
