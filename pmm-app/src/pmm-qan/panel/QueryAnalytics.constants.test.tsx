@@ -20,7 +20,7 @@ const metrics = {
   rows_examined: {
     sum: 100,
   },
-  docs_scanned: {
+  docs_examined: {
     sum: 200,
   },
   docs_returned: {
@@ -137,8 +137,8 @@ describe('Query analytics metrics::', () => {
     expect(processedMetric).toBe('2.00 Bytes per row sent');
   });
 
-  it('docs_scanned', () => {
-    const metric = METRIC_CATALOGUE.docs_scanned;
+  it('docs_examined', () => {
+    const metric = METRIC_CATALOGUE.docs_examined;
     const processedMetric = metric.metricRelation(metrics);
     const absentMetric = metric.metricRelation({});
 
