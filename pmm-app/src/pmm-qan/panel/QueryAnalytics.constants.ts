@@ -1256,21 +1256,6 @@ export const METRIC_CATALOGUE = {
       perQueryStatsPipe: '',
     },
   },
-  cpu_user_time: {
-    humanizeName: 'User CPU time',
-    tooltipText: 'Time spent in user space',
-    simpleName: 'cpu_user_time',
-    serviceTypes: [Databases.mongodb],
-    metricRelation: () => '',
-    units: Units.AVG_LOAD,
-    pipeTypes: {
-      ratePipe: 'number',
-      sumPipe: 'time',
-      subSumPipe: 'percent',
-      sparklineType: 'number',
-      perQueryStatsPipe: 'time',
-    },
-  },
   storage_bytes_read: {
     humanizeName: 'Storage Bytes Read',
     tooltipText: 'Total number of bytes read from storage during a specific operation',
