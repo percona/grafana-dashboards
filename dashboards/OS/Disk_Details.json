@@ -312,21 +312,21 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (node_name,mountpoint) ((max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])))",
+          "expr": "avg by (node_name,mountpoint,device,fstype) ((max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])))",
           "hide": false,
           "interval": "$interval",
           "legendFormat": "Used (device {{ device }}, {{ fstype }})",
           "refId": "A"
         },
         {
-          "expr": "avg by (node_name,mountpoint) (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m]) or (storage_limit_bytes_average{node_name=~\"$node_name\"} - azure_storage_used_bytes_average{node_name=~\"$node_name\"}))",
+          "expr": "avg by (node_name,mountpoint,device,fstype) (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m]) or (storage_limit_bytes_average{node_name=~\"$node_name\"} - azure_storage_used_bytes_average{node_name=~\"$node_name\"}))",
           "hide": false,
           "interval": "$interval",
           "legendFormat": "Free (device {{ device }}, {{ fstype }})",
           "refId": "B"
         },
         {
-          "expr": "avg by (node_name,mountpoint) (1 - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) / (max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) \nor max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) or azure_storage_percent_average{node_name=~\"$node_name\"}/100)",
+          "expr": "avg by (node_name,mountpoint,device,fstype) (1 - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) / (max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) \nor max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) or azure_storage_percent_average{node_name=~\"$node_name\"}/100)",
           "hide": false,
           "interval": "$interval",
           "legendFormat": "Usage",
