@@ -1,13 +1,19 @@
-version: "3"
 services:
   pmm-server:
     container_name: pmm-server
-    image: perconalab/pmm-server:dev-latest
+    # Temporary till we have arm builds
+    platform: linux/amd64
+    image: ${PMM_SERVER_IMAGE:-perconalab/pmm-server:3-dev-container}
     volumes:
-      - "./dist:/srv/grafana/plugins/pmm-app/dist"
+      - './dist:/srv/grafana/plugins/pmm-app/dist'
+    environment:
+      - PMM_DEBUG=1
+      - PMM_DEV_PORTAL_URL=https://portal-dev.percona.com
+      - PMM_DEV_PERCONA_PLATFORM_ADDRESS=https://check-dev.percona.com:443
+      - PMM_DEV_PERCONA_PLATFORM_PUBLIC_KEY=RWTkF7Snv08FCboTne4djQfN5qbrLfAjb8SY3/wwEP+X5nUrkxCEvUDJ
     ports:
-      - 80:80
-      - 443:443
+      - 80:8080
+      - 443:8443
       - 29000:9000
       - 9933:9933
     restart: always
@@ -24,7 +30,7 @@ services:
 
   pmm-client:
     container_name: pmm-client
-    image: centos
+    image: oraclelinux:9
     depends_on:
       - pmm-server
       - sysbench-ps
@@ -32,11 +38,11 @@ services:
       bash -c "
         yum install https://repo.percona.com/yum/percona-release-latest.noarch.rpm -y
         percona-release disable all
-        percona-release enable original testing
+        percona-release enable pmm3-client
         yum update -y
-        yum install pmm2-client -y
-        pmm-agent setup --config-file=/usr/local/percona/pmm2/config/pmm-agent.yaml --server-address=pmm-server:443 --server-insecure-tls --server-username=admin --server-password=admin
-        nohup pmm-agent --config-file=/usr/local/percona/pmm2/config/pmm-agent.yaml &
+        yum install pmm-client -y
+        pmm-agent setup --config-file=/usr/local/percona/pmm/config/pmm-agent.yaml --server-address=pmm-server:8443 --server-insecure-tls --server-username=admin --server-password=admin
+        nohup pmm-agent --config-file=/usr/local/percona/pmm/config/pmm-agent.yaml &
         sleep 60
         pmm-admin add mysql --cluster=cl1 --environment=dev --custom-labels='app=wp1'  --username=root --password=secret --query-source=slowlog MySQLSlowLog ps:3306
         pmm-admin add mysql --cluster=cl2 --environment=prod --custom-labels='app=wp2' --username=root --password=secret --query-source=perfschema MySQLPerfSchema ps:3306
@@ -62,7 +68,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=secret
     ports:
-      - "5432:5432"
+      - '5432:5432'
 
   mongo:
     image: mongo
@@ -70,7 +76,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=mongo
       - MONGO_INITDB_ROOT_PASSWORD=secret
     ports:
-      - "27017:27017"
+      - '27017:27017'
 
   sysbench-ps:
     container_name: sysbench-ps

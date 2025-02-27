@@ -1564,6 +1564,588 @@
         "x": 0,
         "y": 39
       },
+      "id": 1302,
+      "panels": [],
+      "title": "Current Topology",
+      "type": "row"
+    },
+    {
+      "description": "Config servers store the metadata for a sharded cluster. The metadata reflects state and organization for all data and components within the sharded cluster. The metadata includes the list of chunks on every shard and the ranges that define the chunks.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "options": {
+                "1": {
+                  "text": "PRIMARY"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "2": {
+                  "text": "SECONDARY"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "7": {
+                  "text": "ARBITER"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "8": {
+                  "text": "DOWN"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "Exporter is not connected"
+                }
+              },
+              "type": "special"
+            },
+            {
+              "options": {
+                "3": {
+                  "text": "RECOVERING"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "5": {
+                  "text": "STARTUP2"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "6": {
+                  "text": "UNKNOWN"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "9": {
+                  "text": "ROLLBACK"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "10": {
+                  "text": "REMOVED"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "0": {
+                  "text": "STARTUP"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 40
+      },
+      "id": 1306,
+      "nullPointMode": "connected",
+      "options": {
+        "autoSizeColumns": true,
+        "autoSizePolygons": true,
+        "autoSizeRows": true,
+        "compositeConfig": {
+          "animationSpeed": "2500",
+          "composites": [],
+          "enabled": true
+        },
+        "compositeGlobalAliasingEnabled": false,
+        "ellipseCharacters": 18,
+        "ellipseEnabled": true,
+        "globalAutoScaleFonts": false,
+        "globalClickthrough": "",
+        "globalClickthroughCustomTarget": "",
+        "globalClickthroughCustomTargetEnabled": false,
+        "globalClickthroughNewTabEnabled": false,
+        "globalClickthroughSanitizedEnabled": false,
+        "globalDecimals": 2,
+        "globalDisplayMode": "all",
+        "globalDisplayTextTriggeredEmpty": "OK",
+        "globalFillColor": "#0a55a1",
+        "globalFontSize": 12,
+        "globalGradientsEnabled": true,
+        "globalOperator": "last",
+        "globalPolygonBorderColor": "#000000",
+        "globalPolygonBorderSize": 2,
+        "globalPolygonSize": 50,
+        "globalRegexPattern": "",
+        "globalShape": "hexagon_pointed_top",
+        "globalShowTooltipColumnHeadersEnabled": true,
+        "globalShowValueEnabled": true,
+        "globalTextFontAutoColor": "#000000",
+        "globalTextFontAutoColorEnabled": false,
+        "globalTextFontColor": "#000000",
+        "globalTextFontFamily": "Inter",
+        "globalThresholdsConfig": [
+          {
+            "color": "#299c46",
+            "state": 0,
+            "value": 1
+          },
+          {
+            "color": "#E0B400",
+            "state": 0,
+            "value": 2
+          },
+          {
+            "color": "#FA6400",
+            "state": 0,
+            "value": 7
+          },
+          {
+            "color": "#d44a3a",
+            "state": 2,
+            "value": 8
+          }
+        ],
+        "globalTooltipsEnabled": true,
+        "globalTooltipsFontFamily": "Inter",
+        "globalTooltipsShowTimestampEnabled": true,
+        "globalUnitFormat": "short",
+        "layoutDisplayLimit": 100,
+        "layoutNumColumns": 8,
+        "layoutNumRows": 8,
+        "overrideConfig": {
+          "overrides": []
+        },
+        "panelId": 0,
+        "radius": 100,
+        "sortByDirection": 1,
+        "sortByField": "name",
+        "tooltipDisplayMode": "all",
+        "tooltipDisplayTextTriggeredEmpty": "OK",
+        "tooltipPrimarySortByField": "thresholdLevel",
+        "tooltipPrimarySortDirection": 2,
+        "tooltipSecondarySortByField": "value",
+        "tooltipSecondarySortDirection": 2
+      },
+      "pluginVersion": "2.1.5",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by (service_name) (mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set!~\"$shard\",set!='',service_name=~\"$service_name\"})",
+          "hide": true,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        },
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "min by (member_idx) (mongodb_rs_members_state{environment=~\"$environment\",cluster=~\"$cluster\",rs_nm!~\"$shard\"})",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B"
+        }
+      ],
+      "title": "Config Servers",
+      "type": "grafana-polystat-panel"
+    },
+    {
+      "description": "Mongos is a routing service for MongoDB shard configurations that processes queries from the application layer, and determines the location of this data in the sharded cluster, in order to complete these operations. From the perspective of the application, a mongos instance behaves identically to any other MongoDB instance.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "text": "DOWN"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "1": {
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 12,
+        "y": 40
+      },
+      "id": 1308,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "nullPointMode": "connected",
+      "options": {
+        "autoSizeColumns": true,
+        "autoSizePolygons": true,
+        "autoSizeRows": true,
+        "compositeConfig": {
+          "animationSpeed": "2500",
+          "composites": [],
+          "enabled": true
+        },
+        "compositeGlobalAliasingEnabled": false,
+        "ellipseCharacters": 18,
+        "ellipseEnabled": true,
+        "globalAutoScaleFonts": false,
+        "globalClickthrough": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?from=$__from&to=$__to&var-service_name=${__cell_name}",
+        "globalClickthroughCustomTarget": "",
+        "globalClickthroughCustomTargetEnabled": false,
+        "globalClickthroughNewTabEnabled": true,
+        "globalClickthroughSanitizedEnabled": true,
+        "globalDecimals": 2,
+        "globalDisplayMode": "all",
+        "globalDisplayTextTriggeredEmpty": "OK",
+        "globalFillColor": "#8AB8FF",
+        "globalFontSize": 12,
+        "globalGradientsEnabled": true,
+        "globalOperator": "last",
+        "globalPolygonBorderColor": "black",
+        "globalPolygonBorderSize": 2,
+        "globalPolygonSize": 50,
+        "globalRegexPattern": "",
+        "globalShape": "hexagon_pointed_top",
+        "globalShowTooltipColumnHeadersEnabled": true,
+        "globalShowValueEnabled": true,
+        "globalTextFontAutoColor": "#000000",
+        "globalTextFontAutoColorEnabled": false,
+        "globalTextFontColor": "#000000",
+        "globalTextFontFamily": "Inter",
+        "globalThresholdsConfig": [
+          {
+            "color": "#d44a3a",
+            "state": 2,
+            "value": 0
+          },
+          {
+            "color": "#299c46",
+            "state": 0,
+            "value": 1
+          }
+        ],
+        "globalTooltipsEnabled": true,
+        "globalTooltipsFontFamily": "Inter",
+        "globalTooltipsShowTimestampEnabled": true,
+        "globalUnitFormat": "ops",
+        "layoutDisplayLimit": 100,
+        "layoutNumColumns": 8,
+        "layoutNumRows": 8,
+        "overrideConfig": {
+          "overrides": []
+        },
+        "panelId": 0,
+        "radius": 100,
+        "sortByDirection": 1,
+        "sortByField": "name",
+        "tooltipDisplayMode": "all",
+        "tooltipDisplayTextTriggeredEmpty": "OK",
+        "tooltipPrimarySortByField": "thresholdLevel",
+        "tooltipPrimarySortDirection": 2,
+        "tooltipSecondarySortByField": "name",
+        "tooltipSecondarySortDirection": 2
+      },
+      "pluginVersion": "2.1.5",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by (service_name) (mongodb_up{environment=~\"$environment\", cluster=~\"$cluster\", service_name=~\"$service_name_mongos\"})",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B"
+        }
+      ],
+      "title": "Mongos Routers",
+      "type": "grafana-polystat-panel"
+    },
+    {
+      "description": "A shard contains a subset of sharded data for a sharded cluster. Together, the cluster’s shards hold the entire data set for the cluster.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "options": {
+                "1": {
+                  "text": "PRIMARY"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "2": {
+                  "text": "SECONDARY"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "7": {
+                  "text": "ARBITER"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "8": {
+                  "text": "DOWN"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "6": {
+                  "text": "UNKNOWN"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "10": {
+                  "text": "REMOVED"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "9": {
+                  "text": "ROLLBACK"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "5": {
+                  "text": "STARTUP2"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "3": {
+                  "text": "RECOVERING"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "0": {
+                  "text": "STARTUP"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "Exporter is not connected"
+                }
+              },
+              "type": "special"
+            },
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 11,
+        "x": 7,
+        "y": 45
+      },
+      "id": 1310,
+      "nullPointMode": "connected",
+      "options": {
+        "autoSizeColumns": true,
+        "autoSizePolygons": true,
+        "autoSizeRows": true,
+        "compositeConfig": {
+          "animationSpeed": "2500",
+          "composites": [],
+          "enabled": true
+        },
+        "compositeGlobalAliasingEnabled": false,
+        "ellipseCharacters": 18,
+        "ellipseEnabled": true,
+        "globalAutoScaleFonts": false,
+        "globalClickthrough": "",
+        "globalClickthroughCustomTarget": "",
+        "globalClickthroughCustomTargetEnabled": false,
+        "globalClickthroughNewTabEnabled": false,
+        "globalClickthroughSanitizedEnabled": false,
+        "globalDecimals": 2,
+        "globalDisplayMode": "all",
+        "globalDisplayTextTriggeredEmpty": "OK",
+        "globalFillColor": "#0a55a1",
+        "globalFontSize": 12,
+        "globalGradientsEnabled": true,
+        "globalOperator": "last",
+        "globalPolygonBorderColor": "#000000",
+        "globalPolygonBorderSize": 2,
+        "globalPolygonSize": 50,
+        "globalRegexPattern": "",
+        "globalShape": "hexagon_pointed_top",
+        "globalShowTooltipColumnHeadersEnabled": true,
+        "globalShowValueEnabled": true,
+        "globalTextFontAutoColor": "#000000",
+        "globalTextFontAutoColorEnabled": false,
+        "globalTextFontColor": "#000000",
+        "globalTextFontFamily": "Inter",
+        "globalThresholdsConfig": [
+          {
+            "color": "#37872D",
+            "state": 0,
+            "value": 1
+          },
+          {
+            "color": "#E0B400",
+            "state": 0,
+            "value": 2
+          },
+          {
+            "color": "#8b8000",
+            "state": 0,
+            "value": 7
+          },
+          {
+            "color": "#d44a3a",
+            "state": 2,
+            "value": 8
+          }
+        ],
+        "globalTooltipsEnabled": true,
+        "globalTooltipsFontFamily": "Inter",
+        "globalTooltipsShowTimestampEnabled": true,
+        "globalUnitFormat": "short",
+        "layoutDisplayLimit": 100,
+        "layoutNumColumns": 8,
+        "layoutNumRows": 8,
+        "overrideConfig": {
+          "overrides": []
+        },
+        "panelId": 0,
+        "radius": 100,
+        "sortByDirection": 3,
+        "sortByField": "value",
+        "tooltipDisplayMode": "all",
+        "tooltipDisplayTextTriggeredEmpty": "OK",
+        "tooltipPrimarySortByField": "thresholdLevel",
+        "tooltipPrimarySortDirection": 2,
+        "tooltipSecondarySortByField": "value",
+        "tooltipSecondarySortDirection": 2
+      },
+      "pluginVersion": "2.1.5",
+      "repeat": "shard",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "min by (member_idx) (mongodb_rs_members_state{environment=~\"$environment\",cluster=~\"$cluster\",rs_nm=~\"$shard\"})",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Shard - $shard",
+      "type": "grafana-polystat-panel"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 55
+      },
       "id": 1285,
       "panels": [],
       "title": "Node States",
@@ -1679,7 +2261,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 40
+        "y": 56
       },
       "id": 1281,
       "options": {
@@ -1720,7 +2302,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 47
+        "y": 63
       },
       "id": 1279,
       "panels": [],
@@ -1789,7 +2371,7 @@
         "h": 8,
         "w": 11,
         "x": 0,
-        "y": 48
+        "y": 64
       },
       "hide_headers": false,
       "id": 1030,
@@ -1954,7 +2536,7 @@
         "h": 8,
         "w": 13,
         "x": 11,
-        "y": 48
+        "y": 64
       },
       "id": 1043,
       "options": {
@@ -2025,7 +2607,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 72
       },
       "id": 81,
       "panels": [],
@@ -2128,7 +2710,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 57
+        "y": 73
       },
       "id": 37,
       "options": {
@@ -2231,7 +2813,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 64
+        "y": 80
       },
       "id": 1177,
       "options": {
@@ -2274,7 +2856,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 71
+        "y": 87
       },
       "id": 1199,
       "panels": [],
@@ -2334,7 +2916,7 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 72
+        "y": 88
       },
       "hide_headers": false,
       "id": 1200,
@@ -2457,7 +3039,7 @@
         "h": 8,
         "w": 18,
         "x": 6,
-        "y": 72
+        "y": 88
       },
       "id": 1201,
       "options": {
@@ -2553,7 +3135,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 80
+        "y": 96
       },
       "id": 1216,
       "options": {
@@ -2649,7 +3231,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 87
+        "y": 103
       },
       "id": 1212,
       "options": {
@@ -2687,7 +3269,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 94
+        "y": 134
       },
       "id": 97,
       "panels": [],
@@ -2762,7 +3344,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 95
+        "y": 135
       },
       "id": 14,
       "options": {
@@ -2866,7 +3448,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 95
+        "y": 135
       },
       "id": 27,
       "options": {
@@ -2966,7 +3548,7 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 103
+        "y": 143
       },
       "id": 1299,
       "options": {
@@ -3081,9 +3663,13 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 0,
@@ -3212,6 +3798,51 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\",cluster=~\"$cluster\"}, service_name)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Node",
+        "multi": true,
+        "name": "service_name_mongos",
+        "options": [],
+        "query": {
+          "query": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\",cluster=~\"$cluster\"}, service_name)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "mongod",
+          "value": "mongod"
+        },
+        "definition": "label_values(mongodb_up, cluster_role)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "cluster_role",
+        "options": [],
+        "query": {
+          "query": "label_values(mongodb_up, cluster_role)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -3246,6 +3877,6 @@
   "timezone": "browser",
   "title": "MongoDB Sharded Cluster Summary",
   "uid": "mongodb-cluster-summary",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
