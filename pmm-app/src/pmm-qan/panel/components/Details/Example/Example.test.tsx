@@ -6,7 +6,7 @@ import Example from './Example';
 import { ExampleInterface } from './Example.types';
 
 jest.mock('shared/components/helpers/notification-manager');
-jest.mock('react-json-view', () => ({ src = {} }) => <div className="json" data-src={JSON.stringify(src)} />);
+jest.mock('@microlink/react-json-view', () => ({ src = {} }) => <div className="json" data-src={JSON.stringify(src)} />);
 
 describe('Example tab page render test', () => {
   it('Component shows error text when there is no examples', () => {
