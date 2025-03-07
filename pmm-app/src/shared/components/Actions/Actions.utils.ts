@@ -1,10 +1,19 @@
 import { backOff } from 'exponential-backoff';
+import { AxiosError } from 'axios';
 import { ActionResult } from './Actions.types';
 import { ActionsService } from './Actions.service';
 
 const INTERVAL = 500;
 
 export const getActionResult = async (actionId: string): Promise<ActionResult> => {
+  if (actionId === null) {
+    return {
+      loading: false,
+      value: null,
+      error: 'Unknown error',
+    };
+  }
+
   const getData = async () => {
     const result = await ActionsService.getActionResult({
       action_id: actionId,
@@ -46,4 +55,20 @@ export const getActionResult = async (actionId: string): Promise<ActionResult> =
     value: requestResult.output,
     error: '',
   };
+};
+
+export const catchActionError = (error: Error): Promise<ActionResult> => {
+  if (error instanceof AxiosError) {
+    return Promise.resolve({
+      loading: false,
+      value: null,
+      error: error.response?.data?.message,
+    });
+  }
+
+  return Promise.resolve({
+    loading: false,
+    value: null,
+    error: error.message,
+  });
 };

@@ -45,30 +45,18 @@ export const mysqlMethods = {
   },
 
   getExplainJSON: async ({ example, queryId, placeholders }) => {
-    try {
-      const payload = getExplainPayload(example, queryId, placeholders);
+    const payload = getExplainPayload(example, queryId, placeholders);
 
-      const result = await MysqlDatabaseService.getExplainJSON(payload);
+    const result = await MysqlDatabaseService.getExplainJSON(payload);
 
-      return result.mysql_explain_json.action_id;
-    } catch (e) {
-      console.error(e);
-
-      return null;
-    }
+    return result.mysql_explain_json.action_id;
   },
 
   getExplain: async ({ example, queryId, placeholders }) => {
-    try {
-      const payload = getExplainPayload(example, queryId, placeholders);
+    const payload = getExplainPayload(example, queryId, placeholders);
 
-      const result = await MysqlDatabaseService.getExplain(payload);
+    const result = await MysqlDatabaseService.getExplain(payload);
 
-      return result.mysql_explain.action_id;
-    } catch (e) {
-      console.error(e);
-
-      return null;
-    }
+    return result.mysql_explain.action_id;
   },
 };
