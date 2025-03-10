@@ -295,13 +295,13 @@ export const METRIC_CATALOGUE = {
       perQueryStatsPipe: 'number',
     },
   },
-  docs_scanned: {
-    humanizeName: 'Docs scanned',
-    tooltipText: 'Number of scanned documents',
-    simpleName: 'docs_scanned',
+  docs_examined: {
+    humanizeName: 'Docs examined',
+    tooltipText: 'Number of examined documents',
+    simpleName: 'docs_examined',
     serviceTypes: [Databases.mongodb],
     metricRelation: (data) => {
-      const mainMetric = get(data, ['docs_scanned', 'sum']);
+      const mainMetric = get(data, ['docs_examined', 'sum']);
       const divider = get(data, ['docs_returned', 'sum']);
 
       if (!mainMetric || !divider) {
@@ -1109,6 +1109,181 @@ export const METRIC_CATALOGUE = {
       subSumPipe: 'percent',
       sparklineType: 'number',
       perQueryStatsPipe: 'number',
+    },
+  },
+  keys_examined: {
+    humanizeName: 'Keys Examined',
+    tooltipText: 'Number of index keys scanned during query execution',
+    simpleName: 'docs_returned',
+    serviceTypes: [Databases.mongodb],
+    metricRelation: () => '',
+    units: Units.NONE,
+    pipeTypes: {
+      ratePipe: 'number',
+      sumPipe: 'number',
+      subSumPipe: 'percent',
+      sparklineType: 'number',
+      perQueryStatsPipe: 'number',
+    },
+  },
+  locks_global_acquire_count_read_shared: {
+    humanizeName: 'Locks Global Acquire Count Read Shared',
+    tooltipText: 'Number of times a global read lock was acquired during query execution',
+    simpleName: 'locks_global_acquire_count_read_shared',
+    serviceTypes: [Databases.mongodb],
+    metricRelation: (data) => {
+      const mainMetric = get(data, ['locks_global_acquire_count_read_shared', 'sum']);
+      const divider = get(data, ['locks_global_acquire_count_read_shared', 'cnt']);
+
+      if (!mainMetric || !divider) {
+        return '';
+      }
+
+      return `${humanize.transform(mainMetric / divider, 'number')} per query`;
+    },
+    units: Units.NONE,
+    pipeTypes: {
+      sumPipe: 'number',
+      subSumPipe: 'percent',
+      sparklineType: 'number',
+      perQueryStatsPipe: '',
+    },
+  },
+  locks_global_acquire_count_write_shared: {
+    humanizeName: 'Locks Global Acquire Count Write Shared',
+    tooltipText: 'Number of times a global write lock was acquired during query execution',
+    simpleName: 'locks_global_acquire_count_write_shared',
+    serviceTypes: [Databases.mongodb],
+    metricRelation: (data) => {
+      const mainMetric = get(data, ['locks_global_acquire_count_write_shared', 'sum']);
+      const divider = get(data, ['locks_global_acquire_count_write_shared', 'cnt']);
+
+      if (!mainMetric || !divider) {
+        return '';
+      }
+
+      return `${humanize.transform(mainMetric / divider, 'number')} per query`;
+    },
+    units: Units.NONE,
+    pipeTypes: {
+      sumPipe: 'number',
+      subSumPipe: 'percent',
+      sparklineType: 'number',
+      perQueryStatsPipe: '',
+    },
+  },
+  locks_database_acquire_count_read_shared: {
+    humanizeName: 'Locks Database Acquire Count Read Shared',
+    tooltipText: 'Number of times a read lock was acquired at the database level during query execution',
+    simpleName: 'locks_database_acquire_count_read_shared',
+    serviceTypes: [Databases.mongodb],
+    metricRelation: (data) => {
+      const mainMetric = get(data, ['locks_database_acquire_count_read_shared', 'sum']);
+      const divider = get(data, ['locks_database_acquire_count_read_shared', 'cnt']);
+
+      if (!mainMetric || !divider) {
+        return '';
+      }
+
+      return `${humanize.transform(mainMetric / divider, 'number')} per query`;
+    },
+    units: Units.NONE,
+    pipeTypes: {
+      sumPipe: 'number',
+      subSumPipe: 'percent',
+      sparklineType: 'number',
+      perQueryStatsPipe: '',
+    },
+  },
+  locks_database_acquire_wait_count_read_shared: {
+    humanizeName: 'Locks Database Acquire Wait Count Read Shared',
+    tooltipText: 'Number of times a read lock at the database level was requested but had to wait before being granted',
+    simpleName: 'locks_database_acquire_wait_count_read_shared',
+    serviceTypes: [Databases.mongodb],
+    metricRelation: (data) => {
+      const mainMetric = get(data, ['locks_database_acquire_wait_count_read_shared', 'sum']);
+      const divider = get(data, ['locks_database_acquire_wait_count_read_shared', 'cnt']);
+
+      if (!mainMetric || !divider) {
+        return '';
+      }
+
+      return `${humanize.transform(mainMetric / divider, 'number')} per query`;
+    },
+    units: Units.NONE,
+    pipeTypes: {
+      sumPipe: 'number',
+      subSumPipe: 'percent',
+      sparklineType: 'number',
+      perQueryStatsPipe: '',
+    },
+  },
+  locks_database_time_acquiring_micros_read_shared: {
+    humanizeName: 'Locks Database Time Acquiring Micros Read Shared',
+    tooltipText: 'Indicates the time, spent acquiring a read lock at the database level during an operation',
+    simpleName: 'locks_database_time_acquiring_micros_read_shared',
+    serviceTypes: [Databases.mongodb],
+    metricRelation: () => '',
+    units: Units.AVG_LOAD,
+    pipeTypes: {
+      ratePipe: 'number',
+      sumPipe: 'time',
+      subSumPipe: 'percent',
+      sparklineType: 'number',
+      perQueryStatsPipe: 'time',
+    },
+  },
+  locks_collection_acquire_count_read_shared: {
+    humanizeName: 'Locks Collection Acquire Count Read Shared',
+    tooltipText: 'Number of times a read lock was acquired on a specific collection during operations',
+    simpleName: 'locks_collection_acquire_count_read_shared',
+    serviceTypes: [Databases.mongodb],
+    metricRelation: (data) => {
+      const mainMetric = get(data, ['locks_collection_acquire_count_read_shared', 'sum']);
+      const divider = get(data, ['locks_collection_acquire_count_read_shared', 'cnt']);
+
+      if (!mainMetric || !divider) {
+        return '';
+      }
+
+      return `${humanize.transform(mainMetric / divider, 'number')} per query`;
+    },
+    units: Units.NONE,
+    pipeTypes: {
+      sumPipe: 'number',
+      subSumPipe: 'percent',
+      sparklineType: 'number',
+      perQueryStatsPipe: '',
+    },
+  },
+  storage_bytes_read: {
+    humanizeName: 'Storage Bytes Read',
+    tooltipText: 'Total number of bytes read from storage during a specific operation',
+    simpleName: 'storage_bytes_read',
+    serviceTypes: [Databases.mongodb],
+    metricRelation: () => '',
+    units: Units.NONE,
+    pipeTypes: {
+      ratePipe: 'number',
+      sumPipe: 'number',
+      subSumPipe: 'percent',
+      sparklineType: 'number',
+      perQueryStatsPipe: 'number',
+    },
+  },
+  storage_time_reading_micros: {
+    humanizeName: 'Storage Time Reading Micros',
+    tooltipText: 'Indicates the time, spent reading data from storage during an operation',
+    simpleName: 'storage_time_reading_micros',
+    serviceTypes: [Databases.mongodb],
+    metricRelation: () => '',
+    units: Units.AVG_LOAD,
+    pipeTypes: {
+      ratePipe: 'number',
+      sumPipe: 'time',
+      subSumPipe: 'percent',
+      sparklineType: 'number',
+      perQueryStatsPipe: 'time',
     },
   },
 };
