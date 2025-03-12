@@ -1,5 +1,6 @@
 import { backOff } from 'exponential-backoff';
 import { AxiosError } from 'axios';
+import { capitalize } from 'shared/core/utils';
 import { ActionResult } from './Actions.types';
 import { ActionsService } from './Actions.service';
 
@@ -62,13 +63,13 @@ export const catchActionError = (error: Error): Promise<ActionResult> => {
     return Promise.resolve({
       loading: false,
       value: null,
-      error: error.response?.data?.message,
+      error: capitalize(error.response?.data?.message),
     });
   }
 
   return Promise.resolve({
     loading: false,
     value: null,
-    error: error.message,
+    error: capitalize(error.message),
   });
 };
