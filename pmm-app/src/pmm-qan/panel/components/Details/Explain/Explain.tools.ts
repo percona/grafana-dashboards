@@ -80,8 +80,8 @@ export const fetchExplains = async (
       };
 
       const [classicResult, jsonResult] = await Promise.all([
-        mysqlMethods.getExplain(payload).then(getActionResult).catch(catchActionError),
-        mysqlMethods.getExplainJSON(payload).then(getActionResult).catch(catchActionError),
+        mysqlMethods.getExplain(payload, true).then(getActionResult).catch(catchActionError),
+        mysqlMethods.getExplainJSON(payload, true).then(getActionResult).catch(catchActionError),
       ]);
 
       const jsonValue = parseExplain(jsonResult);
@@ -96,7 +96,7 @@ export const fetchExplains = async (
 
     if (databaseType === Databases.mongodb) {
       const jsonResult = await mongodbMethods
-        .getExplainJSON({ example })
+        .getExplainJSON({ example }, true)
         .then(getActionResult)
         .catch(catchActionError);
 
