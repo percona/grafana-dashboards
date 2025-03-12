@@ -1,2 +1,2 @@
-export { getActionResult } from './Actions.utils';
+export { getActionResult, catchActionError } from './Actions.utils';
 export * from './Actions.types';

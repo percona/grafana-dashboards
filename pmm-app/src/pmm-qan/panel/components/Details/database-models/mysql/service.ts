@@ -19,15 +19,15 @@ export default {
     return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
   },
 
-  getExplainJSON(body) {
+  getExplainJSON(body, disableNotifications = false) {
     const requestBody = { mysql_explain_json: body };
 
-    return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
+    return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody, disableNotifications);
   },
 
-  getExplain(body) {
+  getExplain(body, disableNotifications = false) {
     const requestBody = { mysql_explain: body };
 
-    return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody);
+    return apiRequest.post<any, any>('/v1/actions:startServiceAction', requestBody, disableNotifications);
   },
 };
