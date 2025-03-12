@@ -7,7 +7,7 @@ import { ActionsService } from './Actions.service';
 const INTERVAL = 500;
 
 export const getActionResult = async (actionId: string): Promise<ActionResult> => {
-  if (actionId === null) {
+  if (!actionId) {
     return {
       loading: false,
       value: null,
