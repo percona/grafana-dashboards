@@ -1,5 +1,6 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import '@testing-library/jest-dom'
+import { render } from "@testing-library/react";
 import { Form } from 'react-final-form';
 import { CheckboxGroup } from './CheckboxGroup';
 
@@ -49,7 +50,7 @@ const rawTime = {
 
 describe('CheckboxGroup ::', () => {
   it('should render correct without filter', async () => {
-    const root = mount(
+    const root = render(
       <Form
         onSubmit={jest.fn()}
         render={() => (
@@ -67,13 +68,13 @@ describe('CheckboxGroup ::', () => {
       />,
     );
 
-    expect(root.find('[data-testid="filter-checkbox-postgresql"]').length).toEqual(1);
-    expect(root.find('[data-testid="filter-checkbox-mysql"]').length).toEqual(0);
-    expect(root.find('[data-testid="checkbox-group-header"]').length).toEqual(1);
+    expect(root.queryAllByTestId('filter-checkbox-postgresql').length).toEqual(1);
+    expect(root.queryAllByTestId('filter-checkbox-mysql').length).toEqual(0);
+    expect(root.queryAllByTestId('checkbox-group-header').length).toEqual(1);
   });
 
   it('should render correct with partially matching filter', async () => {
-    const root = mount(
+    const root = render(
       <Form
         onSubmit={jest.fn()}
         render={() => (
@@ -91,13 +92,13 @@ describe('CheckboxGroup ::', () => {
       />,
     );
 
-    expect(root.find('[data-testid="filter-checkbox-postgresql"]').length).toEqual(1);
-    expect(root.find('[data-testid="filter-checkbox-mysql"]').length).toEqual(0);
-    expect(root.find('[data-testid="checkbox-group-header"]').length).toEqual(1);
+    expect(root.queryAllByTestId('filter-checkbox-postgresql').length).toEqual(1);
+    expect(root.queryAllByTestId('filter-checkbox-mysql').length).toEqual(0);
+    expect(root.queryAllByTestId('checkbox-group-header').length).toEqual(1);
   });
 
   it('should render empty component with not matching filter', async () => {
-    const root = mount(
+    const root = render(
       <Form
         onSubmit={jest.fn()}
         render={() => (
@@ -115,13 +116,13 @@ describe('CheckboxGroup ::', () => {
       />,
     );
 
-    expect(root.find('[data-testid="filter-checkbox-postgresql"]').length).toEqual(0);
-    expect(root.find('[data-testid="filter-checkbox-mysql"]').length).toEqual(0);
-    expect(root.find('[data-testid="checkbox-group-header"]').length).toEqual(0);
+    expect(root.queryAllByTestId('filter-checkbox-postgresql').length).toEqual(0);
+    expect(root.queryAllByTestId('filter-checkbox-mysql').length).toEqual(0);
+    expect(root.queryAllByTestId('checkbox-group-header').length).toEqual(0);
   });
 
   it('should render only checked with showAll set to false', async () => {
-    const root = mount(
+    const root = render(
       <Form
         onSubmit={jest.fn()}
         render={() => (
@@ -139,13 +140,13 @@ describe('CheckboxGroup ::', () => {
       />,
     );
 
-    expect(root.find('[data-testid="filter-checkbox-postgresql"]').length).toEqual(0);
-    expect(root.find('[data-testid="filter-checkbox-mysql"]').length).toEqual(1);
-    expect(root.find('[data-testid="checkbox-group-header"]').length).toEqual(1);
+    expect(root.queryAllByTestId('filter-checkbox-postgresql').length).toEqual(0);
+    expect(root.queryAllByTestId('filter-checkbox-mysql').length).toEqual(1);
+    expect(root.queryAllByTestId('checkbox-group-header').length).toEqual(1);
   });
 
   it('should render top 5 switcher correct', async () => {
-    const root = mount(
+    const root = render(
       <Form
         onSubmit={jest.fn()}
         render={() => (
@@ -163,10 +164,8 @@ describe('CheckboxGroup ::', () => {
       />,
     );
 
-    const showTopSwitcher = root.find('[data-testid="show-top-switcher"]');
-
-    expect(showTopSwitcher.length).toEqual(1);
-    expect(root.find('[data-testid^="filter-checkbox"]').length).toEqual(1);
-    expect(showTopSwitcher.text()).toBe(`${ITEMS_LIST.length}`);
+    expect(root.getAllByTestId('show-top-switcher').length).toEqual(1);
+    expect(root.queryAllByTestId((testId)=>testId.startsWith('filter-checkbox')).length).toEqual(1);
+    expect(root.getByTestId('show-top-switcher')).toHaveTextContent(`${ITEMS_LIST.length}`);
   });
 });

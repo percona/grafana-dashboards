@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, fireEvent } from "@testing-library/react";
 import { RadioButton } from './RadioButton';
 
 const testProps = {
@@ -11,31 +11,34 @@ const testProps = {
 
 describe('RadioButton::', () => {
   it('Renders correctly', () => {
-    const root = shallow(<RadioButton {...testProps}>Test</RadioButton>);
-    const input = root.find('input');
-    const label = root.find('label');
+    const {container} = render(<RadioButton {...testProps}>Test</RadioButton>);
+    const input = container.querySelector('input');
+    const label = container.querySelector('label');
 
-    expect(label.text()).toEqual('Test');
-    expect(input.prop('id')).toEqual(testProps.id);
-    expect(input.prop('name')).toEqual(testProps.name);
+    expect(label?.textContent).toEqual('Test');
+    expect(input?.id).toEqual(testProps.id);
+    expect(input?.name).toEqual(testProps.name);
   });
 
   it('Renders with active class', () => {
-    const root = shallow(<RadioButton {...testProps} active>Test</RadioButton>);
+    const {container} = render(<RadioButton {...testProps} active>Test</RadioButton>);
 
-    expect(root.find('label').prop('className')).toContain('active');
+    expect(container.querySelector('label')?.className).toContain('active');
   });
 
   it('Renders with disabled class', () => {
-    const root = shallow(<RadioButton {...testProps} disabled>Test</RadioButton>);
+    const {container} = render(<RadioButton {...testProps} disabled>Test</RadioButton>);
 
-    expect(root.find('label').prop('className')).toContain('disabled');
+    expect(container.querySelector('label')?.className).toContain('disabled');
   });
 
   it('Calls onChange when clicked', () => {
-    const root = shallow(<RadioButton {...testProps}>Test</RadioButton>);
+    const {container} = render(<RadioButton {...testProps}>Test</RadioButton>);
 
-    root.find('label').simulate('click');
+    const label = container.querySelector('label');
+    if(label){
+      fireEvent.click(label)
+    }
 
     expect(testProps.onChange).toHaveBeenCalled();
   });

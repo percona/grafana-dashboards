@@ -1,6 +1,6 @@
 import React from 'react';
-import { mount } from 'enzyme';
-import { dataTestId } from 'shared/core/test.utils';
+import { render } from "@testing-library/react";
+
 import { JsonExplain } from './JsonExplain';
 
 jest.mock('shared/components/Elements/Scrollbar/Scrollbar');
@@ -13,10 +13,10 @@ describe('JsonExplain::', () => {
       loading: true,
       value: null,
     };
-    const root = mount(<JsonExplain jsonExplain={jsonExplain} />);
+    const root = render(<JsonExplain jsonExplain={jsonExplain} />);
 
-    expect(root.find(dataTestId('json-explain-error')).length).toBe(0);
-    expect(root.find(dataTestId('json-explain-no-data')).length).toBe(1);
+    expect(root.queryAllByTestId('json-explain-error').length).toBe(0);
+    expect(root.queryAllByTestId('json-explain-no-data').length).toBe(1);
   });
 
   it('should render explains correct for error state', () => {
@@ -25,10 +25,10 @@ describe('JsonExplain::', () => {
       loading: false,
       value: null,
     };
-    const root = mount(<JsonExplain jsonExplain={jsonExplain} />);
+    const root = render(<JsonExplain jsonExplain={jsonExplain} />);
 
-    expect(root.find(dataTestId('json-explain-error')).length).toBe(1);
-    expect(root.find(dataTestId('json-explain-no-data')).length).toBe(0);
+    expect(root.queryAllByTestId('json-explain-error').length).toBe(1);
+    expect(root.queryAllByTestId('json-explain-no-data').length).toBe(0);
   });
 
   it('should render explains correct for success state', () => {
@@ -37,9 +37,9 @@ describe('JsonExplain::', () => {
       loading: false,
       value: JSON.stringify({ data: 'test' }),
     };
-    const root = mount(<JsonExplain jsonExplain={jsonExplain} />);
+    const root = render(<JsonExplain jsonExplain={jsonExplain} />);
 
-    expect(root.find(dataTestId('json-explain-error')).length).toBe(0);
-    expect(root.find(dataTestId('json-explain-no-data')).length).toBe(0);
+    expect(root.queryAllByTestId('json-explain-error').length).toBe(0);
+    expect(root.queryAllByTestId('json-explain-no-data').length).toBe(0);
   });
 });

@@ -1,23 +1,26 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render, fireEvent } from "@testing-library/react";
 import { Search } from './Search';
 
 describe('Search::', () => {
-  it('renders correctly', () => {
-    const root = mount(<Search handleSearch={() => {}} />);
-
-    expect(root.find('form').children().length).toBe(2);
+  it('renders correctly',  () => {
+    const {container} = render(<Search handleSearch={() => {}} />);
+    const form =  container.querySelector('form'); 
+    expect(form?.children.length).toBe(2);
   });
   it('renders correctly with initial value', () => {
-    const root = mount(<Search handleSearch={() => {}} initialValue="Test value" />);
+    const {container} = render(<Search handleSearch={() => {}} initialValue="Test value" />);
 
-    expect(root.find('input').prop('value')).toEqual('Test value');
+    expect(container.querySelector('input')?.value).toEqual('Test value');
   });
   it('submits correctly', () => {
     const handleSearch = jest.fn();
-    const root = mount(<Search handleSearch={handleSearch} />);
+    const {container} = render(<Search handleSearch={handleSearch} />);
 
-    root.find('form').simulate('submit');
+    const form = container.querySelector('form');
+    if(form) {
+      fireEvent.submit(form);
+    }
 
     expect(handleSearch).toHaveBeenCalled();
   });

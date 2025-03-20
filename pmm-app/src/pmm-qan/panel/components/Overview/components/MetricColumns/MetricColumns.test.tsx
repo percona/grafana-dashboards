@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render } from "@testing-library/react";
 import { NonTimeMetric, TimeMetric } from './MetricColumns';
 
 jest.mock('shared/components/helpers/notification-manager');
@@ -19,12 +19,12 @@ jest.mock('shared/components/helpers/getPmmTheme', () => ({
 
 describe('TimeMetric::', () => {
   it('should render filters correct', async () => {
-    mount(<TimeMetric value={10} percentage={10} cnt={10} />);
+    render(<TimeMetric value={10} percentage={10} cnt={10} />);
   });
 });
 
 describe('NonTimeMetric::', () => {
   it('should render filters correct', async () => {
-    mount(<NonTimeMetric value={10} percentage={10} cnt={10} units="test" />);
+    render(<NonTimeMetric value={10} percentage={10} cnt={10} units="test" />);
   });
 });
