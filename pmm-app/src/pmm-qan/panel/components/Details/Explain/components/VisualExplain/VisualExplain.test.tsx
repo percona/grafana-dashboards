@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from "@testing-library/react";
+import { render } from '@testing-library/react';
 import { VisualExplain } from './VisualExplain';
 
 jest.mock('shared/components/Elements/Scrollbar/Scrollbar');
@@ -12,7 +12,7 @@ describe('VisualExplain::', () => {
       loading: true,
       value: null,
     };
-   const root = render(<VisualExplain visualExplain={visualExplain} />);
+    const root = render(<VisualExplain visualExplain={visualExplain} />);
 
     expect(root.queryAllByTestId('visual-explain-error').length).toBe(0);
     expect(root.queryAllByTestId('visual-explain-no-data').length).toBe(1);

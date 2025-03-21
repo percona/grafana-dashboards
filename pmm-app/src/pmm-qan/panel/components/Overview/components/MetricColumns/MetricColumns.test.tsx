@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from "@testing-library/react";
+import { render } from '@testing-library/react';
 import { NonTimeMetric, TimeMetric } from './MetricColumns';
 
 jest.mock('shared/components/helpers/notification-manager');

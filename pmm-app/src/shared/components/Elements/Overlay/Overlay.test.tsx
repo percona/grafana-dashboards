@@ -1,6 +1,6 @@
 import React from 'react';
-import '@testing-library/jest-dom'
-import { render } from "@testing-library/react";
+import '@testing-library/jest-dom';
+import { render } from '@testing-library/react';
 import { Overlay } from './Overlay';
 
 describe('Overlay::', () => {
@@ -29,7 +29,7 @@ describe('Overlay::', () => {
   });
 
   it('Doesnt render overlay if not pending', () => {
-    const {container} = render(
+    const { container } = render(
       <Overlay isPending={false}>
         <p>Test</p>
       </Overlay>,

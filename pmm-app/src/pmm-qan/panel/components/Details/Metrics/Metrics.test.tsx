@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from "@testing-library/react";
+import { render } from '@testing-library/react';
 import { Databases } from 'shared/core';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { QueryDimension, DetailsTabs, RawTime } from 'pmm-qan/panel/provider/provider.types';
@@ -8,11 +8,9 @@ import { getChartDataFromHistogramItems } from './Metrics.utils';
 
 jest.mock('shared/components/helpers/notification-manager');
 jest.mock('antd/es/tooltip', () => <div className="tooltip" />);
-jest.mock('../../BarChart/BarChart', ()=>{
-  return{
-    BarChart: ()=> 'BarChart'
-  }
-})
+jest.mock('../../BarChart/BarChart', () => ({
+  BarChart: () => 'BarChart',
+}));
 
 jest.mock('./hooks/useHistogram', () => ({
   useHistogram: jest.fn(({ theme }) => [

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent } from '@testing-library/react';
 import { RadioButton } from './RadioButton';
 
 const testProps = {
@@ -11,7 +11,7 @@ const testProps = {
 
 describe('RadioButton::', () => {
   it('Renders correctly', () => {
-    const {container} = render(<RadioButton {...testProps}>Test</RadioButton>);
+    const { container } = render(<RadioButton {...testProps}>Test</RadioButton>);
     const input = container.querySelector('input');
     const label = container.querySelector('label');
 
@@ -21,23 +21,24 @@ describe('RadioButton::', () => {
   });
 
   it('Renders with active class', () => {
-    const {container} = render(<RadioButton {...testProps} active>Test</RadioButton>);
+    const { container } = render(<RadioButton {...testProps} active>Test</RadioButton>);
 
     expect(container.querySelector('label')?.className).toContain('active');
   });
 
   it('Renders with disabled class', () => {
-    const {container} = render(<RadioButton {...testProps} disabled>Test</RadioButton>);
+    const { container } = render(<RadioButton {...testProps} disabled>Test</RadioButton>);
 
     expect(container.querySelector('label')?.className).toContain('disabled');
   });
 
   it('Calls onChange when clicked', () => {
-    const {container} = render(<RadioButton {...testProps}>Test</RadioButton>);
+    const { container } = render(<RadioButton {...testProps}>Test</RadioButton>);
 
     const label = container.querySelector('label');
-    if(label){
-      fireEvent.click(label)
+
+    if (label) {
+      fireEvent.click(label);
     }
 
     expect(testProps.onChange).toHaveBeenCalled();

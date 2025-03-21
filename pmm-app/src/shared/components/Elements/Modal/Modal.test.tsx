@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent } from '@testing-library/react';
 import { Modal } from './Modal';
 
 jest.mock('shared/components/helpers/notification-manager');
@@ -21,16 +21,17 @@ describe('Modal window::', () => {
 
     expect(onClose.mock.calls.length).toBe(0);
     const modalCloseButton = root.getByTestId('modal-close-button');
+
     fireEvent.click(modalCloseButton);
     expect(onClose.mock.calls.length).toBe(1);
   });
 
   it('Should NOT call onClose callback on escape when closeOnEscape is NOT set', () => {
     const onClose = jest.fn();
-    const {container} = render(<Modal onClose={onClose} isVisible closeOnEscape={false} title="test" />);
+    const { container } = render(<Modal onClose={onClose} isVisible closeOnEscape={false} title="test" />);
 
     expect(onClose.mock.calls.length).toBe(0);
-    fireEvent.keyDown(container, { key: 'Escape' })
+    fireEvent.keyDown(container, { key: 'Escape' });
     expect(onClose.mock.calls.length).toBe(0);
   });
 
@@ -40,7 +41,8 @@ describe('Modal window::', () => {
 
     expect(onClose.mock.calls.length).toBe(0);
     const modalBackground = root.getByTestId('modal-background');
-    fireEvent.click(modalBackground)
+
+    fireEvent.click(modalBackground);
     expect(onClose.mock.calls.length).toBe(1);
   });
 
@@ -50,7 +52,8 @@ describe('Modal window::', () => {
 
     expect(onClose.mock.calls.length).toBe(0);
     const modalBackground = root.getByTestId('modal-background');
-    fireEvent.click(modalBackground)
+
+    fireEvent.click(modalBackground);
     expect(onClose.mock.calls.length).toBe(0);
   });
 });

@@ -1,6 +1,6 @@
 import React from 'react';
-import '@testing-library/jest-dom'
-import { render } from "@testing-library/react";
+import '@testing-library/jest-dom';
+import { render } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { CheckboxGroup } from './CheckboxGroup';
 
@@ -165,7 +165,7 @@ describe('CheckboxGroup ::', () => {
     );
 
     expect(root.getAllByTestId('show-top-switcher').length).toEqual(1);
-    expect(root.queryAllByTestId((testId)=>testId.startsWith('filter-checkbox')).length).toEqual(1);
+    expect(root.queryAllByTestId((testId) => testId.startsWith('filter-checkbox')).length).toEqual(1);
     expect(root.getByTestId('show-top-switcher')).toHaveTextContent(`${ITEMS_LIST.length}`);
   });
 });

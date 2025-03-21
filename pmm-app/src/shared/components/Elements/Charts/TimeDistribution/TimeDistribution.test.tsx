@@ -4451,6 +4451,7 @@ describe('TimeDistributionChart chart test', () => {
       data: MOCK_METRICS,
     };
     const tree = renderer.create(<TimeDistribution {...TimeDistributionChartProps} />).toJSON();
+
     expect(tree).toMatchSnapshot();
   });
 });
