@@ -120,10 +120,7 @@
   "liveNow": false,
   "panels": [
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -234,10 +231,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Displays whether the IO Thread is in the running state or not. Applies only to a Replica host. The IO Thread connects to the Source host and reads binary log events, and then copies them locally to a file called the relay log.\n\nPossible values:\n\n**Yes** – IO Thread is running and is connected to a Source\n\n**No** – The IO Thread is not running because it is not yet started, or because an error occured while connecting to the Source\n\n**Connecting** – The IO Thread is running but is not fully connected to a Source\n\n**No value** – The host is not configured to be a Replica.\n\nIO Thread Running is one of the parameters returned by **SHOW SLAVE STATUS** command.\n\nSee also:",
       "fieldConfig": {
         "defaults": {
@@ -355,10 +349,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Displays whether the SQL Thread is in the running state or not. Applies only to a Replica host. The SQL Thread reads the events from the local relay log file and applies them to the Replica host.  Depending on the format of the binary log it can read query statements (STATEMENT format) and re-executes them, or by reading row changes (ROW format) and applying only the changes.\n\nPossible values:\n\n**Yes** – The SQL Thread is running and is applying events from the relay log to the local Replica host\n\n**No** – The SQL Thread is not running because it is not yet started, or because of an error\n\nSee also:",
       "fieldConfig": {
         "defaults": {
@@ -475,10 +466,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Displays the number of the last error that the SQL Thread encountered which caused replication to stop.\n\nOne of the more common errors is \"Error: 1022 Duplicate Key Entry\". In such a case replication is attempting to update a row that already exists on the Replica. The SQL Thread will stop replication in order to avoid data corruption.\n\nSee also:",
       "fieldConfig": {
         "defaults": {
@@ -578,10 +566,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Displays whether the host is configured to be in Read Only mode or not.\n\nPossible values:\n\n**Yes** – the host blocks client updates except from users who have the SUPER or REPLICATION SLAVE privilege.This kind of configuration is typically used on Replica hosts in a replication environment to prevent client data modification causing inconsistencies and stopping the replication process.\n\n**No** – the host is not configured for Read Only mode, and will permit local client data modification operations (if the client has appropriate privileges to the database objects).",
       "fieldConfig": {
         "defaults": {
@@ -770,10 +755,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Shows the number of seconds the Replica host is delayed in replication applying events compared to when the Source host applied them, denoted by the **Seconds_Behind_Source** value, and only applies to a Replica host. The most common reasons for Replicas to lag their Source are:\n\n* Network round trip time - High latency links will lead to non-zero replication lag values\n\n* Single threaded nature of replication channels - Source servers have the advantage of applying changes in parallel, whereas Replicas are only able to apply changes in serial, thus limiting their throughput.  In some cases Group Commit can help but is not always applicable.\n\n* High number of changed rows or computationally expensive SQL - Depending on the replication format (ROW vs STATEMENT), significant changes to the database through high volume of rows modified, or expensive CPU will all contribute to Replicas lagging behind their Source\n\nGenerally adding more CPU or Disk resources can alleviate replication lag issues, up to a point.\n\nSee also:",
       "fieldConfig": {
         "defaults": {
@@ -911,10 +893,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Shows the overall size of the binary log files, which can exist on both Sources and Replicas. The binary log (also known as the binlog) contains events that describe database changes: CREATE TABLE, ALTER TABLE, updates, inserts, deletes and other statements or database changes. The binlog is the file that is read by Replicas via their IO Thread process in order to replicate database changes modification on the data and on the table structures. There can be more than one binlog file present depending on the binlog rotation policy adopted (for example using the configuration variables **max_binlog_size** and **expire_logs_days**).\n\nSee also:",
       "fieldConfig": {
         "defaults": {
@@ -1045,10 +1024,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Shows the amount of data written to the binlog files, grouped into hourly buckets. This graph can give you an idea of the amount of changes to your data.",
       "fieldConfig": {
         "defaults": {
@@ -1168,10 +1144,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Shows the overall count of binary log files, which can exist on both Sources and Replicas. The binary log (also known as the binlog) contains events that describe database changes: CREATE TABLE, ALTER TABLE, updates, inserts, deletes and other statements or database changes. The binlog is the file that is read by Replicas via their IO Thread process in order to replicate database changes modification on the data and on the table structures. There can be more than one binlog file present depending on the binlog rotation policy adopted (for example using the configuration variables **max_binlog_size** and **expire_logs_days**).\n\nSee also:",
       "fieldConfig": {
         "defaults": {
@@ -1302,10 +1275,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Shows the number of binlog files created hourly. The number depends on the rotation policy adopted using the configuration variables **max_binlog_size** and **expire_logs_days**.",
       "fieldConfig": {
         "defaults": {
@@ -1425,10 +1395,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Shows the overall size of the relay log files, and applies only to Replicas. The relay log consists of a set of numbered files containing the events to be executed on a Replica in order to replicate database changes.  As soon as the SQL Thread completes execution of all events in a relay log file, the relay log file is then deleted by MySQL.\n\nSee also:",
       "fieldConfig": {
         "defaults": {
@@ -1554,10 +1521,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Shows the amount of data written hourly to the relay log files.",
       "fieldConfig": {
         "defaults": {
@@ -1678,10 +1642,7 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1703,10 +1664,7 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "**MySQL Uptime**\n\nThe amount of time since the last restart of the MySQL server process.",
       "fieldConfig": {
         "defaults": {
@@ -1808,10 +1766,7 @@
       "type": "text"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "**Current QPS**\n\nBased on the queries reported by MySQL's ``SHOW STATUS`` command, it is the number of statements executed by the server within the last second. This variable includes statements executed within stored programs, unlike the Questions variable. It does not count \n``COM_PING`` or ``COM_STATISTICS`` commands.",
       "fieldConfig": {
         "defaults": {
@@ -1900,10 +1855,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1993,10 +1945,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -2086,10 +2035,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -2176,10 +2122,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -2287,10 +2230,7 @@
       "type": "text"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "**Max Connections** \n\nMax Connections is the maximum permitted number of simultaneous client connections. By default, this is 151. Increasing this value increases the number of file descriptors that mysqld requires. If the required number of descriptors are not available, the server reduces the value of Max Connections.\n\nmysqld actually permits Max Connections + 1 clients to connect. The extra connection is reserved for use by accounts that have the SUPER privilege, such as root.\n\nMax Used Connections is the maximum number of connections that have been in use simultaneously since the server started.\n\nConnections is the number of connection attempts (successful or not) to the MySQL server.",
       "fieldConfig": {
         "defaults": {
@@ -2458,10 +2398,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "**MySQL Active Threads**\n\nThreads Connected is the number of open connections, while Threads Running is the number of threads not sleeping.",
       "fieldConfig": {
         "defaults": {
@@ -2653,10 +2590,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "**MySQL Handlers**\n\nHandler statistics are internal statistics on how MySQL is selecting, updating, inserting, and modifying rows, tables, and indexes.\n\nThis is in fact the layer between the Storage Engine and MySQL.\n\n* `read_rnd_next` is incremented when the server performs a full table scan and this is a counter you don't really want to see with a high value.\n* `read_key` is incremented when a read is done with an index.\n* `read_next` is incremented when the storage engine is asked to 'read the next index entry'. A high value means a lot of index scans are being done.",
       "fieldConfig": {
         "defaults": {
@@ -2780,10 +2714,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "**Top Command Counters**\n\nThe Com_{{xxx}} statement counter variables indicate the number of times each xxx statement has been executed. There is one status variable for each type of statement. For example, Com_delete and Com_update count [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements, respectively. Com_delete_multi and Com_update_multi are similar but apply to [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements that use multiple-table syntax.",
       "fieldConfig": {
         "defaults": {
@@ -2893,10 +2824,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3019,10 +2947,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "**MySQL Network Traffic**\n\nHere we can see how much network traffic is generated by MySQL. Outbound is network traffic sent from MySQL and Inbound is network traffic MySQL has received.",
       "fieldConfig": {
         "defaults": {
@@ -3155,10 +3080,7 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -3180,10 +3102,7 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "The parameter shows how long a system has been “up” and running without a shut down or restart.",
       "fieldConfig": {
         "defaults": {
@@ -3265,10 +3184,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "The system load is a measurement of the computational work the system is performing. Each running process either using or waiting for CPU resources adds 1 to the load.",
       "fieldConfig": {
         "defaults": {
@@ -3352,10 +3268,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "RAM (Random Access Memory) is the hardware in a computing device where the operating system, application programs and data in current use are kept so they can be quickly reached by the device's processor.",
       "fieldConfig": {
         "defaults": {
@@ -3437,10 +3350,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Percent of Memory Available\nNote: on Modern Linux Kernels amount of Memory Available for application is not the same as Free+Cached+Buffers",
       "fieldConfig": {
         "defaults": {
@@ -3524,10 +3434,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "RAM + SWAP",
       "fieldConfig": {
         "defaults": {
@@ -3609,10 +3516,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Sum of disk space on all partitions. Note  it can be significantly over-reported in some installations",
       "fieldConfig": {
         "defaults": {
@@ -3701,10 +3605,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Lowest percent of the disk space available",
       "fieldConfig": {
         "defaults": {
@@ -3788,10 +3689,7 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "",
       "gridPos": {
         "h": 3,
@@ -3833,10 +3731,7 @@
       "type": "text"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "The CPU time is measured in clock ticks or seconds. It is useful to measure CPU time as a percentage of the CPU's capacity, which is called the CPU usage.",
       "fieldConfig": {
         "defaults": {
@@ -4160,10 +4055,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "When a system is running with maximum CPU utilization, the transmitting and receiving threads must all share the available CPU. This will cause data to be queued more frequently to cope with the lack of CPU. CPU Saturation may be measured as the length of a wait queue, or the time spent waiting on the queue.",
       "fieldConfig": {
         "defaults": {
@@ -4424,10 +4316,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Disk I/O includes read or write or input/output operations involving a physical disk. It is the speed with which the data transfer takes place between the hard disk drive and RAM.\n\nSwap Activity is memory management that involves swapping sections of memory to and from physical storage.",
       "fieldConfig": {
         "defaults": {
@@ -4673,10 +4562,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PA58DA793C7250F1B"
-      },
+      "datasource": "Metrics",
       "description": "Network traffic refers to the amount of data moving across a network at a given point in time.",
       "fieldConfig": {
         "defaults": {
