@@ -1,11 +1,13 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import { OverflowTooltip } from './OverflowTooptip';
 
 xdescribe('OverflowTooltip test', () => {
   it('OverflowTooltip renders correctly with children', () => {
-    const tree = renderer.create(<OverflowTooltip>Test label</OverflowTooltip>).toJSON();
+    const { asFragment } = render(<OverflowTooltip>Test label</OverflowTooltip>);
 
-    expect(tree).toMatchSnapshot();
+    const firstRender = asFragment();
+
+    expect(firstRender).toMatchSnapshot();
   });
 });

@@ -1,12 +1,14 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { CheckboxField } from './Checkbox';
 
 xdescribe('Checkbox field test', () => {
   it('Checkbox renders correct without props', () => {
-    const tree = renderer.create(<Form onSubmit={jest.fn()} render={() => <CheckboxField name="test_field" />} />).toJSON();
+    const { asFragment } = render(<Form onSubmit={jest.fn()} render={() => <CheckboxField name="test_field" />} />);
 
-    expect(tree).toMatchSnapshot();
+    const firstRender = asFragment();
+
+    expect(firstRender).toMatchSnapshot();
   });
 });

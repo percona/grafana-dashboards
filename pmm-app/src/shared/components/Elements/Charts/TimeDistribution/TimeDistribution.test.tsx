@@ -1,5 +1,5 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import { getMetricDistribution, TimeDistribution } from './TimeDistribution';
 
 const MOCK_METRICS = [
@@ -4450,8 +4450,10 @@ describe('TimeDistributionChart chart test', () => {
     const TimeDistributionChartProps = {
       data: MOCK_METRICS,
     };
-    const tree = renderer.create(<TimeDistribution {...TimeDistributionChartProps} />).toJSON();
+    const { asFragment } = render(<TimeDistribution {...TimeDistributionChartProps} />);
 
-    expect(tree).toMatchSnapshot();
+    const firstRender = asFragment();
+
+    expect(firstRender).toMatchSnapshot();
   });
 });
