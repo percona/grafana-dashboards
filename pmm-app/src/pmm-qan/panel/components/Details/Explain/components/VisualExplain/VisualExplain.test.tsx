@@ -1,6 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
-import { dataTestId } from 'shared/core/test.utils';
+import { render } from '@testing-library/react';
 import { VisualExplain } from './VisualExplain';
 
 jest.mock('shared/components/Elements/Scrollbar/Scrollbar');
@@ -13,10 +12,10 @@ describe('VisualExplain::', () => {
       loading: true,
       value: null,
     };
-    const root = mount(<VisualExplain visualExplain={visualExplain} />);
+    const root = render(<VisualExplain visualExplain={visualExplain} />);
 
-    expect(root.find(dataTestId('visual-explain-error')).length).toBe(0);
-    expect(root.find(dataTestId('visual-explain-no-data')).length).toBe(1);
+    expect(root.queryAllByTestId('visual-explain-error').length).toBe(0);
+    expect(root.queryAllByTestId('visual-explain-no-data').length).toBe(1);
   });
 
   it('should render explains correct for error state', () => {
@@ -25,10 +24,10 @@ describe('VisualExplain::', () => {
       loading: false,
       value: null,
     };
-    const root = mount(<VisualExplain visualExplain={visualExplain} />);
+    const root = render(<VisualExplain visualExplain={visualExplain} />);
 
-    expect(root.find(dataTestId('visual-explain-error')).length).toBe(1);
-    expect(root.find(dataTestId('visual-explain-no-data')).length).toBe(0);
+    expect(root.queryAllByTestId('visual-explain-error').length).toBe(1);
+    expect(root.queryAllByTestId('visual-explain-no-data').length).toBe(0);
   });
 
   it('should render explains correct for success state', () => {
@@ -37,9 +36,9 @@ describe('VisualExplain::', () => {
       loading: false,
       value: 'data',
     };
-    const root = mount(<VisualExplain visualExplain={visualExplain} />);
+    const root = render(<VisualExplain visualExplain={visualExplain} />);
 
-    expect(root.find(dataTestId('visual-explain-error')).length).toBe(0);
-    expect(root.find(dataTestId('visual-explain-no-data')).length).toBe(0);
+    expect(root.queryAllByTestId('visual-explain-error').length).toBe(0);
+    expect(root.queryAllByTestId('visual-explain-no-data').length).toBe(0);
   });
 });
