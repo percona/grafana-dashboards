@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import { SelectableValue } from '@grafana/data';
 import { RadioButtonGroup, RadioButtonGroupProps } from './RadioButtonGroup';
 
@@ -18,19 +18,19 @@ const testProps: RadioButtonGroupProps = {
 
 describe('RadioButtonGroup::', () => {
   it('Renders correctly with selected option', () => {
-    const root = mount(<RadioButtonGroup {...testProps} />);
-    const wrapper = root.find('[data-testid="radio-button-group"]');
+    const root = render(<RadioButtonGroup {...testProps} />);
+    const wrapper = root.getByTestId('radio-button-group');
 
-    expect(wrapper.children().length).toBe(2);
-    expect(wrapper.childAt(0).prop('id')).toEqual(options[0].key);
-    expect(wrapper.childAt(0).prop('name')).toEqual(testProps.name);
-    expect(wrapper.childAt(0).find('label').text()).toEqual(options[0].value);
-    expect(wrapper.childAt(1).find('label').prop('className')).toContain('active');
+    expect(wrapper.children.length).toBe(4);
+    expect(wrapper.firstElementChild?.id).toEqual(options[0].key);
+    expect(wrapper.firstElementChild?.getAttribute('name')).toEqual(testProps.name);
+    expect(wrapper.querySelectorAll('label')[0]).toHaveTextContent(options[0].value);
+    expect(wrapper.querySelectorAll('label')[1].className).toContain('active');
   });
   it('Renders correctly with disabled options', () => {
-    const root = mount(<RadioButtonGroup {...testProps} disabledOptions={['option1']} />);
-    const wrapper = root.find('[data-testid="radio-button-group"]');
+    const root = render(<RadioButtonGroup {...testProps} disabledOptions={['option1']} />);
+    const wrapper = root.getByTestId('radio-button-group');
 
-    expect(wrapper.childAt(0).find('label').prop('className')).toContain('disabled');
+    expect(wrapper.querySelectorAll('label')[0].className).toContain('disabled');
   });
 });
