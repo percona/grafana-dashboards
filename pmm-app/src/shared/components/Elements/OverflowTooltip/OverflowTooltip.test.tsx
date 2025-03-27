@@ -1,12 +1,13 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import { OverflowTooltip } from './OverflowTooptip';
 
 xdescribe('OverflowTooltip test', () => {
   it('OverflowTooltip renders correctly with children', () => {
-    const tree = shallow(<OverflowTooltip>Test label</OverflowTooltip>);
+    const { asFragment } = render(<OverflowTooltip>Test label</OverflowTooltip>);
 
-    expect(tree).toMatchSnapshot();
-    tree.unmount();
+    const firstRender = asFragment();
+
+    expect(firstRender).toMatchSnapshot();
   });
 });
