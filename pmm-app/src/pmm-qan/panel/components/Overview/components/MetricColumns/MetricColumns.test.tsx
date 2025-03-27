@@ -21,14 +21,14 @@ describe('TimeMetric::', () => {
   it('should render time metric correct with value', async () => {
     const { container } = render(<TimeMetric value={10} percentage={10} cnt={10} />);
     const span = container.querySelector('div > span');
-  
+
     expect(span?.textContent).toBe('10.00 sec');
   });
 
   it('should render time metric correct without value but with positive cnt', async () => {
     const { container } = render(<TimeMetric value={undefined} percentage={10} cnt={10} />);
     const span = container.querySelector('div > span');
-  
+
     expect(span?.textContent).toBe('0');
   });
 
@@ -68,7 +68,7 @@ describe('NonTimeMetric::', () => {
 
     expect(span?.textContent).toBe('');
   });
-  
+
   it('should render time metric correct without value and without cnt', async () => {
     const { container } = render(<NonTimeMetric value={undefined} percentage={10} cnt={undefined} units="test" />);
     const span = container.querySelector('div > span');
