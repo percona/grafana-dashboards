@@ -2,7 +2,6 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:491",
         "builtIn": 1,
         "datasource": "-- Grafana --",
         "enable": true,
@@ -28,7 +27,6 @@
         "type": "tags"
       },
       {
-        "$$hashKey": "object:492",
         "builtIn": 1,
         "datasource": "-- Grafana --",
         "enable": true,
@@ -335,9 +333,8 @@
       }
     },
     {
-      "columns": [],
+      "datasource": "Metrics",
       "description": "This table shows network and status information for replication group members. The network addresses shown are the addresses used to connect clients to the group, and should not be confused with the member's internal group communication address specified by group_replication_local_address.",
-      "fontSize": "100%",
       "gridPos": {
         "h": 6,
         "w": 24,
@@ -345,136 +342,20 @@
         "y": 16
       },
       "id": 1016,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": false
-      },
-      "styles": [
-        {
-          "$$hashKey": "object:259",
-          "alias": "Time",
-          "align": "auto",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "pattern": "Time",
-          "type": "hidden"
-        },
-        {
-          "$$hashKey": "object:470",
-          "alias": "Host",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "member_host",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:497",
-          "alias": "",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Value",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:528",
-          "alias": "Port",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "member_port",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:549",
-          "alias": "Role",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "member_role",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:560",
-          "alias": "State",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "member_state",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:571",
-          "alias": "MySQL Version",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "member_version",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        }
-      ],
       "targets": [
         {
+          "datasource": "Metrics",
           "expr": "mysql_perf_schema_replication_group_member_info{replication_set=~\"$replication_set\"} or mysql_perf_schema_replication_group_5_member_info{replication_set=~\"$replication_set\"}",
           "format": "table",
           "hide": false,
           "instant": true,
           "interval": "$interval",
           "legendFormat": "{{service_name}}",
-          "refId": "B"
+          "refId": "B",
+          "editorMode": "code"
         }
       ],
       "title": "Replication Group Members",
-      "transform": "table",
       "transformations": [
         {
           "id": "organize",
@@ -491,7 +372,7 @@
               "instance": true,
               "job": true,
               "machine_id": true,
-              "member_id": true,
+              "member_id": false,
               "member_version": false,
               "node_id": true,
               "node_name": true,
@@ -502,42 +383,117 @@
               "service_type": true
             },
             "indexByName": {
-              "Time": 1,
-              "Value": 23,
-              "__name__": 2,
-              "agent_id": 3,
-              "agent_type": 4,
-              "channel_name": 5,
-              "cluster": 6,
-              "environment": 7,
-              "instance": 8,
-              "job": 9,
-              "machine_id": 10,
-              "member_host": 11,
-              "member_id": 12,
-              "member_port": 13,
-              "member_role": 14,
-              "member_state": 15,
-              "member_version": 16,
-              "node_id": 17,
-              "node_name": 18,
-              "node_type": 19,
-              "replication_set": 20,
-              "service_id": 21,
               "service_name": 0,
-              "service_type": 22
+              "member_id": 1,
+              "Time": 2,
+              "__name__": 3,
+              "agent_id": 4,
+              "agent_type": 5,
+              "channel_name": 6,
+              "cluster": 7,
+              "environment": 8,
+              "instance": 9,
+              "job": 10,
+              "member_host": 11,
+              "member_port": 12,
+              "member_role": 13,
+              "member_state": 14,
+              "member_version": 15,
+              "node_id": 16,
+              "node_name": 17,
+              "node_type": 18,
+              "replication_set": 19,
+              "service_id": 20,
+              "service_type": 21,
+              "Value": 22,
+              "source": 23
             },
             "renameByName": {
               "Time": "",
               "member_version": "Version",
               "node_id": "",
               "node_name": "",
-              "service_name": "Service Name"
-            }
+              "service_name": "Service Name",
+              "member_id": "Member ID",
+              "member_role": "Role",
+              "member_state": "State",
+              "source": "Source",
+              "service_type": "",
+              "member_port": "Port",
+              "member_host": "Host"
+            },
+            "includeByName": {}
           }
         }
       ],
-      "type": "table-old"
+      "type": "table",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "green"
+              },
+              {
+                "value": 80,
+                "color": "red"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "member_port"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": null
+              },
+              {
+                "id": "custom.width",
+                "value": 95
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Member ID"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 312
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": ["sum"],
+          "countRows": false,
+          "fields": ""
+        },
+        "sortBy": []
+      },
+      "pluginVersion": "11.1.8"
     },
     {
       "collapsed": true,
@@ -618,14 +574,12 @@
           },
           "yaxes": [
             {
-              "$$hashKey": "object:679",
               "format": "s",
               "logBase": 1,
               "min": "0",
               "show": true
             },
             {
-              "$$hashKey": "object:680",
               "format": "short",
               "logBase": 1,
               "show": true
@@ -703,14 +657,12 @@
           },
           "yaxes": [
             {
-              "$$hashKey": "object:679",
               "format": "s",
               "logBase": 1,
               "min": "0",
               "show": true
             },
             {
-              "$$hashKey": "object:680",
               "format": "short",
               "logBase": 1,
               "show": true
@@ -788,14 +740,12 @@
           },
           "yaxes": [
             {
-              "$$hashKey": "object:679",
               "format": "s",
               "logBase": 1,
               "min": "0",
               "show": true
             },
             {
-              "$$hashKey": "object:680",
               "format": "short",
               "logBase": 1,
               "show": true
@@ -873,14 +823,12 @@
           },
           "yaxes": [
             {
-              "$$hashKey": "object:679",
               "format": "s",
               "logBase": 1,
               "min": "0",
               "show": true
             },
             {
-              "$$hashKey": "object:680",
               "format": "short",
               "logBase": 1,
               "show": true
@@ -958,14 +906,12 @@
           },
           "yaxes": [
             {
-              "$$hashKey": "object:679",
               "format": "s",
               "logBase": 1,
               "min": "0",
               "show": true
             },
             {
-              "$$hashKey": "object:680",
               "format": "short",
               "logBase": 1,
               "show": true
@@ -1077,7 +1023,6 @@
           },
           "yaxes": [
             {
-              "$$hashKey": "object:541",
               "decimals": 2,
               "format": "short",
               "logBase": 1,
@@ -1085,7 +1030,6 @@
               "show": true
             },
             {
-              "$$hashKey": "object:542",
               "format": "short",
               "logBase": 1,
               "min": 0,
@@ -1184,7 +1128,6 @@
           },
           "yaxes": [
             {
-              "$$hashKey": "object:1326",
               "decimals": 2,
               "format": "short",
               "logBase": 1,
@@ -1192,7 +1135,6 @@
               "show": true
             },
             {
-              "$$hashKey": "object:1327",
               "format": "short",
               "logBase": 1,
               "min": 0,
@@ -1291,7 +1233,6 @@
           },
           "yaxes": [
             {
-              "$$hashKey": "object:1326",
               "decimals": 2,
               "format": "short",
               "logBase": 1,
@@ -1299,7 +1240,6 @@
               "show": true
             },
             {
-              "$$hashKey": "object:1327",
               "format": "short",
               "logBase": 1,
               "min": 0,
@@ -1398,7 +1338,6 @@
           },
           "yaxes": [
             {
-              "$$hashKey": "object:1326",
               "decimals": 2,
               "format": "short",
               "logBase": 1,
@@ -1406,7 +1345,6 @@
               "show": true
             },
             {
-              "$$hashKey": "object:1327",
               "format": "short",
               "logBase": 1,
               "min": 0,
@@ -1505,7 +1443,6 @@
           },
           "yaxes": [
             {
-              "$$hashKey": "object:1612",
               "decimals": 2,
               "format": "short",
               "logBase": 1,
@@ -1513,7 +1450,6 @@
               "show": true
             },
             {
-              "$$hashKey": "object:1613",
               "format": "short",
               "logBase": 1,
               "min": 0,
@@ -1612,7 +1548,6 @@
           },
           "yaxes": [
             {
-              "$$hashKey": "object:1326",
               "decimals": 2,
               "format": "short",
               "logBase": 1,
@@ -1620,7 +1555,6 @@
               "show": true
             },
             {
-              "$$hashKey": "object:1327",
               "format": "short",
               "logBase": 1,
               "min": 0,
@@ -1651,7 +1585,7 @@
           "grid": {},
           "gridPos": {
             "h": 8,
-            "w": 12,
+            "w": 24,
             "x": 0,
             "y": 56
           },
@@ -1719,7 +1653,6 @@
           },
           "yaxes": [
             {
-              "$$hashKey": "object:638",
               "decimals": 2,
               "format": "short",
               "logBase": 1,
@@ -1727,7 +1660,6 @@
               "show": true
             },
             {
-              "$$hashKey": "object:639",
               "format": "short",
               "logBase": 1,
               "min": 0,
@@ -1840,7 +1772,6 @@
           },
           "yaxes": [
             {
-              "$$hashKey": "object:464",
               "decimals": 2,
               "format": "short",
               "logBase": 1,
@@ -1848,7 +1779,6 @@
               "show": true
             },
             {
-              "$$hashKey": "object:465",
               "format": "short",
               "logBase": 1,
               "min": 0,
