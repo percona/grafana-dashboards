@@ -335,6 +335,66 @@
     {
       "datasource": "Metrics",
       "description": "This table shows network and status information for replication group members. The network addresses shown are the addresses used to connect clients to the group, and should not be confused with the member's internal group communication address specified by group_replication_local_address.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-background",
+              "mode": "basic",
+              "applyToRow": false
+            },
+            "inspect": false
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "PRIMARY": {
+                  "text": "PRIMARY",
+                  "color": "dark-blue",
+                  "index": 0
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "member_port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "member_id"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 312
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 6,
         "w": 24,
@@ -342,6 +402,18 @@
         "y": 16
       },
       "id": 1016,
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": ["sum"],
+          "countRows": false,
+          "fields": ""
+        },
+        "sortBy": []
+      },
+      "pluginVersion": "11.1.8",
       "targets": [
         {
           "datasource": "Metrics",
@@ -381,10 +453,10 @@
               "service_name": false,
               "service_type": true
             },
+            "includeByName": {},
             "indexByName": {
-              "service_name": 0,
-              "member_id": 1,
               "Time": 2,
+              "Value": 22,
               "__name__": 3,
               "agent_id": 4,
               "agent_type": 5,
@@ -394,6 +466,7 @@
               "instance": 9,
               "job": 10,
               "member_host": 11,
+              "member_id": 1,
               "member_port": 12,
               "member_role": 13,
               "member_state": 14,
@@ -403,96 +476,28 @@
               "node_type": 18,
               "replication_set": 19,
               "service_id": 20,
+              "service_name": 0,
               "service_type": 21,
-              "Value": 22,
               "source": 23
             },
             "renameByName": {
               "Time": "",
+              "member_host": "Host",
+              "member_id": "Member ID",
+              "member_port": "Port",
+              "member_role": "Role",
+              "member_state": "State",
               "member_version": "Version",
               "node_id": "",
               "node_name": "",
               "service_name": "Service Name",
-              "member_id": "Member ID",
-              "member_role": "Role",
-              "member_state": "State",
-              "source": "Source",
               "service_type": "",
-              "member_port": "Port",
-              "member_host": "Host"
-            },
-            "includeByName": {}
+              "source": "Source"
+            }
           }
         }
       ],
-      "type": "table",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "value": null,
-                "color": "green"
-              },
-              {
-                "value": 80,
-                "color": "red"
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "member_port"
-            },
-            "properties": [
-              {
-                "id": "custom.align",
-                "value": null
-              },
-              {
-                "id": "custom.width",
-                "value": 95
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Member ID"
-            },
-            "properties": [
-              {
-                "id": "custom.minWidth",
-                "value": 312
-              }
-            ]
-          }
-        ]
-      },
-      "options": {
-        "showHeader": true,
-        "cellHeight": "sm",
-        "footer": {
-          "show": false,
-          "reducer": ["sum"],
-          "countRows": false,
-          "fields": ""
-        },
-        "sortBy": []
-      },
-      "pluginVersion": "11.1.8"
+      "type": "table"
     },
     {
       "collapsed": true,
