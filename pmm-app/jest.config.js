@@ -7,7 +7,6 @@ process.env.TZ = 'GMT';
 module.exports = {
   // Jest configuration provided by Grafana scaffolding
   ...baseConfig,
-  snapshotSerializers: ['enzyme-to-json/serializer'],
   verbose: true,
   collectCoverage: true,
   collectCoverageFrom: [

@@ -1,5 +1,5 @@
-import { shallow } from 'enzyme';
 import React from 'react';
+import { render } from '@testing-library/react';
 import { getMetricDistribution, TimeDistribution } from './TimeDistribution';
 
 const MOCK_METRICS = [
@@ -4450,8 +4450,10 @@ describe('TimeDistributionChart chart test', () => {
     const TimeDistributionChartProps = {
       data: MOCK_METRICS,
     };
-    const root = shallow(<TimeDistribution {...TimeDistributionChartProps} />);
+    const { asFragment } = render(<TimeDistribution {...TimeDistributionChartProps} />);
 
-    expect(root).toMatchSnapshot();
+    const firstRender = asFragment();
+
+    expect(firstRender).toMatchSnapshot();
   });
 });
