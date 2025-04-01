@@ -3,7 +3,7 @@ import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import DetailsService from './Details.service';
 import { DatabasesType, QueryExampleResponseItem } from './Details.types';
 
-export const useDetails = (): [boolean, QueryExampleResponseItem[], DatabasesType] => {
+export const useDetails = (): [boolean, QueryExampleResponseItem[], DatabasesType | undefined] => {
   const {
     panelState: {
       queryId,
