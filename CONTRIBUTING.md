@@ -12,6 +12,39 @@ Before submitting code or documentation contributions, you should first complete
 
 Before you can contribute, we kindly ask you to sign our [Contributor License Agreement](https://cla-assistant.percona.com/percona/grafana-dashboards) (CLA). You can do this using your GitHub account and one click.
 
+## Rules and Guidelines
+
+Development Rules and Best Practices while creating a new dashboard -
+https://www.notion.so/percona/Dashboards-Grafana-dashboard-development-rules-b2c36a37e0594eea8b4156413ed4e2d1
+
+### Cleanup Exported Dashboards
+
+Before adding/updating a dashboard JSON file into this repository please follow below mentioned steps to clean it up.
+
+1. Remove hardcoded items, i.e. change datasource from `prometheus`:
+    
+   ![Untitled (2)](https://github.com/percona/grafana-dashboards/assets/119680679/842fa781-65a0-4355-830e-27948e747716)
+    
+    to `Metrics`
+    
+   ![Untitled](https://github.com/percona/grafana-dashboards/assets/119680679/a4d71b9b-1150-4e39-baf7-8bc47db2e86a)
+   
+    or can be removed all together
+    
+3. Set the `editable` flag to “false”.
+    
+    The same applies when working with a new dashboard. 
+    
+4. Set all  `id` attributes to “null”. 
+5. Remove all `$$haskey` items.
+
+    ![Untitled (3)](https://github.com/percona/grafana-dashboards/assets/119680679/aff29412-c26f-4401-9d14-66a5857befba)
+
+6. check and Add missing escape character `\`  for every `"` in expr except for first and last `"` 
+
+    ![Untitled (1)](https://github.com/percona/grafana-dashboards/assets/119680679/14ef97c2-5a5b-45a7-b053-8b2fb1bd257c)
+
+
 ## Submitting a Bug
 
 If you find a bug in Percona MongoDB Exporter or one of the related projects, you should submit a report to that project's [JIRA](https://jira.percona.com) issue tracker.
