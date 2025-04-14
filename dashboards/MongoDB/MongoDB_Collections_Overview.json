@@ -140,21 +140,63 @@
       "type": "row"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Metrics",
-      "decimals": 2,
       "description": "Provides the names and sizes of the 5 largest databases in an instance/cluster. Data showing only from Primary node in replica set.",
-      "editable": true,
-      "error": false,
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {
-        "leftLogBase": 1,
-        "leftMin": 0,
-        "rightLogBase": 1
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -162,86 +204,40 @@
         "x": 0,
         "y": 1
       },
-      "hiddenSeries": false,
       "id": 31,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "paceLength": 10,
-      "percentage": false,
       "pluginVersion": "9.2.20",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
       "repeatDirection": "h",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "avg by (database) (topk(5, mongodb_dbstats_dataSize{rs_state=\"1\",cluster=~\"$cluster\"})/1024/1024)",
+          "expr": "avg by (database) (topk(5, mongodb_dbstats_dataSize{rs_state=\"1\",cluster=~\"$cluster\"}))",
           "interval": "$interval",
           "legendFormat": "{{database}}",
+          "range": true,
           "refId": "A"
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Top 5 Databases By Size",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "x-axis": true,
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "y-axis": true,
-      "y_formats": [
-        "ms",
-        "short"
-      ],
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "decmbytes",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
       "description": "Provides the number of collections in the selected databases",
@@ -277,6 +273,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -284,12 +281,14 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {
           "valueSize": 24
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.2.20",
+      "pluginVersion": "11.1.8",
       "targets": [
         {
           "datasource": "Metrics",
@@ -339,6 +338,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -346,12 +346,14 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {
           "valueSize": 24
         },
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.2.20",
+      "pluginVersion": "11.1.8",
       "targets": [
         {
           "datasource": "Metrics",
@@ -368,20 +370,63 @@
       "type": "stat"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
       "description": "Average size of each document in bytes. dataSize divided by number of documents",
-      "editable": true,
-      "error": false,
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {
-        "leftLogBase": 1,
-        "leftMin": 0,
-        "rightLogBase": 1
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -389,44 +434,33 @@
         "x": 0,
         "y": 12
       },
-      "hiddenSeries": false,
       "id": 37,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "paceLength": 10,
-      "percentage": false,
       "pluginVersion": "9.2.20",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
       "repeatDirection": "h",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(mongodb_dbstats_avgObjSize{ service_name=~\"$service_name\", database=~\"$database\"})",
+          "expr": "sum by (database)(mongodb_dbstats_avgObjSize{ service_name=~\"$service_name\", database=~\"$database\"})",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{database}}",
@@ -435,61 +469,67 @@
           "step": 300
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Avg Object Size in Database ($database)",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "x-axis": true,
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "y-axis": true,
-      "y_formats": [
-        "ms",
-        "short"
-      ],
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "decmbytes",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
       "description": "Total size of all indexes in a given database",
-      "editable": true,
-      "error": false,
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {
-        "leftLogBase": 1,
-        "leftMin": 0,
-        "rightLogBase": 1
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -497,44 +537,33 @@
         "x": 0,
         "y": 20
       },
-      "hiddenSeries": false,
       "id": 39,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "paceLength": 10,
-      "percentage": false,
       "pluginVersion": "9.2.20",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
       "repeatDirection": "h",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(mongodb_dbstats_indexSize{database=~\"$database\", service_name=~\"$service_name\"})",
+          "expr": "sum by (database)(mongodb_dbstats_indexSize{database=~\"$database\", service_name=~\"$service_name\"})",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{database}}",
@@ -543,61 +572,67 @@
           "step": 300
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Index Size in Database ($database)",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "x-axis": true,
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "y-axis": true,
-      "y_formats": [
-        "ms",
-        "short"
-      ],
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "decmbytes",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
       "description": "Total size of uncompressed data in a database in bytes. May be larger than storageSize due to WT compression. ",
-      "editable": true,
-      "error": false,
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {
-        "leftLogBase": 1,
-        "leftMin": 0,
-        "rightLogBase": 1
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -605,44 +640,33 @@
         "x": 0,
         "y": 28
       },
-      "hiddenSeries": false,
       "id": 41,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "paceLength": 10,
-      "percentage": false,
       "pluginVersion": "9.2.20",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
       "repeatDirection": "h",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(mongodb_dbstats_dataSize{database=~\"$database\",service_name=~\"$service_name\"})",
+          "expr": "sum by (database)(mongodb_dbstats_dataSize{database=~\"$database\",service_name=~\"$service_name\"})",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{database}}",
@@ -651,45 +675,8 @@
           "step": 300
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Data Size for Database ($database)",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "x-axis": true,
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "y-axis": true,
-      "y_formats": [
-        "ms",
-        "short"
-      ],
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "decmbytes",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
       "collapsed": false,
@@ -720,7 +707,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": false,
             "inspect": false
           },
@@ -729,14 +718,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
+                "color": "green",
+                "value": null
               }
             ]
-          }
+          },
+          "unit": "none"
         },
         "overrides": [
           {
@@ -747,18 +734,44 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Read"
+                "value": "Reads"
               },
               {
                 "id": "unit",
-                "value": "none"
+                "value": "short"
               },
               {
                 "id": "custom.align"
               },
               {
-                "id": "custom.displayMode",
-                "value": "auto"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "database"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Database"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "collection"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Collection"
               }
             ]
           }
@@ -771,9 +784,10 @@
         "y": 37
       },
       "id": 3,
-      "links": [],
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -782,7 +796,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "9.2.20",
+      "pluginVersion": "11.1.8",
       "targets": [
         {
           "datasource": "Metrics",
@@ -824,12 +838,16 @@
           "id": "organize",
           "options": {
             "excludeByName": {},
+            "includeByName": {},
             "indexByName": {
               "Value": 2,
               "collection": 1,
               "database": 0
             },
-            "renameByName": {}
+            "renameByName": {
+              "Value": "",
+              "collection": ""
+            }
           }
         }
       ],
@@ -844,7 +862,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": false,
             "inspect": false
           },
@@ -853,31 +873,14 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Time"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Time"
-              },
-              {
-                "id": "custom.align"
+                "color": "green",
+                "value": null
               }
             ]
           },
+          "unit": "short"
+        },
+        "overrides": [
           {
             "matcher": {
               "id": "byName",
@@ -886,14 +889,31 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Write"
-              },
+                "value": "Writes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "database"
+            },
+            "properties": [
               {
-                "id": "unit",
-                "value": "string"
-              },
+                "id": "displayName",
+                "value": "Database"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "collection"
+            },
+            "properties": [
               {
-                "id": "custom.align"
+                "id": "displayName",
+                "value": "Collection"
               }
             ]
           }
@@ -906,9 +926,10 @@
         "y": 37
       },
       "id": 19,
-      "links": [],
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -923,7 +944,7 @@
           }
         ]
       },
-      "pluginVersion": "9.2.20",
+      "pluginVersion": "11.1.8",
       "repeatDirection": "v",
       "targets": [
         {
@@ -936,7 +957,7 @@
           "instant": true,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "",
+          "legendFormat": "__auto",
           "refId": "A",
           "step": 10
         }
@@ -984,12 +1005,14 @@
             "fixedColor": "blue",
             "mode": "fixed"
           },
+          "decimals": 1,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1003,11 +1026,12 @@
         "y": 44
       },
       "id": 24,
-      "links": [],
       "options": {
         "displayMode": "gradient",
+        "maxVizHeight": 300,
         "minVizHeight": 10,
         "minVizWidth": 0,
+        "namePlacement": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -1017,9 +1041,11 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "9.2.20",
+      "pluginVersion": "11.1.8",
       "repeatDirection": "v",
       "targets": [
         {
@@ -1038,7 +1064,6 @@
         }
       ],
       "title": "Top 5 Hottest Collections by Read (Rate)",
-      "transformations": [],
       "type": "bargauge"
     },
     {
@@ -1049,12 +1074,14 @@
             "fixedColor": "blue",
             "mode": "fixed"
           },
+          "decimals": 1,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1068,11 +1095,12 @@
         "y": 44
       },
       "id": 20,
-      "links": [],
       "options": {
         "displayMode": "gradient",
+        "maxVizHeight": 300,
         "minVizHeight": 10,
         "minVizWidth": 0,
+        "namePlacement": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -1082,9 +1110,11 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "9.2.20",
+      "pluginVersion": "11.1.8",
       "repeatDirection": "v",
       "targets": [
         {
@@ -1103,7 +1133,6 @@
         }
       ],
       "title": "Top 5 Hottest Collections by Write (Rate)",
-      "transformations": [],
       "type": "bargauge"
     },
     {
@@ -1127,20 +1156,63 @@
       "type": "row"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
       "description": "Provides information on the rate of activity against the database then breaks down into activity type over the selected time period",
-      "editable": true,
-      "error": false,
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {
-        "leftLogBase": 1,
-        "leftMin": 0,
-        "rightLogBase": 1
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -1148,38 +1220,27 @@
         "x": 0,
         "y": 52
       },
-      "hiddenSeries": false,
       "id": 8,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "paceLength": 10,
-      "percentage": false,
       "pluginVersion": "9.2.20",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
       "repeatDirection": "v",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
           "datasource": "Metrics",
@@ -1243,69 +1304,78 @@
           "legendFormat": "Getmore - {{database}}",
           "range": true,
           "refId": "E"
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Collections statistics  for $database (rate)",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "x-axis": true,
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "y-axis": true,
-      "y_formats": [
-        "ms",
-        "short"
-      ],
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
         },
         {
-          "format": "short",
-          "logBase": 1,
-          "show": false
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "rate(sum by (database) (mongodb_top_queries_count {environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$replication_set\", database=~\"$database\", service_name=~\"$service_name\"}[$interval]))",
+          "hide": false,
+          "legendFormat": "Queries - {{database}}",
+          "range": true,
+          "refId": "F"
         }
       ],
-      "yaxis": {
-        "align": false
-      }
+      "title": "Collections statistics  for $database (rate)",
+      "type": "timeseries"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "decimals": 2,
       "description": "Provides summary information on the activity running against the database then breaks down into activity type over the selected time period",
-      "editable": true,
-      "error": false,
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "short"
         },
         "overrides": []
-      },
-      "fill": 2,
-      "fillGradient": 0,
-      "grid": {
-        "leftLogBase": 1,
-        "leftMin": 0,
-        "rightLogBase": 1
       },
       "gridPos": {
         "h": 8,
@@ -1313,44 +1383,33 @@
         "x": 0,
         "y": 60
       },
-      "hiddenSeries": false,
       "id": 25,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "show": true,
-        "sort": "avg",
-        "sortDesc": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "paceLength": 10,
-      "percentage": false,
       "pluginVersion": "9.2.20",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
       "repeatDirection": "v",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by (database) (mongodb_top_commands_count {database=~\"$database\",service_name=~\"$service_name\"}[$interval])",
+          "expr": "sum by (database) (mongodb_top_commands_count {environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$replication_set\", database=~\"$database\", service_name=~\"$service_name\"}[$interval])",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -1364,7 +1423,7 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by (database) (mongodb_top_insert_count {database=~\"$database\",service_name=~\"$service_name\"}[$interval])",
+          "expr": "sum by (database) (mongodb_top_insert_count {environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$replication_set\", database=~\"$database\", service_name=~\"$service_name\"}[$interval])",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -1378,7 +1437,7 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by (database) (mongodb_top_update_count {database=~\"$database\",service_name=~\"$service_name\"}[$interval])",
+          "expr": "sum by (database) (mongodb_top_update_count {environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$replication_set\", database=~\"$database\", service_name=~\"$service_name\"}[$interval])",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -1390,7 +1449,7 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by (database) (mongodb_top_remove_count {database=~\"$database\",service_name=~\"$service_name\"}[$interval])",
+          "expr": "sum by (database) (mongodb_top_remove_count {environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$replication_set\", database=~\"$database\", service_name=~\"$service_name\"}[$interval])",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -1402,56 +1461,27 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by (database) (mongodb_top_getmore_count {database=~\"$database\",service_name=~\"$service_name\"}[$interval])",
+          "expr": "sum by (database) (mongodb_top_getmore_count {environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$replication_set\", database=~\"$database\", service_name=~\"$service_name\"}[$interval])",
           "hide": false,
           "interval": "",
           "legendFormat": "Getmore - {{database}}",
           "range": true,
           "refId": "E"
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Collections statistics  for $database (summary)",
-      "tooltip": {
-        "msResolution": false,
-        "shared": true,
-        "sort": 5,
-        "value_type": "cumulative"
-      },
-      "type": "graph",
-      "x-axis": true,
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "y-axis": true,
-      "y_formats": [
-        "ms",
-        "short"
-      ],
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": "",
-          "logBase": 1,
-          "min": 0,
-          "show": true
         },
         {
-          "format": "short",
-          "logBase": 1,
-          "show": false
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum by (database) (mongodb_top_queries_count {environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$replication_set\", database=~\"$database\", service_name=~\"$service_name\"}[$interval])",
+          "hide": false,
+          "legendFormat": "Queries - {{database}}",
+          "range": true,
+          "refId": "F"
         }
       ],
-      "yaxis": {
-        "align": false
-      }
+      "title": "Collections statistics  for $database (summary)",
+      "type": "timeseries"
     },
     {
-      "datasource": "Metrics",
       "description": "Provides totals for each activity type hitting a database for collections",
       "fieldConfig": {
         "defaults": {
@@ -1460,7 +1490,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": false,
             "inspect": false
           },
@@ -1469,11 +1501,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
-          "unit": "string"
+          "unit": "short"
         },
         "overrides": [
           {
@@ -1553,6 +1586,18 @@
                 "value": "Getmore"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "collection"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Collection"
+              }
+            ]
           }
         ]
       },
@@ -1564,7 +1609,9 @@
       },
       "id": 27,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -1575,18 +1622,19 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Value"
+            "displayName": "Queries"
           }
         ]
       },
-      "pluginVersion": "9.2.20",
+      "pluginVersion": "11.1.8",
       "repeat": "database",
       "repeatDirection": "v",
       "targets": [
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (collection) (mongodb_top_queries_count {database=~\"$database\"})",
+          "expr": "sum by (collection) (mongodb_top_queries_count {environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$replication_set\", database=~\"$database\", service_name=~\"$service_name\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1596,8 +1644,9 @@
         },
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (collection) (mongodb_top_insert_count {database=~\"$database\"})",
+          "expr": "sum by (collection) (mongodb_top_insert_count {environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$replication_set\", database=~\"$database\", service_name=~\"$service_name\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1607,8 +1656,9 @@
         },
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (collection) (mongodb_top_remove_count {database=~\"$database\"})",
+          "expr": "sum by (collection) (mongodb_top_remove_count {environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$replication_set\", database=~\"$database\", service_name=~\"$service_name\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1618,8 +1668,9 @@
         },
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (collection) (mongodb_top_update_count {database=~\"$database\"})",
+          "expr": "sum by (collection) (mongodb_top_update_count{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$replication_set\", database=~\"$database\", service_name=~\"$service_name\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1629,8 +1680,9 @@
         },
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (collection) (mongodb_top_getmore_count {database=~\"$database\"})",
+          "expr": "sum by (collection) (mongodb_top_getmore_count {environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$replication_set\", database=~\"$database\", service_name=~\"$service_name\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1665,8 +1717,7 @@
     }
   ],
   "refresh": "1m",
-  "schemaVersion": 37,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [
     "Percona",
     "MongoDB"
@@ -1748,7 +1799,7 @@
         "hide": 0,
         "includeAll": true,
         "label": "Environment",
-        "multi": true,
+        "multi": false,
         "name": "environment",
         "options": [],
         "query": {
@@ -1764,19 +1815,15 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "definition": "label_values(mongodb_up{environment=~\"$environment\"},cluster)",
         "hide": 0,
         "includeAll": true,
         "label": "Cluster",
-        "multi": true,
+        "multi": false,
         "name": "cluster",
         "options": [],
         "query": {
@@ -1790,44 +1837,16 @@
         "type": "query"
       },
       {
-        "allValue": ".*",
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\"}, node_name)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Node Name",
-        "multi": false,
-        "name": "node_name",
-        "options": [],
-        "query": {
-          "query": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\"}, node_name)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 5,
-        "type": "query"
-      },
-      {
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
         "definition": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
         "hide": 0,
         "includeAll": true,
         "label": "Replication Set",
-        "multi": true,
+        "multi": false,
         "name": "replication_set",
         "options": [],
         "query": {
@@ -1841,6 +1860,30 @@
         "type": "query"
       },
       {
+        "allValue": "",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$replication_set\"}, node_name)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Node Name",
+        "multi": true,
+        "name": "node_name",
+        "options": [],
+        "query": {
+          "query": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$replication_set\"}, node_name)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "type": "query"
+      },
+      {
         "current": {
           "selected": true,
           "text": [
@@ -1850,15 +1893,15 @@
             "$__all"
           ]
         },
-        "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",replication_set=~\"$replication_set\"}, service_name)",
+        "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",set=~\"$replication_set\"}, service_name)",
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "MongoDB Node",
-        "multi": true,
+        "multi": false,
         "name": "service_name",
         "options": [],
         "query": {
-          "query": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",replication_set=~\"$replication_set\"}, service_name)",
+          "query": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",set=~\"$replication_set\"}, service_name)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
