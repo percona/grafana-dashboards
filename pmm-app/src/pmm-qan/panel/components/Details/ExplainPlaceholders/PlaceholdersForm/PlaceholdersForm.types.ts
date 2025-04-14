@@ -1,6 +1,7 @@
-import { QueryExampleResponseItem } from 'pmm-qan/panel/components/Details/Details.types';
+import { DatabasesType, QueryExampleResponseItem } from 'pmm-qan/panel/components/Details/Details.types';
 
 export interface PlaceholdersFormProps {
+  database: DatabasesType;
   example: QueryExampleResponseItem;
   onSubmit: (values: PlaceholdersFormValues) => void;
 }
