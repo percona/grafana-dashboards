@@ -52,7 +52,7 @@ def main():
 
     # Exit when --check-cq is set and CQ already exist
     if options.exit_on_cq and queries:
-        print '[%s] %s continuous queries exist.' % (PROMETHEUS_DB, len(queries))
+        print('[%s] %s continuous queries exist.' % (PROMETHEUS_DB, len(queries)))
         return
 
     count = 0
@@ -60,17 +60,17 @@ def main():
         client.query('DROP CONTINUOUS QUERY %s ON %s;' % (name, PROMETHEUS_DB))
         count += 1
 
-    print '[%s] Deleted %s continuous queries.' % (PROMETHEUS_DB, count)
+    print('[%s] Deleted %s continuous queries.' % (PROMETHEUS_DB, count))
 
     # Recreate trending db
     if options.drop_db:
         client.drop_database(TRENDING_DB)
-        print '[%s] Database dropped.' % (TRENDING_DB,)
+        print('[%s] Database dropped.' % (TRENDING_DB,))
 
     dbs = [x['name'] for x in client.get_list_database()]
     if TRENDING_DB not in dbs:
         client.create_database(TRENDING_DB)
-        print '[%s] Database created.' % (TRENDING_DB,)
+        print('[%s] Database created.' % (TRENDING_DB,))
 
     # Create new CQ
     count = 0
@@ -79,7 +79,7 @@ def main():
         # Create retention
         if interval not in retentions:
             client.create_retention_policy('%s' % (interval,), 'INF', '1', TRENDING_DB)
-            print '[%s] Retention policy "%s" created.' % (TRENDING_DB, interval)
+            print('[%s] Retention policy "%s" created.' % (TRENDING_DB, interval))
 
         for metric, data in METRICS.iteritems():
             params = {'metric': metric,
@@ -105,7 +105,7 @@ def main():
             client.query(query)
             count += 1
 
-    print '[%s] Added %s continuous queries.' % (PROMETHEUS_DB, count)
+    print('[%s] Added %s continuous queries.' % (PROMETHEUS_DB, count))
 
 
 if __name__ == '__main__':
