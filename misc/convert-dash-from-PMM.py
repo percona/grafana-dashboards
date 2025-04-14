@@ -75,18 +75,18 @@ def check_formulas(dashboard, currentVariableName, newVariableName):
                             expr = dashboard['panels'][panel_index]['targets'][target_index]['expr']
                             expr = re.sub('node_type=~\"[a-z,$_|]*\"', '', expr)
                             if expr.find(currentVariableName) != -1:    # check if variable is used in an expression
-                                print ' <<<< %s' % expr
+                                print(' <<<< %s' % (expr,))
                                 dashboard['panels'][panel_index]['targets'][target_index]['expr'] = expr.replace(currentVariableName, newVariableName)
-                                print ' >>>> %s\n' % dashboard['panels'][panel_index]['targets'][target_index]['expr']
+                                print(' >>>> %s\n' % (dashboard['panels'][panel_index]['targets'][target_index]['expr'],))
 
                 if 'options' in panel:
                     for option in enumerate(dashboard['panels'][panel_index]['options']):
                         if 'content' in option :
                             content = dashboard['panels'][panel_index]['options']['content']
                             if content.find(currentVariableName) != -1:    # check if variable is used in a content 
-                                print ' <<<< %s' % content 
+                                print(' <<<< %s' % (content,))
                                 dashboard['panels'][panel_index]['options']['content'] = content.replace(currentVariableName, newVariableName)
-                                print ' >>>> %s\n' % dashboard['panels'][panel_index]['options']['content']
+                                print(' >>>> %s\n' % (dashboard['panels'][panel_index]['options']['content'],))
 
                 if 'panels' in panel:
                         if len(dashboard['panels'][panel_index]['panels']) > 0:
@@ -97,9 +97,9 @@ def check_formulas(dashboard, currentVariableName, newVariableName):
                                             expr = dashboard['panels'][panel_index]['panels'][panelIn_index]['targets'][target_index]['expr']
                                             expr = re.sub('node_type=~\"[a-z,$_|]*\"', '', expr)
                                             if expr.find(currentVariableName) != -1:    # check if variable is used in an expression
-                                                print ' <<<< %s' % expr
+                                                print(' <<<< %s' % (expr,))
                                                 dashboard['panels'][panel_index]['panels'][panelIn_index]['targets'][target_index]['expr'] = expr.replace(currentVariableName, newVariableName)
-                                                print ' >>>> %s\n' % dashboard['panels'][panel_index]['panels'][panelIn_index]['targets'][target_index]['expr']
+                                                print(' >>>> %s\n' % (dashboard['panels'][panel_index]['panels'][panelIn_index]['targets'][target_index]['expr'],) )
 
         if 'templating' in element:
             for list_index, lists in enumerate(dashboard['templating']['list']):
@@ -137,14 +137,14 @@ def fix_variables(dashboard):
             for panel_index, panel in enumerate(dashboard['templating']['list']):
                 if 'query' in panel.keys():
                     currentVariableName = (dashboard['templating']['list'][panel_index]['name'])
-                    print ('\nVariable: %s' % (dashboard['templating']['list'][panel_index]['name']))
-                    print ('Next expression is used for collecting variable: %s' % (dashboard['templating']['list'][panel_index]['query']))
+                    print ('\nVariable: %s' % (dashboard['templating']['list'][panel_index]['name'],))
+                    print ('Next expression is used for collecting variable: %s' % (dashboard['templating']['list'][panel_index]['query'],))
                     prompt = 'Modify (Y/N)? [N]: '
                     user_input = raw_input(prompt).upper()
                     if user_input == 'Y':
                         prompt = 'Please enter new name for variable %s: ' % (currentVariableName)
                         newVariableName = raw_input(prompt)
-                        print 'Collecting formulas ...'
+                        print('Collecting formulas ...')
                         check_formulas(dashboard, currentVariableName, newVariableName)
                         dashboard['templating']['list'][panel_index]['name'] = newVariableName
 
