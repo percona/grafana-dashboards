@@ -1,5 +1,5 @@
 import { config } from '@grafana/runtime';
-import { ALL_VARIABLE_TEXT } from './QueryAnalytics.constants';
+import { ALL_VARIABLE_VALUE } from './QueryAnalytics.constants';
 
 export const getLabelQueryParams = (labels) => Object.keys(labels)
   .filter((key) => key !== 'interval')
@@ -7,7 +7,7 @@ export const getLabelQueryParams = (labels) => Object.keys(labels)
     key,
     value: labels[key],
   }))
-  .filter((item) => item.value.filter((element) => element !== ALL_VARIABLE_TEXT).length) || [];
+  .filter((item) => item.value.filter((element) => element !== ALL_VARIABLE_VALUE).length) || [];
 
 export const toUnixTimestamp = (date: string) => Math.floor(new Date(date).getTime());
 
