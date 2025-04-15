@@ -4078,11 +4078,39 @@
           "value": "$__all"
         },
         "datasource": "Metrics",
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Environment",
+        "multi": true,
+        "name": "environment",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+          "refId": "Metrics-environment-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
         "definition": "label_values(mysql_up, replication_set)",
         "hide": 0,
         "includeAll": true,
         "label": "Replication Set",
-        "multi": false,
+        "multi": true,
         "name": "replication_set",
         "options": [],
         "query": {
@@ -4106,15 +4134,15 @@
           "value": "ps_8.0_3.142.150.215_1"
         },
         "datasource": "Metrics",
-        "definition": "label_values(mysql_up{replication_set=~\"$replication_set\"}, service_name)",
+        "definition": "label_values(mysql_up{environment=~\"$environment\", replication_set=~\"$replication_set\"}, service_name)",
         "hide": 0,
         "includeAll": false,
         "label": "Service Name",
-        "multi": false,
+        "multi": true,
         "name": "service_name",
         "options": [],
         "query": {
-          "query": "label_values(mysql_up{replication_set=~\"$replication_set\"}, service_name)",
+          "query": "label_values(mysql_up{environment=~\"$environment\", replication_set=~\"$replication_set\"}, service_name)",
           "refId": "Metrics-service_name-Variable-Query"
         },
         "refresh": 2,
@@ -4173,34 +4201,6 @@
         },
         "refresh": 2,
         "regex": "/(([0-9\\.]+)\\.([0-9\\.]+)\\.([0-9\\.]+)-?([0-9?]+))/",
-        "skipUrlSync": false,
-        "sort": 5,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Environment",
-        "multi": true,
-        "name": "environment",
-        "options": [],
-        "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
-          "refId": "Metrics-environment-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
         "skipUrlSync": false,
         "sort": 5,
         "tagValuesQuery": "",
