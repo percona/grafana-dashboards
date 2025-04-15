@@ -128,7 +128,6 @@ export const refreshGrafanaVariables = (state) => {
     variablesQuery.search = state.search;
   }
 
-  console.log('refreshGrafanaVariables', variablesQuery);
   locationService.partial(variablesQuery);
 };
 
