@@ -297,17 +297,17 @@
         {
           "targetBlank": true,
           "title": "Replication",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/replication.html"
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/replication.html"
         },
         {
           "targetBlank": true,
-          "title": "SHOW SLAVE STATUS Syntax",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/show-slave-status.html"
+          "title": "SHOW REPLICA STATUS Syntax",
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/show-replica-status.html"
         },
         {
           "targetBlank": true,
           "title": "IO Thread states",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/slave-io-thread-states.html"
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/replica-io-thread-states.html"
         }
       ],
       "maxDataPoints": 100,
@@ -401,17 +401,17 @@
         {
           "targetBlank": true,
           "title": "Replication",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/replication.html"
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/replication.html"
         },
         {
           "targetBlank": true,
-          "title": "SHOW SLAVE STATUS Syntax",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/show-slave-status.html"
+          "title": "SHOW REPLICA STATUS Syntax",
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/show-replica-status.html"
         },
         {
           "targetBlank": true,
           "title": "SQL Thread states",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/slave-sql-thread-states.html"
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/replica-sql-thread-states.html"
         }
       ],
       "maxDataPoints": 100,
@@ -502,7 +502,7 @@
         {
           "targetBlank": true,
           "title": "List of error codes",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/error-messages-server.html"
+          "url": "https://dev.mysql.com/doc/mysql-errors/8.4/en/server-error-reference.html"
         }
       ],
       "maxDataPoints": 100,
@@ -601,7 +601,7 @@
         {
           "targetBlank": true,
           "title": "Replication",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/replication.html"
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/replication.html"
         }
       ],
       "maxDataPoints": 100,
@@ -683,7 +683,7 @@
         {
           "targetBlank": true,
           "title": "Delayed Replication",
-          "url": "https://dev.mysql.com/doc/refman/8.0/en/replication-delayed.html"
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/replication-delayed.html"
         }
       ],
       "maxDataPoints": 100,
@@ -730,7 +730,7 @@
       "dashLength": 10,
       "dashes": false,
       "decimals": 2,
-      "description": "Shows the number of seconds the Replica host is delayed in replication applying events compared to when the Source host applied them, denoted by the **Seconds_Behind_Source** value, and only applies to a Replica host. The most common reasons for Replicas to lag their Source are:\n\n* Network round trip time - High latency links will lead to non-zero replication lag values\n\n* Single threaded nature of replication channels - Source servers have the advantage of applying changes in parallel, whereas Replicas are only able to apply changes in serial, thus limiting their throughput.  In some cases Group Commit can help but is not always applicable.\n\n* High number of changed rows or computationally expensive SQL - Depending on the replication format (ROW vs STATEMENT), significant changes to the database through high volume of rows modified, or expensive CPU will all contribute to Replicas lagging behind their Source\n\nGenerally adding more CPU or Disk resources can alleviate replication lag issues, up to a point.\n\nSee also:",
+      "description": "Shows the number of seconds the Replica host is delayed in applying replicated events compared to when the Source host applied them, denoted by the **Seconds_Behind_Source** value, and only applies to a Replica host. The most common reasons for Replicas to lag their Source are:\n\n* Network round trip time - High latency links will lead to non-zero replication lag values\n\n* Single threaded nature of replication channels - Source servers have the advantage of applying changes in parallel, whereas Replicas are only able to apply changes in serial, thus limiting their throughput.  In some cases Group Commit can help but is not always applicable.\n\n* High number of changed rows or computationally expensive SQL - Depending on the replication format (ROW vs STATEMENT), significant changes to the database through high volume of rows modified, or expensive CPU will all contribute to Replicas lagging behind their Source\n\nGenerally adding more CPU or Disk resources can alleviate replication lag issues, up to a point.\n\nSee also:",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -768,18 +768,18 @@
       "links": [
         {
           "targetBlank": true,
-          "title": "SHOW SLAVE STATUS Syntax",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/show-slave-status.html"
+          "title": "SHOW REPLICA STATUS Syntax",
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/show-replica-status.html"
         },
         {
           "targetBlank": true,
           "title": "Improving replication performance",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/replication-solutions-performance.html"
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/replication-solutions-performance.html"
         },
         {
           "targetBlank": true,
-          "title": "Replication Slave Options and Variables",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/replication-options-slave.html"
+          "title": "Replication Options and Variables",
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/replication-options-replica.html"
         }
       ],
       "nullPointMode": "null",
@@ -806,11 +806,11 @@
           "calculatedInterval": "2m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "clamp_min(avg by (service_name) (\n(max_over_time(mysql_slave_status_seconds_behind_master{service_name=~\"$service_name\"}[$interval]) or max_over_time(mysql_slave_status_seconds_behind_master{service_name=~\"$service_name\"}[5m])) - (max_over_time(mysql_slave_status_sql_delay{service_name=~\"$service_name\"}[$interval]) or max_over_time(mysql_slave_status_sql_delay{service_name=~\"$service_name\"}[$interval]))\n),0)",
+          "expr": "clamp_min(avg by (service_name) (\n(max_over_time(mysql_slave_status_seconds_behind_master{service_name=~\"$service_name\"}[$interval]) or max_over_time(mysql_slave_status_seconds_behind_master{service_name=~\"$service_name\"}[5m])) - (max_over_time(mysql_slave_status_sql_delay{service_name=~\"$service_name\"}[$interval]) or max_over_time(mysql_slave_status_sql_delay{service_name=~\"$service_name\"}[5m]))\n),0)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "Lag",
+          "legendFormat": "__auto",
           "metric": "",
           "refId": "A",
           "step": 300
@@ -895,12 +895,12 @@
         {
           "targetBlank": true,
           "title": "The binary log",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/binary-log.html"
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/binary-log.html"
         },
         {
           "targetBlank": true,
           "title": "Configuring replication",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/replication-configuration.html"
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/replication-configuration.html"
         }
       ],
       "nullPointMode": "null",
@@ -1125,12 +1125,12 @@
         {
           "targetBlank": true,
           "title": "The binary log",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/binary-log.html"
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/binary-log.html"
         },
         {
           "targetBlank": true,
           "title": "Configuring replication",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/replication-configuration.html"
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/replication-configuration.html"
         }
       ],
       "nullPointMode": "null",
@@ -1355,8 +1355,8 @@
       "links": [
         {
           "targetBlank": true,
-          "title": "The Slave Relay Log",
-          "url": "https://dev.mysql.com/doc/refman/5.7/en/slave-logs-relaylog.html"
+          "title": "The Replica Relay Log",
+          "url": "https://dev.mysql.com/doc/refman/8.4/en/replica-logs-relaylog.html"
         }
       ],
       "nullPointMode": "null",
@@ -1684,7 +1684,7 @@
             {
               "targetBlank": true,
               "title": "MySQL Server Status Variables",
-              "url": "https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html#statvar_Queries"
+              "url": "https://dev.mysql.com/doc/refman/8.4/en/server-status-variables.html#statvar_Queries"
             }
           ],
           "maxDataPoints": 100,
@@ -2120,7 +2120,7 @@
             {
               "targetBlank": true,
               "title": "MySQL Server System Variables",
-              "url": "https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_connections"
+              "url": "https://dev.mysql.com/doc/refman/8.4/en/server-system-variables.html#sysvar_max_connections"
             }
           ],
           "nullPointMode": "null",
@@ -2484,7 +2484,7 @@
           "dashLength": 10,
           "dashes": false,
           "decimals": 2,
-          "description": "**Top Command Counters**\n\nThe Com_{{xxx}} statement counter variables indicate the number of times each xxx statement has been executed. There is one status variable for each type of statement. For example, Com_delete and Com_update count [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements, respectively. Com_delete_multi and Com_update_multi are similar but apply to [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements that use multiple-table syntax.",
+          "description": "**Top Command Counters**\n\nThe Com_{{xxx}} statement counter variables indicate the number of times each xxx statement has been executed. There is one status variable for each type of statement. For example, Com_delete and Com_update count [``DELETE``](https://dev.mysql.com/doc/refman/8.4/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/8.4/en/update.html) statements, respectively. Com_delete_multi and Com_update_multi are similar but apply to [``DELETE``](https://dev.mysql.com/doc/refman/8.4/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/8.4/en/update.html) statements that use multiple-table syntax.",
           "editable": true,
           "error": false,
           "fieldConfig": {
@@ -2524,7 +2524,7 @@
           "links": [
             {
               "title": "Server Status Variables (Com_xxx)",
-              "url": "https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html#statvar_Com_xxx"
+              "url": "https://dev.mysql.com/doc/refman/8.4/en/server-status-variables.html#statvar_Com_xxx"
             }
           ],
           "nullPointMode": "null as zero",
