@@ -161,7 +161,7 @@
       },
       "id": 2,
       "options": {
-        "alignValue": "left",
+        "alignValue": "center",
         "legend": {
           "displayMode": "list",
           "placement": "bottom",
@@ -557,7 +557,7 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "min by (name,status) (mongodb_pbm_backup_size_bytes{cluster=~\"$cluster\", replication_set=~\"$rs_nm\"}) OR min by(name,status) (mongodb_pbm_backup_size_bytes{cluster=~\"$cluster\"})",
+          "expr": "min by(name, status) (mongodb_pbm_backup_size_bytes{cluster=~\"$cluster\", replication_set=~\"$rs_nm\",status=~\"done|error\"}) OR min by(name, status) (mongodb_pbm_backup_size_bytes{cluster=~\"$cluster\",status=~\"done|error\"})",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -570,7 +570,11 @@
       "transformations": [
         {
           "id": "timeSeriesTable",
-          "options": {}
+          "options": {
+            "A": {
+              "timeField": "Time"
+            }
+          }
         },
         {
           "id": "organize",
