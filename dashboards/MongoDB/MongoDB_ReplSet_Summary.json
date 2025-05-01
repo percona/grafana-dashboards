@@ -147,6 +147,301 @@
         "x": 0,
         "y": 0
       },
+      "id": 1645,
+      "title": "Overview",
+      "type": "row"
+    },
+    {
+      "description": "Controls the compatibility version of MongoDB data files. Enabling newer version-specific features may cause datafile format to become incompatible with earlier versions of MongoDB.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "id": 1615,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 28
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.8",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "min(mongodb_fcv_feature_compatibility_version{environment=~\"$environment\", service_name=~\"$service_name\"})",
+          "instant": false,
+          "interval": "5m",
+          "legendFormat": "FCV",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Feature Compatibility Version",
+      "type": "stat"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 6,
+        "y": 1
+      },
+      "hideTimeOverride": true,
+      "id": 1644,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 28
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.8",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "count(mongodb_mongod_replset_my_state{environment=~\"$environment\", cluster=~\"$cluster\", set=~\"$rs_nm\"})",
+          "interval": "5m",
+          "intervalFactor": 1,
+          "legendFormat": "Nodes",
+          "range": true,
+          "refId": "A",
+          "step": 300
+        }
+      ],
+      "timeFrom": "1m",
+      "title": "Nodes",
+      "type": "stat"
+    },
+    {
+      "description": "Total number of user-created databases",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 12,
+        "y": 1
+      },
+      "hideTimeOverride": true,
+      "id": 1643,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 28
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.8",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "max(count by(database)(mongodb_dbstats_collections{environment=~\"$environment\", cluster=~\"$cluster\", rs_nm=~\"$rs_nm\"}))",
+          "interval": "5m",
+          "intervalFactor": 1,
+          "legendFormat": "Shards",
+          "range": true,
+          "refId": "A",
+          "step": 300
+        }
+      ],
+      "timeFrom": "1m",
+      "title": "DBs",
+      "type": "stat"
+    },
+    {
+      "description": "Time since the most recent election",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 18,
+        "y": 1
+      },
+      "hideTimeOverride": false,
+      "id": 1642,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 28
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.8",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "time() - max(mongodb_mongod_replset_member_election_date{environment=~\"$environment\", cluster=~\"$cluster\", set=~\"$rs_nm\", service_name=~\"$service_name\"})",
+          "interval": "5m",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "metric": "",
+          "range": true,
+          "refId": "A",
+          "step": 300
+        }
+      ],
+      "title": "Last Election",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
       "id": 1030,
       "panels": [],
       "repeat": "service_name",
@@ -233,7 +528,7 @@
         "h": 4,
         "w": 2,
         "x": 0,
-        "y": 1
+        "y": 5
       },
       "id": 1586,
       "options": {
@@ -438,7 +733,7 @@
         "h": 4,
         "w": 2.5,
         "x": 2,
-        "y": 1
+        "y": 5
       },
       "id": 1071,
       "options": {
@@ -505,7 +800,7 @@
         "h": 4,
         "w": 2.5,
         "x": 4.5,
-        "y": 1
+        "y": 5
       },
       "id": 1060,
       "options": {
@@ -572,7 +867,7 @@
         "h": 4,
         "w": 2.5,
         "x": 7,
-        "y": 1
+        "y": 5
       },
       "id": 1073,
       "options": {
@@ -637,7 +932,7 @@
         "h": 4,
         "w": 2.5,
         "x": 9.5,
-        "y": 1
+        "y": 5
       },
       "id": 1062,
       "options": {
@@ -710,7 +1005,7 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 1
+        "y": 5
       },
       "id": 1076,
       "options": {
@@ -803,7 +1098,7 @@
         "h": 4,
         "w": 4,
         "x": 16,
-        "y": 1
+        "y": 5
       },
       "id": 1052,
       "options": {
@@ -895,7 +1190,7 @@
         "h": 4,
         "w": 2,
         "x": 20,
-        "y": 1
+        "y": 5
       },
       "id": 321,
       "interval": "$interval",
@@ -966,7 +1261,7 @@
         "h": 4,
         "w": 2,
         "x": 22,
-        "y": 1
+        "y": 5
       },
       "id": 1039,
       "interval": "$interval",
@@ -1021,7 +1316,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 19
       },
       "id": 1150,
       "panels": [],
@@ -1141,7 +1436,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 20
       },
       "id": 1587,
       "options": {
@@ -1179,7 +1474,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 26
       },
       "id": 1170,
       "panels": [],
@@ -1263,7 +1558,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 23
+        "y": 27
       },
       "id": 15,
       "options": {
@@ -1354,7 +1649,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 23
+        "y": 27
       },
       "id": 1024,
       "options": {
@@ -1458,7 +1753,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 31
+        "y": 35
       },
       "id": 1064,
       "options": {
@@ -1520,7 +1815,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 31
+        "y": 35
       },
       "id": 1028,
       "options": {
@@ -1549,7 +1844,6 @@
           "expr": "topk (5,sum by (database,collection) ((rate(mongodb_top_insert_count{service_name=~\"$service_name\"}+mongodb_top_remove_count{service_name=~\"$service_name\"}+mongodb_top_update_count{service_name=~\"$service_name\"})[$interval]) or (irate(mongodb_top_insert_count{service_name=~\"$service_name\"}+mongodb_top_remove_count{service_name=~\"$service_name\"}+mongodb_top_update_count{service_name=~\"$service_name\"})[5s])))",
           "instant": true,
           "interval": "",
-          "key": "Q-bf62f68c-ad8e-4fb5-83bb-df50324b416b-0",
           "legendFormat": "{{database}}.{{collection}}",
           "range": false,
           "refId": "A"
@@ -1622,7 +1916,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 39
+        "y": 43
       },
       "id": 1066,
       "options": {
@@ -1737,7 +2031,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 39
+        "y": 43
       },
       "id": 1036,
       "options": {
@@ -1839,7 +2133,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 47
+        "y": 51
       },
       "id": 1067,
       "options": {
@@ -1961,7 +2255,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "short"
         },
         "overrides": []
       },
@@ -1969,7 +2263,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 47
+        "y": 51
       },
       "id": 1074,
       "options": {
@@ -2017,7 +2311,7 @@
           "step": 300
         }
       ],
-      "title": "Connections",
+      "title": "Average Connections",
       "type": "timeseries"
     },
     {
@@ -2026,10 +2320,164 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 55
+        "y": 59
       },
       "id": 1056,
       "panels": [
+        {
+          "collapsed": false,
+          "default_title_for_rows": "DB Name",
+          "description": "MongoDB stores documents in collections. Collections are analogous to tables in relational databases.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "transparent",
+                "mode": "fixed"
+              },
+              "custom": {
+                "align": "left",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "dark-blue",
+                      "index": 0
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "noValue": "N/A",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "red",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "^((?!(DB Name)).)*$"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "basic",
+                      "type": "color-background"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Node"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?${__data.fields.Node}﻿&﻿${__url_time_range}﻿&﻿${interval:queryparam}﻿&﻿${cluster:queryparam}﻿"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 60
+          },
+          "id": 1045,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "enablePagination": true,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "frameIndex": 0,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "DB Name\\Value"
+              }
+            ]
+          },
+          "pluginVersion": "11.1.8",
+          "sorting_props": {
+            "col_index": -1,
+            "direction": "desc"
+          },
+          "targets": [
+            {
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "max by (environment,cluster,rs_nm,database,service_name) (mongodb_mongod_db_collections_total{cluster=~\"$cluster\",rs_nm=~\"$rs_nm\",db!~\"admin|config\"})",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "$interval",
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Number of Collections",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "cluster": true,
+                  "environment": true,
+                  "rs_nm": true
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "Time": 0,
+                  "Value": 6,
+                  "cluster": 2,
+                  "database": 4,
+                  "environment": 1,
+                  "rs_nm": 5,
+                  "service_name": 3
+                },
+                "renameByName": {
+                  "1710776522937": "",
+                  "Value": "Collections",
+                  "database": "DB Name",
+                  "environment": "Environment",
+                  "service_name": "Node"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
         {
           "default_title_for_rows": "DB Name",
           "description": "MongoDB stores documents in collections. Collections are analogous to tables in relational databases.",
@@ -2108,9 +2556,9 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 11,
+            "w": 24,
             "x": 0,
-            "y": 56
+            "y": 68
           },
           "hide_headers": false,
           "id": 1043,
@@ -2118,6 +2566,7 @@
             "cellHeight": "sm",
             "footer": {
               "countRows": false,
+              "enablePagination": true,
               "fields": "",
               "reducer": [
                 "sum"
@@ -2168,9 +2617,10 @@
                 "excludeByName": {
                   "Time": true,
                   "cluster": true,
-                  "environment": false,
+                  "environment": true,
                   "rs_nm": true
                 },
+                "includeByName": {},
                 "indexByName": {
                   "Time": 0,
                   "Value": 6,
@@ -2215,7 +2665,8 @@
                   "options": {
                     "0": {
                       "color": "dark-blue",
-                      "index": 0
+                      "index": 0,
+                      "text": 0
                     }
                   },
                   "type": "value"
@@ -2230,7 +2681,8 @@
                     "value": null
                   }
                 ]
-              }
+              },
+              "unit": "none"
             },
             "overrides": [
               {
@@ -2240,10 +2692,10 @@
                 },
                 "properties": [
                   {
-                    "id": "custom.cellOptions",
+                    "id": "color",
                     "value": {
-                      "mode": "basic",
-                      "type": "color-background"
+                      "fixedColor": "dark-blue",
+                      "mode": "fixed"
                     }
                   }
                 ]
@@ -2259,7 +2711,7 @@
                     "value": [
                       {
                         "title": "",
-                        "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?${__data.fields.Node}﻿&﻿${__url_time_range}﻿&﻿${interval:queryparam}﻿&﻿${cluster:queryparam}﻿"
+                        "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?${__data.fields.Node}﻿&﻿${__url_time_range}﻿&﻿${interval:queryparam}﻿&﻿${cluster:queryparam}"
                       }
                     ]
                   }
@@ -2269,11 +2721,12 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 13,
-            "x": 11,
-            "y": 56
+            "w": 24,
+            "x": 0,
+            "y": 76
           },
-          "id": 1045,
+          "hide_headers": false,
+          "id": 1672,
           "options": {
             "cellHeight": "sm",
             "footer": {
@@ -2308,33 +2761,45 @@
               "hide": false,
               "instant": true,
               "interval": "$interval",
-              "legendFormat": "__auto",
+              "legendFormat": "{{collection}}",
               "range": false,
               "refId": "A"
             }
           ],
-          "title": "Number of Collections",
+          "title": "Count of Documents",
           "transformations": [
+            {
+              "id": "groupingToMatrix",
+              "options": {
+                "columnField": "shard",
+                "rowField": "db",
+                "valueField": "Value"
+              }
+            },
             {
               "id": "organize",
               "options": {
                 "excludeByName": {
                   "Time": true,
                   "cluster": true,
+                  "environment": true,
                   "rs_nm": true
                 },
+                "includeByName": {},
                 "indexByName": {
                   "Time": 0,
-                  "Value": 5,
+                  "Value": 6,
                   "cluster": 1,
+                  "collection": 4,
                   "database": 3,
-                  "rs_nm": 4,
+                  "rs_nm": 5,
                   "service_name": 2
                 },
                 "renameByName": {
-                  "1710776522937": "",
-                  "Value": "Count",
+                  "Value": "Documents",
                   "database": "DB Name",
+                  "db\\shard": "DB Name",
+                  "rs1": "",
                   "service_name": "Node"
                 }
               }
@@ -2352,7 +2817,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 60
       },
       "id": 1049,
       "panels": [
@@ -2409,7 +2874,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "transparent"
+                    "color": "transparent",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -2450,9 +2916,9 @@
           },
           "gridPos": {
             "h": 7,
-            "w": 12,
+            "w": 8,
             "x": 0,
-            "y": 57
+            "y": 61
           },
           "id": 1038,
           "options": {
@@ -2584,9 +3050,9 @@
           },
           "gridPos": {
             "h": 7,
-            "w": 12,
-            "x": 12,
-            "y": 57
+            "w": 8,
+            "x": 8,
+            "y": 61
           },
           "id": 1025,
           "options": {
@@ -2600,7 +3066,7 @@
               "placement": "bottom",
               "showLegend": true,
               "sortBy": "Mean",
-              "sortDesc": false
+              "sortDesc": true
             },
             "tooltip": {
               "mode": "multi",
@@ -2625,122 +3091,6 @@
           "title": "Oplog Recovery Window",
           "type": "timeseries"
         },
-        {
-          "description": "Shows the average hourly oplog data written to cache by the Primary server.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "bars",
-                "fillOpacity": 100,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 2,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 2,
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "bytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 8,
-            "x": 0,
-            "y": 64
-          },
-          "id": 1614,
-          "options": {
-            "legend": {
-              "calcs": [
-                "mean",
-                "max",
-                "min"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true,
-              "sortBy": "Mean",
-              "sortDesc": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "9.2.20",
-          "repeat": "service_name",
-          "repeatDirection": "h",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": true,
-              "expr": "sum(increase(mongodb_oplog_stats_wt_cache_bytes_written_from_cache{service_name=~\"$service_name\"}[1h]))",
-              "interval": "1h",
-              "legendFormat": "{{service_name}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Oplog GB/Hour - $service_name",
-          "type": "timeseries"
-        }
-      ],
-      "title": "Replication",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 57
-      },
-      "id": 1054,
-      "panels": [
         {
           "description": "Average latency of operations (classified by read, write, or (other) command)",
           "fieldConfig": {
@@ -2820,9 +3170,9 @@
           },
           "gridPos": {
             "h": 7,
-            "w": 12,
-            "x": 0,
-            "y": 58
+            "w": 8,
+            "x": 16,
+            "y": 61
           },
           "id": 1020,
           "options": {
@@ -2847,7 +3197,7 @@
           "targets": [
             {
               "editorMode": "code",
-              "expr": "max(rate(mongodb_ss_flowControl_isLaggedCount{service_name=~\"$service_name\"}[$interval]))",
+              "expr": "max by ()(rate(mongodb_ss_flowControl_isLaggedCount{service_name=~\"$service_name\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "fc_count",
               "range": true,
@@ -2855,7 +3205,7 @@
             },
             {
               "editorMode": "code",
-              "expr": "max(rate(mongodb_ss_flowControl_isLaggedTimeMicros{service_name=~\"$service_name\"}[$interval]))",
+              "expr": "max by ()(rate(mongodb_ss_flowControl_isLaggedTimeMicros{service_name=~\"$service_name\"}[$interval]))",
               "hide": false,
               "interval": "$interval",
               "legendFormat": "fc_time",
@@ -2867,7 +3217,7 @@
           "type": "timeseries"
         },
         {
-          "description": "A WT 'ticket' is assigned out for every operation running simultaneously in the WT storage engine. \"Available\" = hardcoded high value - \"Out\".",
+          "description": "Shows the average hourly oplog data written to cache by the Primary server.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2880,8 +3230,8 @@
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 20,
+                "drawStyle": "bars",
+                "fillOpacity": 100,
                 "gradientMode": "none",
                 "hideFrom": {
                   "legend": false,
@@ -2905,9 +3255,9 @@
                   "mode": "off"
                 }
               },
-              "decimals": 0,
-              "links": [],
+              "decimals": 2,
               "mappings": [],
+              "min": 0,
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -2921,30 +3271,17 @@
                   }
                 ]
               },
-              "unit": "none"
+              "unit": "bytes"
             },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "write"
-                },
-                "properties": [
-                  {
-                    "id": "custom.transform",
-                    "value": "negative-Y"
-                  }
-                ]
-              }
-            ]
+            "overrides": []
           },
           "gridPos": {
             "h": 7,
-            "w": 12,
-            "x": 12,
-            "y": 58
+            "w": 8,
+            "x": 0,
+            "y": 68
           },
-          "id": 1041,
+          "id": 1614,
           "options": {
             "legend": {
               "calcs": [
@@ -2964,38 +3301,25 @@
             }
           },
           "pluginVersion": "9.2.20",
+          "repeat": "service_name",
+          "repeatDirection": "h",
           "targets": [
             {
+              "datasource": "Metrics",
               "editorMode": "code",
-              "expr": "avg by (type) ((max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\",txn_rw=\"read\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\",txn_rw=\"read\"}[5m])) -\n(max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\",txn_rw=\"read\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\",txn_rw=\"read\"}[5m])))",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "read",
-              "metric": "",
+              "exemplar": true,
+              "expr": "sum(increase(mongodb_oplog_stats_wt_cache_bytes_written_from_cache{service_name=~\"$service_name\"}[1h]))",
+              "interval": "1h",
+              "legendFormat": "{{service_name}}",
               "range": true,
-              "refId": "B",
-              "step": 300
-            },
-            {
-              "editorMode": "code",
-              "expr": "avg by (type) ((max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\",txn_rw=\"write\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\",txn_rw=\"write\"}[5m])) -\n(max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\",txn_rw=\"write\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\",txn_rw=\"write\"}[5m])))",
-              "hide": false,
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "write",
-              "metric": "",
-              "range": true,
-              "refId": "A",
-              "step": 300
+              "refId": "A"
             }
           ],
-          "title": "WiredTiger Concurrency Tickets Available",
+          "title": "Oplog GB/Hour - $service_name",
           "type": "timeseries"
         }
       ],
-      "repeat": "service_name",
-      "repeatDirection": "h",
-      "title": "Performance - $service_name",
+      "title": "Replication",
       "type": "row"
     },
     {
@@ -3005,7 +3329,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 60
+        "y": 61
       },
       "id": 1403,
       "panels": [
@@ -3050,8 +3374,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "red",
-                    "value": null
+                    "color": "red"
                   },
                   {
                     "color": "orange",
@@ -3203,7 +3526,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 61
+            "y": 62
           },
           "id": 1435,
           "options": {
@@ -3371,7 +3694,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 61
+        "y": 62
       },
       "id": 1569,
       "panels": [
@@ -3424,8 +3747,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3629,7 +3951,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 62
+            "y": 63
           },
           "id": 337,
           "options": {
@@ -3705,7 +4027,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 63
       },
       "id": 1571,
       "panels": [
@@ -3757,8 +4079,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3986,7 +4307,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 63
+        "y": 64
       },
       "id": 1585,
       "panels": [
@@ -4037,8 +4358,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -4239,7 +4559,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 64
+        "y": 65
       },
       "id": 1583,
       "panels": [
@@ -4290,8 +4610,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -4461,8 +4780,8 @@
         "allValue": ".*",
         "current": {
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "All",
+          "value": "$__all"
         },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 0,
@@ -4489,8 +4808,8 @@
         "allValue": ".*",
         "current": {
           "selected": false,
-          "text": "",
-          "value": ""
+          "text": "replicaset",
+          "value": "replicaset"
         },
         "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\"},cluster)",
         "hide": 0,
@@ -4514,8 +4833,8 @@
       {
         "current": {
           "selected": false,
-          "text": "",
-          "value": ""
+          "text": "rs",
+          "value": "rs"
         },
         "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\"}, set)",
         "hide": 0,
@@ -4564,7 +4883,7 @@
       {
         "allFormat": "glob",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -4593,9 +4912,13 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "definition": "query_result(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$rs_nm\"}==2)",
         "hide": 2,
@@ -4608,6 +4931,33 @@
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
+        "regex": "/.*service_name=\"(.*)\",service_type.*/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "rs101_20328"
+          ],
+          "value": [
+            "rs101_20328"
+          ]
+        },
+        "definition": "query_result(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$rs_nm\"}==1)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "primary",
+        "options": [],
+        "query": {
+          "qryType": 3,
+          "query": "query_result(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$rs_nm\"}==1)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
         "regex": "/.*service_name=\"(.*)\",service_type.*/",
         "skipUrlSync": false,
         "sort": 0,
