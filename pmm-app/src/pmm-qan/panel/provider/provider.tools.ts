@@ -1,4 +1,4 @@
-import { getLocationSrv } from '@grafana/runtime';
+import { locationService } from '@grafana/runtime';
 import {
   ALL_VARIABLE_TEXT,
   AUTO_VARIABLE_TEXT,
@@ -128,9 +128,7 @@ export const refreshGrafanaVariables = (state) => {
     variablesQuery.search = state.search;
   }
 
-  getLocationSrv().update({
-    query: variablesQuery,
-  });
+  locationService.partial(variablesQuery);
 };
 
 export const parseURL = (query) => ({
