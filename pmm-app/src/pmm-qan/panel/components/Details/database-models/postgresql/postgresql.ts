@@ -1,3 +1,4 @@
+import { SERVICE_ID_PREFIX } from 'shared/core';
 import PostgresqlDatabaseService from './service';
 import { stripPrefix } from '../utils';
 
@@ -9,7 +10,7 @@ export const postgresqlMethods = {
 
     const result = await PostgresqlDatabaseService.getShowCreateTablePostgreSQL({
       table_name: tableName,
-      service_id: stripPrefix(example.service_id, '/service_id/'),
+      service_id: stripPrefix(example.service_id, SERVICE_ID_PREFIX),
       database,
     });
 
@@ -22,7 +23,7 @@ export const postgresqlMethods = {
 
     const result = await PostgresqlDatabaseService.getPostgreSQLIndex({
       table_name: tableName,
-      service_id: stripPrefix(example.service_id, '/service_id/'),
+      service_id: stripPrefix(example.service_id, SERVICE_ID_PREFIX),
       database,
     });
 

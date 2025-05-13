@@ -1,3 +1,4 @@
+import { SERVICE_ID_PREFIX } from 'shared/core';
 import MongoDBService from './service';
 import { stripPrefix } from '../utils';
 
@@ -7,7 +8,7 @@ export const mongodbMethods = {
       const result = await MongoDBService.getTraditionalExplainJSONMongo(
         {
           pmm_agent_id: example.pmm_agent_id,
-          service_id: stripPrefix(example.service_id, '/service_id/'),
+          service_id: stripPrefix(example.service_id, SERVICE_ID_PREFIX),
           query: example.example,
         },
         disableNotifications,
