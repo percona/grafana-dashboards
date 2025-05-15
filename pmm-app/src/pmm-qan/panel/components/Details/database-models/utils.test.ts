@@ -18,7 +18,7 @@ describe('stripPrefix', () => {
 
     expect(result).toBe('prefix/main-text');
   });
-  
+
   it('should return empty string if both text and prefix are empty', () => {
     const result = stripPrefix('', '');
 
