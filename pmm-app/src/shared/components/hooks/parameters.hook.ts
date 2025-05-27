@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getLocationSrv } from '@grafana/runtime';
+import { locationService } from '@grafana/runtime';
 
 type ParameterHook = (key: string, defaultValue?: string) => [string, (parameter: string) => void];
 
@@ -8,7 +8,7 @@ const useQueryParams: ParameterHook = (key, defaultValue) => {
   const [value, setValue] = useState<string>(defaultValue ?? '');
 
   const setParameter = (parameter) => {
-    getLocationSrv().update({
+    locationService.partial({
       query: { [key]: parameter },
       partial: true,
     });
