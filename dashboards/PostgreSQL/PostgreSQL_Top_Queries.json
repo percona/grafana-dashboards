@@ -1,0 +1,1978 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": false,
+        "hide": false,
+        "iconColor": "orange",
+        "name": "PMM Annotations",
+        "target": {
+          "limit": 100,
+          "matchAny": true,
+          "tags": [
+            "pmm_annotation",
+            "$service_name",
+            "$node_name"
+          ],
+          "type": "tags"
+        }
+      }
+    ]
+  },
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 1,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "(sum by (service_name) (rate(pg_stat_database_xact_commit{service_type=~\"$service_type\",node_name=~\"$node_name\"}[$interval])) or \nsum by (service_name) (irate(pg_stat_database_xact_commit{service_type=~\"$service_type\",node_name=~\"$node_name\"}[5m])))",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Transactions per Seconds",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "Slowest average execution time",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Query"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 789
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Database"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Service Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 334
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg Execution Time"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.2",
+          "queryType": "table",
+          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    avg(m_query_time_sum / m_query_time_cnt) AS \"Avg Execution Time\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND node_name in ($node_name)\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name, \n    database, \n    fingerprint\nORDER BY \"Avg Execution Time\" DESC\nLIMIT 10;",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 Slowest Query",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "Postgresql spent the most time on these queries.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Service Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 337
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Database"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 106
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Query"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 792
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Execution Time Summary"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.2",
+          "queryType": "table",
+          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    sum(m_query_time_sum) AS \"Execution Time Summary\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND node_name in ($node_name)\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name,  \n    database, \n    fingerprint \nORDER BY \"Execution Time Summary\" DESC\nLIMIT 100;",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 time spent",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "Queries which executed the most time.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Query"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 802
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Database"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 102
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Service Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 336
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Executed"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 4,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.2",
+          "queryType": "table",
+          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    sum(num_queries) AS \"Executed\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND node_name in ($node_name)\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name, \n    database, \n    fingerprint\nORDER BY \"Executed\" DESC\nLIMIT 10;",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 Queries Executed the most",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "Queries which writes the most rows",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Query"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 812
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Database"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Service Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 335
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Affected Rows"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 33
+      },
+      "id": 5,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.2",
+          "queryType": "table",
+          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    sum(m_rows_sent_sum) AS \"Affected Rows\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND node_name in ($node_name)\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\n    AND cmd_type not in ('SELECT','')\nGROUP BY \n    service_name, \n    database, \n    fingerprint\nORDER BY \"Affected Rows\" DESC\nLIMIT 10;",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 Queries writing the most",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "These Queries are affecting the most rows.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Query"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 819
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Database"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Service Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 332
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Rows Affected"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 43
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.2",
+          "queryType": "table",
+          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    sum(m_rows_sent_sum) AS \"Rows Affected\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND node_name in ($node_name)\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name, \n    database, \n    fingerprint\nORDER BY \"Rows Affected\" DESC\nLIMIT 10;",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 Queries Affected the most rows",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "PDEE91DDB90597936"
+      },
+      "description": "These users executed the most queries",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Query"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 398
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Database"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 98
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Service Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 329
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Username"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 825
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Executed Queries"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 54
+      },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "PDEE91DDB90597936"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.2",
+          "queryType": "table",
+          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    username as Username,\n    sum(num_queries) AS \"Executed Queries\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND node_name in ($node_name)\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name, \n    database,\n    username\nORDER BY \"Executed Queries\" DESC\nLIMIT 10;",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 User Executed the most queires",
+      "transparent": true,
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 41,
+  "tags": [
+    "Percona",
+    "PostgreSQL",
+    "Services"
+  ],
+  "templating": {
+    "list": [
+      {
+        "auto": true,
+        "auto_count": 200,
+        "auto_min": "1s",
+        "current": {
+          "text": "$__auto",
+          "value": "$__auto"
+        },
+        "label": "Interval",
+        "name": "interval",
+        "options": [
+          {
+            "selected": false,
+            "text": "1s",
+            "value": "1s"
+          },
+          {
+            "selected": false,
+            "text": "5s",
+            "value": "5s"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          }
+        ],
+        "query": "1s,5s,1m,5m,1h,6h,1d",
+        "refresh": 2,
+        "type": "interval"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values({__name__=~\"pg_up\"}, environment)",
+        "includeAll": true,
+        "label": "Environment",
+        "multi": true,
+        "name": "environment",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up\"}, environment)",
+          "refId": "Metrics-environment-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values(postgresql_up, cluster)",
+        "includeAll": true,
+        "label": "Cluster",
+        "multi": true,
+        "name": "cluster",
+        "options": [],
+        "query": {
+          "query": "label_values(postgresql_up, cluster)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values(pg_up{environment=~\"$environment\"},node_name)",
+        "includeAll": false,
+        "label": "Node Name",
+        "multi": true,
+        "name": "node_name",
+        "options": [],
+        "query": {
+          "query": "label_values(pg_up{environment=~\"$environment\"},node_name)",
+          "refId": "Metrics-node_name-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values(pg_up{node_name=~\"$node_name\",environment=~\"$environment\"}, service_name)",
+        "includeAll": true,
+        "label": "Service Name",
+        "multi": true,
+        "name": "service_name",
+        "options": [],
+        "query": {
+          "query": "label_values(pg_up{node_name=~\"$node_name\",environment=~\"$environment\"}, service_name)",
+          "refId": "Metrics-service_name-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "DB",
+        "multi": true,
+        "name": "database",
+        "options": [],
+        "query": {
+          "query": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
+          "refId": "Metrics-database-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "4194304",
+          "value": "4194304"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "work_mem",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_work_mem_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-work_mem-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "14.17",
+          "value": "14.17"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "version",
+        "options": [],
+        "query": {
+          "query": "label_values(pg_static{service_name=~\"$service_name\"},version)",
+          "refId": "Metrics-version-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 2,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "100",
+          "value": "100"
+        },
+        "definition": "query_result(pg_settings_max_connections{service_name=~\"$service_name\"})",
+        "hide": 2,
+        "includeAll": false,
+        "name": "max_connections",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_connections{service_name=~\"$service_name\"})",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "134217728",
+          "value": "134217728"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "shared_buffers",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-shared_buffers-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "4194304",
+          "value": "4194304"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "wal_buffers",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-wal_buffers-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "16777216",
+          "value": "16777216"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "wal_segment_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_wal_segment_size_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-wal_segment_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "67108864",
+          "value": "67108864"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "maintenance_work_mem",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_maintenance_work_mem_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-maintenance_work_mem-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "8192",
+          "value": "8192"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "block_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_block_size{service_name=~\"$service_name\"})",
+          "refId": "Metrics-block_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "checkpoint_segments",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_checkpoint_segments{service_name=~\"$service_name\"})",
+          "refId": "Metrics-checkpoint_segments-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "300",
+          "value": "300"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "checkpoint_timeout",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_checkpoint_timeout_seconds{service_name=~\"$service_name\"})",
+          "refId": "Metrics-checkpoint_timeout-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "100",
+          "value": "100"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "default_statistics_target",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_default_statistics_target{service_name=~\"$service_name\"})",
+          "refId": "Metrics-default_statistics_target-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1",
+          "value": "1"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "seq_page_cost",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_seq_page_cost{service_name=~\"$service_name\"})",
+          "refId": "Metrics-seq_page_cost-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "4",
+          "value": "4"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "random_page_cost",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_random_page_cost{service_name=~\"$service_name\"})",
+          "refId": "Metrics-random_page_cost-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "4294967296",
+          "value": "4294967296"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "effective_cache_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-effective_cache_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1",
+          "value": "1"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "effective_io_concurrency",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_effective_io_concurrency{service_name=~\"$service_name\"})",
+          "refId": "Metrics-effective_io_concurrency-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1",
+          "value": "1"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "fsync",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_fsync{service_name=~\"$service_name\"})",
+          "refId": "Metrics-fsync-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1",
+          "value": "1"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0.1",
+          "value": "0.1"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_analyze_scale_factor",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_analyze_scale_factor{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_analyze_scale_factor-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "50",
+          "value": "50"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_analyze_threshold",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_analyze_threshold{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_analyze_threshold-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0.2",
+          "value": "0.2"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_vacuum_scale_factor",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_vacuum_scale_factor{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_vacuum_scale_factor-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "50",
+          "value": "50"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_vacuum_threshold",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_vacuum_threshold{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_vacuum_threshold-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1748003286000",
+          "value": "1748003286000"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_vacuum_cost_limit",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_vacuum_cost_limit{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_vacuum_cost_limit-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0.002",
+          "value": "0.002"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_vacuum_cost_delay",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_vacuum_cost_delay_seconds{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_vacuum_cost_delay-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "3",
+          "value": "3"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_max_workers",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_max_workers{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_max_workers-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "60",
+          "value": "60"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_naptime",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_naptime_seconds{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_naptime-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "200000000",
+          "value": "200000000"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_freeze_max_age",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_freeze_max_age{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_freeze_max_age-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "logging_collector",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_logging_collector{service_name=~\"$service_name\"})",
+          "refId": "Metrics-logging_collector-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1748003286000",
+          "value": "1748003286000"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "log_min_duration_statement",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_log_min_duration_statement_seconds{service_name=~\"$service_name\"})",
+          "refId": "Metrics-log_min_duration_statement-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "log_duration",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_log_duration{service_name=~\"$service_name\"})",
+          "refId": "Metrics-log_duration-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "log_lock_waits",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_log_lock_waits{service_name=~\"$service_name\"})",
+          "refId": "Metrics-log_lock_waits-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "10",
+          "value": "10"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "max_wal_senders",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_wal_senders{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_wal_senders-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1073741824",
+          "value": "1073741824"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "max_wal_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_wal_size_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_wal_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "83886080",
+          "value": "83886080"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "min_wal_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_min_wal_size_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-min_wal_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "wal_compression",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_wal_compression{service_name=~\"$service_name\"})",
+          "refId": "Metrics-wal_compression-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "8",
+          "value": "8"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "max_worker_processes",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_worker_processes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_worker_processes-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "2",
+          "value": "2"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "max_parallel_workers_per_gather",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_parallel_workers_per_gather{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_parallel_workers_per_gather-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "2",
+          "value": "2"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "max_parallel_workers",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_parallel_workers_per_gather{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_parallel_workers-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1748003286000",
+          "value": "1748003286000"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_work_mem",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_work_mem_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_work_mem-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "400000000",
+          "value": "400000000"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_multixact_freeze_max_age",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_multixact_freeze_max_age{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_multixact_freeze_max_age-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Replication Set",
+        "multi": true,
+        "name": "replication_set",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
+          "refId": "Metrics-replication_set-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Type",
+        "multi": true,
+        "name": "node_type",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
+          "refId": "Metrics-node_type-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Type",
+        "multi": true,
+        "name": "service_type",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
+          "refId": "Metrics-service_type-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Username",
+        "multi": true,
+        "name": "username",
+        "options": [],
+        "query": {
+          "query": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+          "refId": "Metrics-username-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Schema",
+        "multi": true,
+        "name": "schema",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
+          "refId": "Metrics-schema-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "PostgreSQL Top Queries",
+  "uid": "postgresql-top-queries",
+  "version": 2
+}
