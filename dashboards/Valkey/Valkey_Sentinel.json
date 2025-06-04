@@ -21,12 +21,12 @@
       }
     ]
   },
-  "description": "Valkey Cluster Dashboard",
+  "description": "Valkey Sentinel Dashboard",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "gnetId": 763,
   "graphTooltip": 1,
-  "id": 82,
+  "id": 80,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -77,10 +77,10 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 7,
-            "w": 24,
+            "h": 6,
+            "w": 22,
             "x": 0,
-            "y": 25
+            "y": 1
           },
           "id": 9,
           "links": [],
@@ -154,9 +154,9 @@
           "grid": {},
           "gridPos": {
             "h": 8,
-            "w": 24,
+            "w": 22,
             "x": 0,
-            "y": 32
+            "y": 7
           },
           "height": "",
           "hiddenSeries": false,
@@ -259,21 +259,7 @@
           "yaxis": {
             "align": false
           }
-        }
-      ],
-      "title": "Load",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 1
-      },
-      "id": 164,
-      "panels": [
+        },
         {
           "datasource": "Metrics",
           "fieldConfig": {
@@ -301,9 +287,9 @@
           },
           "gridPos": {
             "h": 4,
-            "w": 6,
+            "w": 8,
             "x": 0,
-            "y": 43
+            "y": 15
           },
           "id": 35,
           "links": [],
@@ -354,21 +340,7 @@
             }
           ],
           "type": "stat"
-        }
-      ],
-      "title": "Total Commands/sec",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 2
-      },
-      "id": 221,
-      "panels": [
+        },
         {
           "datasource": "Metrics",
           "fieldConfig": {
@@ -412,8 +384,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -423,13 +394,38 @@
               },
               "unit": "none"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "sum(rate(redis_total_reads_processed{instance=~\"/agent_id/cfb118ce-78c3-433e-8430-7182c33c4aa8\"}[5m]))"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Read"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "sum(rate(redis_total_writes_processed{instance=~\"/agent_id/cfb118ce-78c3-433e-8430-7182c33c4aa8\"}[5m]))"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Write"
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
             "h": 8,
-            "w": 6,
+            "w": 8,
             "x": 0,
-            "y": 27
+            "y": 19
           },
           "id": 10,
           "links": [],
@@ -479,21 +475,7 @@
           ],
           "title": "$node_name - read and Write rate",
           "type": "timeseries"
-        }
-      ],
-      "title": "Read and Write Rates",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 3
-      },
-      "id": 278,
-      "panels": [
+        },
         {
           "datasource": "Metrics",
           "fieldConfig": {
@@ -551,9 +533,9 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 6,
+            "w": 8,
             "x": 0,
-            "y": 45
+            "y": 27
           },
           "id": 18,
           "links": [],
@@ -589,21 +571,7 @@
           ],
           "title": "$node_name - command ops/sec",
           "type": "timeseries"
-        }
-      ],
-      "title": "Operations/sec by command",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 4
-      },
-      "id": 335,
-      "panels": [
+        },
         {
           "datasource": "Metrics",
           "fieldConfig": {
@@ -662,9 +630,9 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 6,
+            "w": 8,
             "x": 0,
-            "y": 46
+            "y": 35
           },
           "id": 58,
           "links": [],
@@ -715,7 +683,7 @@
           "type": "timeseries"
         }
       ],
-      "title": "Hits and Misses",
+      "title": "Load",
       "type": "row"
     },
     {
@@ -724,7 +692,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 5
+        "y": 1
       },
       "id": 39,
       "panels": [
@@ -800,10 +768,10 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 8,
+            "h": 7,
             "w": 3,
             "x": 0,
-            "y": 47
+            "y": 44
           },
           "hideTimeOverride": true,
           "id": 31,
@@ -913,10 +881,10 @@
             ]
           },
           "gridPos": {
-            "h": 8,
+            "h": 7,
             "w": 11,
             "x": 3,
-            "y": 47
+            "y": 44
           },
           "id": 7,
           "links": [],
@@ -925,7 +893,7 @@
               "calcs": [],
               "displayMode": "list",
               "placement": "bottom",
-              "showLegend": false
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -989,10 +957,10 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 8,
+            "h": 7,
             "w": 4,
             "x": 14,
-            "y": 47
+            "y": 44
           },
           "id": 22,
           "options": {
@@ -1007,9 +975,9 @@
           "targets": [
             {
               "datasource": "Metrics",
-              "editorMode": "code",
+              "editorMode": "builder",
               "exemplar": false,
-              "expr": "redis_instance_info{node_name=~\"$node_name\"} and on(node_name) redis_instance_info{role=\"master\"}",
+              "expr": "redis_instance_info{node_name=~\"$node_name\"}",
               "format": "table",
               "instant": true,
               "legendFormat": "__auto",
@@ -1087,10 +1055,10 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 8,
+            "h": 7,
             "w": 6,
             "x": 18,
-            "y": 47
+            "y": 44
           },
           "hideTimeOverride": true,
           "id": 25,
@@ -1110,7 +1078,7 @@
               "datasource": "Metrics",
               "editorMode": "builder",
               "exemplar": false,
-              "expr": "redis_db_keys{node_name=~\"$node_name\"}",
+              "expr": "redis_db_keys{db=\"db0\", node_name=~\"$node_name\"}",
               "format": "table",
               "instant": true,
               "intervalFactor": 2,
@@ -1161,7 +1129,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 6
+        "y": 2
       },
       "id": 41,
       "panels": [
@@ -1222,9 +1190,9 @@
           },
           "gridPos": {
             "h": 9,
-            "w": 6,
+            "w": 8,
             "x": 0,
-            "y": 47
+            "y": 45
           },
           "id": 27,
           "links": [],
@@ -1247,7 +1215,7 @@
             {
               "datasource": "Metrics",
               "editorMode": "code",
-              "expr": "rate(redis_net_input_bytes_total{node_name=~\"$node_name\"}[5m])",
+              "expr": "(rate(redis_net_input_bytes_total{node_name=~\"$node_name\"}[5m]))",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{ input }}",
@@ -1258,7 +1226,7 @@
             {
               "datasource": "Metrics",
               "editorMode": "code",
-              "expr": "rate(redis_net_output_bytes_total{node_name=~\"$node_name\"}[5m])",
+              "expr": "(rate(redis_net_output_bytes_total{node_name=~\"$node_name\"}[5m]))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -1270,21 +1238,7 @@
           ],
           "title": "$node_name - network I/O",
           "type": "timeseries"
-        }
-      ],
-      "title": "Network IO",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 7
-      },
-      "id": 392,
-      "panels": [
+        },
         {
           "datasource": "Metrics",
           "fieldConfig": {
@@ -1328,8 +1282,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1343,9 +1296,9 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 6,
+            "w": 8,
             "x": 0,
-            "y": 32
+            "y": 54
           },
           "id": 16,
           "links": [],
@@ -1386,7 +1339,113 @@
               "refId": "B"
             }
           ],
-          "title": "$node_name - Connected/Blocked Clients",
+          "title": "Connected/Blocked Clients",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "Metrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 8,
+            "x": 0,
+            "y": 62
+          },
+          "id": 30,
+          "links": [],
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.3.3",
+          "repeat": "node_name",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "expr": "(rate(redis_client_recent_max_input_buffer_bytes{node_name=~\"$node_name\"}[5m]))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ input }}",
+              "range": true,
+              "refId": "A",
+              "step": 240
+            },
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "expr": "(rate(redis_client_recent_max_output_buffer_bytes{node_name=~\"$node_name\"}[5m]))",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ output }}",
+              "range": true,
+              "refId": "B",
+              "step": 240
+            }
+          ],
+          "title": "$node_name - client Buffers",
           "type": "timeseries"
         },
         {
@@ -1406,8 +1465,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1417,26 +1475,13 @@
               },
               "unit": "none"
             },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "node_name"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 118
-                  }
-                ]
-              }
-            ]
+            "overrides": []
           },
           "gridPos": {
-            "h": 8,
-            "w": 5,
-            "x": 12,
-            "y": 40
+            "h": 5,
+            "w": 6,
+            "x": 0,
+            "y": 71
           },
           "id": 66,
           "options": {
@@ -1445,8 +1490,7 @@
               "reducer": ["sum"],
               "show": false
             },
-            "showHeader": true,
-            "sortBy": []
+            "showHeader": true
           },
           "pluginVersion": "9.2.20",
           "targets": [
@@ -1507,8 +1551,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1521,10 +1564,10 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 8,
-            "w": 7,
-            "x": 17,
-            "y": 40
+            "h": 5,
+            "w": 6,
+            "x": 6,
+            "y": 71
           },
           "id": 67,
           "options": {
@@ -1578,7 +1621,7 @@
           "type": "table"
         }
       ],
-      "title": "Connected Clients",
+      "title": "Clients",
       "type": "row"
     },
     {
@@ -1587,128 +1630,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 8
-      },
-      "id": 394,
-      "panels": [
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "linear",
-                "lineWidth": 2,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "links": [],
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "bytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 6,
-            "x": 0,
-            "y": 33
-          },
-          "id": 30,
-          "links": [],
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "10.3.3",
-          "repeat": "node_name",
-          "repeatDirection": "h",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "expr": "(rate(redis_client_recent_max_input_buffer_bytes{node_name=~\"$node_name\"}[5m]))",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "{{ input }}",
-              "range": true,
-              "refId": "A",
-              "step": 240
-            },
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "expr": "(rate(redis_client_recent_max_output_buffer_bytes{node_name=~\"$node_name\"}[5m]))",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 2,
-              "legendFormat": "{{ output }}",
-              "range": true,
-              "refId": "B",
-              "step": 240
-            }
-          ],
-          "title": "$node_name - client Buffers",
-          "type": "timeseries"
-        }
-      ],
-      "title": "Client Buffers",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 9
+        "y": 3
       },
       "id": 43,
       "panels": [
@@ -1784,7 +1706,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "memcached_items_evicted_total{job=\"prometheus\"}"
+                  "options": "memcached_items_evicted_total{instance=\"172.17.0.1:9150\",job=\"prometheus\"}"
                 },
                 "properties": [
                   {
@@ -1817,7 +1739,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 68
+            "y": 46
           },
           "id": 8,
           "links": [],
@@ -1826,7 +1748,7 @@
               "calcs": [],
               "displayMode": "list",
               "placement": "bottom",
-              "showLegend": false
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -1925,7 +1847,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 68
+            "y": 46
           },
           "id": 13,
           "links": [],
@@ -1934,7 +1856,7 @@
               "calcs": [],
               "displayMode": "list",
               "placement": "bottom",
-              "showLegend": false
+              "showLegend": true
             },
             "tooltip": {
               "mode": "multi",
@@ -1983,7 +1905,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 4
       },
       "id": 45,
       "panels": [
@@ -2014,9 +1936,9 @@
           },
           "gridPos": {
             "h": 19,
-            "w": 6,
+            "w": 8,
             "x": 0,
-            "y": 69
+            "y": 47
           },
           "id": 46,
           "links": [],
@@ -2113,7 +2035,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 107
+            "y": 66
           },
           "id": 14,
           "links": [],
@@ -2209,7 +2131,7 @@
             "h": 16,
             "w": 24,
             "x": 0,
-            "y": 155
+            "y": 90
           },
           "id": 47,
           "options": {
@@ -2321,485 +2243,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 11
-      },
-      "id": 601,
-      "panels": [
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 24,
-            "x": 0,
-            "y": 1
-          },
-          "id": 611,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "9.2.20",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "builder",
-              "expr": "min(redis_cluster_slots_ok{node_name=~\"$node_name\"})",
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A"
-            },
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "expr": "max(redis_cluster_slots_fail{node_name=~\"$node_name\"})",
-              "hide": false,
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "B"
-            },
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "expr": "max(redis_cluster_slots_pfail{node_name=~\"$node_name\"})",
-              "hide": false,
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "C"
-            }
-          ],
-          "title": "slots status",
-          "type": "timeseries"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 24,
-            "x": 0,
-            "y": 8
-          },
-          "id": 616,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "9.2.20",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "builder",
-              "expr": "redis_cluster_messages_sent_total{node_name=~\"$node_name\"}",
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A"
-            },
-            {
-              "datasource": "Metrics",
-              "editorMode": "builder",
-              "expr": "redis_cluster_messages_received_total{node_name=~\"$node_name\"}",
-              "hide": false,
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "B"
-            }
-          ],
-          "title": "cluster messages",
-          "type": "timeseries"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 24,
-            "x": 0,
-            "y": 15
-          },
-          "id": 621,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "builder",
-              "expr": "min(redis_cluster_state{node_name=~\"$node_name\"})",
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "$node_name - cluster state",
-          "type": "timeseries"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 0,
-            "y": 20
-          },
-          "id": 603,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "repeat": "node_name",
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "builder",
-              "expr": "sum by(node_name) (redis_cluster_connections{node_name=~\"$node_name\"})",
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "$node_name - cluster connections",
-          "type": "timeseries"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 8,
-            "y": 20
-          },
-          "id": 606,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "repeat": "node_name",
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "builder",
-              "expr": "redis_cluster_known_nodes{node_name=~\"$node_name\"}",
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "$node_name - known nodes",
-          "type": "timeseries"
-        }
-      ],
-      "title": "Cluster",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 12
+        "y": 5
       },
       "id": 49,
       "panels": [
@@ -2847,9 +2291,9 @@
           },
           "gridPos": {
             "h": 9,
-            "w": 6,
+            "w": 11,
             "x": 0,
-            "y": 178
+            "y": 48
           },
           "id": 24,
           "options": {
@@ -2869,7 +2313,7 @@
           },
           "pluginVersion": "9.2.20",
           "repeat": "node_name",
-          "repeatDirection": "h",
+          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -2922,21 +2366,7 @@
             }
           ],
           "type": "state-timeline"
-        }
-      ],
-      "title": "Replication Roles",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 13
-      },
-      "id": 451,
-      "panels": [
+        },
         {
           "datasource": "Metrics",
           "fieldConfig": {
@@ -2979,8 +2409,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "orange",
@@ -2994,13 +2423,62 @@
               },
               "unit": "none"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "redis_connected_slave_offset_bytes{agent_id=\"/agent_id/cfb118ce-78c3-433e-8430-7182c33c4aa8\", agent_type=\"external-exporter\", external_group=\"external\", instance=\"/agent_id/cfb118ce-78c3-433e-8430-7182c33c4aa8\", job=\"external-exporter_agent_id_cfb118ce-78c3-433e-8430-7182c33c4aa8_mr\", node_id=\"/node_id/2a3a3f53-4f0f-47d0-af4b-6b471f07a0b6\", node_name=\"RedisExporter\", node_type=\"remote\", service_id=\"/service_id/e377d9b6-5312-441e-9b06-a544e0a328b8\", service_name=\"RedisExporter\", service_type=\"external\", slave_ip=\"192.168.2.233\", slave_port=\"6380\", slave_state=\"online\"}"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "6380 offset"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "redis_connected_slave_offset_bytes{agent_id=\"/agent_id/cfb118ce-78c3-433e-8430-7182c33c4aa8\", agent_type=\"external-exporter\", external_group=\"external\", instance=\"/agent_id/cfb118ce-78c3-433e-8430-7182c33c4aa8\", job=\"external-exporter_agent_id_cfb118ce-78c3-433e-8430-7182c33c4aa8_mr\", node_id=\"/node_id/2a3a3f53-4f0f-47d0-af4b-6b471f07a0b6\", node_name=\"RedisExporter\", node_type=\"remote\", service_id=\"/service_id/e377d9b6-5312-441e-9b06-a544e0a328b8\", service_name=\"RedisExporter\", service_type=\"external\", slave_ip=\"192.168.2.233\", slave_port=\"6381\", slave_state=\"online\"}"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "6381 offset"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "{__name__=\"redis_master_repl_offset\", agent_id=\"/agent_id/cfb118ce-78c3-433e-8430-7182c33c4aa8\", agent_type=\"external-exporter\", external_group=\"external\", instance=\"/agent_id/cfb118ce-78c3-433e-8430-7182c33c4aa8\", job=\"external-exporter_agent_id_cfb118ce-78c3-433e-8430-7182c33c4aa8_mr\", node_id=\"/node_id/2a3a3f53-4f0f-47d0-af4b-6b471f07a0b6\", node_name=\"RedisExporter\", node_type=\"remote\", service_id=\"/service_id/e377d9b6-5312-441e-9b06-a544e0a328b8\", service_name=\"RedisExporter\", service_type=\"external\"}"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Master offset"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "{__name__=\"redis_repl_backlog_first_byte_offset\", agent_id=\"/agent_id/cfb118ce-78c3-433e-8430-7182c33c4aa8\", agent_type=\"external-exporter\", external_group=\"external\", instance=\"/agent_id/cfb118ce-78c3-433e-8430-7182c33c4aa8\", job=\"external-exporter_agent_id_cfb118ce-78c3-433e-8430-7182c33c4aa8_mr\", node_id=\"/node_id/2a3a3f53-4f0f-47d0-af4b-6b471f07a0b6\", node_name=\"RedisExporter\", node_type=\"remote\", service_id=\"/service_id/e377d9b6-5312-441e-9b06-a544e0a328b8\", service_name=\"RedisExporter\", service_type=\"external\"}"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "First Byte offset"
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
             "h": 9,
-            "w": 6,
-            "x": 0,
-            "y": 37
+            "w": 13,
+            "x": 11,
+            "y": 48
           },
           "hideTimeOverride": false,
           "id": 53,
@@ -3018,21 +2496,96 @@
             }
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "h",
           "targets": [
             {
               "datasource": "Metrics",
-              "editorMode": "builder",
-              "expr": "redis_master_repl_offset{node_name=~\"$node_name\"} - on(node_name) redis_connected_slave_offset_bytes{node_name=~\"$node_name\"}",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "redis_connected_slave_offset_bytes{node_name=~\"$node_name\"} and on(node_name) redis_instance_info{role=\"master\"}",
+              "format": "time_series",
+              "instant": false,
+              "intervalFactor": 2,
+              "legendFormat": "__auto",
+              "metric": "",
+              "range": true,
+              "refId": "A",
+              "step": 2
+            },
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "expr": "redis_master_repl_offset{node_name=~\"$node_name\"} and on(node_name) redis_instance_info{role=\"master\"}",
               "hide": false,
               "legendFormat": "__auto",
               "range": true,
-              "refId": "M"
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "name": "Expression",
+                "type": "__expr__",
+                "uid": "__expr__"
+              },
+              "expression": "$B- $A",
+              "hide": false,
+              "refId": "C",
+              "type": "math"
             }
           ],
-          "title": "$node_name - Replica vs Master offsets",
-          "transformations": [],
+          "title": "Replica vs Master offsets",
+          "transformations": [
+            {
+              "id": "joinByField",
+              "options": {
+                "byField": "Time",
+                "mode": "inner"
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "master_vs_repl1",
+                "binary": {
+                  "left": "{__name__=\"redis_master_repl_offset\", agent_id=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", agent_type=\"external-exporter\", cluster=\"vs\", external_group=\"vs\", instance=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", job=\"external-exporter_agent_id_498f684d-7e91-4a5b-b22c-68ad2eafd0bd_mr\", node_id=\"/node_id/1b251d2b-eac4-4505-ab3e-3027988e9236\", node_name=\"valkey-s1\", node_type=\"remote\", service_id=\"/service_id/aa8589e4-e7f0-4a05-88e5-36d306f608cd\", service_name=\"valkey-s1\", service_type=\"external\"}",
+                  "operator": "-",
+                  "reducer": "sum",
+                  "right": "{__name__=\"redis_connected_slave_offset_bytes\", agent_id=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", agent_type=\"external-exporter\", cluster=\"vs\", external_group=\"vs\", instance=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", job=\"external-exporter_agent_id_498f684d-7e91-4a5b-b22c-68ad2eafd0bd_mr\", node_id=\"/node_id/1b251d2b-eac4-4505-ab3e-3027988e9236\", node_name=\"valkey-s1\", node_type=\"remote\", service_id=\"/service_id/aa8589e4-e7f0-4a05-88e5-36d306f608cd\", service_name=\"valkey-s1\", service_type=\"external\", slave_ip=\"192.168.2.233\", slave_port=\"6380\", slave_state=\"online\"}"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "master_vs_repl2",
+                "binary": {
+                  "left": "{__name__=\"redis_master_repl_offset\", agent_id=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", agent_type=\"external-exporter\", cluster=\"vs\", external_group=\"vs\", instance=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", job=\"external-exporter_agent_id_498f684d-7e91-4a5b-b22c-68ad2eafd0bd_mr\", node_id=\"/node_id/1b251d2b-eac4-4505-ab3e-3027988e9236\", node_name=\"valkey-s1\", node_type=\"remote\", service_id=\"/service_id/aa8589e4-e7f0-4a05-88e5-36d306f608cd\", service_name=\"valkey-s1\", service_type=\"external\"}",
+                  "operator": "-",
+                  "reducer": "sum",
+                  "right": "{__name__=\"redis_connected_slave_offset_bytes\", agent_id=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", agent_type=\"external-exporter\", cluster=\"vs\", external_group=\"vs\", instance=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", job=\"external-exporter_agent_id_498f684d-7e91-4a5b-b22c-68ad2eafd0bd_mr\", node_id=\"/node_id/1b251d2b-eac4-4505-ab3e-3027988e9236\", node_name=\"valkey-s1\", node_type=\"remote\", service_id=\"/service_id/aa8589e4-e7f0-4a05-88e5-36d306f608cd\", service_name=\"valkey-s1\", service_type=\"external\", slave_ip=\"192.168.2.233\", slave_port=\"6381\", slave_state=\"online\"}"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "{__name__=\"redis_connected_slave_offset_bytes\", agent_id=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", agent_type=\"external-exporter\", cluster=\"vs\", external_group=\"vs\", instance=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", job=\"external-exporter_agent_id_498f684d-7e91-4a5b-b22c-68ad2eafd0bd_mr\", node_id=\"/node_id/1b251d2b-eac4-4505-ab3e-3027988e9236\", node_name=\"valkey-s1\", node_type=\"remote\", service_id=\"/service_id/aa8589e4-e7f0-4a05-88e5-36d306f608cd\", service_name=\"valkey-s1\", service_type=\"external\", slave_ip=\"192.168.2.233\", slave_port=\"6380\", slave_state=\"online\"}": true,
+                  "{__name__=\"redis_connected_slave_offset_bytes\", agent_id=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", agent_type=\"external-exporter\", cluster=\"vs\", external_group=\"vs\", instance=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", job=\"external-exporter_agent_id_498f684d-7e91-4a5b-b22c-68ad2eafd0bd_mr\", node_id=\"/node_id/1b251d2b-eac4-4505-ab3e-3027988e9236\", node_name=\"valkey-s1\", node_type=\"remote\", service_id=\"/service_id/aa8589e4-e7f0-4a05-88e5-36d306f608cd\", service_name=\"valkey-s1\", service_type=\"external\", slave_ip=\"192.168.2.233\", slave_port=\"6381\", slave_state=\"online\"}": true,
+                  "{__name__=\"redis_master_repl_offset\", agent_id=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", agent_type=\"external-exporter\", cluster=\"vs\", external_group=\"vs\", instance=\"/agent_id/498f684d-7e91-4a5b-b22c-68ad2eafd0bd\", job=\"external-exporter_agent_id_498f684d-7e91-4a5b-b22c-68ad2eafd0bd_mr\", node_id=\"/node_id/1b251d2b-eac4-4505-ab3e-3027988e9236\", node_name=\"valkey-s1\", node_type=\"remote\", service_id=\"/service_id/aa8589e4-e7f0-4a05-88e5-36d306f608cd\", service_name=\"valkey-s1\", service_type=\"external\"}": true
+                },
+                "indexByName": {},
+                "renameByName": {}
+              }
+            }
+          ],
           "type": "timeseries"
         },
         {
@@ -3078,8 +2631,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3141,9 +2693,9 @@
           },
           "gridPos": {
             "h": 9,
-            "w": 12,
-            "x": 12,
-            "y": 46
+            "w": 13,
+            "x": 11,
+            "y": 57
           },
           "id": 23,
           "options": {
@@ -3162,9 +2714,9 @@
           "targets": [
             {
               "datasource": "Metrics",
-              "editorMode": "builder",
+              "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(redis_connected_slaves{node_name=~\"$node_name\"})",
+              "expr": "redis_connected_slaves{node_name=~\"$node_name\"} and on(node_name) redis_instance_info{role=\"master\"}",
               "format": "table",
               "instant": false,
               "legendFormat": "__auto",
@@ -3201,110 +2753,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "node_name"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 121
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 5,
-            "x": 0,
-            "y": 55
-          },
-          "id": 62,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": ["sum"],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "9.2.20",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "builder",
-              "exemplar": false,
-              "expr": "redis_connected_slaves{node_name=~\"$node_name\"}",
-              "format": "table",
-              "instant": true,
-              "legendFormat": "__auto",
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "title": "Connected Replicas",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "__name__": true,
-                  "agent_id": true,
-                  "agent_type": true,
-                  "cluster": true,
-                  "external_group": true,
-                  "instance": true,
-                  "job": true,
-                  "node_id": true,
-                  "node_name": false,
-                  "node_type": true,
-                  "replication_set": true,
-                  "service_id": true,
-                  "service_name": true,
-                  "service_type": true
-                },
-                "indexByName": {},
-                "renameByName": {}
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3330,10 +2779,10 @@
             ]
           },
           "gridPos": {
-            "h": 8,
+            "h": 5,
             "w": 6,
-            "x": 5,
-            "y": 55
+            "x": 11,
+            "y": 66
           },
           "id": 56,
           "options": {
@@ -3405,8 +2854,93 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 6,
+            "x": 17,
+            "y": 66
+          },
+          "id": 55,
+          "options": {
+            "footer": {
+              "fields": "",
+              "reducer": ["sum"],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "builder",
+              "exemplar": false,
+              "expr": "redis_repl_backlog_history_bytes{node_name=~\"$node_name\"}",
+              "format": "table",
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Backlog History Bytes",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "__name__": true,
+                  "agent_id": true,
+                  "agent_type": true,
+                  "cluster": true,
+                  "external_group": true,
+                  "instance": true,
+                  "job": true,
+                  "node_id": true,
+                  "node_name": false,
+                  "node_type": true,
+                  "service_id": true,
+                  "service_name": true,
+                  "service_type": true
+                },
+                "indexByName": {},
+                "renameByName": {}
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "Metrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto",
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3432,10 +2966,10 @@
             ]
           },
           "gridPos": {
-            "h": 8,
+            "h": 5,
             "w": 6,
             "x": 11,
-            "y": 55
+            "y": 71
           },
           "id": 54,
           "options": {
@@ -3507,8 +3041,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3521,12 +3054,12 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 8,
+            "h": 5,
             "w": 6,
             "x": 17,
-            "y": 55
+            "y": 71
           },
-          "id": 55,
+          "id": 62,
           "options": {
             "footer": {
               "fields": "",
@@ -3541,7 +3074,7 @@
               "datasource": "Metrics",
               "editorMode": "builder",
               "exemplar": false,
-              "expr": "redis_repl_backlog_history_bytes{node_name=~\"$node_name\"}",
+              "expr": "redis_connected_slaves{node_name=~\"$node_name\"}",
               "format": "table",
               "instant": true,
               "legendFormat": "__auto",
@@ -3549,7 +3082,7 @@
               "refId": "A"
             }
           ],
-          "title": "Backlog History Bytes",
+          "title": "Connected Replicas",
           "transformations": [
             {
               "id": "organize",
@@ -3566,6 +3099,7 @@
                   "node_id": true,
                   "node_name": false,
                   "node_type": true,
+                  "replication_set": true,
                   "service_id": true,
                   "service_name": true,
                   "service_type": true
@@ -3620,8 +3154,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3682,10 +3215,10 @@
             ]
           },
           "gridPos": {
-            "h": 8,
-            "w": 13,
+            "h": 6,
+            "w": 11,
             "x": 0,
-            "y": 63
+            "y": 75
           },
           "id": 107,
           "options": {
@@ -3759,8 +3292,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3773,10 +3305,10 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 8,
+            "h": 5,
             "w": 6,
-            "x": 13,
-            "y": 63
+            "x": 11,
+            "y": 76
           },
           "id": 65,
           "options": {
@@ -3847,8 +3379,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3874,10 +3405,10 @@
             ]
           },
           "gridPos": {
-            "h": 8,
-            "w": 5,
-            "x": 19,
-            "y": 63
+            "h": 5,
+            "w": 6,
+            "x": 17,
+            "y": 76
           },
           "id": 63,
           "options": {
@@ -3932,7 +3463,7 @@
           "type": "table"
         }
       ],
-      "title": "Replication Offsets",
+      "title": "Replication",
       "type": "row"
     },
     {
@@ -3941,7 +3472,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 6
       },
       "id": 51,
       "panels": [
@@ -3989,8 +3520,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -4003,10 +3533,10 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 9,
-            "w": 6,
+            "h": 7,
+            "w": 11,
             "x": 0,
-            "y": 38
+            "y": 49
           },
           "id": 1,
           "links": [],
@@ -4023,8 +3553,6 @@
             }
           },
           "pluginVersion": "10.3.3",
-          "repeat": "node_name",
-          "repeatDirection": "h",
           "targets": [
             {
               "datasource": "Metrics",
@@ -4057,7 +3585,114 @@
               "target": ""
             }
           ],
-          "title": "$node_name - IO thread R/W per Sec",
+          "title": "IO thread R/W per Sec",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "Metrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "rgb(31, 120, 193)",
+                "mode": "fixed"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 11,
+            "x": 11,
+            "y": 49
+          },
+          "hideTimeOverride": true,
+          "id": 57,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "expr": "sum by(node_name) (redis_io_threads_active{node_name=~\"$node_name\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "metric": "",
+              "range": true,
+              "refId": "A",
+              "step": 2
+            }
+          ],
+          "timeFrom": "1m",
+          "title": "IO threads active",
           "type": "timeseries"
         },
         {
@@ -4089,8 +3724,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -4103,10 +3737,10 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 9,
-            "w": 8,
-            "x": 12,
-            "y": 47
+            "h": 7,
+            "w": 2,
+            "x": 22,
+            "y": 49
           },
           "hideTimeOverride": true,
           "id": 26,
@@ -4164,116 +3798,6 @@
             }
           ],
           "type": "table"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "rgb(31, 120, 193)",
-                "mode": "fixed"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 0,
-              "mappings": [
-                {
-                  "options": {
-                    "match": "null",
-                    "result": {
-                      "text": "N/A"
-                    }
-                  },
-                  "type": "special"
-                }
-              ],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 6,
-            "x": 0,
-            "y": 56
-          },
-          "hideTimeOverride": true,
-          "id": 57,
-          "links": [],
-          "maxDataPoints": 100,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "h",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "builder",
-              "expr": "redis_io_threads_active{node_name=~\"$node_name\"}",
-              "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "",
-              "metric": "",
-              "range": true,
-              "refId": "A",
-              "step": 2
-            }
-          ],
-          "timeFrom": "1m",
-          "title": "IO threads active",
-          "type": "timeseries"
         }
       ],
       "title": "IO Threads",
@@ -4285,7 +3809,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 7
       },
       "id": 60,
       "panels": [
@@ -4331,8 +3855,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "orange",
@@ -4399,9 +3922,9 @@
           },
           "gridPos": {
             "h": 12,
-            "w": 8,
+            "w": 19,
             "x": 0,
-            "y": 32
+            "y": 50
           },
           "hideTimeOverride": true,
           "id": 68,
@@ -4419,8 +3942,6 @@
             }
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "h",
           "targets": [
             {
               "datasource": "Metrics",
@@ -4439,7 +3960,7 @@
             {
               "datasource": "Metrics",
               "editorMode": "code",
-              "expr": "redis_aof_current_size_bytes{node_name=~\"$node_name\"}  and on(node_name) redis_instance_info{role=\"master\"}",
+              "expr": "redis_aof_current_size_bytes{node_name=~\"$node_name\"} and on(node_name) redis_instance_info{role=\"master\"}",
               "hide": false,
               "legendFormat": "__auto",
               "range": true,
@@ -4448,14 +3969,14 @@
             {
               "datasource": "Metrics",
               "editorMode": "code",
-              "expr": "redis_aof_last_cow_size_bytes{node_name=~\"$node_name\"}  and on(node_name) redis_instance_info{role=\"master\"}",
+              "expr": "redis_aof_last_cow_size_bytes{node_name=~\"$node_name\"} and on(node_name) redis_instance_info{role=\"master\"}",
               "hide": false,
               "legendFormat": "__auto",
               "range": true,
               "refId": "C"
             }
           ],
-          "title": "$node_name - base, current, last COW size",
+          "title": "Base, current, last COW size",
           "transformations": [],
           "type": "timeseries"
         },
@@ -4487,8 +4008,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -4503,8 +4023,8 @@
           "gridPos": {
             "h": 3,
             "w": 2,
-            "x": 0,
-            "y": 44
+            "x": 19,
+            "y": 50
           },
           "hideTimeOverride": true,
           "id": 61,
@@ -4525,8 +4045,6 @@
             "wideLayout": true
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -4544,7 +4062,7 @@
             }
           ],
           "timeFrom": "1m",
-          "title": "$node_name - enabled",
+          "title": "Enabled",
           "transformations": [],
           "type": "stat"
         },
@@ -4562,8 +4080,79 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 3,
+            "x": 21,
+            "y": 50
+          },
+          "hideTimeOverride": true,
+          "id": 70,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": ["lastNotNull"],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "redis_aof_delayed_fsync{node_name=~\"$node_name\"} and on(node_name) redis_instance_info{role=\"master\"}",
+              "format": "table",
+              "instant": false,
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "metric": "",
+              "range": true,
+              "refId": "A",
+              "step": 2
+            }
+          ],
+          "timeFrom": "1m",
+          "title": "Delayed fsyncs",
+          "transformations": [],
+          "type": "stat"
+        },
+        {
+          "datasource": "Metrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "rgb(31, 120, 193)",
+                "mode": "fixed"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -4578,8 +4167,8 @@
           "gridPos": {
             "h": 3,
             "w": 2,
-            "x": 2,
-            "y": 44
+            "x": 19,
+            "y": 53
           },
           "hideTimeOverride": true,
           "id": 84,
@@ -4600,8 +4189,6 @@
             "wideLayout": true
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -4619,7 +4206,7 @@
             }
           ],
           "timeFrom": "1m",
-          "title": "$node_name - appendfsync",
+          "title": "Appendfsync",
           "transformations": [
             {
               "id": "organize",
@@ -4657,266 +4244,12 @@
                 "mode": "fixed"
               },
               "decimals": 0,
-              "mappings": [
-                {
-                  "options": {
-                    "0": {
-                      "index": 1,
-                      "text": "NO"
-                    },
-                    "1": {
-                      "index": 0,
-                      "text": "YES"
-                    }
-                  },
-                  "type": "value"
-                }
-              ],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 3,
-            "x": 4,
-            "y": 44
-          },
-          "hideTimeOverride": true,
-          "id": 73,
-          "links": [],
-          "maxDataPoints": 100,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "auto",
-            "wideLayout": true
-          },
-          "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "redis_loading_dump_file{node_name=~\"$node_name\"} and on(node_name) redis_instance_info{role=\"master\"}",
-              "format": "table",
-              "instant": false,
-              "intervalFactor": 2,
-              "legendFormat": "",
-              "metric": "",
-              "range": true,
-              "refId": "A",
-              "step": 2
-            }
-          ],
-          "timeFrom": "1m",
-          "title": "$node_name -  loading Dump",
-          "transformations": [],
-          "type": "stat"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "rgb(31, 120, 193)",
-                "mode": "fixed"
-              },
-              "decimals": 0,
-              "mappings": [
-                {
-                  "options": {
-                    "0": {
-                      "index": 1,
-                      "text": "NO"
-                    },
-                    "1": {
-                      "index": 0,
-                      "text": "YES"
-                    }
-                  },
-                  "type": "value"
-                }
-              ],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 3,
-            "x": 7,
-            "y": 44
-          },
-          "hideTimeOverride": true,
-          "id": 72,
-          "links": [],
-          "maxDataPoints": 100,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "auto",
-            "wideLayout": true
-          },
-          "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "redis_async_loading{node_name=~\"$node_name\"}and on(node_name) redis_instance_info{role=\"master\"}",
-              "format": "table",
-              "instant": false,
-              "intervalFactor": 2,
-              "legendFormat": "",
-              "metric": "",
-              "range": true,
-              "refId": "A",
-              "step": 2
-            }
-          ],
-          "timeFrom": "1m",
-          "title": "$node_name - async Loading",
-          "transformations": [],
-          "type": "stat"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "rgb(31, 120, 193)",
-                "mode": "fixed"
-              },
-              "decimals": 0,
               "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 3,
-            "x": 10,
-            "y": 44
-          },
-          "hideTimeOverride": true,
-          "id": 70,
-          "links": [],
-          "maxDataPoints": 100,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "auto",
-            "wideLayout": true
-          },
-          "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "redis_aof_delayed_fsync{node_name=~\"$node_name\"} and on(node_name) redis_instance_info{role=\"master\"}",
-              "format": "table",
-              "instant": false,
-              "intervalFactor": 2,
-              "legendFormat": "",
-              "metric": "",
-              "range": true,
-              "refId": "A",
-              "step": 2
-            }
-          ],
-          "timeFrom": "1m",
-          "title": "$node_name - delayed fsyncs",
-          "transformations": [],
-          "type": "stat"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "rgb(31, 120, 193)",
-                "mode": "fixed"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -4931,8 +4264,8 @@
           "gridPos": {
             "h": 3,
             "w": 3,
-            "x": 13,
-            "y": 44
+            "x": 21,
+            "y": 53
           },
           "hideTimeOverride": true,
           "id": 69,
@@ -4953,8 +4286,6 @@
             "wideLayout": true
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -4972,7 +4303,93 @@
             }
           ],
           "timeFrom": "1m",
-          "title": "$node_name - last rewrite duration",
+          "title": "Last rewrite duration",
+          "transformations": [],
+          "type": "stat"
+        },
+        {
+          "datasource": "Metrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "rgb(31, 120, 193)",
+                "mode": "fixed"
+              },
+              "decimals": 0,
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "index": 1,
+                      "text": "NO"
+                    },
+                    "1": {
+                      "index": 0,
+                      "text": "YES"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 2,
+            "x": 19,
+            "y": 56
+          },
+          "hideTimeOverride": true,
+          "id": 73,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": ["lastNotNull"],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "redis_loading_dump_file{node_name=~\"$node_name\"} and on(node_name) redis_instance_info{role=\"master\"}",
+              "format": "table",
+              "instant": false,
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "metric": "",
+              "range": true,
+              "refId": "A",
+              "step": 2
+            }
+          ],
+          "timeFrom": "1m",
+          "title": "Loading Dump",
           "transformations": [],
           "type": "stat"
         },
@@ -4990,8 +4407,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5005,9 +4421,9 @@
           },
           "gridPos": {
             "h": 3,
-            "w": 4,
-            "x": 16,
-            "y": 44
+            "w": 3,
+            "x": 21,
+            "y": 56
           },
           "hideTimeOverride": true,
           "id": 82,
@@ -5028,8 +4444,6 @@
             "wideLayout": true
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -5047,7 +4461,7 @@
             }
           ],
           "timeFrom": "1m",
-          "title": "$node_name - last COW size",
+          "title": "Last COW size",
           "transformations": [],
           "type": "stat"
         },
@@ -5079,8 +4493,93 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 2,
+            "x": 19,
+            "y": 59
+          },
+          "hideTimeOverride": true,
+          "id": 72,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": ["lastNotNull"],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "redis_async_loading{node_name=~\"$node_name\"}and on(node_name) redis_instance_info{role=\"master\"}",
+              "format": "table",
+              "instant": false,
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "metric": "",
+              "range": true,
+              "refId": "A",
+              "step": 2
+            }
+          ],
+          "timeFrom": "1m",
+          "title": "Async Loading",
+          "transformations": [],
+          "type": "stat"
+        },
+        {
+          "datasource": "Metrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "rgb(31, 120, 193)",
+                "mode": "fixed"
+              },
+              "decimals": 0,
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "index": 1,
+                      "text": "NO"
+                    },
+                    "1": {
+                      "index": 0,
+                      "text": "YES"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5095,8 +4594,8 @@
           "gridPos": {
             "h": 3,
             "w": 3,
-            "x": 20,
-            "y": 44
+            "x": 21,
+            "y": 59
           },
           "hideTimeOverride": true,
           "id": 71,
@@ -5117,8 +4616,6 @@
             "wideLayout": true
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -5136,7 +4633,7 @@
             }
           ],
           "timeFrom": "1m",
-          "title": "$node_name - last rewrite success",
+          "title": "Last rewrite success",
           "transformations": [],
           "type": "stat"
         }
@@ -5150,7 +4647,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 8
       },
       "id": 75,
       "panels": [
@@ -5168,8 +4665,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5185,27 +4681,27 @@
             "h": 3,
             "w": 3,
             "x": 0,
-            "y": 32
+            "y": 51
           },
           "hideTimeOverride": true,
           "id": 80,
           "links": [],
           "maxDataPoints": 100,
           "options": {
-            "colorMode": "value",
+            "colorMode": "none",
             "graphMode": "area",
             "justifyMode": "auto",
-            "orientation": "auto",
+            "orientation": "horizontal",
             "reduceOptions": {
               "calcs": ["lastNotNull"],
               "fields": "",
               "values": false
             },
-            "textMode": "auto"
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -5223,29 +4719,8 @@
             }
           ],
           "timeFrom": "1m",
-          "title": "$node_name - last bgsave timestamp",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "agent_id": true,
-                  "agent_type": true,
-                  "external_group": true,
-                  "instance": true,
-                  "job": true,
-                  "node_id": true,
-                  "node_type": true,
-                  "service_id": true,
-                  "service_name": true,
-                  "service_type": true
-                },
-                "indexByName": {},
-                "renameByName": {}
-              }
-            }
-          ],
+          "title": "Last bgsave timestamp",
+          "transformations": [],
           "type": "stat"
         },
         {
@@ -5276,8 +4751,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5293,7 +4767,7 @@
             "h": 3,
             "w": 3,
             "x": 3,
-            "y": 32
+            "y": 51
           },
           "hideTimeOverride": true,
           "id": 78,
@@ -5314,8 +4788,6 @@
             "wideLayout": true
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -5333,7 +4805,7 @@
             }
           ],
           "timeFrom": "1m",
-          "title": "$node_name - last bgsave success",
+          "title": "Last bgsave success",
           "transformations": [],
           "type": "stat"
         },
@@ -5351,8 +4823,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5368,7 +4839,7 @@
             "h": 3,
             "w": 3,
             "x": 6,
-            "y": 32
+            "y": 51
           },
           "hideTimeOverride": true,
           "id": 81,
@@ -5389,8 +4860,6 @@
             "wideLayout": true
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -5408,157 +4877,7 @@
             }
           ],
           "timeFrom": "1m",
-          "title": "$node_name - changes since lastsave",
-          "transformations": [],
-          "type": "stat"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "rgb(31, 120, 193)",
-                "mode": "fixed"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 3,
-            "x": 9,
-            "y": 32
-          },
-          "hideTimeOverride": true,
-          "id": 77,
-          "links": [],
-          "maxDataPoints": 100,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "auto",
-            "wideLayout": true
-          },
-          "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "redis_rdb_saves_total{node_name=~\"$node_name\"}and on(node_name) redis_instance_info{role=\"master\"}",
-              "format": "table",
-              "instant": false,
-              "intervalFactor": 2,
-              "legendFormat": "",
-              "metric": "",
-              "range": true,
-              "refId": "A",
-              "step": 2
-            }
-          ],
-          "timeFrom": "1m",
-          "title": "$node_name - RDB saves",
-          "transformations": [],
-          "type": "stat"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "fixedColor": "rgb(31, 120, 193)",
-                "mode": "fixed"
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 3,
-            "w": 3,
-            "x": 12,
-            "y": 32
-          },
-          "hideTimeOverride": true,
-          "id": 79,
-          "links": [],
-          "maxDataPoints": 100,
-          "options": {
-            "colorMode": "none",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": ["lastNotNull"],
-              "fields": "",
-              "values": false
-            },
-            "showPercentChange": false,
-            "textMode": "auto",
-            "wideLayout": true
-          },
-          "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "redis_rdb_last_cow_size_bytes{node_name=~\"$node_name\"}and on(node_name) redis_instance_info{role=\"master\"}",
-              "format": "table",
-              "instant": false,
-              "intervalFactor": 2,
-              "legendFormat": "",
-              "metric": "",
-              "range": true,
-              "refId": "A",
-              "step": 2
-            }
-          ],
-          "timeFrom": "1m",
-          "title": "$node_name - last COW size",
+          "title": "Changes since lastsave",
           "transformations": [],
           "type": "stat"
         },
@@ -5579,8 +4898,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5592,10 +4910,10 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 9,
-            "w": 7,
-            "x": 17,
-            "y": 32
+            "h": 3,
+            "w": 3,
+            "x": 9,
+            "y": 51
           },
           "hideTimeOverride": true,
           "id": 83,
@@ -5644,7 +4962,7 @@
                   "job": true,
                   "key": true,
                   "node_id": true,
-                  "node_name": false,
+                  "node_name": true,
                   "node_type": true,
                   "service_id": true,
                   "service_name": true,
@@ -5656,6 +4974,150 @@
             }
           ],
           "type": "table"
+        },
+        {
+          "datasource": "Metrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "rgb(31, 120, 193)",
+                "mode": "fixed"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 3,
+            "x": 12,
+            "y": 51
+          },
+          "hideTimeOverride": true,
+          "id": 77,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": ["lastNotNull"],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "redis_rdb_saves_total{node_name=~\"$node_name\"}and on(node_name) redis_instance_info{role=\"master\"}",
+              "format": "table",
+              "instant": false,
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "metric": "",
+              "range": true,
+              "refId": "A",
+              "step": 2
+            }
+          ],
+          "timeFrom": "1m",
+          "title": "RDB saves",
+          "transformations": [],
+          "type": "stat"
+        },
+        {
+          "datasource": "Metrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "rgb(31, 120, 193)",
+                "mode": "fixed"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 3,
+            "x": 15,
+            "y": 51
+          },
+          "hideTimeOverride": true,
+          "id": 79,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": ["lastNotNull"],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "9.2.20",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "redis_rdb_last_cow_size_bytes{node_name=~\"$node_name\"}and on(node_name) redis_instance_info{role=\"master\"}",
+              "format": "table",
+              "instant": false,
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "metric": "",
+              "range": true,
+              "refId": "A",
+              "step": 2
+            }
+          ],
+          "timeFrom": "1m",
+          "title": "Last COW size",
+          "transformations": [],
+          "type": "stat"
         }
       ],
       "title": "Master RDB persistence",
@@ -5667,7 +5129,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 9
       },
       "id": 86,
       "panels": [
@@ -5700,8 +5162,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5716,7 +5177,7 @@
             "h": 7,
             "w": 23,
             "x": 0,
-            "y": 42
+            "y": 52
           },
           "id": 88,
           "options": {
@@ -5755,21 +5216,7 @@
           ],
           "title": "$node_name - command percentiles",
           "type": "barchart"
-        }
-      ],
-      "title": "Latencies",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 18
-      },
-      "id": 543,
-      "panels": [
+        },
         {
           "datasource": "Metrics",
           "fieldConfig": {
@@ -5799,8 +5246,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5815,7 +5261,7 @@
             "h": 10,
             "w": 8,
             "x": 0,
-            "y": 64
+            "y": 73
           },
           "id": 89,
           "options": {
@@ -5840,8 +5286,6 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -5855,7 +5299,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - get latency",
+          "title": "get latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -5936,8 +5380,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -5952,7 +5395,7 @@
             "h": 10,
             "w": 8,
             "x": 8,
-            "y": 64
+            "y": 73
           },
           "id": 91,
           "options": {
@@ -5977,8 +5420,6 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -5992,7 +5433,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - set latency",
+          "title": "set latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -6073,8 +5514,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -6089,7 +5529,7 @@
             "h": 10,
             "w": 8,
             "x": 16,
-            "y": 64
+            "y": 73
           },
           "id": 93,
           "options": {
@@ -6114,8 +5554,6 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -6129,7 +5567,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - hset latency",
+          "title": "hset latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -6210,8 +5648,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -6226,7 +5663,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 94
+            "y": 83
           },
           "id": 92,
           "options": {
@@ -6251,8 +5688,6 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -6266,7 +5701,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - rpop latency",
+          "title": "rpop latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -6347,8 +5782,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -6363,7 +5797,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 94
+            "y": 83
           },
           "id": 103,
           "options": {
@@ -6388,8 +5822,6 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -6403,7 +5835,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - lpop latency",
+          "title": "lpop latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -6484,8 +5916,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -6500,7 +5931,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 94
+            "y": 83
           },
           "id": 94,
           "options": {
@@ -6525,8 +5956,6 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -6540,7 +5969,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - lrange latency",
+          "title": "lrange latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -6621,8 +6050,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -6637,7 +6065,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 118
+            "y": 91
           },
           "id": 95,
           "options": {
@@ -6756,8 +6184,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -6772,7 +6199,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 118
+            "y": 91
           },
           "id": 104,
           "options": {
@@ -6891,8 +6318,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -6907,7 +6333,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 118
+            "y": 91
           },
           "id": 90,
           "options": {
@@ -6932,8 +6358,6 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -6947,7 +6371,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - hset latency",
+          "title": "hset latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -7028,8 +6452,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -7044,7 +6467,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 126
+            "y": 99
           },
           "id": 96,
           "options": {
@@ -7069,8 +6492,6 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
@@ -7084,7 +6505,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - psync latency",
+          "title": "psync latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -7137,7 +6558,7 @@
           "type": "barchart"
         }
       ],
-      "title": "Latency by command",
+      "title": "Latencies",
       "type": "row"
     },
     {
@@ -7146,7 +6567,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 10
       },
       "id": 98,
       "panels": [
@@ -7160,7 +6581,7 @@
               },
               "custom": {
                 "axisCenteredZero": false,
-                "axisColorMode": "series",
+                "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
@@ -7194,8 +6615,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -7205,13 +6625,38 @@
               },
               "unit": "none"
             },
-            "overrides": []
+            "overrides": [
+              {
+                "__systemRef": "hideSeriesFrom",
+                "matcher": {
+                  "id": "byNames",
+                  "options": {
+                    "mode": "exclude",
+                    "names": [
+                      "{__name__=\"redis_slowlog_last_id\", agent_id=\"/agent_id/dfc721bd-add9-47a0-83b7-4490e050e505\", agent_type=\"external-exporter\", external_group=\"vc\", instance=\"/agent_id/dfc721bd-add9-47a0-83b7-4490e050e505\", job=\"external-exporter_agent_id_dfc721bd-add9-47a0-83b7-4490e050e505_mr\", node_id=\"/node_id/e96bee6c-8396-48fd-952c-00a794ba2184\", node_name=\"valkey-c2\", node_type=\"remote\", service_id=\"/service_id/7cb3e793-dbca-4ccc-bf25-8bd927dcaf6a\", service_name=\"valkey-c2\", service_type=\"external\"}"
+                    ],
+                    "prefix": "All except:",
+                    "readOnly": true
+                  }
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": true
+                    }
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 151
+            "y": 53
           },
           "hideTimeOverride": true,
           "id": 101,
@@ -7248,7 +6693,7 @@
             {
               "datasource": "Metrics",
               "editorMode": "builder",
-              "expr": "redis_slowlog_last_id{node_name=~\"$node_name\"}",
+              "expr": "redis_slowlog_last_id",
               "hide": false,
               "legendFormat": "__auto",
               "range": true,
@@ -7257,7 +6702,15 @@
           ],
           "timeFrom": "1m",
           "title": "Slowlog length",
-          "transformations": [],
+          "transformations": [
+            {
+              "id": "joinByField",
+              "options": {
+                "byField": "Time",
+                "mode": "inner"
+              }
+            }
+          ],
           "type": "timeseries"
         },
         {
@@ -7292,8 +6745,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -7308,7 +6760,7 @@
             "h": 16,
             "w": 17,
             "x": 0,
-            "y": 159
+            "y": 61
           },
           "hideTimeOverride": true,
           "id": 102,
@@ -7387,8 +6839,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -7404,7 +6855,7 @@
             "h": 5,
             "w": 7,
             "x": 17,
-            "y": 159
+            "y": 61
           },
           "hideTimeOverride": true,
           "id": 99,
@@ -7482,8 +6933,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -7499,7 +6949,7 @@
             "h": 5,
             "w": 7,
             "x": 17,
-            "y": 164
+            "y": 66
           },
           "hideTimeOverride": true,
           "id": 100,
@@ -7621,7 +7071,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -7640,8 +7090,8 @@
     "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
   },
   "timezone": "browser",
-  "title": "Valkey Cluster",
-  "uid": "valkey-cluster",
+  "title": "Valkey Sentinel",
+  "uid": "valkey-sentinel",
   "version": 1,
   "weekStart": ""
 }
