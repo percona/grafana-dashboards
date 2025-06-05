@@ -11,3 +11,5 @@ export const DATABASE_LABELS = {
   [Databases.proxysql]: 'ProxySQL',
   [Databases.haproxy]: 'HAProxy',
 };
+
+export const SERVICE_ID_PREFIX = '/service_id/';
