@@ -49,3 +49,8 @@ docker_clean:
 	docker-compose stop \
 	&& docker-compose rm -f -v \
 	&& docker system prune --volumes -f
+
+.PHONY: upgrade_plugins
+upgrade_plugins:
+	cd misc \
+	&& ./upgrade_plugins.sh
