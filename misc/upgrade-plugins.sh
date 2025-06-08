@@ -1,25 +1,23 @@
 #!/bin/bash -ex
 
-declare DIR OWNER
+declare PLATFORM=${PLATFORM:-linux/amd64}
+declare DIR
 DIR=$(realpath ../panels)
-OWNER=$(id -u):$(id -g)
 
-docker pull grafana/grafana
-
-docker buildx build --progress=plain -t local/grafana -f Dockerfile.upgrade .
+# Note: the PLATFORM matters because some plugins are built for a specific architecture.
+docker buildx build --platform="$PLATFORM" --progress=plain -t local/grafana -f Dockerfile.upgrade .
 
 rm -rf "${DIR:?}"/*
 
 docker run \
   --rm -t \
   --name grafana \
+  --platform="$PLATFORM" \
   -e GF_INSTALL_PLUGINS=grafana-clickhouse-datasource,grafana-polystat-panel,jdbranham-diagram-panel \
   -v "${DIR}":/var/lib/grafana/plugins \
   local/grafana
 
-sudo chown -R "$OWNER" "$DIR"
-
 echo "Listing upgraded Grafana plugins..."
 ls -l "$DIR"
 
-docker rmi local/grafana grafana/grafana
+docker rmi local/grafana
