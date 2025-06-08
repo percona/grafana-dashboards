@@ -53,4 +53,4 @@ docker_clean:
 .PHONY: upgrade_plugins
 upgrade_plugins:
 	cd misc \
-	&& ./upgrade_plugins.sh
+	&& ./upgrade-plugins.sh
