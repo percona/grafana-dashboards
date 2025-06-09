@@ -46,7 +46,7 @@ describe('POST::', () => {
     const result = await apiRequest.post('/test/path', { key: 'value' });
 
     expect(result).toEqual('some data');
-    expect(showErrorNotification).toBeCalledTimes(0);
+    expect(showErrorNotification).toHaveBeenCalledTimes(0);
   });
 
   it('should display an error message on a network error', async () => {
@@ -58,7 +58,7 @@ describe('POST::', () => {
     const result = apiRequest.post('/test/path', { key: 'value' });
 
     await expect(result).rejects.toEqual(response);
-    expect(showErrorNotification).toBeCalledTimes(1);
+    expect(showErrorNotification).toHaveBeenCalledTimes(1);
   });
 
   it('should display no error message if messages are disabled', async () => {
@@ -70,7 +70,7 @@ describe('POST::', () => {
     const result = apiRequest.post('/test/path', { key: 'value' }, true);
 
     await expect(result).rejects.toEqual(response);
-    expect(showErrorNotification).toBeCalledTimes(0);
+    expect(showErrorNotification).toHaveBeenCalledTimes(0);
   });
 });
 
