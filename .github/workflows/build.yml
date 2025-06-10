@@ -1,9 +1,10 @@
-name: Test pipeline
+name: Test
 
 on: pull_request
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -30,6 +31,7 @@ jobs:
           if-no-files-found: error
 
   unit_tests:
+    name: Unit tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -41,7 +43,7 @@ jobs:
           node-version: "22"
           cache: "yarn"
           cache-dependency-path: pmm-app/yarn.lock
-
+    
       - name: Install deps
         run: make prepare_release
 
@@ -51,45 +53,26 @@ jobs:
       - name: Run unit tests
         run: cd pmm-app && yarn test:ci
 
-  code_coverage:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup NodeJS
-        uses: actions/setup-node@v4
+      - name: Upload unit test coverage
+        uses: codecov/codecov-action@v5
         with:
-          node-version: "22"
-          cache: "yarn"
-          cache-dependency-path: pmm-app/yarn.lock
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_GRAFANA_DASHBOARDS_TOKEN }}
-
-      - name: Download built packages
-        uses: actions/download-artifact@v4
-        with:
-          name: build-dist
-          path: pmm-app/dist/
-
-      - name: Install deps
-        run: make prepare_release
-
-      - name: Generate Coverage
-        run: make generate_coverage
+          fail_ci_if_error: true
+          flags: unittests # optional
+          name: codecov-umbrella
+          token: ${{ secrets.CODECOV_GRAFANA_DASHBOARDS_TOKEN }}
+          verbose: true
 
   workflow_success:
-    needs: [unit_tests, code_coverage, build]
+    needs: [unit_tests, build]
     name: Slack Notification success
     runs-on: ubuntu-latest
     env:
       SLACK_WEBHOOK: ${{ secrets.SLACK_TOKEN }}
       SLACK_CHANNEL: "pmm-ci"
-      SLACK_USERNAME: "PR pipelines bot"
+      SLACK_USERNAME: "PR bot"
       SLACK_ICON_EMOJI: ":octocat:"
       SLACK_COLOR: "#00FF00"
-      SLACK_TITLE: "Finished grafana-dashboards workflow"
-      SLACK_MESSAGE: "${{ github.event.inputs.repo || github.repository }}:${{ github.event.inputs.branch || github.head_ref }}"
+      SLACK_MESSAGE: "Workflow succeded: ${{ github.event.inputs.repo || github.repository }}:${{ github.event.inputs.branch || github.head_ref }}"
       SLACK_FOOTER: "Please check the Actions URL ^"
 
     steps:
@@ -99,16 +82,15 @@ jobs:
 
   workflow_failure:
     if: ${{ failure() }}
-    needs: [unit_tests, code_coverage, build]
+    needs: [unit_tests, build]
     name: Slack Notification failure
     runs-on: ubuntu-latest
     env:
       SLACK_WEBHOOK: ${{ secrets.SLACK_TOKEN }}
       SLACK_CHANNEL: "pmm-ci"
-      SLACK_USERNAME: "PR pipelines bot"
+      SLACK_USERNAME: "PR bot"
       SLACK_ICON_EMOJI: ":octocat:"
       SLACK_COLOR: "#FF0000"
-      SLACK_TITLE: "Finished grafana-dashboards workflow"
       SLACK_MESSAGE: "Workflow failed: ${{ github.event.inputs.repo || github.repository }}:${{ github.event.inputs.branch || github.head_ref }}"
       SLACK_FOOTER: "Please check the Actions URL ^"
 
