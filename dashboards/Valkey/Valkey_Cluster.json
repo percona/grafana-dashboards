@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 60,
+  "id": 48,
   "links": [],
   "panels": [
     {
@@ -139,15 +139,15 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 50,
-            "gradientMode": "none",
+            "fillOpacity": 25,
+            "gradientMode": "hue",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineStyle": {
               "fill": "solid"
             },
@@ -157,7 +157,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "normal"
@@ -166,7 +166,8 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
+          "decimals": 0,
+          "fieldMinMax": false,
           "links": [
             {
               "targetBlank": true,
@@ -175,7 +176,6 @@
             }
           ],
           "mappings": [],
-          "max": 100,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -219,9 +219,10 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (node_name,mode) (clamp_max(((avg by (mode,node_name) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=~\"user|system|wait|steal|irq|nice\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=~\"user|system|wait|steal|irq|nice\"}[5m]))),100))",
+          "exemplar": false,
+          "expr": "avg by (node_name,mode) (clamp_max(((avg by (mode,node_name) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$__interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=~\"user|system|wait|steal|irq|nice\"}[$__interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=~\"user|system|wait|steal|irq|nice\"}[5m]))),100))",
           "format": "time_series",
-          "interval": "$interval",
+          "interval": "$__interval",
           "intervalFactor": 1,
           "legendFormat": "{{ mode }}",
           "range": true,
@@ -229,10 +230,10 @@
         },
         {
           "datasource": "Metrics",
-          "expr": "clamp_max(max by (node_name) (sum  by (cpu,node_name) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+          "expr": "clamp_max(max by (node_name) (sum  by (cpu,node_name) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[$__interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
           "format": "time_series",
           "hide": true,
-          "interval": "$interval",
+          "interval": "$__interval",
           "intervalFactor": 1,
           "legendFormat": "Max Core Utilization",
           "refId": "B"
@@ -280,7 +281,7 @@
             "h": 4,
             "w": 24,
             "x": 0,
-            "y": 10
+            "y": 18
           },
           "id": 35,
           "options": {
@@ -398,7 +399,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 11
+            "y": 19
           },
           "id": 10,
           "options": {
@@ -521,7 +522,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 12
+            "y": 20
           },
           "id": 18,
           "options": {
@@ -631,7 +632,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 13
+            "y": 21
           },
           "id": 58,
           "options": {
@@ -772,7 +773,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 14
+            "y": 22
           },
           "hideTimeOverride": true,
           "id": 31,
@@ -844,7 +845,7 @@
             "h": 8,
             "w": 6,
             "x": 12,
-            "y": 14
+            "y": 22
           },
           "id": 22,
           "options": {
@@ -922,7 +923,7 @@
             "h": 8,
             "w": 6,
             "x": 18,
-            "y": 14
+            "y": 22
           },
           "hideTimeOverride": true,
           "id": 25,
@@ -1047,7 +1048,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 1265
+            "y": 1297
           },
           "id": 7,
           "options": {
@@ -1163,7 +1164,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 15
+            "y": 23
           },
           "id": 27,
           "options": {
@@ -1282,7 +1283,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 16
+            "y": 24
           },
           "id": 16,
           "options": {
@@ -1373,7 +1374,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 855
+            "y": 887
           },
           "id": 66,
           "options": {
@@ -1464,7 +1465,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 855
+            "y": 887
           },
           "id": 67,
           "options": {
@@ -1592,7 +1593,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 17
+            "y": 25
           },
           "id": 30,
           "options": {
@@ -1760,7 +1761,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 18
+            "y": 26
           },
           "id": 8,
           "options": {
@@ -1871,7 +1872,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 18
+            "y": 26
           },
           "id": 13,
           "options": {
@@ -1962,7 +1963,7 @@
             "h": 19,
             "w": 24,
             "x": 0,
-            "y": 19
+            "y": 27
           },
           "id": 46,
           "options": {
@@ -2071,7 +2072,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 541
+            "y": 573
           },
           "id": 14,
           "options": {
@@ -2129,7 +2130,7 @@
             "h": 16,
             "w": 24,
             "x": 0,
-            "y": 549
+            "y": 581
           },
           "id": 47,
           "options": {
@@ -2313,7 +2314,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 20
+            "y": 52
           },
           "id": 611,
           "options": {
@@ -2421,7 +2422,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 261
+            "y": 293
           },
           "id": 616,
           "options": {
@@ -2520,7 +2521,7 @@
             "h": 5,
             "w": 24,
             "x": 0,
-            "y": 268
+            "y": 300
           },
           "id": 621,
           "options": {
@@ -2607,7 +2608,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 273
+            "y": 305
           },
           "id": 603,
           "options": {
@@ -2694,7 +2695,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 273
+            "y": 305
           },
           "id": 606,
           "options": {
@@ -2791,7 +2792,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 21
+            "y": 53
           },
           "id": 24,
           "options": {
@@ -2916,7 +2917,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 1345
+            "y": 1377
           },
           "id": 53,
           "options": {
@@ -2996,7 +2997,7 @@
             "h": 8,
             "w": 6,
             "x": 0,
-            "y": 1553
+            "y": 1585
           },
           "id": 62,
           "options": {
@@ -3101,7 +3102,7 @@
             "h": 8,
             "w": 6,
             "x": 6,
-            "y": 1553
+            "y": 1585
           },
           "id": 56,
           "options": {
@@ -3256,7 +3257,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 1553
+            "y": 1585
           },
           "id": 23,
           "options": {
@@ -3346,7 +3347,7 @@
             "h": 8,
             "w": 6,
             "x": 0,
-            "y": 1561
+            "y": 1593
           },
           "id": 54,
           "options": {
@@ -3438,7 +3439,7 @@
             "h": 8,
             "w": 6,
             "x": 6,
-            "y": 1561
+            "y": 1593
           },
           "id": 55,
           "options": {
@@ -3528,7 +3529,7 @@
             "h": 8,
             "w": 6,
             "x": 12,
-            "y": 1561
+            "y": 1593
           },
           "id": 65,
           "options": {
@@ -3632,7 +3633,7 @@
             "h": 8,
             "w": 6,
             "x": 18,
-            "y": 1561
+            "y": 1593
           },
           "id": 63,
           "options": {
@@ -3786,7 +3787,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 1569
+            "y": 1601
           },
           "id": 107,
           "options": {
@@ -3918,7 +3919,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 1346
+            "y": 1378
           },
           "id": 1,
           "options": {
@@ -4018,7 +4019,7 @@
             "h": 8,
             "w": 6,
             "x": 0,
-            "y": 1528
+            "y": 1560
           },
           "hideTimeOverride": true,
           "id": 26,
@@ -4146,9 +4147,9 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 18,
+            "w": 24,
             "x": 6,
-            "y": 1528
+            "y": 1560
           },
           "hideTimeOverride": true,
           "id": 57,
@@ -4287,7 +4288,7 @@
             "h": 12,
             "w": 24,
             "x": 0,
-            "y": 24
+            "y": 56
           },
           "id": 68,
           "options": {
@@ -4386,7 +4387,7 @@
             "h": 3,
             "w": 3,
             "x": 0,
-            "y": 121
+            "y": 153
           },
           "hideTimeOverride": true,
           "id": 61,
@@ -4463,7 +4464,7 @@
             "h": 3,
             "w": 3,
             "x": 3,
-            "y": 121
+            "y": 153
           },
           "hideTimeOverride": true,
           "id": 84,
@@ -4580,7 +4581,7 @@
             "h": 3,
             "w": 3,
             "x": 6,
-            "y": 121
+            "y": 153
           },
           "hideTimeOverride": true,
           "id": 73,
@@ -4667,7 +4668,7 @@
             "h": 3,
             "w": 3,
             "x": 9,
-            "y": 121
+            "y": 153
           },
           "hideTimeOverride": true,
           "id": 72,
@@ -4740,7 +4741,7 @@
             "h": 3,
             "w": 3,
             "x": 12,
-            "y": 121
+            "y": 153
           },
           "hideTimeOverride": true,
           "id": 70,
@@ -4817,7 +4818,7 @@
             "h": 3,
             "w": 3,
             "x": 15,
-            "y": 121
+            "y": 153
           },
           "hideTimeOverride": true,
           "id": 69,
@@ -4894,7 +4895,7 @@
             "h": 3,
             "w": 3,
             "x": 18,
-            "y": 121
+            "y": 153
           },
           "hideTimeOverride": true,
           "id": 82,
@@ -4980,7 +4981,7 @@
             "h": 3,
             "w": 3,
             "x": 21,
-            "y": 121
+            "y": 153
           },
           "hideTimeOverride": true,
           "id": 71,
@@ -5071,7 +5072,7 @@
             "h": 4,
             "w": 3,
             "x": 0,
-            "y": 25
+            "y": 57
           },
           "hideTimeOverride": true,
           "id": 80,
@@ -5177,7 +5178,7 @@
             "h": 4,
             "w": 3,
             "x": 3,
-            "y": 25
+            "y": 57
           },
           "hideTimeOverride": true,
           "id": 78,
@@ -5253,7 +5254,7 @@
             "h": 4,
             "w": 3,
             "x": 6,
-            "y": 25
+            "y": 57
           },
           "hideTimeOverride": true,
           "id": 81,
@@ -5329,7 +5330,7 @@
             "h": 4,
             "w": 3,
             "x": 9,
-            "y": 25
+            "y": 57
           },
           "hideTimeOverride": true,
           "id": 77,
@@ -5405,7 +5406,7 @@
             "h": 4,
             "w": 3,
             "x": 12,
-            "y": 25
+            "y": 57
           },
           "hideTimeOverride": true,
           "id": 79,
@@ -5485,7 +5486,7 @@
             "h": 6,
             "w": 9,
             "x": 15,
-            "y": 25
+            "y": 57
           },
           "hideTimeOverride": true,
           "id": 83,
@@ -5606,7 +5607,7 @@
             "h": 7,
             "w": 23,
             "x": 0,
-            "y": 26
+            "y": 58
           },
           "id": 88,
           "options": {
@@ -5704,7 +5705,7 @@
             "h": 10,
             "w": 8,
             "x": 0,
-            "y": 1350
+            "y": 1382
           },
           "id": 89,
           "options": {
@@ -5837,7 +5838,7 @@
             "h": 10,
             "w": 8,
             "x": 8,
-            "y": 1350
+            "y": 1382
           },
           "id": 91,
           "options": {
@@ -5970,7 +5971,7 @@
             "h": 10,
             "w": 8,
             "x": 16,
-            "y": 1350
+            "y": 1382
           },
           "id": 93,
           "options": {
@@ -6103,7 +6104,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 1408
+            "y": 1440
           },
           "id": 92,
           "options": {
@@ -6236,7 +6237,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 1408
+            "y": 1440
           },
           "id": 103,
           "options": {
@@ -6369,7 +6370,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 1408
+            "y": 1440
           },
           "id": 94,
           "options": {
@@ -6506,7 +6507,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 1416
+            "y": 1448
           },
           "id": 95,
           "options": {
@@ -6643,7 +6644,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 1416
+            "y": 1448
           },
           "id": 104,
           "options": {
@@ -6776,7 +6777,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 1416
+            "y": 1448
           },
           "id": 90,
           "options": {
@@ -6909,7 +6910,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 1424
+            "y": 1456
           },
           "id": 96,
           "options": {
@@ -7431,51 +7432,6 @@
   "templating": {
     "list": [
       {
-        "auto": true,
-        "auto_count": 200,
-        "auto_min": "5s",
-        "current": {},
-        "description": "",
-        "label": "Interval",
-        "name": "interval",
-        "options": [
-          {
-            "selected": true,
-            "text": "5s",
-            "value": "5s"
-          },
-          {
-            "selected": false,
-            "text": "1m",
-            "value": "1m"
-          },
-          {
-            "selected": false,
-            "text": "5m",
-            "value": "5m"
-          },
-          {
-            "selected": false,
-            "text": "1h",
-            "value": "1h"
-          },
-          {
-            "selected": false,
-            "text": "6h",
-            "value": "6h"
-          },
-          {
-            "selected": false,
-            "text": "1d",
-            "value": "1d"
-          }
-        ],
-        "query": "5s,1m,5m,1h,6h,1d",
-        "refresh": 2,
-        "type": "interval"
-      },
-      {
-        "allValue": "",
         "allowCustomValue": false,
         "current": {},
         "definition": "label_values({__name__=\"redis_up\"},environment)",

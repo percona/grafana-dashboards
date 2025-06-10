@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 61,
+  "id": 69,
   "links": [],
   "panels": [
     {
@@ -164,7 +164,7 @@
               "mode": "off"
             }
           },
-          "decimals": 2,
+          "decimals": 0,
           "links": [
             {
               "targetBlank": true,
@@ -173,8 +173,6 @@
             }
           ],
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -216,21 +214,25 @@
       "targets": [
         {
           "datasource": "Metrics",
-          "expr": "avg by (node_name,mode) (clamp_max(((avg by (mode,node_name) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=~\"user|system|wait|steal|irq|nice\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=~\"user|system|wait|steal|irq|nice\"}[5m]))),100))",
+          "editorMode": "code",
+          "expr": "avg by (node_name,mode) (clamp_max(((avg by (mode,node_name) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$__interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=~\"user|system|wait|steal|irq|nice\"}[$__interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode=~\"user|system|wait|steal|irq|nice\"}[5m]))),100))",
           "format": "time_series",
-          "interval": "$interval",
+          "interval": "$__interval",
           "intervalFactor": 1,
           "legendFormat": "{{ mode }}",
+          "range": true,
           "refId": "B"
         },
         {
           "datasource": "Metrics",
-          "expr": "clamp_max(max by (node_name) (sum  by (cpu,node_name) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+          "editorMode": "code",
+          "expr": "clamp_max(max by (node_name) (sum  by (cpu,node_name) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!~\"idle|iowait\"}[$__interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!~\"idle|iowait\"}[5m]),1)) )),1)",
           "format": "time_series",
           "hide": true,
-          "interval": "$interval",
+          "interval": "$__interval",
           "intervalFactor": 1,
           "legendFormat": "Max Core Utilization",
+          "range": true,
           "refId": "C"
         }
       ],
@@ -758,7 +760,7 @@
             "h": 7,
             "w": 5,
             "x": 0,
-            "y": 276
+            "y": 38
           },
           "hideTimeOverride": true,
           "id": 31,
@@ -874,7 +876,7 @@
             "h": 7,
             "w": 19,
             "x": 5,
-            "y": 276
+            "y": 38
           },
           "id": 7,
           "options": {
@@ -955,7 +957,7 @@
             "h": 6,
             "w": 11,
             "x": 0,
-            "y": 514
+            "y": 276
           },
           "hideTimeOverride": true,
           "id": 25,
@@ -1040,7 +1042,7 @@
             "h": 6,
             "w": 13,
             "x": 11,
-            "y": 514
+            "y": 276
           },
           "id": 22,
           "options": {
@@ -1166,7 +1168,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 277
+            "y": 39
           },
           "id": 27,
           "options": {
@@ -1271,7 +1273,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 486
+            "y": 48
           },
           "id": 16,
           "options": {
@@ -1373,7 +1375,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 494
+            "y": 56
           },
           "id": 30,
           "options": {
@@ -1454,7 +1456,7 @@
             "h": 5,
             "w": 12,
             "x": 0,
-            "y": 503
+            "y": 65
           },
           "id": 66,
           "options": {
@@ -1529,7 +1531,7 @@
             "h": 5,
             "w": 12,
             "x": 12,
-            "y": 503
+            "y": 65
           },
           "id": 67,
           "options": {
@@ -1691,7 +1693,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 278
+            "y": 753
           },
           "id": 8,
           "options": {
@@ -1802,7 +1804,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 278
+            "y": 753
           },
           "id": 13,
           "options": {
@@ -1893,7 +1895,7 @@
             "h": 19,
             "w": 24,
             "x": 0,
-            "y": 279
+            "y": 754
           },
           "id": 46,
           "options": {
@@ -2002,7 +2004,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 432
+            "y": 907
           },
           "id": 14,
           "options": {
@@ -2060,7 +2062,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 440
+            "y": 915
           },
           "id": 47,
           "options": {
@@ -2238,7 +2240,7 @@
             "h": 9,
             "w": 11,
             "x": 0,
-            "y": 280
+            "y": 755
           },
           "id": 24,
           "options": {
@@ -2392,7 +2394,7 @@
             "h": 9,
             "w": 13,
             "x": 11,
-            "y": 280
+            "y": 755
           },
           "id": 53,
           "options": {
@@ -2599,7 +2601,7 @@
             "h": 9,
             "w": 11,
             "x": 0,
-            "y": 390
+            "y": 865
           },
           "id": 107,
           "options": {
@@ -2767,7 +2769,7 @@
             "h": 9,
             "w": 13,
             "x": 11,
-            "y": 390
+            "y": 865
           },
           "id": 23,
           "options": {
@@ -2857,7 +2859,7 @@
             "h": 5,
             "w": 8,
             "x": 0,
-            "y": 399
+            "y": 874
           },
           "id": 56,
           "options": {
@@ -2933,7 +2935,7 @@
             "h": 5,
             "w": 8,
             "x": 8,
-            "y": 399
+            "y": 874
           },
           "id": 55,
           "options": {
@@ -3021,7 +3023,7 @@
             "h": 5,
             "w": 8,
             "x": 16,
-            "y": 399
+            "y": 874
           },
           "id": 54,
           "options": {
@@ -3097,7 +3099,7 @@
             "h": 5,
             "w": 8,
             "x": 0,
-            "y": 404
+            "y": 879
           },
           "id": 65,
           "options": {
@@ -3172,7 +3174,7 @@
             "h": 5,
             "w": 8,
             "x": 8,
-            "y": 404
+            "y": 879
           },
           "id": 62,
           "options": {
@@ -3260,7 +3262,7 @@
             "h": 5,
             "w": 8,
             "x": 16,
-            "y": 404
+            "y": 879
           },
           "id": 63,
           "options": {
@@ -3378,7 +3380,7 @@
             "h": 7,
             "w": 11,
             "x": 0,
-            "y": 281
+            "y": 756
           },
           "id": 1,
           "options": {
@@ -3503,7 +3505,7 @@
             "h": 7,
             "w": 11,
             "x": 11,
-            "y": 281
+            "y": 756
           },
           "hideTimeOverride": true,
           "id": 57,
@@ -3587,7 +3589,7 @@
             "h": 7,
             "w": 2,
             "x": 22,
-            "y": 281
+            "y": 756
           },
           "hideTimeOverride": true,
           "id": 26,
@@ -3751,7 +3753,7 @@
             "h": 12,
             "w": 19,
             "x": 0,
-            "y": 282
+            "y": 757
           },
           "id": 68,
           "options": {
@@ -3849,7 +3851,7 @@
             "h": 3,
             "w": 2,
             "x": 19,
-            "y": 282
+            "y": 757
           },
           "hideTimeOverride": true,
           "id": 61,
@@ -3920,7 +3922,7 @@
             "h": 3,
             "w": 3,
             "x": 21,
-            "y": 282
+            "y": 757
           },
           "hideTimeOverride": true,
           "id": 70,
@@ -3991,7 +3993,7 @@
             "h": 3,
             "w": 2,
             "x": 19,
-            "y": 367
+            "y": 842
           },
           "hideTimeOverride": true,
           "id": 84,
@@ -4088,7 +4090,7 @@
             "h": 3,
             "w": 3,
             "x": 21,
-            "y": 367
+            "y": 842
           },
           "hideTimeOverride": true,
           "id": 69,
@@ -4173,7 +4175,7 @@
             "h": 3,
             "w": 2,
             "x": 19,
-            "y": 370
+            "y": 845
           },
           "hideTimeOverride": true,
           "id": 73,
@@ -4244,7 +4246,7 @@
             "h": 3,
             "w": 3,
             "x": 21,
-            "y": 370
+            "y": 845
           },
           "hideTimeOverride": true,
           "id": 82,
@@ -4329,7 +4331,7 @@
             "h": 3,
             "w": 2,
             "x": 19,
-            "y": 373
+            "y": 848
           },
           "hideTimeOverride": true,
           "id": 72,
@@ -4414,7 +4416,7 @@
             "h": 3,
             "w": 3,
             "x": 21,
-            "y": 373
+            "y": 848
           },
           "hideTimeOverride": true,
           "id": 71,
@@ -4499,7 +4501,7 @@
             "h": 3,
             "w": 4,
             "x": 0,
-            "y": 283
+            "y": 758
           },
           "hideTimeOverride": true,
           "id": 80,
@@ -4584,7 +4586,7 @@
             "h": 3,
             "w": 4,
             "x": 4,
-            "y": 283
+            "y": 758
           },
           "hideTimeOverride": true,
           "id": 78,
@@ -4659,7 +4661,7 @@
             "h": 3,
             "w": 4,
             "x": 8,
-            "y": 283
+            "y": 758
           },
           "hideTimeOverride": true,
           "id": 81,
@@ -4734,7 +4736,7 @@
             "h": 3,
             "w": 4,
             "x": 12,
-            "y": 283
+            "y": 758
           },
           "hideTimeOverride": true,
           "id": 83,
@@ -4827,7 +4829,7 @@
             "h": 3,
             "w": 4,
             "x": 16,
-            "y": 283
+            "y": 758
           },
           "hideTimeOverride": true,
           "id": 77,
@@ -4898,7 +4900,7 @@
             "h": 3,
             "w": 4,
             "x": 20,
-            "y": 283
+            "y": 758
           },
           "hideTimeOverride": true,
           "id": 79,
@@ -4997,7 +4999,7 @@
             "h": 7,
             "w": 23,
             "x": 0,
-            "y": 284
+            "y": 759
           },
           "id": 88,
           "options": {
@@ -5085,7 +5087,7 @@
             "h": 10,
             "w": 8,
             "x": 0,
-            "y": 315
+            "y": 790
           },
           "id": 89,
           "options": {
@@ -5222,7 +5224,7 @@
             "h": 10,
             "w": 8,
             "x": 8,
-            "y": 315
+            "y": 790
           },
           "id": 91,
           "options": {
@@ -5359,7 +5361,7 @@
             "h": 10,
             "w": 8,
             "x": 16,
-            "y": 315
+            "y": 790
           },
           "id": 93,
           "options": {
@@ -5496,7 +5498,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 325
+            "y": 800
           },
           "id": 92,
           "options": {
@@ -5633,7 +5635,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 325
+            "y": 800
           },
           "id": 103,
           "options": {
@@ -5770,7 +5772,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 325
+            "y": 800
           },
           "id": 94,
           "options": {
@@ -5907,7 +5909,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 333
+            "y": 808
           },
           "id": 95,
           "options": {
@@ -6044,7 +6046,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 333
+            "y": 808
           },
           "id": 104,
           "options": {
@@ -6181,7 +6183,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 333
+            "y": 808
           },
           "id": 90,
           "options": {
@@ -6318,7 +6320,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 341
+            "y": 816
           },
           "id": 96,
           "options": {
@@ -6484,7 +6486,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 285
+            "y": 760
           },
           "hideTimeOverride": true,
           "id": 101,
@@ -6592,7 +6594,7 @@
             "h": 16,
             "w": 17,
             "x": 0,
-            "y": 293
+            "y": 768
           },
           "hideTimeOverride": true,
           "id": 102,
@@ -6679,7 +6681,7 @@
             "h": 8,
             "w": 7,
             "x": 17,
-            "y": 293
+            "y": 768
           },
           "hideTimeOverride": true,
           "id": 99,
@@ -6776,7 +6778,7 @@
             "h": 8,
             "w": 7,
             "x": 17,
-            "y": 301
+            "y": 776
           },
           "hideTimeOverride": true,
           "id": 100,
@@ -6848,49 +6850,6 @@
   "tags": ["Valkey", "Redis", "Percona"],
   "templating": {
     "list": [
-      {
-        "auto": true,
-        "auto_count": 200,
-        "auto_min": "5s",
-        "current": {},
-        "label": "Interval",
-        "name": "interval",
-        "options": [
-          {
-            "selected": false,
-            "text": "5s",
-            "value": "5s"
-          },
-          {
-            "selected": true,
-            "text": "1m",
-            "value": "1m"
-          },
-          {
-            "selected": false,
-            "text": "5m",
-            "value": "5m"
-          },
-          {
-            "selected": false,
-            "text": "1h",
-            "value": "1h"
-          },
-          {
-            "selected": false,
-            "text": "6h",
-            "value": "6h"
-          },
-          {
-            "selected": false,
-            "text": "1d",
-            "value": "1d"
-          }
-        ],
-        "query": "5s,1m,5m,1h,6h,1d",
-        "refresh": 2,
-        "type": "interval"
-      },
       {
         "allowCustomValue": false,
         "current": {},
