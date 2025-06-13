@@ -287,7 +287,7 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max(pg_custom_stat_replication_flush_lag_seconds{node_name=~\"$node_name\"}[1m]) by (client_addr,state,sync_state\n)\n",
+          "expr": "max by (client_addr,state,sync_state)(pg_custom_stat_replication_flush_lag_seconds{node_name=~\"$node_name\"}[$__range]) \n",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -317,7 +317,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "bytes"
         },
         "overrides": []
       },
@@ -330,7 +331,7 @@
       "id": 30,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -373,7 +374,8 @@
                 "color": "green"
               }
             ]
-          }
+          },
+          "unit": "bytes"
         },
         "overrides": []
       },
@@ -386,7 +388,7 @@
       "id": 31,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -405,7 +407,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "max(rate(pg_custom_stat_replication_write_lsn_bytes{node_name=~\"$node_name\"}[$interval])) by (node_name)\n",
+          "expr": "max(rate(pg_custom_stat_replication_write_lsn_bytes{node_name=~\"$node_name\"}[$interval]) or irate(pg_custom_stat_replication_write_lsn_bytes{node_name=~\"$node_name\"}[5m])) by (node_name)\n",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -429,7 +431,8 @@
                 "color": "green"
               }
             ]
-          }
+          },
+          "unit": "bytes"
         },
         "overrides": []
       },
@@ -442,7 +445,7 @@
       "id": 32,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -461,7 +464,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "max(rate(pg_custom_stat_replication_flush_lsn_bytes{node_name=~\"$node_name\"}[$interval])) by (node_name)\n",
+          "expr": "max(rate(pg_custom_stat_replication_flush_lsn_bytes{node_name=~\"$node_name\"}[$interval]) or irate(pg_custom_stat_replication_flush_lsn_bytes{node_name=~\"$node_name\"}[5m])) by (node_name)\n",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -485,7 +488,8 @@
                 "color": "green"
               }
             ]
-          }
+          },
+          "unit": "bytes"
         },
         "overrides": []
       },
@@ -498,7 +502,7 @@
       "id": 33,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -517,7 +521,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "max(rate(pg_custom_stat_replication_replay_lsn_bytes{node_name=~\"$node_name\"}[$interval])) by (node_name)\n",
+          "expr": "max(rate(pg_custom_stat_replication_replay_lsn_bytes{node_name=~\"$node_name\"}[$interval]) or irate(pg_custom_stat_replication_replay_lsn_bytes{node_name=~\"$node_name\"}[5m])) by (node_name)\n",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -884,7 +888,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "topk(10, sum(rate(pg_stat_database_conflicts[$__interval])) by (node_name))\n",
+          "expr": "topk(10, sum(rate(pg_stat_database_conflicts{node_name=~\"$node_name\",service_name=~\"$service_name\"}[$__interval])) by (node_name))\n",
           "format": "time_series",
           "legendFormat": "{{node_name}}",
           "range": true,
@@ -1161,7 +1165,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "topk(10, rate(pg_stat_database_conflicts[$__interval])) by (datname)\n",
+          "expr": "topk(10, rate(pg_stat_database_conflicts{node_name=~\"$node_name\",service_name=~\"$service_name\"}[$__interval])) by (datname)\n",
           "format": "time_series",
           "legendFormat": "{{node_name}}/{{datname}}",
           "range": true,
@@ -1258,15 +1262,16 @@
           "text": "All",
           "value": "$__all"
         },
-        "definition": "label_values(postgresql_up, cluster)",
+        "definition": "label_values(pg_up,cluster)",
         "includeAll": true,
         "label": "Cluster",
         "multi": true,
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(postgresql_up, cluster)",
-          "refId": "StandardVariableQuery"
+          "qryType": 1,
+          "query": "label_values(pg_up,cluster)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
         "regex": "",
@@ -1275,15 +1280,9 @@
       },
       {
         "current": {
-          "text": [
-            "repmgr-primary",
-            "repmgr-replica",
-            "repmgr-replica-2"
-          ],
+          "text": "All",
           "value": [
-            "repmgr-primary",
-            "repmgr-replica",
-            "repmgr-replica-2"
+            "$__all"
           ]
         },
         "definition": "label_values(pg_up{environment=~\"$environment\"},node_name)",
@@ -1368,8 +1367,8 @@
       },
       {
         "current": {
-          "text": "15.10",
-          "value": "15.10"
+          "text": "17.5",
+          "value": "17.5"
         },
         "definition": "",
         "hide": 2,
@@ -1748,8 +1747,8 @@
       },
       {
         "current": {
-          "text": "1748954087000",
-          "value": "1748954087000"
+          "text": "1749819153000",
+          "value": "1749819153000"
         },
         "definition": "",
         "hide": 2,
@@ -1843,8 +1842,8 @@
       },
       {
         "current": {
-          "text": "1",
-          "value": "1"
+          "text": "0",
+          "value": "0"
         },
         "definition": "",
         "hide": 2,
@@ -1862,8 +1861,8 @@
       },
       {
         "current": {
-          "text": "1748954087000",
-          "value": "1748954087000"
+          "text": "1749819153000",
+          "value": "1749819153000"
         },
         "definition": "",
         "hide": 2,
@@ -1919,8 +1918,8 @@
       },
       {
         "current": {
-          "text": "16",
-          "value": "16"
+          "text": "10",
+          "value": "10"
         },
         "definition": "",
         "hide": 2,
@@ -1938,8 +1937,8 @@
       },
       {
         "current": {
-          "text": "419430400",
-          "value": "419430400"
+          "text": "1073741824",
+          "value": "1073741824"
         },
         "definition": "",
         "hide": 2,
@@ -1976,8 +1975,8 @@
       },
       {
         "current": {
-          "text": "",
-          "value": ""
+          "text": "0",
+          "value": "0"
         },
         "definition": "",
         "hide": 2,
@@ -2052,8 +2051,8 @@
       },
       {
         "current": {
-          "text": "1748954087000",
-          "value": "1748954087000"
+          "text": "1749819153000",
+          "value": "1749819153000"
         },
         "definition": "",
         "hide": 2,
