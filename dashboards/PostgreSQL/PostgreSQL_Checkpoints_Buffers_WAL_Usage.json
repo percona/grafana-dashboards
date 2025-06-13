@@ -1616,11 +1616,13 @@
       "targets": [
         {
           "datasource": "Metrics",
-          "expr": "avg by (node_name,mode) (clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[5m]))),100))",
+          "editorMode": "code",
+          "expr": "avg by (node_name,mode) (clamp_max(((avg by (mode) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[5m]))),100))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{ mode }}",
+          "range": true,
           "refId": "B"
         },
         {
@@ -2049,11 +2051,11 @@
             "max",
             "min"
           ],
-          "sortBy": "Mean",
-          "sortDesc": true,
           "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -2858,11 +2860,11 @@
             "max",
             "min"
           ],
-          "sortBy": "Mean",
-          "sortDesc": true,
           "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -2877,7 +2879,7 @@
           "datasource": "Metrics",
           "dsType": "prometheus",
           "editorMode": "code",
-          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n)",
+          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[$interval]) * on(service_name)(pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[5m]) * on(service_name) \n(pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n))",
           "format": "time_series",
           "groupBy": [
             {
@@ -3007,11 +3009,11 @@
             "max",
             "min"
           ],
-          "sortBy": "Mean",
-          "sortDesc": true,
           "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -3026,7 +3028,7 @@
           "datasource": "Metrics",
           "dsType": "prometheus",
           "editorMode": "code",
-          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n)",
+          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[$interval]) * on(service_name) (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[5m]) * on(service_name) (pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n))",
           "format": "time_series",
           "groupBy": [
             {
@@ -3082,7 +3084,7 @@
           "datasource": "Metrics",
           "dsType": "prometheus",
           "editorMode": "code",
-          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n)",
+          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[$interval]) * on(service_name) (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[5m]) * on(service_name) (pg_settings_block_size{service_name=~\"$service_name\"}[5m]))\n)",
           "format": "time_series",
           "groupBy": [
             {
@@ -3138,7 +3140,7 @@
           "datasource": "Metrics",
           "dsType": "prometheus",
           "editorMode": "code",
-          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n)",
+          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[$interval]) * on(service_name) (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[5m]) * on(service_name) (pg_settings_block_size{service_name=~\"$service_name\"}[5m]))\n)",
           "format": "time_series",
           "groupBy": [
             {
@@ -3540,8 +3542,8 @@
       },
       {
         "current": {
-          "text": "",
-          "value": ""
+          "text": "pmm-server",
+          "value": "pmm-server"
         },
         "definition": "label_values(pg_up{service_name=~\"$service_name\"},node_name)",
         "hide": 2,
@@ -3560,8 +3562,8 @@
       },
       {
         "current": {
-          "text": "",
-          "value": ""
+          "text": "pmm-server-postgresql",
+          "value": "pmm-server-postgresql"
         },
         "definition": "label_values(pg_up, service_name)",
         "includeAll": false,
@@ -3579,8 +3581,8 @@
       },
       {
         "current": {
-          "text": "16.9",
-          "value": "16.9"
+          "text": "14.18",
+          "value": "14.18"
         },
         "definition": "",
         "hide": 2,
@@ -3598,8 +3600,8 @@
       },
       {
         "current": {
-          "text": "1000",
-          "value": "1000"
+          "text": "100",
+          "value": "100"
         },
         "definition": "",
         "hide": 2,
@@ -3959,8 +3961,8 @@
       },
       {
         "current": {
-          "text": "1748920131000",
-          "value": "1748920131000"
+          "text": "1749821670000",
+          "value": "1749821670000"
         },
         "definition": "",
         "hide": 2,
@@ -4073,8 +4075,8 @@
       },
       {
         "current": {
-          "text": "1748920131000",
-          "value": "1748920131000"
+          "text": "1749821670000",
+          "value": "1749821670000"
         },
         "definition": "",
         "hide": 2,
@@ -4187,8 +4189,8 @@
       },
       {
         "current": {
-          "text": "",
-          "value": ""
+          "text": "0",
+          "value": "0"
         },
         "definition": "",
         "hide": 2,
@@ -4263,8 +4265,8 @@
       },
       {
         "current": {
-          "text": "1748920131000",
-          "value": "1748920131000"
+          "text": "1749821670000",
+          "value": "1749821670000"
         },
         "definition": "",
         "hide": 2,
@@ -4449,8 +4451,8 @@
       },
       {
         "current": {
-          "text": "eabbeff7-4545-4fcc-9469-29d24f8d7357",
-          "value": "eabbeff7-4545-4fcc-9469-29d24f8d7357"
+          "text": "40484200-f4ac-497a-8a35-fdd27b3cdc04",
+          "value": "40484200-f4ac-497a-8a35-fdd27b3cdc04"
         },
         "definition": "label_values(pg_up{service_name=\"$service_name\"}, service_id)",
         "hide": 2,
