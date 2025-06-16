@@ -1910,7 +1910,7 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max by (service_name) (mongodb_up{environment=~\"$environment\", cluster=~\"$cluster\", service_name=~\"$service_name\"})",
+          "expr": "max by (service_name) (mongodb_up{environment=~\"$environment\", cluster=~\"$cluster\", service_name=~\"$service_name_mongos\"})",
           "hide": false,
           "instant": true,
           "legendFormat": "__auto",
@@ -4585,6 +4585,52 @@
         },
         "refresh": 2,
         "regex": "/.*service_name=\"(.*)\",service_type.*/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\",cluster=~\"$cluster\"}, service_name)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Node",
+        "multi": true,
+        "name": "service_name_mongos",
+        "options": [],
+        "query": {
+          "query": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\",cluster=~\"$cluster\"}, service_name)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "definition": "label_values(mongodb_up, cluster_role)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "cluster_role",
+        "options": [],
+        "query": {
+          "query": "label_values(mongodb_up, cluster_role)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
