@@ -95,7 +95,7 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "(\n  sum(\n    pg_custom_stat_wal_receiver_written_lsn_bytes{node_name=~\"$node_name\"}\n  ) by (primary_host)\n\n  and on()\n  (\n    sum(\n      pg_replication_is_replica{node_name=~\"$node_name\"} == 1\n    )\n  )\n)\nor on()\nlabel_replace(\n  sum(\n    pg_replication_is_replica{node_name=~\"$node_name\"} == 0\n  ) by (node_name),\n  \"primary_host\",\n  \"$1\",\n  \"node_name\",\n  \"(.*)\"\n)\n",
+          "expr": "(\n  sum(\n    pg_custom_stat_wal_receiver_written_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}\n  ) by (primary_host)\n\n  and on()\n  (\n    sum(\n      pg_replication_is_replica{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"} == 1\n    )\n  )\n)\nor on()\nlabel_replace(\n  sum(\n    pg_replication_is_replica{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"} == 0\n  ) by (node_name),\n  \"primary_host\",\n  \"$1\",\n  \"node_name\",\n  \"(.*)\"\n)\n",
           "instant": true,
           "legendFormat": "{{primary_host}}",
           "range": false,
@@ -154,7 +154,7 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "count(last_over_time(pg_custom_stat_replication_replay_lsn_bytes{node_name=~\"$node_name\"}))",
+          "expr": "count(last_over_time(pg_custom_stat_replication_replay_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}))",
           "format": "time_series",
           "instant": true,
           "legendFormat": "__auto",
@@ -287,7 +287,7 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max by (client_addr,state,sync_state)(pg_custom_stat_replication_flush_lag_seconds{node_name=~\"$node_name\"}[$__range]) \n",
+          "expr": "max by (client_addr,state,sync_state)(pg_custom_stat_replication_flush_lag_seconds{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}[$__range]) \n",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -337,7 +337,7 @@
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "max"
           ],
           "fields": "",
           "values": false
@@ -350,7 +350,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "max(pg_replication_lag_seconds{node_name=~\"$node_name\"}[$__interval] or pg_replication_lag_seconds{node_name=~\"$node_name\"}[5m])",
+          "expr": "max(pg_replication_lag_seconds{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}[$__interval] or pg_replication_lag_seconds{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}[5m])",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -394,7 +394,7 @@
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "max"
           ],
           "fields": "",
           "values": false
@@ -407,7 +407,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "max(rate(pg_custom_stat_replication_write_lsn_bytes{node_name=~\"$node_name\"}[$interval]) or irate(pg_custom_stat_replication_write_lsn_bytes{node_name=~\"$node_name\"}[5m])) by (node_name)\n",
+          "expr": "max(rate(pg_custom_stat_replication_write_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}[$interval]) or irate(pg_custom_stat_replication_write_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}[5m])) by (node_name)\n",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -451,7 +451,7 @@
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "max"
           ],
           "fields": "",
           "values": false
@@ -464,7 +464,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "max(rate(pg_custom_stat_replication_flush_lsn_bytes{node_name=~\"$node_name\"}[$interval]) or irate(pg_custom_stat_replication_flush_lsn_bytes{node_name=~\"$node_name\"}[5m])) by (node_name)\n",
+          "expr": "max(rate(pg_custom_stat_replication_flush_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}[$interval]) or irate(pg_custom_stat_replication_flush_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}[5m])) by (node_name)\n",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -508,7 +508,7 @@
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "max"
           ],
           "fields": "",
           "values": false
@@ -521,7 +521,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "max(rate(pg_custom_stat_replication_replay_lsn_bytes{node_name=~\"$node_name\"}[$interval]) or irate(pg_custom_stat_replication_replay_lsn_bytes{node_name=~\"$node_name\"}[5m])) by (node_name)\n",
+          "expr": "max(rate(pg_custom_stat_replication_replay_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}[$interval]) or irate(pg_custom_stat_replication_replay_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}[5m])) by (node_name)\n",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -604,14 +604,14 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max by (node_name) (pg_replication_is_replica{node_name=~\"$node_name\"})",
+          "expr": "max by (node_name) (pg_replication_is_replica{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"})",
           "instant": false,
           "legendFormat": "{{node_name}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Who was the Primary?",
+      "title": "Replication Members State",
       "type": "state-timeline"
     },
     {
@@ -698,7 +698,7 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "pg_replication_lag_seconds{service_name=~\"$service_name\"}",
+          "expr": "pg_replication_lag_seconds{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -794,7 +794,7 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "pg_custom_stat_wal_receiver_lag_bytes{service_name=~\"$service_name\"}\n",
+          "expr": "pg_custom_stat_wal_receiver_lag_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}\n",
           "format": "time_series",
           "instant": false,
           "legendFormat": "{{service_name}}",
@@ -888,7 +888,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "topk(10, sum(rate(pg_stat_database_conflicts{node_name=~\"$node_name\",service_name=~\"$service_name\"}[$__interval])) by (node_name))\n",
+          "expr": "topk(10, sum(rate(pg_stat_database_conflicts{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}[$__interval])) by (node_name))\n",
           "format": "time_series",
           "legendFormat": "{{node_name}}",
           "range": true,
@@ -985,7 +985,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum(rate(pg_custom_stat_wal_receiver_written_lsn_bytes{node_name=~\"$node_name\"}[$interval])) by (node_name)\n",
+          "expr": "sum(rate(pg_custom_stat_wal_receiver_written_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}[$interval])) by (node_name)\n",
           "format": "time_series",
           "legendFormat": "{{wal_activity_type}}",
           "range": true,
@@ -1074,7 +1074,7 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max by (node_name,slot_name,slot_type) (pg_replication_slot_slot_is_active{node_name=~\"$node_name\"})",
+          "expr": "max by (node_name,slot_name,slot_type) (pg_replication_slot_slot_is_active{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"})",
           "format": "time_series",
           "instant": false,
           "legendFormat": "{{node_name}}/{{slot_name}}/{{slot_type}}",
@@ -1165,7 +1165,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "topk(10, rate(pg_stat_database_conflicts{node_name=~\"$node_name\",service_name=~\"$service_name\"}[$__interval])) by (datname)\n",
+          "expr": "topk(10, rate(pg_stat_database_conflicts{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}[$__interval])) by (datname)\n",
           "format": "time_series",
           "legendFormat": "{{node_name}}/{{datname}}",
           "range": true,
@@ -1240,7 +1240,9 @@
         "allValue": ".*",
         "current": {
           "text": "All",
-          "value": "$__all"
+          "value": [
+            "$__all"
+          ]
         },
         "definition": "label_values({__name__=~\"pg_up\"}, environment)",
         "includeAll": true,
