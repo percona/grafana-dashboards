@@ -617,8 +617,8 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 202
+                "id": "custom.minWidth",
+                "value": 150
               },
               {
                 "id": "custom.displayMode",
@@ -637,8 +637,8 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 220
+                "id": "custom.minWidth",
+                "value": 200
               },
               {
                 "id": "custom.align",
@@ -661,8 +661,8 @@
                 "value": true
               },
               {
-                "id": "custom.width",
-                "value": 832
+                "id": "custom.minWidth",
+                "value": 300
               },
               {
                 "id": "custom.filterable",
@@ -683,6 +683,10 @@
               {
                 "id": "custom.displayMode",
                 "value": "basic"
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 150
               }
             ]
           },
@@ -705,8 +709,8 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 86
+                "id": "custom.minWidth",
+                "value": 100
               }
             ]
           }
@@ -860,13 +864,27 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT $__timeInterval(period_start) as time, service_name \"Service\", username, fingerprint \"Query\", avg(m_query_time_sum/m_query_time_cnt) \"Execution_time\" FROM pmm.\"metrics\" WHERE ( period_start  >= $__fromTime AND period_start <= $__toTime ) AND ( service_type LIKE '%$service_type%' ) GROUP BY service_name, username, fingerprint , m_query_time_sum, time ORDER BY time DESC LIMIT 10000",
+          "rawSql": "SELECT $__timeInterval(period_start) as time, service_name \"Service\", username, fingerprint \"Query\", avg(m_query_time_sum/m_query_time_cnt) \"Execution_time\" FROM pmm.\"metrics\" WHERE ( period_start  >= $__fromTime AND period_start <= $__toTime ) AND ( service_type LIKE '%$service_type%' ) AND (service_name IN ($service_name)) AND (node_name IN ($node_name)) AND (cluster IN ($cluster)) AND (environment IN ($environment)) GROUP BY service_name, username, fingerprint , m_query_time_sum, time ORDER BY time DESC LIMIT 10000",
           "refId": "A",
           "selectedFormat": 1
         }
       ],
       "title": "Queries",
-      "transformations": [],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Execution_time": "Execution Time",
+              "time": "Time",
+              "username": "Username"
+            }
+          }
+        }
+      ],
       "transparent": true,
       "type": "table"
     }
