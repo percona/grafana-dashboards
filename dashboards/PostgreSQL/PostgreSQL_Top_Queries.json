@@ -265,9 +265,9 @@
               "table": ""
             }
           },
-          "pluginVersion": "4.0.2",
+          "pluginVersion": "4.4.0",
           "queryType": "table",
-          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    avg(m_query_time_sum / m_query_time_cnt) AS \"Avg Execution Time\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND node_name in ($node_name)\n    AND if('$cluster' = '',1 , cluster in ($cluster))\n    AND if('$environment' = '.*',1 , environment in ('$environment'))\n    AND if(length('${service_name:csv}') = 0,1, service_name in ($service_name))\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name, \n    database, \n    fingerprint\nORDER BY \"Avg Execution Time\" DESC\nLIMIT 10;",
+          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    avg(m_query_time_sum / m_query_time_cnt) AS \"Avg Execution Time\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND if(length('${service_name:csv}') = 0,1, service_name in ($service_name))\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name, \n    database, \n    fingerprint\nORDER BY \"Avg Execution Time\" DESC\nLIMIT 10;",
           "refId": "A"
         }
       ],
@@ -396,9 +396,9 @@
               "table": ""
             }
           },
-          "pluginVersion": "4.0.2",
+          "pluginVersion": "4.4.0",
           "queryType": "table",
-          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    sum(m_query_time_sum) AS \"Execution Time Summary\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND node_name in ($node_name)\n    AND if('$cluster' = '',1 , cluster in ($cluster))\n    AND if('$environment' = '.*',1 , environment in ('$environment'))\n    AND if(length('${service_name:csv}') = 0,1, service_name in ($service_name))\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name,  \n    database, \n    fingerprint \nORDER BY \"Execution Time Summary\" DESC\nLIMIT 100;",
+          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    sum(m_query_time_sum) AS \"Execution Time Summary\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND if(length('${service_name:csv}') = 0,1, service_name in ($service_name))\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name,  \n    database, \n    fingerprint \nORDER BY \"Execution Time Summary\" DESC\nLIMIT 100;",
           "refId": "A"
         }
       ],
@@ -527,9 +527,9 @@
               "table": ""
             }
           },
-          "pluginVersion": "4.0.2",
+          "pluginVersion": "4.4.0",
           "queryType": "table",
-          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    sum(num_queries) AS \"Executed\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND node_name in ($node_name)\n    AND if('$cluster' = '',1 , cluster in ($cluster))\n    AND if('$environment' = '.*',1 , environment in ('$environment'))\n    AND if(length('${service_name:csv}') = 0,1, service_name in ($service_name))\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name, \n    database, \n    fingerprint\nORDER BY \"Executed\" DESC\nLIMIT 10;",
+          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    sum(num_queries) AS \"Executed\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND if(length('${service_name:csv}') = 0,1, service_name in ($service_name))\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name, \n    database, \n    fingerprint\nORDER BY \"Executed\" DESC\nLIMIT 10;",
           "refId": "A"
         }
       ],
@@ -658,9 +658,9 @@
               "table": ""
             }
           },
-          "pluginVersion": "4.0.2",
+          "pluginVersion": "4.4.0",
           "queryType": "table",
-          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    sum(m_rows_sent_sum) AS \"Affected Rows\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND node_name in ($node_name)\n    AND if('$cluster' = '',1 , cluster in ($cluster))\n    AND if('$environment' = '.*',1 , environment in ('$environment'))\n    AND if(length('${service_name:csv}') = 0,1, service_name in ($service_name))\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\n    AND cmd_type not in ('SELECT','')\nGROUP BY \n    service_name, \n    database, \n    fingerprint\nORDER BY \"Affected Rows\" DESC\nLIMIT 10;",
+          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    sum(m_rows_sent_sum) AS \"Affected Rows\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND if(length('${service_name:csv}') = 0,1, service_name in ($service_name))\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\n    AND cmd_type not in ('SELECT','')\nGROUP BY \n    service_name, \n    database, \n    fingerprint\nORDER BY \"Affected Rows\" DESC\nLIMIT 10;",
           "refId": "A"
         }
       ],
@@ -789,9 +789,9 @@
               "table": ""
             }
           },
-          "pluginVersion": "4.0.2",
+          "pluginVersion": "4.4.0",
           "queryType": "table",
-          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    sum(m_rows_sent_sum) AS \"Rows Affected\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND node_name in ($node_name)\n    AND if('$cluster' = '',1 , cluster in ($cluster))\n    AND if('$environment' = '.*',1 , environment in ('$environment'))\n    AND if(length('${service_name:csv}') = 0,1, service_name in ($service_name))\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name, \n    database, \n    fingerprint\nORDER BY \"Rows Affected\" DESC\nLIMIT 10;",
+          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    fingerprint AS \"Query\", \n    sum(m_rows_sent_sum) AS \"Rows Affected\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND if(length('${service_name:csv}') = 0,1, service_name in ($service_name))\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name, \n    database, \n    fingerprint\nORDER BY \"Rows Affected\" DESC\nLIMIT 10;",
           "refId": "A"
         }
       ],
@@ -932,9 +932,9 @@
               "table": ""
             }
           },
-          "pluginVersion": "4.0.2",
+          "pluginVersion": "4.4.0",
           "queryType": "table",
-          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    username as Username,\n    sum(num_queries) AS \"Executed Queries\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND node_name in ($node_name)\n    AND if('$cluster' = '',1 , cluster in ($cluster))\n    AND if('$environment' = '.*',1 , environment in ('$environment'))\n    AND if(length('${service_name:csv}') = 0,1, service_name in ($service_name))\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name, \n    database,\n    username\nORDER BY \"Executed Queries\" DESC\nLIMIT 10;",
+          "rawSql": "SELECT   \n    service_name as \"Service Name\",\n    database as Database,\n    username as Username,\n    sum(num_queries) AS \"Executed Queries\"\nFROM pmm.\"metrics\"\nWHERE \n    period_start >= $__fromTime \n    AND period_start <= $__toTime \n    AND if(length('${service_name:csv}') = 0,1, service_name in ($service_name))\n    AND service_type = 'postgresql'\n    AND database NOT IN ('postgres', '<database name not available>', 'template1')\n    AND fingerprint NOT IN ('SELECT version()')\n    AND fingerprint NOT ILIKE '%pg_stat_%'\n    AND fingerprint NOT ILIKE '%pg_replication_slots%'\n    AND fingerprint NOT ILIKE '%pg_publication%'\n    AND fingerprint NOT ILIKE '%pg_last_wal_receive_lsn%'\nGROUP BY \n    service_name, \n    database,\n    username\nORDER BY \"Executed Queries\" DESC\nLIMIT 10;",
           "refId": "A"
         }
       ],
@@ -1026,19 +1026,21 @@
         "type": "query"
       },
       {
+        "allValue": ".*",
         "current": {
           "text": "All",
           "value": "$__all"
         },
-        "definition": "label_values(postgresql_up, cluster)",
+        "definition": "label_values(pg_up{environment=~\"$environment\"},cluster)",
         "includeAll": true,
         "label": "Cluster",
         "multi": true,
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(postgresql_up, cluster)",
-          "refId": "StandardVariableQuery"
+          "qryType": 1,
+          "query": "label_values(pg_up{environment=~\"$environment\"},cluster)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
         "regex": "",
@@ -1046,20 +1048,21 @@
         "type": "query"
       },
       {
+        "allValue": ".*",
         "current": {
-          "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "definition": "label_values(pg_up{environment=~\"$environment\"},node_name)",
-        "includeAll": false,
+        "definition": "label_values(pg_up{environment=~\"$environment\", cluster=~\"$cluster\"},node_name)",
+        "includeAll": true,
         "label": "Node Name",
         "multi": true,
         "name": "node_name",
         "options": [],
         "query": {
-          "query": "label_values(pg_up{environment=~\"$environment\"},node_name)",
-          "refId": "Metrics-node_name-Variable-Query"
+          "qryType": 1,
+          "query": "label_values(pg_up{environment=~\"$environment\", cluster=~\"$cluster\"},node_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
         "regex": "",
@@ -1073,15 +1076,16 @@
             "$__all"
           ]
         },
-        "definition": "label_values(pg_up{node_name=~\"$node_name\",environment=~\"$environment\"}, service_name)",
+        "definition": "label_values(pg_up{node_name=~\"$node_name\", environment=~\"$environment\", cluster=~\"$cluster\"},service_name)",
         "includeAll": true,
         "label": "Service Name",
         "multi": true,
         "name": "service_name",
         "options": [],
         "query": {
-          "query": "label_values(pg_up{node_name=~\"$node_name\",environment=~\"$environment\"}, service_name)",
-          "refId": "Metrics-service_name-Variable-Query"
+          "qryType": 1,
+          "query": "label_values(pg_up{node_name=~\"$node_name\", environment=~\"$environment\", cluster=~\"$cluster\"},service_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
         "regex": "",
@@ -1856,9 +1860,7 @@
       {
         "current": {
           "text": "All",
-          "value": [
-            "$__all"
-          ]
+          "value": "$__all"
         },
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
         "hide": 2,
