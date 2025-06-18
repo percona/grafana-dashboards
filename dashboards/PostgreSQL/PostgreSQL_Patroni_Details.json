@@ -130,7 +130,25 @@
   "panels": [
     {
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
         "overrides": []
       },
       "gridPos": {
@@ -141,17 +159,34 @@
       },
       "id": 1023,
       "options": {
-        "code": {
-          "language": "go",
-          "showLineNumbers": false,
-          "showMiniMap": false
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        "content": "<h3 style='color:#5991A7;text-align:center'>\n  <span style='color:#e68a00'>$service_name</span> \n</h3>",
-        "mode": "html"
+        "showPercentChange": false,
+        "textMode": "name",
+        "wideLayout": true
       },
       "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "patroni_version{service_name=~\"$service_name\",cluster=~\"$cluster\",scope=~\"$scope_name\"}",
+          "legendFormat": "{{service_name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
       "title": "",
-      "type": "text"
+      "type": "stat"
     },
     {
       "datasource": "Metrics",
@@ -159,47 +194,21 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "transparent",
+            "mode": "fixed"
           },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "text": "NO"
-                },
-                "1": {
-                  "text": "YES"
-                }
-              },
-              "type": "value"
-            },
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
+          "fieldMinMax": false,
+          "mappings": [],
+          "min": -1,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "#d44a3a"
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "value": 0
-              },
-              {
-                "color": "#299c46",
-                "value": 1
               }
             ]
           },
-          "unit": "none"
+          "unit": "string"
         },
         "overrides": []
       },
@@ -212,10 +221,10 @@
       "id": 1022,
       "maxDataPoints": 100,
       "options": {
-        "colorMode": "none",
+        "colorMode": "background_solid",
         "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
+        "justifyMode": "center",
+        "orientation": "vertical",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
@@ -226,9 +235,10 @@
         },
         "showPercentChange": false,
         "text": {
+          "percentSize": 1,
           "valueSize": 20
         },
-        "textMode": "auto",
+        "textMode": "value",
         "wideLayout": true
       },
       "pluginVersion": "11.6.1",
@@ -236,16 +246,207 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
+          "exemplar": false,
           "expr": "patroni_version{service_name=~\"$service_name\",scope=~\"$scope_name\"}",
           "format": "time_series",
+          "instant": true,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "{{service_name}}",
-          "range": true,
+          "legendFormat": "Original",
+          "range": false,
           "refId": "A"
         }
       ],
       "title": "Patroni Version",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Original"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "fixed": "10000"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Major",
+            "mode": "unary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "unary": {
+              "fieldName": "Original / 10000",
+              "operator": "floor"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Major"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "10000"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Original"
+                }
+              },
+              "operator": "-",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Major * 10000"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Original - Major * 10000"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "fixed": "100"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Minor",
+            "mode": "unary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "unary": {
+              "fieldName": "Original - Major * 10000 / 100",
+              "operator": "floor"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Minor"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "100"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Original - Major * 10000"
+                }
+              },
+              "operator": "-",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Minor * 100"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Patch",
+            "mode": "unary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "unary": {
+              "fieldName": "Original - Major * 10000 - Minor * 100",
+              "operator": "floor"
+            }
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "byVariable": false,
+            "include": {
+              "names": [
+                "Major",
+                "Minor",
+                "Patch"
+              ]
+            }
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -916,44 +1117,39 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "fixed"
           },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
             "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
+            "fillOpacity": 70,
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "lineWidth": 0,
+            "spanNulls": false
           },
           "decimals": 0,
           "links": [],
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "yellow",
+                  "index": 0,
+                  "text": "Secondary"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "Primary"
+                }
+              },
+              "type": "value"
+            }
+          ],
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -989,28 +1185,24 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 7
       },
       "id": 23,
       "options": {
+        "alignValue": "left",
         "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "max",
-            "min"
-          ],
-          "displayMode": "table",
+          "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true,
-          "sortBy": "Mean",
-          "sortDesc": true
+          "showLegend": true
         },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
         "tooltip": {
           "hideZeros": false,
-          "mode": "multi",
+          "mode": "single",
           "sort": "none"
         }
       },
@@ -1019,140 +1211,18 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "patroni_primary{environment=~\"$environment\",cluster=~\"$cluster\",scope=~\"$scope_name\"}",
+          "expr": "max by (service_name) (patroni_primary{environment=~\"$environment\",cluster=~\"$cluster\",scope=~\"$scope_name\"})",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "{{cluster}} {{service_name}}",
+          "legendFormat": "{{service_name}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Patroni Primary Node",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "Metrics",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 0,
-          "links": [],
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total "
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#bf1b00",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 7
-      },
-      "id": 1015,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "max",
-            "min"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "sortBy": "Mean",
-          "sortDesc": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.6.1",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "editorMode": "code",
-          "expr": "patroni_replica{environment=~\"$environment\",cluster=~\"$cluster\",scope=~\"$scope_name\"}",
-          "format": "time_series",
-          "hide": false,
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "{{cluster}} {{service_name}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Patroni Secondary Nodes",
-      "type": "timeseries"
+      "title": "Patroni Nodes State",
+      "type": "state-timeline"
     },
     {
       "collapsed": false,
@@ -1168,8 +1238,29 @@
       "type": "row"
     },
     {
+      "datasource": {
+        "uid": "Metrics"
+      },
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
         "overrides": []
       },
       "gridPos": {
@@ -1180,17 +1271,36 @@
       },
       "id": 1024,
       "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        "content": "\n<h3 style='color:#5991A7;text-align:center'>\n  <span style='color:#e68a00'>$service_name</span>\n</h3>",
-        "mode": "html"
+        "showPercentChange": false,
+        "textMode": "name",
+        "wideLayout": true
       },
       "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "min by (node_name,service_name) (pg_up[1m])*0 + on(node_name) group_left(node_name)(min by (node_name) (patroni_postgres_server_version{scope=~\"patroni_cls\",service_name=~\"$service_name\",cluster=~\"$cluster\"}))",
+          "instant": true,
+          "legendFormat": "{{service_name}}",
+          "range": false,
+          "refId": "A"
+        }
+      ],
       "title": "",
-      "type": "text"
+      "type": "stat"
     },
     {
       "datasource": "Metrics",
@@ -1254,7 +1364,7 @@
         "colorMode": "none",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal",
+        "orientation": "vertical",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
@@ -1267,7 +1377,7 @@
         "text": {
           "valueSize": 20
         },
-        "textMode": "auto",
+        "textMode": "value",
         "wideLayout": true
       },
       "pluginVersion": "11.6.1",
@@ -1275,16 +1385,139 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
+          "exemplar": false,
           "expr": "patroni_postgres_server_version{service_name=~\"$service_name\",scope=~\"$scope_name\"}",
           "format": "time_series",
+          "instant": true,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Original",
+          "range": false,
+          "refId": "A"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "patroni_postgres_server_version{service_name=~\"$service_name\",scope=~\"$scope_name\"} % 10000",
+          "format": "time_series",
+          "hide": true,
+          "instant": true,
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{service_name}}",
-          "range": true,
-          "refId": "A"
+          "range": false,
+          "refId": "B"
         }
       ],
       "title": "PostgreSQL Version",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Original"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "fixed": "10000"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Major",
+            "mode": "unary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "unary": {
+              "fieldName": "Original / 10000",
+              "operator": "floor"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Major"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "10000"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Original"
+                }
+              },
+              "operator": "-",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Major * 10000"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Minor",
+            "mode": "unary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "unary": {
+              "fieldName": "Original - Major * 10000",
+              "operator": "floor"
+            }
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "Major",
+                "Minor"
+              ]
+            }
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -2057,40 +2290,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "fixedColor": "blue",
+            "mode": "fixed"
           },
           "decimals": 2,
           "links": [],
@@ -2122,34 +2323,39 @@
                 "value": "binBps"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "028dc0c13609 pdpgsql_pmm_patroni_16_1"
+            },
+            "properties": []
           }
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 5,
+        "w": 6,
         "x": 0,
         "y": 22
       },
       "id": 1017,
       "options": {
-        "legend": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
           "calcs": [
-            "mean",
-            "max",
-            "min"
+            "lastNotNull"
           ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "sortBy": "Mean",
-          "sortDesc": true
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": false
       },
       "pluginVersion": "11.6.1",
       "targets": [
@@ -2157,12 +2363,12 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "patroni_xlog_location{environment=~\"$environment\",cluster=~\"$cluster\",scope=~\"$scope_name\"}",
+          "expr": "min by (node_name,service_name) (pg_up[1m])*0 + on(node_name) group_left(node_name) patroni_xlog_location{environment=~\"$environment\",cluster=~\"$cluster\",scope=~\"$scope_name\",service_name=~\"$service_name\"}",
           "format": "time_series",
           "instant": false,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "{{cluster}} {{service_name}}",
+          "legendFormat": "{{service_name}}",
           "range": true,
           "refId": "A"
         },
@@ -2182,7 +2388,7 @@
         }
       ],
       "title": "Primary WAL Location",
-      "type": "timeseries"
+      "type": "stat"
     },
     {
       "datasource": "Metrics",
@@ -2190,144 +2396,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "links": [],
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 22
-      },
-      "id": 36,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "sortBy": "Mean",
-          "sortDesc": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.6.1",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "editorMode": "code",
-          "expr": "patroni_xlog_paused{environment=~\"$environment\",cluster=~\"$cluster\",scope=~\"$scope_name\"}",
-          "format": "time_series",
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "{{cluster}} {{service_name}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "WAL Replay Paused",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "Metrics",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "fixedColor": "blue",
+            "mode": "fixed"
           },
           "decimals": 2,
           "links": [],
@@ -2363,30 +2433,28 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 30
+        "h": 5,
+        "w": 6,
+        "x": 6,
+        "y": 22
       },
       "id": 1018,
       "options": {
-        "legend": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
           "calcs": [
-            "mean",
-            "max",
-            "min"
+            "lastNotNull"
           ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "sortBy": "Mean",
-          "sortDesc": true
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": false
       },
       "pluginVersion": "11.6.1",
       "targets": [
@@ -2394,12 +2462,12 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "patroni_xlog_received_location{environment=~\"$environment\",cluster=~\"$cluster\",scope=~\"$scope_name\"}",
+          "expr": "min by (node_name,service_name) (pg_up[1m])*0 + on(node_name) group_left(node_name) patroni_xlog_received_location{environment=~\"$environment\",cluster=~\"$cluster\",scope=~\"$scope_name\",service_name=~\"$service_name\"}",
           "format": "time_series",
           "instant": false,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "{{cluster}} {{service_name}}",
+          "legendFormat": "{{service_name}}",
           "range": true,
           "refId": "A"
         },
@@ -2419,7 +2487,7 @@
         }
       ],
       "title": "Replicas Received WAL Location",
-      "type": "timeseries"
+      "type": "stat"
     },
     {
       "datasource": "Metrics",
@@ -2427,40 +2495,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "fixedColor": "blue",
+            "mode": "fixed"
           },
           "decimals": 2,
           "links": [],
@@ -2496,30 +2532,28 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 5,
+        "w": 6,
         "x": 12,
-        "y": 30
+        "y": 22
       },
       "id": 1019,
       "options": {
-        "legend": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
           "calcs": [
-            "mean",
-            "max",
-            "min"
+            "lastNotNull"
           ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "sortBy": "Mean",
-          "sortDesc": true
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": false
       },
       "pluginVersion": "11.6.1",
       "targets": [
@@ -2527,12 +2561,12 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "patroni_xlog_replayed_location{environment=~\"$environment\",cluster=~\"$cluster\",scope=~\"$scope_name\"}",
+          "expr": "min by (node_name,service_name) (pg_up[1m])*0 + on(node_name) group_left(node_name) patroni_xlog_replayed_location{environment=~\"$environment\",cluster=~\"$cluster\",scope=~\"$scope_name\",service_name=~\"$service_name\"}",
           "format": "time_series",
           "instant": false,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "{{cluster}} {{service_name}}",
+          "legendFormat": "{{service_name}}",
           "range": true,
           "refId": "A"
         },
@@ -2552,7 +2586,88 @@
         }
       ],
       "title": "Replicas Replayed WAL Location",
-      "type": "timeseries"
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "False"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "True"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 18,
+        "y": 22
+      },
+      "id": 36,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "min by (node_name,service_name) (pg_up[1m])*0 + on(node_name) group_left(node_name) patroni_xlog_paused{environment=~\"$environment\",cluster=~\"$cluster\",scope=~\"$scope_name\",service_name=~\"$service_name\"}",
+          "format": "time_series",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "{{cluster}} {{service_name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "WAL Replay Paused",
+      "type": "stat"
     }
   ],
   "preload": false,
@@ -2692,8 +2807,12 @@
       },
       {
         "current": {
-          "text": "All",
-          "value": "$__all"
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "definition": "label_values(patroni_version{environment=~\"$environment\"}, cluster)",
         "includeAll": true,
@@ -2731,8 +2850,8 @@
       },
       {
         "current": {
-          "text": "f0c61b048228",
-          "value": "f0c61b048228"
+          "text": "028dc0c13609",
+          "value": "028dc0c13609"
         },
         "definition": "label_values(patroni_version{service_name=~\"$service_name\"},node_name)",
         "hide": 2,
@@ -2751,8 +2870,8 @@
       },
       {
         "current": {
-          "text": "pg-nodeX-patroni",
-          "value": "pg-nodeX-patroni"
+          "text": "patroni_service_1",
+          "value": "patroni_service_1"
         },
         "definition": "label_values(patroni_version{environment=~\"$environment\",cluster=~\"$cluster\"}, service_name)",
         "includeAll": false,
@@ -3560,8 +3679,8 @@
       },
       {
         "current": {
-          "text": "demo",
-          "value": "demo"
+          "text": "patroni_cls",
+          "value": "patroni_cls"
         },
         "definition": "label_values(patroni_version{environment=~\"$environment\",cluster=~\"$cluster\",service_name=\"$service_name\"}, scope)",
         "includeAll": false,
