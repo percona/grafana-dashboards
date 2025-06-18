@@ -1,0 +1,2217 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": false,
+        "hide": false,
+        "iconColor": "orange",
+        "name": "PMM Annotations",
+        "target": {
+          "limit": 100,
+          "matchAny": true,
+          "tags": [
+            "pmm_annotation",
+            "$service_name",
+            "$node_name"
+          ],
+          "type": "tags"
+        }
+      }
+    ]
+  },
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 10,
+        "x": 0,
+        "y": 0
+      },
+      "id": 27,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "(\n  sum(\n    pg_custom_stat_wal_receiver_written_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}\n  ) by (primary_host)\n\n  and on()\n  (\n    sum(\n      pg_replication_is_replica{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"} == 1\n    )\n  )\n)\nor on()\nlabel_replace(\n  sum(\n    pg_replication_is_replica{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"} == 0\n  ) by (node_name),\n  \"primary_host\",\n  \"$1\",\n  \"node_name\",\n  \"(.*)\"\n)\n",
+          "instant": true,
+          "legendFormat": "{{primary_host}}",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Primary Host",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "No Replicas Detected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 10,
+        "y": 0
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count(last_over_time(pg_custom_stat_replication_replay_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}))",
+          "format": "time_series",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Number of Replicas",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "noValue": "No Replicas Detected",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "client_addr"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Client address"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Lag (seconds)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "state"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "State"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sync_state"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Sync State"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 10,
+        "x": 14,
+        "y": 0
+      },
+      "id": 16,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Lag (seconds)"
+          }
+        ]
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by (client_addr,state,sync_state)(pg_custom_stat_replication_flush_lag_seconds{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}[$__range]) \n",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Replicas",
+      "type": "table"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 4
+      },
+      "id": 30,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "max(pg_replication_lag_seconds{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}[$__interval] or pg_replication_lag_seconds{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}[5m])",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Max Replication Lag",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 6,
+        "y": 4
+      },
+      "id": 31,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "max(rate(pg_custom_stat_replication_write_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}[$interval]) or irate(pg_custom_stat_replication_write_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}[5m])) by (node_name)\n",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Max Written Lag",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 12,
+        "y": 4
+      },
+      "id": 32,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "max(rate(pg_custom_stat_replication_flush_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}[$interval]) or irate(pg_custom_stat_replication_flush_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}[5m])) by (node_name)\n",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Max Flush Lag",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 18,
+        "y": 4
+      },
+      "id": 33,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "max(rate(pg_custom_stat_replication_replay_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}[$interval]) or irate(pg_custom_stat_replication_replay_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}[5m])) by (node_name)\n",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Max Replay Lag",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 70,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "Primary"
+                },
+                "1": {
+                  "color": "yellow",
+                  "index": 0,
+                  "text": "Secondary"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 25,
+      "options": {
+        "alignValue": "right",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by (node_name) (pg_replication_is_replica{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"})",
+          "instant": false,
+          "legendFormat": "{{node_name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Replication Members State",
+      "type": "state-timeline"
+    },
+    {
+      "description": "Displays the replication lag in seconds. ",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 14
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "pg_replication_lag_seconds{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{service_name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Replication Lag (Seconds)",
+      "type": "timeseries"
+    },
+    {
+      "description": "Displays the replication lag in bytes. Thresholds indicate acceptable and critical levels.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "id": 23,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "pg_custom_stat_wal_receiver_lag_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}\n",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "{{service_name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Replication Lag (Bytes)",
+      "type": "timeseries"
+    },
+    {
+      "description": "Tracks conflicts occurring during replication, categorized by type.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 22
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last",
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "topk(10, sum(rate(pg_stat_database_conflicts{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}[$__interval])) by (node_name))\n",
+          "format": "time_series",
+          "legendFormat": "{{node_name}}",
+          "range": true,
+          "refId": "G"
+        }
+      ],
+      "title": "Top 10 Replication Conflicts by Node",
+      "type": "timeseries"
+    },
+    {
+      "description": "Monitors Write-Ahead Logging (WAL) activity, including WAL writes and archives.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 22
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum(rate(pg_custom_stat_wal_receiver_written_lsn_bytes{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}[$interval])) by (node_name)\n",
+          "format": "time_series",
+          "legendFormat": "{{wal_activity_type}}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "WAL Activity",
+      "type": "timeseries"
+    },
+    {
+      "description": "Provides the status of replication slots, indicating active and inactive slots.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 30
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by (node_name,slot_name,slot_type) (pg_replication_slot_slot_is_active{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"})",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "{{node_name}}/{{slot_name}}/{{slot_type}}",
+          "range": true,
+          "refId": "C"
+        }
+      ],
+      "title": "Replication Slots Status",
+      "type": "timeseries"
+    },
+    {
+      "description": "Tracks conflicts occurring during replication, categorized by type.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 30
+      },
+      "id": 28,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Last",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "topk(10, rate(pg_stat_database_conflicts{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"}[$__interval])) by (datname)\n",
+          "format": "time_series",
+          "legendFormat": "{{node_name}}/{{datname}}",
+          "range": true,
+          "refId": "G"
+        }
+      ],
+      "title": "Top 10 Replication Conflicts",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 41,
+  "tags": [
+    "PostgreSQL",
+    "Replication"
+  ],
+  "templating": {
+    "list": [
+      {
+        "auto": true,
+        "auto_count": 200,
+        "auto_min": "1s",
+        "current": {
+          "text": "$__auto",
+          "value": "$__auto"
+        },
+        "label": "Interval",
+        "name": "interval",
+        "options": [
+          {
+            "selected": false,
+            "text": "1s",
+            "value": "1s"
+          },
+          {
+            "selected": false,
+            "text": "5s",
+            "value": "5s"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          }
+        ],
+        "query": "1s,5s,1m,5m,1h,6h,1d",
+        "refresh": 2,
+        "type": "interval"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values({__name__=~\"pg_up\"}, environment)",
+        "includeAll": true,
+        "label": "Environment",
+        "multi": true,
+        "name": "environment",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up\"}, environment)",
+          "refId": "Metrics-environment-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": [
+            "pdpgsql_replication_cluster"
+          ],
+          "value": [
+            "pdpgsql_replication_cluster"
+          ]
+        },
+        "definition": "label_values(pg_up,cluster)",
+        "includeAll": false,
+        "label": "Cluster",
+        "multi": true,
+        "name": "cluster",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(pg_up,cluster)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values(pg_up{environment=~\"$environment\", cluster=~\"$cluster\"},node_name)",
+        "includeAll": true,
+        "label": "Node Name",
+        "multi": true,
+        "name": "node_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(pg_up{environment=~\"$environment\", cluster=~\"$cluster\"},node_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values(pg_up{node_name=~\"$node_name\",environment=~\"$environment\"}, service_name)",
+        "includeAll": true,
+        "label": "Service Name",
+        "multi": true,
+        "name": "service_name",
+        "options": [],
+        "query": {
+          "query": "label_values(pg_up{node_name=~\"$node_name\",environment=~\"$environment\"}, service_name)",
+          "refId": "Metrics-service_name-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "DB",
+        "multi": true,
+        "name": "database",
+        "options": [],
+        "query": {
+          "query": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
+          "refId": "Metrics-database-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "4194304",
+          "value": "4194304"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "work_mem",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_work_mem_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-work_mem-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "17.5",
+          "value": "17.5"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "version",
+        "options": [],
+        "query": {
+          "query": "label_values(pg_static{service_name=~\"$service_name\"},version)",
+          "refId": "Metrics-version-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 2,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "100",
+          "value": "100"
+        },
+        "definition": "query_result(pg_settings_max_connections{service_name=~\"$service_name\"})",
+        "hide": 2,
+        "includeAll": false,
+        "name": "max_connections",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_connections{service_name=~\"$service_name\"})",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "134217728",
+          "value": "134217728"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "shared_buffers",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-shared_buffers-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "4194304",
+          "value": "4194304"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "wal_buffers",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-wal_buffers-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "16777216",
+          "value": "16777216"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "wal_segment_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_wal_segment_size_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-wal_segment_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "67108864",
+          "value": "67108864"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "maintenance_work_mem",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_maintenance_work_mem_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-maintenance_work_mem-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "8192",
+          "value": "8192"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "block_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_block_size{service_name=~\"$service_name\"})",
+          "refId": "Metrics-block_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "checkpoint_segments",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_checkpoint_segments{service_name=~\"$service_name\"})",
+          "refId": "Metrics-checkpoint_segments-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "300",
+          "value": "300"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "checkpoint_timeout",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_checkpoint_timeout_seconds{service_name=~\"$service_name\"})",
+          "refId": "Metrics-checkpoint_timeout-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "100",
+          "value": "100"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "default_statistics_target",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_default_statistics_target{service_name=~\"$service_name\"})",
+          "refId": "Metrics-default_statistics_target-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1",
+          "value": "1"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "seq_page_cost",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_seq_page_cost{service_name=~\"$service_name\"})",
+          "refId": "Metrics-seq_page_cost-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "4",
+          "value": "4"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "random_page_cost",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_random_page_cost{service_name=~\"$service_name\"})",
+          "refId": "Metrics-random_page_cost-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "4294967296",
+          "value": "4294967296"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "effective_cache_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-effective_cache_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1",
+          "value": "1"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "effective_io_concurrency",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_effective_io_concurrency{service_name=~\"$service_name\"})",
+          "refId": "Metrics-effective_io_concurrency-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1",
+          "value": "1"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "fsync",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_fsync{service_name=~\"$service_name\"})",
+          "refId": "Metrics-fsync-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1",
+          "value": "1"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0.1",
+          "value": "0.1"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_analyze_scale_factor",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_analyze_scale_factor{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_analyze_scale_factor-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "50",
+          "value": "50"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_analyze_threshold",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_analyze_threshold{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_analyze_threshold-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0.2",
+          "value": "0.2"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_vacuum_scale_factor",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_vacuum_scale_factor{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_vacuum_scale_factor-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "50",
+          "value": "50"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_vacuum_threshold",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_vacuum_threshold{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_vacuum_threshold-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1749819153000",
+          "value": "1749819153000"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_vacuum_cost_limit",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_vacuum_cost_limit{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_vacuum_cost_limit-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0.002",
+          "value": "0.002"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_vacuum_cost_delay",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_vacuum_cost_delay_seconds{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_vacuum_cost_delay-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "3",
+          "value": "3"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_max_workers",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_max_workers{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_max_workers-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "60",
+          "value": "60"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_naptime",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_naptime_seconds{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_naptime-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "200000000",
+          "value": "200000000"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_freeze_max_age",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_freeze_max_age{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_freeze_max_age-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "logging_collector",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_logging_collector{service_name=~\"$service_name\"})",
+          "refId": "Metrics-logging_collector-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1749819153000",
+          "value": "1749819153000"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "log_min_duration_statement",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_log_min_duration_statement_seconds{service_name=~\"$service_name\"})",
+          "refId": "Metrics-log_min_duration_statement-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "log_duration",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_log_duration{service_name=~\"$service_name\"})",
+          "refId": "Metrics-log_duration-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "log_lock_waits",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_log_lock_waits{service_name=~\"$service_name\"})",
+          "refId": "Metrics-log_lock_waits-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "10",
+          "value": "10"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "max_wal_senders",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_wal_senders{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_wal_senders-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1073741824",
+          "value": "1073741824"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "max_wal_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_wal_size_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_wal_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "83886080",
+          "value": "83886080"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "min_wal_size",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_min_wal_size_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-min_wal_size-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "wal_compression",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_wal_compression{service_name=~\"$service_name\"})",
+          "refId": "Metrics-wal_compression-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "8",
+          "value": "8"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "max_worker_processes",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_worker_processes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_worker_processes-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "2",
+          "value": "2"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "max_parallel_workers_per_gather",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_parallel_workers_per_gather{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_parallel_workers_per_gather-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "2",
+          "value": "2"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "max_parallel_workers",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_max_parallel_workers_per_gather{service_name=~\"$service_name\"})",
+          "refId": "Metrics-max_parallel_workers-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1749819153000",
+          "value": "1749819153000"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_work_mem",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_work_mem_bytes{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_work_mem-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "400000000",
+          "value": "400000000"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "autovacuum_multixact_freeze_max_age",
+        "options": [],
+        "query": {
+          "query": "query_result(pg_settings_autovacuum_multixact_freeze_max_age{service_name=~\"$service_name\"})",
+          "refId": "Metrics-autovacuum_multixact_freeze_max_age-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "/ ([0-9\\.]+)/",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Replication Set",
+        "multi": true,
+        "name": "replication_set",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
+          "refId": "Metrics-replication_set-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Type",
+        "multi": true,
+        "name": "node_type",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
+          "refId": "Metrics-node_type-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Type",
+        "multi": true,
+        "name": "service_type",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
+          "refId": "Metrics-service_type-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Username",
+        "multi": true,
+        "name": "username",
+        "options": [],
+        "query": {
+          "query": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+          "refId": "Metrics-username-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Schema",
+        "multi": true,
+        "name": "schema",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
+          "refId": "Metrics-schema-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "PostgreSQL Replication Overview",
+  "uid": "postgresql-replication-overview",
+  "version": 1
+}
