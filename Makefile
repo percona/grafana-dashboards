@@ -30,3 +30,12 @@ docker_clean:
 	docker-compose stop \
 	&& docker-compose rm -f -v \
 	&& docker system prune --volumes -f
+
+.PHONY: upgrade_plugins
+upgrade_plugins:
+	@echo "Upgrading PMM plugins..."
+	@echo "To override the platform, set the PLATFORM environment variable."
+	@echo "Example: PLATFORM=linux/arm64 make upgrade_plugins"
+	@echo
+	@cd misc && \
+	./upgrade-plugins.sh
