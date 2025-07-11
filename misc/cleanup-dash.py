@@ -376,8 +376,8 @@ def set_hide_timepicker(dashboard):
 
     if 'hidden' not in list(dashboard['timepicker'].keys()):
         add_item = {'hidden': False}
-        for row in enumerate(dashboard['timepicker']):
-            add_item[row] = dashboard['timepicker'][row]
+        for key, value in dashboard['timepicker'].items():
+            add_item[key] = value
         dashboard['timepicker'] = add_item
     prompt = 'Hide Timepicker (conventional: **True**) [%s]: ' % (
         dashboard['timepicker']['hidden']
@@ -437,6 +437,97 @@ def add_annotation(dashboard):
     return dashboard
 
 
+def add_environment_filtering(dashboard):
+    """Add environment filtering to Prometheus queries where missing."""
+    
+    # Check if dashboard has environment variable defined
+    has_environment_var = False
+    if 'templating' in dashboard and 'list' in dashboard['templating']:
+        for var in dashboard['templating']['list']:
+            if var.get('name') == 'environment':
+                has_environment_var = True
+                break
+    
+    if not has_environment_var:
+        print("No environment variable found in dashboard, skipping environment filtering")
+        return dashboard
+    
+    print("Adding environment filtering to queries...")
+    queries_updated = 0
+    
+    def process_query(query_expr):
+        """Process a single query expression to add environment filtering."""
+        if not query_expr or not isinstance(query_expr, str):
+            return query_expr, False
+        
+        # Skip if environment filtering already exists
+        if 'environment=~' in query_expr or 'environment!~' in query_expr:
+            return query_expr, False
+        
+        # Skip if no service_name filtering (likely not a service-specific query)
+        if 'service_name=~' not in query_expr:
+            return query_expr, False
+        
+        # Pattern to match Prometheus queries with service_name filtering
+        # Look for: metric_name{service_name=~"$service_name"
+        # And replace with: metric_name{service_name=~"$service_name",environment=~"$environment"
+        
+        # Handle case where service_name is the only label
+        pattern1 = r'(\{service_name=~[^}]+)\}'
+        if re.search(pattern1, query_expr):
+            new_expr = re.sub(pattern1, r'\1,environment=~"$environment"}', query_expr)
+            return new_expr, True
+        
+        # Handle case where service_name is followed by other labels
+        pattern2 = r'(\{service_name=~[^,}]+)(,)'
+        if re.search(pattern2, query_expr):
+            new_expr = re.sub(pattern2, r'\1,environment=~"$environment"\2', query_expr)
+            return new_expr, True
+        
+        # Handle case where service_name is in the middle of other labels
+        pattern3 = r'(,service_name=~[^,}]+)([,}])'
+        if re.search(pattern3, query_expr):
+            new_expr = re.sub(pattern3, r'\1,environment=~"$environment"\2', query_expr)
+            return new_expr, True
+        
+        return query_expr, False
+    
+    def process_targets(targets):
+        """Process targets array in panels."""
+        nonlocal queries_updated
+        if not targets:
+            return
+        
+        for target in targets:
+            if isinstance(target, dict) and 'expr' in target:
+                new_expr, updated = process_query(target['expr'])
+                if updated:
+                    target['expr'] = new_expr
+                    queries_updated += 1
+    
+    def process_panel(panel):
+        """Process a single panel."""
+        if not isinstance(panel, dict):
+            return
+        
+        # Process direct targets
+        if 'targets' in panel:
+            process_targets(panel['targets'])
+        
+        # Process nested panels (for row panels)
+        if 'panels' in panel and isinstance(panel['panels'], list):
+            for nested_panel in panel['panels']:
+                process_panel(nested_panel)
+    
+    # Process all panels
+    if 'panels' in dashboard and isinstance(dashboard['panels'], list):
+        for panel in dashboard['panels']:
+            process_panel(panel)
+    
+    print(f"Updated {queries_updated} queries with environment filtering")
+    return dashboard
+
+
 def add_copyrights_links(dashboard):
     """Add Copyrights Links footer."""
 
@@ -488,7 +579,7 @@ def main():
     # registered cleanupers.
     cleanupers = [set_title, set_editable, set_hide_timepicker, drop_some_internal_elements, set_time, set_timezone,
                   set_default_refresh_intervals, set_refresh,
-                  fix_datasource, add_annotation, add_links, add_copyrights_links, set_shared_crosshear, set_unique_ids,
+                  fix_datasource, add_environment_filtering, add_annotation, add_links, add_copyrights_links, set_shared_crosshear, set_unique_ids,
                   set_dashboard_id_to_null]
 
     for func in cleanupers:
