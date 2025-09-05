@@ -3,46 +3,45 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
-        "limit": 100,
-        "matchAny": true,
         "name": "PMM Annotations",
         "showIn": 0,
-        "tags": [
-          "pmm_annotation",
-          "$node_name"
-        ],
         "target": {
           "limit": 100,
           "matchAny": true,
           "tags": [
-            "pmm_annotation",
-            "$node_name"
+            "$environment",
+            "$node_name",
+            "$node_type",
+            "$region",
+            "pmm_annotation"
           ],
           "type": "tags"
-        },
-        "type": "tags"
+        }
       },
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": true,
-        "iconColor": "#6ed0e0",
-        "limit": 100,
+        "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "showIn": 0,
-        "tags": [],
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
+        }
       }
     ]
   },
@@ -119,6 +118,61 @@
       ],
       "targetBlank": false,
       "title": "PMM",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": false,
+      "title": "MySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MongoDB"
+      ],
+      "targetBlank": false,
+      "title": "MongoDB",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PostgreSQL"
+      ],
+      "targetBlank": false,
+      "title": "PostgreSQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
       "type": "dashboards"
     }
   ],
@@ -1066,17 +1120,12 @@
         },
         {
           "datasource": "Metrics",
-          "title": "Service Types",
           "description": "",
-          "id": 1002,
-          "gridPos": {
-            "h": 10,
-            "w": 8,
-            "x": 0,
-            "y": 22
-          },
           "fieldConfig": {
             "defaults": {
+              "color": {
+                "mode": "fixed"
+              },
               "custom": {
                 "align": "auto",
                 "displayMode": "auto",
@@ -1101,6 +1150,7 @@
                   "type": "value"
                 }
               ],
+              "noValue": "-",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -1113,11 +1163,7 @@
                     "value": 80
                   }
                 ]
-              },
-              "color": {
-                "mode": "fixed"
-              },
-              "noValue": "-"
+              }
             },
             "overrides": [
               {
@@ -1210,6 +1256,81 @@
               }
             ]
           },
+          "gridPos": {
+            "h": 10,
+            "w": 8,
+            "x": 0,
+            "y": 22
+          },
+          "id": 1002,
+          "options": {
+            "showHeader": true
+          },
+          "pluginVersion": "9.2.20",
+          "sorting_props": {
+            "col_index": -1,
+            "direction": "desc"
+          },
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "count by (service_type) (sum by (service_name,service_type) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\",service_type!=\"external\",node_name=~\"$node_name\"}[$interval])))",
+              "format": "table",
+              "instant": true,
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "MySQL     ",
+              "refId": "A"
+            },
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "count by (service_type) ( \nsum by (service_name,service_type) (max_over_time(mongodb_connections{service_name=~\"$service_name\", environment=~\"$environment\",state=\"current\",service_type!=\"external\",node_name=~\"$node_name\"}[$interval]))\n)",
+              "format": "table",
+              "instant": true,
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "MongoDB   ",
+              "refId": "B"
+            },
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\", environment=~\"$environment\",service_type!=\"external\",node_name=~\"$node_name\"}[$interval]))\n)",
+              "format": "table",
+              "instant": true,
+              "interval": "$interval",
+              "intervalFactor": 1,
+              "legendFormat": "PostgreSQL  ",
+              "refId": "C"
+            },
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(process_virtual_memory_max_bytes{service_type=\"external\",service_name=~\"$service_name\", environment=~\"$environment\",node_name=~\"$node_name\"}[$interval]))\n)",
+              "format": "table",
+              "hide": true,
+              "instant": true,
+              "interval": "$interval",
+              "legendFormat": "External ",
+              "refId": "D"
+            },
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "expr": "count by (service_type) (up{service_type=\"external\",node_name=~\"$node_name\"})",
+              "format": "table",
+              "instant": true,
+              "interval": "$interval",
+              "legendFormat": "External ",
+              "refId": "E"
+            }
+          ],
+          "title": "Service Types",
           "transformations": [
             {
               "id": "merge",
@@ -1220,6 +1341,11 @@
               "options": {
                 "excludeByName": {
                   "Time": true,
+                  "Value #A": false,
+                  "Value #B": false,
+                  "Value #C": false,
+                  "Value #D": false,
+                  "Value #E": false,
                   "agent_id": true,
                   "agent_type": true,
                   "environment": true,
@@ -1228,12 +1354,7 @@
                   "machine_id": true,
                   "node_id": true,
                   "node_name": true,
-                  "node_type": true,
-                  "Value #A": false,
-                  "Value #B": false,
-                  "Value #C": false,
-                  "Value #D": false,
-                  "Value #E": false
+                  "node_type": true
                 },
                 "indexByName": {},
                 "renameByName": {
@@ -1245,9 +1366,9 @@
             {
               "id": "calculateField",
               "options": {
+                "alias": "Amount",
                 "mode": "reduceRow",
                 "reduce": {
-                  "reducer": "sum",
                   "include": [
                     "Value #A",
                     "Value #B",
@@ -1255,79 +1376,12 @@
                     "Value #D",
                     "Value #E",
                     "Value"
-                  ]
-                },
-                "alias": "Amount"
+                  ],
+                  "reducer": "sum"
+                }
               }
             }
           ],
-          "options": {
-            "showHeader": true
-          },
-          "pluginVersion": "9.2.20",
-          "targets": [
-            {
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "count by (service_type) (sum by (service_name,service_type) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\",service_type!=\"external\",node_name=~\"$node_name\"}[$interval])))",
-              "format": "table",
-              "instant": true,
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "MySQL     ",
-              "refId": "A",
-              "datasource": "Metrics"
-            },
-            {
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "count by (service_type) ( \nsum by (service_name,service_type) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\",service_type!=\"external\",node_name=~\"$node_name\"}[$interval]))\n)",
-              "format": "table",
-              "instant": true,
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "MongoDB   ",
-              "refId": "B",
-              "datasource": "Metrics"
-            },
-            {
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\",service_type!=\"external\",node_name=~\"$node_name\"}[$interval]))\n)",
-              "format": "table",
-              "instant": true,
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "PostgreSQL  ",
-              "refId": "C",
-              "datasource":"Metrics"
-            },
-            {
-              "editorMode": "code",
-              "expr": "count by (service_type) (\nsum by (service_name,service_type) (max_over_time(process_virtual_memory_max_bytes{service_type=\"external\",service_name=~\"$service_name\",node_name=~\"$node_name\"}[$interval]))\n)",
-              "format": "table",
-              "hide": true,
-              "instant": true,
-              "interval": "$interval",
-              "legendFormat": "External ",
-              "refId": "D",
-              "datasource": "Metrics"
-            },
-            {
-              "editorMode": "code",
-              "expr": "count by (service_type) (up{service_type=\"external\",node_name=~\"$node_name\"})",
-              "format": "table",
-              "instant": true,
-              "interval": "$interval",
-              "legendFormat": "External ",
-              "refId": "E",
-              "datasource": "Metrics"
-            }
-          ],
-          "sorting_props": {
-            "col_index": -1,
-            "direction": "desc"
-          },
           "type": "table"
         },
         {
@@ -1529,7 +1583,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\",service_type!=\"external\"}[$interval]))",
+              "expr": "avg by (service_name) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\",service_type!=\"external\"}[$interval]))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -1538,7 +1592,7 @@
               "refId": "A"
             },
             {
-              "expr": "avg by (service_name) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\",service_type!=\"external\"}[$interval]))",
+              "expr": "avg by (service_name) (max_over_time(mongodb_connections{service_name=~\"$service_name\", environment=~\"$environment\",state=\"current\",service_type!=\"external\"}[$interval]))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -1547,13 +1601,13 @@
               "refId": "B"
             },
             {
-              "expr": "count by (service_name) (\nsum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\",service_type!=\"external\"}[$interval]))\n)",
+              "expr": "count by (service_name) (\nsum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\", environment=~\"$environment\",service_type!=\"external\"}[$interval]))\n)",
               "interval": "$interval",
               "legendFormat": "{{service_name}}  ",
               "refId": "C"
             },
             {
-              "expr": "up{service_type=\"external\",service_name=~\"$service_name\"}",
+              "expr": "up{service_type=\"external\",service_name=~\"$service_name\", environment=~\"$environment\"}",
               "interval": "$interval",
               "legendFormat": "{{service_name}} ({{external_group}})",
               "refId": "D"
@@ -10165,11 +10219,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "datasource": "Metrics",
         "hide": 0,
         "includeAll": false,
@@ -10228,11 +10278,7 @@
       {
         "allFormat": "glob",
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(node_load1{node_type=~\"generic|remote_rds|container|remote\"}, region)",
         "hide": 0,
@@ -10257,11 +10303,7 @@
       {
         "allFormat": "glob",
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(up{region=~\"$region\"}, node_type)",
         "hide": 0,
@@ -10285,15 +10327,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({region=~\"$region\",node_type=~\"$node_type\",__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions|up\"}, environment)",
         "hide": 0,
@@ -10317,11 +10351,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(up{region=~\"$region\",node_type=~\"$node_type\",environment=~\"$environment\"}, node_name)",
         "hide": 0,
@@ -10344,11 +10374,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|up\",node_name=~\"$node_name\"}, service_name)",
         "hide": 2,
@@ -10371,11 +10397,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
         "hide": 2,
@@ -10398,11 +10420,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
         "hide": 2,
@@ -10425,11 +10443,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
         "hide": 2,
@@ -10452,11 +10466,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
         "hide": 2,
@@ -10479,11 +10489,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
         "hide": 2,
@@ -10506,11 +10512,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
         "hide": 2,
@@ -10541,7 +10543,7 @@
   "timepicker": {
     "collapse": false,
     "enable": true,
-    "hidden": false,
+    "hidden": true,
     "notice": false,
     "now": true,
     "refresh_intervals": [
@@ -10554,6 +10556,7 @@
       "30m",
       "1h",
       "2h",
+      "6h",
       "1d"
     ],
     "status": "Stable",

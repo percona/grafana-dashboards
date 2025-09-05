@@ -3,46 +3,43 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
-        "limit": 100,
-        "matchAny": true,
         "name": "PMM Annotations",
         "showIn": 0,
-        "tags": [
-          "pmm_annotation",
-          "$service_name"
-        ],
         "target": {
           "limit": 100,
           "matchAny": true,
           "tags": [
-            "pmm_annotation",
-            "$service_name"
+            "$database",
+            "$service_name",
+            "pmm_annotation"
           ],
           "type": "tags"
-        },
-        "type": "tags"
+        }
       },
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": true,
-        "iconColor": "#6ed0e0",
-        "limit": 100,
+        "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "showIn": 0,
-        "tags": [],
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
+        }
       }
     ]
   },
@@ -121,6 +118,61 @@
       ],
       "targetBlank": false,
       "title": "PMM",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OS"
+      ],
+      "targetBlank": false,
+      "title": "OS",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": false,
+      "title": "MySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MongoDB"
+      ],
+      "targetBlank": false,
+      "title": "MongoDB",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
       "type": "dashboards"
     }
   ],
@@ -221,7 +273,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "avg by (service_name) (pg_up{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (pg_up{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -339,7 +391,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "avg by (service_name) (max_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\"}[5m])) ",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) ",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -421,7 +473,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "avg by (service_name) (max_over_time(pg_settings_work_mem_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_work_mem_bytes{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_work_mem_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_work_mem_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -516,7 +568,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "avg by (service_name) (max_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_autovacuum{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_autovacuum{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -597,7 +649,7 @@
         {
           "datasource": "Metrics",
           "exemplar": false,
-          "expr": "avg by (service_name) (pg_postmaster_uptime_seconds{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (pg_postmaster_uptime_seconds{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "instant": true,
           "interval": "$interval",
@@ -681,7 +733,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "avg by (service_name) (max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_max_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_max_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -764,7 +816,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "avg by (service_name) (max_over_time(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -851,7 +903,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "avg by (service_name) (max_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -973,7 +1025,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,state) (sum(max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\"}[5m])) by (state))",
+          "expr": "avg by (service_name,state) (sum(max_over_time(pg_stat_activity_count{service_name=~\"$service_name\", environment=~\"$environment\",datname=~\"$database\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\", environment=~\"$environment\",datname=~\"$database\"}[5m])) by (state))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -982,7 +1034,7 @@
           "refId": "A"
         },
         {
-          "expr": "sum(max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\"}[5m]))",
+          "expr": "sum(max_over_time(pg_stat_activity_count{service_name=~\"$service_name\", environment=~\"$environment\",datname=~\"$database\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\", environment=~\"$environment\",datname=~\"$database\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1086,7 +1138,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,datname) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\",state='active'}[5m]))",
+          "expr": "avg by (service_name,datname) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\", environment=~\"$environment\",datname=~\"$database\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\", environment=~\"$environment\",datname=~\"$database\",state='active'}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1094,7 +1146,7 @@
           "refId": "A"
         },
         {
-          "expr": "avg by (service_name) (max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_max_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nmax_over_time(pg_settings_max_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1207,7 +1259,7 @@
           "refId": "A"
         },
         {
-          "expr": "sum(rate(pg_stat_database_tup_returned{datname=~\"$database\",service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_tup_returned{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_tup_returned{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_tup_returned{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1215,7 +1267,7 @@
           "refId": "B"
         },
         {
-          "expr": "sum(rate(pg_stat_database_tup_inserted{datname=~\"$database\",service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_tup_inserted{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_tup_inserted{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_tup_inserted{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1223,7 +1275,7 @@
           "refId": "C"
         },
         {
-          "expr": "sum(rate(pg_stat_database_tup_updated{datname=~\"$database\",service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_tup_updated{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_tup_updated{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_tup_updated{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1231,7 +1283,7 @@
           "refId": "D"
         },
         {
-          "expr": "sum(rate(pg_stat_database_tup_deleted{datname=~\"$database\",service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_tup_deleted{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_tup_deleted{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_tup_deleted{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1323,7 +1375,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(pg_stat_database_tup_returned{datname=~\"$database\",service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_tup_returned{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_tup_returned{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_tup_returned{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1333,7 +1385,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(pg_stat_database_tup_fetched{datname=~\"$database\",service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_tup_fetched{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_tup_fetched{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_tup_fetched{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1427,7 +1479,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(pg_stat_database_tup_inserted{datname=~\"$database\",service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_tup_inserted{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_tup_inserted{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_tup_inserted{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1437,7 +1489,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(pg_stat_database_tup_updated{datname=~\"$database\",service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_tup_updated{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_tup_updated{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_tup_updated{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1447,7 +1499,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(pg_stat_database_tup_deleted{datname=~\"$database\",service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_tup_deleted{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_tup_deleted{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_tup_deleted{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1554,7 +1606,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(pg_stat_database_xact_commit{datname=~\"$database\",service_name=~\"$service_name\"}[$interval])) or \nsum(irate(pg_stat_database_xact_commit{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_xact_commit{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or \nsum(irate(pg_stat_database_xact_commit{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1564,7 +1616,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(pg_stat_database_xact_rollback{datname=~\"$database\",service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_xact_rollback{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_xact_rollback{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_xact_rollback{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1659,7 +1711,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,state) (max_over_time(pg_stat_activity_max_tx_duration{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_stat_activity_max_tx_duration{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name,state) (max_over_time(pg_stat_activity_max_tx_duration{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_stat_activity_max_tx_duration{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1767,7 +1819,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[5m]))",
+          "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*\",datid!=\"0\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*\",datid!=\"0\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1866,7 +1918,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[5m]))",
+          "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*\",datid!=\"0\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*\",datid!=\"0\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1875,7 +1927,7 @@
           "refId": "A"
         },
         {
-          "expr": "rate(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"|template(0|1)\"}[$interval]) or\nirate(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"|template(0|1)\"}[5m])",
+          "expr": "rate(pg_stat_database_temp_bytes{service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"|template(0|1)\"}[$interval]) or\nirate(pg_stat_database_temp_bytes{service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"|template(0|1)\"}[5m])",
           "format": "time_series",
           "hide": true,
           "interval": "$interval",
@@ -1969,7 +2021,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max by (service_name,datname) (increase(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[$interval]))",
+          "expr": "max by (service_name,datname) (increase(pg_stat_database_temp_files{service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*\",datid!=\"0\"}[$interval]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -2069,7 +2121,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,datname) (increase(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname=~\"$database\",datname!~\"|template(0|1)\"}[$interval]) or \nincrease(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname=~\"$database\",datname!~\"|template(0|1)\"}[5m]))",
+          "expr": "avg by (service_name,datname) (increase(pg_stat_database_temp_bytes{service_name=~\"$service_name\", environment=~\"$environment\",datname=~\"$database\",datname!~\"|template(0|1)\"}[$interval]) or \nincrease(pg_stat_database_temp_bytes{service_name=~\"$service_name\", environment=~\"$environment\",datname=~\"$database\",datname!~\"|template(0|1)\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -2180,7 +2232,7 @@
         {
           "alias": "conflicts",
           "dsType": "prometheus",
-          "expr": "sum(rate(pg_stat_database_deadlocks{datname=~\"$database\",service_name=~\"$service_name\"}[$interval])) or \nsum(irate(pg_stat_database_deadlocks{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_deadlocks{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or \nsum(irate(pg_stat_database_deadlocks{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "groupBy": [
             {
@@ -2233,7 +2285,7 @@
         {
           "alias": "deadlocks",
           "dsType": "prometheus",
-          "expr": "sum(rate(pg_stat_database_conflicts{datname=~\"$database\",service_name=~\"$service_name\"}[$interval])) or \nsum(irate(pg_stat_database_conflicts{datname=~\"$database\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_conflicts{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or \nsum(irate(pg_stat_database_conflicts{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "groupBy": [
             {
@@ -2374,7 +2426,7 @@
         {
           "alias": "conflicts",
           "dsType": "prometheus",
-          "expr": "avg by (service_name,datname,mode) (max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}[5m]))",
+          "expr": "avg by (service_name,datname,mode) (max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*\",datid!=\"0\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*\",datid!=\"0\"}[5m]))",
           "format": "time_series",
           "groupBy": [
             {
@@ -2528,7 +2580,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,datname) (rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m]))",
+          "expr": "avg by (service_name,datname) (rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*|postgres\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -2536,7 +2588,7 @@
           "refId": "A"
         },
         {
-          "expr": "avg by (service_name,datname) (rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m]))",
+          "expr": "avg by (service_name,datname) (rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*|postgres\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -2638,7 +2690,7 @@
         {
           "alias": "Buffers Allocated",
           "dsType": "prometheus",
-          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[$interval]) or \nirate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "groupBy": [
             {
@@ -2691,7 +2743,7 @@
         {
           "alias": "Buffers Allocated",
           "dsType": "prometheus",
-          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "groupBy": [
             {
@@ -2744,7 +2796,7 @@
         {
           "alias": "Buffers Allocated",
           "dsType": "prometheus",
-          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "groupBy": [
             {
@@ -2797,7 +2849,7 @@
         {
           "alias": "Buffers Allocated",
           "dsType": "prometheus",
-          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[$interval]) or \nirate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "groupBy": [
             {
@@ -2850,7 +2902,7 @@
         {
           "alias": "Buffers Allocated",
           "dsType": "prometheus",
-          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "groupBy": [
             {
@@ -3000,7 +3052,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(pg_stat_database_conflicts_confl_bufferpin{service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_conflicts_confl_bufferpin{service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_conflicts_confl_bufferpin{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_conflicts_confl_bufferpin{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -3010,7 +3062,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(pg_stat_database_conflicts_confl_deadlock{service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_conflicts_confl_deadlock{service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_conflicts_confl_deadlock{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_conflicts_confl_deadlock{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -3020,7 +3072,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(pg_stat_database_conflicts_confl_lock{service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_conflicts_confl_lock{service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_conflicts_confl_lock{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_conflicts_confl_lock{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -3030,7 +3082,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(pg_stat_database_conflicts_confl_snapshot{service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_conflicts_confl_snapshot{service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_conflicts_confl_snapshot{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_conflicts_confl_snapshot{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -3040,7 +3092,7 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(pg_stat_database_conflicts_confl_tablespace{service_name=~\"$service_name\"}[$interval])) or\nsum(irate(pg_stat_database_conflicts_confl_tablespace{service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(pg_stat_database_conflicts_confl_tablespace{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or\nsum(irate(pg_stat_database_conflicts_confl_tablespace{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -3138,7 +3190,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (datname) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (datname) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\",datid!=\"0\"}) by (datname))",
+          "expr": "sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*\",datid!=\"0\"}) by (datname) /\n(sum(pg_stat_database_blks_hit{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*\",datid!=\"0\"}) by (datname) + \nsum(pg_stat_database_blks_read{datname=~\"$database\",service_name=~\"$service_name\", environment=~\"$environment\",datname!~\"template.*\",datid!=\"0\"}) by (datname))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -4483,11 +4535,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "hide": 0,
         "label": "Interval",
         "name": "interval",
@@ -4539,11 +4587,7 @@
         "type": "interval"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "4194304",
-          "value": "4194304"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4565,11 +4609,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "pmm-server",
-          "value": "pmm-server"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(pg_up{service_name=~\"$service_name\"},node_name)",
         "hide": 2,
@@ -4592,11 +4632,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "pmm-server-postgresql",
-          "value": "pmm-server-postgresql"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(pg_up, service_name)",
         "hide": 0,
@@ -4620,11 +4656,7 @@
       },
       {
         "allValue": "",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 0,
@@ -4647,11 +4679,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "11.14",
-          "value": "11.14"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4673,11 +4701,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "100",
-          "value": "100"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4699,11 +4723,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "134217728",
-          "value": "134217728"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4725,11 +4745,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "4194304",
-          "value": "4194304"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4751,11 +4767,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "16777216",
-          "value": "16777216"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4777,11 +4789,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "67108864",
-          "value": "67108864"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4803,11 +4811,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "8192",
-          "value": "8192"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4829,12 +4833,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4856,11 +4855,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "300",
-          "value": "300"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4882,11 +4877,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "1",
-          "value": "1"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4908,11 +4899,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "100",
-          "value": "100"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4934,11 +4921,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "1",
-          "value": "1"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4960,11 +4943,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "4",
-          "value": "4"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -4986,11 +4965,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "4294967296",
-          "value": "4294967296"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5012,11 +4987,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "1",
-          "value": "1"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5038,11 +5009,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "1",
-          "value": "1"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5064,11 +5031,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "0.1",
-          "value": "0.1"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5090,11 +5053,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "50",
-          "value": "50"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5116,11 +5075,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "0.2",
-          "value": "0.2"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5142,11 +5097,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "50",
-          "value": "50"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5168,11 +5119,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "1647511777000",
-          "value": "1647511777000"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5194,11 +5141,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "0.02",
-          "value": "0.02"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5220,11 +5163,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "3",
-          "value": "3"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5246,11 +5185,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "60",
-          "value": "60"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5272,11 +5207,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "200000000",
-          "value": "200000000"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5298,11 +5229,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "0",
-          "value": "0"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5324,11 +5251,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "1647511777000",
-          "value": "1647511777000"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5350,11 +5273,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "0",
-          "value": "0"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5376,11 +5295,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "0",
-          "value": "0"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5402,11 +5317,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "10",
-          "value": "10"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5428,11 +5339,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "1073741824",
-          "value": "1073741824"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5454,11 +5361,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "83886080",
-          "value": "83886080"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5480,11 +5383,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "0",
-          "value": "0"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5506,11 +5405,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "8",
-          "value": "8"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5532,11 +5427,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "2",
-          "value": "2"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5558,11 +5449,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "2",
-          "value": "2"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5584,11 +5471,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "1647511777000",
-          "value": "1647511777000"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5610,11 +5493,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "400000000",
-          "value": "400000000"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -5637,11 +5516,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 2,
@@ -5664,11 +5539,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
         "hide": 2,
@@ -5691,11 +5562,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
         "hide": 2,
@@ -5718,11 +5585,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
         "hide": 2,
@@ -5745,11 +5608,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
         "hide": 2,
@@ -5772,11 +5631,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
         "hide": 2,
@@ -5799,11 +5654,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
         "hide": 2,
@@ -5826,11 +5677,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "/service_id/f21939b7-dbb1-4c26-a077-97a3eef4adb5",
-          "value": "/service_id/f21939b7-dbb1-4c26-a077-97a3eef4adb5"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(pg_up{service_name=\"$service_name\"}, service_id)",
         "hide": 2,
@@ -5859,7 +5706,7 @@
     "to": "now"
   },
   "timepicker": {
-    "hidden": false,
+    "hidden": true,
     "refresh_intervals": [
       "5s",
       "10s",
@@ -5870,6 +5717,7 @@
       "30m",
       "1h",
       "2h",
+      "6h",
       "1d"
     ],
     "time_options": [

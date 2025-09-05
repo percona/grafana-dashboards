@@ -4,51 +4,44 @@
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
-        "limit": 100,
-        "matchAny": true,
         "name": "PMM Annotations",
         "showIn": 0,
-        "tags": [
-          "pmm_annotation",
-          "$service_name"
-        ],
         "target": {
           "limit": 100,
           "matchAny": true,
           "tags": [
-            "pmm_annotation",
-            "$service_name"
+            "$cluster",
+            "$environment",
+            "$replset",
+            "$service_name",
+            "pmm_annotation"
           ],
           "type": "tags"
-        },
-        "type": "tags"
+        }
       },
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": true,
-        "iconColor": "#6ed0e0",
-        "limit": 100,
+        "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "showIn": 0,
-        "tags": [],
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
+        }
       }
     ]
   },
@@ -135,6 +128,61 @@
       ],
       "targetBlank": false,
       "title": "PMM",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OS"
+      ],
+      "targetBlank": false,
+      "title": "OS",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": false,
+      "title": "MySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PostgreSQL"
+      ],
+      "targetBlank": false,
+      "title": "PostgreSQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
       "type": "dashboards"
     }
   ],
@@ -237,7 +285,7 @@
         {
           "datasource": "Metrics",
           "exemplar": true,
-          "expr": "time()-avg by (service_name) (mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"})",
+          "expr": "time()-avg by (service_name) (mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -248,7 +296,7 @@
         },
         {
           "datasource": "Metrics",
-          "expr": "avg by (service_name) (mongodb_mongod_replset_oplog_head_timestamp{service_name=~\"$service_name\"}-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mongodb_mongod_replset_oplog_head_timestamp{service_name=~\"$service_name\", environment=~\"$environment\"}-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -389,7 +437,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (mongodb_ss_metrics_repl_buffer_apply_count{service_name=~\"$service_name\"}) or avg by (service_name) (mongodb_mongod_metrics_repl_buffer_count{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mongodb_ss_metrics_repl_buffer_apply_count{service_name=~\"$service_name\", environment=~\"$environment\"}) or avg by (service_name) (mongodb_mongod_metrics_repl_buffer_count{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{service_name}}",
@@ -508,7 +556,7 @@
       "targets": [
         {
           "datasource": "Metrics",
-          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{service_name}}",
@@ -627,7 +675,7 @@
       "targets": [
         {
           "datasource": "Metrics",
-          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Document Preload",
@@ -636,7 +684,7 @@
         },
         {
           "datasource": "Metrics",
-          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Index Preload",
@@ -646,7 +694,7 @@
         },
         {
           "datasource": "Metrics",
-          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Batch Apply",
@@ -773,7 +821,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (mongodb_ss_metrics_repl_buffer_apply_sizeBytes{service_name=~\"$service_name\"}) or avg by (service_name) (mongodb_mongod_metrics_repl_buffer_size_bytes{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mongodb_ss_metrics_repl_buffer_apply_sizeBytes{service_name=~\"$service_name\", environment=~\"$environment\"}) or avg by (service_name) (mongodb_mongod_metrics_repl_buffer_size_bytes{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Used",
@@ -784,7 +832,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (mongodb_ss_metrics_repl_buffer_apply_maxSizeBytes{service_name=~\"$service_name\"}) or avg by (service_name) (mongodb_mongod_metrics_repl_buffer_max_size_bytes{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mongodb_ss_metrics_repl_buffer_apply_maxSizeBytes{service_name=~\"$service_name\", environment=~\"$environment\"}) or avg by (service_name) (mongodb_mongod_metrics_repl_buffer_max_size_bytes{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Max",
@@ -904,7 +952,7 @@
       "targets": [
         {
           "datasource": "Metrics",
-          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Document Preload",
@@ -914,7 +962,7 @@
         },
         {
           "datasource": "Metrics",
-          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Index Preload",
@@ -924,7 +972,7 @@
         },
         {
           "datasource": "Metrics",
-          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 2,
           "legendFormat": "Batch Apply",
@@ -1052,7 +1100,7 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": true,
-          "expr": "avg by (service_name) (rate(mongodb_oplog_stats_wt_cache_bytes_written_from_cache{rs_state=\"1\",service_name=~\"$service_name\"})[$interval])",
+          "expr": "avg by (service_name) (rate(mongodb_oplog_stats_wt_cache_bytes_written_from_cache{rs_state=\"1\",service_name=~\"$service_name\", environment=~\"$environment\"})[$interval])",
           "interval": "$interval",
           "legendFormat": "{{service_name}}",
           "range": true,
@@ -1165,7 +1213,7 @@
         {
           "datasource": "Metrics",
           "exemplar": true,
-          "expr": "avg by (node_name,service_name) ((mongodb_mongod_replset_oplog_head_timestamp - mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"}) / 3600)",
+          "expr": "avg by (node_name,service_name) ((mongodb_mongod_replset_oplog_head_timestamp - mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\", environment=~\"$environment\"}) / 3600)",
           "interval": "",
           "legendFormat": "{{service_name}}",
           "refId": "A"
@@ -1212,7 +1260,7 @@
       }
     }
   ],
-  "refresh": "",
+  "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
@@ -1226,11 +1274,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "datasource": "Metrics",
         "hide": 0,
         "includeAll": false,
@@ -1288,11 +1332,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 0,
         "includeAll": true,
@@ -1316,11 +1356,7 @@
       {
         "allFormat": "blob",
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "",
-          "value": ""
-        },
+        "current": {},
         "definition": "label_values(mongodb_up{environment=~\"$environment\"},cluster)",
         "hide": 0,
         "includeAll": false,
@@ -1342,11 +1378,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
         "hide": 0,
         "includeAll": true,
@@ -1368,11 +1400,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "",
-          "value": ""
-        },
+        "current": {},
         "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\"}, node_name)",
         "hide": 2,
         "includeAll": false,
@@ -1395,11 +1423,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "",
-          "value": ""
-        },
+        "current": {},
         "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$replset\"}, service_name)",
         "hide": 0,
         "includeAll": false,
@@ -1421,11 +1445,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
         "hide": 2,
         "includeAll": true,
@@ -1447,11 +1467,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "",
-          "value": ""
-        },
+        "current": {},
         "definition": "label_values(mongodb_top_commands_count{cluster=~\"$cluster\"}, database)",
         "hide": 2,
         "includeAll": false,
@@ -1473,11 +1489,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
         "hide": 2,
         "includeAll": true,
@@ -1499,11 +1511,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
         "hide": 2,
         "includeAll": true,
@@ -1525,11 +1533,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
         "hide": 2,
         "includeAll": true,
@@ -1551,11 +1555,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
         "hide": 2,
         "includeAll": true,
@@ -1579,11 +1579,7 @@
       {
         "allFormat": "blob",
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "",
-          "value": ""
-        },
+        "current": {},
         "definition": "label_values(mongodb_mongod_replset_my_state{set=~\"$replset\"},cluster)",
         "hide": 2,
         "includeAll": false,
@@ -1604,11 +1600,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "query_result(mongodb_mongod_replset_my_state{cluster=~\"$cluster\",set=\"$replset\"}==2)",
         "hide": 2,
         "includeAll": true,
@@ -1638,15 +1630,19 @@
   "timepicker": {
     "collapse": false,
     "enable": true,
-    "hidden": false,
+    "hidden": true,
     "notice": false,
     "now": true,
     "refresh_intervals": [
-      "1s",
       "5s",
+      "10s",
+      "30s",
       "1m",
       "5m",
+      "15m",
+      "30m",
       "1h",
+      "2h",
       "6h",
       "1d"
     ],
@@ -1664,7 +1660,7 @@
     ],
     "type": "timepicker"
   },
-  "timezone": "browser",
+  "timezone": "",
   "title": "MongoDB Oplog Details",
   "uid": "mongodb-oplog-details",
   "version": 1,

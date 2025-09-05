@@ -1,102 +1,50 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_METRICS",
-      "label": "Metrics",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
   "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.2.20"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph (old)",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
-        "limit": 100,
-        "matchAny": true,
         "name": "PMM Annotations",
         "showIn": 0,
-        "tags": [
-          "pmm_annotation",
-          "$service_name"
-        ],
         "target": {
           "limit": 100,
           "matchAny": true,
           "tags": [
-            "pmm_annotation",
-            "$service_name"
+            "$service_name",
+            "pmm_annotation"
           ],
           "type": "tags"
-        },
-        "type": "tags"
+        }
       },
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": true,
-        "iconColor": "#6ed0e0",
-        "limit": 100,
+        "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "showIn": 0,
-        "tags": [],
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
+        }
       }
     ]
   },
   "description": "",
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
   "gnetId": 19600,
   "graphTooltip": 1,
@@ -169,6 +117,61 @@
       ],
       "targetBlank": false,
       "title": "PMM",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OS"
+      ],
+      "targetBlank": false,
+      "title": "OS",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": false,
+      "title": "MySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MongoDB"
+      ],
+      "targetBlank": false,
+      "title": "MongoDB",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
       "type": "dashboards"
     }
   ],
@@ -322,7 +325,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_fsync{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_fsync{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_fsync{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_fsync{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -428,7 +431,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_checkpoint_timeout_seconds{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_checkpoint_timeout_seconds{service_name=~\"$service_name\"}[5m])) ",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_checkpoint_timeout_seconds{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_checkpoint_timeout_seconds{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) ",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -514,7 +517,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_checkpoint_completion_target{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_checkpoint_completion_target{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_checkpoint_completion_target{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_checkpoint_completion_target{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -599,7 +602,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_checkpoint_flush_after_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_checkpoint_flush_after_bytes{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_checkpoint_flush_after_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_checkpoint_flush_after_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -684,7 +687,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_log_checkpoints{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_log_checkpoints{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_log_checkpoints{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_log_checkpoints{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -770,7 +773,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_checkpoint_warning_seconds{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_checkpoint_warning_seconds{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_checkpoint_warning_seconds{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_checkpoint_warning_seconds{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1114,7 +1117,7 @@
       "targets": [
         {
           "datasource": "Metrics",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\"}[5m])) ",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) ",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1193,7 +1196,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_bgwriter_lru_maxpages{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_bgwriter_lru_maxpages{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_bgwriter_lru_maxpages{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_bgwriter_lru_maxpages{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1273,7 +1276,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_bgwriter_delay_seconds{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_bgwriter_delay_seconds{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_bgwriter_delay_seconds{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_bgwriter_delay_seconds{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1353,7 +1356,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_bgwriter_flush_after_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_bgwriter_flush_after_bytes{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_bgwriter_flush_after_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_bgwriter_flush_after_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1433,7 +1436,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_bgwriter_lru_multiplier{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_bgwriter_lru_multiplier{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_bgwriter_lru_multiplier{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_bgwriter_lru_multiplier{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1518,7 +1521,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "pg_stat_bgwriter_stats_reset{service_name=~\"$service_name\"}*1000",
+          "expr": "pg_stat_bgwriter_stats_reset{service_name=~\"$service_name\", environment=~\"$environment\"}*1000",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -1592,7 +1595,7 @@
           "datasource": "Metrics",
           "dsType": "prometheus",
           "editorMode": "code",
-          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n)",
+          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])\n)",
           "format": "time_series",
           "groupBy": [
             {
@@ -1740,7 +1743,7 @@
           "datasource": "Metrics",
           "dsType": "prometheus",
           "editorMode": "code",
-          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n)",
+          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])\n)",
           "format": "time_series",
           "groupBy": [
             {
@@ -1796,7 +1799,7 @@
           "datasource": "Metrics",
           "dsType": "prometheus",
           "editorMode": "code",
-          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n)",
+          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])\n)",
           "format": "time_series",
           "groupBy": [
             {
@@ -1852,7 +1855,7 @@
           "datasource": "Metrics",
           "dsType": "prometheus",
           "editorMode": "code",
-          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\"}[5m])\n)",
+          "expr": "avg by (service_name) (\n  (rate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) * (pg_settings_block_size{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))\n  or\n  (irate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) * pg_settings_block_size{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])\n)",
           "format": "time_series",
           "groupBy": [
             {
@@ -2000,7 +2003,7 @@
           "datasource": "Metrics",
           "dsType": "prometheus",
           "editorMode": "code",
-          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\"}[5m])) * 8192",
+          "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) * 8192",
           "format": "time_series",
           "groupBy": [
             {
@@ -2275,7 +2278,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_min_wal_size_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_min_wal_size_bytes{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_min_wal_size_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_min_wal_size_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -2360,7 +2363,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_max_wal_size_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_max_wal_size_bytes{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_max_wal_size_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_max_wal_size_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -2444,7 +2447,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -2528,7 +2531,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_wal_keep_size_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_wal_keep_size_bytes{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_wal_keep_size_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_wal_keep_size_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -2629,7 +2632,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "avg by (service_name) (max_over_time(pg_settings_full_page_writes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_full_page_writes{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(pg_settings_full_page_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(pg_settings_full_page_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -2721,7 +2724,7 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": true,
-          "expr": "avg by (service_name) (\n  rate(pg_stat_replication_pg_current_wal_lsn_bytes{service_name=~\"$service_name\"}[$interval])\n  or\n  irate(pg_stat_replication_pg_current_wal_lsn_bytes{service_name=~\"$service_name\"}[5m])\n)",
+          "expr": "avg by (service_name) (\n  rate(pg_stat_replication_pg_current_wal_lsn_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])\n  or\n  irate(pg_stat_replication_pg_current_wal_lsn_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])\n)",
           "hide": false,
           "interval": "$interval",
           "legendFormat": "WAL writes",
@@ -4096,11 +4099,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "hide": 0,
         "label": "Interval",
         "name": "interval",
@@ -5248,7 +5247,7 @@
     "to": "now"
   },
   "timepicker": {
-    "hidden": false,
+    "hidden": true,
     "refresh_intervals": [
       "5s",
       "10s",
@@ -5259,6 +5258,7 @@
       "30m",
       "1h",
       "2h",
+      "6h",
       "1d"
     ],
     "time_options": [
