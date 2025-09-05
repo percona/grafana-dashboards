@@ -4,51 +4,42 @@
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
-        "limit": 100,
-        "matchAny": true,
         "name": "PMM Annotations",
         "showIn": 0,
-        "tags": [
-          "pmm_annotation",
-          "$service_name"
-        ],
         "target": {
           "limit": 100,
           "matchAny": true,
           "tags": [
-            "pmm_annotation",
-            "$service_name"
+            "$cluster",
+            "$service_name",
+            "pmm_annotation"
           ],
           "type": "tags"
-        },
-        "type": "tags"
+        }
       },
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": true,
-        "iconColor": "#6ed0e0",
-        "limit": 100,
+        "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "showIn": 0,
-        "tags": [],
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
+        }
       }
     ]
   },
@@ -123,6 +114,61 @@
       ],
       "targetBlank": false,
       "title": "PMM",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OS"
+      ],
+      "targetBlank": false,
+      "title": "OS",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MongoDB"
+      ],
+      "targetBlank": false,
+      "title": "MongoDB",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PostgreSQL"
+      ],
+      "targetBlank": false,
+      "title": "PostgreSQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
       "type": "dashboards"
     }
   ],
@@ -227,7 +273,7 @@
           "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "avg by (service_name) (mysql_global_status_wsrep_ready{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mysql_global_status_wsrep_ready{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
@@ -327,7 +373,7 @@
           "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "avg by (service_name) (mysql_global_status_wsrep_local_state{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mysql_global_status_wsrep_local_state{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
@@ -421,7 +467,7 @@
           "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "avg by (service_name) (mysql_global_variables_wsrep_desync{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mysql_global_variables_wsrep_desync{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
@@ -515,7 +561,7 @@
           "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "avg by (service_name) (mysql_global_status_wsrep_cluster_status{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mysql_global_status_wsrep_cluster_status{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
@@ -597,7 +643,7 @@
           "datasource": "Metrics",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "avg by (service_name) (mysql_galera_gcache_size_bytes{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mysql_galera_gcache_size_bytes{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
@@ -692,7 +738,7 @@
       "targets": [
         {
           "datasource": "Metrics",
-          "expr": "avg by (service_name) (mysql_global_status_wsrep_flow_control_status{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mysql_global_status_wsrep_flow_control_status{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -787,7 +833,7 @@
       "targets": [
         {
           "datasource": "Metrics",
-          "expr": "(avg by (service_name) (max_over_time(mysql_global_status_wsrep_cluster_size{service_name=~\"$service_name\"}[$interval])) or \navg by (service_name) (max_over_time(mysql_global_status_wsrep_cluster_size{service_name=~\"$service_name\"}[5m]))) * on(service_name) group_left(wsrep_cluster_name) (avg by (service_name) (mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\",service_name=~\"$service_name\"})) > 0",
+          "expr": "(avg by (service_name) (max_over_time(mysql_global_status_wsrep_cluster_size{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval])) or \navg by (service_name) (max_over_time(mysql_global_status_wsrep_cluster_size{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))) * on(service_name) group_left(wsrep_cluster_name) (avg by (service_name) (mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\",service_name=~\"$service_name\", environment=~\"$environment\"})) > 0",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -932,7 +978,7 @@
             {
               "datasource": "Metrics",
               "editorMode": "code",
-              "expr": "avg by (service_name) (max_over_time(mysql_galera_evs_repl_latency_max_seconds{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_galera_evs_repl_latency_max_seconds{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (max_over_time(mysql_galera_evs_repl_latency_max_seconds{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_galera_evs_repl_latency_max_seconds{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -944,7 +990,7 @@
             {
               "datasource": "Metrics",
               "editorMode": "code",
-              "expr": "avg by (service_name) (avg_over_time(mysql_galera_evs_repl_latency_stdev{service_name=~\"$service_name\"}[$interval]) or\navg_over_time(mysql_galera_evs_repl_latency_stdev{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (avg_over_time(mysql_galera_evs_repl_latency_stdev{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\navg_over_time(mysql_galera_evs_repl_latency_stdev{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -956,7 +1002,7 @@
             {
               "datasource": "Metrics",
               "editorMode": "code",
-              "expr": "avg by (service_name) (avg_over_time(mysql_galera_evs_repl_latency_avg_seconds{service_name=~\"$service_name\"}[$interval]) or\navg_over_time(mysql_galera_evs_repl_latency_avg_seconds{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (avg_over_time(mysql_galera_evs_repl_latency_avg_seconds{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\navg_over_time(mysql_galera_evs_repl_latency_avg_seconds{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -968,7 +1014,7 @@
             {
               "datasource": "Metrics",
               "editorMode": "code",
-              "expr": "avg by (service_name) (min_over_time(mysql_galera_evs_repl_latency_min_seconds{service_name=~\"$service_name\"}[$interval]) or\nmin_over_time(mysql_galera_evs_repl_latency_min_seconds{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (min_over_time(mysql_galera_evs_repl_latency_min_seconds{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmin_over_time(mysql_galera_evs_repl_latency_min_seconds{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1090,7 +1136,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_local_recv_queue{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_local_recv_queue{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_local_recv_queue{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_local_recv_queue{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1104,7 +1150,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_local_send_queue{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_local_send_queue{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_local_send_queue{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_local_send_queue{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1248,7 +1294,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_flow_control_recv{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_recv{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_flow_control_recv{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_recv{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1262,7 +1308,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_flow_control_sent{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_sent{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_flow_control_sent{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_sent{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1277,7 +1323,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) ((rate(mysql_global_status_wsrep_flow_control_paused_ns{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_paused_ns{service_name=~\"$service_name\"}[5m]))/1000000000)",
+              "expr": "avg by (service_name) ((rate(mysql_global_status_wsrep_flow_control_paused_ns{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_paused_ns{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))/1000000000)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1404,7 +1450,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_local_cert_failures{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_local_cert_failures{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_local_cert_failures{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mysql_global_status_wsrep_local_cert_failures{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1418,7 +1464,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_local_bf_aborts{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_local_bf_aborts{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_local_bf_aborts{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mysql_global_status_wsrep_local_bf_aborts{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1545,7 +1591,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_received{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_received{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_received{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mysql_global_status_wsrep_received{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1559,7 +1605,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_replicated{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_replicated{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_replicated{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mysql_global_status_wsrep_replicated{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1686,7 +1732,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1700,7 +1746,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1826,7 +1872,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_apply_window{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_apply_window{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_apply_window{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_apply_window{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1840,7 +1886,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_commit_window{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_commit_window{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_commit_window{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_commit_window{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1855,7 +1901,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_cert_deps_distance{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_cert_deps_distance{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name) (max_over_time(mysql_global_status_wsrep_cert_deps_distance{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_wsrep_cert_deps_distance{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1982,7 +2028,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (mysql_galera_gcache_size_bytes{service_name=~\"$service_name\"}) /\navg by (service_name) ((rate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[5m])) + \n(rate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[5m])))",
+              "expr": "avg by (service_name) (mysql_galera_gcache_size_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}) /\navg by (service_name) ((rate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) + \n(rate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -1994,7 +2040,7 @@
             },
             {
               "datasource": "Metrics",
-              "expr": "avg by (service_name) (mysql_galera_gcache_size_bytes{service_name=~\"$service_name\"}) /\navg by (service_name) ((rate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[1h])+rate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[1h])))",
+              "expr": "avg by (service_name) (mysql_galera_gcache_size_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}) /\navg by (service_name) ((rate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[1h])+rate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[1h])))",
               "hide": false,
               "interval": "1h",
               "legendFormat": "Time (1h avg)",
@@ -2117,7 +2163,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[$interval]) / (rate(mysql_global_status_wsrep_received{service_name=~\"$service_name\"}[$interval]) > 0) or irate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[5m]) / (irate(mysql_global_status_wsrep_received{service_name=~\"$service_name\"}[5m]) > 0))",
+              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) / (rate(mysql_global_status_wsrep_received{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) > 0) or irate(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) / (irate(mysql_global_status_wsrep_received{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) > 0))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2131,7 +2177,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[$interval]) / (rate(mysql_global_status_wsrep_replicated{service_name=~\"$service_name\"}[$interval]) > 0) or irate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[5m]) / (irate(mysql_global_status_wsrep_replicated{service_name=~\"$service_name\"}[5m]) > 0))",
+              "expr": "avg by (service_name) (rate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) / (rate(mysql_global_status_wsrep_replicated{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) > 0) or irate(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) / (irate(mysql_global_status_wsrep_replicated{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) > 0))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2253,7 +2299,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (increase(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\"}[1h]))",
+              "expr": "avg by (service_name) (increase(mysql_global_status_wsrep_received_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[1h]))",
               "format": "time_series",
               "interval": "1h",
               "intervalFactor": 1,
@@ -2267,7 +2313,7 @@
               "datasource": "Metrics",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (increase(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\"}[1h]))",
+              "expr": "avg by (service_name) (increase(mysql_global_status_wsrep_replicated_bytes{service_name=~\"$service_name\", environment=~\"$environment\"}[1h]))",
               "format": "time_series",
               "interval": "1h",
               "intervalFactor": 1,
@@ -2306,11 +2352,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "datasource": "Metrics",
         "hide": 0,
         "includeAll": false,
@@ -2368,11 +2410,7 @@
       {
         "allFormat": "glob",
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_galera_variables_info, wsrep_cluster_name)",
         "hide": 0,
@@ -2397,11 +2435,7 @@
       {
         "allFormat": "glob",
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "query_result(mysql_galera_variables_info{wsrep_cluster_name=~\"$cluster\"} * on(service_name) mysql_global_variables_wsrep_auto_increment_control)",
         "hide": 0,
@@ -2424,11 +2458,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_name)",
         "hide": 2,
@@ -2452,11 +2482,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 2,
@@ -2479,11 +2505,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
         "hide": 2,
@@ -2506,11 +2528,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
         "hide": 2,
@@ -2533,11 +2551,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
         "hide": 2,
@@ -2560,11 +2574,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
         "hide": 2,
@@ -2587,11 +2597,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
         "hide": 2,
@@ -2614,11 +2620,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
         "hide": 2,
@@ -2649,7 +2651,7 @@
   "timepicker": {
     "collapse": false,
     "enable": true,
-    "hidden": false,
+    "hidden": true,
     "notice": false,
     "now": true,
     "refresh_intervals": [
@@ -2662,6 +2664,7 @@
       "30m",
       "1h",
       "2h",
+      "6h",
       "1d"
     ],
     "status": "Stable",

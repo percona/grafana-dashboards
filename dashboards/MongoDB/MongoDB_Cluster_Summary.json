@@ -4,49 +4,42 @@
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
-        "limit": 100,
-        "matchAny": true,
         "name": "PMM Annotations",
         "showIn": 0,
-        "tags": [
-          "pmm_annotation"
-        ],
         "target": {
           "limit": 100,
           "matchAny": true,
           "tags": [
+            "$cluster",
+            "$environment",
             "pmm_annotation"
           ],
           "type": "tags"
-        },
-        "type": "tags"
+        }
       },
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": true,
-        "iconColor": "#6ed0e0",
-        "limit": 100,
+        "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "showIn": 0,
-        "tags": [],
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
+        }
       }
     ]
   },
@@ -133,6 +126,61 @@
       ],
       "targetBlank": false,
       "title": "PMM",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OS"
+      ],
+      "targetBlank": false,
+      "title": "OS",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": false,
+      "title": "MySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PostgreSQL"
+      ],
+      "targetBlank": false,
+      "title": "PostgreSQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
       "type": "dashboards"
     }
   ],
@@ -1501,7 +1549,7 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg by (service_name,mongodb) (mongodb_version_info{service_name=~\"$service_name\"}) or (avg by (service_name,mongodb) (mongodb_version_info)) * on (service_name) group_right (mongodb) (avg by (service_name) (mongodb_mongos_db_collections_total{cluster=~\"$cluster\"}) / avg by (service_name) (mongodb_mongos_db_collections_total{cluster=~\"$cluster\"}))",
+          "expr": "avg by (service_name,mongodb) (mongodb_version_info{service_name=~\"$service_name\", environment=~\"$environment\"}) or (avg by (service_name,mongodb) (mongodb_version_info)) * on (service_name) group_right (mongodb) (avg by (service_name) (mongodb_mongos_db_collections_total{cluster=~\"$cluster\"}) / avg by (service_name) (mongodb_mongos_db_collections_total{cluster=~\"$cluster\"}))",
           "format": "table",
           "instant": true,
           "interval": "5m",
@@ -2105,14 +2153,19 @@
             {
               "options": {
                 "0": {
+                  "color": "semi-dark-red",
                   "index": 11,
-                  "text": "STARTUP",
-                  "color": "semi-dark-red"
+                  "text": "STARTUP"
                 },
                 "1": {
                   "color": "rgb(107, 152, 102)",
                   "index": 4,
                   "text": "PRIMARY"
+                },
+                "10": {
+                  "color": "semi-dark-red",
+                  "index": 5,
+                  "text": "REMOVED"
                 },
                 "2": {
                   "color": "rgb(193, 159, 20)",
@@ -2120,19 +2173,19 @@
                   "text": "SECONDARY"
                 },
                 "3": {
+                  "color": "semi-dark-red",
                   "index": 10,
-                  "text": "RECOVERING",
-                  "color": "semi-dark-red"
+                  "text": "RECOVERING"
                 },
                 "5": {
+                  "color": "semi-dark-red",
                   "index": 9,
-                  "text": "STARTUP2",
-                  "color": "semi-dark-red"
+                  "text": "STARTUP2"
                 },
                 "6": {
+                  "color": "semi-dark-red",
                   "index": 8,
-                  "text": "UNKNOWN",
-                  "color": "semi-dark-red"
+                  "text": "UNKNOWN"
                 },
                 "7": {
                   "color": "#8B8000",
@@ -2140,19 +2193,14 @@
                   "text": "ARBITER"
                 },
                 "8": {
+                  "color": "semi-dark-red",
                   "index": 7,
-                  "text": "DOWN",
-                  "color": "semi-dark-red"
+                  "text": "DOWN"
                 },
                 "9": {
+                  "color": "semi-dark-red",
                   "index": 6,
-                  "text": "ROLLBACK",
-                  "color": "semi-dark-red"
-                },
-                "10": {
-                  "index": 5,
-                  "text": "REMOVED",
-                  "color": "semi-dark-red"
+                  "text": "ROLLBACK"
                 },
                 "null": {
                   "color": "#FF7383",
@@ -3376,7 +3424,7 @@
       }
     }
   ],
-  "refresh": false,
+  "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
@@ -3390,11 +3438,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "datasource": "Metrics",
         "hide": 0,
         "includeAll": false,
@@ -3451,15 +3495,7 @@
         "type": "interval"
       },
       {
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 0,
         "includeAll": true,
@@ -3482,11 +3518,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "",
-          "value": ""
-        },
+        "current": {},
         "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\"},cluster)",
         "hide": 0,
         "includeAll": false,
@@ -3507,11 +3539,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values(mongodb_mongos_db_collections_total{cluster=\"$cluster\"},shard)",
         "hide": 2,
         "includeAll": true,
@@ -3533,15 +3561,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\"}, set)",
         "hide": 2,
         "includeAll": true,
@@ -3563,11 +3583,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$set\"}, service_name)",
         "hide": 2,
         "includeAll": true,
@@ -3589,11 +3605,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\",cluster=~\"$cluster\"}, service_name)",
         "hide": 2,
         "includeAll": true,
@@ -3612,11 +3624,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "arbiter",
-          "value": "arbiter"
-        },
+        "current": {},
         "definition": "label_values(mongodb_up, cluster_role)",
         "hide": 2,
         "includeAll": false,
@@ -3640,14 +3648,18 @@
     "to": "now"
   },
   "timepicker": {
-    "hidden": false,
+    "hidden": true,
     "now": true,
     "refresh_intervals": [
-      "1s",
       "5s",
+      "10s",
+      "30s",
       "1m",
       "5m",
+      "15m",
+      "30m",
       "1h",
+      "2h",
       "6h",
       "1d"
     ],
@@ -3663,7 +3675,7 @@
       "30d"
     ]
   },
-  "timezone": "browser",
+  "timezone": "",
   "title": "MongoDB Sharded Cluster Summary",
   "uid": "mongodb-cluster-summary",
   "version": 1,

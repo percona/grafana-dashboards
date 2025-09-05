@@ -3,44 +3,42 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
-        "limit": 100,
-        "matchAny": true,
         "name": "PMM Annotations",
         "showIn": 0,
-        "tags": [
-          "pmm_annotation"
-        ],
         "target": {
           "limit": 100,
           "matchAny": true,
           "tags": [
+            "$cluster",
             "pmm_annotation"
           ],
           "type": "tags"
-        },
-        "type": "tags"
+        }
       },
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": true,
-        "iconColor": "#6ed0e0",
-        "limit": 100,
+        "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "showIn": 0,
-        "tags": [],
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
+        }
       }
     ]
   },
@@ -128,6 +126,61 @@
       ],
       "targetBlank": false,
       "title": "PMM",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OS"
+      ],
+      "targetBlank": false,
+      "title": "OS",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": false,
+      "title": "MySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PostgreSQL"
+      ],
+      "targetBlank": false,
+      "title": "PostgreSQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
       "type": "dashboards"
     }
   ],
@@ -288,35 +341,30 @@
       "collapsed": false,
       "default_title_for_rows": "DB Name",
       "description": "MongoDB stores documents in collections. Collections are analogous to tables in relational databases.",
-      "gridPos": {
-        "h": 12,
-        "w": 8,
-        "x": 8,
-        "y": 1
-      },
-      "id": 1043,
-      "pluginVersion": "9.2.20",
-      "title": "Amount of Collections in Shards",
-      "type": "table",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "thresholds"
+          },
           "custom": {
             "align": "left",
             "displayMode": "auto",
-            "inspect": false,
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [
             {
-              "type": "value",
               "options": {
                 "0": {
                   "color": "dark-blue",
                   "index": 0
                 }
-              }
+              },
+              "type": "value"
             }
           ],
+          "noValue": "-",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -329,12 +377,7 @@
                 "value": 20
               }
             ]
-          },
-          "color": {
-            "fixedColor": "text",
-            "mode": "thresholds"
-          },
-          "noValue": "-"
+          }
         },
         "overrides": [
           {
@@ -350,8 +393,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-blue"
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
                 }
               },
               {
@@ -367,23 +410,62 @@
           }
         ]
       },
+      "gridPos": {
+        "h": 12,
+        "w": 8,
+        "x": 8,
+        "y": 1
+      },
+      "id": 1043,
       "options": {
-        "showHeader": true,
         "footer": {
-          "show": false,
+          "fields": "",
           "reducer": [
             "sum"
           ],
-          "fields": ""
+          "show": false
         },
         "frameIndex": 0,
+        "showHeader": true,
         "sortBy": [
           {
-            "displayName": "DB Name\\Value",
-            "desc": false
+            "desc": false,
+            "displayName": "DB Name\\Value"
           }
         ]
       },
+      "pluginVersion": "9.2.20",
+      "sorting_props": {
+        "col_index": -1,
+        "direction": "desc"
+      },
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by (db,shard) (mongodb_mongos_db_collections_total{cluster=\"$cluster\",db!~\"admin|config\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{db}} | {{shard}} | Collections",
+          "range": false,
+          "refId": "A"
+        },
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "mongodb_mongos_db_data_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"}",
+          "format": "table",
+          "hide": true,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{db}} | {{shard}} | Size",
+          "range": false,
+          "refId": "B"
+        }
+      ],
+      "title": "Amount of Collections in Shards",
       "transformations": [
         {
           "id": "groupingToMatrix",
@@ -405,71 +487,36 @@
           }
         }
       ],
-      "targets": [
-        {
-          "expr": "max by (db,shard) (mongodb_mongos_db_collections_total{cluster=\"$cluster\",db!~\"admin|config\"})",
-          "editorMode": "code",
-          "range": false,
-          "exemplar": false,
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{db}} | {{shard}} | Collections",
-          "refId": "A"
-        },
-        {
-          "expr": "mongodb_mongos_db_data_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"}",
-          "editorMode": "code",
-          "range": false,
-          "exemplar": false,
-          "format": "table",
-          "hide": true,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{db}} | {{shard}} | Size",
-          "refId": "B"
-        }
-      ],
-      "sorting_props": {
-        "col_index": -1,
-        "direction": "desc"
-      }
+      "type": "table"
     },
     {
       "default_title_for_rows": "DB Name",
       "description": "MongoDB stores documents in collections. Collections are analogous to tables in relational databases.",
-      "gridPos": {
-        "h": 12,
-        "w": 8,
-        "x": 16,
-        "y": 1
-      },
-      "hide_headers": false,
-      "id": 1030,
-      "pluginVersion": "9.2.20",
-      "title": "Size of Collections in Shards",
-      "type": "table",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "thresholds"
+          },
           "custom": {
             "align": "left",
             "displayMode": "auto",
-            "inspect": false,
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [
             {
-              "type": "value",
               "options": {
                 "0": {
                   "color": "dark-blue",
                   "index": 0,
                   "text": "0"
                 }
-              }
+              },
+              "type": "value"
             }
           ],
+          "noValue": "-",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -483,11 +530,6 @@
               }
             ]
           },
-          "color": {
-            "fixedColor": "text",
-            "mode": "thresholds"
-          },
-          "noValue": "-",
           "unit": "bytes"
         },
         "overrides": [
@@ -504,8 +546,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-blue"
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
                 }
               },
               {
@@ -521,23 +563,51 @@
           }
         ]
       },
+      "gridPos": {
+        "h": 12,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "hide_headers": false,
+      "id": 1030,
       "options": {
-        "showHeader": true,
         "footer": {
-          "show": false,
+          "fields": "",
           "reducer": [
             "sum"
           ],
-          "fields": ""
+          "show": false
         },
         "frameIndex": 0,
+        "showHeader": true,
         "sortBy": [
           {
-            "displayName": "DB Name\\Value",
-            "desc": false
+            "desc": false,
+            "displayName": "DB Name\\Value"
           }
         ]
       },
+      "pluginVersion": "9.2.20",
+      "sorting_props": {
+        "col_index": -1,
+        "direction": "desc"
+      },
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by (db,shard) (mongodb_mongos_db_data_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{db}} | {{shard}} | Collections",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Size of Collections in Shards",
       "transformations": [
         {
           "id": "groupingToMatrix",
@@ -559,24 +629,7 @@
           }
         }
       ],
-      "targets": [
-        {
-          "expr": "max by (db,shard) (mongodb_mongos_db_data_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"})",
-          "editorMode": "code",
-          "range": false,
-          "exemplar": false,
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{db}} | {{shard}} | Collections",
-          "refId": "A"
-        }
-      ],
-      "sorting_props": {
-        "col_index": -1,
-        "direction": "desc"
-      }
+      "type": "table"
     },
     {
       "description": "A shard contains a subset of sharded data for a sharded cluster. Together, the cluster’s shards hold the entire data set for the cluster.",
@@ -1116,7 +1169,7 @@
           "refId": "A"
         },
         {
-          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}))",
+          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set!~\"$shard\"}))",
           "interval": "$interval",
           "legendFormat": "{{service_name}}",
           "refId": "B"
@@ -1237,7 +1290,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name) (avg by (service_name) (mongodb_mongos_db_collections_total{cluster=\"$cluster\"}) / avg by (service_name) (mongodb_mongos_db_collections_total{cluster=\"$cluster\"})))",
+          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name) (avg by (service_name) (mongodb_mongos_db_collections_total{cluster=\"$cluster\"}) / avg by (service_name) (mongodb_mongos_db_collections_total{cluster=\"$cluster\"})))",
           "format": "time_series",
           "instant": false,
           "interval": "$interval",
@@ -1360,7 +1413,7 @@
       ],
       "targets": [
         {
-          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set=~\"$shard\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set=~\"$shard\"}))",
+          "expr": "(sum by (service_name) (rate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[5m])) * on (service_name) group_right avg by (service_name,set) (mongodb_mongod_replset_my_state{cluster=\"$cluster\",set=~\"$shard\"}/ mongodb_mongod_replset_my_state{cluster=\"$cluster\",set=~\"$shard\"}))",
           "format": "time_series",
           "instant": false,
           "interval": "$interval",
@@ -1502,26 +1555,20 @@
     {
       "default_title_for_rows": "Shard Name",
       "description": "A chunk consists of a subset of sharded data.",
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 28
-      },
-      "hide_headers": false,
-      "id": 1200,
-      "pluginVersion": "9.2.20",
-      "title": "Amount of Chunks in Shards",
-      "type": "table",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "thresholds"
+          },
           "custom": {
             "align": "left",
             "displayMode": "auto",
-            "inspect": false,
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
+          "noValue": "-",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1534,12 +1581,7 @@
                 "value": 20
               }
             ]
-          },
-          "color": {
-            "fixedColor": "text",
-            "mode": "thresholds"
-          },
-          "noValue": "-"
+          }
         },
         "overrides": [
           {
@@ -1555,24 +1597,52 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-blue"
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
                 }
               }
             ]
           }
         ]
       },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 28
+      },
+      "hide_headers": false,
+      "id": 1200,
       "options": {
-        "showHeader": true,
         "footer": {
-          "show": false,
+          "fields": "",
           "reducer": [
             "sum"
           ],
-          "fields": ""
-        }
+          "show": false
+        },
+        "showHeader": true
       },
+      "pluginVersion": "9.2.20",
+      "sorting_props": {
+        "col_index": -1,
+        "direction": "desc"
+      },
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg by (shard) (mongodb_mongos_sharding_shard_chunks_total{cluster=\"$cluster\",db!~\"admin|config\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{shard}} | Chunks",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Amount of Chunks in Shards",
       "transformations": [
         {
           "id": "organize",
@@ -1582,30 +1652,13 @@
             },
             "indexByName": {},
             "renameByName": {
-              "shard": "Shard Name",
-              "Value": "Chunks"
+              "Value": "Chunks",
+              "shard": "Shard Name"
             }
           }
         }
       ],
-      "targets": [
-        {
-          "expr": "avg by (shard) (mongodb_mongos_sharding_shard_chunks_total{cluster=\"$cluster\",db!~\"admin|config\"})",
-          "editorMode": "code",
-          "range": false,
-          "exemplar": false,
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{shard}} | Chunks",
-          "refId": "A"
-        }
-      ],
-      "sorting_props": {
-        "col_index": -1,
-        "direction": "desc"
-      }
+      "type": "table"
     },
     {
       "aliasColors": {},
@@ -1905,24 +1958,17 @@
     {
       "default_title_for_rows": "DB Name",
       "description": "Indexes are special data structures that store a small portion of the collection’s data set in an easy to traverse form. ",
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 45
-      },
-      "hide_headers": false,
-      "id": 1040,
-      "pluginVersion": "9.2.20",
-      "title": "Amount of Indexes in Shards",
-      "type": "table",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "thresholds"
+          },
           "custom": {
             "align": "left",
             "displayMode": "auto",
-            "inspect": false,
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [
             {
@@ -1936,6 +1982,7 @@
               "type": "value"
             }
           ],
+          "noValue": "-",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1948,12 +1995,7 @@
                 "value": 20
               }
             ]
-          },
-          "color": {
-            "fixedColor": "text",
-            "mode": "thresholds"
-          },
-          "noValue": "-"
+          }
         },
         "overrides": [
           {
@@ -1969,8 +2011,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-blue"
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
                 }
               },
               {
@@ -1986,23 +2028,63 @@
           }
         ]
       },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 45
+      },
+      "hide_headers": false,
+      "id": 1040,
       "options": {
-        "showHeader": true,
         "footer": {
-          "show": false,
+          "fields": "",
           "reducer": [
             "sum"
           ],
-          "fields": ""
+          "show": false
         },
         "frameIndex": 0,
+        "showHeader": true,
         "sortBy": [
           {
-            "displayName": "DB Name\\Value",
-            "desc": false
+            "desc": false,
+            "displayName": "DB Name\\Value"
           }
         ]
       },
+      "pluginVersion": "9.2.20",
+      "sorting_props": {
+        "col_index": -1,
+        "direction": "desc"
+      },
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg by (db,shard) (mongodb_mongos_db_indexes_total{cluster=\"$cluster\",db!~\"admin|config\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{db}} | {{shard}} | Collections",
+          "range": false,
+          "refId": "A"
+        },
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "mongodb_mongos_db_data_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"}",
+          "format": "table",
+          "hide": true,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{db}} | {{shard}} | Size",
+          "range": false,
+          "refId": "B"
+        }
+      ],
+      "title": "Amount of Indexes in Shards",
       "transformations": [
         {
           "id": "groupingToMatrix",
@@ -2024,36 +2106,7 @@
           }
         }
       ],
-      "targets": [
-        {
-          "expr": "avg by (db,shard) (mongodb_mongos_db_indexes_total{cluster=\"$cluster\",db!~\"admin|config\"})",
-          "editorMode": "code",
-          "range": false,
-          "exemplar": false,
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{db}} | {{shard}} | Collections",
-          "refId": "A"
-        },
-        {
-          "expr": "mongodb_mongos_db_data_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"}",
-          "editorMode": "code",
-          "range": false,
-          "exemplar": false,
-          "format": "table",
-          "hide": true,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{db}} | {{shard}} | Size",
-          "refId": "B"
-        }
-      ],
-      "sorting_props": {
-        "col_index": -1,
-        "direction": "desc"
-      }
+      "type": "table"
     },
     {
       "aliasColors": {},
@@ -2150,24 +2203,17 @@
     {
       "default_title_for_rows": "DB Name",
       "description": "The index stores the value of a specific field or set of fields, ordered by the value of the field. ",
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 53
-      },
-      "hide_headers": false,
-      "id": 1072,
-      "pluginVersion": "9.2.20",
-      "title": "Size of Indexes in Shards",
-      "type": "table",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "thresholds"
+          },
           "custom": {
             "align": "left",
             "displayMode": "auto",
-            "inspect": false,
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [
             {
@@ -2181,6 +2227,7 @@
               "type": "value"
             }
           ],
+          "noValue": "-",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -2194,11 +2241,6 @@
               }
             ]
           },
-          "color": {
-            "fixedColor": "text",
-            "mode": "thresholds"
-          },
-          "noValue": "-",
           "unit": "bytes"
         },
         "overrides": [
@@ -2215,8 +2257,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-blue"
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
                 }
               },
               {
@@ -2232,23 +2274,50 @@
           }
         ]
       },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 53
+      },
+      "hide_headers": false,
+      "id": 1072,
       "options": {
-        "showHeader": true,
         "footer": {
-          "show": false,
+          "fields": "",
           "reducer": [
             "sum"
           ],
-          "fields": ""
+          "show": false
         },
         "frameIndex": 0,
+        "showHeader": true,
         "sortBy": [
           {
-            "displayName": "DB Name\\Value",
-            "desc": false
+            "desc": false,
+            "displayName": "DB Name\\Value"
           }
         ]
       },
+      "pluginVersion": "9.2.20",
+      "sorting_props": {
+        "col_index": -1,
+        "direction": "desc"
+      },
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg by (db,shard) (mongodb_mongos_db_index_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{db}} | {{shard}} | Collections",
+          "refId": "A"
+        }
+      ],
+      "title": "Size of Indexes in Shards",
       "transformations": [
         {
           "id": "groupingToMatrix",
@@ -2270,23 +2339,7 @@
           }
         }
       ],
-      "targets": [
-        {          
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "avg by (db,shard) (mongodb_mongos_db_index_size_bytes{cluster=\"$cluster\",db!~\"admin|config\"})",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{db}} | {{shard}} | Collections",
-          "refId": "A"
-        }
-      ],
-      "sorting_props": {
-        "col_index": -1,
-        "direction": "desc"
-      }
+      "type": "table"
     },
     {
       "aliasColors": {},
@@ -2393,24 +2446,17 @@
         {
           "default_title_for_rows": "DB Name",
           "description": "Documents in MongoDB are objects stored in a format called BSON, a binary-encoded superset of JSON that supports additional data types.",
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 0,
-            "y": 29
-          },
-          "hide_headers": false,
-          "id": 1066,
-          "pluginVersion": "9.2.20",
-          "title": "Amount of Objects in Shards",
-          "type": "table",
           "fieldConfig": {
             "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "thresholds"
+              },
               "custom": {
                 "align": "left",
                 "displayMode": "auto",
-                "inspect": false,
-                "filterable": false
+                "filterable": false,
+                "inspect": false
               },
               "mappings": [
                 {
@@ -2424,6 +2470,7 @@
                   "type": "value"
                 }
               ],
+              "noValue": "-",
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -2436,12 +2483,7 @@
                     "value": 20
                   }
                 ]
-              },
-              "color": {
-                "fixedColor": "text",
-                "mode": "thresholds"
-              },
-              "noValue": "-"
+              }
             },
             "overrides": [
               {
@@ -2457,8 +2499,8 @@
                   {
                     "id": "color",
                     "value": {
-                      "mode": "fixed",
-                      "fixedColor": "dark-blue"
+                      "fixedColor": "dark-blue",
+                      "mode": "fixed"
                     }
                   },
                   {
@@ -2474,23 +2516,50 @@
               }
             ]
           },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 29
+          },
+          "hide_headers": false,
+          "id": 1066,
           "options": {
-            "showHeader": true,
             "footer": {
-              "show": false,
+              "fields": "",
               "reducer": [
                 "sum"
               ],
-              "fields": ""
+              "show": false
             },
             "frameIndex": 0,
+            "showHeader": true,
             "sortBy": [
               {
-                "displayName": "DB Name\\Value",
-                "desc": false
+                "desc": false,
+                "displayName": "DB Name\\Value"
               }
             ]
           },
+          "pluginVersion": "9.2.20",
+          "sorting_props": {
+            "col_index": -1,
+            "direction": "desc"
+          },
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "exemplar": false,
+              "expr": "avg by (db,shard) (mongodb_mongos_db_objects_total{cluster=\"$cluster\",db!~\"admin|config\"})",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "$interval",
+              "legendFormat": "{{db}} | {{shard}} | Collections",
+              "refId": "A"
+            }
+          ],
+          "title": "Amount of Objects in Shards",
           "transformations": [
             {
               "id": "groupingToMatrix",
@@ -2512,23 +2581,7 @@
               }
             }
           ],
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "exemplar": false,
-              "expr": "avg by (db,shard) (mongodb_mongos_db_objects_total{cluster=\"$cluster\",db!~\"admin|config\"})",
-              "format": "table",
-              "hide": false,
-              "instant": true,
-              "interval": "$interval",
-              "legendFormat": "{{db}} | {{shard}} | Collections",
-              "refId": "A"
-            }
-          ],
-          "sorting_props": {
-            "col_index": -1,
-            "direction": "desc"
-          }
+          "type": "table"
         },
         {
           "aliasColors": {},
@@ -2940,7 +2993,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (service_name) (max_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service_name\",state=\"current\"}[$interval]) or \nmax_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service_name\",state=\"current\"}[5m]))",
+          "expr": "sum by (service_name) (max_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service_name\", environment=~\"$environment\",state=\"current\"}[$interval]) or \nmax_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service_name\", environment=~\"$environment\",state=\"current\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -3043,7 +3096,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (service_name) (max_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service_name\",state=\"available\"}[$interval]) or \nmax_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service_name\",state=\"available\"}[5m]))",
+          "expr": "sum by (service_name) (max_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service_name\", environment=~\"$environment\",state=\"available\"}[$interval]) or \nmax_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service_name\", environment=~\"$environment\",state=\"available\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -3736,7 +3789,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (type) (rate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum by (type) (rate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -4109,11 +4162,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "datasource": "Metrics",
         "hide": 0,
         "includeAll": false,
@@ -4170,11 +4219,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "mongodb_cluster",
-          "value": "mongodb_cluster"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up,cluster)",
         "hide": 0,
@@ -4196,11 +4241,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{cluster=\"$cluster\"},service_name)",
         "hide": 2,
@@ -4223,11 +4264,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mongodb_mongos_db_collections_total{cluster=\"$cluster\"},shard)",
         "hide": 2,
@@ -4250,11 +4287,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_name)",
         "hide": 2,
@@ -4277,11 +4310,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 2,
@@ -4304,11 +4333,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
         "hide": 2,
@@ -4331,11 +4356,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
         "hide": 2,
@@ -4358,11 +4379,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
         "hide": 2,
@@ -4385,11 +4402,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
         "hide": 2,
@@ -4412,11 +4425,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
         "hide": 2,
@@ -4457,14 +4466,18 @@
     "to": "now"
   },
   "timepicker": {
-    "hidden": false,
+    "hidden": true,
     "now": true,
     "refresh_intervals": [
-      "1s",
       "5s",
+      "10s",
+      "30s",
       "1m",
       "5m",
+      "15m",
+      "30m",
       "1h",
+      "2h",
       "6h",
       "1d"
     ],

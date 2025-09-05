@@ -3,31 +3,42 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": false,
+        "iconColor": "#e0752d",
+        "name": "PMM Annotations",
+        "showIn": 0,
+        "target": {
+          "limit": 100,
+          "matchAny": true,
+          "tags": [
+            "$cluster",
+            "$environment",
+            "pmm_annotation"
+          ],
+          "type": "tags"
+        }
+      },
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "showIn": 0,
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
-      },
-      {
-        "datasource": "-- Grafana --",
-        "enable": true,
-        "iconColor": "orange",
-        "name": "PMM Annotations",
-        "target": {
-          "limit": 100,
-          "matchAny": true,
-          "tags": [
-            "pmm_annotation"
-          ],
-          "type": "tags"
         }
       }
     ]
@@ -115,6 +126,61 @@
       "tooltip": "",
       "type": "dashboards",
       "url": ""
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": false,
+      "title": "MySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MongoDB"
+      ],
+      "targetBlank": false,
+      "title": "MongoDB",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PostgreSQL"
+      ],
+      "targetBlank": false,
+      "title": "PostgreSQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
+      "type": "dashboards"
     }
   ],
   "liveNow": false,
@@ -813,21 +879,14 @@
       "type": "stat"
     },
     {
-      "id": 13,
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 0,
-        "y": 15
-      },
-      "type": "table",
-      "title": "Cluster Summary",
-      "default_title_for_rows": "Cluster Name",
       "datasource": "Metrics",
-      "pluginVersion": "9.2.18",
+      "default_title_for_rows": "Cluster Name",
       "description": "",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": "center",
             "displayMode": "auto",
@@ -835,6 +894,7 @@
             "minWidth": 100
           },
           "mappings": [],
+          "noValue": "-",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -847,11 +907,7 @@
                 "value": 80
               }
             ]
-          },
-          "color": {
-            "mode": "thresholds"
-          },
-          "noValue": "-"
+          }
         },
         "overrides": [
           {
@@ -954,6 +1010,75 @@
           }
         ]
       },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "id": 13,
+      "options": {
+        "footer": {
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.2.18",
+      "sorting_props": {
+        "col_index": 0,
+        "direction": "desc"
+      },
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum by (cluster) (group by (node_name,cluster) (mysql_global_status_wsrep_cluster_size{cluster=~\"$cluster\", environment=~\"$environment\"}))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{cluster}} | Node Size",
+          "refId": "A"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg by (cluster)(mysql_global_status_wsrep_cluster_status{cluster=~\"$cluster\", environment=~\"$environment\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{cluster}} | Status",
+          "refId": "B"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg by (cluster) (mysql_global_status_wsrep_local_state{cluster=~\"$cluster\", environment=~\"$environment\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{cluster}} | State",
+          "refId": "D"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum by (cluster) (group by (cluster,service_name) (mysql_galera_status_info{cluster=~\"$cluster\", environment=~\"$environment\"}))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{cluster}} | Service Size",
+          "refId": "C"
+        }
+      ],
+      "title": "Cluster Summary",
       "transformations": [
         {
           "id": "merge",
@@ -992,89 +1117,24 @@
           }
         }
       ],
-      "options": {
-        "showHeader": true,      
-        "footer": {
-          "show": false
-        }
-      },
-      "targets": [
-        {
-          "editorMode": "code",
-          "exemplar": true,
-          "datasource": "Metrics",
-          "expr": "sum by (cluster) (group by (node_name,cluster) (mysql_global_status_wsrep_cluster_size{cluster=~\"$cluster\", environment=~\"$environment\"}))",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{cluster}} | Node Size",
-          "refId": "A"
-        },
-        {
-          "editorMode": "code",
-          "exemplar": true,
-          "datasource": "Metrics",
-          "expr": "avg by (cluster)(mysql_global_status_wsrep_cluster_status{cluster=~\"$cluster\", environment=~\"$environment\"})",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{cluster}} | Status",
-          "refId": "B"
-        },
-        {
-          "editorMode": "code",
-          "exemplar": true,
-          "datasource": "Metrics",
-          "expr": "avg by (cluster) (mysql_global_status_wsrep_local_state{cluster=~\"$cluster\", environment=~\"$environment\"})",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{cluster}} | State",
-          "refId": "D"
-        },
-        {
-          "editorMode": "code",
-          "exemplar": true,
-          "datasource": "Metrics",
-          "expr": "sum by (cluster) (group by (cluster,service_name) (mysql_galera_status_info{cluster=~\"$cluster\", environment=~\"$environment\"}))",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{cluster}} | Service Size",
-          "refId": "C"
-        }
-      ],
-      "sorting_props": {
-        "col_index": 0,
-        "direction": "desc"
-      }
+      "type": "table"
     },
     {
-      "id": 16,
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 15
-      },
-      "type": "table",
-      "title": "Service Summary",
-      "default_title_for_rows": "Service Name",
       "datasource": "Metrics",
-      "pluginVersion": "9.2.18",
+      "default_title_for_rows": "Service Name",
       "description": "",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
           "custom": {
             "align": "center",
             "displayMode": "auto",
             "inspect": false
           },
           "mappings": [],
+          "noValue": "-",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1087,11 +1147,7 @@
                 "value": 80
               }
             ]
-          },
-          "color": {
-            "mode": "fixed"
-          },
-          "noValue": "-"
+          }
         },
         "overrides": [
           {
@@ -1116,19 +1172,19 @@
                 "id": "mappings",
                 "value": [
                   {
-                    "type": "value",
                     "options": {
                       "0": {
                         "color": "red",
-                        "text": "Non-Primary",
-                        "index": 0
+                        "index": 0,
+                        "text": "Non-Primary"
                       },
                       "1": {
-                        "text": "Primary",
                         "color": "green",
-                        "index": 1
+                        "index": 1,
+                        "text": "Primary"
                       }
-                    }
+                    },
+                    "type": "value"
                   }
                 ]
               },
@@ -1148,29 +1204,29 @@
                 "id": "mappings",
                 "value": [
                   {
-                    "type": "value",
                     "options": {
                       "1": {
-                        "text": "Joining",
                         "color": "red",
-                        "index": 0
+                        "index": 0,
+                        "text": "Joining"
                       },
                       "2": {
-                        "text": "Donor/Desynced",
                         "color": "red",
-                        "index": 1
+                        "index": 1,
+                        "text": "Donor/Desynced"
                       },
                       "3": {
-                        "text": "Joined",
                         "color": "yellow",
-                        "index": 2
+                        "index": 2,
+                        "text": "Joined"
                       },
                       "4": {
-                        "text": "Synced",
                         "color": "green",
-                        "index": 3
+                        "index": 3,
+                        "text": "Synced"
                       }
-                    }
+                    },
+                    "type": "value"
                   }
                 ]
               },
@@ -1182,12 +1238,63 @@
           }
         ]
       },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "id": 16,
       "options": {
-        "showHeader": true,      
         "footer": {
           "show": false
-        }
+        },
+        "showHeader": true
       },
+      "pluginVersion": "9.2.18",
+      "sorting_props": {
+        "col_index": 2,
+        "direction": "asc"
+      },
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum by (service_name) (group by (service_name) (mysql_global_status_wsrep_cluster_size{cluster=~\"$cluster\", environment=~\"$environment\"}))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{service_name}} | Node Size",
+          "refId": "A"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg by (service_name)(mysql_global_status_wsrep_cluster_status{cluster=~\"$cluster\", environment=~\"$environment\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{service_name}} | Status",
+          "refId": "B"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg by (service_name) (mysql_global_status_wsrep_local_state{cluster=~\"$cluster\", environment=~\"$environment\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{service_name}} | State",
+          "refId": "D"
+        }
+      ],
+      "title": "Service Summary",
       "transformations": [
         {
           "id": "merge",
@@ -1210,10 +1317,10 @@
             },
             "indexByName": {
               "Time": 0,
-              "service_name": 1,
               "Value #A": 2,
+              "Value #B": 4,
               "Value #D": 3,
-              "Value #B": 4
+              "service_name": 1
             },
             "renameByName": {
               "Value #A": "Node Size",
@@ -1224,48 +1331,7 @@
           }
         }
       ],
-      "targets": [
-        {
-          "editorMode": "code",
-          "exemplar": true,
-          "datasource": "Metrics",
-          "expr": "sum by (service_name) (group by (service_name) (mysql_global_status_wsrep_cluster_size{cluster=~\"$cluster\", environment=~\"$environment\"}))",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{service_name}} | Node Size",
-          "refId": "A"
-        },
-        {
-          "editorMode": "code",
-          "exemplar": true,
-          "datasource": "Metrics",
-          "expr": "avg by (service_name)(mysql_global_status_wsrep_cluster_status{cluster=~\"$cluster\", environment=~\"$environment\"})",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{service_name}} | Status",
-          "refId": "B"
-        },
-        {
-          "editorMode": "code",
-          "exemplar": true,
-          "datasource": "Metrics",
-          "expr": "avg by (service_name) (mysql_global_status_wsrep_local_state{cluster=~\"$cluster\", environment=~\"$environment\"})",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{service_name}} | State",
-          "refId": "D"
-        }
-      ],
-      "sorting_props": {
-        "col_index": 2,
-        "direction": "asc"
-      }
+      "type": "table"
     },
     {
       "fieldConfig": {
@@ -1674,7 +1740,7 @@
           "datasourceErrors": {},
           "errors": {},
           "exemplar": true,
-          "expr": "avg by (cluster) (rate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (cluster) (rate(mysql_global_status_aborted_clients{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -4872,11 +4938,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "hide": 0,
         "label": "Interval",
         "name": "interval",
@@ -4929,15 +4991,7 @@
         "type": "interval"
       },
       {
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 0,
         "includeAll": true,
@@ -4956,15 +5010,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "definition": "label_values(mysql_galera_variables_info, cluster)",
         "hide": 0,
         "includeAll": true,
@@ -4983,15 +5029,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_name)",
         "hide": 2,
         "includeAll": true,
@@ -5016,14 +5054,18 @@
     "to": "now"
   },
   "timepicker": {
-    "hidden": false,
+    "hidden": true,
     "now": true,
     "refresh_intervals": [
-      "1s",
       "5s",
+      "10s",
+      "30s",
       "1m",
       "5m",
+      "15m",
+      "30m",
       "1h",
+      "2h",
       "6h",
       "1d"
     ],

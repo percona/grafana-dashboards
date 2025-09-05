@@ -3,48 +3,43 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
-        "limit": 100,
-        "matchAny": true,
         "name": "PMM Annotations",
         "showIn": 0,
-        "tags": [
-          "pmm_annotation",
-          "$namespace",
-          "$pod"
-        ],
         "target": {
           "limit": 100,
           "matchAny": true,
           "tags": [
-            "pmm_annotation",
             "$namespace",
-            "$pod"
+            "$pod",
+            "pmm_annotation"
           ],
           "type": "tags"
-        },
-        "type": "tags"
+        }
       },
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": true,
-        "iconColor": "#6ed0e0",
-        "limit": 100,
+        "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "showIn": 0,
-        "tags": [],
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
+        }
       }
     ]
   },
@@ -121,6 +116,61 @@
       ],
       "targetBlank": false,
       "title": "PMM",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": false,
+      "title": "MySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MongoDB"
+      ],
+      "targetBlank": false,
+      "title": "MongoDB",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PostgreSQL"
+      ],
+      "targetBlank": false,
+      "title": "PostgreSQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
       "type": "dashboards"
     }
   ],
@@ -552,33 +602,21 @@
       "type": "row"
     },
     {
-      "id": 1031,
-      "gridPos": {
-        "h": 13,
-        "w": 12,
-        "x": 0,
-        "y": 6
-      },
-      "type": "table",
-      "title": "RAM",
-      "default_title_for_rows": "Pod",
       "datasource": "Metrics",
-      "pluginVersion": "9.2.20",
+      "default_title_for_rows": "Pod",
       "description": "",
-      "options": {
-        "showHeader": true,
-        "footer": {
-          "show": false
-        }
-      },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
           "custom": {
             "align": "left",
             "displayMode": "auto",
             "inspect": false,
             "width": 85
           },
+          "decimals": 2,
           "mappings": [
             {
               "options": {
@@ -591,6 +629,7 @@
               "type": "value"
             }
           ],
+          "noValue": "-",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -608,11 +647,6 @@
               }
             ]
           },
-          "color": {
-            "mode": "fixed"
-          },
-          "decimals": 2,
-          "noValue": "-",
           "unit": "decbytes"
         },
         "overrides": [
@@ -648,6 +682,70 @@
           }
         ]
       },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 6
+      },
+      "id": 1031,
+      "options": {
+        "footer": {
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg by (pod)(container_spec_memory_limit_bytes{pod=~\"$pod\"})",
+          "format": "table",
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{pod}} | RAM Limit",
+          "refId": "A"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg by (pod)(container_memory_usage_bytes{pod=~\"$pod\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{pod}} | Used",
+          "refId": "B"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "100 - clamp_max((avg by (pod) (container_memory_usage_bytes{pod=~\"$pod\"}) * 100) / avg by (pod) (container_spec_memory_limit_bytes{pod=~\"$pod\"}),100)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{pod}} | Free RAM",
+          "refId": "C"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg by (pod)(container_spec_memory_swap_limit_bytes{pod=~\"$pod\"})",
+          "format": "table",
+          "hide": true,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{pod}} | Swap Limit",
+          "refId": "D"
+        }
+      ],
+      "title": "RAM",
       "transformations": [
         {
           "id": "merge",
@@ -670,10 +768,10 @@
             },
             "indexByName": {
               "Time": 0,
-              "pod": 1,
-              "Value #C": 2,
               "Value #A": 3,
-              "Value #B": 4
+              "Value #B": 4,
+              "Value #C": 2,
+              "pod": 1
             },
             "renameByName": {
               "Value #A": "RAM Limit",
@@ -685,95 +783,37 @@
           }
         }
       ],
-      "targets": [
-        {
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "avg by (pod)(container_spec_memory_limit_bytes{pod=~\"$pod\"})",
-          "format": "table",
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{pod}} | RAM Limit",
-          "datasource": "Metrics",
-          "refId": "A"
-        },
-        {
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "avg by (pod)(container_memory_usage_bytes{pod=~\"$pod\"})",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{pod}} | Used",
-          "datasource": "Metrics",
-          "refId": "B"
-        },
-        {
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "100 - clamp_max((avg by (pod) (container_memory_usage_bytes{pod=~\"$pod\"}) * 100) / avg by (pod) (container_spec_memory_limit_bytes{pod=~\"$pod\"}),100)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{pod}} | Free RAM",
-          "datasource": "Metrics",
-          "refId": "C"
-        },
-        {
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "avg by (pod)(container_spec_memory_swap_limit_bytes{pod=~\"$pod\"})",
-          "format": "table",
-          "hide": true,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{pod}} | Swap Limit",
-          "datasource": "Metrics",
-          "refId": "D"
-        }
-      ]
+      "type": "table"
     },
     {
-      "id": 1032,
-      "gridPos": {
-        "h": 13,
-        "w": 12,
-        "x": 12,
-        "y": 6
-      },
-      "type": "table",
-      "title": "Swap",
-      "default_title_for_rows": "Pod",
       "datasource": "Metrics",
-      "pluginVersion": "9.2.20",
-      "options": {
-        "showHeader": true,
-        "footer": {
-          "show": false
-        }
-      },
+      "default_title_for_rows": "Pod",
+      "description": "",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
           "custom": {
             "align": "left",
             "displayMode": "auto",
             "inspect": false,
             "width": 90
           },
+          "decimals": 2,
           "mappings": [
             {
-              "type": "value",
               "options": {
                 "0": {
-                  "text": "-",
                   "color": "text",
-                  "index": 0
+                  "index": 0,
+                  "text": "-"
                 }
-              }
+              },
+              "type": "value"
             }
           ],
+          "noValue": "-",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -782,8 +822,8 @@
                 "value": null
               },
               {
-                "value": 0,
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -795,12 +835,7 @@
               }
             ]
           },
-          "color": {
-            "mode": "fixed"
-          },
-          "unit": "decbytes",
-          "noValue": "-",
-          "decimals": 2
+          "unit": "decbytes"
         },
         "overrides": [
           {
@@ -862,6 +897,60 @@
           }
         ]
       },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 12,
+        "y": 6
+      },
+      "id": 1032,
+      "options": {
+        "footer": {
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.2.20",
+      "repeat": null,
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg by (pod)(container_memory_swap{pod=~\"$pod\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{pod}} | Used",
+          "refId": "B"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "100 - clamp_max((avg by (pod) (container_memory_swap{pod=~\"$pod\"}) * 100) / avg by (pod) (container_spec_memory_swap_limit_bytes{pod=~\"$pod\"}),100)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{pod}} | Free Swap",
+          "refId": "C"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg by (pod)(container_spec_memory_swap_limit_bytes{pod=~\"$pod\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{pod}} | Swap Limit",
+          "refId": "D"
+        }
+      ],
+      "title": "Swap",
       "transformations": [
         {
           "id": "merge",
@@ -884,10 +973,10 @@
             },
             "indexByName": {
               "Time": 0,
-              "pod": 1,
+              "Value #B": 4,
               "Value #C": 2,
               "Value #D": 3,
-              "Value #B": 4
+              "pod": 1
             },
             "renameByName": {
               "Value #A": "",
@@ -899,46 +988,7 @@
           }
         }
       ],
-      "targets": [
-        {
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "avg by (pod)(container_memory_swap{pod=~\"$pod\"})",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{pod}} | Used",
-          "datasource": "Metrics",
-          "refId": "B"
-        },
-        {
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "100 - clamp_max((avg by (pod) (container_memory_swap{pod=~\"$pod\"}) * 100) / avg by (pod) (container_spec_memory_swap_limit_bytes{pod=~\"$pod\"}),100)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{pod}} | Free Swap",
-          "datasource": "Metrics",
-          "refId": "C"
-        },
-        {
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "avg by (pod)(container_spec_memory_swap_limit_bytes{pod=~\"$pod\"})",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{pod}} | Swap Limit",
-          "datasource": "Metrics",
-          "refId": "D"
-        }
-      ],
-      "description": "",
-      "repeat": null
+      "type": "table"
     },
     {
       "collapsed": true,
@@ -1093,33 +1143,23 @@
       "type": "row"
     },
     {
-      "id": 1081,
-      "gridPos": {
-        "h": 14,
-        "w": 12,
-        "x": 0,
-        "y": 21
-      },
-      "type": "table",
-      "title": "CPU",
-      "default_title_for_rows": "Pod",
       "datasource": "Metrics",
-      "pluginVersion": "9.2.20",
-      "options": {
-        "showHeader": true,
-        "footer": {
-          "show": false
-        }
-      },
+      "default_title_for_rows": "Pod",
+      "description": "",
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
           "custom": {
             "align": "left",
             "displayMode": "auto",
             "inspect": false,
             "width": 90
           },
+          "decimals": 2,
           "mappings": [],
+          "noValue": "-",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1133,12 +1173,7 @@
               }
             ]
           },
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
-          "noValue": "-",
-          "unit": "percent",
-          "decimals": 2
+          "unit": "percent"
         },
         "overrides": [
           {
@@ -1182,6 +1217,58 @@
           }
         ]
       },
+      "gridPos": {
+        "h": 14,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "id": 1081,
+      "options": {
+        "footer": {
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.2.20",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg by (pod)(container_cpu_system_seconds_total{pod=~\"$pod\"} * 100) / avg by (pod) (container_cpu_usage_seconds_total{pod=~\"$pod\"})",
+          "format": "table",
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{pod}} | System Usage",
+          "refId": "A"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg by (pod)(container_cpu_user_seconds_total{pod=~\"$pod\"} * 100) / avg by (pod) (container_cpu_usage_seconds_total{pod=~\"$pod\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{pod}} | User Usage",
+          "refId": "B"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg by (pod)(container_spec_memory_swap_limit_bytes{pod=~\"$pod\"})",
+          "format": "table",
+          "hide": true,
+          "instant": true,
+          "interval": "$interval",
+          "legendFormat": "{{pod}} | Swap Limit",
+          "refId": "D"
+        }
+      ],
+      "title": "CPU",
       "transformations": [
         {
           "id": "merge",
@@ -1212,44 +1299,7 @@
           }
         }
       ],
-      "targets": [
-        {
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "avg by (pod)(container_cpu_system_seconds_total{pod=~\"$pod\"} * 100) / avg by (pod) (container_cpu_usage_seconds_total{pod=~\"$pod\"})",
-          "format": "table",
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{pod}} | System Usage",
-          "datasource": "Metrics",
-          "refId": "A"
-        },
-        {
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "avg by (pod)(container_cpu_user_seconds_total{pod=~\"$pod\"} * 100) / avg by (pod) (container_cpu_usage_seconds_total{pod=~\"$pod\"})",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{pod}} | User Usage",
-          "datasource": "Metrics",
-          "refId": "B"
-        },
-        {
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "avg by (pod)(container_spec_memory_swap_limit_bytes{pod=~\"$pod\"})",
-          "format": "table",
-          "hide": true,
-          "instant": true,
-          "interval": "$interval",
-          "legendFormat": "{{pod}} | Swap Limit",
-          "datasource": "Metrics",
-          "refId": "D"
-        }
-      ],
-      "description": ""
+      "type": "table"
     },
     {
       "aliasColors": {},
@@ -2483,11 +2533,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "datasource": "Metrics",
         "hide": 0,
         "includeAll": false,
@@ -2545,11 +2591,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values(up, environment)",
         "hide": 2,
         "includeAll": true,
@@ -2571,11 +2613,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "pmm-server-postgresql",
-          "value": "pmm-server-postgresql"
-        },
+        "current": {},
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up\"}, service_name)",
         "hide": 2,
         "includeAll": false,
@@ -2598,11 +2636,7 @@
       },
       {
         "allValue": "",
-        "current": {
-          "selected": false,
-          "text": "default",
-          "value": "default"
-        },
+        "current": {},
         "definition": "label_values(container_start_time_seconds,namespace)",
         "hide": 0,
         "includeAll": false,
@@ -2625,11 +2659,7 @@
       },
       {
         "allValue": "",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values(container_start_time_seconds{namespace=~\"$namespace\"},pod)",
         "hide": 0,
         "includeAll": true,
@@ -2659,15 +2689,19 @@
   "timepicker": {
     "collapse": false,
     "enable": true,
-    "hidden": false,
+    "hidden": true,
     "notice": false,
     "now": true,
     "refresh_intervals": [
-      "1s",
       "5s",
+      "10s",
+      "30s",
       "1m",
       "5m",
+      "15m",
+      "30m",
       "1h",
+      "2h",
       "6h",
       "1d"
     ],
@@ -2685,7 +2719,7 @@
     ],
     "type": "timepicker"
   },
-  "timezone": "browser",
+  "timezone": "",
   "title": "DB Cluster Summary",
   "uid": "db-cluster-summary",
   "version": 2,

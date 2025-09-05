@@ -4,51 +4,44 @@
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
-        "limit": 100,
-        "matchAny": true,
         "name": "PMM Annotations",
         "showIn": 0,
-        "tags": [
-          "pmm_annotation",
-          "$service_name"
-        ],
         "target": {
           "limit": 100,
           "matchAny": true,
           "tags": [
-            "pmm_annotation",
-            "$service_name"
+            "$cluster",
+            "$environment",
+            "$rs_nm",
+            "$service_name",
+            "pmm_annotation"
           ],
           "type": "tags"
-        },
-        "type": "tags"
+        }
       },
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": true,
-        "iconColor": "#6ed0e0",
-        "limit": 100,
+        "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "showIn": 0,
-        "tags": [],
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
+        }
       }
     ]
   },
@@ -136,6 +129,61 @@
       "targetBlank": false,
       "title": "PMM",
       "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OS"
+      ],
+      "targetBlank": false,
+      "title": "OS",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": false,
+      "title": "MySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PostgreSQL"
+      ],
+      "targetBlank": false,
+      "title": "PostgreSQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
+      "type": "dashboards"
     }
   ],
   "liveNow": false,
@@ -175,6 +223,10 @@
                   "index": 4,
                   "text": "PRIMARY"
                 },
+                "10": {
+                  "index": 5,
+                  "text": "REMOVED"
+                },
                 "2": {
                   "color": "rgb(193, 159, 20)",
                   "index": 3,
@@ -204,10 +256,6 @@
                 "9": {
                   "index": 6,
                   "text": "ROLLBACK"
-                },
-                "10": {
-                  "index": 5,
-                  "text": "REMOVED"
                 },
                 "null": {
                   "color": "#FF7383",
@@ -453,7 +501,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (100 - (avg by(node_id) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100))",
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\", environment=~\"$environment\"}[1m]*0 + on(node_id) group_left(node_id) (100 - (avg by(node_id) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -518,7 +566,7 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (1 - avg by(node_id)(node_memory_MemAvailable_bytes)/ avg by (node_id) (node_memory_MemTotal_bytes))",
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\", environment=~\"$environment\"}[1m]*0 + on(node_id) group_left(node_id) (1 - avg by(node_id)(node_memory_MemAvailable_bytes)/ avg by (node_id) (node_memory_MemTotal_bytes))",
           "hide": false,
           "instant": false,
           "legendFormat": "__auto",
@@ -582,7 +630,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id)  (sum by (node_id) (rate(node_disk_io_time_seconds_total[$interval])) or (sum by (node_id) (irate(node_disk_io_time_seconds_total[5m]))))",
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\", environment=~\"$environment\"}[1m]*0 + on(node_id) group_left(node_id)  (sum by (node_id) (rate(node_disk_io_time_seconds_total[$interval])) or (sum by (node_id) (irate(node_disk_io_time_seconds_total[5m]))))",
           "interval": "$interval",
           "legendFormat": "{{ node_name }}",
           "range": true,
@@ -644,7 +692,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "avg(mongodb_dbstats_fsUsedSize{service_name=~\"$service_name\"})/ avg (mongodb_dbstats_fsTotalSize{service_name=~\"$service_name\"})",
+          "expr": "avg(mongodb_dbstats_fsUsedSize{service_name=~\"$service_name\", environment=~\"$environment\"})/ avg (mongodb_dbstats_fsTotalSize{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "hide": false,
           "interval": "$interval",
           "legendFormat": "Total Size",
@@ -653,7 +701,7 @@
         },
         {
           "editorMode": "code",
-          "expr": "avg(mongodb_dbstats_fsUsedSize{service_name=~\"$service_name\"})",
+          "expr": "avg(mongodb_dbstats_fsUsedSize{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "hide": true,
           "interval": "$interval",
           "legendFormat": "Usage",
@@ -718,7 +766,7 @@
           "datasourceErrors": {},
           "editorMode": "code",
           "errors": {},
-          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (avg by (node_id) (sum by (node_id)(\n(rate(node_disk_reads_completed_total[$interval]) or \nirate(node_disk_reads_completed_total[5s]))\n)))",
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\", environment=~\"$environment\"}[1m]*0 + on(node_id) group_left(node_id) (avg by (node_id) (sum by (node_id)(\n(rate(node_disk_reads_completed_total[$interval]) or \nirate(node_disk_reads_completed_total[5s]))\n)))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -734,7 +782,7 @@
           "datasourceErrors": {},
           "editorMode": "code",
           "errors": {},
-          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (avg by (node_id) (sum by(node_id)(\n(rate(node_disk_writes_completed_total[$interval]) or \nirate(node_disk_writes_completed_total[5s])) \n)))",
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\", environment=~\"$environment\"}[1m]*0 + on(node_id) group_left(node_id) (avg by (node_id) (sum by(node_id)(\n(rate(node_disk_writes_completed_total[$interval]) or \nirate(node_disk_writes_completed_total[5s])) \n)))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -809,7 +857,7 @@
           "datasourceErrors": {},
           "editorMode": "code",
           "errors": {},
-          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (sum by (node_id) (rate(node_network_receive_bytes_total{device!=\"lo\"}[$interval])) or sum by (node_id) (irate(node_network_receive_bytes_total{device!=\"lo\"}[5m])) or sum by (node_id) (max_over_time(rdsosmetrics_network_rx[$interval])) or sum by (node_id) (max_over_time(rdsosmetrics_network_rx[5m])))",
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\", environment=~\"$environment\"}[1m]*0 + on(node_id) group_left(node_id) (sum by (node_id) (rate(node_network_receive_bytes_total{device!=\"lo\"}[$interval])) or sum by (node_id) (irate(node_network_receive_bytes_total{device!=\"lo\"}[5m])) or sum by (node_id) (max_over_time(rdsosmetrics_network_rx[$interval])) or sum by (node_id) (max_over_time(rdsosmetrics_network_rx[5m])))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -825,7 +873,7 @@
           "datasourceErrors": {},
           "editorMode": "code",
           "errors": {},
-          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (sum by (node_id) (rate(node_network_transmit_bytes_total{device!=\"lo\"}[$interval])) or sum by (node_id) (irate(node_network_transmit_bytes_total{device!=\"lo\"}[5m])) or\nsum by (node_id) (max_over_time(rdsosmetrics_network_tx[$interval])) or sum by (node_id) (max_over_time(rdsosmetrics_network_tx[5m])))",
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\", environment=~\"$environment\"}[1m]*0 + on(node_id) group_left(node_id) (sum by (node_id) (rate(node_network_transmit_bytes_total{device!=\"lo\"}[$interval])) or sum by (node_id) (irate(node_network_transmit_bytes_total{device!=\"lo\"}[5m])) or\nsum by (node_id) (max_over_time(rdsosmetrics_network_tx[$interval])) or sum by (node_id) (max_over_time(rdsosmetrics_network_tx[5m])))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -903,7 +951,7 @@
           "editorMode": "code",
           "errors": {},
           "exemplar": true,
-          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}[1m]*0 + on(node_id) group_left(node_id) (avg by (node_id)  (time() - container_start_time_seconds{id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or avg by (node_id) ((node_time_seconds - node_boot_time_seconds) or (time() - node_boot_time_seconds)))",
+          "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\", environment=~\"$environment\"}[1m]*0 + on(node_id) group_left(node_id) (avg by (node_id)  (time() - container_start_time_seconds{id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or avg by (node_id) ((node_time_seconds - node_boot_time_seconds) or (time() - node_boot_time_seconds)))",
           "format": "time_series",
           "hide": false,
           "interval": "5m",
@@ -974,7 +1022,7 @@
           "editorMode": "code",
           "errors": {},
           "exemplar": false,
-          "expr": "avg by (service_name,mongodb) (mongodb_version_info{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name,mongodb) (mongodb_version_info{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1020,14 +1068,19 @@
             {
               "options": {
                 "0": {
+                  "color": "semi-dark-red",
                   "index": 11,
-                  "text": "STARTUP",
-                  "color": "semi-dark-red"
+                  "text": "STARTUP"
                 },
                 "1": {
                   "color": "rgb(107, 152, 102)",
                   "index": 4,
                   "text": "PRIMARY"
+                },
+                "10": {
+                  "color": "semi-dark-red",
+                  "index": 5,
+                  "text": "REMOVED"
                 },
                 "2": {
                   "color": "rgb(193, 159, 20)",
@@ -1035,19 +1088,19 @@
                   "text": "SECONDARY"
                 },
                 "3": {
+                  "color": "semi-dark-red",
                   "index": 10,
-                  "text": "RECOVERING",
-                  "color": "semi-dark-red"
+                  "text": "RECOVERING"
                 },
                 "5": {
+                  "color": "semi-dark-red",
                   "index": 9,
-                  "text": "STARTUP2",
-                  "color": "semi-dark-red"
+                  "text": "STARTUP2"
                 },
                 "6": {
+                  "color": "semi-dark-red",
                   "index": 8,
-                  "text": "UNKNOWN",
-                  "color": "semi-dark-red"
+                  "text": "UNKNOWN"
                 },
                 "7": {
                   "color": "#8B8000",
@@ -1055,19 +1108,14 @@
                   "text": "ARBITER"
                 },
                 "8": {
+                  "color": "semi-dark-red",
                   "index": 7,
-                  "text": "DOWN",
-                  "color": "semi-dark-red"
+                  "text": "DOWN"
                 },
                 "9": {
+                  "color": "semi-dark-red",
                   "index": 6,
-                  "text": "ROLLBACK",
-                  "color": "semi-dark-red"
-                },
-                "10": {
-                  "index": 5,
-                  "text": "REMOVED",
-                  "color": "semi-dark-red"
+                  "text": "ROLLBACK"
                 },
                 "null": {
                   "color": "#FF7383",
@@ -1225,7 +1273,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "avg by (legacy_op_type) (rate(mongodb_ss_opcountersRepl{service_name=~\"$service_name\", legacy_op_type!~\"(command|query|getmore)\"}[$interval]))",
+          "expr": "avg by (legacy_op_type) (rate(mongodb_ss_opcountersRepl{service_name=~\"$service_name\", environment=~\"$environment\", legacy_op_type!~\"(command|query|getmore)\"}[$interval]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1237,7 +1285,7 @@
         },
         {
           "editorMode": "code",
-          "expr": "avg by () (rate(mongodb_ss_metrics_ttl_deletedDocuments{service_name=~\"$service_name\"}[$interval]))",
+          "expr": "avg by () (rate(mongodb_ss_metrics_ttl_deletedDocuments{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1249,7 +1297,7 @@
         },
         {
           "editorMode": "code",
-          "expr": "avg by (legacy_op_type) (rate(mongodb_ss_opcounters{service_name=~\"$service_name\", legacy_op_type!=\"command\"}[$interval]))",
+          "expr": "avg by (legacy_op_type) (rate(mongodb_ss_opcounters{service_name=~\"$service_name\", environment=~\"$environment\", legacy_op_type!=\"command\"}[$interval]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1420,7 +1468,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "avg by (op_type) (rate(mongodb_ss_opLatencies_latency{service_name=~\"$service_name\"}[$interval]) / (rate(mongodb_ss_opLatencies_ops{service_name=~\"$service_name\"}[$interval]) > 0) or irate(mongodb_ss_opLatencies_latency{service_name=~\"$service_name\"}[5m]) / (irate(mongodb_ss_opLatencies_ops{service_name=~\"$service_name\"}[5m]) > 0))",
+          "expr": "avg by (op_type) (rate(mongodb_ss_opLatencies_latency{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) / (rate(mongodb_ss_opLatencies_ops{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) > 0) or irate(mongodb_ss_opLatencies_latency{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) / (irate(mongodb_ss_opLatencies_ops{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) > 0))",
           "interval": "$interval",
           "legendFormat": "{{op_type}}",
           "range": true,
@@ -1506,7 +1554,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "topk (5,sum by (database,collection) ((rate(mongodb_top_insert_count{service_name=~\"$service_name\"}+mongodb_top_remove_count{service_name=~\"$service_name\"}+mongodb_top_update_count{service_name=~\"$service_name\"})[$interval]) or (irate(mongodb_top_insert_count{service_name=~\"$service_name\"}+mongodb_top_remove_count{service_name=~\"$service_name\"}+mongodb_top_update_count{service_name=~\"$service_name\"})[5s])))",
+          "expr": "topk (5,sum by (database,collection) ((rate(mongodb_top_insert_count{service_name=~\"$service_name\", environment=~\"$environment\"}+mongodb_top_remove_count{service_name=~\"$service_name\", environment=~\"$environment\"}+mongodb_top_update_count{service_name=~\"$service_name\", environment=~\"$environment\"})[$interval]) or (irate(mongodb_top_insert_count{service_name=~\"$service_name\", environment=~\"$environment\"}+mongodb_top_remove_count{service_name=~\"$service_name\", environment=~\"$environment\"}+mongodb_top_update_count{service_name=~\"$service_name\", environment=~\"$environment\"})[5s])))",
           "instant": false,
           "interval": "",
           "key": "Q-bf62f68c-ad8e-4fb5-83bb-df50324b416b-0",
@@ -1582,7 +1630,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "(sum by ()(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[$interval])) /\nsum(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval]))\nor\nsum by ()(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[5m])) /\nsum(irate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m])))",
+          "expr": "(sum by ()(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned_objects\"}[$interval])) /\nsum(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[$interval]))\nor\nsum by ()(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned_objects\"}[5m])) /\nsum(irate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[5m])))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1594,7 +1642,7 @@
         },
         {
           "editorMode": "code",
-          "expr": "(sum by ()(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[$interval])) /\nsum(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval]))\nor\nsum by ()(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[5m])) /\nsum(irate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m])))",
+          "expr": "(sum by ()(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned\"}[$interval])) /\nsum(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[$interval]))\nor\nsum by ()(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned\"}[5m])) /\nsum(irate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[5m])))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1709,7 +1757,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "max by (type) (mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\"})",
+          "expr": "max by (type) (mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1832,7 +1880,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "avg by() (mongodb_ss_globalLock_activeClients_readers{service_name=~\"$service_name\"})",
+          "expr": "avg by() (mongodb_ss_globalLock_activeClients_readers{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1844,7 +1892,7 @@
         },
         {
           "editorMode": "code",
-          "expr": "avg by() (mongodb_ss_globalLock_activeClients_writers{service_name=~\"$service_name\"})",
+          "expr": "avg by() (mongodb_ss_globalLock_activeClients_writers{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1856,7 +1904,7 @@
         },
         {
           "editorMode": "code",
-          "expr": "avg by() (mongodb_ss_globalLock_currentQueue{service_name=~\"$service_name\",count_type=\"readers\"})",
+          "expr": "avg by() (mongodb_ss_globalLock_currentQueue{service_name=~\"$service_name\", environment=~\"$environment\",count_type=\"readers\"})",
           "hide": false,
           "legendFormat": "Queued Readers",
           "range": true,
@@ -1864,7 +1912,7 @@
         },
         {
           "editorMode": "code",
-          "expr": "avg by() (mongodb_ss_globalLock_currentQueue{service_name=~\"$service_name\",count_type=\"writers\"})",
+          "expr": "avg by() (mongodb_ss_globalLock_currentQueue{service_name=~\"$service_name\", environment=~\"$environment\",count_type=\"writers\"})",
           "hide": false,
           "interval": "",
           "legendFormat": "Queued Writers",
@@ -1975,7 +2023,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "avg by () (mongodb_ss_connections{service_name=~\"$service_name\",conn_type=~\"current\"})",
+          "expr": "avg by () (mongodb_ss_connections{service_name=~\"$service_name\", environment=~\"$environment\",conn_type=~\"current\"})",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1987,7 +2035,7 @@
         },
         {
           "editorMode": "code",
-          "expr": "avg by() (mongodb_ss_connections{service_name=~\"$service_name\",conn_type=~\"available\"})",
+          "expr": "avg by() (mongodb_ss_connections{service_name=~\"$service_name\", environment=~\"$environment\",conn_type=~\"available\"})",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -2565,7 +2613,7 @@
           "targets": [
             {
               "editorMode": "code",
-              "expr": "mongodb_mongod_replset_oplog_head_timestamp{service_name=~\"$service_name\"}-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"}",
+              "expr": "mongodb_mongod_replset_oplog_head_timestamp{service_name=~\"$service_name\", environment=~\"$environment\"}-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\", environment=~\"$environment\"}",
               "hide": false,
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2689,7 +2737,7 @@
           "targets": [
             {
               "editorMode": "code",
-              "expr": "max(rate(mongodb_ss_flowControl_isLaggedCount{service_name=~\"$service_name\"}[$interval]))",
+              "expr": "max(rate(mongodb_ss_flowControl_isLaggedCount{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "fc_count",
               "range": true,
@@ -2697,7 +2745,7 @@
             },
             {
               "editorMode": "code",
-              "expr": "max(rate(mongodb_ss_flowControl_isLaggedTimeMicros{service_name=~\"$service_name\"}[$interval]))",
+              "expr": "max(rate(mongodb_ss_flowControl_isLaggedTimeMicros{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "hide": false,
               "interval": "$interval",
               "legendFormat": "fc_time",
@@ -2804,7 +2852,7 @@
           "targets": [
             {
               "editorMode": "code",
-              "expr": "avg by (type) ((max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\",txn_rw=\"read\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\",txn_rw=\"read\"}[5m])) -\n(max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\",txn_rw=\"read\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\",txn_rw=\"read\"}[5m])))",
+              "expr": "avg by (type) ((max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\", environment=~\"$environment\",txn_rw=\"read\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\", environment=~\"$environment\",txn_rw=\"read\"}[5m])) -\n(max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\", environment=~\"$environment\",txn_rw=\"read\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\", environment=~\"$environment\",txn_rw=\"read\"}[5m])))",
               "interval": "$interval",
               "intervalFactor": 1,
               "legendFormat": "read",
@@ -2815,7 +2863,7 @@
             },
             {
               "editorMode": "code",
-              "expr": "avg by (type) ((max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\",txn_rw=\"write\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\",txn_rw=\"write\"}[5m])) -\n(max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\",txn_rw=\"write\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\",txn_rw=\"write\"}[5m])))",
+              "expr": "avg by (type) ((max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\", environment=~\"$environment\",txn_rw=\"write\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\", environment=~\"$environment\",txn_rw=\"write\"}[5m])) -\n(max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\", environment=~\"$environment\",txn_rw=\"write\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\", environment=~\"$environment\",txn_rw=\"write\"}[5m])))",
               "hide": false,
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2897,13 +2945,13 @@
               "mappings": [
                 {
                   "options": {
+                    "-": {
+                      "index": 1,
+                      "text": "No Data"
+                    },
                     "0": {
                       "color": "#8b0000",
                       "index": 0,
-                      "text": "No Data"
-                    },
-                    "-": {
-                      "index": 1,
                       "text": "No Data"
                     }
                   },
@@ -3885,7 +3933,7 @@
       "type": "row"
     }
   ],
-  "refresh": "",
+  "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
@@ -3899,11 +3947,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "datasource": "Metrics",
         "hide": 0,
         "includeAll": false,
@@ -3961,11 +4005,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
+        "current": {},
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 0,
         "includeAll": true,
@@ -3989,11 +4029,7 @@
       {
         "allFormat": "blob",
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "",
-          "value": ""
-        },
+        "current": {},
         "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\"},cluster)",
         "hide": 0,
         "includeAll": false,
@@ -4014,11 +4050,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "",
-          "value": ""
-        },
+        "current": {},
         "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\"}, set)",
         "hide": 0,
         "includeAll": false,
@@ -4038,11 +4070,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$rs_nm\"}, service_name)",
         "hide": 0,
         "includeAll": true,
@@ -4065,15 +4093,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "definition": "label_values(mongodb_up{cluster=~\"$cluster\",service_name=~\"$service_name\"}, node_name)",
         "hide": 2,
         "includeAll": true,
@@ -4094,11 +4114,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "query_result(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\",set=~\"$rs_nm\"}==2)",
         "hide": 2,
         "includeAll": true,
@@ -4122,14 +4138,18 @@
     "to": "now"
   },
   "timepicker": {
-    "hidden": false,
+    "hidden": true,
     "now": true,
     "refresh_intervals": [
-      "1s",
       "5s",
+      "10s",
+      "30s",
       "1m",
       "5m",
+      "15m",
+      "30m",
       "1h",
+      "2h",
       "6h",
       "1d"
     ],
@@ -4145,7 +4165,7 @@
       "30d"
     ]
   },
-  "timezone": "browser",
+  "timezone": "",
   "title": "MongoDB ReplSet Summary",
   "uid": "mongodb-replicaset-summary",
   "version": 1,

@@ -3,44 +3,44 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
-        "limit": 100,
-        "matchAny": true,
         "name": "PMM Annotations",
         "showIn": 0,
-        "tags": [
-          "pmm_annotation"
-        ],
         "target": {
           "limit": 100,
           "matchAny": true,
           "tags": [
+            "$backend",
+            "$frontend",
+            "$service_name",
             "pmm_annotation"
           ],
           "type": "tags"
-        },
-        "type": "tags"
+        }
       },
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": true,
-        "iconColor": "#6ed0e0",
-        "limit": 100,
+        "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "showIn": 0,
-        "tags": [],
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
+        }
       }
     ]
   },
@@ -128,6 +128,61 @@
       ],
       "targetBlank": false,
       "title": "PMM",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OS"
+      ],
+      "targetBlank": false,
+      "title": "OS",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MongoDB"
+      ],
+      "targetBlank": false,
+      "title": "MongoDB",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PostgreSQL"
+      ],
+      "targetBlank": false,
+      "title": "PostgreSQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
       "type": "dashboards"
     }
   ],
@@ -304,7 +359,7 @@
         {
           "datasource": "Metrics",
           "exemplar": false,
-          "expr": "count by (service_name,proxy) (haproxy_frontend_status{service_name=~\"$service_name\",proxy=~\"$frontend\"})",
+          "expr": "count by (service_name,proxy) (haproxy_frontend_status{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$frontend\"})",
           "format": "time_series",
           "instant": true,
           "interval": "$interval",
@@ -385,7 +440,7 @@
         {
           "datasource": "Metrics",
           "exemplar": false,
-          "expr": "avg by (service_name,proxy) (haproxy_backend_status{service_name=~\"$service_name\",proxy=~\"$backend\"})",
+          "expr": "avg by (service_name,proxy) (haproxy_backend_status{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$backend\"})",
           "format": "time_series",
           "instant": true,
           "interval": "$interval",
@@ -461,7 +516,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "count(count by (server) (haproxy_server_status{service_name=~\"$service_name\",proxy=~\"$active_backend\"} == 1))",
+          "expr": "count(count by (server) (haproxy_server_status{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"} == 1))",
           "interval": "$interval",
           "legendFormat": "",
           "refId": "A"
@@ -525,7 +580,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum by () (haproxy_server_current_sessions{service_name=~\"$service_name\",proxy=~\"$backend|$frontend\"})",
+          "expr": "sum by () (haproxy_server_current_sessions{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$backend|$frontend\"})",
           "interval": "$interval",
           "legendFormat": "",
           "refId": "A"
@@ -690,7 +745,7 @@
       "showTimeAxis": true,
       "targets": [
         {
-          "expr": "avg by (service_name,proxy,server) (haproxy_server_status{service_name=~\"$service_name\",proxy=~\"$servers_backend\"})",
+          "expr": "avg by (service_name,proxy,server) (haproxy_server_status{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$servers_backend\"})",
           "format": "time_series",
           "instant": false,
           "interval": "$interval",
@@ -838,7 +893,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "max by (proxy) (increase(haproxy_frontend_sessions_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "max by (proxy) (increase(haproxy_frontend_sessions_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -934,7 +989,7 @@
           "pluginVersion": "8.3.5",
           "targets": [
             {
-              "expr": "avg by (proxy) (haproxy_frontend_limit_sessions{proxy=~\"$frontend\",service_name=~\"$service_name\"})",
+              "expr": "avg by (proxy) (haproxy_frontend_limit_sessions{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"})",
               "format": "table",
               "instant": true,
               "interval": "$interval",
@@ -942,7 +997,7 @@
               "refId": "A"
             },
             {
-              "expr": "avg by (proxy) (haproxy_frontend_max_sessions{proxy=~\"$frontend\",service_name=~\"$service_name\"})",
+              "expr": "avg by (proxy) (haproxy_frontend_max_sessions{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"})",
               "format": "table",
               "instant": true,
               "interval": "$interval",
@@ -1018,7 +1073,7 @@
           "pluginVersion": "8.3.5",
           "targets": [
             {
-              "expr": "max by (proxy) (haproxy_frontend_limit_session_rate{proxy=~\"$frontend\",service_name=~\"$service_name\"})",
+              "expr": "max by (proxy) (haproxy_frontend_limit_session_rate{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"})",
               "format": "table",
               "instant": true,
               "interval": "$interval",
@@ -1026,7 +1081,7 @@
               "refId": "A"
             },
             {
-              "expr": "max by (proxy) (haproxy_frontend_max_session_rate{proxy=~\"$frontend\",service_name=~\"$service_name\"})",
+              "expr": "max by (proxy) (haproxy_frontend_max_session_rate{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"})",
               "format": "table",
               "instant": true,
               "interval": "$interval",
@@ -1123,7 +1178,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "max by (proxy) (increase(haproxy_frontend_connections_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "max by (proxy) (increase(haproxy_frontend_connections_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1133,7 +1188,7 @@
               "step": 60
             },
             {
-              "expr": "max by (proxy) (increase(haproxy_frontend_denied_connections_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "max by (proxy) (increase(haproxy_frontend_denied_connections_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - Denied",
               "refId": "B"
@@ -1238,7 +1293,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (proxy) (rate(haproxy_frontend_bytes_in_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]) or irate(haproxy_frontend_bytes_in_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (proxy) (rate(haproxy_frontend_bytes_in_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(haproxy_frontend_bytes_in_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1248,7 +1303,7 @@
               "step": 60
             },
             {
-              "expr": "avg by (proxy) (rate(haproxy_frontend_bytes_out_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]) or irate(haproxy_frontend_bytes_out_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (proxy) (rate(haproxy_frontend_bytes_out_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(haproxy_frontend_bytes_out_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "interval": "$interval",
               "legendFormat": "Outgoing - {{proxy}}",
               "refId": "B"
@@ -1349,7 +1404,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "max by (proxy) (increase(haproxy_frontend_request_errors_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "max by (proxy) (increase(haproxy_frontend_request_errors_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -1455,7 +1510,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (proxy) (increase(haproxy_frontend_requests_denied_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "avg by (proxy) (increase(haproxy_frontend_requests_denied_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1560,7 +1615,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (proxy) (increase(haproxy_frontend_denied_sessions_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "avg by (proxy) (increase(haproxy_frontend_denied_sessions_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1665,7 +1720,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (proxy) (increase(haproxy_frontend_responses_denied_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "avg by (proxy) (increase(haproxy_frontend_responses_denied_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1786,7 +1841,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name,proxy) (increase(haproxy_backend_sessions_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "avg by (service_name,proxy) (increase(haproxy_backend_sessions_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1879,7 +1934,7 @@
             {
               "datasource": "Metrics",
               "exemplar": false,
-              "expr": "avg by (proxy) (haproxy_backend_limit_sessions{proxy=~\"$backend\",service_name=~\"$service_name\"})",
+              "expr": "avg by (proxy) (haproxy_backend_limit_sessions{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"})",
               "format": "table",
               "instant": true,
               "interval": "$interval",
@@ -1889,7 +1944,7 @@
             {
               "datasource": "Metrics",
               "exemplar": false,
-              "expr": "avg by (proxy) (haproxy_backend_max_sessions{proxy=~\"$backend\",service_name=~\"$service_name\"})",
+              "expr": "avg by (proxy) (haproxy_backend_max_sessions{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"})",
               "format": "table",
               "instant": true,
               "interval": "$interval",
@@ -1964,7 +2019,7 @@
           "pluginVersion": "8.3.5",
           "targets": [
             {
-              "expr": "max by (proxy) (haproxy_backend_limit_session_rate{proxy=~\"$backend\",service_name=~\"$service_name\"})",
+              "expr": "max by (proxy) (haproxy_backend_limit_session_rate{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"})",
               "format": "table",
               "hide": true,
               "instant": true,
@@ -1973,7 +2028,7 @@
               "refId": "A"
             },
             {
-              "expr": "max by (proxy) (haproxy_backend_max_session_rate{proxy=~\"$backend\",service_name=~\"$service_name\"})",
+              "expr": "max by (proxy) (haproxy_backend_max_session_rate{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"})",
               "format": "table",
               "instant": true,
               "interval": "$interval",
@@ -2069,7 +2124,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (proxy) (rate(haproxy_backend_bytes_in_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]) or irate(haproxy_backend_bytes_in_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (proxy) (rate(haproxy_backend_bytes_in_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(haproxy_backend_bytes_in_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2079,7 +2134,7 @@
               "step": 60
             },
             {
-              "expr": "avg by (proxy) (rate(haproxy_backend_bytes_out_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]) or irate(haproxy_backend_bytes_out_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (proxy) (rate(haproxy_backend_bytes_out_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(haproxy_backend_bytes_out_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "interval": "$interval",
               "legendFormat": "Outgoing - {{proxy}}",
               "refId": "B"
@@ -2188,7 +2243,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (proxy) (increase(haproxy_backend_server_aborts_total{proxy=~\"$backend\",service_name=~\"$service_name\"}))",
+              "expr": "avg by (proxy) (increase(haproxy_backend_server_aborts_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2198,7 +2253,7 @@
               "step": 60
             },
             {
-              "expr": "avg by (proxy) (increase(haproxy_backend_client_aborts_total{proxy=~\"$backend\",service_name=~\"$service_name\"}))",
+              "expr": "avg by (proxy) (increase(haproxy_backend_client_aborts_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - Client",
               "refId": "B"
@@ -2299,7 +2354,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "max by (proxy) (increase(haproxy_backend_connection_errors_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "max by (proxy) (increase(haproxy_backend_connection_errors_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2405,7 +2460,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "max by (proxy) (increase(haproxy_backend_connection_attempts_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "max by (proxy) (increase(haproxy_backend_connection_attempts_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2511,7 +2566,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "max by (proxy) (increase(haproxy_backend_connection_reuses_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "max by (proxy) (increase(haproxy_backend_connection_reuses_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2617,7 +2672,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "max by (proxy) (max_over_time(haproxy_backend_queue_time_average_seconds{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]) or max_over_time(haproxy_backend_queue_time_average_seconds{proxy=~\"$backend\",service_name=~\"$service_name\"}[5m]))",
+              "expr": "max by (proxy) (max_over_time(haproxy_backend_queue_time_average_seconds{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or max_over_time(haproxy_backend_queue_time_average_seconds{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2723,7 +2778,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "max by (proxy) (max_over_time(haproxy_backend_current_queue{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]) or max_over_time(haproxy_backend_current_queue{proxy=~\"$backend\",service_name=~\"$service_name\"}[5m]))",
+              "expr": "max by (proxy) (max_over_time(haproxy_backend_current_queue{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or max_over_time(haproxy_backend_current_queue{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2829,7 +2884,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "max by (proxy) (increase(haproxy_backend_responses_denied_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "max by (proxy) (increase(haproxy_backend_responses_denied_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2935,7 +2990,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "max by (proxy) (increase(haproxy_backend_requests_denied_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "max by (proxy) (increase(haproxy_backend_requests_denied_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3041,7 +3096,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (proxy) (increase(haproxy_backend_response_errors_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "avg by (proxy) (increase(haproxy_backend_response_errors_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3147,7 +3202,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (proxy) (increase(haproxy_backend_redispatch_warnings_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "avg by (proxy) (increase(haproxy_backend_redispatch_warnings_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3253,7 +3308,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (proxy) (increase(haproxy_backend_failed_header_rewriting_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "avg by (proxy) (increase(haproxy_backend_failed_header_rewriting_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3409,7 +3464,7 @@
             {
               "datasource": "Metrics",
               "exemplar": false,
-              "expr": "max by (server,proxy) (haproxy_server_weight{service_name=~\"$service_name\",proxy=~\"$active_backend\"})",
+              "expr": "max by (server,proxy) (haproxy_server_weight{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"})",
               "format": "table",
               "instant": true,
               "interval": "$interval",
@@ -3419,7 +3474,7 @@
             {
               "datasource": "Metrics",
               "exemplar": false,
-              "expr": "max by (server,proxy) (haproxy_server_max_session_rate{service_name=~\"$service_name\",proxy=~\"$active_backend\"})",
+              "expr": "max by (server,proxy) (haproxy_server_max_session_rate{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"})",
               "format": "table",
               "instant": true,
               "interval": "$interval",
@@ -3429,7 +3484,7 @@
             {
               "datasource": "Metrics",
               "exemplar": false,
-              "expr": "max by (server,proxy) (haproxy_server_last_session_seconds{service_name=~\"$service_name\",proxy=~\"$active_backend\"})",
+              "expr": "max by (server,proxy) (haproxy_server_last_session_seconds{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"})",
               "format": "table",
               "instant": true,
               "interval": "$interval",
@@ -3518,7 +3573,7 @@
           "showTimeAxis": true,
           "targets": [
             {
-              "expr": "count by (server) (avg by (server) (increase(haproxy_server_sessions_total{service_name=~\"$service_name\",proxy=~\"$active_backend\"}[$interval])) > 0)",
+              "expr": "count by (server) (avg by (server) (increase(haproxy_server_sessions_total{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"}[$interval])) > 0)",
               "format": "time_series",
               "instant": false,
               "interval": "$interval",
@@ -3694,7 +3749,7 @@
           "steppedLine": true,
           "targets": [
             {
-              "expr": "max by (proxy,server) (increase(haproxy_server_sessions_total{service_name=~\"$service_name\",proxy=~\"$active_backend\"}[$interval]))",
+              "expr": "max by (proxy,server) (increase(haproxy_server_sessions_total{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - {{server}}",
               "refId": "A"
@@ -3788,7 +3843,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg by (server, proxy) (rate(haproxy_server_bytes_in_total{proxy=~\"$active_backend\",service_name=~\"$service_name\"}[$interval]) or irate(haproxy_server_bytes_in_total{proxy=~\"$active_backend\",service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (server, proxy) (rate(haproxy_server_bytes_in_total{proxy=~\"$active_backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(haproxy_server_bytes_in_total{proxy=~\"$active_backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "interval": "$interval",
               "legendFormat": "{{server}} - {{proxy}}",
               "refId": "B"
@@ -3886,7 +3941,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg by (server, proxy) (rate(haproxy_server_bytes_out_total{proxy=~\"$active_backend\",service_name=~\"$service_name\"}[$interval]) or irate(haproxy_server_bytes_out_total{proxy=~\"$active_backend\",service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (server, proxy) (rate(haproxy_server_bytes_out_total{proxy=~\"$active_backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(haproxy_server_bytes_out_total{proxy=~\"$active_backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "interval": "$interval",
               "legendFormat": "{{server}} - {{proxy}}",
               "refId": "B"
@@ -3980,7 +4035,7 @@
             {
               "datasource": "Metrics",
               "exemplar": false,
-              "expr": "max by (server,proxy) (haproxy_server_queue_limit{service_name=~\"$service_name\",proxy=~\"$backend\"})",
+              "expr": "max by (server,proxy) (haproxy_server_queue_limit{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$backend\"})",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -3991,7 +4046,7 @@
             {
               "datasource": "Metrics",
               "exemplar": false,
-              "expr": "max by (server,proxy) (haproxy_server_max_queue{service_name=~\"$service_name\",proxy=~\"$backend\"})",
+              "expr": "max by (server,proxy) (haproxy_server_max_queue{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$backend\"})",
               "format": "table",
               "instant": true,
               "interval": "$interval",
@@ -4087,7 +4142,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max by (proxy,server) (max_over_time(haproxy_server_current_queue{service_name=~\"$service_name\",proxy=~\"$active_backend\"}[$interval]))",
+              "expr": "max by (proxy,server) (max_over_time(haproxy_server_current_queue{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - {{server}}",
               "refId": "A"
@@ -4178,7 +4233,7 @@
           "repeatDirection": "v",
           "targets": [
             {
-              "expr": "max by (server,proxy) (haproxy_server_server_idle_connections_limit{service_name=~\"$service_name\",proxy=~\"$backend\"})",
+              "expr": "max by (server,proxy) (haproxy_server_server_idle_connections_limit{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$backend\"})",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -4187,7 +4242,7 @@
               "refId": "A"
             },
             {
-              "expr": "max by (server,proxy) (haproxy_server_server_idle_connections_current{service_name=~\"$service_name\",proxy=~\"$backend\"})",
+              "expr": "max by (server,proxy) (haproxy_server_server_idle_connections_current{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$backend\"})",
               "format": "table",
               "instant": true,
               "interval": "$interval",
@@ -4283,7 +4338,7 @@
           "steppedLine": true,
           "targets": [
             {
-              "expr": "max by (proxy,server) (increase(haproxy_server_connection_attempts_total{service_name=~\"$service_name\",proxy=~\"$active_backend\"}[$interval]))",
+              "expr": "max by (proxy,server) (increase(haproxy_server_connection_attempts_total{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - {{server}}",
               "refId": "A"
@@ -4376,7 +4431,7 @@
           "steppedLine": true,
           "targets": [
             {
-              "expr": "max by (proxy,server) (increase(haproxy_server_connection_reuses_total{service_name=~\"$service_name\",proxy=~\"$active_backend\"}[$interval]))",
+              "expr": "max by (proxy,server) (increase(haproxy_server_connection_reuses_total{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - {{server}}",
               "refId": "A"
@@ -4469,7 +4524,7 @@
           "steppedLine": true,
           "targets": [
             {
-              "expr": "max by (proxy,server) (increase(haproxy_server_connection_errors_total{service_name=~\"$service_name\",proxy=~\"$active_backend\"}[$interval]))",
+              "expr": "max by (proxy,server) (increase(haproxy_server_connection_errors_total{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - {{server}}",
               "refId": "A"
@@ -4562,7 +4617,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "max by (proxy,server) (increase(haproxy_server_max_total_time_seconds{service_name=~\"$service_name\",proxy=~\"$active_backend\"}[$interval]))",
+              "expr": "max by (proxy,server) (increase(haproxy_server_max_total_time_seconds{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - {{server}}",
               "refId": "A"
@@ -4655,7 +4710,7 @@
           "steppedLine": true,
           "targets": [
             {
-              "expr": "max by (proxy,server) (increase(haproxy_server_response_errors_total{service_name=~\"$service_name\",proxy=~\"$active_backend\"}[$interval]))",
+              "expr": "max by (proxy,server) (increase(haproxy_server_response_errors_total{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - {{server}}",
               "refId": "A"
@@ -4748,7 +4803,7 @@
           "steppedLine": true,
           "targets": [
             {
-              "expr": "max by (proxy,server) (increase(haproxy_server_client_aborts_total{service_name=~\"$service_name\",proxy=~\"$active_backend\"}[$interval]))",
+              "expr": "max by (proxy,server) (increase(haproxy_server_client_aborts_total{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - {{server}}",
               "refId": "A"
@@ -4841,7 +4896,7 @@
           "steppedLine": true,
           "targets": [
             {
-              "expr": "max by (proxy,server) (increase(haproxy_server_retry_warnings_total{service_name=~\"$service_name\",proxy=~\"$active_backend\"}[$interval]))",
+              "expr": "max by (proxy,server) (increase(haproxy_server_retry_warnings_total{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - {{server}}",
               "refId": "A"
@@ -4934,7 +4989,7 @@
           "steppedLine": true,
           "targets": [
             {
-              "expr": "max by (proxy,server) (increase(haproxy_server_redispatch_warnings_total{service_name=~\"$service_name\",proxy=~\"$active_backend\"}[$interval]))",
+              "expr": "max by (proxy,server) (increase(haproxy_server_redispatch_warnings_total{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - {{server}}",
               "refId": "A"
@@ -5027,7 +5082,7 @@
           "steppedLine": true,
           "targets": [
             {
-              "expr": "max by (proxy,server) (increase(haproxy_server_failed_header_rewriting_total{service_name=~\"$service_name\",proxy=~\"$active_backend\"}[$interval]))",
+              "expr": "max by (proxy,server) (increase(haproxy_server_failed_header_rewriting_total{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - {{server}}",
               "refId": "A"
@@ -5119,7 +5174,7 @@
             {
               "datasource": "Metrics",
               "exemplar": false,
-              "expr": "max by (server,proxy) (haproxy_server_check_failures_total{service_name=~\"$service_name\",proxy=~\"$backend\"})",
+              "expr": "max by (server,proxy) (haproxy_server_check_failures_total{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$backend\"})",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -5130,7 +5185,7 @@
             {
               "datasource": "Metrics",
               "exemplar": false,
-              "expr": "max by (server,proxy) (haproxy_server_check_up_down_total{service_name=~\"$service_name\",proxy=~\"$backend\"})",
+              "expr": "max by (server,proxy) (haproxy_server_check_up_down_total{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$backend\"})",
               "format": "table",
               "instant": true,
               "interval": "$interval",
@@ -5226,7 +5281,7 @@
           "steppedLine": true,
           "targets": [
             {
-              "expr": "max by (proxy,server) (increase(haproxy_server_server_aborts_total{service_name=~\"$service_name\",proxy=~\"$active_backend\"}[$interval]))",
+              "expr": "max by (proxy,server) (increase(haproxy_server_server_aborts_total{service_name=~\"$service_name\", environment=~\"$environment\",proxy=~\"$active_backend\"}[$interval]))",
               "interval": "$interval",
               "legendFormat": "{{proxy}} - {{server}}",
               "refId": "A"
@@ -5356,7 +5411,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "sum by (code) (increase(haproxy_frontend_http_responses_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]) or irate(haproxy_frontend_http_responses_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[5m]) or increase(haproxy_backend_http_responses_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[$interval]) or irate(haproxy_backend_http_responses_total{proxy=~\"$backend\",service_name=~\"$service_name\"}[5m]))",
+              "expr": "sum by (code) (increase(haproxy_frontend_http_responses_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(haproxy_frontend_http_responses_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) or increase(haproxy_backend_http_responses_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(haproxy_backend_http_responses_total{proxy=~\"$backend\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5466,7 +5521,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name,proxy) (increase(haproxy_frontend_http_requests_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]) or irate(haproxy_frontend_http_requests_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name,proxy) (increase(haproxy_frontend_http_requests_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(haproxy_frontend_http_requests_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5476,7 +5531,7 @@
               "step": 60
             },
             {
-              "expr": "sum by (service_name,proxy) (increase(haproxy_frontend_http_responses_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]) or irate(haproxy_frontend_http_responses_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[5m]))",
+              "expr": "sum by (service_name,proxy) (increase(haproxy_frontend_http_responses_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(haproxy_frontend_http_responses_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "interval": "$interval",
               "legendFormat": "Responses - {{proxy}}",
               "refId": "B"
@@ -5577,7 +5632,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name,proxy) (increase(haproxy_frontend_http_requests_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]))",
+              "expr": "avg by (service_name,proxy) (increase(haproxy_frontend_http_requests_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5683,7 +5738,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name,proxy) (increase(haproxy_frontend_intercepted_requests_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[$interval]) or irate(haproxy_frontend_intercepted_requests_total{proxy=~\"$frontend\",service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name,proxy) (increase(haproxy_frontend_intercepted_requests_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(haproxy_frontend_intercepted_requests_total{proxy=~\"$frontend\",service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7956,11 +8011,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "datasource": "Prometheus",
         "hide": 0,
         "includeAll": false,
@@ -8018,12 +8069,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(haproxy_server_status, service_name)",
         "hide": 0,
@@ -8047,11 +8093,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(haproxy_backend_status{service_name=\"$service_name\"}, proxy)",
         "hide": 0,
@@ -8074,11 +8116,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(haproxy_frontend_status{service_name=~\"$service_name\"}, proxy)",
         "hide": 0,
@@ -8102,11 +8140,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"haproxy_server_bytes_in_total|haproxy_frontend_bytes_in_total\"}, server)",
         "hide": 2,
@@ -8130,11 +8164,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 2,
@@ -8157,11 +8187,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"haproxy_server_status\"}, cluster)",
         "hide": 2,
@@ -8184,11 +8210,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
         "hide": 2,
@@ -8211,11 +8233,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
         "hide": 2,
@@ -8238,11 +8256,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
         "hide": 2,
@@ -8265,11 +8279,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
         "hide": 2,
@@ -8292,11 +8302,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
         "hide": 2,
@@ -8319,12 +8325,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(haproxy_server_bytes_in_total{service_name=~\"$service_name\"}, node_name)",
         "hide": 2,
@@ -8348,11 +8349,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "query_result(haproxy_server_last_session_seconds{service_name=\"$service_name\"} > 0)",
         "hide": 2,
@@ -8376,11 +8373,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "query_result(haproxy_server_status{service_name=\"$service_name\",proxy=~\"$backend\"})",
         "hide": 2,
@@ -8411,7 +8404,7 @@
   "timepicker": {
     "collapse": false,
     "enable": true,
-    "hidden": false,
+    "hidden": true,
     "notice": false,
     "now": true,
     "refresh_intervals": [
@@ -8424,6 +8417,7 @@
       "30m",
       "1h",
       "2h",
+      "6h",
       "1d"
     ],
     "status": "Stable",

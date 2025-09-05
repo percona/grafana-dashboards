@@ -3,48 +3,47 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
-        "limit": 100,
-        "matchAny": true,
         "name": "PMM Annotations",
         "showIn": 0,
-        "tags": [
-          "pmm_annotation",
-          "$node_name",
-          "$service_name"
-        ],
         "target": {
           "limit": 100,
           "matchAny": true,
           "tags": [
-            "pmm_annotation",
+            "$cluster",
+            "$environment",
             "$node_name",
-            "$service_name"
+            "$region",
+            "$replication_set",
+            "$service_name",
+            "pmm_annotation"
           ],
           "type": "tags"
-        },
-        "type": "tags"
+        }
       },
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": true,
-        "iconColor": "#6ed0e0",
-        "limit": 100,
+        "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "showIn": 0,
-        "tags": [],
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
+        }
       }
     ]
   },
@@ -133,6 +132,61 @@
       "targetBlank": false,
       "title": "PMM",
       "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OS"
+      ],
+      "targetBlank": false,
+      "title": "OS",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MongoDB"
+      ],
+      "targetBlank": false,
+      "title": "MongoDB",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PostgreSQL"
+      ],
+      "targetBlank": false,
+      "title": "PostgreSQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
+      "type": "dashboards"
     }
   ],
   "liveNow": false,
@@ -215,7 +269,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "count(mysql_global_status_uptime{service_name=~\"$service_name\"})",
+          "expr": "count(mysql_global_status_uptime{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -289,7 +343,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "min(mysql_global_status_uptime{service_name=~\"$service_name\"})",
+          "expr": "min(mysql_global_status_uptime{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
@@ -365,7 +419,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "max(mysql_global_status_uptime{service_name=~\"$service_name\"})",
+          "expr": "max(mysql_global_status_uptime{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
@@ -444,7 +498,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "sum(rate(mysql_global_status_queries{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_queries{service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(mysql_global_status_queries{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mysql_global_status_queries{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -523,7 +577,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "sum(mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"})",
+          "expr": "sum(mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
@@ -611,7 +665,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "max(max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[5m]))",
+          "expr": "max(max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
@@ -684,7 +738,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "clamp_max(max(max by (service_name) ((max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[$interval]) or max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[5m]))) / max by (service_name) (mysql_global_variables_max_connections{service_name=~\"$service_name\"})),1)",
+          "expr": "clamp_max(max(max by (service_name) ((max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))) / max by (service_name) (mysql_global_variables_max_connections{service_name=~\"$service_name\", environment=~\"$environment\"})),1)",
           "interval": "5m",
           "refId": "A"
         }
@@ -755,7 +809,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "clamp_max(max(max by (service_name) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m])) / max by (service_name) (\nmysql_global_variables_max_connections{service_name=~\"$service_name\"})),1)",
+          "expr": "clamp_max(max(max by (service_name) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / max by (service_name) (\nmysql_global_variables_max_connections{service_name=~\"$service_name\", environment=~\"$environment\"})),1)",
           "format": "time_series",
           "hide": false,
           "interval": "5m",
@@ -824,7 +878,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "clamp_max(max(1 - max by (service_name) ((max_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[5m]))) / max by (service_name)((max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m])))),1)",
+          "expr": "clamp_max(max(1 - max by (service_name) ((max_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))) / max by (service_name)((max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))),1)",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -899,7 +953,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "clamp_max(max(max by (service_name) ((max_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\"}[5m]))) / max by (service_name) (max_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service_name\"}[5m]))),1)",
+          "expr": "clamp_max(max(max by (service_name) ((max_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))) / max by (service_name) (max_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))),1)",
           "hide": false,
           "interval": "5m",
           "refId": "B"
@@ -1001,7 +1055,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,(avg by (service_name) (max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[5m]))))",
+              "expr": "topk(5,(avg by (service_name) (max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -1013,7 +1067,7 @@
               "target": ""
             },
             {
-              "expr": "avg(max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1176,7 +1230,7 @@
           ],
           "targets": [
             {
-              "expr": "clamp_max((avg by (service_name) (max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[5m])) / avg by (service_name) (mysql_global_variables_max_connections{service_name=~\"$service_name\"})),1)",
+              "expr": "clamp_max((avg by (service_name) (max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / avg by (service_name) (mysql_global_variables_max_connections{service_name=~\"$service_name\", environment=~\"$environment\"})),1)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1270,7 +1324,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1280,7 +1334,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1443,7 +1497,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name)(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name)(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1552,7 +1606,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name)(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name)(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -1563,7 +1617,7 @@
               "step": 20
             },
             {
-              "expr": "avg(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1728,7 +1782,7 @@
           ],
           "targets": [
             {
-              "expr": "clamp_max((avg by (service_name)(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m])) / avg by (service_name)(mysql_global_variables_max_connections{service_name=~\"$service_name\"})),1)",
+              "expr": "clamp_max((avg by (service_name)(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / avg by (service_name)(mysql_global_variables_max_connections{service_name=~\"$service_name\", environment=~\"$environment\"})),1)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1823,7 +1877,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name)(max_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name)(max_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1833,7 +1887,7 @@
               "step": 20
             },
             {
-              "expr": "avg(max_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(max_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1998,7 +2052,7 @@
           ],
           "targets": [
             {
-              "expr": "clamp_max((1 - avg by (service_name)(max_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[5m])) / avg by (service_name)\n(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m]))),1)",
+              "expr": "clamp_max((1 - avg by (service_name)(max_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / avg by (service_name)\n(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))),1)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2098,7 +2152,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name)(max_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name)(max_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2108,7 +2162,7 @@
               "step": 20
             },
             {
-              "expr": "avg(max_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(max_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2270,7 +2324,7 @@
           ],
           "targets": [
             {
-              "expr": "clamp_max((avg by (service_name)(max_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\"}[5m])) / avg by (service_name)\n(max_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service_name\"}[5m]))),1)",
+              "expr": "clamp_max((avg by (service_name)(max_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / avg by (service_name)\n(max_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))),1)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2367,7 +2421,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "max(rate(mysql_global_status_queries{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_queries{service_name=~\"$service_name\"}[5m]))",
+          "expr": "max(rate(mysql_global_status_queries{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_queries{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
@@ -2444,7 +2498,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "max(rate(mysql_global_status_questions{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_questions{service_name=~\"$service_name\"}[5m]))",
+          "expr": "max(rate(mysql_global_status_questions{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_questions{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -2512,7 +2566,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "clamp_max(max((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[5m])) / \n((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[5m]))\n)),1)",
+          "expr": "clamp_max(max((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / \n((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))\n)),1)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -2580,7 +2634,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "clamp_max(max((rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[5m])) / \n((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[5m]))\n)),1)",
+          "expr": "clamp_max(max((rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / \n((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))\n)),1)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -2656,7 +2710,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "clamp_max(max((rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[5m])) / \n((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[5m]))\n)),1)",
+          "expr": "clamp_max(max((rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / \n((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))\n)),1)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -2755,7 +2809,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_queries{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_queries{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_queries{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_queries{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2765,7 +2819,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_queries{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_queries{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_queries{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_queries{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -2885,7 +2939,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name)(rate(mysql_global_status_queries{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_quesries{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name)(rate(mysql_global_status_queries{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_quesries{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2973,7 +3027,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name) (rate(mysql_global_status_questions{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_questions{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name) (rate(mysql_global_status_questions{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_questions{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -2984,7 +3038,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_questions{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_questions{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_questions{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_questions{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -3120,7 +3174,7 @@
           ],
           "targets": [
             {
-              "expr": "clamp_max(avg by (service_name)((rate(mysql_global_status_questions{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_questions{service_name=~\"$service_name\"}[5m])) / \n(rate(mysql_global_status_queries{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_queries{service_name=~\"$service_name\"}[5m]))),1)",
+              "expr": "clamp_max(avg by (service_name)((rate(mysql_global_status_questions{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_questions{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / \n(rate(mysql_global_status_queries{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_queries{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))),1)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3215,7 +3269,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name) (rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name) (rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3225,7 +3279,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3360,7 +3414,7 @@
           ],
           "targets": [
             {
-              "expr": "clamp_max((avg by (service_name)(rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[5m])) / \navg by (service_name)((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[5m]))\n)),1)",
+              "expr": "clamp_max((avg by (service_name)(rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / \navg by (service_name)((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))\n)),1)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3441,7 +3495,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3451,7 +3505,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3586,7 +3640,7 @@
           ],
           "targets": [
             {
-              "expr": "clamp_max((avg by (service_name)(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[5m])) / \navg by (service_name)((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[5m])))),1)",
+              "expr": "clamp_max((avg by (service_name)(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / \navg by (service_name)((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))),1)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3673,7 +3727,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -3684,7 +3738,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3819,7 +3873,7 @@
           ],
           "targets": [
             {
-              "expr": "clamp_max((avg by (service_name)(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[5m])) / \navg by (service_name)((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\"}[5m])))),1)",
+              "expr": "clamp_max((avg by (service_name)(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / \navg by (service_name)((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))),1)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3907,7 +3961,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "max(rate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\"}[5m]))",
+          "expr": "max(rate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -3981,7 +4035,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "max(rate(mysql_global_status_select_full_join{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_full_join{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_range{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_range{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_range_check{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_range_check{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_scan{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_scan{service_name=~\"$service_name\"}[5m]))",
+          "expr": "max(rate(mysql_global_status_select_full_join{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_full_join{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_range{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_range{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_range_check{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_range_check{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -4055,7 +4109,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "max(rate(mysql_global_status_sort_rows{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_rows{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_sort_range{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_range{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_sort_scan{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_scan{service_name=~\"$service_name\"}[5m]))",
+          "expr": "max(rate(mysql_global_status_sort_rows{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_rows{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_sort_range{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_range{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_sort_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -4129,7 +4183,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "max(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[5m]))",
+          "expr": "max(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -4203,7 +4257,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "max(rate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\"}[5m]))",
+          "expr": "max(rate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -4302,7 +4356,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -4312,7 +4366,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -4473,7 +4527,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name)(rate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name)(rate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -4570,7 +4624,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_select_full_join{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_full_join{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_range{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_range{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_range_check{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_range_check{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_scan{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_scan{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_select_full_join{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_full_join{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_range{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_range{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_range_check{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_range_check{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -4580,7 +4634,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_select_full_join{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_full_join{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_range{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_range{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_range_check{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_range_check{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_scan{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_scan{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_select_full_join{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_full_join{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_range{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_range{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_range_check{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_range_check{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -4741,7 +4795,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name)(rate(mysql_global_status_select_full_join{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_full_join{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_range{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_range{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_range_check{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_range_check{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_select_scan{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_scan{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name)(rate(mysql_global_status_select_full_join{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_full_join{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_range{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_range{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_range_check{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_range_check{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_select_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_select_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -4851,7 +4905,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_sort_rows{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_rows{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_sort_range{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_range{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_sort_scan{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_scan{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_sort_rows{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_rows{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_sort_range{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_range{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_sort_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -4862,7 +4916,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_sort_rows{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_rows{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_sort_range{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_range{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_sort_scan{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_scan{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_sort_rows{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_rows{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_sort_range{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_range{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_sort_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5023,7 +5077,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name)(rate(mysql_global_status_sort_rows{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_rows{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_sort_range{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_range{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_sort_scan{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_scan{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name)(rate(mysql_global_status_sort_rows{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_rows{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_sort_range{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_range{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_sort_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_sort_scan{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5132,7 +5186,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5142,7 +5196,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5303,7 +5357,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name)(rate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg by (service_name)(rate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) +\nrate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5400,7 +5454,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "max(rate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[5m]))",
+          "expr": "max(rate(mysql_global_status_bytes_received{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_bytes_received{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -5476,7 +5530,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "max(rate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[5m]))",
+          "expr": "max(rate(mysql_global_status_bytes_sent{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_bytes_sent{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -5552,7 +5606,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "clamp_max(max(1 - avg by (service_name)(max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\"}[5m])) / avg by (service_name)\n(max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[5m]))),1)",
+          "expr": "clamp_max(max(1 - avg by (service_name)(max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / avg by (service_name)\n(max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))),1)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -5628,7 +5682,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "clamp_max(max((rate(mysql_global_status_opened_files{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_opened_files{service_name=~\"$service_name\"}[5m])) / \n(max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[5m]))),1)",
+          "expr": "clamp_max(max((rate(mysql_global_status_opened_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_opened_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / \n(max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))),1)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -5704,7 +5758,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "clamp_max(max((max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[5m]))) / on (service_name)\nmax((max_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service_name\"}[5m]))),1)",
+          "expr": "clamp_max(max((max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))) / on (service_name)\nmax((max_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))),1)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -5804,7 +5858,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name) (rate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name) (rate(mysql_global_status_bytes_received{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_bytes_received{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -5815,7 +5869,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_bytes_received{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_bytes_received{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -5935,7 +5989,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name) (rate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name) (rate(mysql_global_status_bytes_sent{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_bytes_sent{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5945,7 +5999,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_bytes_sent{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_bytes_sent{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6067,7 +6121,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\"}[5m])",
+              "expr": "max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])",
               "format": "time_series",
               "hide": true,
               "interval": "$interval",
@@ -6081,7 +6135,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[5m])) ",
+              "expr": "avg by (service_name) (max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) ",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6246,7 +6300,7 @@
           ],
           "targets": [
             {
-              "expr": "clamp_max((1 - (max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[5m]))),1)",
+              "expr": "clamp_max((1 - (max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))),1)",
               "format": "time_series",
               "hide": true,
               "interval": "$interval",
@@ -6255,7 +6309,7 @@
               "refId": "A"
             },
             {
-              "expr": "clamp_max((1 - avg by (service_name)(max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\"}[5m])) / avg by (service_name)\n(max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[5m]))),1)",
+              "expr": "clamp_max((1 - avg by (service_name)(max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / avg by (service_name)\n(max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))),1)",
               "interval": "$interval",
               "legendFormat": "{{service_name}}",
               "refId": "B"
@@ -6361,7 +6415,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name) (rate(mysql_global_status_opened_files{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_opened_files{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name) (rate(mysql_global_status_opened_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_opened_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6371,7 +6425,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_opened_files{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_opened_files{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_opened_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_opened_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6532,7 +6586,7 @@
           ],
           "targets": [
             {
-              "expr": "clamp_max(avg by (service_name) ((rate(mysql_global_status_opened_files{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_opened_files{service_name=~\"$service_name\"}[5m])) / (max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[5m]))),1)",
+              "expr": "clamp_max(avg by (service_name) ((rate(mysql_global_status_opened_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_opened_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / (max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))),1)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6626,7 +6680,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name) (max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name) (max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6636,7 +6690,7 @@
               "step": 20
             },
             {
-              "expr": "avg(max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6797,7 +6851,7 @@
           ],
           "targets": [
             {
-              "expr": "clamp_max((avg by (service_name)(max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[5m])) / avg by (service_name)\n(max_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service_name\"}[5m]))),1)",
+              "expr": "clamp_max((avg by (service_name)(max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / avg by (service_name)\n(max_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))),1)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6894,7 +6948,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "clamp_max(max(1 - (rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))/\n((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))+\n(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[5m])))),1)",
+          "expr": "clamp_max(max(1 - (rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))/\n((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))+\n(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))),1)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -6970,7 +7024,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "min(max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"}[5m]) )",
+          "expr": "min(max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) )",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -7046,7 +7100,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "max(rate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\"}[5m]))",
+          "expr": "max(rate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -7121,7 +7175,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "max(max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[5m]))",
+          "expr": "max(max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -7197,7 +7251,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "clamp_max(max((max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[5m]))) / on (service_name)\nmax((max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"}[5m]))),1)",
+          "expr": "clamp_max(max((max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))) / on (service_name)\nmax((max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))),1)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -7299,7 +7353,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "bottomk(5,avg by (service_name)((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))/\n((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))+\n(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[5m])))))",
+              "expr": "bottomk(5,avg by (service_name)((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))/\n((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))+\n(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7308,7 +7362,7 @@
               "step": 20
             },
             {
-              "expr": "avg((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))/\n((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))+\n(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[5m]))))",
+              "expr": "avg((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))/\n((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))+\n(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7471,7 +7525,7 @@
           ],
           "targets": [
             {
-              "expr": "clamp_max((1 - avg by (service_name)(rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))/\navg by (service_name)((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))+\n(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[5m])))),1)",
+              "expr": "clamp_max((1 - avg by (service_name)(rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))/\navg by (service_name)((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))+\n(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))),1)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7569,7 +7623,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "avg by (service_name) (max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"}[5m])) ",
+              "expr": "avg by (service_name) (max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) ",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7694,7 +7748,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) (rate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name) (rate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -7704,7 +7758,7 @@
               "step": 20
             },
             {
-              "expr": "avg(rate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(rate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7829,7 +7883,7 @@
               "calculatedInterval": "2m",
               "datasourceErrors": {},
               "errors": {},
-              "expr": "topk(5,avg by (service_name) (max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[5m])))",
+              "expr": "topk(5,avg by (service_name) (max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -7840,7 +7894,7 @@
               "step": 20
             },
             {
-              "expr": "avg(max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[5m]))",
+              "expr": "avg(max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -8001,7 +8055,7 @@
           ],
           "targets": [
             {
-              "expr": "clamp_max((avg by (service_name)(max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[5m])) / avg by (service_name)\n(max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"}[5m]))),1)",
+              "expr": "clamp_max((avg by (service_name)(max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\", environment=~\"$environment\"}[5m])) / avg by (service_name)\n(max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))),1)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -8039,11 +8093,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "datasource": "Metrics",
         "hide": 0,
         "includeAll": false,
@@ -8100,11 +8150,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_up, region)",
         "hide": 0,
@@ -8128,11 +8174,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_up, environment)",
         "hide": 0,
@@ -8156,11 +8198,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_up, cluster)",
         "hide": 0,
@@ -8184,11 +8222,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_up, replication_set)",
         "hide": 0,
@@ -8212,11 +8246,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_up{region=~\"$region\",environment=~\"$environment\",cluster=~\"$cluster\",replication_set=~\"$replication_set\"}, node_name)",
         "hide": 0,
@@ -8240,11 +8270,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_up{region=~\"$region\",environment=~\"$environment\",cluster=~\"$cluster\",replication_set=~\"$replication_set\",node_name=~\"$node_name\"}, service_name)",
         "hide": 0,
@@ -8267,12 +8293,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_up{node_name=\"$node_name\"}, node_id)",
         "hide": 2,
@@ -8295,12 +8316,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_up{node_name=\"$node_name\"}, instance)",
         "hide": 2,
@@ -8323,11 +8339,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "/service_id/5bdeaab4-149e-478e-88b4-abf1c26859d4",
-          "value": "/service_id/5bdeaab4-149e-478e-88b4-abf1c26859d4"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_up{service_name=~\"$service_name\"}, service_id)",
         "hide": 2,
@@ -8350,12 +8362,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_up{node_name=\"$node_name\"}, az)",
         "hide": 2,
@@ -8378,11 +8385,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
         "hide": 2,
@@ -8405,12 +8408,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_up{node_name=\"$node_name\"}, node_model)",
         "hide": 2,
@@ -8433,11 +8431,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
         "hide": 2,
@@ -8460,11 +8454,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
         "hide": 2,
@@ -8487,11 +8477,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
         "hide": 2,
@@ -8514,11 +8500,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
         "hide": 2,
@@ -8549,7 +8531,7 @@
   "timepicker": {
     "collapse": false,
     "enable": true,
-    "hidden": false,
+    "hidden": true,
     "notice": false,
     "now": true,
     "refresh_intervals": [
@@ -8562,6 +8544,7 @@
       "30m",
       "1h",
       "2h",
+      "6h",
       "1d"
     ],
     "status": "Stable",

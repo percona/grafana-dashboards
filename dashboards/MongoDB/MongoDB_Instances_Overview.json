@@ -3,48 +3,45 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
-        "limit": 100,
-        "matchAny": true,
         "name": "PMM Annotations",
         "showIn": 0,
-        "tags": [
-          "pmm_annotation",
-          "$node_name",
-          "$service_name"
-        ],
         "target": {
           "limit": 100,
           "matchAny": true,
           "tags": [
-            "pmm_annotation",
+            "$cluster",
+            "$environment",
             "$node_name",
-            "$service_name"
+            "$service_name",
+            "pmm_annotation"
           ],
           "type": "tags"
-        },
-        "type": "tags"
+        }
       },
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": true,
-        "iconColor": "#6ed0e0",
-        "limit": 100,
+        "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "showIn": 0,
-        "tags": [],
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
+        }
       }
     ]
   },
@@ -133,6 +130,61 @@
       "targetBlank": false,
       "title": "PMM",
       "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OS"
+      ],
+      "targetBlank": false,
+      "title": "OS",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": false,
+      "title": "MySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PostgreSQL"
+      ],
+      "targetBlank": false,
+      "title": "PostgreSQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
+      "type": "dashboards"
     }
   ],
   "liveNow": false,
@@ -212,7 +264,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "count(mongodb_up{service_name=~\"$service_name\"})",
+          "expr": "count(mongodb_up{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -291,7 +343,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "min(mongodb_instance_uptime_seconds{service_name=~\"$service_name\"})",
+          "expr": "min(mongodb_instance_uptime_seconds{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -367,7 +419,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(mongodb_memory{service_name=~\"$service_name\",type=~\"resident\"})",
+          "expr": "sum(mongodb_memory{service_name=~\"$service_name\", environment=~\"$environment\",type=~\"resident\"})",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -443,7 +495,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(mongodb_memory{service_name=~\"$service_name\",type=~\"virtual\"})",
+          "expr": "sum(mongodb_memory{service_name=~\"$service_name\", environment=~\"$environment\",type=~\"virtual\"})",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -520,7 +572,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum by () (sum(mongodb_memory{service_name=~\"$service_name\",type=~\"mapped|mapped_with_journal\"}) or \nsum(mongodb_ss_mem_mapped{service_name=~\"$service_name\"},mongodb_ss_mem_mapped_with_journal{service_name=~\"$service_name\"}))",
+          "expr": "sum by () (sum(mongodb_memory{service_name=~\"$service_name\", environment=~\"$environment\",type=~\"mapped|mapped_with_journal\"}) or \nsum(mongodb_ss_mem_mapped{service_name=~\"$service_name\", environment=~\"$environment\"},mongodb_ss_mem_mapped_with_journal{service_name=~\"$service_name\", environment=~\"$environment\"}))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -596,7 +648,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m]))",
+          "expr": "sum(rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -688,7 +740,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"} or\nmongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"} or\nmongodb_connections{service_name=~\"$service_name\", state=\"current\"})",
+          "expr": "sum(mongodb_mongod_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"} or\nmongodb_mongos_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"} or\nmongodb_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"})",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -768,7 +820,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\"})",
+          "expr": "sum(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", environment=~\"$environment\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -844,7 +896,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or\nirate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m]))",
+          "expr": "sum(rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[$interval]) or\nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -920,7 +972,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "max(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]) > 0)\n)",
+          "expr": "max(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[5m]) > 0)\n)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1020,7 +1072,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or max_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[5m]))))",
+              "expr": "topk(5,avg by (service_name) ((max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[$interval]) or max_over_time(mongodb_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -1030,7 +1082,7 @@
               "step": 300
             },
             {
-              "expr": "avg(max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or max_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[5m]))",
+              "expr": "avg(max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[$interval]) or max_over_time(mongodb_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1197,7 +1249,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or max_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[5m]))",
+              "expr": "avg by (service_name) (max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[$interval]) or max_over_time(mongodb_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1308,7 +1360,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", state=\"total\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", state=\"total\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", state=\"total\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", state=\"total\"})))",
+              "expr": "topk(5,avg by (service_name) ((mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"total\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"total\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"total\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"total\"})))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -1318,7 +1370,7 @@
               "step": 300
             },
             {
-              "expr": "avg(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", state=\"total\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", state=\"total\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", state=\"total\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", state=\"total\"})",
+              "expr": "avg(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"total\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"total\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"total\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"total\"})",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1485,7 +1537,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", state=\"total\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", state=\"total\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", state=\"total\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", state=\"total\"})",
+              "expr": "avg by (service_name) (mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"total\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"total\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"total\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"total\"})",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1582,7 +1634,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", state=\"pinned\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", state=\"pinned\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", state=\"pinned\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", state=\"pinned\"})))",
+              "expr": "topk(5,avg by (service_name) ((mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"pinned\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"pinned\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"pinned\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"pinned\"})))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -1592,7 +1644,7 @@
               "step": 300
             },
             {
-              "expr": "avg(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", state=\"pinned\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", state=\"pinned\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", state=\"pinned\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", state=\"pinned\"})",
+              "expr": "avg(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"pinned\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"pinned\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"pinned\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"pinned\"})",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1759,7 +1811,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", state=\"pinned\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", state=\"pinned\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", state=\"pinned\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", state=\"pinned\"})",
+              "expr": "avg by (service_name) (mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"pinned\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"pinned\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"pinned\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"pinned\"})",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -1856,7 +1908,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", state=\"noTimeout\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", state=\"noTimeout\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", state=\"noTimeout\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", state=\"noTimeout\"})))",
+              "expr": "topk(5,avg by (service_name) ((mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"noTimeout\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"noTimeout\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"noTimeout\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"noTimeout\"})))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -1866,7 +1918,7 @@
               "step": 300
             },
             {
-              "expr": "avg(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", state=\"noTimeout\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", state=\"noTimeout\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", state=\"noTimeout\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", state=\"noTimeout\"})",
+              "expr": "avg(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"noTimeout\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"noTimeout\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"noTimeout\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"noTimeout\"})",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2033,7 +2085,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", state=\"noTimeout\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", state=\"noTimeout\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", state=\"noTimeout\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", state=\"noTimeout\"})",
+              "expr": "avg by (service_name) (mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"noTimeout\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"noTimeout\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\", state=\"noTimeout\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\", environment=~\"$environment\", state=\"noTimeout\"})",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2144,7 +2196,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]) > 0)\n)))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[5m]) > 0)\n)))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -2154,7 +2206,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]) > 0)\n)",
+              "expr": "avg(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[5m]) > 0)\n)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2311,7 +2363,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]) > 0))\n",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[5m]) > 0))\n",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2408,7 +2460,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[5m]) > 0)\n)))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"read\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"read\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"read\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"read\"}[5m]) > 0)\n)))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -2418,7 +2470,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[5m]) > 0)\n)",
+              "expr": "avg(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"read\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"read\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"read\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"read\"}[5m]) > 0)\n)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2575,7 +2627,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[5m]) > 0))\n",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"read\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"read\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"read\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"read\"}[5m]) > 0))\n",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2672,7 +2724,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[5m]) > 0)\n)))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"write\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"write\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"write\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"write\"}[5m]) > 0)\n)))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -2682,7 +2734,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[5m]) > 0)\n)",
+              "expr": "avg(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"write\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"write\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"write\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"write\"}[5m]) > 0)\n)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2839,7 +2891,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[5m]) > 0))\n",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"write\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"write\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"write\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"write\"}[5m]) > 0))\n",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -2947,7 +2999,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "min(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[$interval]) / ignoring(state) \nrate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval])\nor\n(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[5m]) / ignoring(state) \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m]))\n)",
+          "expr": "min(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned\"}[$interval]) / ignoring(state) \nrate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[$interval])\nor\n(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned\"}[5m]) / ignoring(state) \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[5m]))\n)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -3032,7 +3084,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "max(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[$interval]) / ignoring(state) \nrate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval])\nor\n(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[5m]) / ignoring(state) \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m]))\n)",
+          "expr": "max(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned\"}[$interval]) / ignoring(state) \nrate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[$interval])\nor\n(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned\"}[5m]) / ignoring(state) \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[5m]))\n)",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -3109,7 +3161,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "min(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval])/ ignoring(state)\nrate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[$interval])\nor\nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m])/ ignoring(state)\nirate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[5m]))",
+          "expr": "min(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[$interval])/ ignoring(state)\nrate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned_objects\"}[$interval])\nor\nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[5m])/ ignoring(state)\nirate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned_objects\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -3185,7 +3237,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "max(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval])/ ignoring(state)\nrate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[$interval])\nor\nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m])/ ignoring(state)\nirate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[5m]))",
+          "expr": "max(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[$interval])/ ignoring(state)\nrate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned_objects\"}[$interval])\nor\nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[5m])/ ignoring(state)\nirate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned_objects\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -3284,7 +3336,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[$interval]) / ignoring(state) \nrate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval])\nor\n(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[5m]) / ignoring(state) \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m]))\n)))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned\"}[$interval]) / ignoring(state) \nrate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[$interval])\nor\n(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned\"}[5m]) / ignoring(state) \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[5m]))\n)))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -3294,7 +3346,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[$interval]) / ignoring(state) \nrate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval])\nor\n(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[5m]) / ignoring(state) \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m]))\n)",
+              "expr": "avg(rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned\"}[$interval]) / ignoring(state) \nrate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[$interval])\nor\n(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned\"}[5m]) / ignoring(state) \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[5m]))\n)",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3444,7 +3496,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[$interval]) / ignoring(state) \nrate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval])\nor\n(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned\"}[5m]) / ignoring(state) \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m])))",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned\"}[$interval]) / ignoring(state) \nrate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[$interval])\nor\n(irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned\"}[5m]) / ignoring(state) \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3539,7 +3591,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval])/ ignoring(state)\nrate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[$interval])\nor\nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m])/ ignoring(state)\nirate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[5m]))))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[$interval])/ ignoring(state)\nrate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned_objects\"}[$interval])\nor\nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[5m])/ ignoring(state)\nirate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned_objects\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -3549,7 +3601,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval])/ ignoring(state)\nrate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[$interval])\nor\nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m])/ ignoring(state)\nirate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[5m]))",
+              "expr": "avg(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[$interval])/ ignoring(state)\nrate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned_objects\"}[$interval])\nor\nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[5m])/ ignoring(state)\nirate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned_objects\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3699,7 +3751,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[$interval])/ ignoring(state)\nrate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[$interval])\nor\nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", state=\"returned\"}[5m])/ ignoring(state)\nirate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=\"scanned_objects\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[$interval])/ ignoring(state)\nrate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned_objects\"}[$interval])\nor\nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"returned\"}[5m])/ ignoring(state)\nirate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=\"scanned_objects\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3794,7 +3846,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,(sum by (service_name) (mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=~\"scanned_objects\"}) / ignoring(state)\nsum by (service_name) (mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=~\"scanned_objects|scanned\"})))",
+              "expr": "topk(5,(sum by (service_name) (mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=~\"scanned_objects\"}) / ignoring(state)\nsum by (service_name) (mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=~\"scanned_objects|scanned\"})))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -3803,7 +3855,7 @@
               "refId": "B"
             },
             {
-              "expr": "avg(sum by (service_name) (mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=~\"scanned_objects\"}) / ignoring(state)\nsum by (service_name) (mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=~\"scanned_objects|scanned\"}))",
+              "expr": "avg(sum by (service_name) (mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=~\"scanned_objects\"}) / ignoring(state)\nsum by (service_name) (mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=~\"scanned_objects|scanned\"}))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -3964,7 +4016,7 @@
           ],
           "targets": [
             {
-              "expr": "sum by (service_name) (mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=~\"scanned_objects\"}) / ignoring(state)\nsum by (service_name) (mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", state=~\"scanned_objects|scanned\"})",
+              "expr": "sum by (service_name) (mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=~\"scanned_objects\"}) / ignoring(state)\nsum by (service_name) (mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\", state=~\"scanned_objects|scanned\"})",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -4067,7 +4119,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[5m])) + \nsum(rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[5m]) or\nrate(mongodb_mongos_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongos_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[5m]) or \nrate(mongodb_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[5m])) +\nsum(rate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongos_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type!=\"command\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type!=\"command\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type!=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type!=\"command\"}[5m])) + \nsum(rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", environment=~\"$environment\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", environment=~\"$environment\", type!~\"(command|query|getmore)\"}[5m]) or\nrate(mongodb_mongos_op_counters_repl_total{service_name=~\"$service_name\", environment=~\"$environment\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongos_op_counters_repl_total{service_name=~\"$service_name\", environment=~\"$environment\", type!~\"(command|query|getmore)\"}[5m]) or \nrate(mongodb_op_counters_repl_total{service_name=~\"$service_name\", environment=~\"$environment\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_op_counters_repl_total{service_name=~\"$service_name\", environment=~\"$environment\", type!~\"(command|query|getmore)\"}[5m])) +\nsum(rate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) or\nrate(mongodb_mongos_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mongodb_mongos_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -4147,7 +4199,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -4227,7 +4279,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -4307,7 +4359,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\"}[5m]))",
+          "expr": "sum(rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -4407,7 +4459,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[5m])))",
+              "expr": "topk(5,sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[5m])))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -4417,7 +4469,7 @@
               "step": 300
             },
             {
-              "expr": "avg(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[5m])))",
+              "expr": "avg(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -4583,7 +4635,7 @@
           ],
           "targets": [
             {
-              "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"command\"}[5m]))",
+              "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"command\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -4680,7 +4732,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[5m]))))",
+              "expr": "topk(5,(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -4690,7 +4742,7 @@
               "step": 300
             },
             {
-              "expr": "avg(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[5m])))",
+              "expr": "avg(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -4856,7 +4908,7 @@
           ],
           "targets": [
             {
-              "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"getmore\"}[5m]))",
+              "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"getmore\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -4953,7 +5005,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[5m]))))",
+              "expr": "topk(5,(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -4963,7 +5015,7 @@
               "step": 300
             },
             {
-              "expr": "avg(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[5m])))",
+              "expr": "avg(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5129,7 +5181,7 @@
           ],
           "targets": [
             {
-              "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"delete\"}[5m]))",
+              "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5226,7 +5278,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[5m]))))",
+              "expr": "topk(5,(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -5236,7 +5288,7 @@
               "step": 300
             },
             {
-              "expr": "avg(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[5m])))",
+              "expr": "avg(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5402,7 +5454,7 @@
           ],
           "targets": [
             {
-              "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"insert\"}[5m]))",
+              "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5499,7 +5551,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[5m]))))",
+              "expr": "topk(5,(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -5509,7 +5561,7 @@
               "step": 300
             },
             {
-              "expr": "avg(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[5m])))",
+              "expr": "avg(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5675,7 +5727,7 @@
           ],
           "targets": [
             {
-              "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"update\"}[5m]))",
+              "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5772,7 +5824,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[5m]))))",
+              "expr": "topk(5,(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -5782,7 +5834,7 @@
               "step": 300
             },
             {
-              "expr": "avg(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[5m])))",
+              "expr": "avg(sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[5m])))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -5948,7 +6000,7 @@
           ],
           "targets": [
             {
-              "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", type=\"query\"}[5m]))",
+              "expr": "sum by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[5m]) or \nrate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[$interval]) or \nirate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"query\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6058,7 +6110,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"deleted\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"deleted\"}[5m]))))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"deleted\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"deleted\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -6068,7 +6120,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"deleted\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"deleted\"}[5m]))",
+              "expr": "avg(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"deleted\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"deleted\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6234,7 +6286,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"deleted\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"deleted\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"deleted\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"deleted\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6330,7 +6382,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"inserted\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"inserted\"}[5m]))))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"inserted\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"inserted\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -6340,7 +6392,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"inserted\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"inserted\"}[5m]))",
+              "expr": "avg(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"inserted\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"inserted\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6506,7 +6558,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"inserted\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"inserted\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"inserted\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"inserted\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6602,7 +6654,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"returned\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"returned\"}[5m]))))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"returned\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"returned\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -6612,7 +6664,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"returned\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"returned\"}[5m]))",
+              "expr": "avg(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"returned\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"returned\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6778,7 +6830,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"returned\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"returned\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"returned\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"returned\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -6874,7 +6926,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"updated\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"updated\"}[5m]))))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"updated\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"updated\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -6884,7 +6936,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"updated\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"updated\"}[5m]))",
+              "expr": "avg(rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"updated\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"updated\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7050,7 +7102,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"updated\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\",state=\"updated\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"updated\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\",state=\"updated\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7160,7 +7212,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\",type=\"reader\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\",type=\"reader\"}[5m]))))",
+              "expr": "topk(5,avg by (service_name) ((max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\",type=\"reader\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\",type=\"reader\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -7170,7 +7222,7 @@
               "step": 300
             },
             {
-              "expr": "avg(max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\",type=\"reader\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\",type=\"reader\"}[5m]))",
+              "expr": "avg(max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\",type=\"reader\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\",type=\"reader\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7336,7 +7388,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\",type=\"reader\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\",type=\"reader\"}[5m]))",
+              "expr": "avg by (service_name) (max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\",type=\"reader\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\",type=\"reader\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7432,7 +7484,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\",type=\"writer\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\",type=\"writer\"}[5m]))))",
+              "expr": "topk(5,avg by (service_name) ((max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\",type=\"writer\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\",type=\"writer\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -7442,7 +7494,7 @@
               "step": 300
             },
             {
-              "expr": "avg(max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\",type=\"writer\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\",type=\"writer\"}[5m]))",
+              "expr": "avg(max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\",type=\"writer\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\",type=\"writer\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7608,7 +7660,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\",type=\"writer\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\",type=\"writer\"}[5m]))",
+              "expr": "avg by (service_name) (max_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\",type=\"writer\"}[$interval]) or \nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\",type=\"writer\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7719,7 +7771,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[5m]))))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -7729,7 +7781,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[5m]))",
+              "expr": "avg(rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7896,7 +7948,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"msg\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"msg\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -7993,7 +8045,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[5m]))))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -8003,7 +8055,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[5m]))",
+              "expr": "avg(rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -8170,7 +8222,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"regular\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"regular\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -8267,7 +8319,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[5m]))))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -8277,7 +8329,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[5m]))",
+              "expr": "avg(rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -8444,7 +8496,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"rollovers\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"rollovers\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -8541,7 +8593,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"user\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"user\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"user\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"user\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"user\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"user\"}[5m]))))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -8551,7 +8603,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"user\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"user\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"user\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"user\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"user\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"user\"}[5m]))",
+              "expr": "avg(rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -8718,7 +8770,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"user\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"user\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"user\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"user\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"user\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"user\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"user\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -8815,7 +8867,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[5m]))))",
+              "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[5m]))))",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
@@ -8825,7 +8877,7 @@
               "step": 300
             },
             {
-              "expr": "avg(rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[5m]))",
+              "expr": "avg(rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -8992,7 +9044,7 @@
           ],
           "targets": [
             {
-              "expr": "avg by (service_name) (rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\",type=\"warning\"}[5m]))",
+              "expr": "avg by (service_name) (rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"warning\"}[5m]))",
               "format": "time_series",
               "interval": "$interval",
               "intervalFactor": 1,
@@ -9030,11 +9082,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "datasource": "Metrics",
         "hide": 0,
         "includeAll": false,
@@ -9091,11 +9139,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 0,
@@ -9120,11 +9164,7 @@
       {
         "allFormat": "blob",
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\"},cluster)",
         "hide": 0,
@@ -9147,11 +9187,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\"}, node_name)",
         "hide": 0,
@@ -9175,11 +9211,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}, service_name)",
         "hide": 0,
@@ -9202,11 +9234,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
         "hide": 2,
@@ -9229,11 +9257,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
         "hide": 2,
@@ -9256,11 +9280,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
         "hide": 2,
@@ -9283,11 +9303,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
         "hide": 2,
@@ -9310,11 +9326,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
         "hide": 2,
@@ -9337,11 +9349,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
         "hide": 2,
@@ -9370,14 +9378,18 @@
     "to": "now"
   },
   "timepicker": {
-    "hidden": false,
+    "hidden": true,
     "now": true,
     "refresh_intervals": [
-      "1s",
       "5s",
+      "10s",
+      "30s",
       "1m",
       "5m",
+      "15m",
+      "30m",
       "1h",
+      "2h",
       "6h",
       "1d"
     ],

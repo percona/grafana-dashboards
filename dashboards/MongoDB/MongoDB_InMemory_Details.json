@@ -3,46 +3,43 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": false,
         "iconColor": "#e0752d",
-        "limit": 100,
-        "matchAny": true,
         "name": "PMM Annotations",
         "showIn": 0,
-        "tags": [
-          "pmm_annotation",
-          "$service_name"
-        ],
         "target": {
           "limit": 100,
           "matchAny": true,
           "tags": [
-            "pmm_annotation",
-            "$service_name"
+            "$cluster",
+            "$service_name",
+            "pmm_annotation"
           ],
           "type": "tags"
-        },
-        "type": "tags"
+        }
       },
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": true,
-        "iconColor": "#6ed0e0",
-        "limit": 100,
+        "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "showIn": 0,
-        "tags": [],
         "target": {
           "limit": 100,
           "matchAny": false,
           "tags": [],
           "type": "dashboard"
-        },
-        "type": "dashboard"
+        }
       }
     ]
   },
@@ -131,6 +128,61 @@
       "targetBlank": false,
       "title": "PMM",
       "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OS"
+      ],
+      "targetBlank": false,
+      "title": "OS",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "MySQL"
+      ],
+      "targetBlank": false,
+      "title": "MySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PostgreSQL"
+      ],
+      "targetBlank": false,
+      "title": "PostgreSQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ProxySQL"
+      ],
+      "targetBlank": false,
+      "title": "ProxySQL",
+      "type": "dashboards"
+    },
+    {
+      "asDropdown": true,
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "HAProxy"
+      ],
+      "targetBlank": false,
+      "title": "HAProxy",
+      "type": "dashboards"
     }
   ],
   "liveNow": false,
@@ -202,7 +254,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "avg by (service_name) (mongodb_mongod_wiredtiger_cache_bytes{service_name=~\"$service_name\", type=\"total\"})",
+          "expr": "avg by (service_name) (mongodb_mongod_wiredtiger_cache_bytes{service_name=~\"$service_name\", environment=~\"$environment\", type=\"total\"})",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
@@ -281,7 +333,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "avg by (service_name) (mongodb_mongod_wiredtiger_cache_max_bytes{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mongodb_mongod_wiredtiger_cache_max_bytes{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "interval": "5m",
           "intervalFactor": 1,
           "refId": "A",
@@ -355,7 +407,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "avg by (service_name) (1-(max(mongodb_mongod_wiredtiger_cache_bytes{service_name=~\"$service_name\", type=\"total\"})/max(mongodb_mongod_wiredtiger_cache_max_bytes{service_name=~\"$service_name\"})))",
+          "expr": "avg by (service_name) (1-(max(mongodb_mongod_wiredtiger_cache_bytes{service_name=~\"$service_name\", environment=~\"$environment\", type=\"total\"})/max(mongodb_mongod_wiredtiger_cache_max_bytes{service_name=~\"$service_name\", environment=~\"$environment\"})))",
           "interval": "5m",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -430,7 +482,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "avg by (service_name) (avg(mongodb_mongod_wiredtiger_cache_pages{service_name=~\"$service_name\",type=\"dirty\"})/avg(mongodb_mongod_wiredtiger_cache_pages{service_name=~\"$service_name\",type=\"total\"}))",
+          "expr": "avg by (service_name) (avg(mongodb_mongod_wiredtiger_cache_pages{service_name=~\"$service_name\", environment=~\"$environment\",type=\"dirty\"})/avg(mongodb_mongod_wiredtiger_cache_pages{service_name=~\"$service_name\", environment=~\"$environment\",type=\"total\"}))",
           "interval": "5m",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -501,7 +553,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,type) (rate(mongodb_mongod_wiredtiger_transactions_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_wiredtiger_transactions_total{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name,type) (rate(mongodb_mongod_wiredtiger_transactions_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_mongod_wiredtiger_transactions_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{type}}",
@@ -605,7 +657,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name) (mongodb_mongod_wiredtiger_cache_max_bytes{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mongodb_mongod_wiredtiger_cache_max_bytes{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -614,7 +666,7 @@
           "step": 300
         },
         {
-          "expr": "avg by (service_name) (mongodb_mongod_wiredtiger_cache_bytes{service_name=~\"$service_name\", type=\"total\"})",
+          "expr": "avg by (service_name) (mongodb_mongod_wiredtiger_cache_bytes{service_name=~\"$service_name\", environment=~\"$environment\", type=\"total\"})",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -715,7 +767,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name) (mongodb_mongod_wiredtiger_session_open_cursors_total{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mongodb_mongod_wiredtiger_session_open_cursors_total{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Cursors",
@@ -724,7 +776,7 @@
           "step": 300
         },
         {
-          "expr": "avg by (service_name) (mongodb_mongod_wiredtiger_session_open_sessions_total{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mongodb_mongod_wiredtiger_session_open_sessions_total{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Sessions",
@@ -825,7 +877,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,type) (mongodb_mongod_wiredtiger_cache_pages{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name,type) (mongodb_mongod_wiredtiger_cache_pages{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{type}}",
@@ -932,7 +984,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,type) (mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\"}-mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name,type) (mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\", environment=~\"$environment\"}-mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{type}}",
@@ -1032,7 +1084,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,type) (mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name,type) (mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1134,7 +1186,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,state) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name,state) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1143,7 +1195,7 @@
           "step": 300
         },
         {
-          "expr": "avg by (service_name) (rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type=\"delete\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type=\"delete\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"delete\"}[5m]))",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1152,7 +1204,7 @@
           "step": 300
         },
         {
-          "expr": "avg by (service_name) (rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type=\"update\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type=\"update\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"update\"}[5m]))",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1161,7 +1213,7 @@
           "step": 300
         },
         {
-          "expr": "avg by (service_name) (rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type=\"insert\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type=\"insert\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", environment=~\"$environment\", type=\"insert\"}[5m]))",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1170,7 +1222,7 @@
           "step": 300
         },
         {
-          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1271,7 +1323,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name) (rate(mongodb_mongod_wiredtiger_cache_evicted_total{service_name=~\"$service_name\",type=\"modified\"}[$interval]) or irate(mongodb_mongod_wiredtiger_cache_evicted_total{service_name=~\"$service_name\",type=\"modified\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_wiredtiger_cache_evicted_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"modified\"}[$interval]) or irate(mongodb_mongod_wiredtiger_cache_evicted_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"modified\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Evicted",
@@ -1372,7 +1424,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,state) (rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name,state) (rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{state}}",
@@ -1381,7 +1433,7 @@
           "step": 300
         },
         {
-          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_record_moves_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_record_moves_total{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_record_moves_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_mongod_metrics_record_moves_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "moved",
@@ -1480,7 +1532,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name) (rate(mongodb_mongod_extra_info_page_faults_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_extra_info_page_faults_total{service_name=~\"$service_name\"}[5m]) or rate(mongodb_extra_info_page_faults_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_extra_info_page_faults_total{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_extra_info_page_faults_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_mongod_extra_info_page_faults_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) or rate(mongodb_extra_info_page_faults_total{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or irate(mongodb_extra_info_page_faults_total{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1604,7 +1656,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "avg by (service_name) (mongodb_instance_uptime_seconds{service_name=~\"$service_name\"})",
+          "expr": "avg by (service_name) (mongodb_instance_uptime_seconds{service_name=~\"$service_name\", environment=~\"$environment\"})",
           "interval": "$interval",
           "refId": "A"
         }
@@ -1678,7 +1730,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "sum(rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m]) or rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m]))",
+          "expr": "sum(rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[$interval]) or irate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[5m]) or rate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\", environment=~\"$environment\",type!=\"command\"}[5m]))",
           "interval": "$interval",
           "refId": "A"
         }
@@ -1751,7 +1803,7 @@
       "pluginVersion": "8.3.5",
       "targets": [
         {
-          "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / (rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / (irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]) > 0))",
+          "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[$interval]) / (rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[5m]) / (irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\", environment=~\"$environment\",type=\"command\"}[5m]) > 0))",
           "interval": "$interval",
           "refId": "A"
         }
@@ -1839,7 +1891,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name) (max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[5m]))",
+          "expr": "avg by (service_name) (max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", environment=~\"$environment\", state=\"current\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -1953,7 +2005,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg by (service_name,state) (max_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\"}[5m]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\"}[5m]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\"}[5m]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\"}[5m]))",
+          "expr": "avg by (service_name,state) (max_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or \nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\", environment=~\"$environment\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\", environment=~\"$environment\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
@@ -2587,7 +2639,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"} ",
+          "expr": "mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\", environment=~\"$environment\"} ",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -3195,11 +3247,7 @@
         "auto": true,
         "auto_count": 200,
         "auto_min": "1s",
-        "current": {
-          "selected": false,
-          "text": "auto",
-          "value": "$__auto_interval_interval"
-        },
+        "current": {},
         "datasource": "Metrics",
         "hide": 0,
         "includeAll": false,
@@ -3257,11 +3305,7 @@
       {
         "allFormat": "glob",
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\"},cluster)",
         "hide": 0,
@@ -3284,11 +3328,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 2,
@@ -3312,12 +3352,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 0,
@@ -3341,11 +3376,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 2,
@@ -3368,11 +3399,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
         "hide": 2,
@@ -3395,11 +3422,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "",
         "hide": 0,
@@ -3422,11 +3445,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{cluster=~\"$cluster\"}, service_name)",
         "hide": 0,
@@ -3450,11 +3469,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{cluster=~\"$cluster\",service_name=~\"$service_name\"}, node_name)",
         "hide": 2,
@@ -3478,11 +3493,7 @@
       },
       {
         "allValue": ".*",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
         "hide": 2,
@@ -3505,11 +3516,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
         "hide": 2,
@@ -3532,11 +3539,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
         "hide": 2,
@@ -3559,11 +3562,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
         "hide": 2,
@@ -3586,11 +3585,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
         "hide": 2,
@@ -3613,11 +3608,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
         "hide": 2,
@@ -3640,11 +3631,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
         "hide": 2,
@@ -3667,11 +3654,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "r1",
-          "value": "r1"
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "query_result(mongodb_mongod_replset_my_state{service_name=~\"$service_name\"})",
         "hide": 2,
@@ -3695,11 +3678,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{service_name=~\"$service_name\"}, service_id)",
         "hide": 2,
@@ -3723,11 +3702,7 @@
       },
       {
         "allFormat": "glob",
-        "current": {
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
+        "current": {},
         "datasource": "Metrics",
         "definition": "label_values(up{service_name=~\"$service_name\"},service_name)",
         "hide": 2,
@@ -3755,7 +3730,7 @@
     "to": "now"
   },
   "timepicker": {
-    "hidden": false,
+    "hidden": true,
     "now": true,
     "refresh_intervals": [
       "5s",
@@ -3767,6 +3742,7 @@
       "30m",
       "1h",
       "2h",
+      "6h",
       "1d"
     ],
     "time_options": [
