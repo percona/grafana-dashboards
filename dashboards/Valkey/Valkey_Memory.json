@@ -1,32 +1,4 @@
 {
-  "__inputs": [],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "11.6.1"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -145,7 +117,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 1
       },
@@ -154,10 +126,16 @@
       "maxDataPoints": 100,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -165,7 +143,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -173,7 +151,7 @@
           "expr": "(100 * (redis_memory_used_bytes{node_name=~\"$node_name\"}  / redis_memory_max_bytes{node_name=~\"$node_name\"}))",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "",
+          "legendFormat": "{{service_name}}",
           "metric": "",
           "range": true,
           "refId": "A",
@@ -217,9 +195,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 6,
-        "x": 12,
-        "y": 1
+        "w": 12,
+        "x": 0,
+        "y": 9
       },
       "id": 22,
       "options": {
@@ -234,7 +212,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -254,6 +232,11 @@
           "id": "filterFieldsByName",
           "options": {
             "include": {
+              "names": [
+                "node_name",
+                "Value",
+                "service_name"
+              ],
               "pattern": "node_name|Value"
             }
           }
@@ -297,9 +280,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 6,
-        "x": 18,
-        "y": 1
+        "w": 12,
+        "x": 12,
+        "y": 9
       },
       "hideTimeOverride": true,
       "id": 25,
@@ -316,13 +299,13 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "redis_db_keys{node_name=~\"$node_name\"}",
+          "expr": "min by (node_name,service_name) (redis_db_keys{node_name=~\"$node_name\"})",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -340,6 +323,11 @@
           "id": "filterFieldsByName",
           "options": {
             "include": {
+              "names": [
+                "node_name",
+                "Value",
+                "service_name"
+              ],
               "pattern": "node_name|Value"
             }
           }
@@ -426,15 +414,21 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 17
       },
       "id": 626,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -442,26 +436,30 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "expr": "redis_memory_used_bytes{node_name=~\"$node_name\"}",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "used, {{ node_name }}",
+          "legendFormat": "used, {{ service_name}}",
           "metric": "",
+          "range": true,
           "refId": "A",
           "step": 240,
           "target": ""
         },
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "expr": "redis_memory_max_bytes{node_name=~\"$node_name\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
-          "legendFormat": "max, {{ node_name }}",
+          "legendFormat": "max, {{ service_name}}",
+          "range": true,
           "refId": "B",
           "step": 240
         }
@@ -475,7 +473,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 25
       },
       "id": 43,
       "panels": [],
@@ -587,18 +585,18 @@
         ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 26
       },
       "id": 8,
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "list",
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -606,7 +604,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -698,18 +696,18 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 12,
         "x": 12,
-        "y": 18
+        "y": 26
       },
       "id": 13,
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "list",
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -717,7 +715,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -725,8 +723,8 @@
           "expr": "sum (redis_db_keys{instance=~\"$node_name\"}) by (node_name) - sum (redis_db_keys_expiring{node_name=~\"$node_name\"}) by (node_name)",
           "format": "time_series",
           "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "not expiring, {{ instance }}",
+          "intervalFactor": 1,
+          "legendFormat": "not expiring, {{ node_name}}",
           "range": true,
           "refId": "A",
           "step": 240,
@@ -750,6 +748,7 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "10s",
   "schemaVersion": 41,
   "tags": [
@@ -839,13 +838,12 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Valkey/Redis Memory",
   "uid": "valkey-memory",
-  "version": 1,
-  "weekStart": ""
+  "version": 1
 }

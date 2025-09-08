@@ -1,32 +1,4 @@
 {
-  "__inputs": [],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "11.6.1"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -136,10 +108,16 @@
       "id": 35,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -147,7 +125,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -244,7 +222,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 16,
+        "h": 9,
         "w": 24,
         "x": 0,
         "y": 11
@@ -253,10 +231,16 @@
       "maxPerRow": 3,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -265,7 +249,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "repeat": "node_name",
       "repeatDirection": "h",
       "targets": [
@@ -277,7 +261,7 @@
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
-          "legendFormat": "Reads_{{label_name}}",
+          "legendFormat": "Reads",
           "range": true,
           "refId": "A",
           "step": 240
@@ -291,7 +275,7 @@
           "instant": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "__auto",
+          "legendFormat": "Writes",
           "range": true,
           "refId": "B",
           "step": 240
@@ -306,7 +290,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 20
       },
       "id": 278,
       "panels": [],
@@ -372,19 +356,23 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 24,
         "x": 0,
-        "y": 60
+        "y": 21
       },
       "id": 18,
       "maxPerRow": 3,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -392,7 +380,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "repeat": "node_name",
       "repeatDirection": "h",
       "targets": [
@@ -403,7 +391,7 @@
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{ node_name,  cmd }}",
+          "legendFormat": "{{cmd}} - {{node_name}}",
           "metric": "redis_command_calls_total",
           "range": true,
           "refId": "A",
@@ -419,7 +407,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 84
+        "y": 30
       },
       "id": 335,
       "panels": [],
@@ -489,15 +477,21 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 85
+        "y": 31
       },
       "id": 58,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -505,30 +499,34 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "expr": "irate(redis_keyspace_hits_total{node_name=~\"$node_name\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "hits, {{ node_name }}",
+          "legendFormat": "hits - {{ service_name}}",
           "metric": "",
+          "range": true,
           "refId": "A",
           "step": 240,
           "target": ""
         },
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "expr": "irate(redis_keyspace_misses_total{node_name=~\"$node_name\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "misses, {{ node_name }}",
+          "legendFormat": "misses - {{ service_name}}",
           "metric": "",
+          "range": true,
           "refId": "B",
           "step": 240,
           "target": ""
@@ -543,7 +541,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 93
+        "y": 39
       },
       "id": 51,
       "panels": [],
@@ -613,15 +611,21 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 94
+        "y": 40
       },
       "id": 1,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -629,17 +633,17 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
-          "editorMode": "builder",
+          "editorMode": "code",
           "expr": "irate(redis_io_threaded_reads_processed{node_name=~\"$node_name\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "reads_{{node_name}}",
+          "legendFormat": "reads - {{service_name}}",
           "metric": "",
           "range": true,
           "refId": "A",
@@ -648,13 +652,13 @@
         },
         {
           "datasource": "Metrics",
-          "editorMode": "builder",
+          "editorMode": "code",
           "expr": "irate(redis_io_threaded_writes_processed{node_name=~\"$node_name\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "writes_{{node_name}}",
+          "legendFormat": "writes - {{service_name}}",
           "metric": "",
           "range": true,
           "refId": "B",
@@ -684,8 +688,22 @@
           "mappings": [
             {
               "options": {
+                "1": {
+                  "index": 1,
+                  "text": "Yes"
+                },
+                "2": {
+                  "index": 2,
+                  "text": "No"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
                 "match": "null",
                 "result": {
+                  "index": 0,
                   "text": "N/A"
                 }
               },
@@ -734,10 +752,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 5,
+        "h": 6,
+        "w": 24,
         "x": 0,
-        "y": 104
+        "y": 50
       },
       "hideTimeOverride": true,
       "id": 26,
@@ -755,17 +773,17 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
           "expr": "redis_config_io_threads{node_name=~\"$node_name\"}",
           "format": "table",
           "instant": true,
           "intervalFactor": 2,
-          "legendFormat": "",
+          "legendFormat": "{{service_name}}",
           "metric": "",
           "range": false,
           "refId": "A",
@@ -788,14 +806,34 @@
               "external_group": true,
               "instance": true,
               "job": true,
+              "machine_id": true,
               "node_id": true,
               "node_type": true,
               "service_id": true,
-              "service_name": true,
+              "service_name": false,
               "service_type": true
             },
             "includeByName": {},
-            "indexByName": {},
+            "indexByName": {
+              "Time": 0,
+              "Value": 17,
+              "__name__": 1,
+              "agent_id": 2,
+              "agent_type": 3,
+              "cluster": 4,
+              "environment": 5,
+              "instance": 6,
+              "job": 7,
+              "machine_id": 8,
+              "node_id": 9,
+              "node_name": 10,
+              "node_type": 11,
+              "replication_set": 12,
+              "role": 14,
+              "service_id": 15,
+              "service_name": 13,
+              "service_type": 16
+            },
             "renameByName": {}
           }
         }
@@ -808,7 +846,7 @@
         "defaults": {
           "color": {
             "fixedColor": "rgb(31, 120, 193)",
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -873,9 +911,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 19,
-        "x": 5,
-        "y": 104
+        "w": 24,
+        "x": 0,
+        "y": 56
       },
       "hideTimeOverride": true,
       "id": 57,
@@ -893,15 +931,15 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
-          "editorMode": "builder",
+          "editorMode": "code",
           "expr": "redis_io_threads_active{node_name=~\"$node_name\"}",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{node_name}}",
+          "legendFormat": "{{service_name}}",
           "metric": "",
           "range": true,
           "refId": "A",
@@ -913,18 +951,20 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "10s",
+  "preload": false,
+  "refresh": "",
   "schemaVersion": 41,
-  "tags": [
-    "Percona",
-    "Valkey",
-    "Redis"
-  ],
+  "tags": [],
   "templating": {
     "list": [
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "definition": "label_values({__name__=\"redis_up\"},environment)",
         "includeAll": true,
         "label": "Environment",
@@ -941,7 +981,12 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
         "definition": "label_values(redis_up,service_name)",
         "includeAll": true,
@@ -961,7 +1006,12 @@
       },
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
         "definition": "label_values(redis_up{environment=~\"$environment\"},cluster)",
         "includeAll": true,
@@ -981,7 +1031,12 @@
       },
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
         "definition": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
         "includeAll": true,
@@ -1002,7 +1057,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},

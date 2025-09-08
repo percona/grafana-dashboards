@@ -1,32 +1,4 @@
 {
-  "__inputs": [],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "11.6.1"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -106,8 +78,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 4,
+        "h": 4,
+        "w": 8,
         "x": 0,
         "y": 1
       },
@@ -133,7 +105,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -157,7 +129,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "blue",
+            "mode": "fixed"
           },
           "links": [],
           "mappings": [],
@@ -178,16 +151,16 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 10,
-        "x": 4,
+        "h": 4,
+        "w": 8,
+        "x": 8,
         "y": 1
       },
       "id": 10,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
-        "justifyMode": "auto",
+        "justifyMode": "center",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
@@ -198,10 +171,10 @@
           "values": false
         },
         "showPercentChange": false,
-        "textMode": "auto",
+        "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -232,6 +205,169 @@
         }
       ],
       "title": "$node_name - Cumulative Read and Write rate",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": false
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "sum((redis_connected_clients{node_name=~\"$node_name\"}))",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Connected",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "sum (redis_blocked_clients{node_name=~\"$node_name\"})",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Blocked",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Total Connected/Blocked Clients",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "µs"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 629,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 36
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "topk(5, redis_latency_percentiles_usec{quantile=\"99.9\", node_name=~\"$node_name\", cmd!~\"config\\\\|get|bgsave|bgrewriteaof|save|flushdb|flushall|debug|psync|.*latency.*|command\\\\|docs\"} )",
+          "format": "time_series",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{cmd}}",
+          "metric": "",
+          "range": true,
+          "refId": "A",
+          "step": 1800,
+          "useBackend": false
+        }
+      ],
+      "title": "Max Latency",
       "type": "stat"
     },
     {
@@ -310,18 +446,24 @@
         ]
       },
       "gridPos": {
-        "h": 7,
-        "w": 10,
-        "x": 14,
-        "y": 1
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 9
       },
       "id": 7,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -329,7 +471,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -337,7 +479,7 @@
           "expr": "sum(redis_memory_used_bytes{node_name=~\"$node_name\"})",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "used",
+          "legendFormat": "Used",
           "metric": "",
           "range": true,
           "refId": "A",
@@ -351,7 +493,7 @@
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
-          "legendFormat": "max",
+          "legendFormat": "Max",
           "range": true,
           "refId": "B",
           "step": 240
@@ -359,168 +501,6 @@
       ],
       "title": "Total Memory Usage",
       "type": "timeseries"
-    },
-    {
-      "datasource": "Metrics",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "rgb(31, 120, 193)",
-            "mode": "fixed"
-          },
-          "decimals": 0,
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "µs"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 4,
-        "x": 0,
-        "y": 4
-      },
-      "id": 629,
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "horizontal",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "valueSize": 36
-        },
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.6.1",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "topk(5, redis_latency_percentiles_usec{quantile=\"99.9\", node_name=~\"$node_name\", cmd!~\"config\\\\|get|bgsave|bgrewriteaof|save|flushdb|flushall|debug|psync|.*latency.*|command\\\\|docs\"} )",
-          "format": "time_series",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "{{cmd}}",
-          "metric": "",
-          "range": true,
-          "refId": "A",
-          "step": 1800,
-          "useBackend": false
-        }
-      ],
-      "title": "Max Latency",
-      "type": "stat"
-    },
-    {
-      "datasource": "Metrics",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 10,
-        "x": 4,
-        "y": 8
-      },
-      "id": 16,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.6.1",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "editorMode": "code",
-          "expr": "sum((redis_connected_clients{node_name=~\"$node_name\"}))",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Connected",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": "Metrics",
-          "editorMode": "code",
-          "expr": "sum (redis_blocked_clients{node_name=~\"$node_name\"})",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Blocked",
-          "range": true,
-          "refId": "B"
-        }
-      ],
-      "title": "Total Connected/Blocked Clients",
-      "type": "stat"
     },
     {
       "datasource": "Metrics",
@@ -581,18 +561,24 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 10,
-        "x": 14,
-        "y": 8
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
       },
       "id": 27,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -600,7 +586,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -608,7 +594,7 @@
           "expr": "sum(irate(redis_net_input_bytes_total{node_name=~\"$node_name\"}[$__rate_interval]))",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "input",
+          "legendFormat": "Input",
           "range": true,
           "refId": "A",
           "step": 240
@@ -620,7 +606,7 @@
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "output",
+          "legendFormat": "Output",
           "range": true,
           "refId": "B",
           "step": 240
@@ -630,6 +616,7 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "10s",
   "schemaVersion": 41,
   "tags": [
@@ -677,6 +664,7 @@
         "type": "query"
       },
       {
+        "allValue": ".*",
         "allowCustomValue": false,
         "current": {},
         "datasource": "Metrics",
@@ -719,13 +707,12 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Valkey/Redis Overview",
   "uid": "valkey-overview",
-  "version": 1,
-  "weekStart": ""
+  "version": 1
 }

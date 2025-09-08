@@ -99,7 +99,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 16,
+        "h": 8,
         "w": 24,
         "x": 0,
         "y": 1
@@ -108,10 +108,12 @@
       "maxPerRow": 3,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -119,7 +121,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "repeat": "node_name",
       "repeatDirection": "h",
       "targets": [
@@ -129,7 +131,7 @@
           "expr": "sum by(node_name)(redis_connected_clients{node_name=~\"$node_name\"})",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "connected_{{node_name}}",
+          "legendFormat": "Connected - {{node_name}}",
           "range": true,
           "refId": "A"
         },
@@ -139,7 +141,7 @@
           "expr": "sum by(node_name)(redis_blocked_clients{node_name=~\"$node_name\"})",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "blocked_{{node_name}}",
+          "legendFormat": "Blocked - {{node_name}}",
           "range": true,
           "refId": "B"
         }
@@ -157,7 +159,8 @@
           "custom": {
             "align": "auto",
             "cellOptions": {
-              "type": "auto"
+              "type": "auto",
+              "wrapText": false
             },
             "inspect": false
           },
@@ -184,8 +187,8 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 118
+                "id": "custom.minWidth",
+                "value": 150
               }
             ]
           }
@@ -195,7 +198,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 9
       },
       "id": 66,
       "options": {
@@ -203,7 +206,9 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
         "showHeader": true,
@@ -244,8 +249,13 @@
               "service_name": true,
               "service_type": true
             },
+            "includeByName": {},
             "indexByName": {},
-            "renameByName": {}
+            "renameByName": {
+              "job": "",
+              "machine_id": "Id",
+              "node_name": "Node Name"
+            }
           }
         }
       ],
@@ -263,6 +273,7 @@
             "cellOptions": {
               "type": "auto"
             },
+            "filterable": false,
             "inspect": false
           },
           "mappings": [],
@@ -280,13 +291,21 @@
           },
           "unit": "none"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Node Name"
+            },
+            "properties": []
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 17
+        "y": 9
       },
       "id": 67,
       "options": {
@@ -294,7 +313,9 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
         "showHeader": true
@@ -334,8 +355,13 @@
               "service_name": true,
               "service_type": true
             },
+            "includeByName": {},
             "indexByName": {},
-            "renameByName": {}
+            "renameByName": {
+              "Value": "",
+              "machine_id": "Id",
+              "node_name": "Node Name"
+            }
           }
         }
       ],
@@ -347,7 +373,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 17
       },
       "id": 394,
       "panels": [],
@@ -362,11 +388,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -375,6 +403,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 5,
@@ -410,25 +439,32 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 18
       },
       "id": 30,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "11.6.4",
       "repeat": "node_name",
       "repeatDirection": "h",
       "targets": [
@@ -438,7 +474,7 @@
           "expr": "(rate(redis_client_recent_max_input_buffer_bytes{node_name=~\"$node_name\"}[5m]))",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{ input }}",
+          "legendFormat": "Input",
           "range": true,
           "refId": "A",
           "step": 240
@@ -450,7 +486,7 @@
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{ output }}",
+          "legendFormat": "Output",
           "range": true,
           "refId": "B",
           "step": 240
@@ -463,14 +499,20 @@
   "preload": false,
   "refresh": "10s",
   "schemaVersion": 41,
-  "tags": ["Redis", "Valkey", "Percona"],
+  "tags": [
+    "Redis",
+    "Valkey",
+    "Percona"
+  ],
   "templating": {
     "list": [
       {
         "allowCustomValue": false,
         "current": {
           "text": "All",
-          "value": ["$__all"]
+          "value": [
+            "$__all"
+          ]
         },
         "definition": "label_values({__name__=\"redis_up\"},environment)",
         "includeAll": true,
@@ -490,7 +532,9 @@
       {
         "current": {
           "text": "All",
-          "value": ["$__all"]
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "Metrics",
         "definition": "label_values(redis_up,service_name)",
@@ -510,10 +554,13 @@
         "type": "query"
       },
       {
+        "allValue": ".*",
         "allowCustomValue": false,
         "current": {
           "text": "All",
-          "value": ["$__all"]
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "Metrics",
         "definition": "label_values(redis_up{environment=~\"$environment\"},cluster)",
@@ -536,7 +583,9 @@
         "allowCustomValue": false,
         "current": {
           "text": "All",
-          "value": ["$__all"]
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "Metrics",
         "definition": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
@@ -565,5 +614,5 @@
   "timezone": "browser",
   "title": "Valkey/Redis Clients",
   "uid": "valkey-clients",
-  "version": 2
+  "version": 1
 }

@@ -1,26 +1,4 @@
 {
-  "__inputs": [],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "11.6.1"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -122,7 +100,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 18,
+        "h": 11,
         "w": 24,
         "x": 0,
         "y": 1
@@ -131,10 +109,16 @@
       "maxPerRow": 3,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -142,17 +126,17 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "repeat": "node_name",
       "repeatDirection": "h",
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "rate(redis_net_input_bytes_total{node_name=~\"$node_name\"}[5m])",
+          "expr": "rate(redis_net_input_bytes_total{node_name=~\"$node_name\"}[$__interval]) or irate(redis_net_output_bytes_total{node_name=~\"$node_name\"}[5m])",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{ input }}",
+          "legendFormat": "{{service_name}}",
           "range": true,
           "refId": "A",
           "step": 240
@@ -160,20 +144,139 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "rate(redis_net_output_bytes_total{node_name=~\"$node_name\"}[5m])",
+          "expr": "rate(redis_net_output_bytes_total{node_name=~\"$node_name\"}[$__interval]) or irate(redis_net_output_bytes_total{node_name=~\"$node_name\"}[5m])",
           "format": "time_series",
+          "hide": true,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{ output }}",
+          "legendFormat": "Output - {{service_name}}",
           "range": true,
           "refId": "B",
           "step": 240
         }
       ],
-      "title": "$node_name - network I/O",
+      "title": "$node_name - network Input",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Metrics",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 629,
+      "maxPerRow": 3,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.4",
+      "repeat": "node_name",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "rate(redis_net_input_bytes_total{node_name=~\"$node_name\"}[$__interval]) or irate(redis_net_output_bytes_total{node_name=~\"$node_name\"}[5m])",
+          "format": "time_series",
+          "hide": true,
+          "intervalFactor": 2,
+          "legendFormat": "Input - {{service_name}}",
+          "range": true,
+          "refId": "A",
+          "step": 240
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "rate(redis_net_output_bytes_total{node_name=~\"$node_name\"}[$__interval]) or irate(redis_net_output_bytes_total{node_name=~\"$node_name\"}[5m])",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{service_name}}",
+          "range": true,
+          "refId": "B",
+          "step": 240
+        }
+      ],
+      "title": "$node_name - network Output",
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "10s",
   "schemaVersion": 41,
   "tags": [
@@ -183,6 +286,72 @@
   ],
   "templating": {
     "list": [
+      {
+        "auto": true,
+        "auto_count": 30,
+        "auto_min": "10s",
+        "current": {
+          "text": "$__auto",
+          "value": "$__auto"
+        },
+        "label": "interval",
+        "name": "Interval",
+        "options": [
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "12h",
+            "value": "12h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          },
+          {
+            "selected": false,
+            "text": "7d",
+            "value": "7d"
+          },
+          {
+            "selected": false,
+            "text": "14d",
+            "value": "14d"
+          },
+          {
+            "selected": false,
+            "text": "30d",
+            "value": "30d"
+          }
+        ],
+        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "refresh": 2,
+        "type": "interval"
+      },
       {
         "allowCustomValue": false,
         "current": {},
@@ -263,13 +432,12 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Valkey/Redis Network",
   "uid": "valkey-network",
-  "version": 1,
-  "weekStart": ""
+  "version": 1
 }

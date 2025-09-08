@@ -1,38 +1,4 @@
 {
-  "__inputs": [],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "barchart",
-      "name": "Bar chart",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "bargauge",
-      "name": "Bar gauge",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "11.6.1"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -153,7 +119,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -270,7 +236,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "repeat": "node_name",
       "repeatDirection": "h",
       "targets": [
@@ -282,7 +248,7 @@
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
-          "legendFormat": "Reads_{{label_name}}",
+          "legendFormat": "Reads - {{node_name}}",
           "range": true,
           "refId": "A",
           "step": 240
@@ -296,7 +262,7 @@
           "instant": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "__auto",
+          "legendFormat": "Writes - {{node_name}}",
           "range": true,
           "refId": "B",
           "step": 240
@@ -311,7 +277,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 21
       },
       "id": 278,
       "panels": [],
@@ -380,16 +346,20 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 60
+        "y": 22
       },
       "id": 18,
       "maxPerRow": 3,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -397,7 +367,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "repeat": "node_name",
       "repeatDirection": "h",
       "targets": [
@@ -408,7 +378,7 @@
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{ node_name,  cmd }}",
+          "legendFormat": "{{cmd}} - {{ node_name}}",
           "metric": "redis_command_calls_total",
           "range": true,
           "refId": "A",
@@ -424,7 +394,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 84
+        "y": 30
       },
       "id": 45,
       "panels": [],
@@ -460,7 +430,7 @@
         "h": 19,
         "w": 24,
         "x": 0,
-        "y": 85
+        "y": 31
       },
       "id": 46,
       "maxPerRow": 3,
@@ -486,26 +456,25 @@
         },
         "showUnfilled": true,
         "sizing": "auto",
-        "text": {
-          "titleSize": 16,
-          "valueSize": 26
-        },
-        "valueMode": "color"
+        "text": {},
+        "valueMode": "text"
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "repeat": "node_name",
       "repeatDirection": "h",
       "targets": [
         {
           "datasource": "Metrics",
-          "editorMode": "builder",
-          "expr": "topk by() (10, sum by(node_name, cmd) (redis_commands_duration_seconds_total{node_name=~\"$node_name\"}) != 0)",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "topk(10, sum by(node_name, cmd) (redis_commands_duration_seconds_total{node_name=~\"$node_name\"}) != 0)",
           "format": "time_series",
+          "instant": true,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "__auto",
+          "legendFormat": "{{cmd}}",
           "metric": "redis_command_calls_total",
-          "range": true,
+          "range": false,
           "refId": "A",
           "step": 240
         }
@@ -521,11 +490,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 80,
             "gradientMode": "none",
@@ -534,6 +505,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -572,33 +544,40 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 142
+        "y": 40
       },
       "id": 14,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "11.6.4",
       "repeat": "node_name",
       "repeatDirection": "v",
       "targets": [
         {
           "datasource": "Metrics",
-          "editorMode": "builder",
+          "editorMode": "code",
           "expr": "sum by(cmd, node_name) (irate(redis_commands_duration_seconds_total{node_name=~\"$node_name\"}[1m])) != 0",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{ node_name, cmd }}",
+          "legendFormat": "{{cmd}} - {{ node_name}}",
           "metric": "redis_command_calls_total",
           "range": true,
           "refId": "A",
@@ -627,10 +606,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 16,
+        "h": 7,
         "w": 24,
         "x": 0,
-        "y": 214
+        "y": 48
       },
       "id": 47,
       "options": {
@@ -661,26 +640,26 @@
         },
         "valueMode": "color"
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
           "expr": "sum by(node_name) (redis_total_reads_processed{node_name=~\"$node_name\"})",
           "instant": true,
-          "legendFormat": "reads_{{node_name}}",
+          "legendFormat": "reads - {{node_name}}",
           "range": false,
           "refId": "A"
         },
         {
           "datasource": "Metrics",
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
           "expr": "sum by(node_name) (redis_total_writes_processed{node_name=~\"$node_name\"})",
           "hide": false,
           "instant": true,
-          "legendFormat": "writes_{{node_name}}",
+          "legendFormat": "writes - {{node_name}}",
           "range": false,
           "refId": "B"
         },
@@ -688,10 +667,10 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(redis_errors_total{node_name=~\"$node_name\"})",
+          "expr": "sum by (node_name)(redis_errors_total{node_name=~\"$node_name\"})",
           "hide": false,
           "instant": true,
-          "legendFormat": "errors_{{node_name}}",
+          "legendFormat": "errors - {{node_name}}",
           "range": false,
           "refId": "C"
         }
@@ -748,7 +727,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 230
+        "y": 55
       },
       "id": 86,
       "panels": [
@@ -797,10 +776,10 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 7,
-            "w": 23,
+            "h": 8,
+            "w": 24,
             "x": 0,
-            "y": 683
+            "y": 56
           },
           "id": 88,
           "options": {
@@ -809,10 +788,16 @@
             "fullHighlight": false,
             "groupWidth": 0.7,
             "legend": {
-              "calcs": [],
-              "displayMode": "list",
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
               "placement": "bottom",
-              "showLegend": false
+              "showLegend": true,
+              "sortBy": "Mean",
+              "sortDesc": true
             },
             "orientation": "horizontal",
             "showValue": "auto",
@@ -825,7 +810,7 @@
             "xTickLabelRotation": 0,
             "xTickLabelSpacing": 0
           },
-          "pluginVersion": "11.6.1",
+          "pluginVersion": "11.6.4",
           "repeat": "node_name",
           "repeatDirection": "v",
           "targets": [
@@ -833,9 +818,9 @@
               "datasource": "Metrics",
               "editorMode": "code",
               "exemplar": false,
-              "expr": "redis_latency_percentiles_usec{node_name=~\"$node_name\"}",
+              "expr": "redis_latency_percentiles_usec{node_name=~\"$node_name\",service_name=~\"$service_name\"}",
               "instant": true,
-              "legendFormat": "__auto",
+              "legendFormat": "{{cmd}} - {{service_name}}",
               "range": false,
               "refId": "A"
             }
@@ -853,7 +838,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 231
+        "y": 56
       },
       "id": 543,
       "panels": [
@@ -905,7 +890,7 @@
             "h": 10,
             "w": 8,
             "x": 0,
-            "y": 684
+            "y": 57
           },
           "id": 89,
           "options": {
@@ -1042,7 +1027,7 @@
             "h": 10,
             "w": 8,
             "x": 8,
-            "y": 684
+            "y": 57
           },
           "id": 91,
           "options": {
@@ -1177,7 +1162,7 @@
             "h": 10,
             "w": 8,
             "x": 16,
-            "y": 684
+            "y": 57
           },
           "id": 93,
           "options": {
@@ -1312,7 +1297,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 774
+            "y": 67
           },
           "id": 92,
           "options": {
@@ -1447,7 +1432,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 774
+            "y": 67
           },
           "id": 103,
           "options": {
@@ -1582,7 +1567,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 774
+            "y": 67
           },
           "id": 94,
           "options": {
@@ -1721,7 +1706,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 846
+            "y": 75
           },
           "id": 95,
           "options": {
@@ -1747,7 +1732,7 @@
             "xTickLabelRotation": 0,
             "xTickLabelSpacing": 0
           },
-          "pluginVersion": "11.6.1",
+          "pluginVersion": "11.6.4",
           "targets": [
             {
               "datasource": "Metrics",
@@ -1860,7 +1845,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 846
+            "y": 75
           },
           "id": 104,
           "options": {
@@ -1886,7 +1871,7 @@
             "xTickLabelRotation": 0,
             "xTickLabelSpacing": 0
           },
-          "pluginVersion": "11.6.1",
+          "pluginVersion": "11.6.4",
           "targets": [
             {
               "datasource": "Metrics",
@@ -1995,7 +1980,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 846
+            "y": 75
           },
           "id": 90,
           "options": {
@@ -2094,6 +2079,7 @@
                 "mode": "continuous-GrYlRd"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -2108,6 +2094,9 @@
                 "lineWidth": 1,
                 "scaleDistribution": {
                   "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
                 }
               },
               "mappings": [],
@@ -2130,23 +2119,25 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 854
+            "y": 83
           },
           "id": 96,
           "options": {
             "barRadius": 0,
             "barWidth": 0.97,
+            "fullHighlight": false,
             "groupWidth": 0.7,
             "legend": {
               "calcs": [],
               "displayMode": "list",
               "placement": "bottom",
-              "showLegend": true
+              "showLegend": false
             },
             "orientation": "auto",
             "showValue": "auto",
             "stacking": "none",
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             },
@@ -2154,13 +2145,13 @@
             "xTickLabelRotation": 0,
             "xTickLabelSpacing": 0
           },
-          "pluginVersion": "9.2.20",
+          "pluginVersion": "11.6.4",
           "repeat": "node_name",
           "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
-              "editorMode": "builder",
+              "editorMode": "code",
               "exemplar": false,
               "expr": "sort(redis_commands_latencies_usec_bucket{node_name=~\"$node_name\", cmd=\"psync\"})",
               "format": "table",
@@ -2226,18 +2217,20 @@
       "type": "row"
     }
   ],
-  "refresh": "10s",
+  "preload": false,
+  "refresh": "",
   "schemaVersion": 41,
-  "tags": [
-    "Redis",
-    "Valkey",
-    "Percona"
-  ],
+  "tags": [],
   "templating": {
     "list": [
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "definition": "label_values({__name__=\"redis_up\"},environment)",
         "includeAll": true,
         "label": "Environment",
@@ -2254,7 +2247,14 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
         "definition": "label_values(redis_up,service_name)",
         "includeAll": true,
@@ -2274,7 +2274,12 @@
       },
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
         "definition": "label_values(redis_up{environment=~\"$environment\"},cluster)",
         "includeAll": true,
@@ -2294,7 +2299,12 @@
       },
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
         "definition": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
         "includeAll": true,
@@ -2315,7 +2325,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},

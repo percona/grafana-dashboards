@@ -25,7 +25,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 88,
   "links": [],
   "panels": [
     {
@@ -102,7 +101,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
+        "w": 17,
         "x": 0,
         "y": 1
       },
@@ -111,10 +110,12 @@
       "maxDataPoints": 100,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -122,7 +123,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -132,20 +133,11 @@
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
-          "legendFormat": "",
+          "legendFormat": "{{node_name}}",
           "metric": "",
           "range": true,
           "refId": "A",
           "step": 2
-        },
-        {
-          "datasource": "Metrics",
-          "editorMode": "builder",
-          "expr": "redis_slowlog_last_id",
-          "hide": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "B"
         }
       ],
       "timeFrom": "1m",
@@ -160,6 +152,106 @@
         }
       ],
       "type": "timeseries"
+    },
+    {
+      "datasource": "Metrics",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 17,
+        "y": 1
+      },
+      "hideTimeOverride": true,
+      "id": 100,
+      "maxDataPoints": 100,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "redis_config_value{key=\"slowlog-max-len\", node_name=~\"$node_name\"}",
+          "format": "table",
+          "instant": true,
+          "intervalFactor": 2,
+          "legendFormat": "",
+          "metric": "",
+          "range": false,
+          "refId": "A",
+          "step": 2
+        }
+      ],
+      "timeFrom": "1m",
+      "title": "Slowlog maxlength",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "agent_id": true,
+              "agent_type": true,
+              "cluster": true,
+              "external_group": true,
+              "instance": true,
+              "job": true,
+              "key": true,
+              "node_id": true,
+              "node_type": true,
+              "service_id": true,
+              "service_name": true,
+              "service_type": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "datasource": {
@@ -224,7 +316,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 16,
+        "h": 8,
         "w": 17,
         "x": 0,
         "y": 9
@@ -234,8 +326,10 @@
       "maxDataPoints": 10,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
         },
@@ -245,7 +339,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "command": "slowlogGet",
@@ -254,7 +348,7 @@
             "uid": "aI6rL8NHz"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "expr": "sum by(node_name) (redis_slowlog_length{node_name=~\"$node_name\"})",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -318,12 +412,14 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
         "showHeader": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -367,117 +463,25 @@
         }
       ],
       "type": "table"
-    },
-    {
-      "datasource": "Metrics",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "rgb(31, 120, 193)",
-            "mode": "fixed"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 7,
-        "x": 17,
-        "y": 17
-      },
-      "hideTimeOverride": true,
-      "id": 100,
-      "maxDataPoints": 100,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": ["sum"],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "11.6.1",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "editorMode": "builder",
-          "exemplar": false,
-          "expr": "redis_config_value{key=\"slowlog-max-len\", node_name=~\"$node_name\"}",
-          "format": "table",
-          "instant": true,
-          "intervalFactor": 2,
-          "legendFormat": "",
-          "metric": "",
-          "range": false,
-          "refId": "A",
-          "step": 2
-        }
-      ],
-      "timeFrom": "1m",
-      "title": "Slowlog maxlength",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "agent_id": true,
-              "agent_type": true,
-              "cluster": true,
-              "external_group": true,
-              "instance": true,
-              "job": true,
-              "key": true,
-              "node_id": true,
-              "node_type": true,
-              "service_id": true,
-              "service_name": true,
-              "service_type": true
-            },
-            "indexByName": {},
-            "renameByName": {}
-          }
-        }
-      ],
-      "type": "table"
     }
   ],
   "preload": false,
   "refresh": "10s",
   "schemaVersion": 41,
-  "tags": ["Valkey", "Redis", "Percona"],
+  "tags": [
+    "Valkey",
+    "Redis",
+    "Percona"
+  ],
   "templating": {
     "list": [
       {
         "allowCustomValue": false,
         "current": {
           "text": "All",
-          "value": ["$__all"]
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "Metrics",
         "definition": "label_values({__name__=\"redis_up\"},environment)",
@@ -500,7 +504,9 @@
         "allowCustomValue": false,
         "current": {
           "text": "All",
-          "value": ["$__all"]
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "Metrics",
         "definition": "label_values(redis_up,node_name)",
@@ -523,7 +529,9 @@
         "allowCustomValue": false,
         "current": {
           "text": "All",
-          "value": ["$__all"]
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "Metrics",
         "definition": "label_values(redis_up,service_name)",
@@ -545,13 +553,12 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Valkey/Redis Slowlog",
   "uid": "valkey-slowlog",
-  "version": 1,
-  "weekStart": ""
+  "version": 1
 }
