@@ -1610,7 +1610,7 @@
             "type": "stat"
         },
         {
-            "description": "Show the data distribution between all the shards involved",
+            "description": "Show the data distribution between all the shards involved (only user-created collections)",
             "fieldConfig":
             {
                 "defaults":
@@ -1681,7 +1681,7 @@
             [
                 {
                     "editorMode": "code",
-                    "expr": "max by(shard) (mongodb_collstats_storageStats_storageSize{environment=~\"$environment\", cluster=~\"$cluster\", db!~\"admin|config|local\"})",
+                    "expr": "sum by(shard) (mongodb_collstats_storageStats_storageSize{environment=~\"$environment\", cluster=~\"$cluster\", db!~\"admin|config|local\", rs_state=\"1\"})",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "__auto",
@@ -3055,7 +3055,7 @@
                         {
                             "editorMode": "code",
                             "exemplar": false,
-                            "expr": "max by (rs_nm, database) (mongodb_mongod_db_collections_total{cluster=\"$cluster\",database!~\"admin|config|system|local\",rs_nm=~\"$set\"})",
+                            "expr": "max by (rs_nm, database) (mongodb_mongod_db_collections_total{environment=~\"$environment\",cluster=\"$cluster\",database!~\"admin|config|system|local\",rs_nm=~\"$set\"})",
                             "format": "table",
                             "hide": false,
                             "instant": true,
@@ -3198,7 +3198,7 @@
                         {
                             "editorMode": "code",
                             "exemplar": false,
-                            "expr": "max by(rs_nm, collection, database) (mongodb_collstats_storageStats_storageSize{cluster=~\"$cluster\", db!~\"admin|config|local\", rs_nm=~\"$shard\"})",
+                            "expr": "max by(rs_nm, collection, database) (mongodb_collstats_storageStats_storageSize{environment=~\"$environment\", cluster=~\"$cluster\", db!~\"admin|config|local\", rs_nm=~\"$shard\"})",
                             "format": "table",
                             "hide": true,
                             "instant": true,
@@ -3210,7 +3210,7 @@
                         {
                             "editorMode": "code",
                             "exemplar": false,
-                            "expr": "max by(rs_nm, collection, database) (mongodb_collstats_storageStats_storageSize{cluster=~\"$cluster\", db!~\"admin|config|local\", rs_nm=~\"$set\"})",
+                            "expr": "max by(rs_nm, collection, database) (mongodb_collstats_storageStats_storageSize{environment=~\"$environment\", cluster=~\"$cluster\", db!~\"admin|config|local\", rs_nm=~\"$set\"})",
                             "format": "table",
                             "hide": false,
                             "instant": true,
