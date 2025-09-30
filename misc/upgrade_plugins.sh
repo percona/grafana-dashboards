@@ -13,7 +13,7 @@ docker run \
   --rm -t \
   --name grafana \
   --platform="$PLATFORM" \
-  -e GF_INSTALL_PLUGINS=grafana-clickhouse-datasource,grafana-polystat-panel,jdbranham-diagram-panel \
+  -e GF_INSTALL_PLUGINS=grafana-clickhouse-datasource,grafana-polystat-panel \
   -v "${DIR}":/var/lib/grafana/plugins \
   local/grafana
 
