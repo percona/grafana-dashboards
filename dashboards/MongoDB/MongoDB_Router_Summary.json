@@ -779,7 +779,7 @@
           "datasourceErrors": {},
           "errors": {},
           "exemplar": true,
-          "expr": "avg by (node_name)  (time() - container_start_time_seconds{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or avg by (node_name) ((node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"}))",
+          "expr": "mongodb_ss_uptime{node_name=~\"$node_name\"}",
           "format": "time_series",
           "hide": false,
           "interval": "5m",
@@ -1213,6 +1213,18 @@
           "range": true,
           "refId": "A",
           "step": 300
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg by(service_name)(mongodb_ss_connections{conn_type=\"current\", service_name=~\"$service_name\"}) - avg by(service_name)(mongodb_ss_connections{conn_type=\"active\", service_name=~\"$service_name\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": " Idle - {{ service_name }}",
+          "range": true,
+          "refId": "B",
+          "step": 300
         }
       ],
       "thresholds": [],
@@ -1308,7 +1320,7 @@
       ],
       "thresholds": [],
       "timeRegions": [],
-      "title": "Query execution times",
+      "title": "Operation Latencies",
       "tooltip": {
         "shared": true,
         "sort": 2,
