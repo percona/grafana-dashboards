@@ -117,7 +117,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 2,
+        "w": 4,
         "x": 0,
         "y": 5
       },
@@ -191,7 +191,7 @@
       "gridPos": {
         "h": 4,
         "w": 8,
-        "x": 2,
+        "x": 4,
         "y": 5
       },
       "id": 16,
@@ -266,8 +266,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 14,
-        "x": 10,
+        "w": 12,
+        "x": 12,
         "y": 5
       },
       "id": 10,
@@ -326,7 +326,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "blue",
+            "mode": "fixed"
           },
           "mappings": [],
           "thresholds": {
@@ -362,7 +363,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 7,
+        "w": 12,
         "x": 0,
         "y": 9
       },
@@ -390,7 +391,7 @@
         {
           "datasource": "Metrics",
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
           "expr": "topk(5, avg_over_time(redis_latency_percentiles_usec{quantile=\"99.9\", node_name=~\"$node_name\", cmd!~\"config\\\\|get|bgsave|bgrewriteaof|save|flushdb|flushall|debug|psync|.*latency.*|command\\\\|docs\", service_name=~\"$service_name\"}[10s]))",
           "format": "time_series",
@@ -415,7 +416,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "blue",
+            "mode": "fixed"
           },
           "mappings": [],
           "thresholds": {
@@ -451,8 +453,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 17,
-        "x": 7,
+        "w": 12,
+        "x": 12,
         "y": 9
       },
       "id": 632,
@@ -737,7 +739,7 @@
     }
   ],
   "preload": false,
-  "refresh": "10s",
+  "refresh": "",
   "schemaVersion": 41,
   "tags": [
     "Valkey",
@@ -748,7 +750,14 @@
     "list": [
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "definition": "label_values({__name__=\"redis_up\"},environment)",
         "includeAll": true,
         "label": "Environment",
@@ -765,7 +774,12 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
         "definition": "label_values(redis_up,service_name)",
         "includeAll": true,
@@ -786,7 +800,12 @@
       {
         "allValue": ".*",
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
         "definition": "label_values(redis_up{environment=~\"$environment\"},cluster)",
         "includeAll": true,
@@ -806,7 +825,12 @@
       },
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
         "definition": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
         "includeAll": true,
@@ -831,7 +855,7 @@
     "to": "now"
   },
   "timepicker": {},
-  "timezone": "Europe/London",
+  "timezone": "browser",
   "title": "Valkey/Redis Overview",
   "uid": "valkey-overview",
   "version": 1

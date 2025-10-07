@@ -65,19 +65,23 @@
               "options": {
                 "master": {
                   "color": "green",
-                  "index": 0
+                  "index": 0,
+                  "text": "Master"
                 },
                 "primary": {
                   "color": "green",
-                  "index": 2
+                  "index": 2,
+                  "text": "Primary"
                 },
                 "replica": {
                   "color": "orange",
-                  "index": 3
+                  "index": 3,
+                  "text": "Replica"
                 },
                 "slave": {
                   "color": "orange",
-                  "index": 1
+                  "index": 1,
+                  "text": "Slave"
                 }
               },
               "type": "value"
@@ -107,7 +111,7 @@
       "id": 24,
       "maxPerRow": 3,
       "options": {
-        "alignValue": "left",
+        "alignValue": "center",
         "legend": {
           "displayMode": "list",
           "placement": "bottom",
@@ -154,6 +158,17 @@
               ]
             }
           }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "role": "Role"
+            }
+          }
         }
       ],
       "type": "state-timeline"
@@ -164,7 +179,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 11
       },
       "id": 451,
       "panels": [],
@@ -236,16 +251,22 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 12
       },
       "id": 53,
       "maxPerRow": 3,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -265,7 +286,7 @@
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
-          "legendFormat": "{{slave_ip}}",
+          "legendFormat": "{{service_name}}_{{slave_ip}}",
           "range": true,
           "refId": "M",
           "useBackend": false
@@ -372,7 +393,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 21
       },
       "id": 23,
       "options": {
@@ -426,9 +447,10 @@
             "mode": "thresholds"
           },
           "custom": {
-            "align": "auto",
+            "align": "center",
             "cellOptions": {
-              "type": "auto"
+              "type": "auto",
+              "wrapText": false
             },
             "inspect": false
           },
@@ -455,8 +477,8 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 121
+                "id": "custom.minWidth",
+                "value": 120
               }
             ]
           },
@@ -468,7 +490,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 102
+                "value": 110
               }
             ]
           },
@@ -479,18 +501,66 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 104
+                "id": "custom.minWidth",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "node_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 350
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "service_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Role"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 50
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 11,
+        "h": 7,
+        "w": 24,
         "x": 0,
-        "y": 28
+        "y": 29
       },
       "id": 62,
       "options": {
@@ -511,7 +581,7 @@
         {
           "datasource": "Metrics",
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
           "expr": "redis_connected_slaves{node_name=~\"$node_name\", service_name=~\"$service_name\"}",
           "format": "table",
@@ -538,6 +608,7 @@
               "external_group": true,
               "instance": true,
               "job": true,
+              "machine_id": true,
               "node_id": true,
               "node_name": false,
               "node_type": true,
@@ -566,7 +637,15 @@
               "service_name": 12,
               "service_type": 15
             },
-            "renameByName": {}
+            "renameByName": {
+              "Value": "",
+              "environment": "Environment",
+              "machine_id": "",
+              "node_name": "Node name",
+              "node_type": "",
+              "role": "Role",
+              "service_name": "Service name"
+            }
           }
         }
       ],
@@ -580,9 +659,10 @@
             "mode": "thresholds"
           },
           "custom": {
-            "align": "auto",
+            "align": "center",
             "cellOptions": {
-              "type": "auto"
+              "type": "auto",
+              "wrapText": false
             },
             "inspect": false
           },
@@ -609,8 +689,8 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 137
+                "id": "custom.minWidth",
+                "value": 120
               }
             ]
           },
@@ -622,128 +702,22 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 115
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 13,
-        "x": 11,
-        "y": 28
-      },
-      "id": 56,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "11.6.4",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "exemplar": false,
-          "expr": "redis_repl_backlog_first_byte_offset{node_name=~\"$node_name\", service_name=~\"$service_name\"}",
-          "format": "table",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Backlog first byte offset",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "agent_id": true,
-              "agent_type": true,
-              "cluster": true,
-              "external_group": true,
-              "instance": true,
-              "job": true,
-              "node_id": true,
-              "node_name": false,
-              "node_type": true,
-              "replication_set": true,
-              "service_id": true,
-              "service_name": false,
-              "service_type": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "Time": 0,
-              "Value": 16,
-              "__name__": 1,
-              "agent_id": 2,
-              "agent_type": 3,
-              "cluster": 4,
-              "environment": 5,
-              "instance": 6,
-              "job": 7,
-              "node_id": 8,
-              "node_name": 9,
-              "node_type": 10,
-              "replication_set": 11,
-              "role": 13,
-              "service_id": 14,
-              "service_name": 12,
-              "service_type": 15
-            },
-            "renameByName": {}
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": "Metrics",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
+                "value": 110
               }
             ]
           },
-          "unit": "none"
-        },
-        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "role"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              }
+            ]
+          },
           {
             "matcher": {
               "id": "byName",
@@ -751,20 +725,44 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 97
+                "id": "custom.minWidth",
+                "value": 350
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "environment"
+              "options": "service_name"
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 111
+                "id": "custom.minWidth",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Role"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 50
               }
             ]
           }
@@ -772,7 +770,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 11,
+        "w": 24,
         "x": 0,
         "y": 36
       },
@@ -822,6 +820,7 @@
               "external_group": true,
               "instance": true,
               "job": true,
+              "machine_id": true,
               "node_id": true,
               "node_name": false,
               "node_type": true,
@@ -843,14 +842,22 @@
               "job": 7,
               "node_id": 8,
               "node_name": 9,
-              "node_type": 11,
-              "replication_set": 15,
-              "role": 12,
-              "service_id": 13,
-              "service_name": 10,
-              "service_type": 14
+              "node_type": 10,
+              "replication_set": 11,
+              "role": 13,
+              "service_id": 14,
+              "service_name": 12,
+              "service_type": 15
             },
-            "renameByName": {}
+            "renameByName": {
+              "Value": "",
+              "environment": "Environment",
+              "machine_id": "",
+              "node_name": "Node name",
+              "node_type": "",
+              "role": "Role",
+              "service_name": "Service name"
+            }
           }
         }
       ],
@@ -864,139 +871,10 @@
             "mode": "thresholds"
           },
           "custom": {
-            "align": "auto",
+            "align": "center",
             "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "environment"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 107
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 13,
-        "x": 11,
-        "y": 36
-      },
-      "id": 65,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "11.6.4",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "exemplar": false,
-          "expr": "redis_replica_partial_resync_accepted{node_name=~\"$node_name\", service_name=~\"$service_name\"}",
-          "format": "table",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Partial resyncs",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "agent_id": true,
-              "agent_type": true,
-              "cluster": true,
-              "external_group": true,
-              "instance": true,
-              "job": true,
-              "node_id": true,
-              "node_name": false,
-              "node_type": true,
-              "replication_set": true,
-              "service_id": true,
-              "service_name": false,
-              "service_type": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "Time": 0,
-              "Value": 16,
-              "__name__": 1,
-              "agent_id": 2,
-              "agent_type": 3,
-              "cluster": 4,
-              "environment": 5,
-              "instance": 6,
-              "job": 7,
-              "node_id": 8,
-              "node_name": 9,
-              "node_type": 11,
-              "replication_set": 15,
-              "role": 12,
-              "service_id": 13,
-              "service_name": 10,
-              "service_type": 14
-            },
-            "renameByName": {}
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": "Metrics",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
+              "type": "auto",
+              "wrapText": false
             },
             "inspect": false
           },
@@ -1023,8 +901,8 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 108
+                "id": "custom.minWidth",
+                "value": 120
               }
             ]
           },
@@ -1036,7 +914,71 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 109
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "role"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "node_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 350
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "service_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Role"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 50
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
               }
             ]
           }
@@ -1044,7 +986,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 11,
+        "w": 24,
         "x": 0,
         "y": 44
       },
@@ -1094,6 +1036,7 @@
               "external_group": true,
               "instance": true,
               "job": true,
+              "machine_id": true,
               "node_id": true,
               "node_name": false,
               "node_type": true,
@@ -1115,14 +1058,22 @@
               "job": 7,
               "node_id": 8,
               "node_name": 9,
-              "node_type": 11,
-              "replication_set": 12,
+              "node_type": 10,
+              "replication_set": 11,
               "role": 13,
               "service_id": 14,
-              "service_name": 10,
+              "service_name": 12,
               "service_type": 15
             },
-            "renameByName": {}
+            "renameByName": {
+              "Value": "",
+              "environment": "Environment",
+              "machine_id": "",
+              "node_name": "Node name",
+              "node_type": "",
+              "role": "Role",
+              "service_name": "Service name"
+            }
           }
         }
       ],
@@ -1136,9 +1087,10 @@
             "mode": "thresholds"
           },
           "custom": {
-            "align": "auto",
+            "align": "center",
             "cellOptions": {
-              "type": "auto"
+              "type": "auto",
+              "wrapText": false
             },
             "inspect": false
           },
@@ -1161,12 +1113,84 @@
           {
             "matcher": {
               "id": "byName",
+              "options": "node_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
               "options": "environment"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 102
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "role"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "node_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 350
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "service_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Role"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 50
               }
             ]
           }
@@ -1174,9 +1198,437 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 13,
-        "x": 11,
-        "y": 44
+        "w": 24,
+        "x": 0,
+        "y": 52
+      },
+      "id": 56,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "redis_repl_backlog_first_byte_offset{node_name=~\"$node_name\", service_name=~\"$service_name\"}",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Backlog first byte offset",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "agent_id": true,
+              "agent_type": true,
+              "cluster": true,
+              "external_group": true,
+              "instance": true,
+              "job": true,
+              "machine_id": true,
+              "node_id": true,
+              "node_name": false,
+              "node_type": true,
+              "replication_set": true,
+              "service_id": true,
+              "service_name": false,
+              "service_type": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time": 0,
+              "Value": 16,
+              "__name__": 1,
+              "agent_id": 2,
+              "agent_type": 3,
+              "cluster": 4,
+              "environment": 5,
+              "instance": 6,
+              "job": 7,
+              "node_id": 8,
+              "node_name": 9,
+              "node_type": 10,
+              "replication_set": 11,
+              "role": 13,
+              "service_id": 14,
+              "service_name": 12,
+              "service_type": 15
+            },
+            "renameByName": {
+              "Value": "",
+              "environment": "Environment",
+              "machine_id": "",
+              "node_name": "Node name",
+              "node_type": "",
+              "role": "Role",
+              "service_name": "Service name"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": "Metrics",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto",
+              "wrapText": false
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "node_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "environment"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "role"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "node_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 350
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "service_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Role"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 50
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 60
+      },
+      "id": 65,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "redis_replica_partial_resync_accepted{node_name=~\"$node_name\", service_name=~\"$service_name\"}",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Partial resyncs",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "agent_id": true,
+              "agent_type": true,
+              "cluster": true,
+              "external_group": true,
+              "instance": true,
+              "job": true,
+              "machine_id": true,
+              "node_id": true,
+              "node_name": false,
+              "node_type": true,
+              "replication_set": true,
+              "service_id": true,
+              "service_name": false,
+              "service_type": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time": 0,
+              "Value": 16,
+              "__name__": 1,
+              "agent_id": 2,
+              "agent_type": 3,
+              "cluster": 4,
+              "environment": 5,
+              "instance": 6,
+              "job": 7,
+              "node_id": 8,
+              "node_name": 9,
+              "node_type": 10,
+              "replication_set": 11,
+              "role": 13,
+              "service_id": 14,
+              "service_name": 12,
+              "service_type": 15
+            },
+            "renameByName": {
+              "Value": "",
+              "environment": "Environment",
+              "machine_id": "",
+              "node_name": "Node name",
+              "node_type": "",
+              "role": "Role",
+              "service_name": "Service name"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": "Metrics",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto",
+              "wrapText": false
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "node_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "environment"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "role"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "node_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 350
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "service_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Role"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 50
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 68
       },
       "id": 55,
       "options": {
@@ -1224,9 +1676,11 @@
               "external_group": true,
               "instance": true,
               "job": true,
+              "machine_id": true,
               "node_id": true,
               "node_name": false,
               "node_type": true,
+              "replication_set": true,
               "service_id": true,
               "service_name": false,
               "service_type": true
@@ -1244,14 +1698,22 @@
               "job": 7,
               "node_id": 8,
               "node_name": 9,
-              "node_type": 11,
-              "replication_set": 12,
+              "node_type": 10,
+              "replication_set": 11,
               "role": 13,
               "service_id": 14,
-              "service_name": 10,
+              "service_name": 12,
               "service_type": 15
             },
-            "renameByName": {}
+            "renameByName": {
+              "Value": "",
+              "environment": "Environment",
+              "machine_id": "",
+              "node_name": "Node name",
+              "node_type": "",
+              "role": "Role",
+              "service_name": "Service name"
+            }
           }
         }
       ],
@@ -1352,18 +1814,22 @@
         ]
       },
       "gridPos": {
-        "h": 16,
+        "h": 9,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 76
       },
       "id": 107,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Last *",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -1376,7 +1842,7 @@
         {
           "datasource": "Metrics",
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "expr": "redis_replica_resyncs_full{node_name=~\"$node_name\", service_name=~\"$service_name\"}",
           "fullMetaSearch": false,
           "hide": false,
@@ -1390,7 +1856,7 @@
         {
           "datasource": "Metrics",
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
           "expr": "redis_replica_partial_resync_accepted{node_name=~\"$node_name\", service_name=~\"$service_name\"}",
           "fullMetaSearch": false,
@@ -1405,7 +1871,7 @@
         {
           "datasource": "Metrics",
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "expr": "redis_replica_partial_resync_denied{node_name=~\"$node_name\", service_name=~\"$service_name\"}",
           "fullMetaSearch": false,
           "hide": false,
@@ -1430,7 +1896,7 @@
     }
   ],
   "preload": false,
-  "refresh": "10s",
+  "refresh": "",
   "schemaVersion": 41,
   "tags": [
     "Valkey",
@@ -1440,8 +1906,16 @@
   "templating": {
     "list": [
       {
+        "allValue": ".*",
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "definition": "label_values({__name__=\"redis_up\"},environment)",
         "includeAll": true,
         "label": "Environment",
@@ -1458,7 +1932,12 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
         "definition": "label_values(redis_up,service_name)",
         "includeAll": true,
@@ -1477,8 +1956,14 @@
         "type": "query"
       },
       {
+        "allValue": ".*",
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
         "definition": "label_values(redis_up{environment=~\"$environment\"},cluster)",
         "includeAll": true,
@@ -1497,10 +1982,16 @@
         "type": "query"
       },
       {
+        "allValue": ".*",
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
-        "definition": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
+        "definition": "label_values(redis_up{cluster=~\"$cluster\", environment=~\"$environment\"},node_name)",
         "includeAll": true,
         "label": "Node Name",
         "multi": true,
@@ -1508,7 +1999,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
+          "query": "label_values(redis_up{cluster=~\"$cluster\", environment=~\"$environment\"},node_name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
@@ -1519,8 +2010,8 @@
     ]
   },
   "time": {
-    "from": "2025-08-06T15:28:27.651Z",
-    "to": "2025-08-06T15:38:27.651Z"
+    "from": "now-12h",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
