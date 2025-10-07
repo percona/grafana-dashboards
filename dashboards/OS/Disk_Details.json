@@ -55,6 +55,7 @@
   "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
+  "id": 21,
   "links": [
     {
       "icon": "doc",
@@ -128,7 +129,7 @@
   ],
   "panels": [
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -136,174 +137,240 @@
         "y": 0
       },
       "id": 1015,
-      "panels": [
-        {
-          "description": "Shows the percentage of disk space utilization for every mountpoint defined on the system. Having some of the mountpoints close to 100% space utilization is not good because of the risk to have a “disk full” error that can block one of the services or even cause a crash of the entire system.\n\nIn case when the mountpoint is close to 100% consider to remove unused files or to expand the space allocated to the mountpoint.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 20,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 2,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 2,
-              "links": [],
-              "mappings": [],
-              "max": 1,
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "percentunit"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 1
-          },
-          "id": 1018,
-          "options": {
-            "alertThreshold": true,
-            "legend": {
-              "calcs": [
-                "mean",
-                "max",
-                "min"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "11.6.1",
-          "targets": [
-            {
-              "expr": "avg by (node_name,mountpoint) (1 - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) / \n(max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or\nmax_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])))",
-              "interval": "$interval",
-              "legendFormat": "{{mountpoint}}",
-              "refId": "A"
-            },
-            {
-              "expr": "avg by (node_name) (azure_storage_percent_average{node_name=~\"$node_name\"}/100)",
-              "interval": "$interval",
-              "legendFormat": "Azure Storage",
-              "refId": "B"
-            }
-          ],
-          "title": "Mountpoint Usage",
-          "type": "timeseries"
-        },
-        {
-          "description": "Shows information about the disk space usage of the specified mountpoint.\n\n**Used** is the amount of space used.\n\n**Free** is the amount of space not in use.\n\n**Used+Free** is the total disk space allocated to the mountpoint.\n\nHaving *Free* close to 0 B is not good because of the risk to have a “disk full” error that can block one of the services or even cause a crash of the entire system.\n\nIn case Free is close to 0 B consider to remove unused files or to expand the space allocated to the mountpoint.",
-          "fieldConfig": {
-            "defaults": {
-              "links": []
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 41
-          },
-          "id": 1023,
-          "maxPerRow": 2,
-          "options": {
-            "alertThreshold": true
-          },
-          "pluginVersion": "8.3.5",
-          "repeat": "mountpoint",
-          "repeatDirection": "h",
-          "targets": [
-            {
-              "expr": "avg by (node_name,mountpoint) ((max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])))",
-              "hide": false,
-              "interval": "$interval",
-              "legendFormat": "Used (device {{ device }}, {{ fstype }})",
-              "refId": "A"
-            },
-            {
-              "expr": "avg by (node_name,mountpoint) (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m]) or (storage_limit_bytes_average{node_name=~\"$node_name\"} - azure_storage_used_bytes_average{node_name=~\"$node_name\"}))",
-              "hide": false,
-              "interval": "$interval",
-              "legendFormat": "Free (device {{ device }}, {{ fstype }})",
-              "refId": "B"
-            },
-            {
-              "expr": "avg by (node_name,mountpoint) (1 - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) / (max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) \nor max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) or azure_storage_percent_average{node_name=~\"$node_name\"}/100)",
-              "hide": false,
-              "interval": "$interval",
-              "legendFormat": "Usage",
-              "refId": "C"
-            },
-            {
-              "expr": "avg by (node_name) (node_filesystem_size_bytes{node_name=~\"$node_name\"} - azure_storage_used_bytes_average{node_name=~\"$node_name\"})",
-              "interval": "$interval",
-              "legendFormat": "Free (Azure Storage)",
-              "refId": "D"
-            },
-            {
-              "expr": "avg by (node_name) (azure_storage_used_bytes_average{node_name=~\"$node_name\"})",
-              "interval": "$interval",
-              "legendFormat": "Used (Azure Storage)",
-              "refId": "E"
-            }
-          ],
-          "title": "Mountpoint $mountpoint",
-          "type": "timeseries"
-        }
-      ],
+      "panels": [],
       "title": "Disk Space",
       "type": "row"
+    },
+    {
+      "description": "Shows the percentage of disk space utilization for every mountpoint defined on the system. Having some of the mountpoints close to 100% space utilization is not good because of the risk to have a “disk full” error that can block one of the services or even cause a crash of the entire system.\n\nIn case when the mountpoint is close to 100% consider to remove unused files or to expand the space allocated to the mountpoint.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 1018,
+      "options": {
+        "alertThreshold": true,
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "expr": "avg by (node_name,mountpoint) (1 - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) / \n(max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or\nmax_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])))",
+          "interval": "$interval",
+          "legendFormat": "{{mountpoint}}",
+          "refId": "A"
+        },
+        {
+          "expr": "avg by (node_name) (azure_storage_percent_average{node_name=~\"$node_name\"}/100)",
+          "interval": "$interval",
+          "legendFormat": "Azure Storage",
+          "refId": "B"
+        }
+      ],
+      "title": "Mountpoint Usage",
+      "type": "timeseries"
+    },
+    {
+      "description": "Shows information about the disk space usage of the specified mountpoint.\n\n**Used** is the amount of space used.\n\n**Free** is the amount of space not in use.\n\n**Used+Free** is the total disk space allocated to the mountpoint.\n\nHaving *Free* close to 0 B is not good because of the risk to have a “disk full” error that can block one of the services or even cause a crash of the entire system.\n\nIn case Free is close to 0 B consider to remove unused files or to expand the space allocated to the mountpoint.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 1023,
+      "maxPerRow": 2,
+      "options": {
+        "alertThreshold": true,
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.4",
+      "repeat": "mountpoint",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "avg by (node_name,device,fstype,mountpoint) ((max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) - (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])))",
+          "hide": false,
+          "interval": "$interval",
+          "legendFormat": "Used (device {{ device }}, {{ fstype }})",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg by (node_name,device,fstype,mountpoint) (max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$node_name\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m]) or (storage_limit_bytes_average{node_name=~\"$node_name\"} - azure_storage_used_bytes_average{node_name=~\"$node_name\"}))",
+          "hide": false,
+          "interval": "$interval",
+          "legendFormat": "Free (device {{ device }}, {{ fstype }})",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg by (node_name,device,fstype,mountpoint) ((max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_size_bytes{node_name=~\"$node_name\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])))",
+          "hide": false,
+          "interval": "$interval",
+          "legendFormat": "Total (device {{ device }}, {{ fstype }})",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "editorMode": "code",
+          "expr": "avg by (node_name) (node_filesystem_size_bytes{node_name=~\"$node_name\"} - azure_storage_used_bytes_average{node_name=~\"$node_name\"})",
+          "interval": "$interval",
+          "legendFormat": "Free (Azure Storage)",
+          "range": true,
+          "refId": "D"
+        },
+        {
+          "expr": "avg by (node_name) (azure_storage_used_bytes_average{node_name=~\"$node_name\"})",
+          "interval": "$interval",
+          "legendFormat": "Used (Azure Storage)",
+          "refId": "E"
+        }
+      ],
+      "title": "Mountpoint $mountpoint",
+      "type": "timeseries"
     },
     {
       "collapsed": false,
@@ -311,7 +378,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 17
       },
       "id": 1001,
       "panels": [],
@@ -463,7 +530,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 2
+        "y": 18
       },
       "id": 11,
       "options": {
@@ -484,7 +551,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "calculatedInterval": "2m",
@@ -623,7 +690,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 2
+        "y": 18
       },
       "id": 15,
       "options": {
@@ -644,7 +711,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "calculatedInterval": "2m",
@@ -783,7 +850,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 10
+        "y": 26
       },
       "id": 16,
       "options": {
@@ -804,7 +871,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "calculatedInterval": "2m",
@@ -913,7 +980,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 10
+        "y": 26
       },
       "id": 1024,
       "options": {
@@ -934,7 +1001,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "calculatedInterval": "2m",
@@ -1061,7 +1128,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 34
       },
       "id": 17,
       "options": {
@@ -1082,12 +1149,14 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
+          "editorMode": "code",
           "expr": "sum by (node_name) (rate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or irate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\n(max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$node_name\"}[5m]))/100)",
           "interval": "$interval",
-          "legendFormat": "{{ node_name }}",
+          "legendFormat": "Util",
+          "range": true,
           "refId": "B"
         }
       ],
@@ -1198,7 +1267,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 18
+        "y": 34
       },
       "id": 14,
       "options": {
@@ -1219,7 +1288,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "calculatedInterval": "2m",
@@ -1449,7 +1518,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 26
+        "y": 42
       },
       "id": 20,
       "options": {
@@ -1470,7 +1539,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "calculatedInterval": "2m",
@@ -1646,7 +1715,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 26
+        "y": 42
       },
       "id": 18,
       "options": {
@@ -1667,7 +1736,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "calculatedInterval": "2m",
@@ -1705,7 +1774,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 34
+        "y": 50
       },
       "id": 1003,
       "panels": [
@@ -1814,7 +1883,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 59
+            "y": 51
           },
           "id": 1004,
           "options": {
@@ -1835,7 +1904,7 @@
               "sort": "none"
             }
           },
-          "pluginVersion": "11.6.1",
+          "pluginVersion": "11.6.4",
           "targets": [
             {
               "calculatedInterval": "2m",
@@ -1953,7 +2022,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 59
+            "y": 51
           },
           "id": 1005,
           "options": {
@@ -1974,7 +2043,7 @@
               "sort": "none"
             }
           },
-          "pluginVersion": "11.6.1",
+          "pluginVersion": "11.6.4",
           "targets": [
             {
               "calculatedInterval": "2m",
@@ -2093,7 +2162,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 67
+            "y": 59
           },
           "id": 1006,
           "options": {
@@ -2114,7 +2183,7 @@
               "sort": "none"
             }
           },
-          "pluginVersion": "11.6.1",
+          "pluginVersion": "11.6.4",
           "targets": [
             {
               "calculatedInterval": "2m",
@@ -2253,7 +2322,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 67
+            "y": 59
           },
           "id": 1025,
           "options": {
@@ -2274,7 +2343,7 @@
               "sort": "none"
             }
           },
-          "pluginVersion": "11.6.1",
+          "pluginVersion": "11.6.4",
           "targets": [
             {
               "calculatedInterval": "2m",
@@ -2380,7 +2449,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 75
+            "y": 67
           },
           "id": 1008,
           "options": {
@@ -2401,19 +2470,21 @@
               "sort": "none"
             }
           },
-          "pluginVersion": "11.6.1",
+          "pluginVersion": "11.6.4",
           "targets": [
             {
               "calculatedInterval": "2m",
               "datasourceErrors": {},
+              "editorMode": "code",
               "errors": {},
               "expr": "avg by (node_name,device) (rate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or irate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$node_name\"}[5m]) or\n(max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$node_name\"}[5m]))/100)",
               "format": "time_series",
               "hide": false,
               "interval": "$interval",
               "intervalFactor": 1,
-              "legendFormat": "{{ device }}",
+              "legendFormat": "Util: {{ device }}",
               "metric": "",
+              "range": true,
               "refId": "A",
               "step": 300,
               "target": ""
@@ -2506,7 +2577,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 75
+            "y": 67
           },
           "id": 1007,
           "options": {
@@ -2527,7 +2598,7 @@
               "sort": "none"
             }
           },
-          "pluginVersion": "11.6.1",
+          "pluginVersion": "11.6.4",
           "targets": [
             {
               "calculatedInterval": "2m",
@@ -2696,7 +2767,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 83
+            "y": 75
           },
           "id": 1010,
           "options": {
@@ -2717,7 +2788,7 @@
               "sort": "none"
             }
           },
-          "pluginVersion": "11.6.1",
+          "pluginVersion": "11.6.4",
           "targets": [
             {
               "calculatedInterval": "2m",
@@ -2853,7 +2924,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 83
+            "y": 75
           },
           "id": 1009,
           "options": {
@@ -2874,7 +2945,7 @@
               "sort": "none"
             }
           },
-          "pluginVersion": "11.6.1",
+          "pluginVersion": "11.6.4",
           "targets": [
             {
               "calculatedInterval": "2m",
@@ -2976,161 +3047,6 @@
         "query": "1s,5s,1m,5m,1h,6h,1d",
         "refresh": 2,
         "type": "interval"
-      },
-      {
-        "allValue": ".*",
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(node_load1{node_type=~\"generic|remote_rds|container|remote\"}, region)",
-        "includeAll": true,
-        "label": "Region",
-        "multi": true,
-        "name": "region",
-        "options": [],
-        "query": {
-          "query": "label_values(node_load1{node_type=~\"generic|remote_rds|container|remote\"}, region)",
-          "refId": "Metrics-region-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "allValue": ".*",
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(up{region=~\"$region\"}, node_type)",
-        "includeAll": true,
-        "label": "Type",
-        "multi": true,
-        "name": "node_type",
-        "options": [],
-        "query": {
-          "query": "label_values(up{region=~\"$region\"}, node_type)",
-          "refId": "Metrics-node_type-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "allValue": ".*",
-        "current": {
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "Metrics",
-        "definition": "label_values({region=~\"$region\",node_type=~\"$node_type\",__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions|up\"}, environment)",
-        "includeAll": true,
-        "label": "Environment",
-        "multi": true,
-        "name": "environment",
-        "options": [],
-        "query": {
-          "query": "label_values({region=~\"$region\",node_type=~\"$node_type\",__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions|up\"}, environment)",
-          "refId": "Metrics-node_type-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(up{region=~\"$region\",node_type=~\"$node_type\",environment=~\"$environment\"}, node_name)",
-        "includeAll": false,
-        "label": "Node Name",
-        "name": "node_name",
-        "options": [],
-        "query": {
-          "query": "label_values(up{region=~\"$region\",node_type=~\"$node_type\",environment=~\"$environment\"}, node_name)",
-          "refId": "Metrics-node_name-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values({__name__=~\"node_disk_reads_completed_total|rdsosmetrics_diskIO_util\",node_name=~\"$node_name\", device!~\"dm-.+\"}, device)",
-        "includeAll": true,
-        "label": "Device",
-        "multi": true,
-        "name": "device",
-        "options": [],
-        "query": {
-          "query": "label_values({__name__=~\"node_disk_reads_completed_total|rdsosmetrics_diskIO_util\",node_name=~\"$node_name\", device!~\"dm-.+\"}, device)",
-          "refId": "Metrics-device-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "sort": 5,
-        "type": "query"
-      },
-      {
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Username",
-        "multi": true,
-        "name": "username",
-        "options": [],
-        "query": {
-          "query": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
-          "refId": "Metrics-username-Variable-Query"
-        },
-        "refresh": 1,
-        "regex": "",
-        "sort": 5,
-        "type": "query"
-      },
-      {
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(node_filesystem_avail_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}, mountpoint)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Mountpoint",
-        "multi": true,
-        "name": "mountpoint",
-        "options": [],
-        "query": {
-          "query": "label_values(node_filesystem_avail_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}, mountpoint)",
-          "refId": "Metrics-mountpoint-Variable-Query"
-        },
-        "refresh": 2,
-        "regex": "",
-        "sort": 5,
-        "type": "query"
       }
     ]
   },
@@ -3138,7 +3054,30 @@
     "from": "now-12h",
     "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "hidden": false,
+    "now": true,
+    "refresh_intervals": [
+      "1s",
+      "5s",
+      "1m",
+      "5m",
+      "1h",
+      "6h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
   "timezone": "browser",
   "title": "Disk Details",
   "uid": "node-disk",
