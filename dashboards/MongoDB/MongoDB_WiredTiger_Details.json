@@ -1093,7 +1093,7 @@
                         "matcher":
                         {
                             "id": "byRegexp",
-                            "options": "/^write_/"
+                            "options": "/^write/"
                         },
                         "properties":
                         [
@@ -1139,10 +1139,10 @@
             "targets":
             [
                 {
-                    "expr": "avg by (service_name,type) ((max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\"}[5m])) -\n(max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\"}[5m])))",
+                    "expr": "avg by (service_name,txn_rw) ((max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=~\"$service_name\"}[5m])) -\n(max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=~\"$service_name\"}[5m])))",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{type}}",
+                    "legendFormat": "{{txn_rw}}",
                     "metric": "",
                     "refId": "B",
                     "step": 300
