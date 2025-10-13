@@ -1196,7 +1196,7 @@
           "refId": "A"
         }
       ],
-      "title": "Query execution times",
+      "title": "Operation Latencies",
       "type": "timeseries"
     },
     {
@@ -4400,7 +4400,7 @@
             "$__all"
           ]
         },
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+        "definition": "label_values({__name__=~\"mongodb_up\"}, environment)",
         "hide": 0,
         "includeAll": true,
         "label": "Environment",
@@ -4408,7 +4408,7 @@
         "name": "environment",
         "options": [],
         "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+          "query": "label_values({__name__=~\"mongodb_up\"}, environment)",
           "refId": "Metrics-environment-Variable-Query"
         },
         "refresh": 2,
@@ -4427,7 +4427,7 @@
           "text": "replicaset",
           "value": "replicaset"
         },
-        "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\"},cluster)",
+        "definition": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\"},cluster)",
         "hide": 0,
         "includeAll": false,
         "label": "Cluster",
@@ -4436,7 +4436,7 @@
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\"},cluster)",
+          "query": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\"},cluster)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -4585,6 +4585,52 @@
         },
         "refresh": 2,
         "regex": "/.*service_name=\"(.*)\",service_type.*/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\",cluster=~\"$cluster\"}, service_name)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Node",
+        "multi": true,
+        "name": "service_name_mongos",
+        "options": [],
+        "query": {
+          "query": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\",cluster=~\"$cluster\"}, service_name)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "definition": "label_values(mongodb_up, cluster_role)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "cluster_role",
+        "options": [],
+        "query": {
+          "query": "label_values(mongodb_up, cluster_role)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
