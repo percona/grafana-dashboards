@@ -1,7 +1,7 @@
 # Grafana Polystat Panel
 
-[![Marketplace](https://img.shields.io/badge/dynamic/json?logo=grafana&color=F47A20&label=marketplace&prefix=v&query=%24.items%5B%3F%28%40.slug%20%3D%3D%20%22grafana-polystat-panel%22%29%5D.version&url=https%3A%2F%2Fgrafana.com%2Fapi%2Fplugins)](https://grafana.com/grafana/plugins/grafana-polystat-panel)
-[![Downloads](https://img.shields.io/badge/dynamic/json?logo=grafana&color=F47A20&label=downloads&query=%24.items%5B%3F%28%40.slug%20%3D%3D%20%22grafana-polystat-panel%22%29%5D.downloads&url=https%3A%2F%2Fgrafana.com%2Fapi%2Fplugins)](https://grafana.com/grafana/plugins/grafana-polystat-panel)
+[![Marketplace](https://img.shields.io/badge/dynamic/json?logo=grafana&color=F47A20&label=marketplace&prefix=v&query=%24.version&url=https%3A%2F%2Fgrafana.com%2Fapi%2Fplugins%2Fgrafana-polystat-panel)](https://grafana.com/grafana/plugins/grafana-polystat-panel)
+[![Downloads](https://img.shields.io/badge/dynamic/json?logo=grafana&color=F47A20&label=downloads&query=%24.downloads&url=https%3A%2F%2Fgrafana.com%2Fapi%2Fplugins%2Fgrafana-polystat-panel)](https://grafana.com/grafana/plugins/grafana-polystat-panel)
 [![License](https://img.shields.io/github/license/grafana/grafana-polystat-panel)](LICENSE)
 [![Known Vulnerabilities](https://snyk.io/test/github/grafana/grafana-polystat-panel/badge.svg)](https://snyk.io/test/github/grafana/grafana-polystat-panel)
 [![Maintainability](https://api.codeclimate.com/v1/badges/5c5cd1076777c637b931/maintainability)](https://codeclimate.com/github/grafana/grafana-polystat-panel/maintainability)
@@ -204,9 +204,31 @@ You can choose to display only metrics that have triggered a threshold or displa
 
 Text to be displayed in polygon when there are no triggered thresholds and global display mode is set to triggered.
 
-#### Show Value
+#### Show Value (Global)
 
-Show the value of the metric along with the name
+Show the value of the metric along with the name.
+
+#### Show Timestamp (Global)
+
+This option will display the time of the metric in the polygon.
+
+![Global Show Timestamp](https://raw.githubusercontent.com/grafana/grafana-polystat-panel/v2.x/src/img/screenshots/polystat-v2-global-showtimestamp.png)
+
+##### Timestamp Formats
+
+Presets are provided for the timestamp, and the field will also accept a custom format.
+
+##### Timestamp Position
+
+The timestamp can be displayed above or below the value.  If the value is not displayed, it will be place where the value is normally rendered.
+
+![Global Show Timestamp Position Above](https://raw.githubusercontent.com/grafana/grafana-polystat-panel/v2.x/src/img/screenshots/polystat-v2-global-timestamp-above.png)
+
+![Global Show Timestamp Position Below](https://raw.githubusercontent.com/grafana/grafana-polystat-panel/v2.x/src/img/screenshots/polystat-v2-global-timestamp-below.png)
+
+##### Timestamp Y-Offset
+
+This allows adjust the timestamp up or down to fine tune placement. Positive values move the timestamp down, negative values move it up.
 
 #### Shape
 
