@@ -100,7 +100,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 24,
         "x": 0,
         "y": 1
@@ -126,14 +126,14 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by(node_name) (rate(redis_commands_total{node_name=~\"$node_name\"}[$__rate_interval]))",
+          "expr": "sum by(service_name) (rate(redis_commands_total{service_name=~\"$service_name\"}[$__rate_interval]))",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{node_name}}",
+          "legendFormat": "{{service_name}}",
           "metric": "redis_command_calls_total",
           "range": true,
           "refId": "A",
@@ -141,7 +141,7 @@
           "useBackend": false
         }
       ],
-      "title": "$node_name - Total Commands / sec",
+      "title": "$service_name - Total Commands / sec",
       "type": "timeseries"
     },
     {
@@ -150,7 +150,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 9
       },
       "id": 221,
       "panels": [],
@@ -216,10 +216,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 16,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 10
       },
       "id": 625,
       "maxPerRow": 3,
@@ -237,18 +237,18 @@
         }
       },
       "pluginVersion": "11.6.4",
-      "repeat": "node_name",
+      "repeat": "service_name",
       "repeatDirection": "h",
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by(node_name) (rate(redis_total_reads_processed{node_name=~\"$node_name\"}[5m]))",
+          "expr": "sum by(service_name) (rate(redis_total_reads_processed{service_name=~\"$service_name\"}[5m]))",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
-          "legendFormat": "Reads - {{node_name}}",
+          "legendFormat": "Reads - {{service_name}}",
           "range": true,
           "refId": "A",
           "step": 240
@@ -257,18 +257,18 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by(node_name) (rate(redis_total_writes_processed{node_name=~\"$node_name\"}[5m]))",
+          "expr": "sum by(service_name) (rate(redis_total_writes_processed{service_name=~\"$service_name\"}[5m]))",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "Writes - {{node_name}}",
+          "legendFormat": "Writes - {{service_name}}",
           "range": true,
           "refId": "B",
           "step": 240
         }
       ],
-      "title": "$node_name - Read and Write rate",
+      "title": "$service_name - Read and Write rate",
       "type": "timeseries"
     },
     {
@@ -277,7 +277,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 26
       },
       "id": 278,
       "panels": [],
@@ -346,7 +346,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 27
       },
       "id": 18,
       "maxPerRow": 3,
@@ -368,24 +368,24 @@
         }
       },
       "pluginVersion": "11.6.4",
-      "repeat": "node_name",
+      "repeat": "service_name",
       "repeatDirection": "h",
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "sum(rate(redis_commands_total{node_name=~\"$node_name\"} [1m])) by (node_name,cmd)",
+          "expr": "sum(rate(redis_commands_total{service_name=~\"$service_name\"} [1m])) by (service_name,cmd)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{cmd}} - {{ node_name}}",
+          "legendFormat": "{{cmd}} - {{ service_name}}",
           "metric": "redis_command_calls_total",
           "range": true,
           "refId": "A",
           "step": 240
         }
       ],
-      "title": "$node_name - command ops/sec",
+      "title": "$service_name - command ops/sec",
       "type": "timeseries"
     },
     {
@@ -394,7 +394,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 30
+        "y": 43
       },
       "id": 45,
       "panels": [],
@@ -427,10 +427,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 19,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 44
       },
       "id": 46,
       "maxPerRow": 3,
@@ -460,14 +460,14 @@
         "valueMode": "text"
       },
       "pluginVersion": "11.6.4",
-      "repeat": "node_name",
+      "repeat": "service_name",
       "repeatDirection": "h",
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "topk(10, sum by(node_name, cmd) (redis_commands_duration_seconds_total{node_name=~\"$node_name\"}) != 0)",
+          "expr": "topk(10, sum by(service_name, cmd) (redis_commands_duration_seconds_total{service_name=~\"$service_name\"}) != 0)",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -479,7 +479,7 @@
           "step": 240
         }
       ],
-      "title": "$node_name - top 10 total time by command",
+      "title": "$service_name - top 10 total time by command",
       "type": "bargauge"
     },
     {
@@ -544,7 +544,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 60
       },
       "id": 14,
       "options": {
@@ -567,24 +567,24 @@
         }
       },
       "pluginVersion": "11.6.4",
-      "repeat": "node_name",
+      "repeat": "service_name",
       "repeatDirection": "v",
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "sum by(cmd, node_name) (irate(redis_commands_duration_seconds_total{node_name=~\"$node_name\"}[1m])) != 0",
+          "expr": "sum by(cmd, service_name) (irate(redis_commands_duration_seconds_total{service_name=~\"$service_name\"}[1m])) != 0",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{cmd}} - {{ node_name}}",
+          "legendFormat": "{{cmd}} - {{ service_name}}",
           "metric": "redis_command_calls_total",
           "range": true,
           "refId": "A",
           "step": 240
         }
       ],
-      "title": "$node_name - total Time Spent by Command / sec",
+      "title": "$service_name - total Time Spent by Command / sec",
       "type": "timeseries"
     },
     {
@@ -606,12 +606,13 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 100
       },
       "id": 47,
+      "maxPerRow": 3,
       "options": {
         "displayMode": "lcd",
         "legend": {
@@ -641,14 +642,16 @@
         "valueMode": "color"
       },
       "pluginVersion": "11.6.4",
+      "repeat": "service_name",
+      "repeatDirection": "h",
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by(node_name) (redis_total_reads_processed{node_name=~\"$node_name\"})",
+          "expr": "sum by(service_name) (redis_total_reads_processed{service_name=~\"$service_name\"})",
           "instant": true,
-          "legendFormat": "reads - {{node_name}}",
+          "legendFormat": "reads - {{service_name}}",
           "range": false,
           "refId": "A"
         },
@@ -656,10 +659,10 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by(node_name) (redis_total_writes_processed{node_name=~\"$node_name\"})",
+          "expr": "sum by(service_name) (redis_total_writes_processed{service_name=~\"$service_name\"})",
           "hide": false,
           "instant": true,
-          "legendFormat": "writes - {{node_name}}",
+          "legendFormat": "writes - {{service_name}}",
           "range": false,
           "refId": "B"
         },
@@ -667,10 +670,10 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (node_name)(redis_errors_total{node_name=~\"$node_name\"})",
+          "expr": "sum by (service_name)(redis_errors_total{service_name=~\"$service_name\"})",
           "hide": false,
           "instant": true,
-          "legendFormat": "errors - {{node_name}}",
+          "legendFormat": "errors - {{service_name}}",
           "range": false,
           "refId": "C"
         }
@@ -727,7 +730,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 55
+        "y": 116
       },
       "id": 86,
       "panels": [
@@ -811,21 +814,21 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "11.6.4",
-          "repeat": "node_name",
+          "repeat": "service_name",
           "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
               "editorMode": "code",
               "exemplar": false,
-              "expr": "redis_latency_percentiles_usec{node_name=~\"$node_name\",service_name=~\"$service_name\"}",
+              "expr": "redis_latency_percentiles_usec{service_name=~\"$service_name\",service_name=~\"$service_name\"}",
               "instant": true,
               "legendFormat": "{{cmd}} - {{service_name}}",
               "range": false,
               "refId": "A"
             }
           ],
-          "title": "$node_name - command percentiles",
+          "title": "$service_name - command percentiles",
           "type": "barchart"
         }
       ],
@@ -838,7 +841,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 117
       },
       "id": 543,
       "panels": [
@@ -887,7 +890,7 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 10,
+            "h": 8,
             "w": 8,
             "x": 0,
             "y": 57
@@ -917,14 +920,14 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "11.6.1",
-          "repeat": "node_name",
+          "repeat": "service_name",
           "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sort(redis_commands_latencies_usec_bucket{node_name=~\"$node_name\", cmd=\"get\"})",
+              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"get\"})",
               "format": "table",
               "instant": true,
               "legendFormat": "__auto",
@@ -932,7 +935,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - get latency",
+          "title": "$service_name - get latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -954,7 +957,6 @@
                   "instance": true,
                   "job": true,
                   "node_id": true,
-                  "node_name": true,
                   "node_type": true,
                   "service_id": true,
                   "service_name": true,
@@ -1024,7 +1026,7 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 10,
+            "h": 8,
             "w": 8,
             "x": 8,
             "y": 57
@@ -1052,14 +1054,14 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
+          "repeat": "service_name",
           "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sort(redis_commands_latencies_usec_bucket{node_name=~\"$node_name\", cmd=\"set\"})",
+              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"set\"})",
               "format": "table",
               "instant": true,
               "legendFormat": "__auto",
@@ -1067,7 +1069,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - set latency",
+          "title": "$service_name - set latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1089,7 +1091,6 @@
                   "instance": true,
                   "job": true,
                   "node_id": true,
-                  "node_name": true,
                   "node_type": true,
                   "service_id": true,
                   "service_name": true,
@@ -1159,7 +1160,7 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 10,
+            "h": 8,
             "w": 8,
             "x": 16,
             "y": 57
@@ -1187,14 +1188,14 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
+          "repeat": "service_name",
           "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sort(redis_commands_latencies_usec_bucket{node_name=~\"$node_name\", cmd=\"hset\"})",
+              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"hset\"})",
               "format": "table",
               "instant": true,
               "legendFormat": "__auto",
@@ -1202,7 +1203,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - hset latency",
+          "title": "$service_name - hset latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1224,7 +1225,6 @@
                   "instance": true,
                   "job": true,
                   "node_id": true,
-                  "node_name": true,
                   "node_type": true,
                   "service_id": true,
                   "service_name": true,
@@ -1322,14 +1322,14 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
+          "repeat": "service_name",
           "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
-              "editorMode": "builder",
+              "editorMode": "code",
               "exemplar": false,
-              "expr": "sort(redis_commands_latencies_usec_bucket{node_name=~\"$node_name\", cmd=\"rpop\"})",
+              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"rpop\"})",
               "format": "table",
               "instant": true,
               "legendFormat": "__auto",
@@ -1337,7 +1337,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - rpop latency",
+          "title": "$service_name - rpop latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1359,7 +1359,6 @@
                   "instance": true,
                   "job": true,
                   "node_id": true,
-                  "node_name": true,
                   "node_type": true,
                   "service_id": true,
                   "service_name": true,
@@ -1457,14 +1456,14 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
+          "repeat": "service_name",
           "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
-              "editorMode": "builder",
+              "editorMode": "code",
               "exemplar": false,
-              "expr": "sort(redis_commands_latencies_usec_bucket{node_name=~\"$node_name\", cmd=\"lpop\"})",
+              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"lpop\"})",
               "format": "table",
               "instant": true,
               "legendFormat": "__auto",
@@ -1472,7 +1471,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - lpop latency",
+          "title": "$service_name - lpop latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1494,7 +1493,6 @@
                   "instance": true,
                   "job": true,
                   "node_id": true,
-                  "node_name": true,
                   "node_type": true,
                   "service_id": true,
                   "service_name": true,
@@ -1592,14 +1590,14 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
+          "repeat": "service_name",
           "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
-              "editorMode": "builder",
+              "editorMode": "code",
               "exemplar": false,
-              "expr": "sort(redis_commands_latencies_usec_bucket{node_name=~\"$node_name\", cmd=\"lrange\"})",
+              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"lrange\"})",
               "format": "table",
               "instant": true,
               "legendFormat": "__auto",
@@ -1607,7 +1605,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - lrange latency",
+          "title": "$service_name - lrange latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1629,7 +1627,6 @@
                   "instance": true,
                   "job": true,
                   "node_id": true,
-                  "node_name": true,
                   "node_type": true,
                   "service_id": true,
                   "service_name": true,
@@ -1736,9 +1733,9 @@
           "targets": [
             {
               "datasource": "Metrics",
-              "editorMode": "builder",
+              "editorMode": "code",
               "exemplar": false,
-              "expr": "sort(redis_commands_latencies_usec_bucket{node_name=~\"$node_name\", cmd=\"rpush\"})",
+              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"rpush\"})",
               "format": "table",
               "instant": true,
               "legendFormat": "__auto",
@@ -1768,7 +1765,6 @@
                   "instance": true,
                   "job": true,
                   "node_id": true,
-                  "node_name": true,
                   "node_type": true,
                   "service_id": true,
                   "service_name": true,
@@ -1875,9 +1871,9 @@
           "targets": [
             {
               "datasource": "Metrics",
-              "editorMode": "builder",
+              "editorMode": "code",
               "exemplar": false,
-              "expr": "sort(redis_commands_latencies_usec_bucket{node_name=~\"$node_name\", cmd=\"lpush\"})",
+              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"lpush\"})",
               "format": "table",
               "instant": true,
               "legendFormat": "__auto",
@@ -1907,7 +1903,6 @@
                   "instance": true,
                   "job": true,
                   "node_id": true,
-                  "node_name": true,
                   "node_type": true,
                   "service_id": true,
                   "service_name": true,
@@ -2005,14 +2000,14 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "9.2.20",
-          "repeat": "node_name",
+          "repeat": "service_name",
           "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
-              "editorMode": "builder",
+              "editorMode": "code",
               "exemplar": false,
-              "expr": "sort(redis_commands_latencies_usec_bucket{node_name=~\"$node_name\", cmd=\"hset\"})",
+              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"hset\"})",
               "format": "table",
               "instant": true,
               "legendFormat": "__auto",
@@ -2020,7 +2015,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - hset latency",
+          "title": "$service_name - hset latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -2042,7 +2037,6 @@
                   "instance": true,
                   "job": true,
                   "node_id": true,
-                  "node_name": true,
                   "node_type": true,
                   "service_id": true,
                   "service_name": true,
@@ -2146,14 +2140,14 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "11.6.4",
-          "repeat": "node_name",
+          "repeat": "service_name",
           "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sort(redis_commands_latencies_usec_bucket{node_name=~\"$node_name\", cmd=\"psync\"})",
+              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"psync\"})",
               "format": "table",
               "instant": true,
               "legendFormat": "__auto",
@@ -2161,7 +2155,7 @@
               "refId": "A"
             }
           ],
-          "title": "$node_name - psync latency",
+          "title": "$service_name - psync latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -2183,7 +2177,6 @@
                   "instance": true,
                   "job": true,
                   "node_id": true,
-                  "node_name": true,
                   "node_type": true,
                   "service_id": true,
                   "service_name": true,
@@ -2227,9 +2220,7 @@
         "allowCustomValue": false,
         "current": {
           "text": "All",
-          "value": [
-            "$__all"
-          ]
+          "value": "$__all"
         },
         "definition": "label_values({__name__=\"redis_up\"},environment)",
         "includeAll": true,
@@ -2248,9 +2239,7 @@
       },
       {
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -2306,15 +2295,15 @@
           ]
         },
         "datasource": "Metrics",
-        "definition": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
+        "definition": "label_values(redis_up{cluster=~\"$cluster\"},service_name)",
         "includeAll": true,
         "label": "Node Name",
         "multi": true,
-        "name": "node_name",
+        "name": "service_name",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
+          "query": "label_values(redis_up{cluster=~\"$cluster\"},service_name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
@@ -2331,7 +2320,6 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Valkey/Redis Command Detail",
-  "uid": "valkey-command-details",
-  "version": 1,
-  "weekStart": ""
+  "uid": "valkey-command-details1",
+  "version": 2
 }

@@ -148,7 +148,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "(100 * (redis_memory_used_bytes{node_name=~\"$node_name\"}  / redis_memory_max_bytes{node_name=~\"$node_name\"}))",
+          "expr": "(100 * (redis_memory_used_bytes{service_name=~\"$service_name\"}  / redis_memory_max_bytes{service_name=~\"$service_name\"}))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{service_name}}",
@@ -218,7 +218,7 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "redis_instance_info{node_name=~\"$node_name\"} and on(node_name) redis_instance_info{role=\"master\"}",
+          "expr": "redis_instance_info{service_name=~\"$service_name\"} and on(service_name) redis_instance_info{role=\"master\"}",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -233,11 +233,11 @@
           "options": {
             "include": {
               "names": [
-                "node_name",
+                "service_name",
                 "Value",
                 "service_name"
               ],
-              "pattern": "node_name|Value"
+              "pattern": "service_name|Value"
             }
           }
         }
@@ -276,7 +276,20 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "service_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Service name"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -305,7 +318,7 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "min by (node_name,service_name) (redis_db_keys{node_name=~\"$node_name\"})",
+          "expr": "min by (service_name,service_name) (redis_db_keys{service_name=~\"$service_name\"})",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -324,11 +337,11 @@
           "options": {
             "include": {
               "names": [
-                "node_name",
+                "service_name",
                 "Value",
                 "service_name"
               ],
-              "pattern": "node_name|Value"
+              "pattern": "service_name|Value"
             }
           }
         }
@@ -441,7 +454,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "redis_memory_used_bytes{node_name=~\"$node_name\"}",
+          "expr": "redis_memory_used_bytes{service_name=~\"$service_name\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "used, {{ service_name}}",
@@ -454,7 +467,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "redis_memory_max_bytes{node_name=~\"$node_name\"}",
+          "expr": "redis_memory_max_bytes{service_name=~\"$service_name\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -609,12 +622,12 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "sum(rate(redis_expired_keys_total{node_name=~\"$node_name\"}[5m])) by (node_name)",
+          "expr": "sum(rate(redis_expired_keys_total{service_name=~\"$service_name\"}[5m])) by (service_name)",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "expired, {{ node_name}}",
+          "legendFormat": "expired, {{ service_name}}",
           "metric": "",
           "range": true,
           "refId": "A",
@@ -624,11 +637,11 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "sum(rate(redis_evicted_keys_total{node_name=~\"$node_name\"}[5m])) by (node_name)",
+          "expr": "sum(rate(redis_evicted_keys_total{service_name=~\"$service_name\"}[5m])) by (service_name)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "evicted, {{ node_name}}",
+          "legendFormat": "evicted, {{ service_name}}",
           "range": true,
           "refId": "B",
           "step": 240
@@ -720,11 +733,11 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "sum (redis_db_keys{instance=~\"$node_name\"}) by (node_name) - sum (redis_db_keys_expiring{node_name=~\"$node_name\"}) by (node_name)",
+          "expr": "sum (redis_db_keys{instance=~\"$service_name\"}) by (service_name) - sum (redis_db_keys_expiring{service_name=~\"$service_name\"}) by (service_name)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "not expiring, {{ node_name}}",
+          "legendFormat": "not expiring, {{ service_name}}",
           "range": true,
           "refId": "A",
           "step": 240,
@@ -733,11 +746,11 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "sum (redis_db_keys_expiring{node_name=~\"$node_name\"}) by (node_name)",
+          "expr": "sum (redis_db_keys_expiring{service_name=~\"$service_name\"}) by (service_name)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "expiring, {{ node_name }}",
+          "legendFormat": "expiring, {{ service_name }}",
           "metric": "",
           "range": true,
           "refId": "B",
@@ -760,7 +773,12 @@
     "list": [
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "definition": "label_values({__name__=\"redis_up\"},environment)",
         "includeAll": true,
         "label": "Environment",
@@ -777,7 +795,12 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
         "definition": "label_values(redis_up,service_name)",
         "includeAll": true,
@@ -797,7 +820,12 @@
       },
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
         "definition": "label_values(redis_up{environment=~\"$environment\"},cluster)",
         "includeAll": true,
@@ -817,17 +845,22 @@
       },
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
-        "definition": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
+        "definition": "label_values(redis_up{cluster=~\"$cluster\"},service_name)",
         "includeAll": true,
         "label": "Node Name",
         "multi": true,
-        "name": "node_name",
+        "name": "service_name",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
+          "query": "label_values(redis_up{cluster=~\"$cluster\"},service_name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,

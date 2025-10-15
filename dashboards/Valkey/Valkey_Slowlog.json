@@ -129,11 +129,11 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "redis_slowlog_length{node_name=~\"$node_name\"}",
+          "expr": "redis_slowlog_length{service_name=~\"$service_name\"}",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
-          "legendFormat": "{{node_name}}",
+          "legendFormat": "{{service_name}}",
           "metric": "",
           "range": true,
           "refId": "A",
@@ -211,9 +211,9 @@
       "targets": [
         {
           "datasource": "Metrics",
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "redis_config_value{key=\"slowlog-max-len\", node_name=~\"$node_name\"}",
+          "expr": "redis_config_value{key=\"slowlog-max-len\", service_name=~\"$service_name\"}",
           "format": "table",
           "instant": true,
           "intervalFactor": 2,
@@ -349,7 +349,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum by(node_name) (redis_slowlog_length{node_name=~\"$node_name\"})",
+          "expr": "sum by(service_name) (redis_slowlog_length{service_name=~\"$service_name\"})",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "legendFormat": "__auto",
@@ -423,9 +423,9 @@
       "targets": [
         {
           "datasource": "Metrics",
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "redis_config_value{key=\"slowlog-log-slower-than\", node_name=~\"$node_name\"} / 1000",
+          "expr": "redis_config_value{key=\"slowlog-log-slower-than\", service_name=~\"$service_name\"} / 1000",
           "format": "table",
           "instant": true,
           "intervalFactor": 2,
@@ -479,9 +479,7 @@
         "allowCustomValue": false,
         "current": {
           "text": "All",
-          "value": [
-            "$__all"
-          ]
+          "value": "$__all"
         },
         "datasource": "Metrics",
         "definition": "label_values({__name__=\"redis_up\"},environment)",
@@ -509,15 +507,15 @@
           ]
         },
         "datasource": "Metrics",
-        "definition": "label_values(redis_up,node_name)",
+        "definition": "label_values(redis_up,service_name)",
         "includeAll": true,
         "label": "Node Name",
         "multi": true,
-        "name": "node_name",
+        "name": "service_name",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(redis_up,node_name)",
+          "query": "label_values(redis_up,service_name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,

@@ -100,7 +100,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 24,
         "x": 0,
         "y": 1
@@ -132,7 +132,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by(node_name) (rate(redis_commands_total{node_name=~\"$node_name\"}[$__rate_interval]))",
+          "expr": "sum by(node_name) (rate(redis_commands_total{service_name=~\"$service_name\"}[$__rate_interval]))",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -222,7 +222,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 24,
         "x": 0,
         "y": 11
@@ -250,18 +250,18 @@
         }
       },
       "pluginVersion": "11.6.4",
-      "repeat": "node_name",
+      "repeat": "service_name",
       "repeatDirection": "h",
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by(node_name) (rate(redis_total_reads_processed{node_name=~\"$node_name\"}[5m]))",
+          "expr": "sum by(service_name) (rate(redis_total_reads_processed{service_name=~\"$service_name\"}[5m]))",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
-          "legendFormat": "Reads",
+          "legendFormat": "Reads - $service_name",
           "range": true,
           "refId": "A",
           "step": 240
@@ -270,18 +270,18 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by(node_name) (rate(redis_total_writes_processed{node_name=~\"$node_name\"}[5m]))",
+          "expr": "sum by(service_name) (rate(redis_total_writes_processed{service_name=~\"$service_name\"}[5m]))",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "Writes",
+          "legendFormat": "Writes - $service_name",
           "range": true,
           "refId": "B",
           "step": 240
         }
       ],
-      "title": "$node_name - Read and Write rate",
+      "title": "$service_name - Read and Write rate",
       "type": "timeseries"
     },
     {
@@ -290,7 +290,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 29
       },
       "id": 278,
       "panels": [],
@@ -356,10 +356,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 30
       },
       "id": 18,
       "maxPerRow": 3,
@@ -371,6 +371,7 @@
             "min"
           ],
           "displayMode": "table",
+          "sortBy": "Mean",
           "placement": "bottom",
           "showLegend": true
         },
@@ -387,11 +388,11 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "sum(rate(redis_commands_total{node_name=~\"$node_name\"} [1m])) by (node_name,cmd)",
+          "expr": "sum(rate(redis_commands_total{service_name=~\"$service_name\"} [1m])) by (service_name,cmd)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{cmd}} - {{node_name}}",
+          "legendFormat": "{{cmd}} - {{service_name}}",
           "metric": "redis_command_calls_total",
           "range": true,
           "refId": "A",
@@ -407,7 +408,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 30
+        "y": 39
       },
       "id": 335,
       "panels": [],
@@ -477,7 +478,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 40
       },
       "id": 58,
       "options": {
@@ -504,7 +505,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "irate(redis_keyspace_hits_total{node_name=~\"$node_name\"}[5m])",
+          "expr": "irate(redis_keyspace_hits_total{service_name=~\"$service_name\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -519,7 +520,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "irate(redis_keyspace_misses_total{node_name=~\"$node_name\"}[5m])",
+          "expr": "irate(redis_keyspace_misses_total{node_name=~\"$service_name\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -541,7 +542,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 39
+        "y": 48
       },
       "id": 51,
       "panels": [],
@@ -608,10 +609,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 49
       },
       "id": 1,
       "options": {
@@ -638,7 +639,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "irate(redis_io_threaded_reads_processed{node_name=~\"$node_name\"}[5m])",
+          "expr": "irate(redis_io_threaded_reads_processed{service_name=~\"$service_name\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -653,7 +654,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "irate(redis_io_threaded_writes_processed{node_name=~\"$node_name\"}[5m])",
+          "expr": "irate(redis_io_threaded_writes_processed{service_name=~\"$service_name\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -678,9 +679,10 @@
             "mode": "fixed"
           },
           "custom": {
-            "align": "auto",
+            "align": "center",
             "cellOptions": {
-              "type": "auto"
+              "type": "auto",
+              "wrapText": false
             },
             "inspect": false
           },
@@ -728,34 +730,58 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "environment"
+              "options": "node_name"
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 107
+                "id": "custom.minWidth",
+                "value": 200
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "node_name"
+              "options": "replication_set"
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 104
+                "id": "custom.minWidth",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "service_name"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 200
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "role"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 100
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 50
+        "y": 59
       },
       "hideTimeOverride": true,
       "id": 26,
@@ -779,7 +805,7 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "redis_config_io_threads{node_name=~\"$node_name\"}",
+          "expr": "redis_config_io_threads{service_name=~\"$service_name\"}",
           "format": "table",
           "instant": true,
           "intervalFactor": 2,
@@ -834,7 +860,14 @@
               "service_name": 13,
               "service_type": 16
             },
-            "renameByName": {}
+            "renameByName": {
+              "Value": "",
+              "node_id": "",
+              "node_name": "Node name",
+              "replication_set": "Replication set",
+              "role": "Role",
+              "service_name": "Service name"
+            }
           }
         }
       ],
@@ -913,7 +946,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 66
       },
       "hideTimeOverride": true,
       "id": 57,
@@ -936,7 +969,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "redis_io_threads_active{node_name=~\"$node_name\"}",
+          "expr": "redis_io_threads_active{service_name=~\"$service_name\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{service_name}}",
