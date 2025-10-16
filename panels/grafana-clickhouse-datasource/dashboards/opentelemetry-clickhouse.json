@@ -806,7 +806,7 @@
           },
           "pluginVersion": "4.0.6",
           "queryType": "traces",
-          "rawSql": "WITH '${trace_id}' as trace_id, (SELECT min(Start) FROM \"default\".\"otel_traces_trace_id_ts\" WHERE TraceId = trace_id) as trace_start, (SELECT max(End) + 1 FROM \"default\".\"otel_traces_trace_id_ts\" WHERE TraceId = trace_id) as trace_end SELECT \"TraceId\" as traceID, \"SpanId\" as spanID, \"ParentSpanId\" as parentSpanID, \"ServiceName\" as serviceName, \"SpanName\" as operationName, \"Timestamp\" as startTime, multiply(\"Duration\", 0.000001) as duration, arrayMap(key -> map('key', key, 'value',\"SpanAttributes\"[key]), mapKeys(\"SpanAttributes\")) as tags, arrayMap(key -> map('key', key, 'value',\"ResourceAttributes\"[key]), mapKeys(\"ResourceAttributes\")) as serviceTags FROM \"default\".\"otel_traces\" WHERE traceID = trace_id AND startTime >= trace_start AND startTime <= trace_end AND ( Timestamp >= $__fromTime AND Timestamp <= $__toTime ) AND ( Duration > 0 ) ORDER BY Timestamp DESC, Duration DESC LIMIT 1000",
+          "rawSql": "WITH '${trace_id}' as trace_id, (SELECT min(Start) FROM \"otel_traces_trace_id_ts\" WHERE TraceId = trace_id) as trace_start, (SELECT max(End) + 1 FROM \"otel_traces_trace_id_ts\" WHERE TraceId = trace_id) as trace_end SELECT \"TraceId\" as traceID, \"SpanId\" as spanID, \"ParentSpanId\" as parentSpanID, \"ServiceName\" as serviceName, \"SpanName\" as operationName, \"Timestamp\" as startTime, multiply(\"Duration\", 0.000001) as duration, arrayMap(key -> map('key', key, 'value',\"SpanAttributes\"[key]), mapKeys(\"SpanAttributes\")) as tags, arrayMap(key -> map('key', key, 'value',\"ResourceAttributes\"[key]), mapKeys(\"ResourceAttributes\")) as serviceTags FROM \"otel_traces\" WHERE traceID = trace_id AND startTime >= trace_start AND startTime <= trace_end AND ( Timestamp >= $__fromTime AND Timestamp <= $__toTime ) AND ( Duration > 0 ) ORDER BY Timestamp DESC, Duration DESC LIMIT 1000",
           "refId": "A"
         }
       ],
@@ -887,7 +887,7 @@
           "editorType": "builder",
           "format": 2,
           "pluginVersion": "4.0.6",
-          "rawSql": "SELECT Timestamp as timestamp, Body as body, SeverityText as level FROM \"default\".\"otel_logs\" LIMIT 1000",
+          "rawSql": "SELECT Timestamp as timestamp, Body as body, SeverityText as level FROM \"otel_logs\" LIMIT 1000",
           "refId": "A"
         }
       ],
