@@ -282,32 +282,23 @@
           "datasource": "Metrics",
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "redis_master_repl_offset{service_name=~\"$service_name\"}\r\n",
+          "exemplar": false,
+          "expr": "redis_master_repl_offset{service_name=~\"$replica_service_name\",role=~\"replica\"} - on(cluster) group_left(servcie_name) redis_master_repl_offset{cluster=~\"$cluster\",role=~\"primary\"}\r\n",
+          "format": "time_series",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
+          "instant": false,
           "legendFormat": "{{service_name}}",
           "range": true,
           "refId": "M",
-          "useBackend": false
-        },
-        {
-          "datasource": "Metrics",
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "redis_master_repl_offset{role=~\"primary\"}",
-          "fullMetaSearch": false,
-          "hide": false,
-          "includeNullMetadata": true,
-          "legendFormat": "{{service_name}}",
-          "range": true,
-          "refId": "A",
           "useBackend": false
         }
       ],
       "title": "$replica_service_name - Replica vs Master offsets",
       "transformations": [
         {
+          "disabled": true,
           "id": "calculateField",
           "options": {
             "binary": {
@@ -321,7 +312,7 @@
               "right": {
                 "matcher": {
                   "id": "byName",
-                  "options": "valkey-primary-svc-4469"
+                  "options": "$master_service_name"
                 }
               }
             },
@@ -1990,6 +1981,29 @@
         "query": {
           "qryType": 1,
           "query": "label_values(redis_up{node_name=~\"$node_name\", role=~\"replica\"},service_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(redis_up{node_name=~\"$node_name\", role=~\"primary\"},service_name)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Service Name",
+        "multi": true,
+        "name": "master_service_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(redis_up{node_name=~\"$node_name\", role=~\"primary\"},service_name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
