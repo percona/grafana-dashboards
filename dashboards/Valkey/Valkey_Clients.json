@@ -122,31 +122,31 @@
         }
       },
       "pluginVersion": "11.6.4",
-      "repeat": "node_name",
+      "repeat": "service_name",
       "repeatDirection": "h",
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "sum by(node_name)(redis_connected_clients{node_name=~\"$node_name\"})",
+          "expr": "sum by(service_name)(redis_connected_clients{service_name=~\"$service_name\"})",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Connected - {{node_name}}",
+          "legendFormat": "Connected - {{service_name}}",
           "range": true,
           "refId": "A"
         },
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "sum by(node_name)(redis_blocked_clients{node_name=~\"$node_name\"})",
+          "expr": "sum by(service_name)(redis_blocked_clients{service_name=~\"$service_name\"})",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Blocked - {{node_name}}",
+          "legendFormat": "Blocked - {{service_name}}",
           "range": true,
           "refId": "B"
         }
       ],
-      "title": "$node_name - Connected/Blocked Clients",
+      "title": "$service_name - Connected/Blocked Clients",
       "type": "timeseries"
     },
     {
@@ -183,7 +183,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "node_name"
+              "options": "service_name"
             },
             "properties": [
               {
@@ -198,7 +198,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 9
+        "y": 17
       },
       "id": 66,
       "options": {
@@ -220,7 +220,7 @@
           "datasource": "Metrics",
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "redis_config_maxclients{node_name=~\"$node_name\"}",
+          "expr": "redis_config_maxclients{service_name=~\"$service_name\"}",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -243,7 +243,6 @@
               "instance": true,
               "job": true,
               "node_id": true,
-              "node_name": false,
               "node_type": true,
               "service_id": true,
               "service_name": true,
@@ -254,7 +253,7 @@
             "renameByName": {
               "job": "",
               "machine_id": "Id",
-              "node_name": "Node Name"
+              "service_name": "Node Name"
             }
           }
         }
@@ -305,7 +304,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 9
+        "y": 17
       },
       "id": 67,
       "options": {
@@ -326,7 +325,7 @@
           "datasource": "Metrics",
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "redis_evicted_clients_total{node_name=~\"$node_name\"}",
+          "expr": "redis_evicted_clients_total{service_name=~\"$service_name\"}",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -349,7 +348,6 @@
               "instance": true,
               "job": true,
               "node_id": true,
-              "node_name": false,
               "node_type": true,
               "service_id": true,
               "service_name": true,
@@ -360,7 +358,7 @@
             "renameByName": {
               "Value": "",
               "machine_id": "Id",
-              "node_name": "Node Name"
+              "service_name": "Node Name"
             }
           }
         }
@@ -373,7 +371,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 25
       },
       "id": 394,
       "panels": [],
@@ -442,7 +440,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 26
       },
       "id": 30,
       "options": {
@@ -465,13 +463,13 @@
         }
       },
       "pluginVersion": "11.6.4",
-      "repeat": "node_name",
+      "repeat": "service_name",
       "repeatDirection": "h",
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "(rate(redis_client_recent_max_input_buffer_bytes{node_name=~\"$node_name\"}[5m]))",
+          "expr": "(rate(redis_client_recent_max_input_buffer_bytes{service_name=~\"$service_name\"}[5m]))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Input",
@@ -482,7 +480,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "(rate(redis_client_recent_max_output_buffer_bytes{node_name=~\"$node_name\"}[5m]))",
+          "expr": "(rate(redis_client_recent_max_output_buffer_bytes{service_name=~\"$service_name\"}[5m]))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -492,7 +490,7 @@
           "step": 240
         }
       ],
-      "title": "$node_name - client Buffers",
+      "title": "$service_name - client Buffers",
       "type": "timeseries"
     }
   ],
@@ -530,30 +528,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "All",
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(redis_up,service_name)",
-        "includeAll": true,
-        "label": "Service Name",
-        "multi": true,
-        "name": "service_name",
-        "options": [],
-        "query": {
-          "qryType": 1,
-          "query": "label_values(redis_up,service_name)",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
-        },
-        "refresh": 2,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
-      },
-      {
         "allValue": ".*",
         "allowCustomValue": false,
         "current": {
@@ -582,7 +556,9 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "All",
+          "text": [
+            "All"
+          ],
           "value": [
             "$__all"
           ]
@@ -597,6 +573,29 @@
         "query": {
           "qryType": 1,
           "query": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(redis_up{node_name=~\"$node_name\"},service_name)",
+        "includeAll": true,
+        "label": "Service Name",
+        "multi": true,
+        "name": "service_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(redis_up{node_name=~\"$node_name\"},service_name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,

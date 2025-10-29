@@ -179,7 +179,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 19
       },
       "id": 451,
       "panels": [],
@@ -243,7 +243,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "bytes"
         },
         "overrides": []
       },
@@ -251,7 +251,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 20
       },
       "id": 53,
       "maxPerRow": 3,
@@ -275,24 +275,64 @@
         }
       },
       "pluginVersion": "11.6.4",
-      "repeat": "node_name",
+      "repeat": "replica_service_name",
       "repeatDirection": "h",
       "targets": [
         {
           "datasource": "Metrics",
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "redis_master_repl_offset{node_name=~\"$node_name\", service_name=~\"$service_name\"}\r\n- on(node_name, service_name) group_left(slave_ip, slave_port)\r\nredis_connected_slave_offset_bytes{node_name=~\"$node_name\", service_name=~\"$service_name\"}",
+          "expr": "redis_master_repl_offset{service_name=~\"$service_name\"}\r\n",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
-          "legendFormat": "{{service_name}}_{{slave_ip}}",
+          "legendFormat": "{{service_name}}",
           "range": true,
           "refId": "M",
           "useBackend": false
+        },
+        {
+          "datasource": "Metrics",
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "redis_master_repl_offset{role=~\"primary\"}",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "legendFormat": "{{service_name}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
         }
       ],
-      "title": "$node_name - Replica vs Master offsets",
+      "title": "$replica_service_name - Replica vs Master offsets",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "$replica_service_name"
+                }
+              },
+              "operator": "-",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "valkey-primary-svc-4469"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -393,7 +433,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 29
       },
       "id": 23,
       "options": {
@@ -548,7 +588,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 37
       },
       "id": 62,
       "options": {
@@ -748,7 +788,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 44
       },
       "id": 63,
       "options": {
@@ -948,7 +988,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 52
       },
       "id": 65,
       "options": {
@@ -1152,7 +1192,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 51
+        "y": 60
       },
       "id": 54,
       "options": {
@@ -1352,7 +1392,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 68
       },
       "id": 56,
       "options": {
@@ -1556,7 +1596,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 67
+        "y": 76
       },
       "id": 55,
       "options": {
@@ -1745,7 +1785,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 75
+        "y": 84
       },
       "id": 107,
       "options": {
@@ -1858,30 +1898,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "All",
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(redis_up,service_name)",
-        "includeAll": true,
-        "label": "Service Name",
-        "multi": true,
-        "name": "service_name",
-        "options": [],
-        "query": {
-          "qryType": 1,
-          "query": "label_values(redis_up,service_name)",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
-        },
-        "refresh": 2,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
-      },
-      {
         "allValue": ".*",
         "allowCustomValue": false,
         "current": {
@@ -1908,7 +1924,6 @@
         "type": "query"
       },
       {
-        "allValue": ".*",
         "allowCustomValue": false,
         "current": {
           "text": "All",
@@ -1917,7 +1932,7 @@
           ]
         },
         "datasource": "Metrics",
-        "definition": "label_values(redis_up{cluster=~\"$cluster\", environment=~\"$environment\"},node_name)",
+        "definition": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
         "includeAll": true,
         "label": "Node Name",
         "multi": true,
@@ -1925,7 +1940,56 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(redis_up{cluster=~\"$cluster\", environment=~\"$environment\"},node_name)",
+          "query": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(redis_up{node_name=~\"$node_name\"},service_name)",
+        "includeAll": true,
+        "label": "Service Name",
+        "multi": true,
+        "name": "service_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(redis_up{node_name=~\"$node_name\"},service_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(redis_up{node_name=~\"$node_name\", role=~\"replica\"},service_name)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Service Name",
+        "multi": true,
+        "name": "replica_service_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(redis_up{node_name=~\"$node_name\", role=~\"replica\"},service_name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,

@@ -372,17 +372,44 @@
       },
       {
         "allowCustomValue": false,
-        "current": {},
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": "Metrics",
-        "definition": "label_values(redis_up{cluster=~\"$cluster\"},service_name)",
+        "definition": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
         "includeAll": true,
         "label": "Node Name",
+        "multi": true,
+        "name": "node_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {},
+        "datasource": "Metrics",
+        "definition": "label_values(redis_up{node_name=~\"$node_name\"},service_name)",
+        "includeAll": true,
+        "label": "Service Name",
         "multi": true,
         "name": "service_name",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(redis_up{cluster=~\"$cluster\"},service_name)",
+          "query": "label_values(redis_up{node_name=~\"$node_name\"},service_name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,

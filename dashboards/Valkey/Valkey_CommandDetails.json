@@ -300,7 +300,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 80,
+            "fillOpacity": 50,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -368,7 +368,7 @@
         }
       },
       "pluginVersion": "11.6.4",
-      "repeat": "service_name",
+      "repeat": "ns_service_name",
       "repeatDirection": "h",
       "targets": [
         {
@@ -385,7 +385,7 @@
           "step": 240
         }
       ],
-      "title": "$service_name - command ops/sec",
+      "title": "$ns_service_name - command ops/sec",
       "type": "timeseries"
     },
     {
@@ -394,7 +394,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 35
       },
       "id": 45,
       "panels": [],
@@ -430,7 +430,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 36
       },
       "id": 46,
       "maxPerRow": 3,
@@ -498,7 +498,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 80,
+            "fillOpacity": 50,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -544,7 +544,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 60
+        "y": 52
       },
       "id": 14,
       "options": {
@@ -567,7 +567,7 @@
         }
       },
       "pluginVersion": "11.6.4",
-      "repeat": "service_name",
+      "repeat": "ns_service_name",
       "repeatDirection": "v",
       "targets": [
         {
@@ -584,7 +584,7 @@
           "step": 240
         }
       ],
-      "title": "$service_name - total Time Spent by Command / sec",
+      "title": "$ns_service_name - total Time Spent by Command / sec",
       "type": "timeseries"
     },
     {
@@ -609,7 +609,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 100
+        "y": 76
       },
       "id": 47,
       "maxPerRow": 3,
@@ -730,7 +730,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 116
+        "y": 92
       },
       "id": 86,
       "panels": [
@@ -782,7 +782,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 56
+            "y": 93
           },
           "id": 88,
           "options": {
@@ -814,21 +814,21 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "11.6.4",
-          "repeat": "service_name",
+          "repeat": "ns_service_name",
           "repeatDirection": "v",
           "targets": [
             {
               "datasource": "Metrics",
               "editorMode": "code",
               "exemplar": false,
-              "expr": "redis_latency_percentiles_usec{service_name=~\"$service_name\",service_name=~\"$service_name\"}",
+              "expr": "redis_latency_percentiles_usec{service_name=~\"$service_name\"}",
               "instant": true,
               "legendFormat": "{{cmd}} - {{service_name}}",
               "range": false,
               "refId": "A"
             }
           ],
-          "title": "$service_name - command percentiles",
+          "title": "$ns_service_name - command percentiles",
           "type": "barchart"
         }
       ],
@@ -841,7 +841,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 117
+        "y": 93
       },
       "id": 543,
       "panels": [
@@ -891,11 +891,12 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 8,
+            "w": 24,
             "x": 0,
-            "y": 118
+            "y": 94
           },
           "id": 89,
+          "maxPerRow": 3,
           "options": {
             "barRadius": 0,
             "barWidth": 0.97,
@@ -920,8 +921,8 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "11.6.4",
-          "repeat": "service_name",
-          "repeatDirection": "v",
+          "repeat": "ns_service_name",
+          "repeatDirection": "h",
           "targets": [
             {
               "datasource": "Metrics",
@@ -935,7 +936,7 @@
               "refId": "A"
             }
           ],
-          "title": "$service_name - get latency",
+          "title": "$ns_service_name - get latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -993,6 +994,7 @@
                 "mode": "continuous-GrYlRd"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -1007,6 +1009,9 @@
                 "lineWidth": 1,
                 "scaleDistribution": {
                   "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
                 }
               },
               "mappings": [],
@@ -1027,282 +1032,16 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 8,
-            "x": 8,
-            "y": 118
-          },
-          "id": 91,
-          "options": {
-            "barRadius": 0,
-            "barWidth": 0.97,
-            "groupWidth": 0.7,
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "orientation": "auto",
-            "showValue": "auto",
-            "stacking": "none",
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            },
-            "xField": "le",
-            "xTickLabelRotation": 0,
-            "xTickLabelSpacing": 0
-          },
-          "pluginVersion": "9.2.20",
-          "repeat": "service_name",
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"set\"})",
-              "format": "table",
-              "instant": true,
-              "legendFormat": "__auto",
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "title": "$service_name - set latency",
-          "transformations": [
-            {
-              "id": "joinByField",
-              "options": {
-                "byField": "Time",
-                "mode": "inner"
-              }
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "__name__": true,
-                  "agent_id": true,
-                  "agent_type": true,
-                  "cmd": true,
-                  "external_group": true,
-                  "instance": true,
-                  "job": true,
-                  "node_id": true,
-                  "node_type": true,
-                  "service_id": true,
-                  "service_name": true,
-                  "service_type": true
-                },
-                "indexByName": {}
-              }
-            },
-            {
-              "id": "groupBy",
-              "options": {
-                "fields": {
-                  "Value": {
-                    "aggregations": [
-                      "last"
-                    ],
-                    "operation": "aggregate"
-                  },
-                  "le": {
-                    "aggregations": [],
-                    "operation": "groupby"
-                  }
-                }
-              }
-            }
-          ],
-          "type": "barchart"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-GrYlRd"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "fillOpacity": 80,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineWidth": 1,
-                "scaleDistribution": {
-                  "type": "linear"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 16,
-            "y": 118
-          },
-          "id": 93,
-          "options": {
-            "barRadius": 0,
-            "barWidth": 0.97,
-            "groupWidth": 0.7,
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "orientation": "auto",
-            "showValue": "auto",
-            "stacking": "none",
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            },
-            "xField": "le",
-            "xTickLabelRotation": 0,
-            "xTickLabelSpacing": 0
-          },
-          "pluginVersion": "9.2.20",
-          "repeat": "service_name",
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"hset\"})",
-              "format": "table",
-              "instant": true,
-              "legendFormat": "__auto",
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "title": "$service_name - hset latency",
-          "transformations": [
-            {
-              "id": "joinByField",
-              "options": {
-                "byField": "Time",
-                "mode": "inner"
-              }
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "__name__": true,
-                  "agent_id": true,
-                  "agent_type": true,
-                  "cmd": true,
-                  "external_group": true,
-                  "instance": true,
-                  "job": true,
-                  "node_id": true,
-                  "node_type": true,
-                  "service_id": true,
-                  "service_name": true,
-                  "service_type": true
-                },
-                "indexByName": {}
-              }
-            },
-            {
-              "id": "groupBy",
-              "options": {
-                "fields": {
-                  "Value": {
-                    "aggregations": [
-                      "last"
-                    ],
-                    "operation": "aggregate"
-                  },
-                  "le": {
-                    "aggregations": [],
-                    "operation": "groupby"
-                  }
-                }
-              }
-            }
-          ],
-          "type": "barchart"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-GrYlRd"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "fillOpacity": 80,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineWidth": 1,
-                "scaleDistribution": {
-                  "type": "linear"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 8,
+            "w": 24,
             "x": 0,
-            "y": 158
+            "y": 103
           },
           "id": 92,
+          "maxPerRow": 3,
           "options": {
             "barRadius": 0,
             "barWidth": 0.97,
+            "fullHighlight": false,
             "groupWidth": 0.7,
             "legend": {
               "calcs": [],
@@ -1314,6 +1053,7 @@
             "showValue": "auto",
             "stacking": "none",
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             },
@@ -1321,9 +1061,9 @@
             "xTickLabelRotation": 0,
             "xTickLabelSpacing": 0
           },
-          "pluginVersion": "9.2.20",
-          "repeat": "service_name",
-          "repeatDirection": "v",
+          "pluginVersion": "11.6.4",
+          "repeat": "ns_service_name",
+          "repeatDirection": "h",
           "targets": [
             {
               "datasource": "Metrics",
@@ -1337,7 +1077,7 @@
               "refId": "A"
             }
           ],
-          "title": "$service_name - rpop latency",
+          "title": "$ns_service_name - rpop latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1395,6 +1135,7 @@
                 "mode": "continuous-GrYlRd"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -1409,6 +1150,9 @@
                 "lineWidth": 1,
                 "scaleDistribution": {
                   "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
                 }
               },
               "mappings": [],
@@ -1429,14 +1173,16 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 8,
-            "x": 8,
-            "y": 158
+            "w": 24,
+            "x": 0,
+            "y": 112
           },
-          "id": 103,
+          "id": 91,
+          "maxPerRow": 3,
           "options": {
             "barRadius": 0,
             "barWidth": 0.97,
+            "fullHighlight": false,
             "groupWidth": 0.7,
             "legend": {
               "calcs": [],
@@ -1448,6 +1194,7 @@
             "showValue": "auto",
             "stacking": "none",
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             },
@@ -1455,9 +1202,150 @@
             "xTickLabelRotation": 0,
             "xTickLabelSpacing": 0
           },
-          "pluginVersion": "9.2.20",
-          "repeat": "service_name",
-          "repeatDirection": "v",
+          "pluginVersion": "11.6.4",
+          "repeat": "ns_service_name",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"set\"})",
+              "format": "table",
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "$ns_service_name - set latency",
+          "transformations": [
+            {
+              "id": "joinByField",
+              "options": {
+                "byField": "Time",
+                "mode": "inner"
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "__name__": true,
+                  "agent_id": true,
+                  "agent_type": true,
+                  "cmd": true,
+                  "external_group": true,
+                  "instance": true,
+                  "job": true,
+                  "node_id": true,
+                  "node_type": true,
+                  "service_id": true,
+                  "service_name": true,
+                  "service_type": true
+                },
+                "indexByName": {}
+              }
+            },
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "Value": {
+                    "aggregations": [
+                      "last"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "le": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  }
+                }
+              }
+            }
+          ],
+          "type": "barchart"
+        },
+        {
+          "datasource": "Metrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 121
+          },
+          "id": 103,
+          "maxPerRow": 3,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.97,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "orientation": "auto",
+            "showValue": "auto",
+            "stacking": "none",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xField": "le",
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "pluginVersion": "11.6.4",
+          "repeat": "ns_service_name",
+          "repeatDirection": "h",
           "targets": [
             {
               "datasource": "Metrics",
@@ -1471,7 +1359,7 @@
               "refId": "A"
             }
           ],
-          "title": "$service_name - lpop latency",
+          "title": "$ns_service_name - lpop latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1529,6 +1417,7 @@
                 "mode": "continuous-GrYlRd"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -1543,6 +1432,9 @@
                 "lineWidth": 1,
                 "scaleDistribution": {
                   "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
                 }
               },
               "mappings": [],
@@ -1563,14 +1455,16 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 8,
-            "x": 16,
-            "y": 158
+            "w": 24,
+            "x": 0,
+            "y": 130
           },
-          "id": 94,
+          "id": 93,
+          "maxPerRow": 3,
           "options": {
             "barRadius": 0,
             "barWidth": 0.97,
+            "fullHighlight": false,
             "groupWidth": 0.7,
             "legend": {
               "calcs": [],
@@ -1582,6 +1476,7 @@
             "showValue": "auto",
             "stacking": "none",
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             },
@@ -1589,9 +1484,150 @@
             "xTickLabelRotation": 0,
             "xTickLabelSpacing": 0
           },
-          "pluginVersion": "9.2.20",
-          "repeat": "service_name",
-          "repeatDirection": "v",
+          "pluginVersion": "11.6.4",
+          "repeat": "ns_service_name",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"hset\"})",
+              "format": "table",
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "$ns_service_name - hset latency",
+          "transformations": [
+            {
+              "id": "joinByField",
+              "options": {
+                "byField": "Time",
+                "mode": "inner"
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "__name__": true,
+                  "agent_id": true,
+                  "agent_type": true,
+                  "cmd": true,
+                  "external_group": true,
+                  "instance": true,
+                  "job": true,
+                  "node_id": true,
+                  "node_type": true,
+                  "service_id": true,
+                  "service_name": true,
+                  "service_type": true
+                },
+                "indexByName": {}
+              }
+            },
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "Value": {
+                    "aggregations": [
+                      "last"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "le": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  }
+                }
+              }
+            }
+          ],
+          "type": "barchart"
+        },
+        {
+          "datasource": "Metrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 139
+          },
+          "id": 94,
+          "maxPerRow": 3,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.97,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "orientation": "auto",
+            "showValue": "auto",
+            "stacking": "none",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xField": "le",
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "pluginVersion": "11.6.4",
+          "repeat": "ns_service_name",
+          "repeatDirection": "h",
           "targets": [
             {
               "datasource": "Metrics",
@@ -1605,7 +1641,148 @@
               "refId": "A"
             }
           ],
-          "title": "$service_name - lrange latency",
+          "title": "$ns_service_name - lrange latency",
+          "transformations": [
+            {
+              "id": "joinByField",
+              "options": {
+                "byField": "Time",
+                "mode": "inner"
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "__name__": true,
+                  "agent_id": true,
+                  "agent_type": true,
+                  "cmd": true,
+                  "external_group": true,
+                  "instance": true,
+                  "job": true,
+                  "node_id": true,
+                  "node_type": true,
+                  "service_id": true,
+                  "service_name": true,
+                  "service_type": true
+                },
+                "indexByName": {}
+              }
+            },
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "Value": {
+                    "aggregations": [
+                      "last"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "le": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  }
+                }
+              }
+            }
+          ],
+          "type": "barchart"
+        },
+        {
+          "datasource": "Metrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 148
+          },
+          "id": 96,
+          "maxPerRow": 3,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.97,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "orientation": "auto",
+            "showValue": "auto",
+            "stacking": "none",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xField": "le",
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "pluginVersion": "11.6.4",
+          "repeat": "ns_service_name",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"psync\"})",
+              "format": "table",
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "$ns_service_name - psync latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1703,7 +1880,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 198
+            "y": 156
           },
           "id": 95,
           "options": {
@@ -1841,7 +2018,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 198
+            "y": 156
           },
           "id": 104,
           "options": {
@@ -1930,146 +2107,6 @@
             }
           ],
           "type": "barchart"
-        },
-        {
-          "datasource": "Metrics",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-GrYlRd"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "fillOpacity": 80,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineWidth": 1,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 206
-          },
-          "id": 96,
-          "options": {
-            "barRadius": 0,
-            "barWidth": 0.97,
-            "fullHighlight": false,
-            "groupWidth": 0.7,
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": false
-            },
-            "orientation": "auto",
-            "showValue": "auto",
-            "stacking": "none",
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "single",
-              "sort": "none"
-            },
-            "xField": "le",
-            "xTickLabelRotation": 0,
-            "xTickLabelSpacing": 0
-          },
-          "pluginVersion": "11.6.4",
-          "repeat": "service_name",
-          "repeatDirection": "v",
-          "targets": [
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "sort(redis_commands_latencies_usec_bucket{service_name=~\"$service_name\", cmd=\"psync\"})",
-              "format": "table",
-              "instant": true,
-              "legendFormat": "__auto",
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "title": "$service_name - psync latency",
-          "transformations": [
-            {
-              "id": "joinByField",
-              "options": {
-                "byField": "Time",
-                "mode": "inner"
-              }
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "__name__": true,
-                  "agent_id": true,
-                  "agent_type": true,
-                  "cmd": true,
-                  "external_group": true,
-                  "instance": true,
-                  "job": true,
-                  "node_id": true,
-                  "node_type": true,
-                  "service_id": true,
-                  "service_name": true,
-                  "service_type": true
-                },
-                "indexByName": {}
-              }
-            },
-            {
-              "id": "groupBy",
-              "options": {
-                "fields": {
-                  "Value": {
-                    "aggregations": [
-                      "last"
-                    ],
-                    "operation": "aggregate"
-                  },
-                  "le": {
-                    "aggregations": [],
-                    "operation": "groupby"
-                  }
-                }
-              }
-            }
-          ],
-          "type": "barchart"
         }
       ],
       "title": "Latency by command",
@@ -2079,7 +2116,11 @@
   "preload": false,
   "refresh": "",
   "schemaVersion": 41,
-  "tags": ["Valkey","Redis","Percona"],
+  "tags": [
+    "Valkey",
+    "Redis",
+    "Percona"
+  ],
   "templating": {
     "list": [
       {
@@ -2131,23 +2172,72 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
         },
         "datasource": "Metrics",
-        "definition": "label_values(redis_up{cluster=~\"$cluster\"},service_name)",
+        "definition": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
         "includeAll": true,
         "label": "Node Name",
+        "multi": true,
+        "name": "node_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(redis_up{node_name=~\"$node_name\"},service_name)",
+        "includeAll": true,
+        "label": "Service Name",
         "multi": true,
         "name": "service_name",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(redis_up{cluster=~\"$cluster\"},service_name)",
+          "query": "label_values(redis_up{node_name=~\"$node_name\"},service_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(redis_up{node_name=~\"$node_name\", role!=\"sentinel\"},service_name)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Service Name",
+        "multi": true,
+        "name": "ns_service_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(redis_up{node_name=~\"$node_name\", role!=\"sentinel\"},service_name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
@@ -2165,5 +2255,5 @@
   "timezone": "browser",
   "title": "Valkey/Redis Command Detail",
   "uid": "valkey-command-details",
-  "version": 2
+  "version": 1
 }

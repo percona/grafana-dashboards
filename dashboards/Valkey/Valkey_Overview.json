@@ -148,7 +148,7 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "min(redis_uptime_in_seconds{node_name=~\"$node_name\"})",
+          "expr": "min(redis_uptime_in_seconds{node_name=~\"$node_name\", service_name=~\"$service_name\"})",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -774,30 +774,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "All",
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "Metrics",
-        "definition": "label_values(redis_up,service_name)",
-        "includeAll": true,
-        "label": "Service Name",
-        "multi": true,
-        "name": "service_name",
-        "options": [],
-        "query": {
-          "qryType": 1,
-          "query": "label_values(redis_up,service_name)",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
-        },
-        "refresh": 2,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
-      },
-      {
         "allValue": ".*",
         "allowCustomValue": false,
         "current": {
@@ -841,6 +817,30 @@
         "query": {
           "qryType": 1,
           "query": "label_values(redis_up{cluster=~\"$cluster\"},node_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(redis_up{node_name=~\"$environment|$node_name\"},service_name)",
+        "includeAll": true,
+        "label": "Service Name",
+        "multi": true,
+        "name": "service_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(redis_up{node_name=~\"$environment|$node_name\"},service_name)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
