@@ -218,7 +218,7 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "redis_instance_info{service_name=~\"$service_name\"} and on(service_name) redis_instance_info{role=\"master\"}",
+          "expr": "redis_instance_info{service_name=~\"$service_name\"} and on(service_name) redis_instance_info{role=\"primary\"}",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -229,14 +229,38 @@
       "title": "Eviction Policy",
       "transformations": [
         {
-          "id": "filterFieldsByName",
+          "id": "organize",
           "options": {
-            "include": {
-              "names": [
-                "service_name",
-                "Value"
-              ],
-              "pattern": "service_name|Value"
+            "excludeByName": {
+              "Time": true,
+              "Value": false,
+              "__name__": true,
+              "agent_id": true,
+              "agent_type": true,
+              "cluster": true,
+              "environment": true,
+              "exported_role": true,
+              "instance": true,
+              "job": true,
+              "master_replid": true,
+              "maxmemory_policy": true,
+              "node_id": true,
+              "node_name": true,
+              "node_type": true,
+              "os": true,
+              "process_id": true,
+              "redis_build_id": true,
+              "redis_version": true,
+              "role": true,
+              "run_id": true,
+              "service_id": true,
+              "service_type": true,
+              "tcp_port": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "service_name": "Service name"
             }
           }
         }
@@ -843,7 +867,7 @@
         "datasource": "Metrics",
         "definition": "label_values(redis_up{node_name=~\"$node_name\"},service_name)",
         "includeAll": true,
-        "label": "Node Name",
+        "label": "Service Name",
         "multi": true,
         "name": "service_name",
         "options": [],

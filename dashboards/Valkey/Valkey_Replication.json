@@ -245,7 +245,15 @@
           },
           "unit": "bytes"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Master"
+            },
+            "properties": []
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -283,7 +291,23 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "redis_master_repl_offset{service_name=~\"$replica_service_name\",role=~\"replica\"} - on(cluster) group_left(servcie_name) redis_master_repl_offset{cluster=~\"$cluster\",role=~\"primary\"}\r\n",
+          "expr": "(redis_slave_repl_offset{service_name=~\"$replica_service_name\"})",
+          "format": "time_series",
+          "fullMetaSearch": false,
+          "hide": true,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "Slave",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        },
+        {
+          "datasource": "Metrics",
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "(redis_master_repl_offset * on(service_name) group_left(service_name) (min by (service_name) ((redis_instance_info{role=~\"primary\"}) * on(master_replid) group_left(master_replid) (redis_instance_info{service_name=~\"$replica_service_name\"})) )) - on(cluster) group_right(service_name) (redis_slave_repl_offset{service_name=~\"$replica_service_name\"})",
           "format": "time_series",
           "fullMetaSearch": false,
           "hide": false,
@@ -291,7 +315,7 @@
           "instant": false,
           "legendFormat": "{{service_name}}",
           "range": true,
-          "refId": "M",
+          "refId": "B",
           "useBackend": false
         }
       ],
@@ -301,18 +325,19 @@
           "disabled": true,
           "id": "calculateField",
           "options": {
+            "alias": "",
             "binary": {
               "left": {
                 "matcher": {
                   "id": "byName",
-                  "options": "$replica_service_name"
+                  "options": "Master"
                 }
               },
               "operator": "-",
               "right": {
                 "matcher": {
                   "id": "byName",
-                  "options": "$master_service_name"
+                  "options": "Slave"
                 }
               }
             },
@@ -322,6 +347,10 @@
             },
             "replaceFields": true
           }
+        },
+        {
+          "id": "organize",
+          "options": {}
         }
       ],
       "type": "timeseries"
