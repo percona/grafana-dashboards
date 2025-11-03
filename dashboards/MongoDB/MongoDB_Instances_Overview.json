@@ -5147,6 +5147,120 @@
         "query": "1s,5s,1m,5m,1h,6h,1d",
         "refresh": 2,
         "type": "interval"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+        "includeAll": true,
+        "label": "Environment",
+        "multi": true,
+        "name": "environment",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+          "refId": "Metrics-environment-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(mongodb_up{environment=~\"$environment\"},cluster)",
+        "includeAll": true,
+        "label": "Cluster",
+        "multi": true,
+        "name": "cluster",
+        "options": [],
+        "query": {
+          "query": "label_values(mongodb_up{environment=~\"$environment\"},cluster)",
+          "refId": "Metrics-cluster-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\"}, node_name)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Node Name",
+        "name": "node_name",
+        "options": [],
+        "query": {
+          "query": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\"}, node_name)",
+          "refId": "Metrics-node_name-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}, service_name)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Service Name",
+        "multi": true,
+        "name": "service_name",
+        "options": [],
+        "query": {
+          "query": "label_values(mongodb_up{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\"}, service_name)",
+          "refId": "Metrics-service_name-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\", cluster=~\"$cluster\"},service_name)",
+        "description": "",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Service Name",
+        "multi": true,
+        "name": "mongos_service_name",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(mongodb_mongos_sharding_shards_total{environment=~\"$environment\", cluster=~\"$cluster\"},service_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
       }
     ]
   },
@@ -5180,6 +5294,6 @@
   },
   "timezone": "browser",
   "title": "MongoDB Instances Overview",
-  "uid": "mongodb-instance-overview",
-  "version": 11
+  "uid": "mongodb-instance-overview2",
+  "version": 12
 }
