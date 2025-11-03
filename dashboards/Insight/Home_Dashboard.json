@@ -696,6 +696,10 @@
           "targetBlank": true,
           "title": "HAProxy Instance Summary $node_name_haproxy",
           "url": "/graph/d/haproxy-instance-summary/haproxy-instance-summary?$__url_time_range&var-node_name=$node_name_haproxy"
+        },
+        {
+          "title": "Valkey Overview - $node_name_valkey",
+          "url": "/graph/d/valkey-overview/valkey-redis-overview?$__url_time_range&var-node_name=$node_name_valkey"
         }
       ],
       "maxDataPoints": 100,
@@ -723,11 +727,13 @@
       "targets": [
         {
           "datasource": "Metrics",
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by () (sum by (node_name)(mysql_global_status_threads_connected{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]),\nsum by (node_name)(mongodb_connections{node_name=~\"$node_name\",state=\"current\",environment=~\"$environment\"}[$interval]),\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval])),\nsum by (node_name) (proxysql_connection_pool_conn_used{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]),\nsum by (node_name) (increase(haproxy_frontend_connections_total{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]))\n)",
+          "expr": "sum by () (sum by (node_name)(mysql_global_status_threads_connected{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]),\nsum by (node_name)(mongodb_connections{node_name=~\"$node_name\",state=\"current\",environment=~\"$environment\"}[$interval]),\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval])),\nsum by (node_name) (proxysql_connection_pool_conn_used{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]),\nsum by (node_name) (increase(haproxy_frontend_connections_total{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]),\nsum by (node_name)(redis_connected_clients{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]))\n)",
           "hide": false,
           "interval": "$interval",
           "legendFormat": "Database connections",
+          "range": true,
           "refId": "C"
         }
       ],
@@ -801,6 +807,10 @@
           "targetBlank": true,
           "title": "HAProxy Instance Summary $node_name_haproxy",
           "url": "/graph/d/haproxy-instance-summary/haproxy-instance-summary?$__url_time_range&var-node_name=$node_name_haproxy"
+        },
+        {
+          "title": "Valkey Command Details - $node_name_valkey",
+          "url": "/graph/d/valkey-command-details/valkey-redis-command-detail?$__url_time_range&var-node_name=$node_name_valkey"
         }
       ],
       "maxDataPoints": 100,
@@ -830,15 +840,17 @@
           "calculatedInterval": "10m",
           "datasource": "Metrics",
           "datasourceErrors": {},
+          "editorMode": "code",
           "errors": {},
           "exemplar": true,
-          "expr": "sum by () (\n(rate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or \nirate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])), \n(rate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m]) or \nirate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m])),\n((rate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])) or\n(irate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]))),\n(rate(proxysql_connection_pool_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or\nirate(proxysql_connection_pool_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])),\n(rate(haproxy_backend_sessions_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or irate(haproxy_backend_sessions_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])))",
+          "expr": "sum by () (\n(rate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or \nirate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])), \n(rate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m]) or \nirate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m])),\n((rate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])) or\n(irate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]))),\n(rate(proxysql_connection_pool_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or\nirate(proxysql_connection_pool_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])),\n(rate(haproxy_backend_sessions_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or irate(haproxy_backend_sessions_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])),\n(rate(redis_commands_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or irate(redis_commands_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": " ",
           "metric": "node_mem",
+          "range": true,
           "refId": "A",
           "step": 300
         }
@@ -4572,8 +4584,8 @@
       },
       {
         "current": {
-          "text": "",
-          "value": ""
+          "text": "pmm-server",
+          "value": "pmm-server"
         },
         "definition": "label_values(pg_up{node_name=~\"$node_name\"}, node_name)",
         "hide": 2,
@@ -4647,10 +4659,27 @@
         "type": "query"
       },
       {
+        "allowCustomValue": false,
         "current": {
-          "text": "",
-          "value": ""
+          "text": "All",
+          "value": "$__all"
         },
+        "definition": "label_values(redis_instance_info{node_name=~\"$node_name\"},node_name)",
+        "hide": 2,
+        "includeAll": false,
+        "name": "node_name_valkey",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(redis_instance_info{node_name=~\"$node_name\"},node_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
         "definition": "label_values(up{node_name=~\"$node_name\"}, node_name)",
         "hide": 2,
         "includeAll": false,

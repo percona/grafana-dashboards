@@ -291,22 +291,6 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "(redis_slave_repl_offset{service_name=~\"$replica_service_name\"})",
-          "format": "time_series",
-          "fullMetaSearch": false,
-          "hide": true,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "Slave",
-          "range": true,
-          "refId": "A",
-          "useBackend": false
-        },
-        {
-          "datasource": "Metrics",
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "exemplar": false,
           "expr": "(redis_master_repl_offset * on(service_name) group_left(service_name) (min by (service_name) ((redis_instance_info{role=~\"primary\"}) * on(master_replid) group_left(master_replid) (redis_instance_info{service_name=~\"$replica_service_name\"})) )) - on(cluster) group_right(service_name) (redis_slave_repl_offset{service_name=~\"$replica_service_name\"})",
           "format": "time_series",
           "fullMetaSearch": false,
@@ -321,37 +305,6 @@
       ],
       "title": "$replica_service_name - Replica vs Master offsets",
       "transformations": [
-        {
-          "disabled": true,
-          "id": "calculateField",
-          "options": {
-            "alias": "",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Master"
-                }
-              },
-              "operator": "-",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Slave"
-                }
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": true
-          }
-        },
-        {
-          "id": "organize",
-          "options": {}
-        }
       ],
       "type": "timeseries"
     },

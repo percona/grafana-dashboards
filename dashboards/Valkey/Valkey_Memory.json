@@ -148,8 +148,9 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "(100 * (redis_memory_used_bytes{service_name=~\"$service_name\"}  / redis_memory_max_bytes{service_name=~\"$service_name\"}))",
+          "expr": "100 * (min by (service_name)(redis_memory_used_bytes{service_name=~\"$service_name\"})) / (min by (service_name)(redis_memory_max_bytes{service_name=~\"$service_name\"}) > 0 OR min by (service_name) (node_memory_MemTotal_bytes + on(node_name) group_left(service_name) redis_instance_info{service_name =~\"$service_name\"}))",
           "format": "time_series",
+          "hide": false,
           "intervalFactor": 2,
           "legendFormat": "{{service_name}}",
           "metric": "",
