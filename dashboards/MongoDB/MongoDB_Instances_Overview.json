@@ -358,7 +358,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "count(mongodb_up{environment=~\"$environment\", cluster=~\"$cluster\", service_name=~\"$service_name\"})",
+          "expr": "count(count by (service_name)(mongodb_up{environment=~\"$environment\", cluster=~\"$cluster\", service_name=~\"$service_name\"}))",
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
@@ -667,8 +667,8 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "time() - max(mongodb_mongod_replset_member_election_date{environment=~\"$environment\", cluster=~\"$cluster\", service_name=~\"$service_name\"})",
-          "interval": "5m",
+          "expr": "time() - max(mongodb_mongod_replset_member_election_date{})",
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "",
           "metric": "",
@@ -5318,9 +5318,7 @@
         "allValue": ".*",
         "allowCustomValue": false,
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -5411,7 +5409,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -5441,5 +5439,5 @@
   "timezone": "browser",
   "title": "MongoDB Instances Overview",
   "uid": "mongodb-instance-overview2",
-  "version": 17
+  "version": 18
 }
