@@ -155,7 +155,7 @@
       "type": "row"
     },
     {
-      "description": "Number of sharded clusters",
+      "description": "Number of Sharded Clusters",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -221,7 +221,7 @@
       "type": "stat"
     },
     {
-      "description": "The number of replica sets that are not part of a sharded cluster",
+      "description": "Number of Replica Sets that are not part of a Sharded Cluster",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -371,7 +371,7 @@
       "type": "stat"
     },
     {
-      "description": "Percent of time each replicaset had a primary",
+      "description": "Percent of time each Cluster/Replica Set had a primary",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -454,6 +454,7 @@
       "type": "stat"
     },
     {
+      "description": "Total number of read/write operations in the selected Cluster/Replica Set",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -529,7 +530,7 @@
       "type": "stat"
     },
     {
-      "description": "Documents inserted, updated, deleted or returned per second.",
+      "description": "Documents inserted, updated, deleted or returned per second in the selected Cluster/Replica Set",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -605,7 +606,7 @@
       "type": "stat"
     },
     {
-      "description": "Time since the most recent election in any replicaset",
+      "description": "Time since the most recent election in the selected Cluster/Replica Set",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -680,7 +681,7 @@
       "type": "stat"
     },
     {
-      "description": "Minimum uptime between all processes (mongod and mongos)",
+      "description": "Minimum uptime between all processes (mongod and mongos) in the selected Cluster/Replica Set",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -776,7 +777,7 @@
       "type": "row"
     },
     {
-      "description": "",
+      "description": "mongod servers registered with PMM server",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -826,8 +827,8 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 6,
+        "w": 6,
         "x": 0,
         "y": 8
       },
@@ -883,7 +884,7 @@
       "type": "piechart"
     },
     {
-      "description": "Click on each replica set to go to the details page",
+      "description": "Click on each Replica Set to go to the details page",
       "fieldConfig": {
         "defaults": {
           "fieldMinMax": false,
@@ -944,12 +945,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
+        "h": 4,
+        "w": 18,
+        "x": 6,
         "y": 8
       },
-      "id": 222,
+      "id": 230,
       "options": {
         "autoSizeColumns": true,
         "autoSizePolygons": true,
@@ -971,7 +972,7 @@
         "globalCompositeValueFontSize": 14,
         "globalDecimals": 2,
         "globalDisplayMode": "all",
-        "globalDisplayTextTriggeredEmpty": "OK",
+        "globalDisplayTextTriggeredEmpty": "None",
         "globalFillColor": "#0a55a1",
         "globalFontSize": 12,
         "globalGradientsEnabled": true,
@@ -1022,29 +1023,172 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max by (rs_nm)(mongodb_members_state{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"} != 7)",
+          "expr": "max by (rs_nm)(mongodb_members_state{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\",cl_role=\"\"} != 7) ",
           "hide": false,
           "instant": true,
           "interval": "",
           "legendFormat": "__auto",
           "range": false,
           "refId": "A"
-        },
-        {
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "max by (rs_nm)(mongodb_members_state{environment=~\"$environment\",cluster=~\"$cluster\",node_name=~\"$node_name\",service_name=~\"$service_name\"} == 0)",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "B"
         }
       ],
       "title": "Replica Set Status",
       "type": "grafana-polystat-panel"
     },
     {
+      "description": "Click on each Custer to go to the details page",
+      "fieldConfig": {
+        "defaults": {
+          "fieldMinMax": false,
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "dark-red",
+                  "index": 0,
+                  "text": "CHECK"
+                },
+                "7": {
+                  "color": "dark-green",
+                  "index": 3,
+                  "text": "OK"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "from": 1,
+                "result": {
+                  "color": "dark-green",
+                  "index": 1,
+                  "text": "OK"
+                },
+                "to": 2
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 3,
+                "result": {
+                  "color": "dark-red",
+                  "index": 2,
+                  "text": "CHECK"
+                },
+                "to": 6
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 8,
+                "result": {
+                  "color": "dark-red",
+                  "index": 4,
+                  "text": "CHECK"
+                },
+                "to": 10
+              },
+              "type": "range"
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 18,
+        "x": 6,
+        "y": 12
+      },
+      "id": 222,
+      "options": {
+        "autoSizeColumns": true,
+        "autoSizePolygons": true,
+        "autoSizeRows": true,
+        "compositeConfig": {
+          "animationSpeed": "2500",
+          "composites": [],
+          "enabled": true
+        },
+        "compositeGlobalAliasingEnabled": false,
+        "ellipseCharacters": 18,
+        "ellipseEnabled": true,
+        "globalAutoScaleFonts": false,
+        "globalClickthrough": "/graph/d/mongodb-cluster-summary/mongodb-sharded-cluster-summary?var-cluster=${__cell_name}",
+        "globalClickthroughCustomTarget": "",
+        "globalClickthroughCustomTargetEnabled": false,
+        "globalClickthroughNewTabEnabled": true,
+        "globalClickthroughSanitizedEnabled": true,
+        "globalCompositeValueFontSize": 14,
+        "globalDecimals": 2,
+        "globalDisplayMode": "all",
+        "globalDisplayTextTriggeredEmpty": "None",
+        "globalFillColor": "#0a55a1",
+        "globalFontSize": 12,
+        "globalGradientsEnabled": true,
+        "globalLabelFontSize": 12,
+        "globalOperator": "last",
+        "globalPolygonBorderColor": "#000000",
+        "globalPolygonBorderSize": 2,
+        "globalPolygonSize": 50,
+        "globalRegexPattern": "",
+        "globalShape": "hexagon_pointed_top",
+        "globalShowTimestampEnabled": false,
+        "globalShowTimestampFontSize": 12,
+        "globalShowTimestampFormat": "YYYY-MM-DD HH:mm:ss",
+        "globalShowTimestampPosition": "below_value",
+        "globalShowTimestampYOffset": 0,
+        "globalShowTooltipColumnHeadersEnabled": true,
+        "globalShowValueEnabled": true,
+        "globalTextFontAutoColor": "#000000",
+        "globalTextFontAutoColorEnabled": false,
+        "globalTextFontColor": "#000000",
+        "globalTextFontFamily": "Inter",
+        "globalThresholdsConfig": [],
+        "globalTooltipsEnabled": true,
+        "globalTooltipsFontFamily": "Inter",
+        "globalTooltipsShowTimestampEnabled": true,
+        "globalTooltipsShowValueEnabled": true,
+        "globalUnitFormat": "short",
+        "globalValueFontSize": 14,
+        "layoutDisplayLimit": 100,
+        "layoutNumColumns": 8,
+        "layoutNumRows": 8,
+        "overrideConfig": {
+          "overrides": []
+        },
+        "panelId": 0,
+        "radius": 100,
+        "sortByDirection": 1,
+        "sortByField": "name",
+        "tooltipDisplayMode": "all",
+        "tooltipDisplayTextTriggeredEmpty": "OK",
+        "tooltipPrimarySortByField": "thresholdLevel",
+        "tooltipPrimarySortDirection": 2,
+        "tooltipSecondarySortByField": "value",
+        "tooltipSecondarySortDirection": 2
+      },
+      "pluginVersion": "2.1.5",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(cluster) (\n  max by (rs_nm, cluster) (\n    mongodb_members_state{environment=~\"$environment\", cluster=~\"$cluster\", node_name=~\"$node_name\", service_name=~\"$service_name\"} != 7\n  )\n)\nand on(cluster)\n  mongodb_mongos_sharding_shards_total{environment=~\"$environment\", cluster=~\"$cluster\"}",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Sharded Cluster Status",
+      "type": "grafana-polystat-panel"
+    },
+    {
+      "description": "Mongos Routers registered with PMM Server",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1058,7 +1202,7 @@
             }
           },
           "mappings": [],
-          "noValue": "No routers detected"
+          "noValue": "None"
         },
         "overrides": [
           {
@@ -1102,10 +1246,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 6,
+        "w": 6,
         "x": 0,
-        "y": 16
+        "y": 14
       },
       "id": 224,
       "options": {
@@ -1148,7 +1292,7 @@
       "type": "piechart"
     },
     {
-      "description": "Click on each router to go to the details page",
+      "description": "Click on each Mongos Router to go to the details page",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -1172,9 +1316,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
+        "h": 4,
+        "w": 18,
+        "x": 6,
         "y": 16
       },
       "id": 225,
@@ -1199,7 +1343,7 @@
         "globalCompositeValueFontSize": 14,
         "globalDecimals": 2,
         "globalDisplayMode": "all",
-        "globalDisplayTextTriggeredEmpty": "No routers detected",
+        "globalDisplayTextTriggeredEmpty": "None",
         "globalFillColor": "#0a55a1",
         "globalFontSize": 12,
         "globalGradientsEnabled": true,
@@ -1267,7 +1411,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 20
       },
       "id": 114,
       "panels": [
@@ -1596,7 +1740,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 21
       },
       "id": 147,
       "panels": [
@@ -3370,7 +3514,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 22
       },
       "id": 132,
       "panels": [
@@ -4498,7 +4642,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 23
       },
       "id": 134,
       "panels": [
@@ -5174,7 +5318,9 @@
         "allValue": ".*",
         "allowCustomValue": false,
         "current": {
-          "text": "All",
+          "text": [
+            "All"
+          ],
           "value": [
             "$__all"
           ]
@@ -5182,7 +5328,7 @@
         "datasource": "Metrics",
         "definition": "label_values(mongodb_up{environment=~\"$environment\"},cluster)",
         "includeAll": true,
-        "label": "Cluster",
+        "label": "Cluster/Replica Set",
         "multi": true,
         "name": "cluster",
         "options": [],
@@ -5295,5 +5441,5 @@
   "timezone": "browser",
   "title": "MongoDB Instances Overview",
   "uid": "mongodb-instance-overview2",
-  "version": 12
+  "version": 17
 }
