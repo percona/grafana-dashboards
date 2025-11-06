@@ -500,7 +500,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "100 * (avg (mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"})) / (max (node_memory_MemTotal_bytes))",
+          "expr": "100 * (avg by (service_name)(mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"})) / on(service_name) min by (service_name) (node_memory_MemTotal_bytes * on(node_name) group_left(service_name) min by (node_name,service_name) (mysql_up{service_name=~\"$service_name\"}))",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
