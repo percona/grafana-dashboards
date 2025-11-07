@@ -2,6 +2,68 @@
 
 ## Entries
 
+## v2.1.15
+
+- New Feature - Templated Polygon Sizing [[#354](https://github.com/grafana/grafana-polystat-panel/issues/354)]
+  - When font autoscaling is disabled these four options become available
+    1. Label Font Size
+    2. Value Font Size
+    3. Timestamp Font Size
+    4. Composite Value Font Size
+- Force uplot dependency to resolve to 1.6.32 (package is not used)
+- Fixes [[#411](https://github.com/grafana/grafana-polystat-panel/issues/411)]
+- Fixes [[#404](https://github.com/grafana/grafana-polystat-panel/issues/404)]
+- Fixes [[#427](https://github.com/grafana/grafana-polystat-panel/issues/427)]
+
+## v2.1.14
+
+- Fix for auto-generation of composites. Depending on the format of metric names some groupings overlapped. This feature now requires an exact match instead of a wildcard.
+- Fixes [#425](https://github.com/grafana/grafana-polystat-panel/issues/425)
+- Fixes [[#426](https://github.com/grafana/grafana-polystat-panel/issues/426)]
+- Minimum version of Grafana is now v9.5 due to API changes
+
+## v2.1.13
+
+- Fix for id conflicts [#413](https://github.com/grafana/grafana-polystat-panel/pull/413)
+- Adds natural sort [#410](https://github.com/grafana/grafana-polystat-panel/pull/410)
+
+## v2.1.12
+
+- Fix for runtime differences causing parsing errors [#387](https://github.com/grafana/grafana-polystat-panel/issues/387) and [#389](https://github.com/grafana/grafana-polystat-panel/issues/389)
+
+## v2.1.11
+
+- Fix for show/hide metric value in composites  [#383](https://github.com/grafana/grafana-polystat-panel/issues/381)
+- Fix for value toggle in tooltips [#381](https://github.com/grafana/grafana-polystat-panel/issues/381)
+- NEW: Tooltips now have a toggle for showing values
+
+## v2.1.10
+
+- Fix for filtering triggered composites in tooltips [#368](https://github.com/grafana/grafana-polystat-panel/issues/368)
+- Remove deprecated ArrayVector usage (G11 compatibility)
+
+## v2.1.9
+
+- NEW: Option to display timestamp of metric inside polygon, available in Global Configuration Section
+  - Show Timestamp Toggle on/off
+  - Preset time formats, and allows entry of arbitrary format
+  - Position of timestamp can be above or below the metric value (default is below)
+  - Y Offset can be specified to fine tune placement of timestamp displayed
+- Fixed alignment bug when name or value is disabled, will now align correctly (and use more space)
+
+## v2.1.8
+
+- Tooltips will now display newest time of data received, and current time if none is supplied
+
+## v2.1.7
+
+- Fix for using ${__composite_name} in clickthrough
+- Update dependencies
+
+## v2.1.6
+
+- Fix for repeat panel usage of template variables not expanding correctly [#331](https://github.com/grafana/grafana-polystat-panel/issues/331)
+
 ## v2.1.5
 
 - Fixes rendering of composites when template variables changes
