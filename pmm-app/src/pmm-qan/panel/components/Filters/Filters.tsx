@@ -113,7 +113,8 @@ export const Filters: FC = () => {
             setFilter('');
           }}
         >
-          <div ref={filtersWrapperRef} className={cx({ [styles.filtersDisabled]: loadingDetails })}>
+          {/* eslint-disable-next-line max-len */}
+          <div key={theme.type} ref={filtersWrapperRef} className={cx({ [styles.filtersDisabled]: loadingDetails })}>
             <FiltersHeader loading={loading} />
             <Overlay isPending={loading}>
               <Scrollbar className={styles.getFiltersWrapper(height)}>

@@ -51,7 +51,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = (
   const listRef = useRef(null);
 
   return itemsList.length ? (
-    <div>
+    <div key={theme.type}>
       <p className={styles.filterHeaderWrapper}>
         <span className={styles.filterHeader} data-testid="checkbox-group-header">
           {name}

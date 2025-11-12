@@ -1,3 +1,4 @@
+// Comments in English only.
 import React, {
   FC, useCallback, useContext, useEffect, useRef, useState,
 } from 'react';
@@ -50,7 +51,8 @@ const QueryAnalyticsPanel: FC = () => {
   }, [querySelected]);
 
   return (
-    <div className="query-analytics-grid" id="antd" ref={queryAnalyticsWrapper}>
+    // Force remount of the whole QAN subtree when theme mode changes.
+    <div key={theme.type} className="query-analytics-grid" id="antd" ref={queryAnalyticsWrapper}>
       <div className="overview-filters">
         <Filters />
       </div>
