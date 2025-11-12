@@ -1,4 +1,3 @@
-// Comments in English only.
 import React, {
   FC, useCallback, useContext, useEffect, useRef, useState,
 } from 'react';
