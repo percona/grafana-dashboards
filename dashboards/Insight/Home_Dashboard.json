@@ -72,6 +72,9 @@
       "type": "row"
     },
     {
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -93,8 +96,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 6,
+        "h": 4,
+        "w": 12,
         "x": 0,
         "y": 1
       },
@@ -122,7 +125,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -161,6 +164,15 @@
           "legendFormat": "ProxySQL",
           "range": true,
           "refId": "D"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "count(min by(instance) (redis_up)) or vector(0)",
+          "hide": false,
+          "legendFormat": "Valkey",
+          "range": true,
+          "refId": "E"
         }
       ],
       "title": "Monitored DB Services",
@@ -207,9 +219,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 6,
-        "x": 6,
+        "h": 4,
+        "w": 12,
+        "x": 12,
         "y": 1
       },
       "id": 376,
@@ -235,45 +247,64 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "count by (service_type) (group by (service_name, service_type) (mysql_global_status_uptime{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}))",
+          "exemplar": false,
+          "expr": "count by (service_type) (group by (service_name, service_type) (mysql_global_status_uptime{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"})) or on() vector(0)",
           "format": "time_series",
           "hide": false,
+          "instant": true,
           "intervalFactor": 1,
           "legendFormat": "MySQL",
-          "range": true,
+          "range": false,
           "refId": "A"
         },
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "count by (service_type) (group by (service_name, service_type) (mongodb_up{region=~\"$region\",node_type=~\"$node_type\",node_name=~\"$node_name\"}))",
+          "exemplar": false,
+          "expr": "count by (service_type) (group by (service_name, service_type) (mongodb_up{region=~\"$region\",node_type=~\"$node_type\",node_name=~\"$node_name\"})) or on() vector(0)",
           "hide": false,
+          "instant": true,
           "legendFormat": "MongoDB",
-          "range": true,
+          "range": false,
           "refId": "B"
         },
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "count by (service_type)  (group by (service_name, service_type) (pg_up{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}))",
+          "exemplar": false,
+          "expr": "count by (service_type)  (group by (service_name, service_type) (pg_up{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"})) or on() vector(0)",
           "hide": false,
+          "instant": true,
           "legendFormat": "PostgreSQL",
-          "range": true,
+          "range": false,
           "refId": "C"
         },
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "count by (service_type)  (group by (service_name, service_type) (proxysql_mysql_status_active_transactions{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}))",
+          "exemplar": false,
+          "expr": "count by (service_type)  (group by (service_name, service_type) (proxysql_mysql_status_active_transactions{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"})) or on() vector(0)",
           "hide": false,
+          "instant": true,
           "legendFormat": "ProxySQL",
-          "range": true,
+          "range": false,
           "refId": "D"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count by (service_type) (group by (service_name, service_type) (redis_up{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"})) or on() vector(0) ",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Valkey",
+          "range": false,
+          "refId": "E"
         }
       ],
       "title": "Monitored DB Instances",
@@ -327,10 +358,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 12,
-        "y": 1
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 5
       },
       "id": 326,
       "links": [
@@ -361,7 +392,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -379,20 +410,14 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Minimal Uptime",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "rgb(31, 120, 193)",
-            "mode": "fixed"
+            "mode": "thresholds"
           },
-          "displayName": "Total Virtual CPUs",
-          "links": [
-            {
-              "targetBlank": true,
-              "title": "Nodes Overview",
-              "url": "/graph/d/node-instance-overview/nodes-overview?$__url_time_range&$__all_variables"
-            }
-          ],
+          "decimals": 1,
+          "displayName": "Min Node Uptime",
           "mappings": [
             {
               "options": {
@@ -408,39 +433,33 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#1F60C4"
+                "color": "#F2495C"
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
-                "value": 1000
+                "value": 3600
               },
               {
-                "color": "#d44a3a"
+                "color": "#299c46",
+                "value": 86400
               }
             ]
           },
-          "unit": "short"
+          "unit": "s"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 15,
-        "y": 1
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 5
       },
-      "id": 306,
-      "links": [
-        {
-          "targetBlank": true,
-          "title": "Nodes Overview",
-          "url": "/graph/d/node-instance-overview/nodes-overview?$__url_time_range&$__all_variables"
-        }
-      ],
+      "id": 375,
       "maxDataPoints": 100,
       "options": {
-        "colorMode": "none",
-        "graphMode": "area",
+        "colorMode": "value",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
         "percentChangeColorMode": "standard",
@@ -453,22 +472,338 @@
         },
         "showPercentChange": false,
         "text": {
-          "valueSize": 25
+          "valueSize": 24
         },
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
-          "expr": "(count(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\",region=~\"$region\",node_type=~\"$node_type\"}) or \n(1-absent(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\",region=~\"$region\",node_type=~\"$node_type\"}))) + \nsum(rdsosmetrics_General_numVCPUs{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} or up * 0)",
+          "editorMode": "code",
+          "expr": "min(node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"})",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "",
+          "range": true,
           "refId": "A"
         }
       ],
-      "title": "Total Virtual CPUs",
+      "title": "Min Node Uptime",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Minimal DB Uptime",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "displayName": "Min DB Uptime",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#F2495C"
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 3600
+              },
+              {
+                "color": "#299c46",
+                "value": 86400
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 5
+      },
+      "id": 377,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 24
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "min by () (mysql_global_status_uptime{node_name=~\"$node_name\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$node_name\"} or \n(time() - pg_postmaster_start_time_seconds{node_name=~\"$node_name\"}))",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Min DB Uptime",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "displayName": "Database Connection",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 5
+      },
+      "id": 1038,
+      "interval": "$interval",
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "MySQL Services Overview $node_name_mysql",
+          "url": "/graph/d/mysql-instance-overview/mysql-instances-overview?$__url_time_range&var-node_name=$node_name_mysql"
+        },
+        {
+          "targetBlank": true,
+          "title": "MongoDB Services Overview $node_name_mongodb",
+          "url": "/graph/d/mongodb-instance-overview/mongodb-instances-overview?$__url_time_range&var-node_name=$node_name_mongodb"
+        },
+        {
+          "targetBlank": true,
+          "title": "PostgreSQL Services Overview $node_name_pg",
+          "url": "/graph/d/postgresql-instance-overview/postgresql-instances-overview?$__url_time_range&var-node_name=$node_name_pg"
+        },
+        {
+          "targetBlank": true,
+          "title": "ProxySQL Instance Summary $node_name_proxysql",
+          "url": "/graph/d/proxysql-instance-summary/proxysql-instance-summary?$__url_time_range&var-node_name=$node_name_proxysql"
+        },
+        {
+          "targetBlank": true,
+          "title": "HAProxy Instance Summary $node_name_haproxy",
+          "url": "/graph/d/haproxy-instance-summary/haproxy-instance-summary?$__url_time_range&var-node_name=$node_name_haproxy"
+        },
+        {
+          "title": "Valkey Overview - $node_name_valkey",
+          "url": "/graph/d/valkey-overview/valkey-redis-overview?$__url_time_range&var-node_name=$node_name_valkey"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 24
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum by () (sum by (node_name)(mysql_global_status_threads_connected{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]),\nsum by (node_name)(mongodb_connections{node_name=~\"$node_name\",state=\"current\",environment=~\"$environment\"}[$interval]),\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval])),\nsum by (node_name) (proxysql_connection_pool_conn_used{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]),\nsum by (node_name) (increase(haproxy_frontend_connections_total{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]),\nsum by (node_name)(redis_connected_clients{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]))\n)",
+          "hide": false,
+          "interval": "$interval",
+          "legendFormat": "Database connections",
+          "range": true,
+          "refId": "C"
+        }
+      ],
+      "title": "Database Connections",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Query per second",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "displayName": "Database Query/s (QPS)",
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 5
+      },
+      "id": 1040,
+      "interval": "$interval",
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "MySQL Services Overview $node_name_mysql",
+          "url": "/graph/d/mysql-instance-overview/mysql-instances-overview?$__url_time_range&var-node_name=$node_name_mysql"
+        },
+        {
+          "targetBlank": true,
+          "title": "MongoDB Services Overview $node_name_mongodb",
+          "url": "/graph/d/mongodb-instance-overview/mongodb-instances-overview?$__url_time_range&var-node_name=$node_name_mongodb"
+        },
+        {
+          "targetBlank": true,
+          "title": "PostgreSQL Services Overview $node_name_pg",
+          "url": "/graph/d/postgresql-instance-overview/postgresql-instances-overview?$__url_time_range&var-node_name=$node_name_pg"
+        },
+        {
+          "targetBlank": true,
+          "title": "ProxySQL Instance Summary $node_name_proxysql",
+          "url": "/graph/d/proxysql-instance-summary/proxysql-instance-summary?$__url_time_range&var-node_name=$node_name_proxysql"
+        },
+        {
+          "targetBlank": true,
+          "title": "HAProxy Instance Summary $node_name_haproxy",
+          "url": "/graph/d/haproxy-instance-summary/haproxy-instance-summary?$__url_time_range&var-node_name=$node_name_haproxy"
+        },
+        {
+          "title": "Valkey Command Details - $node_name_valkey",
+          "url": "/graph/d/valkey-command-details/valkey-redis-command-detail?$__url_time_range&var-node_name=$node_name_valkey"
+        }
+      ],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 24
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "calculatedInterval": "10m",
+          "datasource": "Metrics",
+          "datasourceErrors": {},
+          "editorMode": "code",
+          "errors": {},
+          "exemplar": true,
+          "expr": "sum by () (\n(rate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or \nirate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])), \n(rate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m]) or \nirate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m])),\n((rate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])) or\n(irate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]))),\n(rate(proxysql_connection_pool_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or\nirate(proxysql_connection_pool_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])),\n(rate(haproxy_backend_sessions_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or irate(haproxy_backend_sessions_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])),\n(rate(redis_commands_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or irate(redis_commands_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": " ",
+          "metric": "node_mem",
+          "range": true,
+          "refId": "A",
+          "step": 300
+        }
+      ],
+      "title": "Database Queries/s (QPS)",
       "type": "stat"
     },
     {
@@ -520,10 +855,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 18,
-        "y": 1
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 9
       },
       "id": 309,
       "links": [
@@ -554,7 +889,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -617,10 +952,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 21,
-        "y": 1
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 9
       },
       "id": 310,
       "links": [
@@ -651,7 +986,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -663,177 +998,6 @@
         }
       ],
       "title": "Virtual Memory Total",
-      "type": "stat"
-    },
-    {
-      "datasource": "Metrics",
-      "description": "Minimal Uptime",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 1,
-          "displayName": "Min Node Uptime",
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#F2495C"
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "value": 3600
-              },
-              {
-                "color": "#299c46",
-                "value": 86400
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 0,
-        "y": 6
-      },
-      "id": 375,
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "valueSize": 24
-        },
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.6.1",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "editorMode": "code",
-          "expr": "min(node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"})",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Min Node Uptime",
-      "type": "stat"
-    },
-    {
-      "datasource": "Metrics",
-      "description": "Minimal DB Uptime",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 1,
-          "displayName": "Min DB Uptime",
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#F2495C"
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "value": 3600
-              },
-              {
-                "color": "#299c46",
-                "value": 86400
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 3,
-        "y": 6
-      },
-      "id": 377,
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "valueSize": 24
-        },
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.6.1",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "editorMode": "code",
-          "expr": "min by () (mysql_global_status_uptime{node_name=~\"$node_name\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$node_name\"} or \n(time() - pg_postmaster_start_time_seconds{node_name=~\"$node_name\"}))",
-          "format": "time_series",
-          "hide": false,
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Min DB Uptime",
       "type": "stat"
     },
     {
@@ -885,10 +1049,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 6,
-        "x": 6,
-        "y": 6
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 9
       },
       "id": 311,
       "links": [
@@ -919,7 +1083,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -980,10 +1144,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 6,
         "x": 12,
-        "y": 6
+        "y": 9
       },
       "id": 1036,
       "interval": "$interval",
@@ -1015,7 +1179,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -1076,10 +1240,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 6,
         "x": 18,
-        "y": 6
+        "y": 9
       },
       "id": 1034,
       "interval": "$interval",
@@ -1111,7 +1275,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -1133,7 +1297,14 @@
             "fixedColor": "rgb(31, 120, 193)",
             "mode": "fixed"
           },
-          "displayName": "Database Connection",
+          "displayName": "Total Virtual CPUs",
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Nodes Overview",
+              "url": "/graph/d/node-instance-overview/nodes-overview?$__url_time_range&$__all_variables"
+            }
+          ],
           "mappings": [
             {
               "options": {
@@ -1149,7 +1320,14 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "#1F60C4"
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 1000
+              },
+              {
+                "color": "#d44a3a"
               }
             ]
           },
@@ -1161,140 +1339,14 @@
         "h": 5,
         "w": 6,
         "x": 0,
-        "y": 11
+        "y": 13
       },
-      "id": 1038,
-      "interval": "$interval",
+      "id": 306,
       "links": [
         {
           "targetBlank": true,
-          "title": "MySQL Services Overview $node_name_mysql",
-          "url": "/graph/d/mysql-instance-overview/mysql-instances-overview?$__url_time_range&var-node_name=$node_name_mysql"
-        },
-        {
-          "targetBlank": true,
-          "title": "MongoDB Services Overview $node_name_mongodb",
-          "url": "/graph/d/mongodb-instance-overview/mongodb-instances-overview?$__url_time_range&var-node_name=$node_name_mongodb"
-        },
-        {
-          "targetBlank": true,
-          "title": "PostgreSQL Services Overview $node_name_pg",
-          "url": "/graph/d/postgresql-instance-overview/postgresql-instances-overview?$__url_time_range&var-node_name=$node_name_pg"
-        },
-        {
-          "targetBlank": true,
-          "title": "ProxySQL Instance Summary $node_name_proxysql",
-          "url": "/graph/d/proxysql-instance-summary/proxysql-instance-summary?$__url_time_range&var-node_name=$node_name_proxysql"
-        },
-        {
-          "targetBlank": true,
-          "title": "HAProxy Instance Summary $node_name_haproxy",
-          "url": "/graph/d/haproxy-instance-summary/haproxy-instance-summary?$__url_time_range&var-node_name=$node_name_haproxy"
-        }
-      ],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "valueSize": 24
-        },
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.6.1",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "exemplar": true,
-          "expr": "sum by () (sum by (node_name)(mysql_global_status_threads_connected{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]),\nsum by (node_name)(mongodb_connections{node_name=~\"$node_name\",state=\"current\",environment=~\"$environment\"}[$interval]),\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval])),\nsum by (node_name) (proxysql_connection_pool_conn_used{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]),\nsum by (node_name) (increase(haproxy_frontend_connections_total{node_name=~\"$node_name\",environment=~\"$environment\"}[$interval]))\n)",
-          "hide": false,
-          "interval": "$interval",
-          "legendFormat": "Database connections",
-          "refId": "C"
-        }
-      ],
-      "title": "Database Connections",
-      "type": "stat"
-    },
-    {
-      "datasource": "Metrics",
-      "description": "Query per second",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "rgb(31, 120, 193)",
-            "mode": "fixed"
-          },
-          "decimals": 1,
-          "displayName": "Database Query/s (QPS)",
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 6,
-        "x": 6,
-        "y": 11
-      },
-      "id": 1040,
-      "interval": "$interval",
-      "links": [
-        {
-          "targetBlank": true,
-          "title": "MySQL Services Overview $node_name_mysql",
-          "url": "/graph/d/mysql-instance-overview/mysql-instances-overview?$__url_time_range&var-node_name=$node_name_mysql"
-        },
-        {
-          "targetBlank": true,
-          "title": "MongoDB Services Overview $node_name_mongodb",
-          "url": "/graph/d/mongodb-instance-overview/mongodb-instances-overview?$__url_time_range&var-node_name=$node_name_mongodb"
-        },
-        {
-          "targetBlank": true,
-          "title": "PostgreSQL Services Overview $node_name_pg",
-          "url": "/graph/d/postgresql-instance-overview/postgresql-instances-overview?$__url_time_range&var-node_name=$node_name_pg"
-        },
-        {
-          "targetBlank": true,
-          "title": "ProxySQL Instance Summary $node_name_proxysql",
-          "url": "/graph/d/proxysql-instance-summary/proxysql-instance-summary?$__url_time_range&var-node_name=$node_name_proxysql"
-        },
-        {
-          "targetBlank": true,
-          "title": "HAProxy Instance Summary $node_name_haproxy",
-          "url": "/graph/d/haproxy-instance-summary/haproxy-instance-summary?$__url_time_range&var-node_name=$node_name_haproxy"
+          "title": "Nodes Overview",
+          "url": "/graph/d/node-instance-overview/nodes-overview?$__url_time_range&$__all_variables"
         }
       ],
       "maxDataPoints": 100,
@@ -1302,7 +1354,7 @@
         "colorMode": "none",
         "graphMode": "area",
         "justifyMode": "auto",
-        "orientation": "auto",
+        "orientation": "horizontal",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
@@ -1313,31 +1365,22 @@
         },
         "showPercentChange": false,
         "text": {
-          "valueSize": 24
+          "valueSize": 25
         },
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
-          "calculatedInterval": "10m",
           "datasource": "Metrics",
-          "datasourceErrors": {},
-          "errors": {},
-          "exemplar": true,
-          "expr": "sum by () (\n(rate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or \nirate(mysql_global_status_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])), \n(rate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m]) or \nirate(mongodb_op_counters_total{node_name=~\"$node_name\",type!=\"command\",environment=~\"$environment\"}[5m])),\n((rate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])) or\n(irate(pg_stat_database_xact_commit{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]))),\n(rate(proxysql_connection_pool_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or\nirate(proxysql_connection_pool_queries{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])),\n(rate(haproxy_backend_sessions_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m]) or irate(haproxy_backend_sessions_total{node_name=~\"$node_name\",environment=~\"$environment\"}[5m])))",
+          "expr": "(count(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\",region=~\"$region\",node_type=~\"$node_type\"}) or \n(1-absent(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\",region=~\"$region\",node_type=~\"$node_type\"}))) + \nsum(rdsosmetrics_General_numVCPUs{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} or up * 0)",
           "format": "time_series",
-          "hide": false,
-          "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": " ",
-          "metric": "node_mem",
-          "refId": "A",
-          "step": 300
+          "refId": "A"
         }
       ],
-      "title": "Database Queries/s (QPS)",
+      "title": "Total Virtual CPUs",
       "type": "stat"
     },
     {
@@ -1349,14 +1392,14 @@
       "gridPos": {
         "h": 5,
         "w": 6,
-        "x": 12,
-        "y": 11
+        "x": 6,
+        "y": 13
       },
       "id": 1042,
       "options": {
         "title": "Failed Checks"
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "title": "Failed advisors",
       "type": "pmm-check-panel"
     },
@@ -1368,13 +1411,13 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 6,
-        "x": 18,
-        "y": 11
+        "w": 12,
+        "x": 12,
+        "y": 13
       },
       "id": 1048,
       "options": {},
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -1393,7 +1436,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 18
       },
       "id": 1044,
       "panels": [],
@@ -1440,7 +1483,7 @@
         "h": 8,
         "w": 9,
         "x": 0,
-        "y": 17
+        "y": 19
       },
       "id": 1028,
       "maxDataPoints": 100,
@@ -1464,7 +1507,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -1522,7 +1565,7 @@
         "h": 8,
         "w": 15,
         "x": 9,
-        "y": 17
+        "y": 19
       },
       "id": 1026,
       "maxDataPoints": 100,
@@ -1547,7 +1590,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -1604,7 +1647,7 @@
         "h": 8,
         "w": 9,
         "x": 0,
-        "y": 25
+        "y": 27
       },
       "id": 1032,
       "maxDataPoints": 100,
@@ -1628,7 +1671,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -1684,7 +1727,7 @@
         "h": 8,
         "w": 15,
         "x": 9,
-        "y": 25
+        "y": 27
       },
       "id": 1030,
       "maxDataPoints": 100,
@@ -1709,7 +1752,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -1767,7 +1810,7 @@
         "h": 8,
         "w": 9,
         "x": 0,
-        "y": 33
+        "y": 35
       },
       "id": 1056,
       "maxDataPoints": 100,
@@ -1791,7 +1834,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -1849,7 +1892,7 @@
         "h": 8,
         "w": 15,
         "x": 9,
-        "y": 33
+        "y": 35
       },
       "id": 1055,
       "maxDataPoints": 100,
@@ -1874,7 +1917,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -1932,7 +1975,7 @@
         "h": 8,
         "w": 9,
         "x": 0,
-        "y": 41
+        "y": 43
       },
       "id": 1058,
       "maxDataPoints": 100,
@@ -1956,7 +1999,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -2014,7 +2057,7 @@
         "h": 8,
         "w": 15,
         "x": 9,
-        "y": 41
+        "y": 43
       },
       "id": 1057,
       "maxDataPoints": 100,
@@ -2039,7 +2082,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": "Metrics",
@@ -2063,7 +2106,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 49
+        "y": 51
       },
       "id": 49,
       "panels": [
@@ -3798,7 +3841,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 50
+        "y": 52
       },
       "id": 1054,
       "panels": [
@@ -4302,9 +4345,7 @@
   "preload": false,
   "refresh": "1m",
   "schemaVersion": 41,
-  "tags": [
-    "Percona"
-  ],
+  "tags": [],
   "templating": {
     "list": [
       {
@@ -4312,17 +4353,12 @@
         "auto_count": 200,
         "auto_min": "1s",
         "current": {
-          "text": "auto",
-          "value": "$__auto_interval_interval"
+          "text": "$__auto",
+          "value": "$__auto"
         },
         "label": "Interval",
         "name": "interval",
         "options": [
-          {
-            "selected": true,
-            "text": "auto",
-            "value": "$__auto_interval_interval"
-          },
           {
             "selected": false,
             "text": "1s",
@@ -4366,22 +4402,21 @@
       {
         "allValue": ".*",
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
         },
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions|redis_up\"},environment)",
         "includeAll": true,
         "label": "Environment",
         "multi": true,
         "name": "environment",
         "options": [],
         "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
-          "refId": "Metrics-environment-Variable-Query"
+          "qryType": 1,
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions|redis_up\"},environment)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
         "regex": "",
@@ -4389,9 +4424,7 @@
       },
       {
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -4414,12 +4447,8 @@
       {
         "allValue": ".*",
         "current": {
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "text": "All",
+          "value": "$__all"
         },
         "definition": "label_values(node_load1{node_type=~\"generic|remote_rds|container|remote\"}, region)",
         "hide": 2,
@@ -4438,9 +4467,7 @@
       },
       {
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -4462,14 +4489,12 @@
       },
       {
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
         },
-        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|up\",node_name=~\"$node_name\"}, service_name)",
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|up|redis_up\", node_name=~\"$node_name\"},service_name)",
         "hide": 2,
         "includeAll": true,
         "label": "Service Name",
@@ -4477,8 +4502,9 @@
         "name": "service_name",
         "options": [],
         "query": {
-          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|up\",node_name=~\"$node_name\"}, service_name)",
-          "refId": "StandardVariableQuery"
+          "qryType": 1,
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|up|redis_up\", node_name=~\"$node_name\"},service_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
         "regex": "",
@@ -4506,8 +4532,8 @@
       },
       {
         "current": {
-          "text": "",
-          "value": ""
+          "text": "pmm-server",
+          "value": "pmm-server"
         },
         "definition": "label_values(pg_up{node_name=~\"$node_name\"}, node_name)",
         "hide": 2,
@@ -4525,8 +4551,7 @@
       },
       {
         "current": {
-          "isNone": true,
-          "text": "None",
+          "text": "",
           "value": ""
         },
         "definition": "label_values(mongodb_up{node_name=~\"$node_name\"}, node_name)",
@@ -4564,8 +4589,7 @@
       },
       {
         "current": {
-          "isNone": true,
-          "text": "None",
+          "text": "",
           "value": ""
         },
         "definition": "label_values(haproxy_process_start_time_seconds{node_name=~\"$node_name\"}, node_name)",
@@ -4583,10 +4607,27 @@
         "type": "query"
       },
       {
+        "allowCustomValue": false,
         "current": {
-          "text": "",
-          "value": ""
+          "text": "All",
+          "value": "$__all"
         },
+        "definition": "label_values(redis_instance_info{node_name=~\"$node_name\"},node_name)",
+        "hide": 2,
+        "includeAll": false,
+        "name": "node_name_valkey",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(redis_instance_info{node_name=~\"$node_name\"},node_name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
         "definition": "label_values(up{node_name=~\"$node_name\"}, node_name)",
         "hide": 2,
         "includeAll": false,
