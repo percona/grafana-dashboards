@@ -68,9 +68,7 @@ const QueryAnalyticsPanel: FC<QueryAnalyticsPanelProps> = ({ grafanaTheme }) => 
   }, [querySelected]);
 
   return (
-    // Force remount of the whole QAN subtree when theme mode changes.
     <div
-      key={grafanaTheme.type}
       className="query-analytics-grid"
       id="antd"
       ref={queryAnalyticsWrapper}
