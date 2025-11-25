@@ -101,15 +101,10 @@ export const antdLightTheme: ThemeConfig = {
 
 /**
  * Returns the appropriate AntD theme based on Grafana theme.
- * Defaults to light theme if Grafana theme is not initialized or missing type property.
  *
- * @param grafanaTheme - The current Grafana theme (may be undefined during initialization)
+ * @param grafanaTheme - The current Grafana theme
  * @returns AntD theme configuration for dark or light mode
  */
-export const getAntdTheme = (grafanaTheme: GrafanaTheme | undefined): ThemeConfig => {
-  if (!grafanaTheme?.type) {
-    return antdLightTheme;
-  }
-
+export const getAntdTheme = (grafanaTheme: GrafanaTheme): ThemeConfig => {
   return grafanaTheme.type === 'dark' ? antdDarkTheme : antdLightTheme;
 };
