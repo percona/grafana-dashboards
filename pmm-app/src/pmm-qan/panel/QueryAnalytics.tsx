@@ -68,7 +68,11 @@ const QueryAnalyticsPanel: FC<QueryAnalyticsPanelProps> = ({ grafanaTheme }) => 
   }, [querySelected]);
 
   return (
+    // Force remount when theme changes to ensure Ant Design components (Table, Select, Checkbox)
+    // pick up the new theme from ConfigProvider. Without this, components render with wrong colors
+    // until page refresh (e.g., dark mode Table in light theme).
     <div
+      key={grafanaTheme.type}
       className="query-analytics-grid"
       id="antd"
       ref={queryAnalyticsWrapper}
