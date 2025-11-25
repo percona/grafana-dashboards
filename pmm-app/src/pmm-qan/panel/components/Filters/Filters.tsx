@@ -114,7 +114,6 @@ export const Filters: FC = () => {
           }}
         >
           <div
-            key={theme.type}
             ref={filtersWrapperRef}
             className={cx({ [styles.filtersDisabled]: loadingDetails })}
           >

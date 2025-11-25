@@ -69,10 +69,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       margin-top: 3px !important;
       margin-bottom: 12px !important;
       height: 1px !important;
-      background-color: #3d3d3d !important;
+      background-color: ${theme.colors.border2} !important;
     `,
     showModeSwitcher: css`
-      color: rgb(50, 179, 227) !important;
+      color: ${theme.colors.linkExternal} !important;
     `,
   };
 });
