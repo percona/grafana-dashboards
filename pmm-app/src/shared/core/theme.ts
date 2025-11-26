@@ -105,6 +105,6 @@ export const antdLightTheme: ThemeConfig = {
  * @param grafanaTheme - The current Grafana theme
  * @returns AntD theme configuration for dark or light mode
  */
-export const getAntdTheme = (grafanaTheme: GrafanaTheme): ThemeConfig => {
-  return grafanaTheme.type === 'dark' ? antdDarkTheme : antdLightTheme;
-};
+export const getAntdTheme = (grafanaTheme: GrafanaTheme): ThemeConfig => (
+  grafanaTheme.type === 'dark' ? antdDarkTheme : antdLightTheme
+);
