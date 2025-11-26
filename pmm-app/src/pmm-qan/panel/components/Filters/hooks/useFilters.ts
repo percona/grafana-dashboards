@@ -6,12 +6,13 @@ import {
   COMMENT_NAME_LENGTH,
   HIDDEN_FILTER_LABELS,
 } from '../Filters.constants';
+import { Filters, FilterGroup } from '../Filters.types';
 
-export const useFilters = (): [any, boolean, any, boolean] => {
-  const [filters, setFilters] = useState({});
+export const useFilters = (): [Filters, boolean, FilterGroup[], boolean] => {
+  const [filters, setFilters] = useState<Filters>({});
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [filtersGroups, setFiltersGroups] = useState(FILTERS_GROUPS);
+  const [filtersGroups, setFiltersGroups] = useState<FilterGroup[]>(FILTERS_GROUPS);
 
   const {
     panelState: {

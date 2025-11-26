@@ -6,8 +6,6 @@ import { getPmmTheme } from 'shared/components/helpers/getPmmTheme';
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const parameters = getPmmTheme(theme);
 
-  const selectedRowColor = theme.isLight ? 'deepskyblue' : '#234682';
-
   return {
     tableWrap: (size) => css`
       display: block;
@@ -33,7 +31,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
 
         .selected-overview-row {
           .td {
-            background-color: ${selectedRowColor};
+            background-color: ${parameters.table.selectedRowColor};
           }
         }
         .tr {
@@ -126,7 +124,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     sortBy: css`
       display: flex;
       flex-direction: column;
-      padding: 10px;
 
       .sort-by:before,
       .sort-by:after {
@@ -148,11 +145,11 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         margin-top: 1px;
       }
       .sort-by.asc:after {
-        border-top-color: deepskyblue;
+        border-top-color: ${parameters.table.sortIconColor};
       }
 
       .sort-by.desc:before {
-        border-bottom-color: deepskyblue;
+        border-bottom-color: ${parameters.table.sortIconColor};
       }
     `,
     headerRow: css`
