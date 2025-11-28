@@ -11,8 +11,7 @@ The ClickHouse data source plugin allows you to query and visualize ClickHouse d
 Users on Grafana `v9.x` and higher of Grafana can use `v4`.
 Users on Grafana `v8.x` are encouraged to continue using `v2.2.0` of the plugin.
 
-
-\* *As of 2.0 this plugin will only support ad hoc filters when using ClickHouse 22.7+*
+\* _As of 2.0 this plugin will only support ad hoc filters when using ClickHouse 22.7+_
 
 ## Installation
 
@@ -30,6 +29,7 @@ For example, statements like `ALTER TABLE system.users DELETE WHERE name='sadUse
 and `DROP TABLE sadTable;` would be executed.
 
 To configure a readonly user, follow these steps:
+
 1. Create a `readonly` user profile following the [Creating Users and Roles in ClickHouse](https://clickhouse.com/docs/en/operations/access-rights) guide.
 2. Ensure the `readonly` user has enough permission to modify the `max_execution_time` setting required by the underlying [clickhouse-go client](https://github.com/ClickHouse/clickhouse-go/).
 3. If you're using a public Clickhouse instance, it's not recommended to set `readonly=2` in the `readonly` profile. Instead, leave `readonly=1` and set the constraint type of `max_execution_time` to [changeable_in_readonly](https://clickhouse.com/docs/en/operations/settings/constraints-on-settings) to allow modification of this setting.
@@ -126,11 +126,13 @@ interprets timestamp rows without explicit time zone as UTC. Any column except
 
 To create multi-line time series, the query must return at least 3 fields in
 the following order:
-- field 1:  `datetime` field with an alias of `time`
-- field 2:  value to group by
+
+- field 1: `datetime` field with an alias of `time`
+- field 2: value to group by
 - field 3+: the metric values
 
 For example:
+
 ```sql
 SELECT log_time AS time, machine_group, avg(disk_free) AS avg_disk_free
 FROM mgbench.logs1
@@ -144,9 +146,10 @@ Table visualizations will always be available for any valid ClickHouse query.
 
 ### Visualizing logs with the Logs Panel
 
-To use the Logs panel your query must return a timestamp and string values. To default to the logs visualization in Explore mode, set the timestamp alias to *log_time*.
+To use the Logs panel your query must return a timestamp and string values. To default to the logs visualization in Explore mode, set the timestamp alias to _log_time_.
 
 For example:
+
 ```sql
 SELECT log_time AS log_time, machine_group, toString(avg(disk_free)) AS avg_disk_free
 FROM logs1
@@ -186,29 +189,29 @@ ORDER BY startTime ASC
 To simplify syntax and to allow for dynamic parts, like date range filters, the query can contain macros.
 
 Here is an example of a query with a macro that will use Grafana's time filter:
+
 ```sql
 SELECT date_time, data_stuff
 FROM test_data
 WHERE $__timeFilter(date_time)
 ```
 
-| Macro                                        | Description                                                                                                                                                                         | Output example                                                                                        |
-|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| *$__dateFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the date range of the panel                                                                    | `date >= toDate('2022-10-21') AND date <= toDate('2022-10-23')`                                       |
-| *$__timeFilter(columnName)*                  | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in seconds                                                         | `time >= toDateTime(1415792726) AND time <= toDateTime(1447328726)`                                   |
-| *$__timeFilter_ms(columnName)*               | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in milliseconds                                                    | `time >= fromUnixTimestamp64Milli(1415792726123) AND time <= fromUnixTimestamp64Milli(1447328726456)` |
-| *$__dateTimeFilter(dateColumn, timeColumn)*  | Shorthand that combines $__dateFilter() AND $__timeFilter() using separate Date and DateTime columns.                                                                               | `$__dateFilter(dateColumn) AND $__timeFilter(timeColumn)`                                             |
-| *$__fromTime*                                | Replaced by the starting time of the range of the panel casted to `DateTime`                                                                                                        | `toDateTime(1415792726)`                                                                              |
-| *$__toTime*                                  | Replaced by the ending time of the range of the panel casted to `DateTime`                                                                                                          | `toDateTime(1447328726)`                                                                              |
-| *$__fromTime_ms*                             | Replaced by the starting time of the range of the panel casted to `DateTime64(3)`                                                                                                   | `fromUnixTimestamp64Milli(1415792726123)`                                                             |
-| *$__toTime_ms*                               | Replaced by the ending time of the range of the panel casted to `DateTime64(3)`                                                                                                     | `fromUnixTimestamp64Milli(1447328726456)`                                                             |
-| *$__interval_s*                              | Replaced by the interval in seconds                                                                                                                                                 | `20`                                                                                                  |
-| *$__timeInterval(columnName)*                | Replaced by a function calculating the interval based on window size in seconds, useful when grouping                                                                               | `toStartOfInterval(toDateTime(column), INTERVAL 20 second)`                                           |
-| *$__timeInterval_ms(columnName)*             | Replaced by a function calculating the interval based on window size in milliseconds, useful when grouping                                                                          | `toStartOfInterval(toDateTime64(column, 3), INTERVAL 20 millisecond)`                                 |
-| *$__conditionalAll(condition, $templateVar)* | Replaced by the first parameter when the template variable in the second parameter does not select every value. Replaced by the 1=1 when the template variable selects every value. | `condition` or `1=1`                                                                                  |
+| Macro                                          | Description                                                                                                                                                                         | Output example                                                                                        |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| _$\_\_dateFilter(columnName)_                  | Replaced by a conditional that filters the data (using the provided column) based on the date range of the panel                                                                    | `date >= toDate('2022-10-21') AND date <= toDate('2022-10-23')`                                       |
+| _$\_\_timeFilter(columnName)_                  | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in seconds                                                         | `time >= toDateTime(1415792726) AND time <= toDateTime(1447328726)`                                   |
+| _$\_\_timeFilter_ms(columnName)_               | Replaced by a conditional that filters the data (using the provided column) based on the time range of the panel in milliseconds                                                    | `time >= fromUnixTimestamp64Milli(1415792726123) AND time <= fromUnixTimestamp64Milli(1447328726456)` |
+| _$\_\_dateTimeFilter(dateColumn, timeColumn)_  | Shorthand that combines $**dateFilter() AND $**timeFilter() using separate Date and DateTime columns.                                                                               | `$__dateFilter(dateColumn) AND $__timeFilter(timeColumn)`                                             |
+| _$\_\_fromTime_                                | Replaced by the starting time of the range of the panel casted to `DateTime`                                                                                                        | `toDateTime(1415792726)`                                                                              |
+| _$\_\_toTime_                                  | Replaced by the ending time of the range of the panel casted to `DateTime`                                                                                                          | `toDateTime(1447328726)`                                                                              |
+| _$\_\_fromTime_ms_                             | Replaced by the starting time of the range of the panel casted to `DateTime64(3)`                                                                                                   | `fromUnixTimestamp64Milli(1415792726123)`                                                             |
+| _$\_\_toTime_ms_                               | Replaced by the ending time of the range of the panel casted to `DateTime64(3)`                                                                                                     | `fromUnixTimestamp64Milli(1447328726456)`                                                             |
+| _$\_\_interval_s_                              | Replaced by the interval in seconds                                                                                                                                                 | `20`                                                                                                  |
+| _$\_\_timeInterval(columnName)_                | Replaced by a function calculating the interval based on window size in seconds, useful when grouping                                                                               | `toStartOfInterval(toDateTime(column), INTERVAL 20 second)`                                           |
+| _$\_\_timeInterval_ms(columnName)_             | Replaced by a function calculating the interval based on window size in milliseconds, useful when grouping                                                                          | `toStartOfInterval(toDateTime64(column, 3), INTERVAL 20 millisecond)`                                 |
+| _$\_\_conditionalAll(condition, $templateVar)_ | Replaced by the first parameter when the template variable in the second parameter does not select every value. Replaced by the 1=1 when the template variable selects every value. | `condition` or `1=1`                                                                                  |
 
 The plugin also supports notation using braces {}. Use this notation when queries are needed inside parameters.
-
 
 ### Templates and variables
 
@@ -244,7 +247,7 @@ Ad hoc filters allow you to add key/value filters that are automatically added
 to all metric queries that use the specified data source, without being
 explicitly used in queries.
 
-By default, Ad Hoc filters will be populated with all Tables and Columns.  If
+By default, Ad Hoc filters will be populated with all Tables and Columns. If
 you have a default database defined in the Datasource settings, all Tables from
 that database will be used to populate the filters. As this could be
 slow/expensive, you can introduce a second variable to allow limiting the
@@ -267,7 +270,7 @@ names are filtered for in the dashboard.
 
 ## Learn more
 
-* Add [Annotations](https://grafana.com/docs/grafana/latest/dashboards/annotations/).
-* Configure and use [Templates and variables](https://grafana.com/docs/grafana/latest/variables/).
-* Add [Transformations](https://grafana.com/docs/grafana/latest/panels/transformations/).
-* Set up alerting; refer to [Alerts overview](https://grafana.com/docs/grafana/latest/alerting/).
+- Add [Annotations](https://grafana.com/docs/grafana/latest/dashboards/annotations/).
+- Configure and use [Templates and variables](https://grafana.com/docs/grafana/latest/variables/).
+- Add [Transformations](https://grafana.com/docs/grafana/latest/panels/transformations/).
+- Set up alerting; refer to [Alerts overview](https://grafana.com/docs/grafana/latest/alerting/).

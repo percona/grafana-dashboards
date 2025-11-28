@@ -457,7 +457,7 @@
           },
           "pluginVersion": "4.4.0",
           "queryType": "timeseries",
-          "rawSql": "SELECT period_start, service_name, avg(m_query_time_sum/m_query_time_cnt) \"Execution_time\"\nFROM pmm.\"metrics\" WHERE   ( period_start  >= $__fromTime AND period_start <= $__toTime ) and service_type like '%$service_type%' AND (service_name IN ($service_name)) GROUP BY period_start, service_name ORDER BY period_start ASC ",
+          "rawSql": "SELECT period_start, service_name, avgIf(m_query_time_sum/m_query_time_cnt, m_query_time_cnt > 0) \"Execution_time\"\nFROM pmm.\"metrics\" WHERE   ( period_start  >= $__fromTime AND period_start <= $__toTime ) and service_type like '%$service_type%' AND (service_name IN ($service_name)) GROUP BY period_start, service_name ORDER BY period_start ASC ",
           "refId": "B"
         }
       ],
@@ -850,7 +850,7 @@
           },
           "pluginVersion": "4.4.0",
           "queryType": "table",
-          "rawSql": "SELECT $__timeInterval(period_start) as time, \r\nservice_name \"Service\", username, fingerprint \"Query\", avg(m_query_time_sum/m_query_time_cnt) \"Execution_time\" FROM pmm.\"metrics\" WHERE ( period_start  >= $__fromTime AND period_start <= $__toTime ) AND ( service_type LIKE '%$service_type%' ) AND (service_name IN ($service_name)) GROUP BY service_name, username, fingerprint , m_query_time_sum, time ORDER BY time DESC LIMIT 10000",
+          "rawSql": "SELECT $__timeInterval(period_start) as time, \r\nservice_name \"Service\", username, fingerprint \"Query\", avgIf(m_query_time_sum/m_query_time_cnt, m_query_time_cnt > 0) \"Execution_time\" FROM pmm.\"metrics\" WHERE ( period_start  >= $__fromTime AND period_start <= $__toTime ) AND ( service_type LIKE '%$service_type%' ) AND (service_name IN ($service_name)) GROUP BY service_name, username, fingerprint , m_query_time_sum, time ORDER BY time DESC LIMIT 10000",
           "refId": "A"
         }
       ],
@@ -994,13 +994,13 @@
           "type": "grafana-clickhouse-datasource",
           "uid": "PDEE91DDB90597936"
         },
-        "definition": "SELECT count(*)\n   FROM pmm.metrics\n   WHERE service_type = '${service_type}'\n     AND ( period_start  >= $__fromTime AND period_start <= $__toTime )\n    AND m_query_time_sum/m_query_time_cnt > ${qthres}",
+        "definition": "SELECT count(*)\n   FROM pmm.metrics\n   WHERE service_type = '${service_type}'\n     AND ( period_start  >= $__fromTime AND period_start <= $__toTime )\n    AND m_query_time_cnt > 0 AND m_query_time_sum/m_query_time_cnt > ${qthres}",
         "hide": 2,
         "includeAll": false,
         "label": "slowq",
         "name": "slowq",
         "options": [],
-        "query": "SELECT count(*)\n   FROM pmm.metrics\n   WHERE service_type = '${service_type}'\n     AND ( period_start  >= $__fromTime AND period_start <= $__toTime )\n    AND m_query_time_sum/m_query_time_cnt > ${qthres}",
+        "query": "SELECT count(*)\n   FROM pmm.metrics\n   WHERE service_type = '${service_type}'\n     AND ( period_start  >= $__fromTime AND period_start <= $__toTime )\n    AND m_query_time_cnt > 0 AND m_query_time_sum/m_query_time_cnt > ${qthres}",
         "refresh": 2,
         "regex": "",
         "type": "query"
