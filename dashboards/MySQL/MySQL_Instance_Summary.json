@@ -500,7 +500,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "avg by (node_name) ((mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"} * 100)) / \non (node_name) (max by () (container_spec_memory_limit_bytes{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or \nmax by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\"}))",
+          "expr": "100 * (avg by (service_name)(mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"})) / on(service_name) min by (service_name) (node_memory_MemTotal_bytes * on(node_name) group_left(service_name) min by (node_name,service_name) (mysql_up{service_name=~\"$service_name\"}))",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
