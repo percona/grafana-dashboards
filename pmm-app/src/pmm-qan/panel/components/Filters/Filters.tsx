@@ -113,13 +113,17 @@ export const Filters: FC = () => {
             setFilter('');
           }}
         >
-          <div ref={filtersWrapperRef} className={cx({ [styles.filtersDisabled]: loadingDetails })}>
+          <div
+            ref={filtersWrapperRef}
+            className={cx({ [styles.filtersDisabled]: loadingDetails })}
+          >
             <FiltersHeader loading={loading} />
             <Overlay isPending={loading}>
               <Scrollbar className={styles.getFiltersWrapper(height)}>
                 <FilterInput filter={filter} />
-                {filtersGroups.filter((group) => filters[group.dataKey]).map(
-                  ({ name, dataKey, getDashboardURL }) => (
+                {filtersGroups
+                  .filter((group) => filters[group.dataKey])
+                  .map(({ name, dataKey, getDashboardURL }) => (
                     <CheckboxGroup
                       key={name}
                       name={name}
@@ -130,8 +134,7 @@ export const Filters: FC = () => {
                       getDashboardURL={getDashboardURL}
                       rawTime={rawTime}
                     />
-                  ),
-                )}
+                  ))}
               </Scrollbar>
             </Overlay>
           </div>
