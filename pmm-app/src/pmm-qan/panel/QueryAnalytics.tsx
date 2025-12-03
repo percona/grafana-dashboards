@@ -1,15 +1,27 @@
 import React, {
-  FC, useCallback, useContext, useEffect, useRef, useState,
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useMemo,
 } from 'react';
 import SplitPane from 'react-split-pane';
 import { Button, useTheme } from '@grafana/ui';
+import type { GrafanaTheme } from '@grafana/data';
 import { cx } from '@emotion/css';
 import { showSuccessNotification, showWarningNotification } from 'shared/components/helpers';
 import { ConfigProvider } from 'antd';
-import { antdTheme } from 'shared/core/theme';
+import { getAntdTheme } from 'shared/core/theme';
+import { applyPmmCssVariables } from 'shared/components/helpers/getPmmTheme';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
-  Details, Filters, ManageColumns, Overview,
+  Details,
+  Filters,
+  ManageColumns,
+  Overview,
 } from './components';
 import 'shared/styles.scss';
 import 'shared/style.less';
@@ -18,15 +30,21 @@ import { getStyles } from './QueryAnalytics.styles';
 import { Messages } from './QueryAnalytics.messages';
 import { buildShareLink, toUnixTimestamp } from './QueryAnalytics.tools';
 
-const QueryAnalyticsPanel: FC = () => {
-  const theme = useTheme();
-  const styles = getStyles(theme);
+// Panel now receives theme from root.
+interface QueryAnalyticsPanelProps {
+  grafanaTheme: GrafanaTheme;
+}
+
+const QueryAnalyticsPanel: FC<QueryAnalyticsPanelProps> = ({ grafanaTheme }) => {
+  const styles = getStyles(grafanaTheme);
 
   const {
     panelState: { querySelected, from, to },
   } = useContext(QueryAnalyticsProvider);
+
   const queryAnalyticsWrapper = useRef<HTMLDivElement>(null);
   const [, setReload] = useState<object>({});
+
   const copyLinkToClipboard = useCallback(() => {
     const link = buildShareLink(toUnixTimestamp(from), toUnixTimestamp(to));
 
@@ -50,7 +68,15 @@ const QueryAnalyticsPanel: FC = () => {
   }, [querySelected]);
 
   return (
-    <div className="query-analytics-grid" id="antd" ref={queryAnalyticsWrapper}>
+    // Force remount when theme changes to ensure Ant Design components (Table, Select, Checkbox)
+    // pick up the new theme from ConfigProvider. Without this, components render with wrong colors
+    // until page refresh (e.g., dark mode Table in light theme).
+    <div
+      key={grafanaTheme.type}
+      className="query-analytics-grid"
+      id="antd"
+      ref={queryAnalyticsWrapper}
+    >
       <div className="overview-filters">
         <Filters />
       </div>
@@ -82,7 +108,9 @@ const QueryAnalyticsPanel: FC = () => {
               pane2Style={{ minHeight: '20%', zIndex: 999 }}
             >
               <Overview />
-              <div className={styles.detailsWrapper}>{querySelected ? <Details /> : null}</div>
+              <div className={styles.detailsWrapper}>
+                {querySelected ? <Details /> : null}
+              </div>
             </SplitPane>
           </div>
         </div>
@@ -91,10 +119,27 @@ const QueryAnalyticsPanel: FC = () => {
   );
 };
 
-export default (props) => (
-  <ConfigProvider theme={antdTheme}>
-    <UrlParametersProvider {...props}>
-      <QueryAnalyticsPanel />
-    </UrlParametersProvider>
-  </ConfigProvider>
-);
+const QueryAnalyticsRoot: FC<any> = (props) => {
+  const grafanaTheme = useTheme();
+
+  const antdTheme = useMemo(
+    () => getAntdTheme(grafanaTheme),
+    [grafanaTheme],
+  );
+
+  // Apply CSS variables for QAN theme (dropdowns, backgrounds, text colors)
+  // useLayoutEffect runs synchronously before browser paint, ensuring styles are applied before render
+  useLayoutEffect(() => {
+    applyPmmCssVariables(grafanaTheme);
+  }, [grafanaTheme, grafanaTheme.type]);
+
+  return (
+    <ConfigProvider theme={antdTheme}>
+      <UrlParametersProvider {...props}>
+        <QueryAnalyticsPanel grafanaTheme={grafanaTheme} />
+      </UrlParametersProvider>
+    </ConfigProvider>
+  );
+};
+
+export default QueryAnalyticsRoot;
