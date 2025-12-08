@@ -1,7 +1,8 @@
 import { defaultTheme } from '@ant-design/compatible';
 import { ThemeConfig } from 'antd';
+import type { GrafanaTheme } from '@grafana/data';
 
-export const antdTheme: ThemeConfig = {
+export const antdDarkTheme: ThemeConfig = {
   ...defaultTheme,
   token: {
     ...defaultTheme.token,
@@ -47,3 +48,63 @@ export const antdTheme: ThemeConfig = {
     },
   },
 };
+
+export const antdLightTheme: ThemeConfig = {
+  ...defaultTheme,
+  token: {
+    ...defaultTheme.token,
+    colorBgBase: '#ffffff',
+    colorBgContainer: '#ffffff',
+    colorBgElevated: '#ffffff',
+    colorText: '#000000',
+    colorTextHeading: '#000000',
+    colorTextSecondary: '#000000',
+    colorTextDisabled: 'rgba(0, 0, 0, 0.45)',
+    fontSize: 14,
+    fontFamily: 'inherit',
+    borderRadius: 0,
+    colorBorder: '#d9d9d9',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+    colorLink: 'rgb(51, 181, 229)',
+  },
+  components: {
+    ...defaultTheme.components,
+    Table: {
+      headerBg: '#dedfe1',
+      rowSelectedBg: 'deepskyblue',
+      rowHoverBg: '#f5f5f5',
+      cellPaddingBlock: 4,
+    },
+    Select: {
+      optionSelectedBg: '#f5f5f5',
+      optionActiveBg: '#f5f5f5',
+      colorTextPlaceholder: '#000000',
+      selectorBg: '#ffffff',
+    },
+    Checkbox: {
+      colorBgContainer: '#ffffff',
+      colorBorder: '#d9d9d9',
+    },
+    Tag: {
+      defaultBg: 'transparent',
+      defaultColor: '#000000',
+    },
+    Tooltip: {
+      colorBgSpotlight: '#3274d9',
+    },
+    Tabs: {
+      itemActiveColor: '#000000',
+      itemSelectedColor: '#000000',
+    },
+  },
+};
+
+/**
+ * Returns the appropriate AntD theme based on Grafana theme.
+ *
+ * @param grafanaTheme - The current Grafana theme
+ * @returns AntD theme configuration for dark or light mode
+ */
+export const getAntdTheme = (grafanaTheme: GrafanaTheme): ThemeConfig => (
+  grafanaTheme.type === 'dark' ? antdDarkTheme : antdLightTheme
+);
