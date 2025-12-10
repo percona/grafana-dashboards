@@ -38,11 +38,12 @@
       },
       "id": 164,
       "panels": [],
-      "title": "Total Commands/sec",
+      "title": "Total Commands/Sec",
       "type": "row"
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how many commands each service is executing per second. Sudden spikes may indicate traffic surges or batch operations, while drops could signal connectivity problems or reduced activity.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -141,7 +142,7 @@
           "useBackend": false
         }
       ],
-      "title": "$service_name - Total Commands / sec",
+      "title": "$service_name - Total Commands/Sec",
       "type": "timeseries"
     },
     {
@@ -159,6 +160,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how many read and write operations each service is processing per second. Compare reads versus writes to see if your workload is read-heavy, write-heavy, or balanced.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -268,7 +270,7 @@
           "step": 240
         }
       ],
-      "title": "$service_name - Read and Write rate",
+      "title": "$service_name - Read and Write Rate",
       "type": "timeseries"
     },
     {
@@ -281,11 +283,12 @@
       },
       "id": 278,
       "panels": [],
-      "title": "Operations/sec by command",
+      "title": "Command by Type",
       "type": "row"
     },
     {
       "datasource": "Metrics",
+      "description": "Shows the rate of each command type per second. Use this to see which operations dominate your workload and identify which commands are running most frequently.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -385,7 +388,7 @@
           "step": 240
         }
       ],
-      "title": "$ns_service_name - command ops/sec",
+      "title": "$ns_service_name - Command by Type",
       "type": "timeseries"
     },
     {
@@ -394,7 +397,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 43
       },
       "id": 45,
       "panels": [],
@@ -403,6 +406,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows the top 10 commands that have consumed the most total execution time since startup. Commands at the top are the best candidates for performance tuning or optimization.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -430,7 +434,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 44
       },
       "id": 46,
       "maxPerRow": 3,
@@ -479,11 +483,12 @@
           "step": 240
         }
       ],
-      "title": "$service_name - top 10 total time by command",
+      "title": "$service_name - Top 10 Commands by Total TIme",
       "type": "bargauge"
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how much execution time each command type is using per second. Commands consuming more time indicate either high frequency, slow operations, or both.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -544,7 +549,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 60
       },
       "id": 14,
       "options": {
@@ -584,11 +589,12 @@
           "step": 240
         }
       ],
-      "title": "$ns_service_name - total Time Spent by Command / sec",
+      "title": "$ns_service_name - Total Time Spent by Command/Sec",
       "type": "timeseries"
     },
     {
       "datasource": "Metrics",
+      "description": "Shows cumulative totals for reads, writes, and errors since service startup. Any non-zero error count requires investigation to identify failing commands or connection issues.",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -609,7 +615,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 76
+        "y": 108
       },
       "id": 47,
       "maxPerRow": 3,
@@ -730,12 +736,13 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 92
+        "y": 124
       },
       "id": 86,
       "panels": [
         {
           "datasource": "Metrics",
+          "description": "Shows latency percentiles for each command type in microseconds. Higher percentiles (p99, p99.9) show worst-case performance. Commands with high percentile values may need optimization.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -782,7 +789,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 93
+            "y": 125
           },
           "id": 88,
           "options": {
@@ -828,7 +835,7 @@
               "refId": "A"
             }
           ],
-          "title": "$ns_service_name - command percentiles",
+          "title": "$ns_service_name - Command Percentiles",
           "type": "barchart"
         }
       ],
@@ -841,12 +848,13 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 93
+        "y": 125
       },
       "id": 543,
       "panels": [
         {
           "datasource": "Metrics",
+          "description": "Shows how GET command latency is distributed across different time ranges in microseconds. You should see most operations in lower latency ranges. Since GET is typically your most frequent command, improving its latency has the biggest impact.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -893,7 +901,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 94
+            "y": 126
           },
           "id": 89,
           "maxPerRow": 3,
@@ -936,7 +944,7 @@
               "refId": "A"
             }
           ],
-          "title": "$ns_service_name - get latency",
+          "title": "$ns_service_name - GET Latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -988,6 +996,7 @@
         },
         {
           "datasource": "Metrics",
+          "description": "Shows how RPOP command latency is distributed across different time ranges in microseconds. RPOP is commonly used in queue patterns. Higher latencies may indicate blocking on empty lists or resource contention.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1034,7 +1043,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 103
+            "y": 142
           },
           "id": 92,
           "maxPerRow": 3,
@@ -1077,7 +1086,7 @@
               "refId": "A"
             }
           ],
-          "title": "$ns_service_name - rpop latency",
+          "title": "$ns_service_name - RPOP Latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1129,6 +1138,7 @@
         },
         {
           "datasource": "Metrics",
+          "description": "Shows how SET command latency is distributed across different time ranges in microseconds. You should see most operations in lower latency ranges. Spikes in higher ranges may indicate disk I/O issues or memory pressure.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1175,7 +1185,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 112
+            "y": 158
           },
           "id": 91,
           "maxPerRow": 3,
@@ -1218,7 +1228,7 @@
               "refId": "A"
             }
           ],
-          "title": "$ns_service_name - set latency",
+          "title": "$ns_service_name - SET Latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1270,6 +1280,7 @@
         },
         {
           "datasource": "Metrics",
+          "description": "Shows how LPOP command latency is distributed across different time ranges in microseconds. LPOP is commonly used in queue patterns. Higher latencies may indicate blocking on empty lists or resource contention.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1316,7 +1327,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 121
+            "y": 174
           },
           "id": 103,
           "maxPerRow": 3,
@@ -1359,7 +1370,7 @@
               "refId": "A"
             }
           ],
-          "title": "$ns_service_name - lpop latency",
+          "title": "$ns_service_name - LPOP Latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1411,6 +1422,7 @@
         },
         {
           "datasource": "Metrics",
+          "description": "Shows how HSET command latency is distributed across different time ranges in microseconds. HSET is used for storing field-value pairs in hashes. Higher latencies may indicate large hash sizes or persistence overhead.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1457,7 +1469,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 130
+            "y": 190
           },
           "id": 93,
           "maxPerRow": 3,
@@ -1500,7 +1512,7 @@
               "refId": "A"
             }
           ],
-          "title": "$ns_service_name - hset latency",
+          "title": "$ns_service_name - HSET Latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1552,6 +1564,7 @@
         },
         {
           "datasource": "Metrics",
+          "description": "Shows how LRANGE command latency is distributed across different time ranges in microseconds. Latency depends heavily on the range size. Large ranges take longer. Higher latencies typically indicate large range requests or long lists.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1598,7 +1611,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 139
+            "y": 206
           },
           "id": 94,
           "maxPerRow": 3,
@@ -1641,7 +1654,7 @@
               "refId": "A"
             }
           ],
-          "title": "$ns_service_name - lrange latency",
+          "title": "$ns_service_name - LRANGE Latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1693,6 +1706,7 @@
         },
         {
           "datasource": "Metrics",
+          "description": "Shows how PSYNC command latency is distributed across different time ranges in microseconds. PSYNC is used when replicas reconnect to catch up with primaries. Lower latencies indicate efficient replication with good network connectivity.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1739,7 +1753,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 148
+            "y": 222
           },
           "id": 96,
           "maxPerRow": 3,
@@ -1782,7 +1796,7 @@
               "refId": "A"
             }
           ],
-          "title": "$ns_service_name - psync latency",
+          "title": "$ns_service_name - PSYNC Latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1834,6 +1848,7 @@
         },
         {
           "datasource": "Metrics",
+          "description": "Shows how RPUSH command latency is distributed across different time ranges in microseconds. RPUSH is commonly used for adding items at the end of list. Higher latencies may indicate long lists.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1878,11 +1893,12 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 8,
+            "w": 24,
             "x": 0,
-            "y": 156
+            "y": 238
           },
           "id": 95,
+          "maxPerRow": 3,
           "options": {
             "barRadius": 0,
             "barWidth": 0.97,
@@ -1907,6 +1923,8 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "11.6.4",
+          "repeat": "service_name",
+          "repeatDirection": "h",
           "targets": [
             {
               "datasource": "Metrics",
@@ -1920,7 +1938,7 @@
               "refId": "A"
             }
           ],
-          "title": "rpush latency",
+          "title": "$service_name - RPUSH latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -1972,6 +1990,7 @@
         },
         {
           "datasource": "Metrics",
+          "description": "Shows how LPUSH command latency is distributed across different time ranges in microseconds. LPUSH is commonly used in queue implementations for adding items. Higher latencies may indicate long lists or persistence overhead.",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2016,11 +2035,12 @@
           },
           "gridPos": {
             "h": 8,
-            "w": 8,
-            "x": 8,
-            "y": 156
+            "w": 24,
+            "x": 0,
+            "y": 254
           },
           "id": 104,
+          "maxPerRow": 3,
           "options": {
             "barRadius": 0,
             "barWidth": 0.97,
@@ -2045,6 +2065,8 @@
             "xTickLabelSpacing": 0
           },
           "pluginVersion": "11.6.4",
+          "repeat": "service_name",
+          "repeatDirection": "h",
           "targets": [
             {
               "datasource": "Metrics",
@@ -2058,7 +2080,7 @@
               "refId": "A"
             }
           ],
-          "title": "lpush latency",
+          "title": "$service_name - LPUSH Latency",
           "transformations": [
             {
               "id": "joinByField",
@@ -2109,7 +2131,7 @@
           "type": "barchart"
         }
       ],
-      "title": "Latency by command",
+      "title": "Latency by Command",
       "type": "row"
     }
   ],

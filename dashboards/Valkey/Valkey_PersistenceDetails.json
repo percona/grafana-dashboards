@@ -38,11 +38,12 @@
       },
       "id": 60,
       "panels": [],
-      "title": "Master AOF persistence ",
+      "title": "Master AOF Persistence ",
       "type": "row"
     },
     {
       "datasource": "Metrics",
+      "description": "Shows whether AOF persistence is enabled on primary nodes. YES means AOF is active and logging every write operation. NO means only RDB snapshots are used for persistence.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -131,6 +132,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows the AOF fsync policy configured on primary nodes. This determines how often AOF writes are synced to disk, balancing performance and durability. Most deployments use everysec.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -229,6 +231,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows whether primary nodes are currently loading data from disk. Nodes that are still loading aren't ready to serve requests yet.\n",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -316,6 +319,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how many AOF fsync operations have been delayed on primary nodes. Non-zero values indicate disk I/O bottlenecks that can impact write performance and potentially cause data loss.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -390,6 +394,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how long the last AOF rewrite took in seconds on primary nodes. Long durations may indicate large datasets, slow disk I/O, or insufficient system resources.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -458,11 +463,12 @@
         }
       ],
       "timeFrom": "1m",
-      "title": "Last rewrite duration",
+      "title": "Last Rewrite Duration",
       "type": "stat"
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how much extra memory was used during the last AOF rewrite in bytes. High values indicate significant write activity during rewrites, requiring extra memory capacity.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -531,11 +537,12 @@
         }
       ],
       "timeFrom": "1m",
-      "title": "Last COW size",
+      "title": "Last COW Size",
       "type": "stat"
     },
     {
       "datasource": "Metrics",
+      "description": "Shows whether the last AOF write completed successfully on primary nodes. Failures could compromise data durability and require immediate investigation.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -618,11 +625,12 @@
         }
       ],
       "timeFrom": "1m",
-      "title": "Last rewrite success",
+      "title": "Last Rewrite Success",
       "type": "stat"
     },
     {
       "datasource": "Metrics",
+      "description": "Shows whether primary nodes can accept connections while still loading data from disk. YES means the node can respond to some commands during loading, reducing downtime.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -710,6 +718,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows AOF file sizes and memory overhead during rewrites for primary nodes in bytes. When current size significantly exceeds base size, a rewrite is needed to compact the file.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -849,7 +858,7 @@
           "refId": "C"
         }
       ],
-      "title": "Base, current, last COW size",
+      "title": "Base, Current, Last COW Size",
       "type": "timeseries"
     },
     {
@@ -867,6 +876,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows when the last successful RDB snapshot completed. Large gaps between snapshots may indicate configuration issues, failed saves, or disabled RDB persistence.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -935,11 +945,12 @@
         }
       ],
       "timeFrom": "1m",
-      "title": "Last bgsave timestamp",
+      "title": "Last Bgsave Timestamp",
       "type": "stat"
     },
     {
       "datasource": "Metrics",
+      "description": "Shows whether the last RDB snapshot completed successfully on primary nodes. Failures could compromise data durability and require immediate investigation.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -947,7 +958,21 @@
             "mode": "fixed"
           },
           "decimals": 0,
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 1,
+                  "text": "No"
+                },
+                "1": {
+                  "index": 0,
+                  "text": "Yes"
+                }
+              },
+              "type": "value"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -971,7 +996,7 @@
         "y": 13
       },
       "hideTimeOverride": true,
-      "id": 81,
+      "id": 78,
       "maxDataPoints": 100,
       "options": {
         "colorMode": "none",
@@ -987,6 +1012,10 @@
           "values": false
         },
         "showPercentChange": false,
+        "text": {
+          "titleSize": 32,
+          "valueSize": 32
+        },
         "textMode": "auto",
         "wideLayout": true
       },
@@ -996,23 +1025,24 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "redis_rdb_changes_since_last_save{service_name=~\"$service_name\",role=~\"primary\"}",
+          "expr": "redis_rdb_last_bgsave_status{service_name=~\"$service_name\",role=~\"primary\"}",
           "format": "table",
-          "instant": false,
+          "instant": true,
           "intervalFactor": 2,
           "legendFormat": "",
           "metric": "",
-          "range": true,
+          "range": false,
           "refId": "A",
           "step": 2
         }
       ],
       "timeFrom": "1m",
-      "title": "Changes since lastsave",
+      "title": "Last Bgsave Success",
       "type": "stat"
     },
     {
       "datasource": "Metrics",
+      "description": "Shows the configured RDB snapshot save rules for primary nodes. These rules define when automatic snapshots trigger based on time and changes (e.g., \"900 1\" means save after 900 seconds if at least 1 key changed).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1080,7 +1110,7 @@
         }
       ],
       "timeFrom": "1m",
-      "title": "Save config",
+      "title": "Save Config",
       "transformations": [
         {
           "id": "organize",
@@ -1117,6 +1147,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows the total count of RDB snapshot operations completed since startup. Monitor this to confirm snapshots are occurring as expected and to verify automatic snapshots are working properly.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1185,11 +1216,12 @@
         }
       ],
       "timeFrom": "1m",
-      "title": "RDB saves",
+      "title": "RDB Saves",
       "type": "stat"
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how many write operations have occurred since the last successful RDB snapshot. High values mean more data could be lost if the server crashes before the next snapshot.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1197,21 +1229,7 @@
             "mode": "fixed"
           },
           "decimals": 0,
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "index": 1,
-                  "text": "No"
-                },
-                "1": {
-                  "index": 0,
-                  "text": "Yes"
-                }
-              },
-              "type": "value"
-            }
-          ],
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1235,7 +1253,7 @@
         "y": 17
       },
       "hideTimeOverride": true,
-      "id": 78,
+      "id": 81,
       "maxDataPoints": 100,
       "options": {
         "colorMode": "none",
@@ -1251,10 +1269,6 @@
           "values": false
         },
         "showPercentChange": false,
-        "text": {
-          "titleSize": 32,
-          "valueSize": 32
-        },
         "textMode": "auto",
         "wideLayout": true
       },
@@ -1264,19 +1278,19 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "redis_rdb_last_bgsave_status{service_name=~\"$service_name\",role=~\"primary\"}",
+          "expr": "redis_rdb_changes_since_last_save{service_name=~\"$service_name\",role=~\"primary\"}",
           "format": "table",
-          "instant": true,
+          "instant": false,
           "intervalFactor": 2,
           "legendFormat": "",
           "metric": "",
-          "range": false,
+          "range": true,
           "refId": "A",
           "step": 2
         }
       ],
       "timeFrom": "1m",
-      "title": "Last bgsave success",
+      "title": "Changes Since Last Save",
       "type": "stat"
     }
   ],

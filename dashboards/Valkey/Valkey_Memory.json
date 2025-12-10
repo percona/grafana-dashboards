@@ -22,7 +22,7 @@
     ]
   },
   "description": "Valkey/Redis Memory Dashboard",
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
@@ -43,6 +43,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows memory usage as a percentage of the configured maximum limit for each service. When usage approaches 100%, eviction begins based on your eviction policy.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -165,6 +166,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows the configured eviction policy for each primary node. This determines which keys get removed when memory reaches the limit. Common policies include `allkeys-lru`, `volatile-lru`, and `noeviction`.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -219,7 +221,7 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "redis_instance_info{service_name=~\"$service_name\"} and on(service_name) redis_instance_info{role=\"primary\"}",
+          "expr": "redis_config_key_value{key=\"maxmemory-policy\",role=\"primary\"}",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -234,7 +236,7 @@
           "options": {
             "excludeByName": {
               "Time": true,
-              "Value": false,
+              "Value": true,
               "__name__": true,
               "agent_id": true,
               "agent_type": true,
@@ -243,6 +245,7 @@
               "exported_role": true,
               "instance": true,
               "job": true,
+              "key": true,
               "master_replid": true,
               "maxmemory_policy": true,
               "node_id": true,
@@ -261,7 +264,8 @@
             "includeByName": {},
             "indexByName": {},
             "renameByName": {
-              "service_name": "Service name"
+              "service_name": "Service name",
+              "value": "Value"
             }
           }
         }
@@ -270,6 +274,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows the total number of keys stored in each service. Rapidly growing counts may indicate you need to review TTL policies or eviction settings.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -361,6 +366,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows memory usage in bytes compared to the configured maximum limit. When used memory approaches the max limit (shown in red), eviction begins.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -506,6 +512,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how many keys are stored in each service. If counts are growing rapidly, you may need to adjust your TTL policies or eviction settings.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -663,6 +670,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how many keys have TTL (expiring) versus keys without TTL (not expiring). Keys with TTL expire automatically, while keys without TTL persist indefinitely unless manually deleted or evicted. High proportions of non-expiring keys may lead to memory growth.",
       "fieldConfig": {
         "defaults": {
           "color": {
