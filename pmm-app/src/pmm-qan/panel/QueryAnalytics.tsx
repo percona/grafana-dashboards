@@ -7,7 +7,9 @@ import { cx } from '@emotion/css';
 import { showSuccessNotification, showWarningNotification } from 'shared/components/helpers';
 import { ConfigProvider } from 'antd';
 import { antdTheme } from 'shared/core/theme';
-import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
+import {
+  QueryAnalyticsProvider, UrlParametersProvider,
+} from './provider/provider';
 import {
   Details, Filters, ManageColumns, Overview,
 } from './components';
@@ -17,6 +19,18 @@ import './qan.scss';
 import { getStyles } from './QueryAnalytics.styles';
 import { Messages } from './QueryAnalytics.messages';
 import { buildShareLink, toUnixTimestamp } from './QueryAnalytics.tools';
+
+const SPLIT_PANE_CONFIG = {
+  overview: {
+    minHeight: '30%',
+    maxHeight: '60%',
+  },
+  details: {
+    minHeight: '40%',
+    maxHeight: '68%',
+    zIndex: 999,
+  },
+};
 
 const QueryAnalyticsPanel: FC = () => {
   const theme = useTheme();
@@ -71,15 +85,20 @@ const QueryAnalyticsPanel: FC = () => {
           <div className={styles.splitterWrapper}>
             {/* @ts-ignore */}
             <SplitPane
+              key={querySelected ? 'split' : 'full'}
               split="horizontal"
               onDragFinished={() => setReload({})}
               className={styles.splitterWrapper}
               resizerStyle={{ display: querySelected ? '' : 'none' }}
               pane1Style={{
-                minHeight: querySelected ? '30%' : '100%',
-                maxHeight: querySelected ? '60%' : '100%',
+                minHeight: querySelected ? SPLIT_PANE_CONFIG.overview.minHeight : '100%',
+                maxHeight: querySelected ? SPLIT_PANE_CONFIG.overview.maxHeight : '100%',
               }}
-              pane2Style={{ minHeight: '20%', zIndex: 999 }}
+              pane2Style={{
+                minHeight: querySelected ? SPLIT_PANE_CONFIG.details.minHeight : '0',
+                maxHeight: querySelected ? SPLIT_PANE_CONFIG.details.maxHeight : '0',
+                zIndex: SPLIT_PANE_CONFIG.details.zIndex,
+              }}
             >
               <Overview />
               <div className={styles.detailsWrapper}>{querySelected ? <Details /> : null}</div>

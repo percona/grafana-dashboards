@@ -12,6 +12,15 @@ import { Table } from './components/QanTable';
 import { getStyles } from '../../QueryAnalytics.styles';
 import { Messages } from './Overview.messages';
 
+const SCROLL_RETRY_DELAYS = [500, 1000, 1500, 2000, 3000];
+const SELECTED_ROW_SELECTORS = [
+  '.selected-overview-row',
+  '[class*="selected-overview"]',
+  '[class*="selected"]',
+  '.ant-table-row-selected',
+];
+const MAX_TABLE_HEIGHT = 1227;
+
 export const Overview: FC = () => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -33,6 +42,30 @@ export const Overview: FC = () => {
     setHeight((tableWrapperRef.current && tableWrapperRef.current.clientHeight) || 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tableWrapperRef.current && tableWrapperRef.current.clientHeight]);
+
+  useEffect(() => {
+    if (!querySelected) {
+      return undefined;
+    }
+
+    const timeoutIds: NodeJS.Timeout[] = [];
+
+    SCROLL_RETRY_DELAYS.forEach((delay) => {
+      const timeoutId = setTimeout(() => {
+        const row = SELECTED_ROW_SELECTORS.map((selector) => document.querySelector(selector)).find(Boolean);
+
+        if (row) {
+          row.scrollIntoView({ block: 'center', behavior: 'auto' });
+        }
+      }, delay);
+
+      timeoutIds.push(timeoutId);
+    });
+
+    return () => {
+      timeoutIds.forEach((id) => clearTimeout(id));
+    };
+  }, [querySelected]);
 
   const changePageNumber = useCallback((page) => {
     contextActions.changePage(page);
@@ -107,7 +140,7 @@ export const Overview: FC = () => {
                   selected.index === 0,
                 );
               }}
-              scroll={{ y: Math.min(height, 550), x: '100%' }}
+              scroll={{ y: Math.min(height, MAX_TABLE_HEIGHT), x: '100%' }}
               onSortChange={onSortChange}
               rowNumber={(index) => <div>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>}
               orderBy={orderBy}

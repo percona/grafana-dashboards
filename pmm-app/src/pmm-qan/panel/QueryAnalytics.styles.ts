@@ -3,6 +3,13 @@ import { GrafanaTheme } from '@grafana/data';
 import { stylesFactory } from '@grafana/ui';
 import { getPmmTheme } from 'shared/components/helpers/getPmmTheme';
 
+const LAYOUT_SIZES = {
+  headerHeight: 50,
+  footerHeight: 50,
+  splitterHeight: 1300,
+  tableMinHeight: 1000,
+};
+
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const parameters = getPmmTheme(theme);
 
@@ -11,7 +18,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       display: flex;
       justify-content: flex-end;
       padding: 13px 2px 5px 0px;
-      height: 50px;
+      height: ${LAYOUT_SIZES.headerHeight}px;
 
       button {
         margin-right: ${theme.spacing.sm} !important;
@@ -21,10 +28,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       display: flex;
       justify-content: flex-start;
       padding: 13px 2px 5px 0px;
-      height: 50px;
+      height: ${LAYOUT_SIZES.footerHeight}px;
     `,
     splitterWrapper: css`
-      height: 1200px;
+      height: ${LAYOUT_SIZES.splitterHeight}px;
       position: relative;
     `,
     detailsWrapper: css`
@@ -47,7 +54,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       color: ${parameters.mainTextColor};
     `,
     tableWrapper: css`
-      min-height: 1000px;
+      min-height: ${LAYOUT_SIZES.tableMinHeight}px;
     `,
     link: css`
       display: block;
