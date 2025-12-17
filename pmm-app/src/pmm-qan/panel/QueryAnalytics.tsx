@@ -30,6 +30,18 @@ import { getStyles } from './QueryAnalytics.styles';
 import { Messages } from './QueryAnalytics.messages';
 import { buildShareLink, toUnixTimestamp } from './QueryAnalytics.tools';
 
+const SPLIT_PANE_CONFIG = {
+  overview: {
+    minHeight: '30%',
+    maxHeight: '60%',
+  },
+  details: {
+    minHeight: '40%',
+    maxHeight: '68%',
+    zIndex: 999,
+  },
+};
+
 // Panel now receives theme from root.
 interface QueryAnalyticsPanelProps {
   grafanaTheme: GrafanaTheme;
