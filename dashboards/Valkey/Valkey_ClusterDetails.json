@@ -43,6 +43,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows cluster slot status over time. In a healthy cluster, all slots should be OK. Problems with slots can prevent the cluster from serving certain data.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -106,10 +107,16 @@
       "id": 611,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -122,35 +129,37 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "min(redis_cluster_slots_ok{service_name=~\"$service_name\"})",
-          "legendFormat": "__auto",
+          "expr": "min by (service_name)(redis_cluster_slots_ok{service_name=~\"$service_name\"})",
+          "hide": false,
+          "legendFormat": "ok - {{service_name}}",
           "range": true,
           "refId": "A"
         },
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "max(redis_cluster_slots_fail{service_name=~\"$service_name\"})",
+          "expr": "max by (service_name)(redis_cluster_slots_fail{service_name=~\"$service_name\"})",
           "hide": false,
-          "legendFormat": "__auto",
+          "legendFormat": "fail - {{service_name}}",
           "range": true,
           "refId": "B"
         },
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "max(redis_cluster_slots_pfail{service_name=~\"$service_name\"})",
+          "expr": "max by (service_name)(redis_cluster_slots_pfail{service_name=~\"$service_name\"})",
           "hide": false,
-          "legendFormat": "__auto",
+          "legendFormat": "pfail - {{service_name}}",
           "range": true,
           "refId": "C"
         }
       ],
-      "title": "slots status",
+      "title": "Slots Status",
       "type": "timeseries"
     },
     {
       "datasource": "Metrics",
+      "description": "Shows the overall cluster state over time. A value of 1 means the cluster is healthy with all slots covered. A value of 0 means the cluster has failed with some slots unavailable.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -214,10 +223,12 @@
       "id": 621,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -230,17 +241,18 @@
         {
           "datasource": "Metrics",
           "editorMode": "code",
-          "expr": "min(redis_cluster_state{service_name=~\"$service_name\"})",
-          "legendFormat": "__auto",
+          "expr": "min by (service_name)(redis_cluster_state{service_name=~\"$service_name\"})",
+          "legendFormat": "{{service_name}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "$service_name - cluster state",
+      "title": "$service_name - Cluster State",
       "type": "timeseries"
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how many cluster communication messages are being sent and received over time. High message rates can indicate cluster instability or frequent topology changes.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -304,10 +316,16 @@
       "id": 616,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -321,7 +339,7 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "expr": "redis_cluster_messages_sent_total{service_name=~\"$service_name\"}",
-          "legendFormat": "__auto",
+          "legendFormat": "Sent - {{service_name}}",
           "range": true,
           "refId": "A"
         },
@@ -330,12 +348,12 @@
           "editorMode": "code",
           "expr": "redis_cluster_messages_received_total{service_name=~\"$service_name\"}",
           "hide": false,
-          "legendFormat": "__auto",
+          "legendFormat": "Received - {{service_name}}",
           "range": true,
           "refId": "B"
         }
       ],
-      "title": "cluster messages",
+      "title": "Cluster Messages",
       "type": "timeseries"
     },
     {
@@ -425,7 +443,7 @@
           "refId": "A"
         }
       ],
-      "title": "$service_name - cluster connections",
+      "title": "$service_name - Cluster Connections",
       "type": "timeseries"
     },
     {
@@ -515,7 +533,7 @@
           "refId": "A"
         }
       ],
-      "title": "$service_name - known nodes",
+      "title": "$service_name - Known Nodes",
       "type": "timeseries"
     },
     {
@@ -1273,7 +1291,7 @@
               "refId": "A"
             }
           ],
-          "title": "Full resyncs",
+          "title": "Full Resyncs",
           "transformations": [
             {
               "id": "organize",
@@ -1481,7 +1499,7 @@
               "refId": "A"
             }
           ],
-          "title": "Partial resyncs",
+          "title": "Partial Resyncs",
           "transformations": [
             {
               "id": "organize",
@@ -1897,7 +1915,7 @@
               "refId": "A"
             }
           ],
-          "title": "Backlog first byte offset",
+          "title": "Backlog First Byte Offset",
           "transformations": [
             {
               "id": "organize",
