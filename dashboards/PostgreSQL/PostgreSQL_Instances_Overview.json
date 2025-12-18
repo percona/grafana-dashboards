@@ -26,33 +26,101 @@
   "graphTooltip": 1,
   "id": null,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
+      "datasource": {
+        "uid": "Metrics"
+      },
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 5,
         "w": 6,
         "x": 0,
         "y": 0
       },
-      "id": 1083,
+      "id": 1090,
       "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        "content": "<div style=\"\n    color: #F9A100; \n    font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif; \n    letter-spacing: 0.011em; \n    font-weight: 600;\n    font-size: 16px;\n    -webkit-font-smoothing: antialiased;\n    border: 0px solid #ffffff;\n    border-radius: 10px;\n    background: #FFEFBA;  /* fallback for old browsers */\n    background: -webkit-linear-gradient(to right, #FFFFFF, #FFEFBA);  /* Chrome 10-25, Safari 5.1-6 */\n    background: linear-gradient(to right, #FFFFFF, #FFEFBA); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n    padding: 10px;\n    display: block;\n    width: 100%;\n    height: auto;\n    text-align: center;\n\">\n    <span style=\"color: #400004; font-size: 20px;\">${clustercnt} - Cluster</span><br/>\n    <span style=\"color: #400004; font-size: 20px;\">${srvcnt} - Nodes</span><br/>\n    <span style=\"color: #400004; font-size: 20px;\">${withoutcluster} - Nodes without cluster</span><br/>\n    <a href=\"/graph/inventory/services\" target=\"_blank\">Databases monitored</a>\n</div>\n",
-        "mode": "html"
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count(min by (cluster)(pg_up{cluster!=\"\"}))",
+          "instant": true,
+          "legendFormat": "Cluster",
+          "range": false,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count(min by (service_name)(pg_up))",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Nodes",
+          "range": false,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count(min by (service_name)(pg_up{cluster=\"\"}))",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "Nodes without cluster",
+          "range": false,
+          "refId": "C"
+        }
+      ],
       "title": "Databases Monitored",
-      "transparent": true,
-      "type": "text"
+      "type": "stat"
     },
     {
       "fieldConfig": {
@@ -110,7 +178,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 18,
         "x": 6,
         "y": 0
@@ -136,7 +204,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "editorMode": "code",
@@ -176,7 +244,7 @@
         "h": 4,
         "w": 6,
         "x": 0,
-        "y": 6
+        "y": 5
       },
       "id": 1079,
       "options": {
@@ -188,10 +256,65 @@
         "content": " <div style=\"\n          color: #FFFFFF; \n          font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue,Helvetica,Arial,sans-serif; \n          letter-spacing: 0.011em; \n          font-weight: 600;\n          font-size: 15px;\n          -webkit-font-smoothing: antialiased;\n          border: 0px solid #ffffff;\n          border-radius: 10px;\n          background: #23074d;  /* fallback for old browsers */\n          background: -webkit-linear-gradient(to right, #cc5333, #23074d);  /* Chrome 10-25, Safari 5.1-6 */\n          background: linear-gradient(to right, #cc5333, #23074d); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n          padding: 8px;\n          display:block;\n          width:100%;\n          height:80px;\n          \"> <span style=\"\n          color: #FBEEC1; \n          font-size: 20px;\n          \"> ${slowq} </span>Queries slower than ${qthres} sec(s) in the last ${rangeCustom} minutes*\n          </br></div>",
         "mode": "html"
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "title": "Slow Queries",
       "transparent": true,
       "type": "text"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 9
+      },
+      "id": 1089,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum(rate(pg_stat_database_xact_commit{service_type=\"$service_type\",service_name=~\"$service_name\",node_name=~\"$node_name\",environment=~\"$environment\",cluster=~\"$cluster\", datname!~\"template1|template0\"}))",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Transactions per Second",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -259,7 +382,7 @@
         "h": 8,
         "w": 18,
         "x": 6,
-        "y": 8
+        "y": 9
       },
       "id": 1077,
       "options": {
@@ -282,7 +405,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "builderOptions": {
@@ -416,61 +539,6 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue"
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 0,
-        "y": 10
-      },
-      "id": 1089,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.6.1",
-      "targets": [
-        {
-          "editorMode": "code",
-          "expr": "sum(rate(pg_stat_database_xact_commit{service_type=\"$service_type\",service_name=~\"$service_name\",node_name=~\"$node_name\",environment=~\"$environment\",cluster=~\"$cluster\", datname!~\"template1|template0\"}))",
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Transactions per Second",
-      "type": "stat"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
             "fixedColor": "dark-blue",
             "mode": "fixed"
           },
@@ -488,10 +556,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 5,
         "w": 6,
         "x": 0,
-        "y": 13
+        "y": 12
       },
       "id": 1087,
       "options": {
@@ -518,7 +586,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "editorMode": "code",
@@ -696,7 +764,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 17
       },
       "id": 1065,
       "options": {
@@ -718,7 +786,7 @@
           }
         ]
       },
-      "pluginVersion": "11.6.1",
+      "pluginVersion": "11.6.4",
       "targets": [
         {
           "datasource": {
@@ -934,8 +1002,8 @@
       },
       {
         "current": {
-          "text": "6",
-          "value": "6"
+          "text": "16",
+          "value": "16"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
@@ -1055,9 +1123,7 @@
       {
         "allValue": ".*",
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -1104,9 +1170,7 @@
       },
       {
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
