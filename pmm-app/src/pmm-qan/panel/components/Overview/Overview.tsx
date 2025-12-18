@@ -12,7 +12,6 @@ import { Table } from './components/QanTable';
 import { getStyles } from '../../QueryAnalytics.styles';
 import { Messages } from './Overview.messages';
 
-const SCROLL_RETRY_DELAYS = [500, 1000, 1500, 2000, 3000];
 const SELECTED_ROW_SELECTORS = [
   '.selected-overview-row',
   '[class*="selected-overview"]',
@@ -20,6 +19,8 @@ const SELECTED_ROW_SELECTORS = [
   '.ant-table-row-selected',
 ];
 const MAX_TABLE_HEIGHT = 1227;
+const SCROLL_CHECK_INTERVAL_MS = 200;
+const SCROLL_MAX_ATTEMPTS = 10;
 
 export const Overview: FC = () => {
   const theme = useTheme();
@@ -48,22 +49,23 @@ export const Overview: FC = () => {
       return undefined;
     }
 
-    const timeoutIds: NodeJS.Timeout[] = [];
+    let attempts = 0;
 
-    SCROLL_RETRY_DELAYS.forEach((delay) => {
-      const timeoutId = setTimeout(() => {
-        const row = SELECTED_ROW_SELECTORS.map((selector) => document.querySelector(selector)).find(Boolean);
+    const intervalId = setInterval(() => {
+      attempts += 1;
 
-        if (row) {
-          row.scrollIntoView({ block: 'center', behavior: 'auto' });
-        }
-      }, delay);
+      const row = SELECTED_ROW_SELECTORS.map((selector) => document.querySelector(selector)).find(Boolean);
 
-      timeoutIds.push(timeoutId);
-    });
+      if (row) {
+        row.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        clearInterval(intervalId);
+      } else if (attempts >= SCROLL_MAX_ATTEMPTS) {
+        clearInterval(intervalId);
+      }
+    }, SCROLL_CHECK_INTERVAL_MS);
 
     return () => {
-      timeoutIds.forEach((id) => clearTimeout(id));
+      clearInterval(intervalId);
     };
   }, [querySelected]);
 
