@@ -44,6 +44,10 @@ export const Overview: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tableWrapperRef.current && tableWrapperRef.current.clientHeight]);
 
+  // Auto-scroll selected row into view when a query is selected.
+  // Uses interval-based checking because the selected row may not be immediately available in the DOM
+  // after querySelected changes (due to React rendering cycles and table virtualization).
+  // This ensures the selected row becomes visible in the table viewport, improving UX.
   useEffect(() => {
     if (!querySelected) {
       return undefined;
