@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.12.0
+
+### Features
+
+- Support log volume queries for the SQL editor. Note that this will only work for Grafana versions >= 12.4.0 (#1475)
+- Support columns with `.` in ad-hoc filters (#1481)
+
+### Fixes
+
+- Dependency updates
+
 ## 4.11.4
 
 ## Fixes
@@ -11,7 +22,7 @@
 
 ## 4.11.3
 
-## Fixes
+### Fixes
 
 - Fix config UI bugs (#1409) and update design (#1422)
 - Dependency updates
