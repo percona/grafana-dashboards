@@ -2412,7 +2412,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 50
+            "y": 154
           },
           "id": 1177,
           "options": {
@@ -2506,7 +2506,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 65
+            "y": 169
           },
           "id": 1043,
           "options": {
@@ -2627,7 +2627,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 73
+            "y": 177
           },
           "id": 1030,
           "options": {
@@ -2802,7 +2802,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 81
+            "y": 185
           },
           "id": 1305,
           "options": {
@@ -2958,7 +2958,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 90
+            "y": 194
           },
           "id": 1313,
           "options": {
@@ -3054,7 +3054,7 @@
             "h": 8,
             "w": 6,
             "x": 0,
-            "y": 97
+            "y": 201
           },
           "id": 1200,
           "options": {
@@ -3172,7 +3172,7 @@
             "h": 8,
             "w": 18,
             "x": 6,
-            "y": 97
+            "y": 201
           },
           "id": 1201,
           "options": {
@@ -3269,7 +3269,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 105
+            "y": 209
           },
           "id": 1216,
           "options": {
@@ -3366,7 +3366,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 112
+            "y": 216
           },
           "id": 1212,
           "options": {
@@ -3481,7 +3481,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 120
+            "y": 46
           },
           "id": 14,
           "options": {
@@ -3586,7 +3586,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 120
+            "y": 46
           },
           "id": 27,
           "options": {
@@ -3705,7 +3705,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 120
+            "y": 46
           },
           "id": 1324,
           "options": {
@@ -3751,6 +3751,9 @@
           "type": "timeseries"
         },
         {
+          "datasource": {
+            "type": "prometheus"
+          },
           "description": "Shows the average hourly oplog data written to cache by the Primary server.",
           "fieldConfig": {
             "defaults": {
@@ -3764,6 +3767,7 @@
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "bars",
                 "fillOpacity": 100,
                 "gradientMode": "none",
@@ -3812,9 +3816,10 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 128
+            "y": 54
           },
           "id": 1299,
+          "maxPerRow": 3,
           "options": {
             "legend": {
               "calcs": [
@@ -3829,15 +3834,23 @@
               "sortDesc": true
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "multi",
               "sort": "none"
             }
           },
-          "pluginVersion": "9.2.20",
+          "pluginVersion": "11.6.4",
           "repeat": "service_name",
           "repeatDirection": "h",
           "targets": [
             {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "sum(increase(mongodb_oplog_stats_wt_cache_bytes_written_from_cache{service_name=~\"$service_name\"}[1h]))",
+              "interval": "1h",
+              "legendFormat": "{{service_name}}",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -3857,7 +3870,347 @@
         "y": 46
       },
       "id": 1326,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": "Metrics",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "inspect": false,
+                "width": 100
+              },
+              "decimals": 2,
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "#8b0000",
+                      "index": 0,
+                      "text": "No Data"
+                    },
+                    "-": {
+                      "index": 1,
+                      "text": "No Data"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "noValue": "-",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "red"
+                  },
+                  {
+                    "color": "orange",
+                    "value": 10
+                  },
+                  {
+                    "color": "green",
+                    "value": 20
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "node_name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "custom.width"
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "",
+                        "url": "/graph/d/node-instance-summary/node-summary?orgId=1&${interval:queryparam}&var-region=All&var-node_type=All&var-environment=All&var-node_name=${__value.text}&${__url_time_range}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #A"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "s"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #D"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "decbytes"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #F"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "decbytes"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #C"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #G"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 170
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #E"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "decbytes"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #B"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 262
+          },
+          "id": 1309,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "11.6.4",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "avg by (node_name)  (time() - container_start_time_seconds{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or avg by (node_name) ((node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"}))",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "$interval",
+              "legendFormat": "{{node_name}} | Uptime",
+              "refId": "A"
+            },
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "max by (node_name) (avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m]))",
+              "format": "table",
+              "instant": true,
+              "interval": "$interval",
+              "legendFormat": "{{node_name}} | Load",
+              "range": false,
+              "refId": "B"
+            },
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "clamp_max(avg by (node_name) (container_memory_usage_bytes{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|backup-agent|\"} * 100 / container_spec_memory_limit_bytes{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|backup-agent|\"}),100) or avg by (node_name) ((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} * 100)",
+              "format": "table",
+              "instant": true,
+              "interval": "$interval",
+              "legendFormat": "{{node_name}} | Memory",
+              "range": false,
+              "refId": "C"
+            },
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "max by (node_name) (container_spec_memory_limit_bytes{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
+              "format": "table",
+              "instant": true,
+              "interval": "$interval",
+              "legendFormat": "{{node_name}} | RAM",
+              "range": false,
+              "refId": "D"
+            },
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "max by (node_name) (container_spec_memory_limit_bytes{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}+container_spec_memory_swap_limit_bytes{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"})",
+              "format": "table",
+              "instant": true,
+              "interval": "$interval",
+              "legendFormat": "{{node_name}} | Virtual",
+              "refId": "E"
+            },
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "avg by (node_name) (sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype))",
+              "format": "table",
+              "instant": true,
+              "interval": "$interval",
+              "legendFormat": "{{node_name}} | Disk",
+              "refId": "F"
+            },
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "min by (node_name) (node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100",
+              "format": "table",
+              "instant": true,
+              "interval": "$interval",
+              "legendFormat": "{{node_name}} | Min Space",
+              "refId": "G"
+            }
+          ],
+          "title": "Nodes Overview",
+          "transformations": [
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "agent_id": true,
+                  "agent_type": true,
+                  "environment": true,
+                  "instance": true,
+                  "job": true,
+                  "machine_id": true,
+                  "node_id": true,
+                  "node_name": false,
+                  "node_type": true,
+                  "service_name": false
+                },
+                "indexByName": {
+                  "Time": 0,
+                  "Value #A": 3,
+                  "Value #B": 5,
+                  "Value #C": 6,
+                  "Value #D": 2,
+                  "Value #E": 8,
+                  "Value #F": 4,
+                  "Value #G": 7,
+                  "node_name": 1
+                },
+                "renameByName": {
+                  "Value #A": "Uptime",
+                  "Value #B": "Load Average",
+                  "Value #C": "Memory Available",
+                  "Value #D": "RAM",
+                  "Value #E": "Virtual Memory",
+                  "Value #F": "Disk Space",
+                  "Value #G": "Min Space Available",
+                  "node_name": "Node Name",
+                  "service_name": "Service Name"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
       "title": "Nodes Summary",
       "type": "row"
     }
