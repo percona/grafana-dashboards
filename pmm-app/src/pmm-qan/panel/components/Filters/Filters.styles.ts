@@ -9,7 +9,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
 
   return {
     getFiltersWrapper: (height) => css`
-      border: 1px solid rgba(40, 40, 40);
+      border: 1px solid ${theme.colors.border2};
       height: ${height}px;
       padding: 10px 16px !important;
       border-radius: 3px;
@@ -22,7 +22,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       }
     `,
     icon: css`
-      fill: #c6c6c6;
+      fill: ${theme.colors.textWeak};
     `,
     filtersHeader: css`
       display: flex;

@@ -56,77 +56,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "links": [
-    {
-      "icon": "doc",
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "Home"
-      ],
-      "targetBlank": false,
-      "title": "Home",
-      "type": "link",
-      "url": "/graph/d/pmm-home/home-dashboard"
-    },
-    {
-      "icon": "dashboard",
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "Query Analytics"
-      ],
-      "targetBlank": false,
-      "title": "Query Analytics",
-      "type": "link",
-      "url": "/graph/d/pmm-qan/pmm-query-analytics"
-    },
-    {
-      "icon": "bolt",
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "Compare"
-      ],
-      "targetBlank": false,
-      "title": "Compare",
-      "type": "link",
-      "url": "/graph/d/postgresql-instance-compare/postgresql-instances-compare"
-    },
-    {
-      "asDropdown": true,
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "PostgreSQL"
-      ],
-      "targetBlank": false,
-      "title": "PostgreSQL",
-      "type": "dashboards"
-    },
-    {
-      "asDropdown": true,
-      "includeVars": false,
-      "keepTime": true,
-      "tags": [
-        "Services"
-      ],
-      "targetBlank": false,
-      "title": "Services",
-      "type": "dashboards"
-    },
-    {
-      "asDropdown": true,
-      "includeVars": false,
-      "keepTime": true,
-      "tags": [
-        "PMM"
-      ],
-      "targetBlank": false,
-      "title": "PMM",
-      "type": "dashboards"
-    }
-  ],
+  "links": [],
   "panels": [
     {
       "fieldConfig": {
@@ -755,7 +685,7 @@
     {
       "datasource": {
         "type": "grafana-clickhouse-datasource",
-        "uid": "PDEE91DDB90597936"
+        "uid": "clickhouse"
       },
       "fieldConfig": {
         "defaults": {
@@ -987,7 +917,7 @@
           },
           "datasource": {
             "type": "grafana-clickhouse-datasource",
-            "uid": "PDEE91DDB90597936"
+            "uid": "clickhouse"
           },
           "format": 1,
           "hide": false,
@@ -1050,7 +980,7 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT $__timeInterval(period_start) as time, service_name \"Service\", username, database, fingerprint \"Query\", avg(m_query_time_sum/m_query_time_cnt) \"Execution_time\" FROM pmm.\"metrics\" WHERE ( period_start  >= $__fromTime AND period_start <= $__toTime ) AND ( service_name LIKE '%$service_name%' ) GROUP BY service_name, username, database, fingerprint , m_query_time_sum, time ORDER BY time DESC LIMIT 10000",
+          "rawSql": "SELECT $__timeInterval(period_start) as time, service_name \"Service\", username, database, fingerprint \"Query\", avgIf(m_query_time_sum/m_query_time_cnt, m_query_time_cnt > 0) \"Execution_time\" FROM pmm.\"metrics\" WHERE ( period_start  >= $__fromTime AND period_start <= $__toTime ) AND ( service_name LIKE '%$service_name%' ) GROUP BY service_name, username, database, fingerprint , m_query_time_sum, time ORDER BY time DESC LIMIT 10000",
           "refId": "A",
           "selectedFormat": 1
         }
@@ -5068,15 +4998,15 @@
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
-          "uid": "PDEE91DDB90597936"
+          "uid": "clickhouse"
         },
-        "definition": "SELECT count(*)\n   FROM pmm.metrics\n   WHERE service_name = '${service_name}'\n     AND ( period_start  >= $__fromTime AND period_start <= $__toTime )\n    AND m_query_time_sum/m_query_time_cnt > ${qthres}",
+        "definition": "SELECT count(*)\n   FROM pmm.metrics\n   WHERE service_name = '${service_name}'\n     AND ( period_start  >= $__fromTime AND period_start <= $__toTime )\n    AND m_query_time_cnt > 0 AND m_query_time_sum/m_query_time_cnt > ${qthres}",
         "hide": 2,
         "includeAll": false,
         "label": "slowq",
         "name": "slowq",
         "options": [],
-        "query": "SELECT count(*)\n   FROM pmm.metrics\n   WHERE service_name = '${service_name}'\n     AND ( period_start  >= $__fromTime AND period_start <= $__toTime )\n    AND m_query_time_sum/m_query_time_cnt > ${qthres}",
+        "query": "SELECT count(*)\n   FROM pmm.metrics\n   WHERE service_name = '${service_name}'\n     AND ( period_start  >= $__fromTime AND period_start <= $__toTime )\n    AND m_query_time_cnt > 0 AND m_query_time_sum/m_query_time_cnt > ${qthres}",
         "refresh": 2,
         "regex": "",
         "type": "query"
@@ -5126,7 +5056,7 @@
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
-          "uid": "PDEE91DDB90597936"
+          "uid": "clickhouse"
         },
         "definition": "select ($__toTime - $__fromTime)/60",
         "hide": 2,
@@ -5201,7 +5131,7 @@
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
-          "uid": "PDEE91DDB90597936"
+          "uid": "clickhouse"
         },
         "definition": "select round($uptime, 2)",
         "hide": 2,
