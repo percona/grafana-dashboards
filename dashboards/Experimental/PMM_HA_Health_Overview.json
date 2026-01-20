@@ -19,116 +19,20 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 100,
+  "id": 92,
   "links": [],
   "panels": [
-    {
-      "datasource": "Metrics",
-      "description": "CPU usage by pod for selected namespace",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 25,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "cpu",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "cores"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 6,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "pluginVersion": "11.6.4",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "editorMode": "code",
-          "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{namespace=\"$namespace\", container!=\"\", pod!=\"\"}[5m]))",
-          "legendFormat": "{{pod}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "🧮 CPU Usage for PMM HA",
-      "type": "timeseries"
-    },
     {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 0
       },
-      "id": 100,
+      "id": 200,
       "panels": [],
-      "title": "🏥 Cluster Health Status",
+      "title": "📊 Overview",
       "type": "row"
     },
     {
@@ -181,7 +85,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 9
+        "y": 1
       },
       "id": 5,
       "options": {
@@ -265,7 +169,7 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 9
+        "y": 1
       },
       "id": 1,
       "options": {
@@ -349,7 +253,7 @@
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 9
+        "y": 1
       },
       "id": 2,
       "options": {
@@ -433,7 +337,7 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 9
+        "y": 1
       },
       "id": 3,
       "options": {
@@ -517,7 +421,7 @@
         "h": 4,
         "w": 4,
         "x": 16,
-        "y": 9
+        "y": 1
       },
       "id": 4,
       "options": {
@@ -552,21 +456,209 @@
       "type": "stat"
     },
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 13
+      "datasource": "Metrics",
+      "description": "Overall health percentage of all PMM HA pods",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "yellow",
+                "value": 80
+              },
+              {
+                "color": "green",
+                "value": 95
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
       },
-      "id": 105,
-      "panels": [],
-      "title": "🧭 PMM Details",
-      "type": "row"
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 5
+      },
+      "id": 201,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "(\n  count(kube_pod_status_phase{phase=\"Running\", exported_namespace=\"$namespace\", exported_pod!~\".*($health_exclude_regex).*\"} == 1)\n  /\n  count(kube_pod_info{exported_namespace=\"$namespace\", exported_pod!~\".*($health_exclude_regex).*\"})\n) * 100",
+          "legendFormat": "Health",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "🎯 Overall System Health",
+      "type": "gauge"
     },
     {
       "datasource": "Metrics",
-      "description": "Status of each PMM server pod (Running = UP).",
+      "description": "Number of running pods vs total pods",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 5
+      },
+      "id": 202,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "count(kube_pod_status_phase{phase=\"Running\", exported_namespace=\"$namespace\", exported_pod!~\".*($health_exclude_regex).*\"} == 1)",
+          "legendFormat": "Running",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "count(kube_pod_info{exported_namespace=\"$namespace\", exported_pod!~\".*($health_exclude_regex).*\"})",
+          "legendFormat": "Total",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "🔢 Pod Count",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Total pod restarts in the last 24 hours",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 5
+      },
+      "id": 203,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=\"$namespace\", pod!~\".*($health_exclude_regex).*\"}[24h]))",
+          "legendFormat": "Restarts (24h)",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "🔄 Pod Restarts",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Pods with restarts in the last 24 hours",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -579,37 +671,20 @@
             },
             "inspect": false
           },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "red",
-                  "index": 1,
-                  "text": "DOWN"
-                }
-              },
-              "type": "value"
-            },
-            {
-              "options": {
-                "1": {
-                  "color": "green",
-                  "index": 0,
-                  "text": "UP"
-                }
-              },
-              "type": "value"
-            }
-          ],
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "green"
               },
               {
-                "color": "green",
+                "color": "yellow",
                 "value": 1
+              },
+              {
+                "color": "red",
+                "value": 3
               }
             ]
           }
@@ -636,12 +711,12 @@
         ]
       },
       "gridPos": {
-        "h": 5,
-        "w": 24,
-        "x": 0,
-        "y": 14
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 5
       },
-      "id": 50,
+      "id": 204,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -660,30 +735,29 @@
           "datasource": "Metrics",
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max by(exported_pod) (kube_pod_status_phase{phase=\"Running\", exported_pod=~\"${release}-${pmm_suffix_regex}\", exported_namespace=\"$namespace\"})",
+          "expr": "sum by(pod) (increase(kube_pod_container_status_restarts_total{namespace=\"$namespace\", pod!~\".*($health_exclude_regex).*\"}[24h])) > 0",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "Status"
+          "refId": "A"
         }
       ],
-      "title": "PMM Pods",
+      "title": "⚠️ Pods with Restarts",
       "transformations": [
         {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Time": true,
-              "service_name": true
+              "Time": true
             },
             "indexByName": {
               "Value": 1,
-              "exported_pod": 0
+              "pod": 0
             },
             "renameByName": {
-              "Value": "Status",
-              "exported_pod": "Pod"
+              "Value": "Restarts (24h)",
+              "pod": "Pod"
             }
           }
         }
@@ -691,18 +765,567 @@
       "type": "table"
     },
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 11
+      },
+      "id": 205,
+      "panels": [],
+      "title": "💻 Resource Usage",
+      "type": "row"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "CPU usage by pod for selected namespace",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 25,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "cpu",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "cores"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 12
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{namespace=\"$namespace\", container!=\"\", pod!=\"\"}[5m]))",
+          "legendFormat": "{{pod}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "🧮 CPU Usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Memory usage by pod for selected namespace",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 25,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "memory",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "id": 206,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "sum by(pod) (container_memory_working_set_bytes{namespace=\"$namespace\", container!=\"\", pod!=\"\"})",
+          "legendFormat": "{{pod}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "💾 Memory Usage",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 207,
+      "panels": [],
+      "title": "💿 Storage Usage",
+      "type": "row"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "PostgreSQL persistent volume usage percentage",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 21
+      },
+      "id": 208,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "max(\n  (\n    (kubelet_volume_stats_capacity_bytes{namespace=\"$namespace\", persistentvolumeclaim=~\"${release}-pg-db-.*\"} - kubelet_volume_stats_available_bytes{namespace=\"$namespace\", persistentvolumeclaim=~\"${release}-pg-db-.*\"})\n    /\n    kubelet_volume_stats_capacity_bytes{namespace=\"$namespace\", persistentvolumeclaim=~\"${release}-pg-db-.*\"}\n  ) * 100\n)",
+          "legendFormat": "PostgreSQL",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "🐘 PostgreSQL Storage",
+      "type": "gauge"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "ClickHouse persistent volume usage percentage",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 21
+      },
+      "id": 209,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "max(\n  (\n    (kubelet_volume_stats_capacity_bytes{namespace=\"$namespace\", persistentvolumeclaim=~\".*${clickhouse_suffix_regex}\"} - kubelet_volume_stats_available_bytes{namespace=\"$namespace\", persistentvolumeclaim=~\".*${clickhouse_suffix_regex}\"})\n    /\n    kubelet_volume_stats_capacity_bytes{namespace=\"$namespace\", persistentvolumeclaim=~\".*${clickhouse_suffix_regex}\"}\n  ) * 100\n)",
+          "legendFormat": "ClickHouse",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "🖱️ ClickHouse Storage",
+      "type": "gauge"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "VictoriaMetrics persistent volume usage percentage",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 21
+      },
+      "id": 210,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "max(\n  (\n    (kubelet_volume_stats_capacity_bytes{namespace=\"$namespace\", persistentvolumeclaim=~\".*vmstorage.*\"} - kubelet_volume_stats_available_bytes{namespace=\"$namespace\", persistentvolumeclaim=~\".*vmstorage.*\"})\n    /\n    kubelet_volume_stats_capacity_bytes{namespace=\"$namespace\", persistentvolumeclaim=~\".*vmstorage.*\"}\n  ) * 100\n)",
+          "legendFormat": "VictoriaMetrics",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "📊 VictoriaMetrics Storage",
+      "type": "gauge"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 211,
+      "panels": [],
+      "title": "📈 Service Availability",
+      "type": "row"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Health percentage timeline for each service component. Shows % of pods running over time. 100% = all pods healthy (green), <100% = some pods down (red/yellow).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 70,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "yellow",
+                "value": 75
+              },
+              {
+                "color": "green",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "id": 212,
+      "options": {
+        "alignValue": "left",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "(\n  count(kube_pod_status_phase{phase=\"Running\", exported_namespace=\"$namespace\", exported_pod=~\"${release}-${pmm_suffix_regex}\", exported_pod!~\".*($health_exclude_regex).*\"} == 1)\n  /\n  count(kube_pod_info{exported_namespace=\"$namespace\", exported_pod=~\"${release}-${pmm_suffix_regex}\", exported_pod!~\".*($health_exclude_regex).*\"})\n) * 100",
+          "legendFormat": "🧭 PMM",
+          "range": true,
+          "refId": "PMM"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "(\n  count(kube_pod_status_phase{phase=\"Running\", exported_namespace=\"$namespace\", exported_pod=~\"${release}-pg-db-.*\", exported_pod!~\".*(${pg_exclude_regex}|$health_exclude_regex).*\"} == 1)\n  /\n  count(kube_pod_info{exported_namespace=\"$namespace\", exported_pod=~\"${release}-pg-db-.*\", exported_pod!~\".*(${pg_exclude_regex}|$health_exclude_regex).*\"})\n) * 100",
+          "legendFormat": "🐘 PostgreSQL",
+          "range": true,
+          "refId": "PostgreSQL"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "(\n  count(kube_pod_status_phase{phase=\"Running\", exported_namespace=\"$namespace\", exported_pod=~\"${release}-${clickhouse_suffix_regex}\", exported_pod!~\".*($health_exclude_regex).*\"} == 1)\n  /\n  count(kube_pod_info{exported_namespace=\"$namespace\", exported_pod=~\"${release}-${clickhouse_suffix_regex}\", exported_pod!~\".*($health_exclude_regex).*\"})\n) * 100",
+          "legendFormat": "🖱️ ClickHouse",
+          "range": true,
+          "refId": "ClickHouse"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "(\n  count(kube_pod_status_phase{phase=\"Running\", exported_namespace=\"$namespace\", exported_pod=~\"${vm_suffix_regex}.*${release}.*\", exported_pod!~\".*($health_exclude_regex).*\"} == 1)\n  /\n  count(kube_pod_info{exported_namespace=\"$namespace\", exported_pod=~\"${vm_suffix_regex}.*${release}.*\", exported_pod!~\".*($health_exclude_regex).*\"})\n) * 100",
+          "legendFormat": "📊 VictoriaMetrics",
+          "range": true,
+          "refId": "VictoriaMetrics"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "(\n  count(kube_pod_status_phase{phase=\"Running\", exported_namespace=\"$namespace\", exported_pod=~\"$haproxy_pod_regex\", exported_pod!~\".*($health_exclude_regex).*\"} == 1)\n  /\n  count(kube_pod_info{exported_namespace=\"$namespace\", exported_pod=~\"$haproxy_pod_regex\", exported_pod!~\".*($health_exclude_regex).*\"})\n) * 100",
+          "legendFormat": "⚖️ HAProxy",
+          "range": true,
+          "refId": "HAProxy"
+        }
+      ],
+      "title": "⏱️ Service Availability by Component",
+      "type": "state-timeline"
+    },
+    {
       "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 43
       },
-      "id": 101,
+      "id": 105,
       "panels": [
         {
           "datasource": "Metrics",
-          "description": "Status of each PostgreSQL pod based on Kubernetes phase (Running = UP).",
+          "description": "Status of each PMM server pod (Running = UP).",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -768,57 +1391,16 @@
                     }
                   }
                 ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Role"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 120
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "type": "auto"
-                    }
-                  },
-                  {
-                    "id": "mappings",
-                    "value": [
-                      {
-                        "options": {
-                          "0": {
-                            "index": 1,
-                            "text": "Replica"
-                          }
-                        },
-                        "type": "value"
-                      },
-                      {
-                        "options": {
-                          "1": {
-                            "index": 0,
-                            "text": "Primary"
-                          }
-                        },
-                        "type": "value"
-                      }
-                    ]
-                  }
-                ]
               }
             ]
           },
           "gridPos": {
-            "h": 6,
+            "h": 5,
             "w": 24,
             "x": 0,
             "y": 37
           },
-          "id": 10,
+          "id": 50,
           "options": {
             "cellHeight": "sm",
             "footer": {
@@ -837,50 +1419,29 @@
               "datasource": "Metrics",
               "editorMode": "code",
               "exemplar": false,
-              "expr": "max by(exported_pod) (kube_pod_status_phase{phase=\"Running\", exported_pod=~\"${release}-pg-db-.*\", exported_pod!~\".*(${pg_exclude_regex}).*\", exported_namespace=\"$namespace\"})",
+              "expr": "max by(exported_pod) (kube_pod_status_phase{phase=\"Running\", exported_pod=~\"${release}-${pmm_suffix_regex}\", exported_namespace=\"$namespace\"})",
               "format": "table",
-              "instant": false,
+              "instant": true,
               "legendFormat": "__auto",
-              "range": true,
+              "range": false,
               "refId": "Status"
-            },
-            {
-              "datasource": "Metrics",
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "label_replace(max by(name) (patroni_primary), \"exported_pod\", \"$1\", \"name\", \"(.*)\")",
-              "format": "table",
-              "instant": false,
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "Primary"
             }
           ],
-          "title": "PostgreSQL Pods",
+          "title": "PMM Pods",
           "transformations": [
-            {
-              "id": "seriesToColumns",
-              "options": {
-                "byField": "exported_pod"
-              }
-            },
             {
               "id": "organize",
               "options": {
                 "excludeByName": {
                   "Time": true,
-                  "name": true,
                   "service_name": true
                 },
-                "includeByName": {},
                 "indexByName": {
-                  "Value #Primary": 2,
-                  "Value #Status": 1,
+                  "Value": 1,
                   "exported_pod": 0
                 },
                 "renameByName": {
-                  "Value #Primary": "Role",
-                  "Value #Status": "Status",
+                  "Value": "Status",
                   "exported_pod": "Pod"
                 }
               }
@@ -889,8 +1450,209 @@
           "type": "table"
         }
       ],
-      "title": "🐘 PostgreSQL Details",
+      "title": "🧭 PMM Pod's Status",
       "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
+      "id": 101,
+      "panels": [],
+      "title": "🐘 PostgreSQL Pod's Status",
+      "type": "row"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Status of each PostgreSQL pod based on Kubernetes phase (Running = UP).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "DOWN"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Pod"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 400
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Role"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "index": 1,
+                        "text": "Replica"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "1": {
+                        "index": 0,
+                        "text": "Primary"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 38
+      },
+      "id": 10,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(exported_pod) (kube_pod_status_phase{phase=\"Running\", exported_pod=~\"${release}-pg-db-.*\", exported_pod!~\".*(${pg_exclude_regex}).*\", exported_namespace=\"$namespace\"})",
+          "format": "table",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "Status"
+        },
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "label_replace(max by(name) (patroni_primary), \"exported_pod\", \"$1\", \"name\", \"(.*)\")",
+          "format": "table",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "Primary"
+        }
+      ],
+      "title": "PostgreSQL Pods",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "exported_pod"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "name": true,
+              "service_name": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Value #Primary": 2,
+              "Value #Status": 1,
+              "exported_pod": 0
+            },
+            "renameByName": {
+              "Value #Primary": "Role",
+              "Value #Status": "Status",
+              "exported_pod": "Pod"
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "collapsed": true,
@@ -898,7 +1660,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 44
       },
       "id": 102,
       "panels": [
@@ -1018,7 +1780,7 @@
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 73
+            "y": 84
           },
           "id": 20,
           "options": {
@@ -1090,7 +1852,7 @@
           "type": "table"
         }
       ],
-      "title": "🖱️ ClickHouse Details",
+      "title": "🖱️ ClickHouse Pod's Status",
       "type": "row"
     },
     {
@@ -1099,7 +1861,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 45
       },
       "id": 103,
       "panels": [
@@ -1200,7 +1962,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 39
+            "y": 50
           },
           "id": 30,
           "options": {
@@ -1264,7 +2026,7 @@
           "type": "table"
         }
       ],
-      "title": "📊 VictoriaMetrics Details",
+      "title": "📊 VictoriaMetrics Pod's Status",
       "type": "row"
     },
     {
@@ -1273,7 +2035,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 46
       },
       "id": 104,
       "panels": [
@@ -1548,7 +2310,7 @@
           "type": "table"
         }
       ],
-      "title": "⚖️ HAProxy Details",
+      "title": "⚖️ HAProxy Pod's Status",
       "type": "row"
     }
   ],
@@ -1612,8 +2374,8 @@
       },
       {
         "current": {
-          "text": "pgbouncer|repo-host",
-          "value": "pgbouncer|repo-host"
+          "text": "pgbouncer|repo-host|backup",
+          "value": "pgbouncer|repo-host|backup"
         },
         "hide": 2,
         "label": "PostgreSQL exclude regex",
@@ -1621,11 +2383,11 @@
         "options": [
           {
             "selected": true,
-            "text": "pgbouncer|repo-host",
-            "value": "pgbouncer|repo-host"
+            "text": "pgbouncer|repo-host|backup",
+            "value": "pgbouncer|repo-host|backup"
           }
         ],
-        "query": "pgbouncer|repo-host",
+        "query": "pgbouncer|repo-host|backup",
         "type": "textbox"
       },
       {
@@ -1699,16 +2461,34 @@
         ],
         "query": "(vmauth|vminsert|vmselect|vmstorage|vmagent).*",
         "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "(token|backup).*",
+          "value": "(token|backup).*"
+        },
+        "hide": 2,
+        "label": "Exclude pods from health (regex)",
+        "name": "health_exclude_regex",
+        "options": [
+          {
+            "selected": true,
+            "text": "(token|backup).*",
+            "value": "(token|backup).*"
+          }
+        ],
+        "query": "(token|backup).*",
+        "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-60m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "PMM HA Health Overview",
   "uid": "pmm-ha-health-overview",
-  "version": 13
+  "version": 3
 }
