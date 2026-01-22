@@ -30,6 +30,18 @@ import { getStyles } from './QueryAnalytics.styles';
 import { Messages } from './QueryAnalytics.messages';
 import { buildShareLink, toUnixTimestamp } from './QueryAnalytics.tools';
 
+const SPLIT_PANE_CONFIG = {
+  overview: {
+    minHeight: '30%',
+    maxHeight: '60%',
+  },
+  details: {
+    minHeight: '40%',
+    maxHeight: '68%',
+    zIndex: 999,
+  },
+};
+
 // Panel now receives theme from root.
 interface QueryAnalyticsPanelProps {
   grafanaTheme: GrafanaTheme;
@@ -97,15 +109,20 @@ const QueryAnalyticsPanel: FC<QueryAnalyticsPanelProps> = ({ grafanaTheme }) => 
           <div className={styles.splitterWrapper}>
             {/* @ts-ignore */}
             <SplitPane
+              key={querySelected ? 'split' : 'full'}
               split="horizontal"
               onDragFinished={() => setReload({})}
               className={styles.splitterWrapper}
               resizerStyle={{ display: querySelected ? '' : 'none' }}
               pane1Style={{
-                minHeight: querySelected ? '30%' : '100%',
-                maxHeight: querySelected ? '60%' : '100%',
+                minHeight: querySelected ? SPLIT_PANE_CONFIG.overview.minHeight : '100%',
+                maxHeight: querySelected ? SPLIT_PANE_CONFIG.overview.maxHeight : '100%',
               }}
-              pane2Style={{ minHeight: '20%', zIndex: 999 }}
+              pane2Style={{
+                minHeight: querySelected ? SPLIT_PANE_CONFIG.details.minHeight : '0',
+                maxHeight: querySelected ? SPLIT_PANE_CONFIG.details.maxHeight : '0',
+                zIndex: SPLIT_PANE_CONFIG.details.zIndex,
+              }}
             >
               <Overview />
               <div className={styles.detailsWrapper}>
