@@ -32,7 +32,7 @@ To configure a readonly user, follow these steps:
 
 1. Create a `readonly` user profile following the [Creating Users and Roles in ClickHouse](https://clickhouse.com/docs/en/operations/access-rights) guide.
 2. Ensure the `readonly` user has enough permission to modify the `max_execution_time` setting required by the underlying [clickhouse-go client](https://github.com/ClickHouse/clickhouse-go/).
-3. If you're using a public Clickhouse instance, it's not recommended to set `readonly=2` in the `readonly` profile. Instead, leave `readonly=1` and set the constraint type of `max_execution_time` to [changeable_in_readonly](https://clickhouse.com/docs/en/operations/settings/constraints-on-settings) to allow modification of this setting.
+3. If you're using a public ClickHouse instance, it's not recommended to set `readonly=2` in the `readonly` profile. Instead, leave `readonly=1` and set the constraint type of `max_execution_time` to [changeable_in_readonly](https://clickhouse.com/docs/en/operations/settings/constraints-on-settings) to allow modification of this setting.
 
 ### ClickHouse protocol support
 
@@ -260,7 +260,7 @@ docs](https://grafana.com/docs/grafana/latest/variables/variable-types/add-ad-ho
 
 #### Using a query for Ad Hoc filters
 
-The second `clickhouse_adhoc_query` also allows any valid Clickhouse query. The
+The second `clickhouse_adhoc_query` also allows any valid ClickHouse query. The
 query results will be used to populate your ad-hoc filter's selectable filters.
 You may choose to hide this variable from view as it serves no further purpose.
 
