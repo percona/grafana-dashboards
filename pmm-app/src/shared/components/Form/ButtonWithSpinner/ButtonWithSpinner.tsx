@@ -3,9 +3,9 @@ import { cx } from '@emotion/css';
 import { Button, Spinner, ButtonProps } from '@grafana/ui';
 import * as styles from './ButtonWithSpinner.styles';
 
-interface ButtonWithSpinnerProps extends ButtonProps {
+type ButtonWithSpinnerProps = ButtonProps & {
   isLoading?: boolean;
-}
+};
 
 export const ButtonWithSpinner: FC<ButtonWithSpinnerProps> = ({
   children,
