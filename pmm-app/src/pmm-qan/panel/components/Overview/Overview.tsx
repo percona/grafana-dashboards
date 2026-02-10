@@ -107,7 +107,7 @@ export const Overview: FC = () => {
                   selected.index === 0,
                 );
               }}
-              scroll={{ y: Math.min(height, 550), x: '1000px' }}
+              scroll={{ y: Math.min(height, 550), x: '100%' }}
               onSortChange={onSortChange}
               rowNumber={(index) => <div>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>}
               orderBy={orderBy}
