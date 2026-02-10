@@ -6,7 +6,7 @@ import { TABLE_HEIGHT, TABLE_HEIGHT_QUERY_SELECTED } from './components/Filters/
 
 export const getStyles = stylesFactory((theme: GrafanaTheme, querySelected: boolean) => {
   const parameters = getPmmTheme(theme);
-  const tableHeight = querySelected ? TABLE_HEIGHT_QUERY_SELECTED: TABLE_HEIGHT;
+  const tableHeight = querySelected ? TABLE_HEIGHT_QUERY_SELECTED : TABLE_HEIGHT;
 
   return {
     overviewHeader: css`
@@ -66,6 +66,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme, querySelected: bool
       .table-body > div {
         height: ${tableHeight};
       }
-    `
+    `,
   };
 });

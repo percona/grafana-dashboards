@@ -91,7 +91,7 @@ const QueryAnalyticsPanel: FC<QueryAnalyticsPanelProps> = ({ grafanaTheme }) => 
       <div className="overview-filters">
         <Filters />
       </div>
-      <div className={cx(styles.queryAnalyticsData, "query-analytics-data")}>
+      <div className={cx(styles.queryAnalyticsData, 'query-analytics-data')}>
         <div>
           <div className={cx(styles.overviewHeader, 'manage-columns')}>
             <Button
