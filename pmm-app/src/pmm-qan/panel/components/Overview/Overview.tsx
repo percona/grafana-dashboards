@@ -12,19 +12,8 @@ import { Table } from './components/QanTable';
 import { getStyles } from '../../QueryAnalytics.styles';
 import { Messages } from './Overview.messages';
 
-const SELECTED_ROW_SELECTORS = [
-  '.selected-overview-row',
-  '[class*="selected-overview"]',
-  '[class*="selected"]',
-  '.ant-table-row-selected',
-];
-const MAX_TABLE_HEIGHT = 1227;
-const SCROLL_CHECK_INTERVAL_MS = 200;
-const SCROLL_MAX_ATTEMPTS = 10;
-
 export const Overview: FC = () => {
   const theme = useTheme();
-  const styles = getStyles(theme);
 
   const [total, setTotal] = useState(30);
   const [overviewMetricsList, loading] = useOverviewTable(setTotal);
@@ -37,41 +26,13 @@ export const Overview: FC = () => {
       queryId, querySelected, totals, pageNumber, pageSize, orderBy, loadingDetails,
     },
   } = useContext(QueryAnalyticsProvider);
+  const styles = getStyles(theme, querySelected);
   const tableWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setHeight((tableWrapperRef.current && tableWrapperRef.current.clientHeight) || 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tableWrapperRef.current && tableWrapperRef.current.clientHeight]);
-
-  // Auto-scroll selected row into view when a query is selected.
-  // Uses interval-based checking because the selected row may not be immediately available in the DOM
-  // after querySelected changes (due to React rendering cycles and table virtualization).
-  // This ensures the selected row becomes visible in the table viewport, improving UX.
-  useEffect(() => {
-    if (!querySelected) {
-      return undefined;
-    }
-
-    let attempts = 0;
-
-    const intervalId = setInterval(() => {
-      attempts += 1;
-
-      const row = SELECTED_ROW_SELECTORS.map((selector) => document.querySelector(selector)).find(Boolean);
-
-      if (row) {
-        row.scrollIntoView({ block: 'center', behavior: 'smooth' });
-        clearInterval(intervalId);
-      } else if (attempts >= SCROLL_MAX_ATTEMPTS) {
-        clearInterval(intervalId);
-      }
-    }, SCROLL_CHECK_INTERVAL_MS);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [querySelected]);
 
   const changePageNumber = useCallback((page) => {
     contextActions.changePage(page);
@@ -132,7 +93,7 @@ export const Overview: FC = () => {
     <div className="table-wrapper overview" ref={tableWrapperRef}>
       {useMemo(
         () => (
-          <div>
+          <div className={styles.queryTableWrapper}>
             <Table
               columns={overviewMetricsList.columns}
               data={overviewMetricsList.rows.length > 1 ? overviewMetricsList.rows : []}
@@ -146,7 +107,7 @@ export const Overview: FC = () => {
                   selected.index === 0,
                 );
               }}
-              scroll={{ y: Math.min(height, MAX_TABLE_HEIGHT), x: '100%' }}
+              scroll={{ y: Math.min(height, 550), x: '1000px' }}
               onSortChange={onSortChange}
               rowNumber={(index) => <div>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>}
               orderBy={orderBy}

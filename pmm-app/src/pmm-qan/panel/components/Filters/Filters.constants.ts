@@ -6,6 +6,8 @@ export const FILTERS_BODY_HEIGHT = 1205;
 export const FILTERS_HEADER_SIZE = 50;
 export const FILTERS_MARGIN_BOTTOM = 20;
 export const COMMENT_NAME_LENGTH = 24;
+export const TABLE_HEIGHT = '75vh';
+export const TABLE_HEIGHT_QUERY_SELECTED = '290px';
 
 const subURL = '/graph/d/';
 

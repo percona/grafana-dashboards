@@ -2,23 +2,18 @@ import { css } from '@emotion/css';
 import { GrafanaTheme } from '@grafana/data';
 import { stylesFactory } from '@grafana/ui';
 import { getPmmTheme } from 'shared/components/helpers/getPmmTheme';
+import { TABLE_HEIGHT, TABLE_HEIGHT_QUERY_SELECTED } from './components/Filters/Filters.constants';
 
-const LAYOUT_SIZES = {
-  headerHeight: 50,
-  footerHeight: 50,
-  splitterHeight: 1300,
-  tableMinHeight: 1000,
-};
-
-export const getStyles = stylesFactory((theme: GrafanaTheme) => {
+export const getStyles = stylesFactory((theme: GrafanaTheme, querySelected: boolean) => {
   const parameters = getPmmTheme(theme);
+  const tableHeight = querySelected ? TABLE_HEIGHT_QUERY_SELECTED: TABLE_HEIGHT;
 
   return {
     overviewHeader: css`
       display: flex;
       justify-content: flex-end;
       padding: 13px 2px 5px 0px;
-      height: ${LAYOUT_SIZES.headerHeight}px;
+      height: 50px;
 
       button {
         margin-right: ${theme.spacing.sm} !important;
@@ -28,10 +23,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       display: flex;
       justify-content: flex-start;
       padding: 13px 2px 5px 0px;
-      height: ${LAYOUT_SIZES.footerHeight}px;
+      height: 50px;
     `,
     splitterWrapper: css`
-      height: ${LAYOUT_SIZES.splitterHeight}px;
+      height: 1200px;
       position: relative;
     `,
     detailsWrapper: css`
@@ -54,12 +49,23 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       color: ${parameters.mainTextColor};
     `,
     tableWrapper: css`
-      min-height: ${LAYOUT_SIZES.tableMinHeight}px;
+      min-height: 1000px;
     `,
     link: css`
       display: block;
       margin-top: ${theme.spacing.sm};
       text-decoration: underline;
     `,
+    queryAnalyticsData: css`
+      height: ${tableHeight};
+    `,
+    queryTableWrapper: css`
+      height: ${tableHeight};
+
+      .table-body,
+      .table-body > div {
+        height: ${tableHeight};
+      }
+    `
   };
 });
