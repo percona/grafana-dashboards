@@ -2979,6 +2979,161 @@
         "query": "1s,5s,1m,5m,1h,6h,1d",
         "refresh": 2,
         "type": "interval"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(node_load1{node_type=~\"generic|remote_rds|container|remote\"}, region)",
+        "includeAll": true,
+        "label": "Region",
+        "multi": true,
+        "name": "region",
+        "options": [],
+        "query": {
+          "query": "label_values(node_load1{node_type=~\"generic|remote_rds|container|remote\"}, region)",
+          "refId": "Metrics-region-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(up{region=~\"$region\"}, node_type)",
+        "includeAll": true,
+        "label": "Type",
+        "multi": true,
+        "name": "node_type",
+        "options": [],
+        "query": {
+          "query": "label_values(up{region=~\"$region\"}, node_type)",
+          "refId": "Metrics-node_type-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Metrics",
+        "definition": "label_values({region=~\"$region\",node_type=~\"$node_type\",__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions|up\"}, environment)",
+        "includeAll": true,
+        "label": "Environment",
+        "multi": true,
+        "name": "environment",
+        "options": [],
+        "query": {
+          "query": "label_values({region=~\"$region\",node_type=~\"$node_type\",__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions|up\"}, environment)",
+          "refId": "Metrics-node_type-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(up{region=~\"$region\",node_type=~\"$node_type\",environment=~\"$environment\"}, node_name)",
+        "includeAll": false,
+        "label": "Node Name",
+        "name": "node_name",
+        "options": [],
+        "query": {
+          "query": "label_values(up{region=~\"$region\",node_type=~\"$node_type\",environment=~\"$environment\"}, node_name)",
+          "refId": "Metrics-node_name-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values({__name__=~\"node_disk_reads_completed_total|rdsosmetrics_diskIO_util\",node_name=~\"$node_name\", device!~\"dm-.+\"}, device)",
+        "includeAll": true,
+        "label": "Device",
+        "multi": true,
+        "name": "device",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"node_disk_reads_completed_total|rdsosmetrics_diskIO_util\",node_name=~\"$node_name\", device!~\"dm-.+\"}, device)",
+          "refId": "Metrics-device-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Username",
+        "multi": true,
+        "name": "username",
+        "options": [],
+        "query": {
+          "query": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+          "refId": "Metrics-username-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Metrics",
+        "definition": "label_values(node_filesystem_avail_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}, mountpoint)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Mountpoint",
+        "multi": true,
+        "name": "mountpoint",
+        "options": [],
+        "query": {
+          "query": "label_values(node_filesystem_avail_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}, mountpoint)",
+          "refId": "Metrics-mountpoint-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
       }
     ]
   },
