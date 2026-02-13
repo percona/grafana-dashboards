@@ -51,88 +51,7 @@
   "graphTooltip": 1,
   "id": null,
   "iteration": 1656499460857,
-  "links": [
-    {
-      "icon": "doc",
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "Home"
-      ],
-      "targetBlank": false,
-      "title": "Home",
-      "type": "link",
-      "url": "/graph/d/pmm-home/home-dashboard"
-    },
-    {
-      "icon": "dashboard",
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "Query Analytics"
-      ],
-      "targetBlank": false,
-      "title": "Query Analytics",
-      "type": "link",
-      "url": "/graph/d/pmm-qan/pmm-query-analytics"
-    },
-    {
-      "icon": "bolt",
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "Compare"
-      ],
-      "targetBlank": false,
-      "title": "Compare",
-      "type": "link",
-      "url": "/graph/d/mysql-instance-compare/mysql-instances-compare"
-    },
-    {
-      "asDropdown": true,
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "MySQL"
-      ],
-      "targetBlank": false,
-      "title": "MySQL",
-      "type": "dashboards"
-    },
-    {
-      "asDropdown": true,
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "MySQL_HA"
-      ],
-      "targetBlank": false,
-      "title": "HA",
-      "type": "dashboards"
-    },
-    {
-      "asDropdown": true,
-      "includeVars": false,
-      "keepTime": true,
-      "tags": [
-        "Services"
-      ],
-      "targetBlank": false,
-      "title": "Services",
-      "type": "dashboards"
-    },
-    {
-      "asDropdown": true,
-      "includeVars": false,
-      "keepTime": true,
-      "tags": [
-        "PMM"
-      ],
-      "targetBlank": false,
-      "title": "PMM",
-      "type": "dashboards"
-    }
-  ],
+  "links": [],
   "liveNow": false,
   "panels": [
     {
@@ -500,7 +419,7 @@
           "calculatedInterval": "10m",
           "datasourceErrors": {},
           "errors": {},
-          "expr": "avg by (node_name) ((mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"} * 100)) / \non (node_name) (max by () (container_spec_memory_limit_bytes{node_name=~\"$node_name\",id=~\"/kubepods.*\",container!~\"POD|pmm-client|\"}) or \nmax by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\"}))",
+          "expr": "100 * (avg by (service_name)(mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"})) / on(service_name) min by (service_name) (node_memory_MemTotal_bytes * on(node_name) group_left(service_name) min by (node_name,service_name) (mysql_up{service_name=~\"$service_name\"}))",
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
@@ -2216,7 +2135,7 @@
       "dashLength": 10,
       "dashes": false,
       "decimals": 0,
-      "description": "***System Memory***: Total Memory for the system.\\\n***InnoDB Buffer Pool Size***: \nInnoDB maintains a storage area called the buffer pool for caching data and indexes in memory.  Knowing how the InnoDB buffer pool works, and taking advantage of it to keep frequently accessed data in memory, is one of the most important aspects of MySQL tuning. The goal is to keep the working set in memory. In most cases, this should be between 60%-90% of available memory on a dedicated database host, but depends on many factors.\\\n***TokuDB Cache Size***: Similar in function to the InnoDB Buffer Pool,  TokuDB will allocate 50% of the installed RAM for its own cache.\\\n***Key Buffer Size***: Index blocks for MYISAM tables are buffered and are shared by all threads. key_buffer_size is the size of the buffer used for index blocks.\\\n***Adaptive Hash Index Size***: When InnoDB notices that some index values are being accessed very frequently, it builds a hash index for them in memory on top of B-Tree indexes.\\\n ***Query Cache Size***: The query cache stores the text of a SELECT statement together with the corresponding result that was sent to the client. The query cache has huge scalability problems in that only one thread can do an operation in the query cache at the same time.\\\n***InnoDB Dictionary Size***: The data dictionary is InnoDB ‘s internal catalog of tables. InnoDB stores the data dictionary on disk, and loads entries into memory while the server is running.\\\n***InnoDB Log Buffer Size***: The MySQL InnoDB log buffer allows transactions to run without having to write the log to disk before the transactions commit.",
+      "description": "***System Memory***: Total Memory for the system.\\\n***InnoDB Buffer Pool Size***: \nInnoDB maintains a storage area called the buffer pool for caching data and indexes in memory.  Knowing how the InnoDB buffer pool works, and taking advantage of it to keep frequently accessed data in memory, is one of the most important aspects of MySQL tuning. The goal is to keep the working set in memory. In most cases, this should be between 60%-90% of available memory on a dedicated database host, but depends on many factors.\\\n***Key Buffer Size***: Index blocks for MYISAM tables are buffered and are shared by all threads. key_buffer_size is the size of the buffer used for index blocks.\\\n***Adaptive Hash Index Size***: When InnoDB notices that some index values are being accessed very frequently, it builds a hash index for them in memory on top of B-Tree indexes.\\\n ***Query Cache Size***: The query cache stores the text of a SELECT statement together with the corresponding result that was sent to the client. The query cache has huge scalability problems in that only one thread can do an operation in the query cache at the same time.\\\n***InnoDB Dictionary Size***: The data dictionary is InnoDB ‘s internal catalog of tables. InnoDB stores the data dictionary on disk, and loads entries into memory while the server is running.\\\n***InnoDB Log Buffer Size***: The MySQL InnoDB log buffer allows transactions to run without having to write the log to disk before the transactions commit.",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -2352,16 +2271,6 @@
           "intervalFactor": 1,
           "legendFormat": "Adaptive Hash Index Size",
           "refId": "E",
-          "step": 20
-        },
-        {
-          "expr": "avg by (service_name) (max_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[5m]))",
-          "format": "time_series",
-          "hide": false,
-          "interval": "$interval",
-          "intervalFactor": 1,
-          "legendFormat": "TokuDB Cache Size",
-          "refId": "I",
           "step": 20
         }
       ],

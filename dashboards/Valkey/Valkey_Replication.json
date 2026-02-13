@@ -22,7 +22,7 @@
     ]
   },
   "description": "Valkey/Redis Replication details",
-  "editable": true,
+  "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
@@ -43,6 +43,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows whether each node is running as a primary or replica over time. Changes indicate failovers or manual reconfiguration.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -188,6 +189,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how far behind replicas are from their primary nodes, measured in bytes. Lower values mean replicas are caught up. High or growing values mean replicas are falling behind.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -245,15 +247,7 @@
           },
           "unit": "bytes"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Master"
-            },
-            "properties": []
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 9,
@@ -283,34 +277,30 @@
         }
       },
       "pluginVersion": "11.6.4",
-      "repeat": "replica_service_name",
-      "repeatDirection": "h",
       "targets": [
         {
           "datasource": "Metrics",
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "(redis_master_repl_offset * on(service_name) group_left(service_name) (min by (service_name) ((redis_instance_info{role=~\"primary\"}) * on(master_replid) group_left(master_replid) (redis_instance_info{service_name=~\"$replica_service_name\"})) )) - on(cluster) group_right(service_name) (redis_slave_repl_offset{service_name=~\"$replica_service_name\"})",
+          "expr": "redis_master_repl_offset{service_name=~\"$service_name\"} - on(service_name) group_left(slave_ip, slave_port) (redis_connected_slave_offset_bytes{service_name=~\"$service_name\"})",
           "format": "time_series",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
           "instant": false,
-          "legendFormat": "{{service_name}}",
+          "legendFormat": "{{service_name}}_{{slave_ip}}",
           "range": true,
           "refId": "B",
           "useBackend": false
         }
       ],
-      "title": "$replica_service_name - Replica vs Master offsets",
-      "transformations": [
-      ],
+      "title": "$service_name - Replica vs Master Offsets",
       "type": "timeseries"
     },
     {
       "datasource": "Metrics",
-      "description": "",
+      "description": "Shows how many replicas are connected across all services over time. Sudden drops can mean replicas have failed or lost connectivity.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -427,7 +417,7 @@
         {
           "datasource": "Metrics",
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
           "expr": "sum(redis_connected_slaves{node_name=~\"$node_name\", service_name=~\"$service_name\"})",
           "format": "table",
@@ -454,6 +444,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how many replicas are connected to each node. Use this to check that each primary has the right number of replicas for redundancy.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -654,6 +645,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how many times each node has done a full resynchronization. Full resyncs transfer entire datasets and are expensive. High counts suggest stability or configuration issues.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -795,7 +787,7 @@
           "useBackend": false
         }
       ],
-      "title": "Full resyncs",
+      "title": "Full Resyncs",
       "transformations": [
         {
           "id": "organize",
@@ -854,6 +846,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how many times each node has done a partial resynchronization. Partial resyncs only transfer missed changes and are much more efficient. Higher counts than full resyncs indicate good backlog configuration.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -995,7 +988,7 @@
           "useBackend": false
         }
       ],
-      "title": "Partial resyncs",
+      "title": "Partial Resyncs",
       "transformations": [
         {
           "id": "organize",
@@ -1054,6 +1047,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows the replication backlog size in bytes for each node. When the backlog is big enough, replicas can catch up after brief disconnections without doing expensive full resyncs.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1258,6 +1252,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows the oldest data still available in each node's backlog. Replicas that fall behind this point will need a full resync to catch up.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1399,7 +1394,7 @@
           "useBackend": false
         }
       ],
-      "title": "Backlog first byte offset",
+      "title": "Backlog First Byte Offset",
       "transformations": [
         {
           "id": "organize",
@@ -1458,6 +1453,7 @@
     },
     {
       "datasource": "Metrics",
+      "description": "Shows how much replication history is currently stored in each node's backlog. More history means replicas have longer to reconnect without needing a full resync.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1662,7 +1658,7 @@
     },
     {
       "datasource": "Metrics",
-      "description": "",
+      "description": "Shows how resyncs are trending over time. You should see mostly partial resyncs with few full resyncs or denials if your replication is working well.",
       "fieldConfig": {
         "defaults": {
           "color": {

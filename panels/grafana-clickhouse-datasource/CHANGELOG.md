@@ -1,6 +1,64 @@
 # Changelog
 
-# 4.10.2
+## 4.12.0
+
+### Features
+
+- Support log volume queries for the SQL editor. Note that this will only work for Grafana versions >= 12.4.0 (#1475)
+- Support columns with `.` in ad-hoc filters (#1481)
+
+### Fixes
+
+- Dependency updates
+
+## 4.11.4
+
+## Fixes
+
+- Fix view logs link in Explore and Dashboards (#1462)
+- Fix filter for map type LogLabels (#1456)
+- Temporarily disable slow JSON suggestions function (#1468)
+- Dependency updates
+
+## 4.11.3
+
+### Fixes
+
+- Fix config UI bugs (#1409) and update design (#1422)
+- Dependency updates
+
+## 4.11.2
+
+### Features
+
+- Second part of redesigned ClickHouse config page (behind newClickhouseConfigPageDesign) (#1387)
+
+### Fixes
+
+- Improved error classification to mark all ClickHouse errors as downstream errors, including errors wrapped in HTTP response bodies and multi-error chains (#1405)
+- Dependency updates
+
+## 4.11.1
+
+### Fixes
+
+- All Clickhouse errors are marked as downstream errors for Grafana (#1378)
+
+## 4.11.0
+
+### Features
+
+- Merge OpenTelemetry resource/scope/log attributes into a unified Labels column in Logs (#1369)
+- First part of redesigned ClickHouse config page with sidebar navigation and collapsible sections (behind newClickhouseConfigPageDesign) (#1370)
+
+### Fixes
+
+- Fix ad-hoc filter application with templated target tables (#1241)
+- Fix column sorting by formatting bytes in Grafana (#1352)
+- Fix events and links not displaying correctly for table view queries (#1345)
+- Dependency updates
+
+## 4.10.2
 
 ### Fixes
 
@@ -11,31 +69,31 @@
 - Fix bug where switched to logs query type errored #1341
 - Dependency updates
 
-# 4.10.1
+## 4.10.1
 
 ### Fixes
 
 - Bump grafana/plugin-actions from ff169fa386880e34ca85a49414e5a0ff84c3f7ad to b788be6746403ff9bae26d5e800794f2a5620b4c (#1286)
 - Bump cspell from 9.0.2 to 9.1.1 (#1278)
 
-# 4.10.0
+## 4.10.0
 
 ### Features
 
 - Ad-hoc queries: Allow to filter by values inside the map (#1265)
 
-### Fixes 
+### Fixes
 
 - Fix ad-hoc filter application with templated target tables (#1241)
 - Dependency updates
 
-# 4.9.1
+## 4.9.1
 
 ### Fixes
 
 - Error logging fix
 
-# 4.9.0
+## 4.9.0
 
 ### Features
 
