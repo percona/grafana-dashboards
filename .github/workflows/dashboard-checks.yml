@@ -1,0 +1,37 @@
+name: Dashboard Checks
+
+on:
+  pull_request:
+
+jobs:
+  dashboard-cleanup:
+    name: Dashboard cleanup check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed dashboard files
+        id: changed
+        run: |
+          git diff --name-only ${{ github.event.pull_request.base.sha }} HEAD \
+            | grep -E '^(dashboards/|misc/).*\.json$|^disk-details\.json$|^panels/.*/dashboards/.*\.json$' \
+            | sort -u > changed_dashboards.txt || true
+          echo "count=$(wc -l < changed_dashboards.txt | tr -d ' ')" >> $GITHUB_OUTPUT
+
+      - name: Run cleanup and verify
+        if: steps.changed.outputs.count != '0'
+        run: |
+          while IFS= read -r f; do
+            [ -n "$f" ] && python3 misc/cleanup-dash.py "$f"
+          done < changed_dashboards.txt
+
+          if ! git diff --exit-code; then
+            echo "::error::Dashboard cleanup required. Run: python3 misc/cleanup-dash.py <file>"
+            for f in $(git diff --name-only); do
+              echo "::error file=$f,title=Cleanup required::Dashboard needs cleanup. Run: python3 misc/cleanup-dash.py $f"
+            done
+            exit 1
+          fi
