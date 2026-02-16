@@ -24,9 +24,9 @@ jobs:
       - name: Run cleanup check per dashboard
         if: steps.changed.outputs.count != '0'
         run: |
-          echo "## Dashboard cleanup results" >> $GITHUB_STEP_SUMMARY
-          echo "| Dashboard | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 Dashboard cleanup results" >> $GITHUB_STEP_SUMMARY
+          echo "| Dashboard | Status |          |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------| -------- |" >> $GITHUB_STEP_SUMMARY
 
           has_failed=0
           while IFS= read -r f; do
@@ -35,9 +35,9 @@ jobs:
             cp "$f" "$tmp"
             python3 misc/cleanup-dash.py "$tmp" > /dev/null
             if diff -q "$f" "$tmp" > /dev/null; then
-              echo "| \`$f\` | OK |" >> $GITHUB_STEP_SUMMARY
+              echo "| \`$f\` | ✅ OK |  |" >> $GITHUB_STEP_SUMMARY
             else
-              echo "| \`$f\` | Requires cleanup |" >> $GITHUB_STEP_SUMMARY
+              echo "| \`$f\` | ❌ Requires cleanup | `python3 misc/cleanup-dash.py $f` |" >> $GITHUB_STEP_SUMMARY
               echo "::error file=$f,title=Cleanup required::Dashboard needs cleanup. Run: python3 misc/cleanup-dash.py $f"
               has_failed=1
             fi
