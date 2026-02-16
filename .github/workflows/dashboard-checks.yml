@@ -21,17 +21,32 @@ jobs:
             | sort -u > changed_dashboards.txt || true
           echo "count=$(wc -l < changed_dashboards.txt | tr -d ' ')" >> $GITHUB_OUTPUT
 
-      - name: Run cleanup and verify
+      - name: Run cleanup check per dashboard
         if: steps.changed.outputs.count != '0'
         run: |
+          echo "## Dashboard cleanup results" >> $GITHUB_STEP_SUMMARY
+          echo "| Dashboard | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          has_failed=0
           while IFS= read -r f; do
-            [ -n "$f" ] && python3 misc/cleanup-dash.py "$f"
+            [ -z "$f" ] && continue
+            tmp=$(mktemp)
+            cp "$f" "$tmp"
+            python3 misc/cleanup-dash.py "$tmp" > /dev/null
+            if diff -q "$f" "$tmp" > /dev/null; then
+              echo "| \`$f\` | OK |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| \`$f\` | Requires cleanup |" >> $GITHUB_STEP_SUMMARY
+              echo "::error file=$f,title=Cleanup required::Dashboard needs cleanup. Run: python3 misc/cleanup-dash.py $f"
+              has_failed=1
+            fi
+            rm -f "$tmp"
           done < changed_dashboards.txt
 
-          if ! git diff --exit-code; then
-            echo "::error::Dashboard cleanup required. Run: python3 misc/cleanup-dash.py <file>"
-            for f in $(git diff --name-only); do
-              echo "::error file=$f,title=Cleanup required::Dashboard needs cleanup. Run: python3 misc/cleanup-dash.py $f"
-            done
+          if [ "$has_failed" -ne 0 ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Run: \`python3 misc/cleanup-dash.py <file>\` for each failed dashboard." >> $GITHUB_STEP_SUMMARY
+            echo "::error::Some dashboards require cleanup. Run: python3 misc/cleanup-dash.py <file> for each failed dashboard above."
             exit 1
           fi
