@@ -20,6 +20,7 @@ jobs:
             | grep -E '^dashboards/.*\.json$' \
             | sort -u > changed_dashboards.txt || true
           echo "count=$(wc -l < changed_dashboards.txt | tr -d ' ')" >> $GITHUB_OUTPUT
+          echo "changed_dashboards.txt: $(cat changed_dashboards.txt)" >> $GITHUB_STEP_SUMMARY
 
       - name: Run cleanup check per dashboard
         if: steps.changed.outputs.count != '0'
