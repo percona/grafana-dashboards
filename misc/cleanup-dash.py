@@ -44,11 +44,14 @@ def set_time(dashboard):
     return dashboard
 
 def main():
-    """Execute cleanups."""
+    if len(sys.argv) < 2:
+        print('Usage: cleanup-dash.py <dashboard-file>')
+        exit(1)
+
     with open(sys.argv[1], 'r') as dashboard_file:
         dashboard = json.loads(dashboard_file.read())
+        raw_dashboard = copy.deepcopy(dashboard)
 
-    # registered cleanupers.
     CLEANUPERS = [set_editable, set_time, set_timezone, set_refresh, set_dashboard_id_to_null]
 
     for func in CLEANUPERS:
@@ -57,11 +60,14 @@ def main():
     dashboard_json = json.dumps(dashboard, sort_keys=True, indent=2,
                                 separators=(',', ': '))
 
+    if raw_dashboard == dashboard:
+        print('Dashboard is already cleaned up.')
+        exit(0)
+
     with open(sys.argv[1], 'w') as dashboard_file:
         dashboard_file.write(dashboard_json)
         dashboard_file.write('\n')
-
-    print('Done!')
+        print('Dashboard is cleaned up successfully.')
 
 
 if __name__ == '__main__':

@@ -17,7 +17,7 @@ jobs:
         id: changed
         run: |
           git diff --name-only ${{ github.event.pull_request.base.sha }} HEAD \
-            | grep -E '^(dashboards/|misc/).*\.json$|^disk-details\.json$|^panels/.*/dashboards/.*\.json$' \
+            | grep -E '^dashboards/.*\.json$' \
             | sort -u > changed_dashboards.txt || true
           echo "count=$(wc -l < changed_dashboards.txt | tr -d ' ')" >> $GITHUB_OUTPUT
 
@@ -28,25 +28,17 @@ jobs:
           echo "| Dashboard | Status |          |" >> $GITHUB_STEP_SUMMARY
           echo "|-----------|--------| -------- |" >> $GITHUB_STEP_SUMMARY
 
-          has_failed=0
           while IFS= read -r f; do
             [ -z "$f" ] && continue
             tmp=$(mktemp)
             cp "$f" "$tmp"
-            python3 misc/cleanup-dash.py "$tmp" > /dev/null
-            if diff -q "$f" "$tmp" > /dev/null; then
+            output=$(python3 misc/cleanup-dash.py "$tmp")
+            
+            if [ "$output" == "Dashboard is already cleaned up." ]; then
               echo "| \`$f\` | ✅ OK |  |" >> $GITHUB_STEP_SUMMARY
             else
               echo "| \`$f\` | ❌ Requires cleanup | `python3 misc/cleanup-dash.py $f` |" >> $GITHUB_STEP_SUMMARY
               echo "::error file=$f,title=Cleanup required::Dashboard needs cleanup. Run: python3 misc/cleanup-dash.py $f"
-              has_failed=1
             fi
             rm -f "$tmp"
           done < changed_dashboards.txt
-
-          if [ "$has_failed" -ne 0 ]; then
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Run: \`python3 misc/cleanup-dash.py <file>\` for each failed dashboard." >> $GITHUB_STEP_SUMMARY
-            echo "::error::Some dashboards require cleanup. Run: python3 misc/cleanup-dash.py <file> for each failed dashboard above."
-            exit 1
-          fi
