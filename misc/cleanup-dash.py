@@ -28,7 +28,7 @@ def set_refresh(dashboard):
     if 'refresh' not in dashboard.keys():
         return dashboard
 
-    dashboard['refresh'] = ""
+    dashboard['refresh'] = False
     return dashboard
 
 def set_timezone(dashboard):
@@ -59,8 +59,12 @@ def main():
     for func in CLEANUPERS:
         dashboard = func(dashboard)
 
-    dashboard_json = json.dumps(dashboard, sort_keys=True, indent=2,
-                                separators=(',', ': '))
+    dashboard_json = json.dumps(
+        dashboard,
+        sort_keys=True,
+        indent=4,
+        separators=(',', ': '),
+    )
 
     if args.check_only:
         if raw_dashboard == dashboard:
