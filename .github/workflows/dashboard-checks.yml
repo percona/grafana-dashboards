@@ -28,6 +28,7 @@ jobs:
           echo "| Dashboard | Status |          |" >> $GITHUB_STEP_SUMMARY
           echo "|-----------|--------| -------- |" >> $GITHUB_STEP_SUMMARY
 
+          has_failed=0
           while IFS= read -r f; do
             [ -z "$f" ] && continue
             tmp=$(mktemp)
@@ -39,6 +40,13 @@ jobs:
             else
               echo "| \`$f\` | ❌ Requires cleanup | `python3 misc/cleanup-dash.py $f` |" >> $GITHUB_STEP_SUMMARY
               echo "::error file=$f,title=Cleanup required::Dashboard needs cleanup. Run: python3 misc/cleanup-dash.py $f"
+              has_failed=1
             fi
             rm -f "$tmp"
           done < changed_dashboards.txt
+
+          if [ "$has_failed" -ne 0 ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "::error::Some dashboards require cleanup. Run: python3 misc/cleanup-dash.py <file> for each failed dashboard above."
+            exit 1
+          fi
