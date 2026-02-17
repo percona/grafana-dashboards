@@ -4,6 +4,7 @@ import sys
 import json
 import copy
 import datetime
+import argparse
 import re
 
 def set_dashboard_id_to_null(dashboard):
@@ -44,11 +45,12 @@ def set_time(dashboard):
     return dashboard
 
 def main():
-    if len(sys.argv) < 2:
-        print('Usage: cleanup-dash.py <dashboard-file>')
-        exit(1)
+    parser = argparse.ArgumentParser(description='Dashboard cleaner')
+    parser.add_argument('dashboard_file', type=str, help='Dashboard file to cleanup.')
+    parser.add_argument('--check-only', action='store_true', help='Check only mode.')
+    args = parser.parse_args()
 
-    with open(sys.argv[1], 'r') as dashboard_file:
+    with open(args.dashboard_file, 'r') as dashboard_file:
         dashboard = json.loads(dashboard_file.read())
         raw_dashboard = copy.deepcopy(dashboard)
 
@@ -60,11 +62,15 @@ def main():
     dashboard_json = json.dumps(dashboard, sort_keys=True, indent=2,
                                 separators=(',', ': '))
 
-    if raw_dashboard == dashboard:
-        print('Dashboard is already cleaned up.')
-        exit(0)
+    if args.check_only:
+        if raw_dashboard == dashboard:
+            print('Dashboard is already cleaned up.')
+            exit(0)
+        else:
+            print('Dashboard needs cleanup.')
+            exit(1)
 
-    with open(sys.argv[1], 'w') as dashboard_file:
+    with open(args.dashboard_file, 'w') as dashboard_file:
         dashboard_file.write(dashboard_json)
         dashboard_file.write('\n')
         print('Dashboard is cleaned up successfully.')
