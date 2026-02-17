@@ -26,27 +26,26 @@ jobs:
         if: steps.changed.outputs.count != '0'
         continue-on-error: true
         run: |
+          # Ensure we don't exit immediately on the python check
           echo "## 📊 Dashboard cleanup results" >> $GITHUB_STEP_SUMMARY
-          echo "| Dashboard | Status |          |" >> $GITHUB_STEP_SUMMARY
-          echo "|-----------|--------| -------- |" >> $GITHUB_STEP_SUMMARY
+          echo "| Dashboard | Status | Action |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|--------|" >> $GITHUB_STEP_SUMMARY
 
           has_failed=0
-          while IFS= read -r f; do
+          # The [ -n "$f" ] ensures the last line is read even if it lacks a newline
+          while IFS= read -r f || [ -n "$f" ]; do
             [ -z "$f" ] && continue
-            python3 misc/cleanup-dash.py --check-only "$f"
-            exit_code=$?
-
-            if [ "$exit_code" -eq 0 ]; then
-              echo "| \`$f\` | ✅ OK |  |" >> $GITHUB_STEP_SUMMARY
+            
+            if python3 misc/cleanup-dash.py --check-only "$f"; then
+              echo "| \`$f\` | ✅ OK | - |" >> $GITHUB_STEP_SUMMARY
             else
-              echo "| \`$f\` | ❌ Requires cleanup | Run: \`python3 misc/cleanup-dash.py $f\` |" >> $GITHUB_STEP_SUMMARY
+              echo "| \`$f\` | ❌ Requires cleanup | \`python3 misc/cleanup-dash.py $f\` |" >> $GITHUB_STEP_SUMMARY
               echo "::error file=$f,title=Cleanup required::Dashboard needs cleanup. Run: python3 misc/cleanup-dash.py $f"
               has_failed=1
             fi
           done < changed_dashboards.txt
 
           if [ "$has_failed" -ne 0 ]; then
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "::error::Some dashboards require cleanup. Run: python3 misc/cleanup-dash.py <file> for each failed dashboard above."
+            echo -e "\n> [!CAUTION]\n> Some dashboards failed the cleanup check. See the table above for fix commands." >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
