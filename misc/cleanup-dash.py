@@ -46,8 +46,8 @@ def set_time(dashboard):
 
 def main():
     parser = argparse.ArgumentParser(description='Dashboard cleaner')
-    parser.add_argument('dashboard_file', type=str, help='Dashboard file to cleanup.')
-    parser.add_argument('--check-only', action='store_true', help='Check only mode.')
+    parser.add_argument('dashboard_file', type=str, help='dashboard file to cleanup')
+    parser.add_argument('--check-only', action='store_true', help='check only mode')
     args = parser.parse_args()
 
     with open(args.dashboard_file, 'r') as dashboard_file:
