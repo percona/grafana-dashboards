@@ -36,11 +36,10 @@ interface QueryAnalyticsPanelProps {
 }
 
 const QueryAnalyticsPanel: FC<QueryAnalyticsPanelProps> = ({ grafanaTheme }) => {
-  const styles = getStyles(grafanaTheme);
-
   const {
     panelState: { querySelected, from, to },
   } = useContext(QueryAnalyticsProvider);
+  const styles = getStyles(grafanaTheme, querySelected);
 
   const queryAnalyticsWrapper = useRef<HTMLDivElement>(null);
   const [, setReload] = useState<object>({});
@@ -80,7 +79,7 @@ const QueryAnalyticsPanel: FC<QueryAnalyticsPanelProps> = ({ grafanaTheme }) => 
       <div className="overview-filters">
         <Filters />
       </div>
-      <div className="query-analytics-data">
+      <div className={cx(styles.queryAnalyticsData, 'query-analytics-data')}>
         <div>
           <div className={cx(styles.overviewHeader, 'manage-columns')}>
             <Button

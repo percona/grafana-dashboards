@@ -14,7 +14,6 @@ import { Messages } from './Overview.messages';
 
 export const Overview: FC = () => {
   const theme = useTheme();
-  const styles = getStyles(theme);
 
   const [total, setTotal] = useState(30);
   const [overviewMetricsList, loading] = useOverviewTable(setTotal);
@@ -27,6 +26,7 @@ export const Overview: FC = () => {
       queryId, querySelected, totals, pageNumber, pageSize, orderBy, loadingDetails,
     },
   } = useContext(QueryAnalyticsProvider);
+  const styles = getStyles(theme, querySelected);
   const tableWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -93,7 +93,7 @@ export const Overview: FC = () => {
     <div className="table-wrapper overview" ref={tableWrapperRef}>
       {useMemo(
         () => (
-          <div>
+          <div className={styles.queryTableWrapper}>
             <Table
               columns={overviewMetricsList.columns}
               data={overviewMetricsList.rows.length > 1 ? overviewMetricsList.rows : []}
