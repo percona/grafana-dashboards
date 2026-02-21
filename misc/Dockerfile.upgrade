@@ -1,0 +1,9 @@
+ARG IMAGE_TAG=latest
+FROM grafana/grafana:${IMAGE_TAG}
+
+USER root
+
+# No need to run the server, we want to exit after the upgrade
+RUN sed -i '/exec grafana server/,$d' /run.sh
+
+USER grafana
