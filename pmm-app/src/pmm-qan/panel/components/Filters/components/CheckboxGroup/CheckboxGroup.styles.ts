@@ -10,7 +10,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   return {
     scrollContainer: css`
       will-change: transform;
-      overflow: scroll;
+      overflow: auto;
       overflow-x: hidden; // hide horizontal scroll
       max-height: 200px;
     `,
