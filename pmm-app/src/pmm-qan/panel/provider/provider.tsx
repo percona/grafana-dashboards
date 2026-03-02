@@ -3,7 +3,6 @@ import { isEqual, omit } from 'lodash';
 import moment from 'moment';
 import { parseURL, refreshGrafanaVariables, setLabels } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
-import { ParseQueryParamDate } from '../../../shared/components/helpers/time-parameters-parser';
 
 const initialState = {} as QueryAnalyticsContext;
 
@@ -157,16 +156,11 @@ export const UrlParametersProvider = (props) => {
     }),
   };
 
+  const getAbsoluteTime = (timeValue) => (timeValue.valueOf ? timeValue.valueOf() : timeValue);
   const query = new URLSearchParams(window.location.search);
   const searchRef = useRef<string | null>(null);
-  const [fromTimeMomentValue, setFromTimeMomentValue] = useState(ParseQueryParamDate.transform(
-    query.get('from') || 'now-12h', 'from', timeZone,
-  )
-    .format('YYYY-MM-DDTHH:mm:ssZ'));
-  const [toTimeMomentValue, setToTimeMomentValue] = useState(ParseQueryParamDate.transform(
-    query.get('to') || 'now', 'to', timeZone,
-  )
-    .format('YYYY-MM-DDTHH:mm:ssZ'));
+  const [fromTimeMomentValue, setFromTimeMomentValue] = useState(timeRange.from.clone().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
+  const [toTimeMomentValue, setToTimeMomentValue] = useState(timeRange.to.clone().subtract(1, 'minute').format('YYYY-MM-DDTHH:mm:ssZ'));
 
   const [panelState, setContext] = useState({
     ...parseURL(query),
@@ -205,7 +199,6 @@ export const UrlParametersProvider = (props) => {
     refreshGrafanaVariables(panelState);
   }, [panelState]);
 
-  const getAbsoluteTime = (timeValue) => (timeValue.valueOf ? timeValue.valueOf() : timeValue);
   const [from, setFrom] = useState(getAbsoluteTime(timeRange.raw.from));
   const [to, setTo] = useState(getAbsoluteTime(timeRange.raw.to));
   const [previousState, setPreviousState] = useState(panelState);
@@ -214,18 +207,18 @@ export const UrlParametersProvider = (props) => {
     const newTo = getAbsoluteTime(timeRange.raw.to);
 
     if (newTo === 'now') {
-      setToTimeMomentValue(timeRange.to.subtract(1, 'minute')
+      setToTimeMomentValue(timeRange.to.clone().subtract(1, 'minute')
         .format('YYYY-MM-DDTHH:mm:ssZ'));
 
       if (moment.isMoment(timeRange.raw.from)) {
-        setFromTimeMomentValue(timeRange.from.format('YYYY-MM-DDTHH:mm:ssZ'));
+        setFromTimeMomentValue(timeRange.from.clone().format('YYYY-MM-DDTHH:mm:ssZ'));
       } else {
-        setFromTimeMomentValue(timeRange.from.subtract(1, 'minute')
+        setFromTimeMomentValue(timeRange.from.clone().subtract(1, 'minute')
           .format('YYYY-MM-DDTHH:mm:ssZ'));
       }
     } else {
-      setToTimeMomentValue(timeRange.to.format('YYYY-MM-DDTHH:mm:ssZ'));
-      setFromTimeMomentValue(timeRange.from.format('YYYY-MM-DDTHH:mm:ssZ'));
+      setToTimeMomentValue(timeRange.to.clone().format('YYYY-MM-DDTHH:mm:ssZ'));
+      setFromTimeMomentValue(timeRange.from.clone().format('YYYY-MM-DDTHH:mm:ssZ'));
     }
   }, [timeRange, from, to]);
 
