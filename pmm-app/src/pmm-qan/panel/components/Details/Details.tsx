@@ -130,7 +130,7 @@ export const DetailsSection: FC = () => {
         data-testid="query-analytics-details"
       >
         <div className="details-tabs">
-          <TabsBar>
+          <TabsBar className={styles.tabsBar}>
             {tabs
               .filter(({ show }) => show)
               .map((tab, index) => (
