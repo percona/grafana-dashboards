@@ -64,6 +64,7 @@ def main():
         sort_keys=True,
         indent=4,
         separators=(',', ': '),
+        ensure_ascii=False,
     )
 
     if args.check_only:
