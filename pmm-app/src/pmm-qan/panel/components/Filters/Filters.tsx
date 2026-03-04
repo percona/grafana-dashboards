@@ -9,12 +9,10 @@ import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { Input, useTheme, Button } from '@grafana/ui';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
-import { FILTERS_BODY_HEIGHT } from './Filters.constants';
 import { getSelectedCheckboxes } from './Filters.tools';
 import { getStyles } from './Filters.styles';
 import { useFilters } from './hooks/useFilters';
 import { useInitialFilterValues } from './hooks/useInitialFilterValues';
-import { useFiltersContainerHeight } from './hooks/useFiltersContainerHeight';
 import { Messages } from './Filters.messages';
 import 'shared/style.less';
 
@@ -29,7 +27,6 @@ export const Filters: FC = () => {
   const [filters, loading, filtersGroups] = useFilters();
   const initialValues = useInitialFilterValues();
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
-  const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);
   const [showAll, showSetAll] = useState(true);
   const [filter, setFilter] = useState('');
   const selectedCheckboxes = getSelectedCheckboxes(filters, filtersGroups);
@@ -119,7 +116,7 @@ export const Filters: FC = () => {
           >
             <FiltersHeader loading={loading} />
             <Overlay isPending={loading}>
-              <Scrollbar className={styles.getFiltersWrapper(height)}>
+              <Scrollbar className={styles.filtersWrapper}>
                 <FilterInput filter={filter} />
                 {filtersGroups
                   .filter((group) => filters[group.dataKey])
