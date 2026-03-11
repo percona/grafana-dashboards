@@ -34,5 +34,8 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       margin-right: 10px;
       align-self: center;
     `,
+    tabsBar: css`
+      overflow-y: hidden;
+    `,
   };
 });
