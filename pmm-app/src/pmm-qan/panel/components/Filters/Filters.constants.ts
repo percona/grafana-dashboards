@@ -1,10 +1,13 @@
 import { Databases } from 'shared/core';
 import { getServiceType } from './Filters.tools';
+import { FilterGroup } from './Filters.types';
 
-export const FILTERS_BODY_HEIGHT = 600;
+export const FILTERS_BODY_HEIGHT = 1205;
 export const FILTERS_HEADER_SIZE = 50;
 export const FILTERS_MARGIN_BOTTOM = 20;
 export const COMMENT_NAME_LENGTH = 24;
+export const TABLE_HEIGHT = '65vh';
+export const TABLE_HEIGHT_QUERY_SELECTED = '290px';
 
 const subURL = '/graph/d/';
 
@@ -20,7 +23,7 @@ export const HIDDEN_FILTER_LABELS = [
   'top_queryid',
 ];
 
-export const FILTERS_GROUPS = [
+export const FILTERS_GROUPS: FilterGroup[] = [
   {
     name: 'Environment',
     dataKey: 'environment',

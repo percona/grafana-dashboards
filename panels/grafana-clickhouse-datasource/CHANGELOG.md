@@ -1,5 +1,177 @@
 # Changelog
 
+## 4.12.0
+
+### Features
+
+- Support log volume queries for the SQL editor. Note that this will only work for Grafana versions >= 12.4.0 (#1475)
+- Support columns with `.` in ad-hoc filters (#1481)
+
+### Fixes
+
+- Dependency updates
+
+## 4.11.4
+
+## Fixes
+
+- Fix view logs link in Explore and Dashboards (#1462)
+- Fix filter for map type LogLabels (#1456)
+- Temporarily disable slow JSON suggestions function (#1468)
+- Dependency updates
+
+## 4.11.3
+
+### Fixes
+
+- Fix config UI bugs (#1409) and update design (#1422)
+- Dependency updates
+
+## 4.11.2
+
+### Features
+
+- Second part of redesigned ClickHouse config page (behind newClickhouseConfigPageDesign) (#1387)
+
+### Fixes
+
+- Improved error classification to mark all ClickHouse errors as downstream errors, including errors wrapped in HTTP response bodies and multi-error chains (#1405)
+- Dependency updates
+
+## 4.11.1
+
+### Fixes
+
+- All Clickhouse errors are marked as downstream errors for Grafana (#1378)
+
+## 4.11.0
+
+### Features
+
+- Merge OpenTelemetry resource/scope/log attributes into a unified Labels column in Logs (#1369)
+- First part of redesigned ClickHouse config page with sidebar navigation and collapsible sections (behind newClickhouseConfigPageDesign) (#1370)
+
+### Fixes
+
+- Fix ad-hoc filter application with templated target tables (#1241)
+- Fix column sorting by formatting bytes in Grafana (#1352)
+- Fix events and links not displaying correctly for table view queries (#1345)
+- Dependency updates
+
+## 4.10.2
+
+### Fixes
+
+- Fix Ad-Hoc filters for variable datasources #1330
+- Fix switching between SQL Editor and Query Builder #1337
+- Fix large JSON objects + complex JSON types #1326
+- Configuration fixes related to row limit implementation #1294
+- Fix bug where switched to logs query type errored #1341
+- Dependency updates
+
+## 4.10.1
+
+### Fixes
+
+- Bump grafana/plugin-actions from ff169fa386880e34ca85a49414e5a0ff84c3f7ad to b788be6746403ff9bae26d5e800794f2a5620b4c (#1286)
+- Bump cspell from 9.0.2 to 9.1.1 (#1278)
+
+## 4.10.0
+
+### Features
+
+- Ad-hoc queries: Allow to filter by values inside the map (#1265)
+
+### Fixes
+
+- Fix ad-hoc filter application with templated target tables (#1241)
+- Dependency updates
+
+## 4.9.1
+
+### Fixes
+
+- Error logging fix
+
+## 4.9.0
+
+### Features
+
+- Add support for the Grafana `row_limit` [configuration setting](https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/#row_limit).
+- Add support for kind, status, instrumentation library, links, events and state data for traces (#1043, #1208)
+- Cancel JSON paths query after 10s (#1206)
+- SQL Editor now suggests database, table, column, and function names while typing (#1204)
+- Add SQL Formatter button + shortcut for making long queries more readable in the editor (#1205)
+
+### Fixes
+
+- Fixed "run query" shortcut from running stale query (#1205)
+- Dependency updates
+
+## 4.8.2
+
+### Fixes
+
+- Dependency updates
+
+## 4.8.1
+
+### Fixes
+
+- Dependency updates
+
+## 4.8.0
+
+### Features
+
+- Enable CtrlCmd + Enter keyboard shortcut to Run Query (#1158)
+
+### Fixes
+
+- Refactor `MutateResponse` function and PDC dialler creation (#1155)
+- Refactor `clickhouse.Connect` to improve context cancellation handling (#1154)
+- Prevent usage of failed connections and improve connection management (#1156). Please note that following this change, the following limits will be set. Although we believe these limits are reasonable, you can adjust them in the datasource settings if needed:
+  - `MaxOpenConns` to 50.
+  - `MaxIdleConns` to 25.
+  - `ConnMaxLifetime` to 5 minutes.
+- Dependency updates
+
+## 4.7.0
+
+### Features
+
+- Add JSON column sub-paths to column selection in query builder
+- Added events support in trace detail view.(https://github.com/grafana/clickhouse-datasource/pull/1128)
+
+## 4.6.0
+
+### Features
+
+- Add support for new Variant, Dynamic, and JSON types (https://github.com/grafana/clickhouse-datasource/pull/1108)
+
+### Fixes
+
+- Optimized performance for log volumes processing using ClickHouse `multiSearchAny`
+
+## 4.5.1
+
+### Fixes
+
+- Dependency updates
+
+## 4.5.0
+
+### Features
+
+- Implemented log context for log queries
+- Added configuration options for log context columns
+- Queries parsed from the SQL editor will now attempt to re-map columns into their correct fields for Log and Trace queries.
+- Added support for IN operator in adhoc filters
+
+### Fixes
+
+- Fixed and enhanced the logic for parsing a query back into the query builder.
+
 ## 4.4.0
 
 ### Features
@@ -105,7 +277,7 @@
 - Fixed empty builder options when switching from SQL Editor back to Query Editor
 - Fix SQL Generator including "undefined" in `FROM` when database isn't defined
 - Allow adding spaces in multi filters (such as `WHERE .. IN`)
-- Fixed missing `AND` keyword when adding a filter to a Trace ID query 
+- Fixed missing `AND` keyword when adding a filter to a Trace ID query
 
 ## 4.0.2
 
@@ -155,10 +327,12 @@ Version 4.0.0 contains major revisions to the query builder and datasource confi
 - Added column hints, which offers better linking across query components when working with columns and filters. For example, a filter can be added for the `Time` column, even without knowing what the time column name is yet. This enables better SQL generation that is "aware" of a column's intended use.
 
 ### Plugin Backend
+
 - Added migration logic for `v3` configs going to `v4+`. This is applied when the config is loaded when building a database connection.
 - `$__timeFilter`, `$__fromTime`, and `$__toTime` macros now convert to `DateTime64(3)` for better server-side type conversion. Also enables millisecond precision time range filtering.
 
 #### Datasource Configuration
+
 - Added migration script for `v3.x` configurations to `v4+`. This runs automatically when opening/saving the datasource configuration.
 - Renamed config value `server` to `host`.
 - Renamed config value `timeout` to the more specific `dial_timeout`.

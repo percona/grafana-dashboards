@@ -1,0 +1,1224 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "panels": [],
+      "title": "Overview",
+      "type": "row"
+    },
+    {
+      "description": "Check if PBM is configured with a remote backup storage",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "NO"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "YES"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "bool"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 18,
+          "valueSize": 18
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "min by(cluster) (mongodb_pbm_cluster_backup_configured{environment=~\"$environment\", cluster=~\"$cluster\", replication_set=~\"$rs_nm\"}) OR min by(cluster) (mongodb_pbm_cluster_backup_configured{environment=~\"$environment\", cluster=~\"$cluster\"})",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{cluster}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Backup Configured",
+      "type": "stat"
+    },
+    {
+      "description": "Checks if PBM oplog streaming feature for point in time recovery is enabled",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "OFF"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "ON"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "noValue": "N/A",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "bool"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 6,
+        "y": 1
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 18,
+          "valueSize": 18
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "min by(cluster) (mongodb_pbm_cluster_pitr_backup_enabled{cluster=~\"$cluster\", replication_set=~\"$rs_nm\"}) OR min by(cluster) (mongodb_pbm_cluster_pitr_backup_enabled{cluster=~\"$cluster\"}) ",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "{{cluster}}",
+          "range": false,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "PITR Status",
+      "type": "stat"
+    },
+    {
+      "description": "Total number of PBM agents monitored",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgb(31, 120, 193)",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 12,
+        "y": 1
+      },
+      "id": 8,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "valueSize": 20
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count (mongodb_pbm_agent_status{environment=~\"$environment\", cluster=~\"$cluster\", self=\"1\"}) OR count (mongodb_pbm_agent_status{environment=~\"$environment\", cluster=~\"$cluster\", replica_set=~\"$rs_nm\", self=\"1\"}) OR count (mongodb_pbm_agent_status{environment=~\"$environment\", cluster=~\"$cluster\", replication_set=~\"$rs_nm\", self=\"1\"})",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Backup Agents",
+      "type": "stat"
+    },
+    {
+      "description": "Name of the most recent successful backup",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "noValue": "N/A",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 18,
+        "y": 1
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 18,
+          "valueSize": 18
+        },
+        "textMode": "value",
+        "wideLayout": false
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by (name) (mongodb_pbm_backup_size_bytes{environment=~\"$environment\", cluster=~\"$cluster\", replication_set=~\"$rs_nm\",status=~\"done\"}) OR max by(name) (mongodb_pbm_backup_size_bytes{environment=~\"$environment\", cluster=~\"$cluster\",status=~\"done\"})",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Last Successful Backup",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time": 0,
+              "Value": 4,
+              "cluster": 2,
+              "environment": 1,
+              "name": 3
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 13,
+      "panels": [],
+      "title": "Status",
+      "type": "row"
+    },
+    {
+      "description": "Status of PBM agents registered with PMM server",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "semi-dark-blue",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "OK"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "CHECK"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "1"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "CHECK"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 5
+      },
+      "id": 11,
+      "options": {
+        "displayLabels": [
+          "value"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false,
+          "values": []
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count_values( \"state\",min by(host) (mongodb_pbm_agent_status{environment=~\"$environment\", cluster=~\"$cluster\"}))",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Backup Agent Summary",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus"
+      },
+      "description": "Status of each PBM agent monitored",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "dark-green",
+                  "index": 0,
+                  "text": "OK"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "from": 1,
+                "result": {
+                  "color": "semi-dark-red",
+                  "index": 1,
+                  "text": "CHECK"
+                },
+                "to": 2
+              },
+              "type": "range"
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 18,
+        "x": 6,
+        "y": 5
+      },
+      "id": 12,
+      "options": {
+        "autoSizeColumns": true,
+        "autoSizePolygons": true,
+        "autoSizeRows": true,
+        "compositeConfig": {
+          "animationSpeed": "2500",
+          "composites": [],
+          "enabled": false
+        },
+        "compositeGlobalAliasingEnabled": false,
+        "ellipseCharacters": 12,
+        "ellipseEnabled": true,
+        "globalAutoScaleFonts": false,
+        "globalClickthrough": "",
+        "globalClickthroughCustomTarget": "",
+        "globalClickthroughCustomTargetEnabled": false,
+        "globalClickthroughNewTabEnabled": false,
+        "globalClickthroughSanitizedEnabled": false,
+        "globalCompositeValueFontSize": 14,
+        "globalDecimals": 2,
+        "globalDisplayMode": "all",
+        "globalDisplayTextTriggeredEmpty": "None",
+        "globalFillColor": "#0a55a1",
+        "globalGradientsEnabled": true,
+        "globalLabelFontSize": 12,
+        "globalOperator": "last",
+        "globalPolygonBorderColor": "#000000",
+        "globalPolygonBorderSize": 1,
+        "globalPolygonSize": 50,
+        "globalRegexPattern": "",
+        "globalShape": "hexagon_pointed_top",
+        "globalShowTimestampEnabled": false,
+        "globalShowTimestampFontSize": 12,
+        "globalShowTimestampFormat": "YYYY-MM-DD HH:mm:ss",
+        "globalShowTimestampPosition": "below_value",
+        "globalShowTimestampYOffset": 0,
+        "globalShowTooltipColumnHeadersEnabled": true,
+        "globalShowValueEnabled": true,
+        "globalTextFontAutoColor": "#000000",
+        "globalTextFontAutoColorEnabled": false,
+        "globalTextFontColor": "#000000",
+        "globalTextFontFamily": "Inter",
+        "globalThresholdsConfig": [],
+        "globalTooltipsEnabled": true,
+        "globalTooltipsFontFamily": "Inter",
+        "globalTooltipsShowTimestampEnabled": true,
+        "globalTooltipsShowValueEnabled": true,
+        "globalUnitFormat": "short",
+        "globalValueFontSize": 14,
+        "layoutDisplayLimit": 100,
+        "layoutNumColumns": 8,
+        "layoutNumRows": 8,
+        "overrideConfig": {
+          "overrides": []
+        },
+        "panelId": 0,
+        "radius": 100,
+        "sortByDirection": 1,
+        "sortByField": "name",
+        "tooltipDisplayMode": "all",
+        "tooltipDisplayTextTriggeredEmpty": "-",
+        "tooltipPrimarySortByField": "thresholdLevel",
+        "tooltipPrimarySortDirection": 2,
+        "tooltipSecondarySortByField": "value",
+        "tooltipSecondarySortDirection": 2
+      },
+      "pluginVersion": "2.1.15",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(host) (mongodb_pbm_agent_status{environment=~\"$environment\", cluster=~\"$cluster\", replication_set=~\"$rs_nm\"}) OR max by(host) (mongodb_pbm_agent_status{environment=~\"$environment\", cluster=~\"$cluster\", replica_set=~\"$rs_nm\"}) OR max by(host) (mongodb_pbm_agent_status{environment=~\"$environment\", cluster=~\"$cluster\"}) ",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B"
+        }
+      ],
+      "title": "Backup Agent Status",
+      "type": "grafana-polystat-panel"
+    },
+    {
+      "description": "Status of pbm-agent over time on each node",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 70,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "OK"
+                },
+                "1": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "FAIL"
+                },
+                "2": {
+                  "color": "red",
+                  "index": 2,
+                  "text": "DOWN"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 2,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "min by(host) (mongodb_pbm_agent_status{environment=~\"$environment\", cluster=~\"$cluster\", replication_set=~\"$rs_nm\"}) OR min by(host) (mongodb_pbm_agent_status{environment=~\"$environment\", cluster=~\"$cluster\", replica_set=~\"$rs_nm\"}) OR min by(host) (mongodb_pbm_agent_status{environment=~\"$environment\", cluster=~\"$cluster\"}) ",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{host}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Backup agent status over time",
+      "type": "state-timeline"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 9,
+      "panels": [],
+      "title": "Details",
+      "type": "row"
+    },
+    {
+      "description": "List of all backup jobs during the specified time range",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duration"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurations"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Size"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decbytes"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 19
+      },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 1,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Backup Name"
+          }
+        ]
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "min by(environment, cluster, name) (mongodb_pbm_backup_size_bytes{environment=~\"$environment\", cluster=~\"$cluster\", status=~\"done|error\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B"
+        },
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "min by(environment, cluster, name) (mongodb_pbm_backup_duration_seconds{environment=~\"$environment\", cluster=~\"$cluster\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Backup history",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "name",
+            "mode": "inner"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time 1": true,
+              "Time 2": true,
+              "cluster 2": true,
+              "environment 2": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time 1": 3,
+              "Time 2": 5,
+              "Value #A": 8,
+              "Value #B": 4,
+              "cluster 1": 1,
+              "cluster 2": 6,
+              "environment 1": 0,
+              "environment 2": 7,
+              "name": 2
+            },
+            "renameByName": {
+              "Value #A": "Duration",
+              "Value #B": "Size",
+              "cluster 1": "Cluster/Replica Set",
+              "environment 1": "Environment",
+              "environment 2": "",
+              "name": "Backup Name"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "description": "Size of each backup taken",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "left",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [
+            {
+              "options": {
+                "match": "null+nan",
+                "result": {
+                  "index": 0,
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 28
+      },
+      "id": 4,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.75,
+        "colorByField": "name",
+        "fullHighlight": false,
+        "groupWidth": 1,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "text": {
+          "valueSize": 14
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xField": "name",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "min by(environment, cluster, name) (mongodb_pbm_backup_size_bytes{environment=~\"$environment\", cluster=~\"$cluster\", replication_set=~\"$rs_nm\",status=~\"done\"}) OR min by(environment, cluster, name) (mongodb_pbm_backup_size_bytes{environment=~\"$environment\", cluster=~\"$cluster\",status=~\"done\"})",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "{{environment}} - {{cluster}} - {{name}}",
+          "range": false,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Backup Sizes",
+      "type": "barchart"
+    },
+    {
+      "description": "Time required to perform each successful backup",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "left",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 28
+      },
+      "id": 5,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.75,
+        "colorByField": "status",
+        "fullHighlight": false,
+        "groupWidth": 1,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "text": {
+          "valueSize": 14
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "asc"
+        },
+        "xField": "name",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": -200
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg by(environment, cluster, name, status) (mongodb_pbm_backup_duration_seconds{environment=~\"$environment\", cluster=~\"$cluster\", replication_set=~\"$rs_nm\", status=\"done\"}) OR avg by(environment, cluster, name, status) (mongodb_pbm_backup_duration_seconds{environment=~\"$environment\", cluster=~\"$cluster\", status=\"done\"})",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A",
+          "useBackend": false
+        },
+        {
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "avg by(environment, cluster, name, status) (mongodb_pbm_backup_duration_seconds{environment=~\"$environment\", cluster=~\"$cluster\", replication_set=~\"$rs_nm\", status=\"error\"}) OR avg by(environment, cluster, name, status) (mongodb_pbm_backup_duration_seconds{environment=~\"$environment\", cluster=~\"$cluster\", status=\"error\"})",
+          "format": "table",
+          "fullMetaSearch": false,
+          "hide": true,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B",
+          "useBackend": false
+        }
+      ],
+      "title": "Backup Duration",
+      "type": "barchart"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 41,
+  "tags": [
+    "Percona",
+    "MongoDB"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".*",
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+        "includeAll": true,
+        "label": "Environment",
+        "multi": true,
+        "name": "environment",
+        "options": [],
+        "query": {
+          "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+          "refId": "Metrics-environment-Variable-Query"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\"},cluster)",
+        "includeAll": true,
+        "label": "Cluster/Replica Set",
+        "multi": true,
+        "name": "cluster",
+        "options": [],
+        "query": {
+          "query": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\"},cluster)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 5,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\"}, set)",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Replica Set",
+        "name": "rs_nm",
+        "options": [],
+        "query": {
+          "query": "label_values(mongodb_mongod_replset_my_state{environment=~\"$environment\",cluster=~\"$cluster\"}, set)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": false,
+    "now": true,
+    "refresh_intervals": [
+      "1s",
+      "5s",
+      "1m",
+      "5m",
+      "1h",
+      "6h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "MongoDB Backup Details",
+  "uid": "mongodb-backup-details",
+  "version": 3
+}

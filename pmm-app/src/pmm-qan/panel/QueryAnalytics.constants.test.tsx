@@ -110,12 +110,14 @@ const metrics = {
 };
 
 const EMPTY_RELATIONS_METRICS = [
-  'blk_read_time',
-  'blk_write_time',
+  'local_blk_read_time',
+  'local_blk_write_time',
   'local_blks_dirtied',
   'local_blks_hit',
   'local_blks_read',
   'local_blks_written',
+  'shared_blk_read_time',
+  'shared_blk_write_time',
   'shared_blks_dirtied',
   'shared_blks_hit',
   'shared_blks_read',

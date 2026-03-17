@@ -3,14 +3,15 @@ import { css } from '@emotion/css';
 import { stylesFactory } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
 import { getPmmTheme } from 'shared/components/helpers/getPmmTheme';
+import { TABLE_HEIGHT } from './Filters.constants';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const parameters = getPmmTheme(theme);
 
   return {
-    getFiltersWrapper: (height) => css`
-      border: 1px solid rgba(40, 40, 40);
-      height: ${height}px;
+    filtersWrapper: css`
+      border: 1px solid ${theme.colors.border2};
+      height: calc(${TABLE_HEIGHT} + 45px);
       padding: 10px 16px !important;
       border-radius: 3px;
     `,
@@ -22,7 +23,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       }
     `,
     icon: css`
-      fill: #c6c6c6;
+      fill: ${theme.colors.textWeak};
     `,
     filtersHeader: css`
       display: flex;

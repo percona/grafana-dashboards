@@ -26,13 +26,16 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       margin: 0 !important;
       margin-right: 4px !important;
     `,
+    // Action buttons at the bottom of dropdown (Remove column, Swap with main metric)
+    // Light theme: light gray background for readability of black text
+    // Dark theme: dark gray background
     actionElement: css`
       padding: 4px 8px;
       cursor: pointer;
-      background-color: #3d3d3d;
+      background-color: ${theme.isLight ? '#e0e0e0' : '#3d3d3d'};
       transition: background 0.3s ease;
       &:hover {
-        background-color: #2d2e2f;
+        background-color: ${theme.isLight ? '#d0d0d0' : '#2d2e2f'};
       }
     `,
     metricsTooltip: css`

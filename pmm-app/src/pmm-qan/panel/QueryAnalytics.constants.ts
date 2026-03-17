@@ -69,11 +69,11 @@ export const METRIC_CATALOGUE = {
       perQueryStatsPipe: 'size',
     },
   },
-  blk_read_time: {
-    humanizeName: 'Reading Blocks Time',
+  local_blk_read_time: {
+    humanizeName: 'Reading Local Blocks Time',
     tooltipText:
-      'Total time the statement spent reading blocks (if track_io_timing is enabled, otherwise zero)',
-    simpleName: 'blk_read_time',
+      'Total time the statement spent reading local blocks (if track_io_timing is enabled, otherwise zero)',
+    simpleName: 'local_blk_read_time',
     serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -85,11 +85,11 @@ export const METRIC_CATALOGUE = {
       perQueryStatsPipe: 'time',
     },
   },
-  blk_write_time: {
-    humanizeName: 'Writing Blocks Time',
+  local_blk_write_time: {
+    humanizeName: 'Writing Local  Blocks Time',
     tooltipText:
-      'Total time the statement spent writing blocks (if track_io_timing is enabled, otherwise zero)',
-    simpleName: 'blk_write_time',
+      'Total time the statement spent writing local blocks (if track_io_timing is enabled, otherwise zero)',
+    simpleName: 'local_blk_write_time',
     serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -174,6 +174,38 @@ export const METRIC_CATALOGUE = {
       subSumPipe: 'percent',
       sparklineType: 'number',
       perQueryStatsPipe: 'number',
+    },
+  },
+  shared_blk_read_time: {
+    humanizeName: 'Reading Shared Blocks Time',
+    tooltipText:
+      'Total time the statement spent reading shared blocks (if track_io_timing is enabled, otherwise zero)',
+    simpleName: 'shared_blk_read_time',
+    serviceTypes: [Databases.postgresql],
+    metricRelation: () => '',
+    units: Units.PER_SEC,
+    pipeTypes: {
+      ratePipe: 'number',
+      sumPipe: 'time',
+      subSumPipe: 'percent',
+      sparklineType: 'number',
+      perQueryStatsPipe: 'time',
+    },
+  },
+  shared_blk_write_time: {
+    humanizeName: 'Writing Shared Blocks Time',
+    tooltipText:
+      'Total time the statement spent writing shared blocks (if track_io_timing is enabled, otherwise zero)',
+    simpleName: 'shared_blk_write_time',
+    serviceTypes: [Databases.postgresql],
+    metricRelation: () => '',
+    units: Units.PER_SEC,
+    pipeTypes: {
+      ratePipe: 'number',
+      sumPipe: 'time',
+      subSumPipe: 'percent',
+      sparklineType: 'number',
+      perQueryStatsPipe: 'time',
     },
   },
   shared_blks_hit: {

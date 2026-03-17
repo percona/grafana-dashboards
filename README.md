@@ -30,7 +30,6 @@ The list of featured dashboards:
 - MySQL Query Response Time Details
 - MySQL Replication Summary
 - MySQL Table Details
-- MySQL TokuDB Details
 - MySQL User Details
 - MySQL Wait Event Analyses Details
 - NUMA Details
