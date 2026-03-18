@@ -1,5 +1,5 @@
 export type QueryDimension = 'queryid' | 'service_name' | 'database' | 'schema' | 'username' | 'client_host';
-export type DetailsTabs = 'details' | 'examples' | 'explain' | 'tables';
+export type DetailsTabs = 'details' | 'examples' | 'explain' | 'tables' | 'aiInsights';
 
 export interface RawTime {
   from: string;
