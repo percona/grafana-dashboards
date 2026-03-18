@@ -36,6 +36,18 @@ const ExplainPlaceholders: React.FC<ExplainPlaceholdersProps> = ({
       setInitialized(true);
       handlePlaceholderSubmit({ placeholders: [] });
     } else if (!example) {
+      setClassicExplain({
+        ...actionResult,
+        loading: false,
+      });
+      setJsonExplain({
+        ...actionResult,
+        loading: false,
+      });
+      setVisualExplain({
+        ...actionResult,
+        loading: false,
+      });
       setInitialized(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
