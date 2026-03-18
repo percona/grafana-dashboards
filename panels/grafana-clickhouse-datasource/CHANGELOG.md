@@ -1,5 +1,43 @@
 # Changelog
 
+## 4.14.1
+
+### Features
+
+- Extract `Map` value type for `mapKey` filter in `getFilters` (#1694)
+
+### Fixes
+
+- Dependency updates
+  
+## 4.14.0
+
+### Features
+
+- Add FilterTime hint to enable multi-timestamp log filtering/sorting (#1642)
+- Skip OTel trace time range optimization when trace timestamp table does not exist (#1663)
+
+### Fixes
+
+- Dependency updates
+- Add separate columns for Resource/Scope/Log Attributes (#1560)
+- Fix panic when configuring datasource with numeric timeout values (#1559)
+
+## 4.13.0
+
+### Features
+
+- Support for hiding table names in ad-hoc filters (#1493)
+- Allow manual placement of ad-hoc filters (#1488)
+- Add support for Nullable(Enum8/16) column types (#1523)
+- Add dashboard variable to control AdHoc filter syntax (#1464)
+
+### Fixes
+
+- Fix generating query with column names containing colons (#1538)
+- Update config HTTPS language (#1537)
+- Dependency updates
+
 ## 4.12.0
 
 ### Features
