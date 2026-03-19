@@ -80,6 +80,7 @@ export const AiInsights: FC<AiInsightsProps> = ({
     }
 
     let cancelled = false;
+
     setApiLoading(true);
     fetchQanInsights({
       serviceId,
