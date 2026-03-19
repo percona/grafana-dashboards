@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Spinner } from '@grafana/ui';
 import { css } from '@emotion/css';
-import { stripPrefix } from '../database-models/utils';
 import { SERVICE_ID_PREFIX } from 'shared/core';
+import { stripPrefix } from '../database-models/utils';
 import { QueryExampleResponseItem } from '../Details.types';
 import { Messages } from '../Details.messages';
 import { fetchQanInsights } from './AiInsights.service';
@@ -61,20 +61,22 @@ export const AiInsights: FC<AiInsightsProps> = ({
     const firstExample = examples?.find(
       (e) => e.service_id && (e.example || e.explain_fingerprint),
     );
+
     if (!firstExample) {
       if (!examplesLoading && examples?.length !== undefined) {
         setError(Messages.tabs.aiInsights.noExample);
       }
 
-      return;
+      return () => {};
     }
 
     const serviceId = stripPrefix(firstExample.service_id, SERVICE_ID_PREFIX);
     const queryText = firstExample.example || firstExample.explain_fingerprint || '';
+
     if (!serviceId.trim() || !queryText.trim()) {
       setError(Messages.tabs.aiInsights.noExample);
 
-      return;
+      return () => {};
     }
 
     let cancelled = false;
@@ -95,8 +97,8 @@ export const AiInsights: FC<AiInsightsProps> = ({
       })
       .catch((err: Error & { response?: { data?: { message?: string } } }) => {
         if (!cancelled) {
-          const msg =
-            err?.response?.data?.message ?? err?.message ?? Messages.tabs.aiInsights.error;
+          const msg = err?.response?.data?.message ?? err?.message ?? Messages.tabs.aiInsights.error;
+
           setError(msg);
           setAnalysis(null);
         }

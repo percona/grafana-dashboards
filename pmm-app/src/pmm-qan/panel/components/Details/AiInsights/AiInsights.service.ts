@@ -15,10 +15,8 @@ export interface AdreQanInsightsResponse {
 
 export const fetchQanInsights = async (
   body: AdreQanInsightsRequest,
-): Promise<AdreQanInsightsResponse> => {
-  return apiRequest.post<AdreQanInsightsResponse, AdreQanInsightsRequest>(
-    '/v1/adre/qan-insights',
-    body,
-    true,
-  );
-};
+): Promise<AdreQanInsightsResponse> => apiRequest.post<AdreQanInsightsResponse, AdreQanInsightsRequest>(
+  '/v1/adre/qan-insights',
+  body,
+  true,
+);
