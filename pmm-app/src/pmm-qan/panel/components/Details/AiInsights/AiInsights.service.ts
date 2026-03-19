@@ -7,10 +7,13 @@ export interface AdreQanInsightsRequest {
   fingerprint?: string;
   time_from?: string;
   time_to?: string;
+  force?: boolean;
 }
 
 export interface AdreQanInsightsResponse {
   analysis: string;
+  created_at?: string;
+  cached?: boolean;
 }
 
 export const fetchQanInsights = async (
@@ -20,3 +23,17 @@ export const fetchQanInsights = async (
   body,
   true,
 );
+
+export const fetchQanInsightsCache = async (
+  queryId: string,
+  serviceId: string,
+): Promise<AdreQanInsightsResponse | null> => {
+  try {
+    return await apiRequest.get<AdreQanInsightsResponse, { query_id: string; service_id: string }>(
+      '/v1/adre/qan-insights',
+      { params: { query_id: queryId, service_id: serviceId } },
+    );
+  } catch {
+    return null;
+  }
+};
