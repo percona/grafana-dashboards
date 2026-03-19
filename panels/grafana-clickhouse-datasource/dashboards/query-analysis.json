@@ -1081,12 +1081,16 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "memory usage"
+              "options": "memory_usage"
             },
             "properties": [
               {
                 "id": "custom.width",
                 "value": 119
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
               }
             ]
           },
@@ -1246,7 +1250,7 @@
               },
               {
                 "id": "unit",
-                "value": "dtdurationms"
+                "value": "ms"
               }
             ]
           },
@@ -1378,7 +1382,7 @@
             }
           },
           "queryType": "sql",
-          "rawSql": "SELECT query_start_time, type, query_duration_ms, initial_user, substring(query_id,1, 8) as query_id, query_kind, normalizeQuery(query) AS normalized_query, concat( toString(read_rows), ' rows / ', formatReadableSize(read_bytes) ) AS read, concat( toString(written_rows), ' rows / ', formatReadableSize(written_bytes) ) AS written, concat( toString(result_rows), ' rows / ', formatReadableSize(result_bytes) ) AS result, formatReadableSize(memory_usage) AS \"memory usage\" FROM system.query_log WHERE type in ($type) AND initial_user IN ($user) AND query_kind IN ($query_kind) AND $__timeFilter(event_time) ORDER BY query_duration_ms DESC LIMIT  1000",
+          "rawSql": "SELECT query_start_time, type, query_duration_ms, initial_user, substring(query_id,1, 8) as query_id, query_kind, normalizeQuery(query) AS normalized_query, concat( toString(read_rows), ' rows / ', formatReadableSize(read_bytes) ) AS read, concat( toString(written_rows), ' rows / ', formatReadableSize(written_bytes) ) AS written, concat( toString(result_rows), ' rows / ', formatReadableSize(result_bytes) ) AS result, memory_usage FROM system.query_log WHERE type in ($type) AND initial_user IN ($user) AND query_kind IN ($query_kind) AND $__timeFilter(event_time) ORDER BY query_duration_ms DESC LIMIT  1000",
           "refId": "A"
         }
       ],
@@ -1390,7 +1394,7 @@
             "excludeByName": {},
             "indexByName": {
               "initial_user": 5,
-              "memory usage": 2,
+              "memory_usage": 2,
               "normalized_query": 7,
               "query_duration_ms": 4,
               "query_id": 0,
@@ -1408,7 +1412,7 @@
               "databases": "Databases",
               "exception": "Exception",
               "initial_user": "User",
-              "memory usage": "Memory usage",
+              "memory_usage": "Memory usage",
               "normalized_query": "Normalized query",
               "query_duration_ms": "Duration",
               "query_id": "Query id",

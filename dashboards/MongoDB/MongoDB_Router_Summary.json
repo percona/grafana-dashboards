@@ -57,7 +57,6 @@
   "graphTooltip": 1,
   "id": null,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "collapsed": true,
@@ -1066,36 +1065,36 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "avg by (legacy_op_type) (rate(mongodb_ss_opcountersRepl{service_name=~\"$service_name\", legacy_op_type!~\"(command|query|getmore)\"}[$interval]))",
+          "expr": "avg by (legacy_op_type,service_name) (rate(mongodb_ss_opcountersRepl{service_name=~\"$service_name\", legacy_op_type!~\"(command|query|getmore)\"}[$interval]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "repl_{{legacy_op_type}}",
+          "legendFormat": "repl_{{legacy_op_type}} - {{service_name}}",
           "range": true,
           "refId": "A",
           "step": 300
         },
         {
           "editorMode": "code",
-          "expr": "avg by () (rate(mongodb_ss_metrics_ttl_deletedDocuments{service_name=~\"$service_name\"}[$interval]))",
+          "expr": "avg by (service_name) (rate(mongodb_ss_metrics_ttl_deletedDocuments{service_name=~\"$service_name\"}[$interval]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "ttl_delete",
+          "legendFormat": "ttl_delete - {{service_name}}",
           "range": true,
           "refId": "B",
           "step": 300
         },
         {
           "editorMode": "code",
-          "expr": "avg by (legacy_op_type) (rate(mongodb_ss_opcounters{service_name=~\"$service_name\", legacy_op_type!=\"command\"}[$interval]))",
+          "expr": "avg by (legacy_op_type,service_name) (rate(mongodb_ss_opcounters{service_name=~\"$service_name\", legacy_op_type!=\"command\"}[$interval]))",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "{{legacy_op_type}}",
+          "legendFormat": "{{legacy_op_type}} - {{service_name}}",
           "range": true,
           "refId": "C",
           "step": 300
@@ -1193,12 +1192,12 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "max by (type) (mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\"})",
+          "expr": "max by (type,service_name) (mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\"})",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "{{type}}",
+          "legendFormat": "{{type}} - {{service_name}}",
           "range": true,
           "refId": "J",
           "step": 300
@@ -1291,9 +1290,9 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "avg by (op_type) (rate(mongodb_ss_opLatencies_latency{service_name=~\"$service_name\"}[$interval]) / (rate(mongodb_ss_opLatencies_ops{service_name=~\"$service_name\"}[$interval]) > 0) or irate(mongodb_ss_opLatencies_latency{service_name=~\"$service_name\"}[5m]) / (irate(mongodb_ss_opLatencies_ops{service_name=~\"$service_name\"}[5m]) > 0))",
+          "expr": "avg by (op_type,service_name) (rate(mongodb_ss_opLatencies_latency{service_name=~\"$service_name\"}[$interval]) / (rate(mongodb_ss_opLatencies_ops{service_name=~\"$service_name\"}[$interval]) > 0) or irate(mongodb_ss_opLatencies_latency{service_name=~\"$service_name\"}[5m]) / (irate(mongodb_ss_opLatencies_ops{service_name=~\"$service_name\"}[5m]) > 0))",
           "interval": "$interval",
-          "legendFormat": "{{op_type}}",
+          "legendFormat": "{{op_type}} - {{service_name}}",
           "range": true,
           "refId": "A"
         }
@@ -1511,42 +1510,42 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "avg by() (mongodb_ss_globalLock_activeClients_readers{service_name=~\"$service_name\"})",
+          "expr": "avg by(service_name) (mongodb_ss_globalLock_activeClients_readers{service_name=~\"$service_name\"})",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "Active Readers",
+          "legendFormat": "Active Readers - {{service_name}}",
           "range": true,
           "refId": "J",
           "step": 300
         },
         {
           "editorMode": "code",
-          "expr": "avg by() (mongodb_ss_globalLock_activeClients_writers{service_name=~\"$service_name\"})",
+          "expr": "avg by(service_name) (mongodb_ss_globalLock_activeClients_writers{service_name=~\"$service_name\"})",
           "format": "time_series",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "Active Writers",
+          "legendFormat": "Active Writers - {{service_name}}",
           "range": true,
           "refId": "A",
           "step": 300
         },
         {
           "editorMode": "code",
-          "expr": "avg by() (mongodb_ss_globalLock_currentQueue{service_name=~\"$service_name\",count_type=\"readers\"})",
+          "expr": "avg by(service_name) (mongodb_ss_globalLock_currentQueue{service_name=~\"$service_name\",count_type=\"readers\"})",
           "hide": false,
-          "legendFormat": "Queued Readers",
+          "legendFormat": "Queued Readers - {{service_name}}",
           "range": true,
           "refId": "B"
         },
         {
           "editorMode": "code",
-          "expr": "avg by() (mongodb_ss_globalLock_currentQueue{service_name=~\"$service_name\",count_type=\"writers\"})",
+          "expr": "avg by(service_name) (mongodb_ss_globalLock_currentQueue{service_name=~\"$service_name\",count_type=\"writers\"})",
           "hide": false,
           "interval": "",
-          "legendFormat": "Queued Writers",
+          "legendFormat": "Queued Writers - {{service_name}}",
           "range": true,
           "refId": "C"
         }
@@ -1629,7 +1628,7 @@
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 51
+            "y": 32
           },
           "id": 1174,
           "options": {
@@ -1820,10 +1819,7 @@
     "to": "now"
   },
   "timepicker": {
-    "hidden": false,
-    "now": true,
     "refresh_intervals": [
-      "1s",
       "5s",
       "1m",
       "5m",
