@@ -1,12 +1,12 @@
 import { apiRequest } from 'shared/components/helpers/api';
 
 export interface AdreQanInsightsRequest {
-  serviceId: string;
-  queryText: string;
-  queryId?: string;
+  service_id: string;
+  query_text: string;
+  query_id?: string;
   fingerprint?: string;
-  timeFrom?: string;
-  timeTo?: string;
+  time_from?: string;
+  time_to?: string;
 }
 
 export interface AdreQanInsightsResponse {
