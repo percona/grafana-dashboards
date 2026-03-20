@@ -139,11 +139,13 @@ const markdownToHtml = (md: string): string => {
 
   while (i < lines.length) {
     const line = lines[i];
-
-    // Fenced code block
     const fenceMatch = line.match(/^```(\w*)/);
+    const headerMatch = line.match(/^(#{1,4})\s+(.*)/);
+    const isUnorderedList = /^\s*[-*]\s+/.test(line);
+    const isOrderedList = /^\s*\d+\.\s+/.test(line);
+    const isEmpty = line.trim() === '';
 
-    if (fenceMatch) {
+    if (fenceMatch != null) {
       const lang = fenceMatch[1] || '';
       const codeLines: string[] = [];
 
@@ -154,7 +156,9 @@ const markdownToHtml = (md: string): string => {
         i += 1;
       }
 
-      i += 1; // skip closing ```
+      if (i < lines.length && lines[i].startsWith('```')) {
+        i += 1;
+      }
 
       const raw = codeLines.join('\n');
       let highlighted: string;
@@ -168,26 +172,16 @@ const markdownToHtml = (md: string): string => {
       }
 
       out.push(`<pre><code class="hljs${lang ? ` language-${lang}` : ''}">${highlighted}</code></pre>`);
-      continue;
-    }
-
-    // Headers
-    const headerMatch = line.match(/^(#{1,4})\s+(.*)/);
-
-    if (headerMatch) {
+    } else if (headerMatch != null) {
       const level = headerMatch[1].length;
       const text = headerMatch[2];
 
       out.push(`<h${level}>${inlineFormat(text)}</h${level}>`);
       i += 1;
-      continue;
-    }
-
-    // Unordered list items
-    if (line.match(/^\s*[-*]\s+/)) {
+    } else if (isUnorderedList) {
       out.push('<ul>');
 
-      while (i < lines.length && lines[i].match(/^\s*[-*]\s+/)) {
+      while (i < lines.length && /^\s*[-*]\s+/.test(lines[i])) {
         const content = lines[i].replace(/^\s*[-*]\s+/, '');
 
         out.push(`<li>${inlineFormat(content)}</li>`);
@@ -195,14 +189,10 @@ const markdownToHtml = (md: string): string => {
       }
 
       out.push('</ul>');
-      continue;
-    }
-
-    // Ordered list items
-    if (line.match(/^\s*\d+\.\s+/)) {
+    } else if (isOrderedList) {
       out.push('<ol>');
 
-      while (i < lines.length && lines[i].match(/^\s*\d+\.\s+/)) {
+      while (i < lines.length && /^\s*\d+\.\s+/.test(lines[i])) {
         const content = lines[i].replace(/^\s*\d+\.\s+/, '');
 
         out.push(`<li>${inlineFormat(content)}</li>`);
@@ -210,18 +200,12 @@ const markdownToHtml = (md: string): string => {
       }
 
       out.push('</ol>');
-      continue;
-    }
-
-    // Empty line
-    if (line.trim() === '') {
+    } else if (isEmpty) {
       i += 1;
-      continue;
+    } else {
+      out.push(`<p>${inlineFormat(line)}</p>`);
+      i += 1;
     }
-
-    // Paragraph
-    out.push(`<p>${inlineFormat(line)}</p>`);
-    i += 1;
   }
 
   return out.join('\n');
@@ -283,6 +267,7 @@ export const AiInsights: FC<AiInsightsProps> = ({
 
   const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
+
     setElapsed(0);
     timerRef.current = setInterval(() => setElapsed((prev) => prev + 1), 1000);
   }, []);
@@ -329,6 +314,7 @@ export const AiInsights: FC<AiInsightsProps> = ({
 
   useEffect(() => {
     if (runOnceRef.current) return () => {};
+
     if (examplesLoading) return () => {};
 
     if (!firstExample || !serviceId.trim() || !queryText.trim()) {
