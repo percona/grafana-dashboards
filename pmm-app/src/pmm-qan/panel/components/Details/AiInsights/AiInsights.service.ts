@@ -35,6 +35,7 @@ export const fetchQanInsightsCache = async (
       params: { query_id: queryId, service_id: serviceId },
       validateStatus: (status) => status === 200 || status === 404,
     });
+
     if (res.status === 404) {
       return null;
     }

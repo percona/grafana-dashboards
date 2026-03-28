@@ -1,0 +1,130 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "datasource", "uid": "grafana" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Phase 1 service map data from PMM OTEL traces in ClickHouse (otel.otel_traces). Use for Node Graph migration or tabular MVP.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 0 },
+      "id": 1,
+      "options": { "showHeader": true },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "editorType": "sql",
+          "format": 1,
+          "meta": { "builderOptions": { "fields": [], "limit": 100, "mode": "list" } },
+          "pluginVersion": "4.0.8",
+          "queryType": "sql",
+          "rawSql": "SELECT DISTINCT\n  ServiceName AS id,\n  ServiceName AS title,\n  toString(anyLast(ResourceAttributes['pmm.node_id'])) AS subtitle\nFROM otel.otel_traces\nWHERE $__timeFilter(Timestamp)\nLIMIT 500",
+          "refId": "nodes"
+        }
+      ],
+      "title": "Nodes (distinct services)",
+      "type": "table"
+    },
+    {
+      "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 0 },
+      "id": 2,
+      "options": { "showHeader": true },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "editorType": "sql",
+          "format": 1,
+          "meta": { "builderOptions": { "fields": [], "limit": 100, "mode": "list" } },
+          "pluginVersion": "4.0.8",
+          "queryType": "sql",
+          "rawSql": "SELECT\n  lower(hex(MD5(concat(ServiceName, '->', SpanAttributes['pmm.map_edge_target'])))) AS id,\n  ServiceName AS source,\n  SpanAttributes['pmm.map_edge_target'] AS target,\n  toString(count()) AS mainstat,\n  toString(round(avg(Duration) / 1e6, 3)) AS secondarystat\nFROM otel.otel_traces\nWHERE $__timeFilter(Timestamp)\n  AND SpanAttributes['pmm.map_edge_target'] != ''\nGROUP BY ServiceName, SpanAttributes['pmm.map_edge_target']\nLIMIT 500",
+          "refId": "edges"
+        }
+      ],
+      "title": "Edges (pmm.map_edge_target)",
+      "type": "table"
+    },
+    {
+      "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 10 },
+      "id": 3,
+      "options": {
+        "edges": {},
+        "layoutAlgorithm": "force",
+        "nodes": {},
+        "zoomMode": "cooperative"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "queryType": "sql",
+          "rawSql": "SELECT DISTINCT\n  ServiceName AS id,\n  ServiceName AS title\nFROM otel.otel_traces\nWHERE $__timeFilter(Timestamp)\nLIMIT 300",
+          "refId": "nodes"
+        },
+        {
+          "datasource": { "type": "grafana-clickhouse-datasource", "uid": "${datasource}" },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "queryType": "sql",
+          "rawSql": "SELECT\n  lower(hex(MD5(concat(ServiceName, '->', SpanAttributes['pmm.map_edge_target'])))) AS id,\n  ServiceName AS source,\n  SpanAttributes['pmm.map_edge_target'] AS target\nFROM otel.otel_traces\nWHERE $__timeFilter(Timestamp)\n  AND SpanAttributes['pmm.map_edge_target'] != ''\nGROUP BY ServiceName, SpanAttributes['pmm.map_edge_target']\nLIMIT 500",
+          "refId": "edges"
+        }
+      ],
+      "title": "Service map (Node Graph — experimental)",
+      "type": "nodeGraph"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "tags": ["pmm", "ebpf", "otel", "experimental"],
+  "templating": {
+    "list": [
+      {
+        "current": { "selected": false, "text": "ClickHouse", "value": "ClickHouse" },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Datasource",
+        "multi": false,
+        "name": "datasource",
+        "options": [],
+        "query": "grafana-clickhouse-datasource",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      }
+    ]
+  },
+  "time": { "from": "now-6h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "PMM eBPF / OTLP Service Map (Phase 1)",
+  "uid": "pmm-ebpf-svc-map-ph1",
+  "version": 1,
+  "weekStart": ""
+}
