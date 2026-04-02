@@ -5,7 +5,7 @@ import * as styles from './ButtonWithSpinner.styles';
 
 type ButtonWithSpinnerProps = ButtonProps & {
   isLoading?: boolean;
-}
+};
 
 export const ButtonWithSpinner: FC<ButtonWithSpinnerProps> = ({
   children,
