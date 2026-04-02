@@ -21,6 +21,7 @@ import { Plan } from './Plan/Plan';
 import ExplainPlaceholders from './ExplainPlaceholders';
 import Metadata from './Metadata/Metadata';
 import { showMetadata } from './Metadata/Metadata.utils';
+import AiInsights from './AiInsights/AiInsights';
 
 export const DetailsSection: FC = () => {
   const theme = useTheme();
@@ -28,7 +29,7 @@ export const DetailsSection: FC = () => {
   const {
     contextActions: { closeDetails, setActiveTab, setLoadingDetails },
     panelState: {
-      queryId, groupBy, totals, openDetailsTab, database,
+      queryId, groupBy, totals, openDetailsTab, database, from, to, fingerprint,
     },
   } = useContext(QueryAnalyticsProvider);
 
@@ -40,8 +41,15 @@ export const DetailsSection: FC = () => {
   const showExplainTab = databaseType !== Databases.postgresql && groupBy === 'queryid' && !totals;
   const showExamplesTab = groupBy === 'queryid' && !totals;
   const showPlanTab = databaseType === Databases.postgresql && groupBy === 'queryid' && !totals;
+  const showAiInsightsTab = groupBy === 'queryid' && !totals;
 
   useEffect(() => {
+    if (openDetailsTab === TabKeys.aiInsights && !showAiInsightsTab) {
+      changeActiveTab(TabKeys.details);
+
+      return;
+    }
+
     if (openDetailsTab === TabKeys.examples && !showExamplesTab) {
       changeActiveTab(TabKeys.details);
 
@@ -61,7 +69,7 @@ export const DetailsSection: FC = () => {
     }
 
     changeActiveTab(TabKeys[openDetailsTab]);
-  }, [queryId, openDetailsTab, showTablesTab, showExplainTab, showExamplesTab]);
+  }, [queryId, openDetailsTab, showTablesTab, showExplainTab, showExamplesTab, showAiInsightsTab]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => setLoadingDetails(loading || metricsLoading), [loading, metricsLoading]);
 
@@ -113,6 +121,21 @@ export const DetailsSection: FC = () => {
         <ExplainPlaceholders queryId={queryId} databaseType={databaseType} examples={examples}>
           {(result) => <TableCreateContainer {...result} database={database} />}
         </ExplainPlaceholders>
+      ),
+    },
+    {
+      label: Messages.tabs.aiInsights.tab,
+      key: TabKeys.aiInsights,
+      show: showAiInsightsTab,
+      component: (
+        <AiInsights
+          queryId={queryId}
+          from={from}
+          to={to}
+          fingerprint={fingerprint}
+          examples={examples}
+          examplesLoading={loading || metricsLoading}
+        />
       ),
     },
     {

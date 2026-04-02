@@ -34,5 +34,11 @@ export const Messages = {
     plan: {
       tab: 'Plan',
     },
+    aiInsights: {
+      tab: 'AI Insights',
+      loading: 'Running AI analysis…',
+      noExample: 'No example available for this query.',
+      error: 'Failed to get AI insights.',
+    },
   },
 };
