@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 92,
+  "id": 227,
   "links": [],
   "panels": [
     {
@@ -82,7 +82,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 4,
         "x": 0,
         "y": 1
@@ -166,7 +166,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 4,
         "x": 4,
         "y": 1
@@ -250,7 +250,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 4,
         "x": 8,
         "y": 1
@@ -334,7 +334,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 4,
         "x": 12,
         "y": 1
@@ -418,7 +418,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 4,
         "x": 16,
         "y": 1
@@ -490,7 +490,7 @@
         "h": 6,
         "w": 6,
         "x": 0,
-        "y": 5
+        "y": 4
       },
       "id": 201,
       "options": {
@@ -547,7 +547,7 @@
         "h": 6,
         "w": 6,
         "x": 6,
-        "y": 5
+        "y": 4
       },
       "id": 202,
       "options": {
@@ -622,7 +622,7 @@
         "h": 6,
         "w": 6,
         "x": 12,
-        "y": 5
+        "y": 4
       },
       "id": 203,
       "options": {
@@ -714,7 +714,7 @@
         "h": 6,
         "w": 6,
         "x": 18,
-        "y": 5
+        "y": 4
       },
       "id": 204,
       "options": {
@@ -770,7 +770,266 @@
         "h": 1,
         "w": 24,
         "x": 0,
+        "y": 10
+      },
+      "id": 213,
+      "panels": [],
+      "title": "🌐 External Access",
+      "type": "row"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Shows if HAProxy is configured for external access (LoadBalancer vs ClusterIP)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "regex",
+                "pattern": "ClusterIP",
+                "result": {
+                  "color": "blue",
+                  "index": 0,
+                  "text": "ClusterIP"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "match": "regex",
+                "pattern": "NodePort",
+                "result": {
+                  "color": "yellow",
+                  "index": 1,
+                  "text": "NodePort"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "match": "regex",
+                "pattern": "LoadBalancer",
+                "result": {
+                  "color": "green",
+                  "index": 2,
+                  "text": "LoadBalancer"
+                }
+              },
+              "type": "regex"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              },
+              {
+                "color": "yellow",
+                "value": 2
+              },
+              {
+                "color": "green",
+                "value": 3
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 5,
+        "x": 0,
         "y": 11
+      },
+      "id": 214,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^LoadBalancer$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "kube_service_spec_type{namespace=\"$namespace\", service=\"pmm-ha-haproxy\"}",
+          "legendFormat": "{{type}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "🔌 HAProxy Service Type",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "Shows if external LoadBalancer has been provisioned and assigned an external IP/hostname",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Not Assigned"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Assigned"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 5,
+        "y": 11
+      },
+      "id": 215,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "(count(kube_service_status_load_balancer_ingress{namespace=\"$namespace\", service=\"pmm-ha-haproxy\"}) > 0) OR on() vector(0)",
+          "legendFormat": "External IP Status",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "🌍 External IP Status",
+      "type": "stat"
+    },
+    {
+      "datasource": "Metrics",
+      "description": "External LoadBalancer hostname (e.g., AWS ELB endpoint)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 13,
+        "x": 11,
+        "y": 11
+      },
+      "id": 216,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^a25a1cf03b2294522aa0c064b7f92758\\-fabdb8706dbc6f96\\.elb\\.eu\\-central\\-1\\.amazonaws\\.com$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.4",
+      "targets": [
+        {
+          "datasource": "Metrics",
+          "editorMode": "code",
+          "expr": "kube_service_status_load_balancer_ingress{namespace=\"$namespace\", service=\"pmm-ha-haproxy\"}",
+          "legendFormat": "{{hostname}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "🔗 External Endpoint",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 14
       },
       "id": 205,
       "panels": [],
@@ -839,7 +1098,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 12
+        "y": 15
       },
       "id": 6,
       "options": {
@@ -935,7 +1194,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 12
+        "y": 15
       },
       "id": 206,
       "options": {
@@ -975,7 +1234,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 23
       },
       "id": 207,
       "panels": [],
@@ -1017,7 +1276,7 @@
         "h": 6,
         "w": 8,
         "x": 0,
-        "y": 21
+        "y": 24
       },
       "id": 208,
       "options": {
@@ -1084,7 +1343,7 @@
         "h": 6,
         "w": 8,
         "x": 8,
-        "y": 21
+        "y": 24
       },
       "id": 209,
       "options": {
@@ -1151,7 +1410,7 @@
         "h": 6,
         "w": 8,
         "x": 16,
-        "y": 21
+        "y": 24
       },
       "id": 210,
       "options": {
@@ -1189,7 +1448,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 30
       },
       "id": 211,
       "panels": [],
@@ -1223,8 +1482,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": 0
+                "color": "red"
               },
               {
                 "color": "orange",
@@ -1248,7 +1506,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 31
       },
       "id": 212,
       "options": {
@@ -1319,7 +1577,209 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 39
+      },
+      "id": 101,
+      "panels": [
+        {
+          "datasource": "Metrics",
+          "description": "Status of each PostgreSQL pod based on Kubernetes phase (Running = UP).",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "color-background"
+                },
+                "inspect": false
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "red",
+                      "index": 1,
+                      "text": "DOWN"
+                    }
+                  },
+                  "type": "value"
+                },
+                {
+                  "options": {
+                    "1": {
+                      "color": "green",
+                      "index": 0,
+                      "text": "UP"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "red"
+                  },
+                  {
+                    "color": "green",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Pod"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 400
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "auto"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Role"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "auto"
+                    }
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "0": {
+                            "index": 1,
+                            "text": "Replica"
+                          }
+                        },
+                        "type": "value"
+                      },
+                      {
+                        "options": {
+                          "1": {
+                            "index": 0,
+                            "text": "Primary"
+                          }
+                        },
+                        "type": "value"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 41
+          },
+          "id": 10,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "11.6.4",
+          "targets": [
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "max by(exported_pod) (kube_pod_status_phase{phase=\"Running\", exported_pod=~\"${release}-pg-db-.*\", exported_pod!~\".*(${pg_exclude_regex}).*\", exported_namespace=\"$namespace\"})",
+              "format": "table",
+              "instant": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "Status"
+            },
+            {
+              "datasource": "Metrics",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "label_replace(max by(name) (patroni_primary), \"exported_pod\", \"$1\", \"name\", \"(.*)\")",
+              "format": "table",
+              "instant": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "Primary"
+            }
+          ],
+          "title": "PostgreSQL Pods",
+          "transformations": [
+            {
+              "id": "seriesToColumns",
+              "options": {
+                "byField": "exported_pod"
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "name": true,
+                  "service_name": true
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "Value #Primary": 2,
+                  "Value #Status": 1,
+                  "exported_pod": 0
+                },
+                "renameByName": {
+                  "Value #Primary": "Role",
+                  "Value #Status": "Status",
+                  "exported_pod": "Pod"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "🐘 PostgreSQL Pod's Status",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 40
       },
       "id": 105,
       "panels": [
@@ -1398,7 +1858,7 @@
             "h": 5,
             "w": 24,
             "x": 0,
-            "y": 37
+            "y": 42
           },
           "id": 50,
           "options": {
@@ -1454,213 +1914,12 @@
       "type": "row"
     },
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 37
-      },
-      "id": 101,
-      "panels": [],
-      "title": "🐘 PostgreSQL Pod's Status",
-      "type": "row"
-    },
-    {
-      "datasource": "Metrics",
-      "description": "Status of each PostgreSQL pod based on Kubernetes phase (Running = UP).",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "center",
-            "cellOptions": {
-              "type": "color-background"
-            },
-            "inspect": false
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "red",
-                  "index": 1,
-                  "text": "DOWN"
-                }
-              },
-              "type": "value"
-            },
-            {
-              "options": {
-                "1": {
-                  "color": "green",
-                  "index": 0,
-                  "text": "UP"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red"
-              },
-              {
-                "color": "green",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Pod"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 400
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "auto"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Role"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 120
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "auto"
-                }
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "0": {
-                        "index": 1,
-                        "text": "Replica"
-                      }
-                    },
-                    "type": "value"
-                  },
-                  {
-                    "options": {
-                      "1": {
-                        "index": 0,
-                        "text": "Primary"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 38
-      },
-      "id": 10,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "11.6.4",
-      "targets": [
-        {
-          "datasource": "Metrics",
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "max by(exported_pod) (kube_pod_status_phase{phase=\"Running\", exported_pod=~\"${release}-pg-db-.*\", exported_pod!~\".*(${pg_exclude_regex}).*\", exported_namespace=\"$namespace\"})",
-          "format": "table",
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "Status"
-        },
-        {
-          "datasource": "Metrics",
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "label_replace(max by(name) (patroni_primary), \"exported_pod\", \"$1\", \"name\", \"(.*)\")",
-          "format": "table",
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "Primary"
-        }
-      ],
-      "title": "PostgreSQL Pods",
-      "transformations": [
-        {
-          "id": "seriesToColumns",
-          "options": {
-            "byField": "exported_pod"
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "name": true,
-              "service_name": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "Value #Primary": 2,
-              "Value #Status": 1,
-              "exported_pod": 0
-            },
-            "renameByName": {
-              "Value #Primary": "Role",
-              "Value #Status": "Status",
-              "exported_pod": "Pod"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
       "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 41
       },
       "id": 102,
       "panels": [
@@ -1861,7 +2120,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 42
       },
       "id": 103,
       "panels": [
@@ -2035,7 +2294,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 43
       },
       "id": 104,
       "panels": [
@@ -2490,5 +2749,5 @@
   "timezone": "",
   "title": "PMM HA Health Overview",
   "uid": "pmm-ha-health-overview",
-  "version": 3
+  "version": 1
 }
